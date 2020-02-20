@@ -1,5 +1,6 @@
 ﻿using MetroSet_UI.Forms;
 using PlexDL.Common.Structures;
+using PlexDL.Common;
 using PlexDL.WaitWindow;
 using System;
 using System.Linq;
@@ -12,9 +13,32 @@ namespace PlexDL.UI
     {
         public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
 
+        public bool connectionStarted = false;
+
         public DirectConnect()
         {
             InitializeComponent();
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
+        }
+
+        private void fadeIn(object sender, EventArgs e)
+        {
+            if (Opacity >= 1)
+                t1.Stop();   //this stops the timer if the form is completely displayed
+            else
+                Opacity += 0.05;
+        }
+
+        private void fadeOut(object sender, EventArgs e)
+        {
+            if (Opacity <= 0)     //check if opacity is 0
+            {
+                t1.Stop();    //if it is, we stop the timer
+                Close();   //and we try to close the form
+            }
+            else
+                Opacity -= 0.05;
         }
 
         public bool WebSiteIsAvailable(string Url)
@@ -61,12 +85,13 @@ namespace PlexDL.UI
                     bool available = (bool)WaitWindow.WaitWindow.Show(CheckWebWorker, "Checking Connection", new object[] { uri });
                     if (available)
                     {
+                        connectionStarted = true;
                         this.DialogResult = DialogResult.OK;
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show(uri);
+                        //MessageBox.Show(uri);
                         MessageBox.Show("Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by the button in the top-right.", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -81,6 +106,24 @@ namespace PlexDL.UI
         {
             string uri = (string)e.Arguments[0];
             e.Result = WebSiteIsAvailable(uri);
+        }
+
+        private void DirectConnect_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if ((Home.settings.Generic.AnimationSpeed > 0) && !connectionStarted)
+            {
+                e.Cancel = true;
+                t1 = new Timer();
+                t1.Interval = Home.settings.Generic.AnimationSpeed;
+                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1.Start();
+
+                if (Opacity == 0)
+                {
+                    //resume the event - the program can be closed
+                    e.Cancel = false;
+                }
+            }
         }
 
         public bool ValidateIPv4(string ipString)
@@ -99,6 +142,19 @@ namespace PlexDL.UI
             byte tempForParsing;
 
             return splitValues.All(r => byte.TryParse(r, out tempForParsing));
+        }
+
+        private void DirectConnect_Load(object sender, EventArgs e)
+        {
+            connectionStarted = false;
+            if (Home.settings.Generic.AnimationSpeed > 0)
+            {
+                Opacity = 0;      //first the opacity is 0
+
+                t1.Interval = Home.settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
+                t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
+                t1.Start();
+            }
         }
     }
 }

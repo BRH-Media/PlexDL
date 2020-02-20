@@ -3,6 +3,7 @@ using PlexDL.Common.Structures;
 using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common;
 
 namespace PlexDL.UI
 {
@@ -15,7 +16,8 @@ namespace PlexDL.UI
         public SearchForm()
         {
             InitializeComponent();
-            this.cbxSearchColumn.Font = Home.ROBOTO_MEDIUM_10;
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
         }
 
         private void btnStartSearch_Click(object sender, EventArgs e)

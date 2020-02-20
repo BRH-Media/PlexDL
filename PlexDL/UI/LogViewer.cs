@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
 using MetroSet_UI.Forms;
+using PlexDL.Common;
 
 namespace PlexDL.UI
 {
@@ -15,6 +16,8 @@ namespace PlexDL.UI
         public LogViewer()
         {
             InitializeComponent();
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
         }
 
         private void fadeOut(object sender, EventArgs e)

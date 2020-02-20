@@ -18,34 +18,56 @@ namespace PlexDL.UI
 
         public Connect()
         {
-            this.styleMain = Home.styleMain;
-            this.styleMain.MetroForm = this;
             InitializeComponent();
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
+        }
+
+        private void fadeIn(object sender, EventArgs e)
+        {
+            if (Opacity >= 1)
+                t1.Stop();   //this stops the timer if the form is completely displayed
+            else
+                Opacity += 0.05;
+        }
+
+        private void fadeOut(object sender, EventArgs e)
+        {
+            if (Opacity <= 0)     //check if opacity is 0
+            {
+                t1.Stop();    //if it is, we stop the timer
+                Close();   //and we try to close the form
+            }
+            else
+                Opacity -= 0.05;
         }
 
         private void frmConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if ((settings.Generic.AnimationSpeed > 0) && !connectionStarted)
+            {
+                e.Cancel = true;
+                t1 = new Timer();
+                t1.Interval = settings.Generic.AnimationSpeed;
+                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1.Start();
 
+                if (Opacity == 0)
+                {
+                    //resume the event - the program can be closed
+                    e.Cancel = false;
+                }
+            }
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            //if (!verifyText(txtPlexIP.Text))
-            //{
-            //MessageBox.Show("Please enter a valid IP Address/Hostname", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            // else if (!(System.Text.RegularExpressions.Regex.IsMatch(txtPlexPort.Text, @"^\d+$")))
-            //{
-            //MessageBox.Show("Please enter a valid TCP Port", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // }
             if (!verifyText(txtAccountToken.Text))
             {
                 MessageBox.Show("Please enter a valid account token. A token must be 20 characters in length with no spaces.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                //ConnectionInfo.PlexAddress = txtPlexIP.Text;
-                //ConnectionInfo.PlexPort = Convert.ToInt32(txtPlexPort.Text);
                 ConnectionInfo.PlexAccountToken = txtAccountToken.Text;
                 ConnectionInfo.RelaysOnly = chkRelays.Checked;
                 connectionStarted = true;
@@ -80,8 +102,14 @@ namespace PlexDL.UI
         {
             connectionStarted = false;
             settings = Home.settings;
-            //txtPlexIP.Text = ConnectionInfo.PlexAddress;
-            //txtPlexPort.Text = ConnectionInfo.PlexPort.ToString();
+            if (settings.Generic.AnimationSpeed > 0)
+            {
+                Opacity = 0;      //first the opacity is 0
+
+                t1.Interval = settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
+                t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
+                t1.Start();
+            }
             txtAccountToken.Text = ConnectionInfo.PlexAccountToken;
             chkRelays.Checked = ConnectionInfo.RelaysOnly;
         }

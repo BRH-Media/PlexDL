@@ -38,6 +38,8 @@
             this.chkDirectMatch = new MetroSet_UI.Controls.MetroSetCheckBox();
             this.txtSearchTerm = new MetroSet_UI.Controls.MetroSetTextBox();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
+            styleMain = new MetroSet_UI.StyleManager();
+            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
             this.SuspendLayout();
             // 
             // btnStartSearch
@@ -65,10 +67,10 @@
             this.btnStartSearch.PressTextColor = System.Drawing.Color.White;
             this.btnStartSearch.Size = new System.Drawing.Size(44, 36);
             this.btnStartSearch.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStartSearch.StyleManager = null;
+            this.btnStartSearch.StyleManager = styleMain;
             this.btnStartSearch.TabIndex = 4;
-            this.btnStartSearch.ThemeAuthor = "Narwin";
-            this.btnStartSearch.ThemeName = "MetroLite";
+            this.btnStartSearch.ThemeAuthor = null;
+            this.btnStartSearch.ThemeName = null;
             this.tipMain.SetToolTip(this.btnStartSearch, "Start Content Search");
             this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
             // 
@@ -97,10 +99,10 @@
             this.btnCancelSearch.PressTextColor = System.Drawing.Color.White;
             this.btnCancelSearch.Size = new System.Drawing.Size(44, 36);
             this.btnCancelSearch.Style = MetroSet_UI.Design.Style.Light;
-            this.btnCancelSearch.StyleManager = null;
+            this.btnCancelSearch.StyleManager = styleMain;
             this.btnCancelSearch.TabIndex = 3;
-            this.btnCancelSearch.ThemeAuthor = "Narwin";
-            this.btnCancelSearch.ThemeName = "MetroLite";
+            this.btnCancelSearch.ThemeAuthor = null;
+            this.btnCancelSearch.ThemeName = null;
             this.tipMain.SetToolTip(this.btnCancelSearch, "Cancel Content Search");
             this.btnCancelSearch.Click += new System.EventHandler(this.btnCancelSearch_Click);
             // 
@@ -126,10 +128,10 @@
             this.cbxSearchColumn.SelectedItemForeColor = System.Drawing.Color.White;
             this.cbxSearchColumn.Size = new System.Drawing.Size(331, 26);
             this.cbxSearchColumn.Style = MetroSet_UI.Design.Style.Light;
-            this.cbxSearchColumn.StyleManager = null;
+            this.cbxSearchColumn.StyleManager = styleMain;
             this.cbxSearchColumn.TabIndex = 5;
-            this.cbxSearchColumn.ThemeAuthor = "Narwin";
-            this.cbxSearchColumn.ThemeName = "MetroLite";
+            this.cbxSearchColumn.ThemeAuthor = null;
+            this.cbxSearchColumn.ThemeName = null;
             // 
             // lblSearchField
             // 
@@ -139,11 +141,11 @@
             this.lblSearchField.Name = "lblSearchField";
             this.lblSearchField.Size = new System.Drawing.Size(87, 17);
             this.lblSearchField.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSearchField.StyleManager = null;
+            this.lblSearchField.StyleManager = styleMain;
             this.lblSearchField.TabIndex = 6;
             this.lblSearchField.Text = "Search Field";
-            this.lblSearchField.ThemeAuthor = "Narwin";
-            this.lblSearchField.ThemeName = "MetroLite";
+            this.lblSearchField.ThemeAuthor = null;
+            this.lblSearchField.ThemeName = null;
             // 
             // chkDirectMatch
             // 
@@ -161,11 +163,11 @@
             this.chkDirectMatch.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
             this.chkDirectMatch.Size = new System.Drawing.Size(331, 16);
             this.chkDirectMatch.Style = MetroSet_UI.Design.Style.Light;
-            this.chkDirectMatch.StyleManager = null;
+            this.chkDirectMatch.StyleManager = styleMain;
             this.chkDirectMatch.TabIndex = 7;
             this.chkDirectMatch.Text = "Direct Match";
-            this.chkDirectMatch.ThemeAuthor = "Narwin";
-            this.chkDirectMatch.ThemeName = "MetroLite";
+            this.chkDirectMatch.ThemeAuthor = null;
+            this.chkDirectMatch.ThemeName = null;
             // 
             // txtSearchTerm
             // 
@@ -187,13 +189,46 @@
             this.txtSearchTerm.ReadOnly = false;
             this.txtSearchTerm.Size = new System.Drawing.Size(331, 26);
             this.txtSearchTerm.Style = MetroSet_UI.Design.Style.Light;
-            this.txtSearchTerm.StyleManager = null;
+            this.txtSearchTerm.StyleManager = styleMain;
             this.txtSearchTerm.TabIndex = 8;
             this.txtSearchTerm.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtSearchTerm.ThemeAuthor = "Narwin";
-            this.txtSearchTerm.ThemeName = "MetroLite";
+            this.txtSearchTerm.ThemeAuthor = null;
+            this.txtSearchTerm.ThemeName = null;
             this.txtSearchTerm.UseSystemPasswordChar = false;
             this.txtSearchTerm.WatermarkText = "Search Term (Limited to 64 Characters)";
+            // 
+            // styleMain
+            // 
+            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            styleMain.MetroForm = this;
+            styleMain.Style = MetroSet_UI.Design.Style.Light;
+            styleMain.ThemeAuthor = null;
+            styleMain.ThemeName = null;
+            // 
+            // ctrlMain
+            // 
+            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
+            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
+            this.ctrlMain.Location = new System.Drawing.Point(277, 2);
+            this.ctrlMain.MaximizeBox = true;
+            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeBox = true;
+            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.Name = "ctrlMain";
+            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
+            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
+            this.ctrlMain.StyleManager = styleMain;
+            this.ctrlMain.TabIndex = 12;
+            this.ctrlMain.Text = "Title Search";
+            this.ctrlMain.ThemeAuthor = null;
+            this.ctrlMain.ThemeName = null;
             // 
             // SearchForm
             // 
@@ -203,6 +238,7 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(379, 271);
             this.ControlBox = false;
+            this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.txtSearchTerm);
             this.Controls.Add(this.chkDirectMatch);
             this.Controls.Add(this.lblSearchField);
@@ -212,7 +248,10 @@
             this.Name = "SearchForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StyleManager = styleMain;
             this.Text = "Search for Content";
+            this.ThemeAuthor = null;
+            this.ThemeName = null;
             this.Load += new System.EventHandler(this.frmSearch_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -227,5 +266,7 @@
         private MetroSet_UI.Controls.MetroSetCheckBox chkDirectMatch;
         private MetroSet_UI.Controls.MetroSetTextBox txtSearchTerm;
         private System.Windows.Forms.ToolTip tipMain;
+        private MetroSet_UI.StyleManager styleMain;
+        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
     }
 }
