@@ -18,6 +18,8 @@ namespace PlexDL.UI
         public Metadata()
         {
             InitializeComponent();
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
         }
 
         private void LoadWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)

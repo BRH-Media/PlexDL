@@ -33,6 +33,8 @@ namespace PlexDL.UI
         public Player()
         {
             InitializeComponent();
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
         }
 
         public XmlDocument GetXMLTransaction(string uri, string secret)

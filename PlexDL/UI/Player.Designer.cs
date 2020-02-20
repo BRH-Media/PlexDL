@@ -31,12 +31,12 @@ namespace PlexDL.UI
         {
             this.components = new System.ComponentModel.Container();
             MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet4 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet5 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet6 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet7 = new MetroSet_UI.Extensions.ImageSet();
+            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.pnlPlayer = new System.Windows.Forms.Panel();
             this.btnExit = new MetroSet_UI.Controls.MetroSetEllipse();
@@ -52,6 +52,8 @@ namespace PlexDL.UI
             this.btnSkipBack = new MetroSet_UI.Controls.MetroSetEllipse();
             this.btnPlayPause = new MetroSet_UI.Controls.MetroSetEllipse();
             this.pnlControls = new MetroSet_UI.Controls.MetroSetPanel();
+            styleMain = new MetroSet_UI.StyleManager();
+            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
             this.pnlControls.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,10 +75,10 @@ namespace PlexDL.UI
             this.btnExit.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnExit.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnExit.HoverTextColor = System.Drawing.Color.White;
-            this.btnExit.Image = null;
-            imageSet7.Idle = PlexDL.Properties.Resources.baseline_cancel_black_18dp;
-            imageSet7.Focus = PlexDL.Properties.Resources.baseline_cancel_black_18dp_white;
-            this.btnExit.ImageSet = imageSet7;
+            this.btnExit.Image = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
+            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp_white;
+            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
+            this.btnExit.ImageSet = imageSet1;
             this.btnExit.ImageSize = new System.Drawing.Size(28, 28);
             this.btnExit.Location = new System.Drawing.Point(1220, 7);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -89,10 +91,10 @@ namespace PlexDL.UI
             this.btnExit.PressTextColor = System.Drawing.Color.White;
             this.btnExit.Size = new System.Drawing.Size(44, 36);
             this.btnExit.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExit.StyleManager = null;
+            this.btnExit.StyleManager = styleMain;
             this.btnExit.TabIndex = 9;
-            this.btnExit.ThemeAuthor = "Narwin";
-            this.btnExit.ThemeName = "MetroLite";
+            this.btnExit.ThemeAuthor = null;
+            this.btnExit.ThemeName = null;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // tmrCopied
@@ -108,11 +110,11 @@ namespace PlexDL.UI
             this.lblTotalDuration.Name = "lblTotalDuration";
             this.lblTotalDuration.Size = new System.Drawing.Size(64, 18);
             this.lblTotalDuration.Style = MetroSet_UI.Design.Style.Light;
-            this.lblTotalDuration.StyleManager = null;
+            this.lblTotalDuration.StyleManager = styleMain;
             this.lblTotalDuration.TabIndex = 8;
             this.lblTotalDuration.Text = "00:00:00";
-            this.lblTotalDuration.ThemeAuthor = "Narwin";
-            this.lblTotalDuration.ThemeName = "MetroLite";
+            this.lblTotalDuration.ThemeAuthor = null;
+            this.lblTotalDuration.ThemeName = null;
             this.lblTotalDuration.Click += new System.EventHandler(this.materialLabel1_Click);
             // 
             // lblTimeSoFar
@@ -123,11 +125,11 @@ namespace PlexDL.UI
             this.lblTimeSoFar.Name = "lblTimeSoFar";
             this.lblTimeSoFar.Size = new System.Drawing.Size(64, 18);
             this.lblTimeSoFar.Style = MetroSet_UI.Design.Style.Light;
-            this.lblTimeSoFar.StyleManager = null;
+            this.lblTimeSoFar.StyleManager = styleMain;
             this.lblTimeSoFar.TabIndex = 6;
             this.lblTimeSoFar.Text = "00:00:00";
-            this.lblTimeSoFar.ThemeAuthor = "Narwin";
-            this.lblTimeSoFar.ThemeName = "MetroLite";
+            this.lblTimeSoFar.ThemeAuthor = null;
+            this.lblTimeSoFar.ThemeName = null;
             // 
             // trkDuration
             // 
@@ -145,10 +147,10 @@ namespace PlexDL.UI
             this.trkDuration.Name = "trkDuration";
             this.trkDuration.Size = new System.Drawing.Size(757, 16);
             this.trkDuration.Style = MetroSet_UI.Design.Style.Light;
-            this.trkDuration.StyleManager = null;
+            this.trkDuration.StyleManager = styleMain;
             this.trkDuration.TabIndex = 7;
-            this.trkDuration.ThemeAuthor = "Narwin";
-            this.trkDuration.ThemeName = "MetroLite";
+            this.trkDuration.ThemeAuthor = null;
+            this.trkDuration.ThemeName = null;
             this.trkDuration.Value = 0;
             this.trkDuration.ValueColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             // 
@@ -162,9 +164,9 @@ namespace PlexDL.UI
             this.btnPrevTitle.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPrevTitle.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPrevTitle.HoverTextColor = System.Drawing.Color.White;
-            this.btnPrevTitle.Image = null;
-            imageSet3.Idle = PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
-            imageSet3.Focus = PlexDL.Properties.Resources.baseline_skip_previous_black_18dp_white;
+            this.btnPrevTitle.Image = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
+            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp_white;
+            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
             this.btnPrevTitle.ImageSet = imageSet3;
             this.btnPrevTitle.ImageSize = new System.Drawing.Size(28, 28);
             this.btnPrevTitle.Location = new System.Drawing.Point(109, 7);
@@ -178,10 +180,10 @@ namespace PlexDL.UI
             this.btnPrevTitle.PressTextColor = System.Drawing.Color.White;
             this.btnPrevTitle.Size = new System.Drawing.Size(44, 36);
             this.btnPrevTitle.Style = MetroSet_UI.Design.Style.Light;
-            this.btnPrevTitle.StyleManager = null;
+            this.btnPrevTitle.StyleManager = styleMain;
             this.btnPrevTitle.TabIndex = 2;
-            this.btnPrevTitle.ThemeAuthor = "Narwin";
-            this.btnPrevTitle.ThemeName = "MetroLite";
+            this.btnPrevTitle.ThemeAuthor = null;
+            this.btnPrevTitle.ThemeName = null;
             this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
             // 
             // btnNextTitle
@@ -194,10 +196,10 @@ namespace PlexDL.UI
             this.btnNextTitle.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnNextTitle.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnNextTitle.HoverTextColor = System.Drawing.Color.White;
-            this.btnNextTitle.Image = null;
-            imageSet6.Idle = PlexDL.Properties.Resources.baseline_skip_next_black_18dp;
-            imageSet6.Focus = PlexDL.Properties.Resources.baseline_skip_next_black_18dp_white;
-            this.btnNextTitle.ImageSet = imageSet6;
+            this.btnNextTitle.Image = global::PlexDL.Properties.Resources.baseline_skip_next_black_18dp;
+            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_skip_next_black_18dp_white;
+            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_skip_next_black_18dp;
+            this.btnNextTitle.ImageSet = imageSet4;
             this.btnNextTitle.ImageSize = new System.Drawing.Size(28, 28);
             this.btnNextTitle.Location = new System.Drawing.Point(265, 7);
             this.btnNextTitle.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -210,10 +212,10 @@ namespace PlexDL.UI
             this.btnNextTitle.PressTextColor = System.Drawing.Color.White;
             this.btnNextTitle.Size = new System.Drawing.Size(44, 36);
             this.btnNextTitle.Style = MetroSet_UI.Design.Style.Light;
-            this.btnNextTitle.StyleManager = null;
+            this.btnNextTitle.StyleManager = styleMain;
             this.btnNextTitle.TabIndex = 5;
-            this.btnNextTitle.ThemeAuthor = "Narwin";
-            this.btnNextTitle.ThemeName = "MetroLite";
+            this.btnNextTitle.ThemeAuthor = null;
+            this.btnNextTitle.ThemeName = null;
             this.btnNextTitle.Click += new System.EventHandler(this.btnNextTitle_Click);
             // 
             // btnStop
@@ -226,10 +228,10 @@ namespace PlexDL.UI
             this.btnStop.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnStop.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnStop.HoverTextColor = System.Drawing.Color.White;
-            this.btnStop.Image = null;
-            imageSet2.Idle = PlexDL.Properties.Resources.baseline_stop_black_18dp;
-            imageSet2.Focus = PlexDL.Properties.Resources.baseline_stop_black_18dp_white;
-            this.btnStop.ImageSet = imageSet2;
+            this.btnStop.Image = global::PlexDL.Properties.Resources.baseline_stop_black_18dp;
+            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_stop_black_18dp_white;
+            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_stop_black_18dp;
+            this.btnStop.ImageSet = imageSet5;
             this.btnStop.ImageSize = new System.Drawing.Size(28, 28);
             this.btnStop.Location = new System.Drawing.Point(57, 7);
             this.btnStop.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -242,10 +244,10 @@ namespace PlexDL.UI
             this.btnStop.PressTextColor = System.Drawing.Color.White;
             this.btnStop.Size = new System.Drawing.Size(44, 36);
             this.btnStop.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStop.StyleManager = null;
+            this.btnStop.StyleManager = styleMain;
             this.btnStop.TabIndex = 1;
-            this.btnStop.ThemeAuthor = "Narwin";
-            this.btnStop.ThemeName = "MetroLite";
+            this.btnStop.ThemeAuthor = null;
+            this.btnStop.ThemeName = null;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // btnSkipForward
@@ -258,10 +260,10 @@ namespace PlexDL.UI
             this.btnSkipForward.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSkipForward.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSkipForward.HoverTextColor = System.Drawing.Color.White;
-            this.btnSkipForward.Image = null;
-            imageSet5.Idle = PlexDL.Properties.Resources.baseline_fast_forward_black_18dp;
-            imageSet5.Focus = PlexDL.Properties.Resources.baseline_fast_forward_black_18dp_white;
-            this.btnSkipForward.ImageSet = imageSet5;
+            this.btnSkipForward.Image = global::PlexDL.Properties.Resources.baseline_fast_forward_black_18dp;
+            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_fast_forward_black_18dp_white;
+            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_fast_forward_black_18dp;
+            this.btnSkipForward.ImageSet = imageSet6;
             this.btnSkipForward.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSkipForward.Location = new System.Drawing.Point(213, 7);
             this.btnSkipForward.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -274,10 +276,10 @@ namespace PlexDL.UI
             this.btnSkipForward.PressTextColor = System.Drawing.Color.White;
             this.btnSkipForward.Size = new System.Drawing.Size(44, 36);
             this.btnSkipForward.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSkipForward.StyleManager = null;
+            this.btnSkipForward.StyleManager = styleMain;
             this.btnSkipForward.TabIndex = 4;
-            this.btnSkipForward.ThemeAuthor = "Narwin";
-            this.btnSkipForward.ThemeName = "MetroLite";
+            this.btnSkipForward.ThemeAuthor = null;
+            this.btnSkipForward.ThemeName = null;
             this.btnSkipForward.Click += new System.EventHandler(this.btnSkipForward_Click);
             // 
             // btnSkipBack
@@ -290,10 +292,10 @@ namespace PlexDL.UI
             this.btnSkipBack.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSkipBack.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSkipBack.HoverTextColor = System.Drawing.Color.White;
-            this.btnSkipBack.Image = null;
-            imageSet4.Idle = PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp;
-            imageSet4.Focus = PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp_white;
-            this.btnSkipBack.ImageSet = imageSet4;
+            this.btnSkipBack.Image = global::PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp;
+            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp_white;
+            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp;
+            this.btnSkipBack.ImageSet = imageSet7;
             this.btnSkipBack.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSkipBack.Location = new System.Drawing.Point(161, 7);
             this.btnSkipBack.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -306,10 +308,10 @@ namespace PlexDL.UI
             this.btnSkipBack.PressTextColor = System.Drawing.Color.White;
             this.btnSkipBack.Size = new System.Drawing.Size(44, 36);
             this.btnSkipBack.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSkipBack.StyleManager = null;
+            this.btnSkipBack.StyleManager = styleMain;
             this.btnSkipBack.TabIndex = 3;
-            this.btnSkipBack.ThemeAuthor = "Narwin";
-            this.btnSkipBack.ThemeName = "MetroLite";
+            this.btnSkipBack.ThemeAuthor = null;
+            this.btnSkipBack.ThemeName = null;
             this.btnSkipBack.Click += new System.EventHandler(this.btnSkipBack_Click);
             // 
             // btnPlayPause
@@ -322,10 +324,10 @@ namespace PlexDL.UI
             this.btnPlayPause.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPlayPause.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPlayPause.HoverTextColor = System.Drawing.Color.White;
-            this.btnPlayPause.Image = null;
-            imageSet1.Idle = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            imageSet1.Focus = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
-            this.btnPlayPause.ImageSet = imageSet1;
+            this.btnPlayPause.Image = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
+            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
+            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
+            this.btnPlayPause.ImageSet = imageSet2;
             this.btnPlayPause.ImageSize = new System.Drawing.Size(28, 28);
             this.btnPlayPause.Location = new System.Drawing.Point(4, 7);
             this.btnPlayPause.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -338,10 +340,10 @@ namespace PlexDL.UI
             this.btnPlayPause.PressTextColor = System.Drawing.Color.White;
             this.btnPlayPause.Size = new System.Drawing.Size(44, 36);
             this.btnPlayPause.Style = MetroSet_UI.Design.Style.Light;
-            this.btnPlayPause.StyleManager = null;
+            this.btnPlayPause.StyleManager = styleMain;
             this.btnPlayPause.TabIndex = 0;
-            this.btnPlayPause.ThemeAuthor = "Narwin";
-            this.btnPlayPause.ThemeName = "MetroLite";
+            this.btnPlayPause.ThemeAuthor = null;
+            this.btnPlayPause.ThemeName = null;
             this.btnPlayPause.Click += new System.EventHandler(this.btnPlayPause_Click);
             // 
             // pnlControls
@@ -363,23 +365,60 @@ namespace PlexDL.UI
             this.pnlControls.Name = "pnlControls";
             this.pnlControls.Size = new System.Drawing.Size(1280, 50);
             this.pnlControls.Style = MetroSet_UI.Design.Style.Light;
-            this.pnlControls.StyleManager = null;
+            this.pnlControls.StyleManager = styleMain;
             this.pnlControls.TabIndex = 10;
-            this.pnlControls.ThemeAuthor = "Narwin";
-            this.pnlControls.ThemeName = "MetroLite";
+            this.pnlControls.ThemeAuthor = null;
+            this.pnlControls.ThemeName = null;
+            // 
+            // styleMain
+            // 
+            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            styleMain.MetroForm = this;
+            styleMain.Style = MetroSet_UI.Design.Style.Light;
+            styleMain.ThemeAuthor = null;
+            styleMain.ThemeName = null;
+            // 
+            // ctrlMain
+            // 
+            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
+            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
+            this.ctrlMain.Location = new System.Drawing.Point(1178, 2);
+            this.ctrlMain.MaximizeBox = true;
+            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeBox = true;
+            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.Name = "ctrlMain";
+            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
+            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
+            this.ctrlMain.StyleManager = styleMain;
+            this.ctrlMain.TabIndex = 11;
+            this.ctrlMain.Text = "Player";
+            this.ctrlMain.ThemeAuthor = null;
+            this.ctrlMain.ThemeName = null;
             // 
             // Player
             // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1280, 845);
+            this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.pnlControls);
             this.Controls.Add(this.pnlPlayer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Player";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StyleManager = styleMain;
             this.Text = "Unknown Title";
+            this.ThemeAuthor = null;
+            this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlayer_FormClosing);
             this.Load += new System.EventHandler(this.frmPlayer_Load);
             this.pnlControls.ResumeLayout(false);
@@ -405,5 +444,7 @@ namespace PlexDL.UI
         private MetroSet_UI.Controls.MetroSetEllipse btnPrevTitle;
         private WMPLib.WindowsMediaPlayer axWindowsMediaPlayer1;
         private MetroSet_UI.Controls.MetroSetPanel pnlControls;
+        private MetroSet_UI.StyleManager styleMain;
+        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
     }
 }

@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet4 = new MetroSet_UI.Extensions.ImageSet();
+            MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
+            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
+            MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
             this.lblActors = new MetroSet_UI.Controls.MetroSetLabel();
@@ -56,6 +56,8 @@
             this.lblContainer = new MetroSet_UI.Controls.MetroSetLabel();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
             this.btnStreamInVLC = new MetroSet_UI.Controls.MetroSetEllipse();
+            styleMain = new MetroSet_UI.StyleManager();
+            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,11 +78,11 @@
             this.lblActors.Name = "lblActors";
             this.lblActors.Size = new System.Drawing.Size(59, 18);
             this.lblActors.Style = MetroSet_UI.Design.Style.Light;
-            this.lblActors.StyleManager = null;
+            this.lblActors.StyleManager = styleMain;
             this.lblActors.TabIndex = 2;
             this.lblActors.Text = "Starring";
-            this.lblActors.ThemeAuthor = "Narwin";
-            this.lblActors.ThemeName = "MetroLite";
+            this.lblActors.ThemeAuthor = null;
+            this.lblActors.ThemeName = null;
             // 
             // lblMetadata
             // 
@@ -102,11 +104,11 @@
             this.lblSize.Name = "lblSize";
             this.lblSize.Size = new System.Drawing.Size(41, 18);
             this.lblSize.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSize.StyleManager = null;
+            this.lblSize.StyleManager = styleMain;
             this.lblSize.TabIndex = 4;
             this.lblSize.Text = "Size:";
-            this.lblSize.ThemeAuthor = "Narwin";
-            this.lblSize.ThemeName = "MetroLite";
+            this.lblSize.ThemeAuthor = null;
+            this.lblSize.ThemeName = null;
             // 
             // lblSizeValue
             // 
@@ -116,11 +118,11 @@
             this.lblSizeValue.Name = "lblSizeValue";
             this.lblSizeValue.Size = new System.Drawing.Size(71, 18);
             this.lblSizeValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSizeValue.StyleManager = null;
+            this.lblSizeValue.StyleManager = styleMain;
             this.lblSizeValue.TabIndex = 5;
             this.lblSizeValue.Text = "Unknown";
-            this.lblSizeValue.ThemeAuthor = "Narwin";
-            this.lblSizeValue.ThemeName = "MetroLite";
+            this.lblSizeValue.ThemeAuthor = null;
+            this.lblSizeValue.ThemeName = null;
             // 
             // lblRuntime
             // 
@@ -130,11 +132,11 @@
             this.lblRuntime.Name = "lblRuntime";
             this.lblRuntime.Size = new System.Drawing.Size(67, 18);
             this.lblRuntime.Style = MetroSet_UI.Design.Style.Light;
-            this.lblRuntime.StyleManager = null;
+            this.lblRuntime.StyleManager = styleMain;
             this.lblRuntime.TabIndex = 6;
             this.lblRuntime.Text = "Runtime:";
-            this.lblRuntime.ThemeAuthor = "Narwin";
-            this.lblRuntime.ThemeName = "MetroLite";
+            this.lblRuntime.ThemeAuthor = null;
+            this.lblRuntime.ThemeName = null;
             // 
             // lblRuntimeValue
             // 
@@ -144,11 +146,11 @@
             this.lblRuntimeValue.Name = "lblRuntimeValue";
             this.lblRuntimeValue.Size = new System.Drawing.Size(71, 18);
             this.lblRuntimeValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblRuntimeValue.StyleManager = null;
+            this.lblRuntimeValue.StyleManager = styleMain;
             this.lblRuntimeValue.TabIndex = 7;
             this.lblRuntimeValue.Text = "Unknown";
-            this.lblRuntimeValue.ThemeAuthor = "Narwin";
-            this.lblRuntimeValue.ThemeName = "MetroLite";
+            this.lblRuntimeValue.ThemeAuthor = null;
+            this.lblRuntimeValue.ThemeName = null;
             // 
             // lblGenre
             // 
@@ -158,11 +160,11 @@
             this.lblGenre.Name = "lblGenre";
             this.lblGenre.Size = new System.Drawing.Size(53, 18);
             this.lblGenre.Style = MetroSet_UI.Design.Style.Light;
-            this.lblGenre.StyleManager = null;
+            this.lblGenre.StyleManager = styleMain;
             this.lblGenre.TabIndex = 8;
             this.lblGenre.Text = "Genre:";
-            this.lblGenre.ThemeAuthor = "Narwin";
-            this.lblGenre.ThemeName = "MetroLite";
+            this.lblGenre.ThemeAuthor = null;
+            this.lblGenre.ThemeName = null;
             // 
             // lblGenreValue
             // 
@@ -172,11 +174,11 @@
             this.lblGenreValue.Name = "lblGenreValue";
             this.lblGenreValue.Size = new System.Drawing.Size(71, 18);
             this.lblGenreValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblGenreValue.StyleManager = null;
+            this.lblGenreValue.StyleManager = styleMain;
             this.lblGenreValue.TabIndex = 9;
             this.lblGenreValue.Text = "Unknown";
-            this.lblGenreValue.ThemeAuthor = "Narwin";
-            this.lblGenreValue.ThemeName = "MetroLite";
+            this.lblGenreValue.ThemeAuthor = null;
+            this.lblGenreValue.ThemeName = null;
             // 
             // lblResolutionValue
             // 
@@ -186,11 +188,11 @@
             this.lblResolutionValue.Name = "lblResolutionValue";
             this.lblResolutionValue.Size = new System.Drawing.Size(71, 18);
             this.lblResolutionValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblResolutionValue.StyleManager = null;
+            this.lblResolutionValue.StyleManager = styleMain;
             this.lblResolutionValue.TabIndex = 11;
             this.lblResolutionValue.Text = "Unknown";
-            this.lblResolutionValue.ThemeAuthor = "Narwin";
-            this.lblResolutionValue.ThemeName = "MetroLite";
+            this.lblResolutionValue.ThemeAuthor = null;
+            this.lblResolutionValue.ThemeName = null;
             // 
             // lblResolution
             // 
@@ -200,11 +202,11 @@
             this.lblResolution.Name = "lblResolution";
             this.lblResolution.Size = new System.Drawing.Size(83, 18);
             this.lblResolution.Style = MetroSet_UI.Design.Style.Light;
-            this.lblResolution.StyleManager = null;
+            this.lblResolution.StyleManager = styleMain;
             this.lblResolution.TabIndex = 10;
             this.lblResolution.Text = "Resolution:";
-            this.lblResolution.ThemeAuthor = "Narwin";
-            this.lblResolution.ThemeName = "MetroLite";
+            this.lblResolution.ThemeAuthor = null;
+            this.lblResolution.ThemeName = null;
             // 
             // btnExit
             // 
@@ -217,9 +219,9 @@
             this.btnExit.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnExit.HoverTextColor = System.Drawing.Color.White;
             this.btnExit.Image = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
-            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp_white;
-            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
-            this.btnExit.ImageSet = imageSet1;
+            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp_white;
+            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
+            this.btnExit.ImageSet = imageSet4;
             this.btnExit.ImageSize = new System.Drawing.Size(28, 28);
             this.btnExit.Location = new System.Drawing.Point(836, 470);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -232,10 +234,10 @@
             this.btnExit.PressTextColor = System.Drawing.Color.White;
             this.btnExit.Size = new System.Drawing.Size(44, 36);
             this.btnExit.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExit.StyleManager = null;
+            this.btnExit.StyleManager = styleMain;
             this.btnExit.TabIndex = 1;
-            this.btnExit.ThemeAuthor = "Narwin";
-            this.btnExit.ThemeName = "MetroLite";
+            this.btnExit.ThemeAuthor = null;
+            this.btnExit.ThemeName = null;
             this.tipMain.SetToolTip(this.btnExit, "Close Metadata");
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -267,9 +269,9 @@
             this.btnExportMetadata.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnExportMetadata.HoverTextColor = System.Drawing.Color.White;
             this.btnExportMetadata.Image = global::PlexDL.Properties.Resources.baseline_save_black_18dp;
-            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_save_black_18dp_white;
-            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_save_black_18dp;
-            this.btnExportMetadata.ImageSet = imageSet2;
+            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_save_black_18dp_white;
+            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_save_black_18dp;
+            this.btnExportMetadata.ImageSet = imageSet3;
             this.btnExportMetadata.ImageSize = new System.Drawing.Size(28, 28);
             this.btnExportMetadata.Location = new System.Drawing.Point(15, 470);
             this.btnExportMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -282,10 +284,10 @@
             this.btnExportMetadata.PressTextColor = System.Drawing.Color.White;
             this.btnExportMetadata.Size = new System.Drawing.Size(44, 36);
             this.btnExportMetadata.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExportMetadata.StyleManager = null;
+            this.btnExportMetadata.StyleManager = styleMain;
             this.btnExportMetadata.TabIndex = 13;
-            this.btnExportMetadata.ThemeAuthor = "Narwin";
-            this.btnExportMetadata.ThemeName = "MetroLite";
+            this.btnExportMetadata.ThemeAuthor = null;
+            this.btnExportMetadata.ThemeName = null;
             this.tipMain.SetToolTip(this.btnExportMetadata, "Export Metadata");
             this.btnExportMetadata.Click += new System.EventHandler(this.btnExportMetadata_Click);
             // 
@@ -300,9 +302,9 @@
             this.btnImport.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnImport.HoverTextColor = System.Drawing.Color.White;
             this.btnImport.Image = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
-            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            this.btnImport.ImageSet = imageSet3;
+            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
+            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
+            this.btnImport.ImageSet = imageSet2;
             this.btnImport.ImageSize = new System.Drawing.Size(28, 28);
             this.btnImport.Location = new System.Drawing.Point(67, 470);
             this.btnImport.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -315,10 +317,10 @@
             this.btnImport.PressTextColor = System.Drawing.Color.White;
             this.btnImport.Size = new System.Drawing.Size(44, 36);
             this.btnImport.Style = MetroSet_UI.Design.Style.Light;
-            this.btnImport.StyleManager = null;
+            this.btnImport.StyleManager = styleMain;
             this.btnImport.TabIndex = 14;
-            this.btnImport.ThemeAuthor = "Narwin";
-            this.btnImport.ThemeName = "MetroLite";
+            this.btnImport.ThemeAuthor = null;
+            this.btnImport.ThemeName = null;
             this.tipMain.SetToolTip(this.btnImport, "Import Metadata");
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
@@ -339,11 +341,11 @@
             this.lblContainerValue.Name = "lblContainerValue";
             this.lblContainerValue.Size = new System.Drawing.Size(71, 18);
             this.lblContainerValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblContainerValue.StyleManager = null;
+            this.lblContainerValue.StyleManager = styleMain;
             this.lblContainerValue.TabIndex = 16;
             this.lblContainerValue.Text = "Unknown";
-            this.lblContainerValue.ThemeAuthor = "Narwin";
-            this.lblContainerValue.ThemeName = "MetroLite";
+            this.lblContainerValue.ThemeAuthor = null;
+            this.lblContainerValue.ThemeName = null;
             // 
             // lblContainer
             // 
@@ -353,11 +355,11 @@
             this.lblContainer.Name = "lblContainer";
             this.lblContainer.Size = new System.Drawing.Size(76, 18);
             this.lblContainer.Style = MetroSet_UI.Design.Style.Light;
-            this.lblContainer.StyleManager = null;
+            this.lblContainer.StyleManager = styleMain;
             this.lblContainer.TabIndex = 15;
             this.lblContainer.Text = "Container:";
-            this.lblContainer.ThemeAuthor = "Narwin";
-            this.lblContainer.ThemeName = "MetroLite";
+            this.lblContainer.ThemeAuthor = null;
+            this.lblContainer.ThemeName = null;
             // 
             // btnStreamInVLC
             // 
@@ -370,9 +372,9 @@
             this.btnStreamInVLC.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnStreamInVLC.HoverTextColor = System.Drawing.Color.White;
             this.btnStreamInVLC.Image = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
-            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            this.btnStreamInVLC.ImageSet = imageSet4;
+            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
+            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
+            this.btnStreamInVLC.ImageSet = imageSet1;
             this.btnStreamInVLC.ImageSize = new System.Drawing.Size(24, 24);
             this.btnStreamInVLC.Location = new System.Drawing.Point(119, 470);
             this.btnStreamInVLC.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -385,13 +387,46 @@
             this.btnStreamInVLC.PressTextColor = System.Drawing.Color.White;
             this.btnStreamInVLC.Size = new System.Drawing.Size(44, 36);
             this.btnStreamInVLC.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStreamInVLC.StyleManager = null;
+            this.btnStreamInVLC.StyleManager = styleMain;
             this.btnStreamInVLC.TabIndex = 17;
-            this.btnStreamInVLC.ThemeAuthor = "Narwin";
-            this.btnStreamInVLC.ThemeName = "MetroLite";
+            this.btnStreamInVLC.ThemeAuthor = null;
+            this.btnStreamInVLC.ThemeName = null;
             this.tipMain.SetToolTip(this.btnStreamInVLC, "Stream in VLC");
             this.btnStreamInVLC.Visible = false;
             this.btnStreamInVLC.Click += new System.EventHandler(this.btnStreamInVLC_Click);
+            // 
+            // styleMain
+            // 
+            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            styleMain.MetroForm = this;
+            styleMain.Style = MetroSet_UI.Design.Style.Light;
+            styleMain.ThemeAuthor = null;
+            styleMain.ThemeName = null;
+            // 
+            // ctrlMain
+            // 
+            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
+            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
+            this.ctrlMain.Location = new System.Drawing.Point(794, 2);
+            this.ctrlMain.MaximizeBox = true;
+            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeBox = true;
+            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.Name = "ctrlMain";
+            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
+            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
+            this.ctrlMain.StyleManager = styleMain;
+            this.ctrlMain.TabIndex = 18;
+            this.ctrlMain.Text = "Metadata";
+            this.ctrlMain.ThemeAuthor = null;
+            this.ctrlMain.ThemeName = null;
             // 
             // Metadata
             // 
@@ -399,6 +434,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 515);
+            this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.btnStreamInVLC);
             this.Controls.Add(this.lblContainerValue);
             this.Controls.Add(this.lblContainer);
@@ -421,7 +457,10 @@
             this.Name = "Metadata";
             this.Padding = new System.Windows.Forms.Padding(12, 90, 12, 12);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StyleManager = styleMain;
             this.Text = "Metadata";
+            this.ThemeAuthor = null;
+            this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
             this.Load += new System.EventHandler(this.frmTitleInformation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
@@ -453,5 +492,7 @@
         private MetroSet_UI.Controls.MetroSetLabel lblContainer;
         private System.Windows.Forms.ToolTip tipMain;
         private MetroSet_UI.Controls.MetroSetEllipse btnStreamInVLC;
+        private MetroSet_UI.StyleManager styleMain;
+        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
     }
 }

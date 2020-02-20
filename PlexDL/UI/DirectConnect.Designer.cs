@@ -28,9 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnConnect = new MetroSet_UI.Controls.MetroSetButton();
+            this.styleMain = new MetroSet_UI.StyleManager();
             this.txtServerIP = new MetroSet_UI.Controls.MetroSetTextBox();
             this.txtServerPort = new MetroSet_UI.Controls.MetroSetTextBox();
+            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
+            this.t1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btnConnect
@@ -53,12 +57,20 @@
             this.btnConnect.PressTextColor = System.Drawing.Color.White;
             this.btnConnect.Size = new System.Drawing.Size(197, 36);
             this.btnConnect.Style = MetroSet_UI.Design.Style.Light;
-            this.btnConnect.StyleManager = null;
+            this.btnConnect.StyleManager = this.styleMain;
             this.btnConnect.TabIndex = 11;
             this.btnConnect.Text = "Connect";
-            this.btnConnect.ThemeAuthor = "Narwin";
-            this.btnConnect.ThemeName = "MetroLite";
+            this.btnConnect.ThemeAuthor = null;
+            this.btnConnect.ThemeName = null;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // styleMain
+            // 
+            this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            this.styleMain.MetroForm = this;
+            this.styleMain.Style = MetroSet_UI.Design.Style.Light;
+            this.styleMain.ThemeAuthor = null;
+            this.styleMain.ThemeName = null;
             // 
             // txtServerIP
             // 
@@ -80,12 +92,12 @@
             this.txtServerIP.ReadOnly = false;
             this.txtServerIP.Size = new System.Drawing.Size(197, 25);
             this.txtServerIP.Style = MetroSet_UI.Design.Style.Light;
-            this.txtServerIP.StyleManager = null;
+            this.txtServerIP.StyleManager = this.styleMain;
             this.txtServerIP.TabIndex = 10;
             this.txtServerIP.TabStop = false;
             this.txtServerIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtServerIP.ThemeAuthor = "Narwin";
-            this.txtServerIP.ThemeName = "MetroLite";
+            this.txtServerIP.ThemeAuthor = null;
+            this.txtServerIP.ThemeName = null;
             this.txtServerIP.UseSystemPasswordChar = false;
             this.txtServerIP.WatermarkText = "Server Address (IPv4)";
             // 
@@ -109,20 +121,46 @@
             this.txtServerPort.ReadOnly = false;
             this.txtServerPort.Size = new System.Drawing.Size(197, 25);
             this.txtServerPort.Style = MetroSet_UI.Design.Style.Light;
-            this.txtServerPort.StyleManager = null;
+            this.txtServerPort.StyleManager = this.styleMain;
             this.txtServerPort.TabIndex = 12;
             this.txtServerPort.TabStop = false;
             this.txtServerPort.Text = "32400";
             this.txtServerPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtServerPort.ThemeAuthor = "Narwin";
-            this.txtServerPort.ThemeName = "MetroLite";
+            this.txtServerPort.ThemeAuthor = null;
+            this.txtServerPort.ThemeName = null;
             this.txtServerPort.UseSystemPasswordChar = false;
             this.txtServerPort.WatermarkText = "Server Port (TCP)";
+            // 
+            // ctrlMain
+            // 
+            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
+            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
+            this.ctrlMain.Location = new System.Drawing.Point(131, 2);
+            this.ctrlMain.MaximizeBox = false;
+            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeBox = false;
+            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.Name = "ctrlMain";
+            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
+            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
+            this.ctrlMain.StyleManager = this.styleMain;
+            this.ctrlMain.TabIndex = 13;
+            this.ctrlMain.Text = "Direct Connect";
+            this.ctrlMain.ThemeAuthor = null;
+            this.ctrlMain.ThemeName = null;
             // 
             // DirectConnect
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(233, 205);
+            this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.txtServerPort);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtServerIP);
@@ -130,9 +168,13 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StyleManager = this.styleMain;
             this.Text = "Direct Connect";
+            this.ThemeAuthor = null;
+            this.ThemeName = null;
+            this.Load += new System.EventHandler(this.DirectConnect_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DirectConnect_FormClosing);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -141,5 +183,8 @@
         private MetroSet_UI.Controls.MetroSetButton btnConnect;
         private MetroSet_UI.Controls.MetroSetTextBox txtServerIP;
         private MetroSet_UI.Controls.MetroSetTextBox txtServerPort;
+        private MetroSet_UI.StyleManager styleMain;
+        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
+        private System.Windows.Forms.Timer t1;
     }
 }

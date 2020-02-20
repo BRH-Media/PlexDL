@@ -32,6 +32,7 @@
             this.styleMain = new MetroSet_UI.StyleManager();
             this.chkRelays = new MetroSet_UI.Controls.MetroSetCheckBox();
             this.btnConnect = new MetroSet_UI.Controls.MetroSetButton();
+            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
             this.SuspendLayout();
             // 
             // txtAccountToken
@@ -52,7 +53,7 @@
             this.txtAccountToken.Multiline = false;
             this.txtAccountToken.Name = "txtAccountToken";
             this.txtAccountToken.ReadOnly = false;
-            this.txtAccountToken.Size = new System.Drawing.Size(204, 21);
+            this.txtAccountToken.Size = new System.Drawing.Size(204, 26);
             this.txtAccountToken.Style = MetroSet_UI.Design.Style.Light;
             this.txtAccountToken.StyleManager = this.styleMain;
             this.txtAccountToken.TabIndex = 5;
@@ -81,7 +82,7 @@
             this.chkRelays.Cursor = System.Windows.Forms.Cursors.Hand;
             this.chkRelays.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
             this.chkRelays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chkRelays.Location = new System.Drawing.Point(15, 115);
+            this.chkRelays.Location = new System.Drawing.Point(15, 120);
             this.chkRelays.Name = "chkRelays";
             this.chkRelays.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
             this.chkRelays.Size = new System.Drawing.Size(204, 16);
@@ -101,7 +102,7 @@
             this.btnConnect.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverTextColor = System.Drawing.Color.White;
-            this.btnConnect.Location = new System.Drawing.Point(15, 144);
+            this.btnConnect.Location = new System.Drawing.Point(15, 149);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnConnect.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -118,14 +119,41 @@
             this.btnConnect.ThemeName = null;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // ctrlMain
+            // 
+            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
+            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
+            this.ctrlMain.Location = new System.Drawing.Point(131, 2);
+            this.ctrlMain.MaximizeBox = false;
+            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeBox = false;
+            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
+            this.ctrlMain.Name = "ctrlMain";
+            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
+            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
+            this.ctrlMain.StyleManager = this.styleMain;
+            this.ctrlMain.TabIndex = 27;
+            this.ctrlMain.Text = "Player";
+            this.ctrlMain.ThemeAuthor = null;
+            this.ctrlMain.ThemeName = null;
+            // 
             // Connect
             // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(234, 182);
+            this.ClientSize = new System.Drawing.Size(234, 187);
+            this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.chkRelays);
             this.Controls.Add(this.txtAccountToken);
+            this.DropShadowEffect = false;
             this.Name = "Connect";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -143,5 +171,6 @@
         private MetroSet_UI.Controls.MetroSetCheckBox chkRelays;
         private MetroSet_UI.Controls.MetroSetButton btnConnect;
         private MetroSet_UI.StyleManager styleMain;
+        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
     }
 }

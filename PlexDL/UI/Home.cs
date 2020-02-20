@@ -37,7 +37,6 @@ namespace PlexDL.UI
         public Timer t1 = new Timer();
         public User user = new User();
         public Server svr;
-        public static MetroSet_UI.StyleManager styleMain;
 
         #region Fonts
 
@@ -133,16 +132,8 @@ namespace PlexDL.UI
         public Home()
         {
             InitializeComponent();
-
-            styleMain = new MetroSet_UI.StyleManager();
-            // 
-            // styleMain
-            // 
-            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
-            styleMain.MetroForm = this;
-            styleMain.Style = MetroSet_UI.Design.Style.Light;
-            styleMain.ThemeAuthor = null;
-            styleMain.ThemeName = null;
+            this.styleMain = GlobalStaticVars.GlobalStyle;
+            this.styleMain.MetroForm = this;
         }
 
         #endregion FormInitialiser
