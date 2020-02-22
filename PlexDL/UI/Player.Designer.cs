@@ -40,11 +40,12 @@ namespace PlexDL.UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.pnlPlayer = new System.Windows.Forms.Panel();
             this.btnExit = new MetroSet_UI.Controls.MetroSetEllipse();
+            this.styleMain = new MetroSet_UI.StyleManager();
             this.tmrCopied = new System.Windows.Forms.Timer(this.components);
             this.lblTotalDuration = new MetroSet_UI.Controls.MetroSetLabel();
             this.lblTimeSoFar = new MetroSet_UI.Controls.MetroSetLabel();
             this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
-            this.trkDuration = new MetroSet_UI.Controls.MetroSetTrackBar();
+            this.trkDuration = new System.Windows.Forms.TrackBar();
             this.btnPrevTitle = new MetroSet_UI.Controls.MetroSetEllipse();
             this.btnNextTitle = new MetroSet_UI.Controls.MetroSetEllipse();
             this.btnStop = new MetroSet_UI.Controls.MetroSetEllipse();
@@ -52,8 +53,8 @@ namespace PlexDL.UI
             this.btnSkipBack = new MetroSet_UI.Controls.MetroSetEllipse();
             this.btnPlayPause = new MetroSet_UI.Controls.MetroSetEllipse();
             this.pnlControls = new MetroSet_UI.Controls.MetroSetPanel();
-            styleMain = new MetroSet_UI.StyleManager();
             this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
+            ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             this.pnlControls.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,11 +92,19 @@ namespace PlexDL.UI
             this.btnExit.PressTextColor = System.Drawing.Color.White;
             this.btnExit.Size = new System.Drawing.Size(44, 36);
             this.btnExit.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExit.StyleManager = styleMain;
+            this.btnExit.StyleManager = this.styleMain;
             this.btnExit.TabIndex = 9;
             this.btnExit.ThemeAuthor = null;
             this.btnExit.ThemeName = null;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // styleMain
+            // 
+            this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            this.styleMain.MetroForm = this;
+            this.styleMain.Style = MetroSet_UI.Design.Style.Light;
+            this.styleMain.ThemeAuthor = null;
+            this.styleMain.ThemeName = null;
             // 
             // tmrCopied
             // 
@@ -110,7 +119,7 @@ namespace PlexDL.UI
             this.lblTotalDuration.Name = "lblTotalDuration";
             this.lblTotalDuration.Size = new System.Drawing.Size(64, 18);
             this.lblTotalDuration.Style = MetroSet_UI.Design.Style.Light;
-            this.lblTotalDuration.StyleManager = styleMain;
+            this.lblTotalDuration.StyleManager = this.styleMain;
             this.lblTotalDuration.TabIndex = 8;
             this.lblTotalDuration.Text = "00:00:00";
             this.lblTotalDuration.ThemeAuthor = null;
@@ -125,7 +134,7 @@ namespace PlexDL.UI
             this.lblTimeSoFar.Name = "lblTimeSoFar";
             this.lblTimeSoFar.Size = new System.Drawing.Size(64, 18);
             this.lblTimeSoFar.Style = MetroSet_UI.Design.Style.Light;
-            this.lblTimeSoFar.StyleManager = styleMain;
+            this.lblTimeSoFar.StyleManager = this.styleMain;
             this.lblTimeSoFar.TabIndex = 6;
             this.lblTimeSoFar.Text = "00:00:00";
             this.lblTimeSoFar.ThemeAuthor = null;
@@ -133,26 +142,15 @@ namespace PlexDL.UI
             // 
             // trkDuration
             // 
-            this.trkDuration.BackColor = System.Drawing.Color.Transparent;
-            this.trkDuration.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.trkDuration.AutoSize = false;
+            this.trkDuration.BackColor = this.BackColor;
             this.trkDuration.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.trkDuration.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            this.trkDuration.DisabledBorderColor = System.Drawing.Color.Empty;
-            this.trkDuration.DisabledHandlerColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
-            this.trkDuration.DisabledValueColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.trkDuration.HandlerColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.trkDuration.Location = new System.Drawing.Point(386, 17);
             this.trkDuration.Maximum = 100;
-            this.trkDuration.Minimum = 0;
             this.trkDuration.Name = "trkDuration";
             this.trkDuration.Size = new System.Drawing.Size(757, 16);
-            this.trkDuration.Style = MetroSet_UI.Design.Style.Light;
-            this.trkDuration.StyleManager = styleMain;
             this.trkDuration.TabIndex = 7;
-            this.trkDuration.ThemeAuthor = null;
-            this.trkDuration.ThemeName = null;
-            this.trkDuration.Value = 0;
-            this.trkDuration.ValueColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
+            this.trkDuration.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // btnPrevTitle
             // 
@@ -180,7 +178,7 @@ namespace PlexDL.UI
             this.btnPrevTitle.PressTextColor = System.Drawing.Color.White;
             this.btnPrevTitle.Size = new System.Drawing.Size(44, 36);
             this.btnPrevTitle.Style = MetroSet_UI.Design.Style.Light;
-            this.btnPrevTitle.StyleManager = styleMain;
+            this.btnPrevTitle.StyleManager = this.styleMain;
             this.btnPrevTitle.TabIndex = 2;
             this.btnPrevTitle.ThemeAuthor = null;
             this.btnPrevTitle.ThemeName = null;
@@ -212,7 +210,7 @@ namespace PlexDL.UI
             this.btnNextTitle.PressTextColor = System.Drawing.Color.White;
             this.btnNextTitle.Size = new System.Drawing.Size(44, 36);
             this.btnNextTitle.Style = MetroSet_UI.Design.Style.Light;
-            this.btnNextTitle.StyleManager = styleMain;
+            this.btnNextTitle.StyleManager = this.styleMain;
             this.btnNextTitle.TabIndex = 5;
             this.btnNextTitle.ThemeAuthor = null;
             this.btnNextTitle.ThemeName = null;
@@ -244,7 +242,7 @@ namespace PlexDL.UI
             this.btnStop.PressTextColor = System.Drawing.Color.White;
             this.btnStop.Size = new System.Drawing.Size(44, 36);
             this.btnStop.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStop.StyleManager = styleMain;
+            this.btnStop.StyleManager = this.styleMain;
             this.btnStop.TabIndex = 1;
             this.btnStop.ThemeAuthor = null;
             this.btnStop.ThemeName = null;
@@ -276,7 +274,7 @@ namespace PlexDL.UI
             this.btnSkipForward.PressTextColor = System.Drawing.Color.White;
             this.btnSkipForward.Size = new System.Drawing.Size(44, 36);
             this.btnSkipForward.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSkipForward.StyleManager = styleMain;
+            this.btnSkipForward.StyleManager = this.styleMain;
             this.btnSkipForward.TabIndex = 4;
             this.btnSkipForward.ThemeAuthor = null;
             this.btnSkipForward.ThemeName = null;
@@ -308,7 +306,7 @@ namespace PlexDL.UI
             this.btnSkipBack.PressTextColor = System.Drawing.Color.White;
             this.btnSkipBack.Size = new System.Drawing.Size(44, 36);
             this.btnSkipBack.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSkipBack.StyleManager = styleMain;
+            this.btnSkipBack.StyleManager = this.styleMain;
             this.btnSkipBack.TabIndex = 3;
             this.btnSkipBack.ThemeAuthor = null;
             this.btnSkipBack.ThemeName = null;
@@ -340,7 +338,7 @@ namespace PlexDL.UI
             this.btnPlayPause.PressTextColor = System.Drawing.Color.White;
             this.btnPlayPause.Size = new System.Drawing.Size(44, 36);
             this.btnPlayPause.Style = MetroSet_UI.Design.Style.Light;
-            this.btnPlayPause.StyleManager = styleMain;
+            this.btnPlayPause.StyleManager = this.styleMain;
             this.btnPlayPause.TabIndex = 0;
             this.btnPlayPause.ThemeAuthor = null;
             this.btnPlayPause.ThemeName = null;
@@ -365,18 +363,10 @@ namespace PlexDL.UI
             this.pnlControls.Name = "pnlControls";
             this.pnlControls.Size = new System.Drawing.Size(1280, 50);
             this.pnlControls.Style = MetroSet_UI.Design.Style.Light;
-            this.pnlControls.StyleManager = styleMain;
+            this.pnlControls.StyleManager = this.styleMain;
             this.pnlControls.TabIndex = 10;
             this.pnlControls.ThemeAuthor = null;
             this.pnlControls.ThemeName = null;
-            // 
-            // styleMain
-            // 
-            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
-            styleMain.MetroForm = this;
-            styleMain.Style = MetroSet_UI.Design.Style.Light;
-            styleMain.ThemeAuthor = null;
-            styleMain.ThemeName = null;
             // 
             // ctrlMain
             // 
@@ -397,7 +387,7 @@ namespace PlexDL.UI
             this.ctrlMain.Name = "ctrlMain";
             this.ctrlMain.Size = new System.Drawing.Size(100, 25);
             this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
-            this.ctrlMain.StyleManager = styleMain;
+            this.ctrlMain.StyleManager = this.styleMain;
             this.ctrlMain.TabIndex = 11;
             this.ctrlMain.Text = "Player";
             this.ctrlMain.ThemeAuthor = null;
@@ -415,12 +405,13 @@ namespace PlexDL.UI
             this.Name = "Player";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.StyleManager = styleMain;
+            this.StyleManager = this.styleMain;
             this.Text = "Unknown Title";
             this.ThemeAuthor = null;
             this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlayer_FormClosing);
             this.Load += new System.EventHandler(this.frmPlayer_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();
             this.ResumeLayout(false);
@@ -436,7 +427,7 @@ namespace PlexDL.UI
         private MetroSet_UI.Controls.MetroSetLabel lblTotalDuration;
         private MetroSet_UI.Controls.MetroSetLabel lblTimeSoFar;
         private System.Windows.Forms.Timer tmrRefreshUI;
-        private MetroSet_UI.Controls.MetroSetTrackBar trkDuration;
+        private new System.Windows.Forms.TrackBar trkDuration;
         private MetroSet_UI.Controls.MetroSetEllipse btnSkipBack;
         private MetroSet_UI.Controls.MetroSetEllipse btnSkipForward;
         private MetroSet_UI.Controls.MetroSetEllipse btnStop;

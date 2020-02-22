@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="10" allowSync="0" identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1580814888" title1="Plex Library">
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/7/composite/1582235264" filters="1" refreshing="0" thumb="/:/resources/video.png" key="7" type="movie" title="4WD Videos" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="cc66cc38-efeb-49e1-98b9-de88f7763fc8" updatedAt="1582231718" createdAt="1571906384" scannedAt="1582235264" content="1" directory="1" contentChangedAt="247706">
+    <Location id="8" path="/media/4WD Videos/4WD Action" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/3/composite/1582232564" filters="1" refreshing="0" thumb="/:/resources/video.png" key="3" type="movie" title="Documentaries (Movies)" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="ae85339b-98e9-4707-bce3-ac445413e1a7" updatedAt="1582232619" createdAt="1571906261" scannedAt="1582232564" content="1" directory="1" contentChangedAt="664116">
+    <Location id="3" path="/media/Documentaries/Movies" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/show-fanart.jpg" composite="/library/sections/4/composite/1582233164" filters="1" refreshing="0" thumb="/:/resources/show.png" key="4" type="show" title="Documentaries (TV Shows)" agent="com.plexapp.agents.thetvdb" scanner="Plex Series Scanner" language="en" uuid="080796d6-968b-4fc0-884d-236b8abf9b75" updatedAt="1582233219" createdAt="1571906284" scannedAt="1582233164" content="1" directory="1" contentChangedAt="670017">
+    <Location id="4" path="/media/Documentaries/TV Shows" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/10/composite/1582234964" filters="1" refreshing="0" thumb="/:/resources/video.png" key="10" type="movie" title="Educational Videos" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="89a896c9-1e9a-4c37-b405-8436444cafa1" updatedAt="1582235019" createdAt="1581797617" scannedAt="1582234964" content="1" directory="1" contentChangedAt="687694">
+    <Location id="13" path="/media/Education" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/8/composite/1582234964" filters="1" refreshing="0" thumb="/:/resources/video.png" key="8" type="movie" title="Kiting Videos" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="244c8f45-37bd-43dd-886e-2f039504518d" updatedAt="1582235019" createdAt="1571906414" scannedAt="1582234964" content="1" directory="1" contentChangedAt="682447">
+    <Location id="9" path="/media/Kiting Videos" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/1/composite/1582231665" filters="1" refreshing="0" thumb="/:/resources/movie.png" key="1" type="movie" title="Movies" agent="com.plexapp.agents.imdb" scanner="Plex Movie Scanner" language="en" uuid="c4c1e769-9608-4289-b588-23ecc3fe0827" updatedAt="1582231718" createdAt="1571906216" scannedAt="1582231665" content="1" directory="1" contentChangedAt="667052">
+    <Location id="1" path="/media/Movies" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/artist-fanart.jpg" composite="/library/sections/5/composite/1582234666" filters="1" refreshing="0" thumb="/:/resources/artist.png" key="5" type="artist" title="Music" agent="com.plexapp.agents.lastfm" scanner="Plex Music Scanner" language="en" uuid="51d384f7-aa7a-401b-83f4-fb0f81b7fa46" updatedAt="1582234721" createdAt="1571906309" scannedAt="1582234666" content="1" directory="1" contentChangedAt="683942">
+    <Location id="7" path="/media/Music (FLAC)" />
+    <Location id="5" path="/media/Music" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/6/composite/1582234666" filters="1" refreshing="0" thumb="/:/resources/video.png" key="6" type="movie" title="Music Videos" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="6e3906ca-fb5b-4940-a5ff-3182005b0b42" updatedAt="1582234721" createdAt="1571906331" scannedAt="1582234666" content="1" directory="1" contentChangedAt="114343">
+    <Location id="6" path="/media/Music Videos" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/show-fanart.jpg" composite="/library/sections/2/composite/1582233766" filters="1" refreshing="0" thumb="/:/resources/show.png" key="2" type="show" title="TV Shows" agent="com.plexapp.agents.thetvdb" scanner="Plex Series Scanner" language="en" uuid="01cb0821-52c2-4515-8135-6f07b1be82be" updatedAt="1582233822" createdAt="1571906229" scannedAt="1582233766" content="1" directory="1" contentChangedAt="648291">
+    <Location id="2" path="/media/TV Shows" />
+  </Directory>
+  <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/9/composite/1582233767" filters="1" refreshing="0" thumb="/:/resources/video.png" key="9" type="movie" title="Z Videos" agent="com.plexapp.agents.none" scanner="Plex Video Files Scanner" language="xn" uuid="3ca28bca-ef85-48c1-bea2-85ec9e6b279d" updatedAt="1582233822" createdAt="1571912334" scannedAt="1582233767" content="1" directory="1" contentChangedAt="666521">
+    <Location id="10" path="/media/Z Videos" />
+  </Directory>
+</MediaContainer>

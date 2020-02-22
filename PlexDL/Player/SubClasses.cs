@@ -4429,7 +4429,7 @@ namespace PVS.MediaPlayer
         /// <summary>
         /// Gets or sets the media playback position slider (trackbar) that is controlled by the player.
         /// </summary>
-        public MetroSet_UI.Controls.MetroSetTrackBar TrackBar
+        public TrackBar TrackBar
         {
             get
             {
@@ -4469,6 +4469,11 @@ namespace PVS.MediaPlayer
                     {
                         _base._positionSlider = value;
                         _base._hasPositionSlider = true;
+
+                        _base._psHorizontal = (_base._positionSlider.Orientation == Orientation.Horizontal);
+                        _base._positionSlider.SmallChange = 0;
+                        _base._positionSlider.LargeChange = 0;
+                        _base._positionSlider.TickFrequency = 0;
 
                         SetPositionSliderMode(_base._psHandlesProgress);
 
