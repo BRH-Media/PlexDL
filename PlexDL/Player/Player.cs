@@ -6799,7 +6799,7 @@ namespace PVS.MediaPlayer
         internal int _psMouseWheel = 0;    // 0 = disabled
         internal int _psMouseWheelShift = 5000;
 
-        internal MetroSet_UI.Controls.MetroSetTrackBar _positionSlider;
+        internal TrackBar _positionSlider;
         internal bool _hasPositionSlider;
 
         internal bool _psHorizontal;
@@ -7006,7 +7006,7 @@ namespace PVS.MediaPlayer
             _psTracking = false;
         }
 
-        internal void PositionSlider_Scroll(object sender)
+        internal void PositionSlider_Scroll(object sender, EventArgs e)
         {
             if (_playing)
             {
