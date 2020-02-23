@@ -1,7 +1,7 @@
 # PlexDL
 Plex Downloader/Streamer written in C#
 
-* Utilises MaterialSkin.NET by IgnaceMaes - https://github.com/IgnaceMaes/MaterialSkin
+* Utilises a slightly modified fork of MetroSet-UI by N-a-r-w-i-n - https://github.com/Brhsoftco/MetroSet-UI
 * Utilises csharp-plex-api by ammmze for server detection - https://github.com/ammmze/csharp-plex-api
 * Utilises Google's Material Design Icons - https://material.io/icons
 * Utilises AltoHttp by aalitor for Web Downloads - https://github.com/aalitor/AltoHttp
