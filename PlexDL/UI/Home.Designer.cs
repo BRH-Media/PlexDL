@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            MetroSet_UI.Extensions.ImageSet imageSet9 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
@@ -37,6 +36,7 @@
             MetroSet_UI.Extensions.ImageSet imageSet5 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet6 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet7 = new MetroSet_UI.Extensions.ImageSet();
+            MetroSet_UI.Extensions.ImageSet imageSet8 = new MetroSet_UI.Extensions.ImageSet();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSaveProfile = new System.Windows.Forms.SaveFileDialog();
@@ -164,9 +164,9 @@
             this.btnMetadata.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnMetadata.HoverTextColor = System.Drawing.Color.White;
             this.btnMetadata.Image = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            imageSet9.Focus = global::PlexDL.Properties.Resources.baseline_book_black_18dp_white;
-            imageSet9.Idle = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            this.btnMetadata.ImageSet = imageSet9;
+            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_book_black_18dp_white;
+            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
+            this.btnMetadata.ImageSet = imageSet1;
             this.btnMetadata.ImageSize = new System.Drawing.Size(28, 28);
             this.btnMetadata.Location = new System.Drawing.Point(130, 196);
             this.btnMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -198,9 +198,9 @@
             this.btnSetDlDir.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSetDlDir.HoverTextColor = System.Drawing.Color.White;
             this.btnSetDlDir.Image = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp_white;
-            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            this.btnSetDlDir.ImageSet = imageSet1;
+            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp_white;
+            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
+            this.btnSetDlDir.ImageSet = imageSet2;
             this.btnSetDlDir.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSetDlDir.Location = new System.Drawing.Point(78, 196);
             this.btnSetDlDir.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -231,9 +231,9 @@
             this.btnSearch.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSearch.HoverTextColor = System.Drawing.Color.White;
             this.btnSearch.Image = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
-            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            this.btnSearch.ImageSet = imageSet2;
+            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
+            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
+            this.btnSearch.ImageSet = imageSet3;
             this.btnSearch.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSearch.Location = new System.Drawing.Point(182, 84);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -265,9 +265,9 @@
             this.btnLoadProfile.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnLoadProfile.HoverTextColor = System.Drawing.Color.White;
             this.btnLoadProfile.Image = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
-            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            this.btnLoadProfile.ImageSet = imageSet3;
+            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
+            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
+            this.btnLoadProfile.ImageSet = imageSet4;
             this.btnLoadProfile.ImageSize = new System.Drawing.Size(28, 28);
             this.btnLoadProfile.Location = new System.Drawing.Point(26, 196);
             this.btnLoadProfile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -299,9 +299,9 @@
             this.btnPause.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPause.HoverTextColor = System.Drawing.Color.White;
             this.btnPause.Image = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
-            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            this.btnPause.ImageSet = imageSet4;
+            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
+            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
+            this.btnPause.ImageSet = imageSet5;
             this.btnPause.ImageSize = new System.Drawing.Size(28, 28);
             this.btnPause.Location = new System.Drawing.Point(78, 84);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -332,9 +332,9 @@
             this.btnHTTPPlay.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnHTTPPlay.HoverTextColor = System.Drawing.Color.White;
             this.btnHTTPPlay.Image = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
-            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            this.btnHTTPPlay.ImageSet = imageSet5;
+            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
+            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
+            this.btnHTTPPlay.ImageSet = imageSet6;
             this.btnHTTPPlay.ImageSize = new System.Drawing.Size(28, 28);
             this.btnHTTPPlay.Location = new System.Drawing.Point(130, 84);
             this.btnHTTPPlay.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -365,9 +365,9 @@
             this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnConnect.HoverTextColor = System.Drawing.Color.White;
             this.btnConnect.Image = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_power_black_18dp_white;
-            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            this.btnConnect.ImageSet = imageSet6;
+            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_power_black_18dp_white;
+            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
+            this.btnConnect.ImageSet = imageSet7;
             this.btnConnect.ImageSize = new System.Drawing.Size(28, 28);
             this.btnConnect.Location = new System.Drawing.Point(234, 84);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -398,9 +398,9 @@
             this.btnDownload.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnDownload.HoverTextColor = System.Drawing.Color.White;
             this.btnDownload.Image = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp_white;
-            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            this.btnDownload.ImageSet = imageSet7;
+            imageSet8.Focus = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp_white;
+            imageSet8.Idle = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
+            this.btnDownload.ImageSet = imageSet8;
             this.btnDownload.ImageSize = new System.Drawing.Size(28, 28);
             this.btnDownload.Location = new System.Drawing.Point(26, 84);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -458,7 +458,7 @@
             this.itmEpisodeMetadata,
             this.itmEpisodeDownload});
             this.cxtEpisodeOptions.Name = "cxtEpisodeOptions";
-            this.cxtEpisodeOptions.Size = new System.Drawing.Size(181, 70);
+            this.cxtEpisodeOptions.Size = new System.Drawing.Size(129, 48);
             this.cxtEpisodeOptions.Style = MetroSet_UI.Design.Style.Light;
             this.cxtEpisodeOptions.StyleManager = null;
             this.cxtEpisodeOptions.ThemeAuthor = "Narwin";
@@ -468,7 +468,7 @@
             // itmEpisodeMetadata
             // 
             this.itmEpisodeMetadata.Name = "itmEpisodeMetadata";
-            this.itmEpisodeMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeMetadata.Text = "Metadata";
             this.itmEpisodeMetadata.Click += new System.EventHandler(this.itmEpisodeMetadata_Click);
             // 
@@ -478,20 +478,20 @@
             this.itmDGVDownloadThisEpisode,
             this.itmDGVDownloadThisSeason});
             this.itmEpisodeDownload.Name = "itmEpisodeDownload";
-            this.itmEpisodeDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeDownload.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeDownload.Text = "Download";
             // 
             // itmDGVDownloadThisEpisode
             // 
             this.itmDGVDownloadThisEpisode.Name = "itmDGVDownloadThisEpisode";
-            this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(139, 22);
             this.itmDGVDownloadThisEpisode.Text = "This Episode";
             this.itmDGVDownloadThisEpisode.Click += new System.EventHandler(this.itmDGVDownloadThisEpisode_Click);
             // 
             // itmDGVDownloadThisSeason
             // 
             this.itmDGVDownloadThisSeason.Name = "itmDGVDownloadThisSeason";
-            this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(139, 22);
             this.itmDGVDownloadThisSeason.Text = "This Season";
             this.itmDGVDownloadThisSeason.Click += new System.EventHandler(this.itmDGVDownloadThisSeason_Click);
             // 
@@ -679,7 +679,7 @@
             this.tabMain.ItemSize = new System.Drawing.Size(100, 38);
             this.tabMain.Location = new System.Drawing.Point(626, 94);
             this.tabMain.Name = "tabMain";
-            this.tabMain.SelectedIndex = 0;
+            this.tabMain.SelectedIndex = 1;
             this.tabMain.Size = new System.Drawing.Size(646, 408);
             this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabMain.Speed = 20;
@@ -717,6 +717,7 @@
             this.dgvContent.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
             this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvContent.Location = new System.Drawing.Point(3, 3);
@@ -801,6 +802,7 @@
             this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
             this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvEpisodes.Location = new System.Drawing.Point(312, 184);
@@ -822,6 +824,7 @@
             this.dgvLibrary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvLibrary.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLibrary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
             this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLibrary.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvLibrary.Location = new System.Drawing.Point(304, 298);

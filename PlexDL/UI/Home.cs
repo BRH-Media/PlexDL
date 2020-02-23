@@ -3237,7 +3237,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MetroSetMessageBox.Show(this, "You cannot view metadata while an internal download is running");
+                    MetroSetMessageBox.Show(this, "You cannot view metadata while an internal download is running", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else if ((dgvContent.Rows.Count == 0) && (dgvTVShows.Rows.Count == 0))
