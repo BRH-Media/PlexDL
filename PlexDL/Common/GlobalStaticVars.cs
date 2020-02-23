@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetroSet_UI;
-using PlexDL.UI;
+﻿using MetroSet_UI;
 
 namespace PlexDL.Common
 {

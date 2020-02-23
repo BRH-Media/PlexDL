@@ -1,7 +1,6 @@
-﻿using System;
+﻿using MetroSet_UI.Forms;
+using System;
 using System.Windows.Forms;
-using MetroSet_UI.Forms;
-using PlexDL.UI;
 
 namespace PlexDL.WaitWindow
 {
@@ -18,7 +17,6 @@ namespace PlexDL.WaitWindow
             InitializeComponent();
 
             this._Parent = parent;
-
 
             //	Position the window in the top right of the main screen.
             this.Top = Screen.PrimaryScreen.WorkingArea.Top + 32;
@@ -130,9 +128,9 @@ namespace PlexDL.WaitWindow
             this.styleMain = new MetroSet_UI.StyleManager();
             this.Marquee = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
-            // 
+            //
             // MessageLabel
-            // 
+            //
             this.MessageLabel.AutoSize = true;
             this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.MessageLabel.Location = new System.Drawing.Point(12, 70);
@@ -144,25 +142,25 @@ namespace PlexDL.WaitWindow
             this.MessageLabel.Text = "Updating Data";
             this.MessageLabel.ThemeAuthor = null;
             this.MessageLabel.ThemeName = null;
-            // 
+            //
             // styleMain
-            // 
+            //
             this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
             this.styleMain.MetroForm = this;
             this.styleMain.Style = MetroSet_UI.Design.Style.Light;
             this.styleMain.ThemeAuthor = null;
             this.styleMain.ThemeName = null;
-            // 
+            //
             // Marquee
-            // 
+            //
             this.Marquee.Location = new System.Drawing.Point(12, 90);
             this.Marquee.Name = "Marquee";
             this.Marquee.Size = new System.Drawing.Size(284, 23);
             this.Marquee.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.Marquee.TabIndex = 3;
-            // 
+            //
             // WaitWindowGUI
-            // 
+            //
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -179,7 +177,6 @@ namespace PlexDL.WaitWindow
             this.ThemeName = null;
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         public MetroSet_UI.Controls.MetroSetLabel MessageLabel;

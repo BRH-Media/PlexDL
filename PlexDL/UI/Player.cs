@@ -1,4 +1,6 @@
-﻿using PlexDL.Common;
+﻿using MetroSet_UI.Extensions;
+using MetroSet_UI.Forms;
+using PlexDL.Common;
 using PlexDL.Common.Structures;
 using PVS.MediaPlayer;
 using System;
@@ -7,8 +9,6 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
-using MetroSet_UI.Forms;
-using MetroSet_UI.Extensions;
 
 namespace PlexDL.UI
 {
@@ -152,7 +152,10 @@ namespace PlexDL.UI
             mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
             mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
             mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
-            mPlayer.FullScreenMode = FullScreenMode.Display;
+            mPlayer.FullScreenMode = FullScreenMode.Form;
+            mPlayer.Display.FullScreenMode = FullScreenMode.Display;
+            mPlayer.Display.Window = pnlPlayer;
+            mPlayer.Display.Mode = DisplayMode.Stretch;
             //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
             //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
         }
@@ -204,8 +207,20 @@ namespace PlexDL.UI
                         mPlayer.FullScreen = false;
                     }
                 }
+                else if (keyData == (Keys.F))
+                {
+                    if (mPlayer.Display.FullScreen)
+                        Fullscreen(false);
+                    else
+                        Fullscreen(true);
+                }
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void Fullscreen(bool enabled)
+        {
+           // mPlayer.FullScreen = enabled;
         }
 
         private void frmPlayer_FormClosing(object sender, FormClosingEventArgs e)
@@ -350,9 +365,9 @@ namespace PlexDL.UI
         }
 
         /*
-         * 
+         *
          * FUTURE FEATURE!
-         * 
+         *
         private void SetIconExitFS()
         {
             if (btnFullScreen.InvokeRequired)
@@ -383,7 +398,6 @@ namespace PlexDL.UI
             }
         }
         */
-
 
         private delegate void SafePlayDelegate(string fileName);
 
@@ -632,9 +646,9 @@ namespace PlexDL.UI
         }
 
         /*
-         * 
+         *
          * FUTURE FEATURE!
-         * 
+         *
         private void btnFullScreen_Click(object sender, EventArgs e)
         {
             if (IsFullScreen)
@@ -656,6 +670,7 @@ namespace PlexDL.UI
             }
         }
         */
+
         private void btnPlayPause_Click(object sender, EventArgs e)
         {
             PlayPause();

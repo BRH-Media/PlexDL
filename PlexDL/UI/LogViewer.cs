@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MetroSet_UI.Forms;
+using PlexDL.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using MetroSet_UI.Forms;
-using PlexDL.Common;
 
 namespace PlexDL.UI
 {

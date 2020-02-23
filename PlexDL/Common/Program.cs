@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PlexDL.Common;
+using System;
 using System.Windows.Forms;
-using PlexDL.Common;
 
 namespace PlexDL
 {
@@ -14,7 +14,7 @@ namespace PlexDL
         {
             Application.EnableVisualStyles();
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHandler.Handler);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHandler.CriticalExceptionHandler);
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new PlexDL.UI.Home());
         }

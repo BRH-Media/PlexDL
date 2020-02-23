@@ -1,7 +1,6 @@
 ﻿using PlexDL.UI;
 using System.Drawing;
 using System.IO;
-using System.Collections.Generic;
 
 namespace PlexDL.Common.Caching
 {
@@ -16,6 +15,7 @@ namespace PlexDL.Common.Caching
             string fqPath = cachePath + @"\" + fileName;
             return fqPath;
         }
+
         public static bool ThumbInCache(string sourceUrl)
         {
             if (Home.settings.CacheSettings.Mode.EnableThumbCaching)

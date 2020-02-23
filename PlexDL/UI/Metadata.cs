@@ -1,4 +1,6 @@
-﻿using PlexDL.Common;
+﻿using MetroSet_UI.Controls;
+using MetroSet_UI.Forms;
+using PlexDL.Common;
 using PlexDL.Common.Structures;
 using System;
 using System.Drawing;
@@ -6,15 +8,14 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using MetroSet_UI.Controls;
-using MetroSet_UI.Forms;
 
 namespace PlexDL.UI
 {
     public partial class Metadata : MetroSetForm
     {
         public PlexObject StreamingContent { get; set; } = new PlexObject();
-        public bool StationaryMode { get; set; }  = false;
+        public bool StationaryMode { get; set; } = false;
+
         public Metadata()
         {
             InitializeComponent();

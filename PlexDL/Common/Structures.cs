@@ -97,6 +97,7 @@ namespace PlexDL.Common.Structures
         public int PlexPort { get; set; } = 32400;
         public string PlexAddress { get; set; } = "";
         public string PlexAccountToken { get; set; } = "";
+
         [NonSerialized]
         public bool RelaysOnly = false;
     }

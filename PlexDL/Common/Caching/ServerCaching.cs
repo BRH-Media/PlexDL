@@ -7,8 +7,6 @@ namespace PlexDL.Common.Caching
 {
     public static class ServerCaching
     {
-
-
         public static string ServerCachePath(string accountToken)
         {
             string fileName = Helpers.CalculateMD5Hash(accountToken);

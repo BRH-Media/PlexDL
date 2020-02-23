@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Structures;
 using System.Diagnostics;
 
 namespace PlexDL.Common

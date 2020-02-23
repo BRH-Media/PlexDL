@@ -44,7 +44,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\source\repos\PlexDL_materialskin\PlexDL\bin\Release\libbrhscgui.dll</HintPath>
     </Reference>
-    <Reference Include="MetroSet UI">
+    <Reference Include="MetroSet UI, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Coding\MetroSet-UI\MetroSet UI\bin\Debug\MetroSet UI.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
@@ -82,12 +83,15 @@
     <Compile Include="Common\Caching\ServerCaching.cs" />
     <Compile Include="Common\Caching\ThumbCaching.cs" />
     <Compile Include="Common\Caching\XMLCaching.cs" />
+    <Compile Include="Common\Components\NoAutoSelectDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Common\GlobalStaticVars.cs" />
     <Compile Include="Common\Methods.cs" />
     <Compile Include="Common\SearchOptions.cs" />
     <Compile Include="Common\StringVar.cs" />
     <Compile Include="Common\Structures.cs" />
-    <Compile Include="Common\Components\Components.cs">
+    <Compile Include="Common\Components\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
@@ -202,7 +206,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="WaitWindow\WaitWindowGUI.resx" />
-    <None Include="packages.config" />
     <None Include="Properties\packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

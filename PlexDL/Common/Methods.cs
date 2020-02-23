@@ -6,12 +6,27 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace PlexDL.Common
 {
     public static class Methods
     {
+        public static bool PlexXmlValid(XmlDocument doc)
+        {
+            XmlNodeList checkNodes = doc.GetElementsByTagName("MediaContainer");
+
+            if (checkNodes.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static PlexObject MetadataFromFile(string fileName)
         {
             try

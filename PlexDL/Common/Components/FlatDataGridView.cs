@@ -16,14 +16,16 @@ namespace PlexDL.Common.Components
             this.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
             this.MultiSelect = false;
             this.Name = "dgvMain";
             this.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.RowHeadersVisible = false;
+            this.Paint += new PaintEventHandler(DGVPaint);
+            this.DataError += new DataGridViewDataErrorEventHandler(this.DGVDataError);
         }
 
-        public void DGVPaint(object sender, PaintEventArgs e)
+        private void DGVPaint(object sender, PaintEventArgs e)
         {
             if (this.Rows.Count == 0)
             {
@@ -37,8 +39,12 @@ namespace PlexDL.Common.Components
             else
             {
                 this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
-                this.BorderStyle = BorderStyle.FixedSingle;
             }
+        }
+
+        private void DGVDataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }

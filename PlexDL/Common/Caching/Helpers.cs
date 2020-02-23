@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using PlexDL.UI;
+using System.Security.Cryptography;
 using System.Text;
-using PlexDL.UI;
 
 namespace PlexDL.Common.Caching
 {

@@ -53,6 +53,7 @@ namespace PlexDL.Common
     public class GridViewDisplays
     {
         public ContentDisplay ContentView { get; set; } = new ContentDisplay();
+        public TVDisplay TVView { get; set; } = new TVDisplay();
         public SeriesDisplay SeriesView { get; set; } = new SeriesDisplay();
         public EpisodesDisplay EpisodesView { get; set; } = new EpisodesDisplay();
         public LibraryDisplay LibraryView { get; set; } = new LibraryDisplay();
@@ -68,6 +69,12 @@ namespace PlexDL.Common
     {
         public List<string> ContentDisplayColumns { get; set; } = new List<string>() { "title", "studio", "year", "contentRating" };
         public List<string> ContentDisplayCaption { get; set; } = new List<string>() { "Title", "Studio", "Year", "Rating" };
+    }
+
+    public class TVDisplay
+    {
+        public List<string> TVDisplayColumns { get; set; } = new List<string>() { "title", "studio", "year", "contentRating" };
+        public List<string> TVDisplayCaption { get; set; } = new List<string>() { "Title", "Studio", "Year", "Rating" };
     }
 
     public class SeriesDisplay
