@@ -6,7 +6,8 @@ namespace PlexDL.Common.Logging
 {
     public class LoggingHelpers
     {
-        static int logIncrementer = 0;
+        private static int logIncrementer = 0;
+
         public static void addToLog(string logEntry)
         {
             logIncrementer++;
@@ -15,6 +16,7 @@ namespace PlexDL.Common.Logging
             if (Home.settings.Logging.EnableGenericLogDel)
                 logDelWriter("PlexDL.logdel", headers, logEntryToAdd);
         }
+
         public static void recordException(string message, string type)
         {
             ////Options weren't too great performance-wise, so I ended up using a stack-walk.

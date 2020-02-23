@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Caching;
+﻿using PlexAPI;
+using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using System;
@@ -11,12 +12,28 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using PlexAPI;
 
 namespace PlexDL.Common
 {
     public static class Methods
     {
+        public static bool IsPrivateIP(string ipAddress)
+        {
+            int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                                     .Select(s => int.Parse(s)).ToArray();
+            // in private ip range
+            if (ipParts[0] == 10 ||
+                (ipParts[0] == 192 && ipParts[1] == 168) ||
+                (ipParts[0] == 172 && (ipParts[1] >= 16 && ipParts[1] <= 31)))
+            {
+                return true;
+            }
+
+            // IP Address is probably public.
+            // This doesn't catch some VPN ranges like OpenVPN and Hamachi.
+            return false;
+        }
+
         public static string MatchUriToToken(string uri, List<Server> plexServers)
         {
             foreach (Server s in plexServers)
@@ -37,6 +54,7 @@ namespace PlexDL.Common
             string final = url.Contains('.') ? url.Substring(url.LastIndexOf('.')) : "";
             return final;
         }
+
         public static void SetHeaderText(DataGridView dgv, DataTable table)
         {
             //Copy column captions into DataGridView

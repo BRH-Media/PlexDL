@@ -733,7 +733,14 @@ namespace PlexDL.UI
                         List<Server> servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            DialogResult msg = MessageBox.Show("No servers found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            //to make it look nicer xD
+                            string r = "";
+                            if (settings.ConnectionInfo.RelaysOnly)
+                                r = "relays";
+                            else
+                                r = "servers";
+
+                            DialogResult msg = MessageBox.Show("No " + r + " found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                             if (msg == DialogResult.Yes)
                             {
                                 using (DirectConnect frmDir = new DirectConnect())
@@ -802,7 +809,7 @@ namespace PlexDL.UI
 
                     string uri = getBaseUri(true);
                     //MessageBox.Show(uri);
-                    XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri });
+                    XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri, false, true });
                     if (Methods.PlexXmlValid(reply))
                     {
                         connected = true;
@@ -817,6 +824,10 @@ namespace PlexDL.UI
                             populateLibrary(reply);
                         }
                         doNotAttemptAgain = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Connection failed. Check that '" + s.name + "' exists, that you have the right address, that it is accessible from your network, and that you have permission to access it.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -1280,7 +1291,7 @@ namespace PlexDL.UI
             }
             else
             {
-                List<Server> result = GetServerRelays(user.authenticationToken);
+                List<Server> result = Relays.GetServerRelays(user.authenticationToken);
                 e.Result = result;
             }
         }
@@ -2381,93 +2392,6 @@ namespace PlexDL.UI
                     downloadIsPaused = false;
                 }
             }
-        }
-
-        public static bool _IsPrivate(string ipAddress)
-        {
-            int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
-                                     .Select(s => int.Parse(s)).ToArray();
-            // in private ip range
-            if (ipParts[0] == 10 ||
-                (ipParts[0] == 192 && ipParts[1] == 168) ||
-                (ipParts[0] == 172 && (ipParts[1] >= 16 && ipParts[1] <= 31)))
-            {
-                return true;
-            }
-
-            // IP Address is probably public.
-            // This doesn't catch some VPN ranges like OpenVPN and Hamachi.
-            return false;
-        }
-
-        private List<Server> GetServerRelays(string token, bool matchCurrentList = true)
-        {
-            try
-            {
-                List<Server> relays = new List<Server>();
-                string uri = "https://plex.tv/api/resources?includeHttps=1&amp;includeRelay=1&amp;X-Plex-Token=";
-                XmlDocument reply = XmlGet.GetXMLTransaction(uri, token);
-                XmlNode root = reply.SelectSingleNode("MediaContainer");
-                //MessageBox.Show(root.Name);
-                if (root.HasChildNodes)
-                {
-                    for (int i = 0; i < root.ChildNodes.Count; i++)
-                    {
-                        XmlNode node = root.ChildNodes[i];
-                        //MessageBox.Show(node.Name);
-                        string accessToken = "";
-                        if (node.Attributes["accessToken"] != null)
-                        {
-                            accessToken = node.Attributes["accessToken"].Value.ToString();
-                        }
-                        string name = node.Attributes["name"].Value.ToString();
-                        string address = "";
-                        string local = "";
-                        int port = 0;
-                        if (node.HasChildNodes)
-                        {
-                            foreach (XmlNode n in node.ChildNodes)
-                            {
-                                Uri u = new Uri(n.Attributes["uri"].Value.ToString());
-                                string u_parse = u.Host;
-                                string[] u_parse_split = u_parse.Split('.');
-                                local = n.Attributes["address"].Value.ToString();
-
-                                //MessageBox.Show(u_parse_temp);
-                                if (u_parse.Contains(".plex.direct") && (!_IsPrivate(local)))
-                                {
-                                    address = u_parse;
-                                    port = Convert.ToInt32(n.Attributes["port"].Value);
-                                    Server svrRelay = new Server()
-                                    {
-                                        address = address,
-                                        port = port,
-                                        name = name,
-                                        accessToken = accessToken
-                                    };
-                                    relays.Add(svrRelay);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                //MessageBox.Show(relays.Count.ToString());
-                return relays;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Relay Retrieval Error\n\n" + ex.ToString(), "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "GetRelaysError");
-                return new List<Server>();
-            }
-        }
-
-        private void ReplaceServersWithRelays()
-        {
-            plexServers = GetServerRelays(settings.ConnectionInfo.PlexAccountToken);
-            dgvServers.DataSource = null;
-            renderServersView(plexServers);
         }
 
         private void StartStreaming(PlexObject stream)

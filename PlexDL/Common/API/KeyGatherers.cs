@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlexDL.Common.Logging;
 using System.Xml;
-using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.API
 {

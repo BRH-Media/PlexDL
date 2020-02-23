@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlexDL.UI;
-using System.Net;
-using System.Xml;
-using PlexDL.Common.Caching;
-using PlexDL.Common;
-using System.IO;
-using System.Windows.Forms;
+﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
+using PlexDL.UI;
+using System;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {
@@ -19,10 +14,21 @@ namespace PlexDL.Common.API
         public static void GetXMLTransactionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
             string uri = (string)e.Arguments[0];
-            e.Result = GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken);
+            bool forceNoCache = false;
+            bool silent = false;
+            if (e.Arguments.Count > 1)
+            {
+                forceNoCache = (bool)e.Arguments[1];
+            }
+            if (e.Arguments.Count > 2)
+            {
+                silent = (bool)e.Arguments[2];
+            }
+
+            e.Result = GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
         }
 
-        public static XmlDocument GetXMLTransaction(string uri, string secret = "", bool forceNoCache = false)
+        public static XmlDocument GetXMLTransaction(string uri, string secret = "", bool forceNoCache = false, bool silent = false)
         {
             //Create the cache folder structure
             Helpers.CacheStructureBuilder();
@@ -98,7 +104,8 @@ namespace PlexDL.Common.API
                     }
                     else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
+                        if (!silent)
+                            MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
                     }
                     //Close Steam
                     objResponseStream.Close();
@@ -111,7 +118,8 @@ namespace PlexDL.Common.API
                 {
                     LoggingHelpers.recordException(ex.Message, "XMLTransactionError");
                     LoggingHelpers.recordTransaction(fullUri, "Undetermined");
-                    MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!silent)
+                        MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return new XmlDocument();
                 }
                 finally
