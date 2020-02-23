@@ -1,18 +1,66 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
-using PlexDL.UI;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using PlexAPI;
 
 namespace PlexDL.Common
 {
     public static class Methods
     {
+        public static string MatchUriToToken(string uri, List<Server> plexServers)
+        {
+            foreach (Server s in plexServers)
+            {
+                string serverUri = "http://" + s.address + ":" + s.port + "/";
+                if (uri.Contains(serverUri))
+                {
+                    return s.accessToken;
+                }
+            }
+            return "";
+        }
+
+        public static string GetFileExtensionFromUrl(string url)
+        {
+            url = url.Split('?')[0];
+            url = url.Split('/').Last();
+            string final = url.Contains('.') ? url.Substring(url.LastIndexOf('.')) : "";
+            return final;
+        }
+        public static void SetHeaderText(DataGridView dgv, DataTable table)
+        {
+            //Copy column captions into DataGridView
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                if (table.Columns[col.Name].Caption != null)
+                    col.HeaderText = table.Columns[col.Name].Caption;
+            }
+        }
+
+        public static void SortingEnabled(DataGridView dgv, bool enabled)
+        {
+            if (enabled)
+            {
+                foreach (DataGridViewColumn c in dgv.Columns)
+                    c.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+            else
+            {
+                foreach (DataGridViewColumn c in dgv.Columns)
+                    c.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
         public static bool PlexXmlValid(XmlDocument doc)
         {
             XmlNodeList checkNodes = doc.GetElementsByTagName("MediaContainer");
@@ -25,6 +73,13 @@ namespace PlexDL.Common
             {
                 return false;
             }
+        }
+
+        public static List<string> OrderMatch(List<string> ordered, List<string> unordered)
+        {
+            List<string> newList = new List<string>();
+            newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
+            return newList;
         }
 
         public static PlexObject MetadataFromFile(string fileName)
@@ -44,7 +99,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Home.recordException(ex.Message, "XMLMetadataLoadError");
+                LoggingHelpers.recordException(ex.Message, "XMLMetadataLoadError");
                 return new PlexObject();
             }
         }
@@ -120,7 +175,7 @@ namespace PlexDL.Common
             }
             catch (Exception ex)
             {
-                Home.recordException(ex.Message, "ImageFetchError");
+                LoggingHelpers.recordException(ex.Message, "ImageFetchError");
                 return PlexDL.Properties.Resources.image_not_available_png_8;
             }
         }

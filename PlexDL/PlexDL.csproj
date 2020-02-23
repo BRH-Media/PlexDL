@@ -77,6 +77,8 @@
     <Compile Include="AltoHTTP\Enums\FromTo.cs" />
     <Compile Include="AltoHTTP\Interfaces\IDownloader.cs" />
     <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
+    <Compile Include="Common\API\KeyGatherers.cs" />
+    <Compile Include="Common\API\XmlGet.cs" />
     <Compile Include="Common\AppOptions.cs" />
     <Compile Include="Common\BrowserLauncher.cs" />
     <Compile Include="Common\Caching\Helpers.cs" />
@@ -87,7 +89,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Common\GlobalStaticVars.cs" />
+    <Compile Include="Common\Logging\Helpers.cs" />
     <Compile Include="Common\Methods.cs" />
+    <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />
+    <Compile Include="Common\Renderers\GenericRenderer.cs" />
+    <Compile Include="Common\Renderers\RenderStruct.cs" />
+    <Compile Include="Common\Renderers\RenderWorkers\ContentRenderWorker.cs" />
+    <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
     <Compile Include="Common\SearchOptions.cs" />
     <Compile Include="Common\StringVar.cs" />
     <Compile Include="Common\Structures.cs" />

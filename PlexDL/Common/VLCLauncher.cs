@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures;
 using PlexDL.UI;
 using System;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Home.recordException(ex.Message, "VLCLaunchError");
+                LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
                 return;
             }
         }

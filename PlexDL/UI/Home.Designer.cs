@@ -588,7 +588,7 @@
             this.pbMain.Name = "pbMain";
             this.pbMain.Orientation = MetroSet_UI.Enums.ProgressOrientation.Horizontal;
             this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.pbMain.Size = new System.Drawing.Size(272, 10);
+            this.pbMain.Size = new System.Drawing.Size(252, 10);
             this.pbMain.Style = MetroSet_UI.Design.Style.Light;
             this.pbMain.StyleManager = this.styleMain;
             this.pbMain.TabIndex = 22;
@@ -679,7 +679,7 @@
             this.tabMain.ItemSize = new System.Drawing.Size(100, 38);
             this.tabMain.Location = new System.Drawing.Point(626, 94);
             this.tabMain.Name = "tabMain";
-            this.tabMain.SelectedIndex = 1;
+            this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(646, 408);
             this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabMain.Speed = 20;
@@ -791,7 +791,6 @@
             this.dgvSeasons.Size = new System.Drawing.Size(320, 175);
             this.dgvSeasons.TabIndex = 20;
             this.dgvSeasons.SelectionChanged += new System.EventHandler(this.dgvSeasons_OnRowChange);
-            this.dgvSeasons.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvSeasons_Paint);
             // 
             // dgvEpisodes
             // 
@@ -813,7 +812,6 @@
             this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEpisodes.Size = new System.Drawing.Size(320, 175);
             this.dgvEpisodes.TabIndex = 21;
-            this.dgvEpisodes.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvEpisodes_Paint);
             // 
             // dgvLibrary
             // 
@@ -836,7 +834,6 @@
             this.dgvLibrary.Size = new System.Drawing.Size(320, 197);
             this.dgvLibrary.TabIndex = 16;
             this.dgvLibrary.SelectionChanged += new System.EventHandler(this.dgvLibrary_OnRowChange);
-            this.dgvLibrary.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvLibrary_Paint);
             // 
             // dgvServers
             // 

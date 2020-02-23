@@ -1,6 +1,7 @@
 ﻿using MetroSet_UI.Extensions;
 using MetroSet_UI.Forms;
 using PlexDL.Common;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using PVS.MediaPlayer;
 using System;
@@ -142,7 +143,7 @@ namespace PlexDL.UI
                     {
                         CanFadeOut = false;
                         MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Home.recordException(ex.Message, "VLCLaunchError");
+                        LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
                         this.Close();
                     }
                 }
@@ -220,7 +221,7 @@ namespace PlexDL.UI
 
         private void Fullscreen(bool enabled)
         {
-           // mPlayer.FullScreen = enabled;
+            // mPlayer.FullScreen = enabled;
         }
 
         private void frmPlayer_FormClosing(object sender, FormClosingEventArgs e)
