@@ -15,7 +15,9 @@ namespace PlexDL.Common.API
             {
                 List<Server> relays = new List<Server>();
                 string uri = "https://plex.tv/api/resources?includeHttps=1&amp;includeRelay=1&amp;X-Plex-Token=";
-                XmlDocument reply = XmlGet.GetXMLTransaction(uri, token, false, true);
+
+                //cache is disabled for relays. This is because they're always changing, and cache would need to be frequently cleared.
+                XmlDocument reply = XmlGet.GetXMLTransaction(uri, token, true, true);
                 if (Methods.PlexXmlValid(reply))
                 {
                     XmlNode root = reply.SelectSingleNode("MediaContainer");

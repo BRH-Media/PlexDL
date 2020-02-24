@@ -6,7 +6,7 @@ namespace PlexDL.Common.Renderers
 {
     public class GenericRenderer
     {
-        public static void RenderView(RenderStruct info, DataGridView target)
+        public static DataTable RenderView(RenderStruct info, DataGridView target)
         {
             if ((info != null) && (target != null))
             {
@@ -50,7 +50,10 @@ namespace PlexDL.Common.Renderers
                     Methods.SetHeaderText(target, info.Data);
                     target.Refresh();
                 }
+
+                return dgvBind;
             }
+            return info.Data;
         }
     }
 }

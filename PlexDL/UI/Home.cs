@@ -114,12 +114,6 @@ namespace PlexDL.UI
         public DataTable contentViewTable = null;
         public DataTable tvViewTable = null;
 
-        public DataView contentView = null;
-        public DataView episodesView = null;
-        public DataView seasonsView = null;
-        public DataView sectionsView = null;
-        public DataView tvView = null;
-
         #endregion GlobalDataTableVariables
 
         #region GlobalListVariables
@@ -171,10 +165,6 @@ namespace PlexDL.UI
         #region XML/Metadata
 
         #region PlexMovieBuilders
-
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pvd, [In] ref uint pcFonts);
-
         public int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null, string key = "title")
         {
             DataGridViewRow sel = dgv.SelectedRows[0];
@@ -1134,7 +1124,7 @@ namespace PlexDL.UI
 
                 RenderStruct info = new RenderStruct() { Data = content, WantedColumns = wantedColumns, WantedCaption = wantedCaption };
 
-                GenericRenderer.RenderView(info, dgvContent);
+                contentViewTable = GenericRenderer.RenderView(info, dgvContent);
 
                 if (this.InvokeRequired)
                     this.BeginInvoke((MethodInvoker)delegate
@@ -1167,7 +1157,7 @@ namespace PlexDL.UI
 
                 RenderStruct info = new RenderStruct() { Data = content, WantedColumns = wantedColumns, WantedCaption = wantedCaption };
 
-                GenericRenderer.RenderView(info, dgvTVShows);
+                tvViewTable = GenericRenderer.RenderView(info, dgvTVShows);
 
                 if (this.InvokeRequired)
                     this.BeginInvoke((MethodInvoker)delegate
@@ -1895,19 +1885,6 @@ namespace PlexDL.UI
                     }
                 }
             }
-        }
-
-        private FontFamily LoadFont(byte[] fontResource)
-        {
-            int dataLength = fontResource.Length;
-            IntPtr fontPtr = Marshal.AllocCoTaskMem(dataLength);
-            Marshal.Copy(fontResource, 0, fontPtr, dataLength);
-
-            uint cFonts = 0;
-            AddFontMemResourceEx(fontPtr, (uint)fontResource.Length, IntPtr.Zero, ref cFonts);
-            privateFontCollection.AddMemoryFont(fontPtr, dataLength);
-
-            return privateFontCollection.Families.Last();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
