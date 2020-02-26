@@ -1,6 +1,7 @@
 ﻿using MetroSet_UI.Forms;
 using PlexDL.Common;
 using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
 
@@ -8,9 +9,9 @@ namespace PlexDL.UI
 {
     public partial class Connect : MetroSetForm
     {
-        public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
+        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
-        public AppOptions settings;
+        public ApplicationOptions settings;
 
         public Timer t1 = new Timer();
 

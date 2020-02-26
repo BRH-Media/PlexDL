@@ -1,4 +1,4 @@
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     public class Location
     {

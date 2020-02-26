@@ -1,6 +1,6 @@
 using System;
 
-namespace PlexAPI.DirectoryTypes
+namespace PlexDL.PlexAPI.DirectoryTypes
 {
     public class Show : Directory
     {

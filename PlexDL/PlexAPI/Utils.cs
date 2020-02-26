@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     public static class Utils
     {

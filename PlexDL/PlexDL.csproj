@@ -80,7 +80,21 @@
     <Compile Include="Common\API\KeyGatherers.cs" />
     <Compile Include="Common\API\Relays.cs" />
     <Compile Include="Common\API\XmlGet.cs" />
-    <Compile Include="Common\AppOptions.cs" />
+    <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
+    <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
+    <Compile Include="Common\Structures\AppOptions\Caching\CachingSettings.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\Grids\ContentDisplay.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\Grids\EpisodesDisplay.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\Grids\LibraryDisplay.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\Grids\SeriesDisplay.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\Grids\TVDisplay.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\GridViewDisplays.cs" />
+    <Compile Include="Common\Structures\AppOptions\Logging\LoggingSettings.cs" />
+    <Compile Include="Common\Structures\AppOptions\Player\PlaybackMode.cs" />
+    <Compile Include="Common\Structures\AppOptions\Player\PlayerKeyBindings.cs" />
+    <Compile Include="Common\Structures\AppOptions\Player\PlayerSettings.cs" />
+    <Compile Include="Common\Structures\ConnectionInfo.cs" />
+    <Compile Include="Common\Structures\AppOptions\ApplicationOptions.cs" />
     <Compile Include="Common\BrowserLauncher.cs" />
     <Compile Include="Common\Caching\Helpers.cs" />
     <Compile Include="Common\Caching\ServerCaching.cs" />
@@ -99,10 +113,18 @@
     <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
     <Compile Include="Common\SearchOptions.cs" />
     <Compile Include="Common\StringVar.cs" />
-    <Compile Include="Common\Structures.cs" />
+    <Compile Include="Common\Structures\DownloadInfo.cs" />
+    <Compile Include="Common\Structures\DownloadLayout.cs" />
+    <Compile Include="Common\Structures\AppOptions\GenericAppSettings.cs" />
+    <Compile Include="Common\Structures\Plex\PlexMovie.cs" />
+    <Compile Include="Common\Structures\Plex\PlexObject.cs" />
+    <Compile Include="Common\Structures\Plex\PlexTVShow.cs" />
+    <Compile Include="Common\Structures\Resolution.cs" />
+    <Compile Include="Common\Structures\Plex\PlexActor.cs" />
     <Compile Include="Common\Components\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\VLCLauncher.cs" />
     <Compile Include="Player\CursorHide.cs" />

@@ -1,6 +1,6 @@
 ﻿using MetroSet_UI.Forms;
-using PlexDL.Common.Structures;
 using PlexDL.Common;
+using PlexDL.Common.Structures;
 using PlexDL.WaitWindow;
 using System;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace PlexDL.UI
 {
     public partial class DirectConnect : MetroSetForm
     {
-        public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
+        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
         public bool connectionStarted = false;
 

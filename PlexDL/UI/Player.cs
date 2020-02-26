@@ -1,13 +1,13 @@
 ﻿using MetroSet_UI.Extensions;
 using MetroSet_UI.Forms;
 using PlexDL.Common;
+using PlexDL.Common.API;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
 using PVS.MediaPlayer;
 using System;
 using System.Data;
-using System.IO;
-using System.Net;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -38,69 +38,6 @@ namespace PlexDL.UI
             this.styleMain.MetroForm = this;
         }
 
-        public XmlDocument GetXMLTransaction(string uri, string secret)
-        {
-            //Declare XMLResponse document
-            XmlDocument XMLResponse = null;
-            //Declare an HTTP-specific implementation of the WebRequest class.
-            HttpWebRequest objHttpWebRequest;
-            //Declare an HTTP-specific implementation of the WebResponse class
-            HttpWebResponse objHttpWebResponse = null;
-            //Declare a generic view of a sequence of bytes
-            Stream objResponseStream = null;
-            //Declare XMLReader
-            XmlTextReader objXMLReader;
-
-            string fullUri = uri + secret;
-
-            //MessageBox.Show(uri + secret);
-
-            //Creates an HttpWebRequest for the specified URL.
-            objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
-
-            //---------- Start HttpRequest
-            try
-            {
-                //Set HttpWebRequest properties
-                objHttpWebRequest.Method = "GET";
-                //---------- End HttpRequest
-                //Sends the HttpWebRequest, and waits for a response.
-                objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
-                //---------- Start HttpResponse, Return code 200
-                if (objHttpWebResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    //Get response stream
-                    objResponseStream = objHttpWebResponse.GetResponseStream();
-                    //Load response stream into XMLReader
-                    objXMLReader = new XmlTextReader(objResponseStream);
-                    //Declare XMLDocument
-                    XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(objXMLReader);
-                    //Set XMLResponse object returned from XMLReader
-                    XMLResponse = xmldoc;
-                    //Close XMLReader
-                    objXMLReader.Close();
-                }
-                else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    MessageBox.Show("The web server denied access to the resource. Check your token and try again.", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                //Close Steam
-                objResponseStream.Close();
-                //Close HttpWebResponse
-                objHttpWebResponse.Close();
-            }
-            finally
-            {
-                //Release objects
-                objXMLReader = null;
-                objResponseStream = null;
-                objHttpWebResponse = null;
-                objHttpWebRequest = null;
-            }
-            return XMLResponse;
-        }
-
         private void fadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
@@ -124,11 +61,11 @@ namespace PlexDL.UI
 
             if (StreamingContent.StreamInformation.Container == "mkv")
             {
+                CanFadeOut = false;
                 DialogResult msg = MessageBox.Show("PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (msg == DialogResult.No)
                 {
-                    CanFadeOut = false;
                     this.Close();
                 }
                 else
@@ -136,12 +73,10 @@ namespace PlexDL.UI
                     try
                     {
                         VLCLauncher.LaunchVLC(StreamingContent.StreamInformation);
-                        CanFadeOut = false;
                         this.Close();
                     }
                     catch (Exception ex)
                     {
-                        CanFadeOut = false;
                         MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
                         this.Close();
@@ -419,9 +354,26 @@ namespace PlexDL.UI
         {
             if (!mPlayer.Playing)
             {
-                string FileName = (string)e.Arguments[0];
-                StartPlayer(FileName);
-                SetIconPause();
+                if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Link))
+                {
+                    string FileName = (string)e.Arguments[0];
+                    StartPlayer(FileName);
+                    SetIconPause();
+                }
+                else
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.BeginInvoke((MethodInvoker)delegate
+                        {
+                            MessageBox.Show("Couldn't load the stream because the remote file doesn't exist or returned an error", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Couldn't load the stream because the remote file doesn't exist or returned an error", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
@@ -477,7 +429,7 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
-                XmlDocument reply = GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken);
+                XmlDocument reply = XmlGet.GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken);
 
                 obj = getContentDownloadInfo_Xml(reply);
                 return obj;

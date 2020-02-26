@@ -1,7 +1,7 @@
 ﻿using MetroSet_UI.Controls;
 using MetroSet_UI.Forms;
 using PlexDL.Common;
-using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
 using System;
 using System.Drawing;
 using System.IO;

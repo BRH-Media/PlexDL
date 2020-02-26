@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     public class Photo : PlexItem
     {

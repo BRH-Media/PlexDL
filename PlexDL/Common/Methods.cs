@@ -1,13 +1,14 @@
-﻿using PlexAPI;
-using PlexDL.Common.Caching;
+﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
@@ -17,6 +18,27 @@ namespace PlexDL.Common
 {
     public static class Methods
     {
+        public static bool RemoteFileExists(string url)
+        {
+            try
+            {
+                //Creating the HttpWebRequest
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                //Setting the Request method HEAD, you can also use GET too.
+                request.Method = "HEAD";
+                //Getting the Web Response.
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                //Returns TRUE if the Status code == 200
+                response.Close();
+                return (response.StatusCode == HttpStatusCode.OK);
+            }
+            catch
+            {
+                //Any exception will return false.
+                return false;
+            }
+        }
+
         public static bool IsPrivateIP(string ipAddress)
         {
             int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)

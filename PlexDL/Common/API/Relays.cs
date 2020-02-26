@@ -1,5 +1,5 @@
-﻿using PlexAPI;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;

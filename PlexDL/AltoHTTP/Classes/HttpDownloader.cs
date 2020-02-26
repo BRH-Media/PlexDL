@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using PlexDL.Common;
 
 namespace PlexDL.AltoHttp
 {
@@ -31,6 +32,11 @@ namespace PlexDL.AltoHttp
         /// Occurs when the download process is cancelled
         /// </summary>
         public event EventHandler DownloadCancelled;
+
+        /// <summary>
+        /// Occurs when an exception is thrown in the download
+        /// </summary>
+        public event EventHandler DownloadError;
 
         /// <summary>
         /// Occurs when the download progress is changed
@@ -154,6 +160,14 @@ namespace PlexDL.AltoHttp
                         if (DownloadCancelled != null)
                             DownloadCancelled(this, EventArgs.Empty);
                     }), null);
+                else if (state == DownloadState.ErrorOccured && DownloadError != null)
+                {
+                    oprtor.Post(new SendOrPostCallback(delegate
+                    {
+                        if (DownloadError != null)
+                            DownloadError(this, EventArgs.Empty);
+                    }), null);
+                }
             }
         }
 
@@ -207,7 +221,8 @@ namespace PlexDL.AltoHttp
             }
             catch (Exception)
             {
-                state = DownloadState.Completed;
+                state = DownloadState.ErrorOccured;
+                State = state;
                 return;
             }
 
@@ -263,7 +278,7 @@ namespace PlexDL.AltoHttp
         /// </summary>
         public async void StartAsync()
         {
-            if (state != DownloadState.Started & state != DownloadState.Completed & state != DownloadState.Cancelled)
+            if (state != DownloadState.Started & state != DownloadState.Completed & state != DownloadState.Cancelled & state != DownloadState.ErrorOccured)
                 return;
 
             state = DownloadState.Started;

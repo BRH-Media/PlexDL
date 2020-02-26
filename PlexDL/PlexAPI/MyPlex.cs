@@ -2,7 +2,7 @@
 using RestSharp;
 using System.Collections.Generic;
 
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     public class MyPlex : PlexRest
     {

@@ -1,7 +1,6 @@
 ﻿using libbrhscgui.Components;
 using MetroSet_UI.Extensions;
 using MetroSet_UI.Forms;
-using PlexAPI;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
@@ -9,6 +8,10 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.AppOptions;
+using PlexDL.Common.Structures.AppOptions.Player;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
 using PlexDL.Properties;
 using System;
 using System.Collections.Generic;
@@ -19,7 +22,6 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -61,19 +63,19 @@ namespace PlexDL.UI
 
         #region GlobalBoolVariables
 
-        public bool connected = false;
+        public bool IsConnected = false;
         public bool InitialFill = true;
-        public bool libraryFilled = false;
+        public bool IsLibraryFilled = false;
         public bool IsFiltered = false;
         public bool IsTVShow = false;
         public bool IsContentSortingEnabled = true;
-        public bool DownloadQueueCancelled = false;
-        public bool DownloadAllEpisodes = false;
-        public bool downloadIsRunning = false;
-        public bool downloadIsPaused = false;
-        public bool engineIsRunning = false;
-        public bool msgAlreadyShown = false;
+        public bool IsDownloadQueueCancelled = false;
+        public bool IsDownloadRunning = false;
+        public bool IsDownloadPaused = false;
+        public bool IsEngineRunning = false;
+        public bool IsMsgAlreadyShown = false;
         public bool doNotAttemptAgain = false;
+        public bool DownloadAllEpisodes = false;
 
         #endregion GlobalBoolVariables
 
@@ -92,7 +94,7 @@ namespace PlexDL.UI
 
         public static AltoHttp.DownloadQueue engine;
         public static List<DownloadInfo> queue;
-        public static AppOptions settings = new AppOptions();
+        public static ApplicationOptions settings = new ApplicationOptions();
         public static MyPlex plex = new MyPlex();
 
         #endregion GlobalStaticVariables
@@ -165,6 +167,7 @@ namespace PlexDL.UI
         #region XML/Metadata
 
         #region PlexMovieBuilders
+
         public int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null, string key = "title")
         {
             DataGridViewRow sel = dgv.SelectedRows[0];
@@ -221,21 +224,29 @@ namespace PlexDL.UI
 
                 metadata = GetEpisodeMetadata(index);
 
-                infRow = episodesTable.DefaultView[index].Row;
+                addToLog("Checking XML validity");
+                if (Methods.PlexXmlValid(metadata))
+                {
+                    infRow = episodesTable.DefaultView[index].Row;
 
-                DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
+                    addToLog("XML Valid");      
 
-                addToLog("Assembling Object");
+                    DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
 
-                obj.ContentGenre = getContentGenre(metadata);
-                obj.StreamInformation = dlInfo;
-                obj.ContentDuration = dlInfo.ContentDuration;
-                obj.StreamPosterUri = getContentThumbnailUri(metadata);
-                obj.Season = getTVShowSeason(metadata);
-                obj.EpisodesInSeason = episodesTable.Rows.Count;
-                obj.TVShowName = getTVShowTitle(metadata);
-                obj.StreamResolution = getContentResolution(metadata);
-                obj.StreamIndex = index;
+                    addToLog("Assembling Object");
+
+                    obj.ContentGenre = getContentGenre(metadata);
+                    obj.StreamInformation = dlInfo;
+                    obj.ContentDuration = dlInfo.ContentDuration;
+                    obj.StreamPosterUri = getContentThumbnailUri(metadata);
+                    obj.Season = getTVShowSeason(metadata);
+                    obj.EpisodesInSeason = episodesTable.Rows.Count;
+                    obj.TVShowName = getTVShowTitle(metadata);
+                    obj.StreamResolution = getContentResolution(metadata);
+                    obj.StreamIndex = index;
+                }
+                else
+                    addToLog("XML Invalid");
             }
             return obj;
         }
@@ -260,25 +271,30 @@ namespace PlexDL.UI
                 addToLog("Grabbing Titles");
                 DataRow infRow;
 
-                if (IsTVShow)
-                    metadata = GetEpisodeMetadata(index);
+                metadata = GetContentMetadata(index);
+
+                addToLog("Checking XML validity");
+                if (Methods.PlexXmlValid(metadata))
+                {
+                    infRow = GetDataRowContent(index, false);
+
+                    addToLog("XML Valid");
+
+                    DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
+
+                    addToLog("Assembling Object");
+
+                    obj.Actors = getActorsFromMetadata(metadata);
+                    obj.ContentGenre = getContentGenre(metadata);
+                    obj.StreamInformation = dlInfo;
+                    obj.ContentDuration = dlInfo.ContentDuration;
+                    obj.StreamPosterUri = getContentThumbnailUri(metadata);
+
+                    obj.StreamResolution = getContentResolution(metadata);
+                    obj.StreamIndex = index;
+                }
                 else
-                    metadata = GetContentMetadata(index);
-
-                infRow = GetDataRowContent(index, false);
-
-                DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
-
-                addToLog("Assembling Object");
-
-                obj.Actors = getActorsFromMetadata(metadata);
-                obj.ContentGenre = getContentGenre(metadata);
-                obj.StreamInformation = dlInfo;
-                obj.ContentDuration = dlInfo.ContentDuration;
-                obj.StreamPosterUri = getContentThumbnailUri(metadata);
-
-                obj.StreamResolution = getContentResolution(metadata);
-                obj.StreamIndex = index;
+                    addToLog("XML Invalid");
             }
             return obj;
         }
@@ -586,9 +602,16 @@ namespace PlexDL.UI
 
         public void loadProfile()
         {
-            if (ofdLoadProfile.ShowDialog() == DialogResult.OK)
+            if (!IsConnected)
             {
-                doLoadProfile(ofdLoadProfile.FileName);
+                if (ofdLoadProfile.ShowDialog() == DialogResult.OK)
+                {
+                    doLoadProfile(ofdLoadProfile.FileName);
+                }
+            }
+            else
+            {
+                MessageBox.Show("You can't load profiles while you're connected; please disconnect first.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -612,7 +635,7 @@ namespace PlexDL.UI
             try
             {
                 var subReq = settings;
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(AppOptions));
+                XmlSerializer xsSubmit = new XmlSerializer(typeof(ApplicationOptions));
                 XmlWriterSettings xmlSettings = new XmlWriterSettings();
                 xmlSettings.Indent = true;
                 xmlSettings.IndentChars = ("\t");
@@ -649,12 +672,12 @@ namespace PlexDL.UI
         {
             try
             {
-                AppOptions subReq = null;
+                ApplicationOptions subReq = null;
 
-                XmlSerializer serializer = new XmlSerializer(typeof(AppOptions));
+                XmlSerializer serializer = new XmlSerializer(typeof(ApplicationOptions));
 
                 StreamReader reader = new StreamReader(fileName);
-                subReq = (AppOptions)serializer.Deserialize(reader);
+                subReq = (ApplicationOptions)serializer.Deserialize(reader);
                 reader.Close();
 
                 settings = subReq;
@@ -682,20 +705,19 @@ namespace PlexDL.UI
 
         private void Disconnect()
         {
-            if (connected)
+            if (IsConnected)
             {
                 if (engine != null)
                 {
                     CancelDownload();
                 }
-                dgvLibrary.DataSource = null;
-                dgvContent.DataSource = null;
-                dgvServers.DataSource = null;
-                dgvSeasons.DataSource = null;
-                dgvEpisodes.DataSource = null;
+                ClearContentView();
+                ClearTVViews();
+                ClearLibraryViews();
                 SetProgressLabel("Disconnected");
                 SetConnect();
-                connected = false;
+                SelectMoviesTab();
+                IsConnected = false;
             }
         }
 
@@ -705,12 +727,12 @@ namespace PlexDL.UI
             {
                 using (Connect frm = new Connect())
                 {
-                    ConnectionInformation existingInfo = new ConnectionInformation();
+                    ConnectionInfo existingInfo = new ConnectionInfo();
                     existingInfo.PlexAccountToken = settings.ConnectionInfo.PlexAccountToken;
                     frm.ConnectionInfo = existingInfo;
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
-                        ConnectionInformation result = frm.ConnectionInfo;
+                        ConnectionInfo result = frm.ConnectionInfo;
                         settings.ConnectionInfo = result;
                         user.authenticationToken = result.PlexAccountToken;
 
@@ -785,9 +807,9 @@ namespace PlexDL.UI
                     string address = s.address;
                     int port = s.port;
 
-                    ConnectionInformation connectInfo;
+                    ConnectionInfo connectInfo;
 
-                    connectInfo = new ConnectionInformation()
+                    connectInfo = new ConnectionInfo()
                     {
                         PlexAccountToken = getToken(),
                         PlexAddress = address,
@@ -802,7 +824,7 @@ namespace PlexDL.UI
                     XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri, false, true });
                     if (Methods.PlexXmlValid(reply))
                     {
-                        connected = true;
+                        IsConnected = true;
                         if (settings.Generic.ShowConnectionSuccess)
                         {
                             MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -863,7 +885,7 @@ namespace PlexDL.UI
 
                     addToLog("Binding to grid");
                     renderLibraryView(sectionsTable);
-                    libraryFilled = true;
+                    IsLibraryFilled = true;
                     uri = baseUri + libraryDir + "/" + sectionDir + "/";
                     //we can render the content view if a row is already selected
                     DGVServersEnabled(true);
@@ -1026,7 +1048,7 @@ namespace PlexDL.UI
                         });
                         PlexTVShow show = GetTVObjectFromIndex(index);
                         DownloadInfo dlInfo = show.StreamInformation;
-                        TVShowDirectoryLayout dir = DownloadLayouts.CreateDownloadLayoutTVShow(show, settings, DownloadLayouts.PlexStandardLayout);
+                        TVShowDirectoryLayout dir = DownloadLayout.CreateDownloadLayoutTVShow(show, settings, DownloadLayout.PlexStandardLayout);
                         dlInfo.DownloadPath = dir.SeasonPath;
                         queue.Add(dlInfo);
                         index += 1;
@@ -1040,7 +1062,7 @@ namespace PlexDL.UI
                     });
                     PlexTVShow show = GetTVObjectFromSelection();
                     DownloadInfo dlInfo = show.StreamInformation;
-                    TVShowDirectoryLayout dir = DownloadLayouts.CreateDownloadLayoutTVShow(show, settings, DownloadLayouts.PlexStandardLayout);
+                    TVShowDirectoryLayout dir = DownloadLayout.CreateDownloadLayoutTVShow(show, settings, DownloadLayout.PlexStandardLayout);
                     dlInfo.DownloadPath = dir.SeasonPath;
                     queue.Add(dlInfo);
                 }
@@ -1129,20 +1151,63 @@ namespace PlexDL.UI
                 if (this.InvokeRequired)
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        if (tabMain.SelectedTab != tabMovies)
-                            tabMain.SelectedTab = tabMovies;
+                        SelectMoviesTab();
                     });
                 else
                 {
-                    if (tabMain.SelectedTab != tabMovies)
-                        tabMain.SelectedTab = tabMovies;
+                    SelectMoviesTab();
                 }
+            }
+        }
+
+        private void SelectMoviesTab(bool checkSelected = true)
+        {
+            if (checkSelected)
+            {
+                if (tabMain.SelectedTab != tabMovies)
+                {
+                    tabMain.SelectedTab = tabMovies;
+                }
+            }
+            else
+            {
+                tabMain.SelectedTab = tabMovies;
+            }
+        }
+
+        private void SelectTVTab(bool checkSelected = true)
+        {
+            if (checkSelected)
+            {
+                if (tabMain.SelectedTab != tabTV)
+                {
+                    tabMain.SelectedTab = tabTV;
+                }
+            }
+            else
+            {
+                tabMain.SelectedTab = tabTV;
             }
         }
 
         private void ClearContentView()
         {
             dgvContent.DataSource = null;
+        }
+
+        private void ClearTVViews()
+        {
+            dgvSeasons.DataSource = null;
+            dgvEpisodes.DataSource = null;
+            dgvTVShows.DataSource = null;
+        }
+
+        private void ClearLibraryViews(bool clearServers = true, bool clearLibrary = true)
+        {
+            if (clearServers)
+                dgvServers.DataSource = null;
+            if (clearLibrary)
+                dgvLibrary.DataSource = null;
         }
 
         private void renderTVView(DataTable content)
@@ -1162,13 +1227,11 @@ namespace PlexDL.UI
                 if (this.InvokeRequired)
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        if (tabMain.SelectedTab != tabTV)
-                            tabMain.SelectedTab = tabTV;
+                        SelectTVTab();
                     });
                 else
                 {
-                    if (tabMain.SelectedTab != tabTV)
-                        tabMain.SelectedTab = tabTV;
+                    SelectTVTab();
                 }
             }
         }
@@ -1384,43 +1447,54 @@ namespace PlexDL.UI
 
         private DownloadInfo getContentDownloadInfo_Xml(XmlDocument xml)
         {
-            DownloadInfo obj = new DownloadInfo();
-
-            addToLog("Creating new datasets");
-            DataSet sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(xml));
-
-            DataTable part = sections.Tables["Part"];
-            DataRow video = sections.Tables["Video"].Rows[0];
-            string title = video["title"].ToString();
-            if (title.Length > settings.Generic.DefaultStringLength)
-                title = title.Substring(0, settings.Generic.DefaultStringLength);
-            string thumb = video["thumb"].ToString();
-            string thumbnailFullUri = "";
-            if (!(thumb == ""))
+            if (Methods.PlexXmlValid(xml))
             {
-                string baseUri = getBaseUri(false).TrimEnd('/');
-                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + getToken();
+                DownloadInfo obj = new DownloadInfo();
+
+                addToLog("Creating new datasets");
+                DataSet sections = new DataSet();
+                sections.ReadXml(new XmlNodeReader(xml));
+
+                DataTable part = sections.Tables["Part"];
+                DataRow video = sections.Tables["Video"].Rows[0];
+                string title = video["title"].ToString();
+                if (title.Length > settings.Generic.DefaultStringLength)
+                    title = title.Substring(0, settings.Generic.DefaultStringLength);
+                string thumb = video["thumb"].ToString();
+                string thumbnailFullUri = "";
+                if (!(thumb == ""))
+                {
+                    string baseUri = getBaseUri(false).TrimEnd('/');
+                    thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + getToken();
+                }
+
+                DataRow partRow = part.Rows[0];
+
+                string filePart = "";
+                string container = "";
+                if (partRow["key"] != null)
+                    filePart = partRow["key"].ToString();
+                if (partRow["container"] != null)
+                    container = partRow["container"].ToString();
+                long byteLength = Convert.ToInt64(partRow["size"]);
+                int contentDuration = Convert.ToInt32(partRow["duration"]);
+                string fileName = Common.Methods.removeIllegalCharacters(title + "." + container);
+
+                string link = getBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + getToken();
+                obj.Link = link;
+                obj.Container = container;
+                obj.ByteLength = byteLength;
+                obj.ContentDuration = contentDuration;
+                obj.FileName = fileName;
+                obj.ContentTitle = title;
+                obj.ContentThumbnailUri = thumbnailFullUri;
+
+                return obj;
             }
-
-            DataRow partRow = part.Rows[0];
-
-            string filePart = partRow["key"].ToString();
-            string container = partRow["container"].ToString();
-            long byteLength = Convert.ToInt64(partRow["size"]);
-            int contentDuration = Convert.ToInt32(partRow["duration"]);
-            string fileName = Common.Methods.removeIllegalCharacters(title + "." + container);
-
-            string link = getBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + getToken();
-            obj.Link = link;
-            obj.Container = container;
-            obj.ByteLength = byteLength;
-            obj.ContentDuration = contentDuration;
-            obj.FileName = fileName;
-            obj.ContentTitle = title;
-            obj.ContentThumbnailUri = thumbnailFullUri;
-
-            return obj;
+            else
+            {
+                return new DownloadInfo();
+            }
         }
 
         #endregion DownloadInfoGatherers
@@ -1433,22 +1507,23 @@ namespace PlexDL.UI
             {
                 wkrGetMetadata.Abort();
             }
-            if (engineIsRunning)
+            if (IsEngineRunning)
             {
                 engine.Cancel();
                 engine.Clear();
             }
-            if (downloadIsRunning)
+            if (IsDownloadRunning)
             {
                 SetProgressLabel("Download Cancelled");
                 SetDownloadStart();
                 SetResume();
-                pbMain.Value = 100;
+                pbMain.Value = pbMain.Maximum;
+                btnPause.Enabled = false;
                 addToLog("Download Cancelled");
-                downloadIsRunning = false;
-                downloadIsPaused = false;
-                engineIsRunning = false;
-                DownloadQueueCancelled = true;
+                IsDownloadRunning = false;
+                IsDownloadPaused = false;
+                IsEngineRunning = false;
+                IsDownloadQueueCancelled = true;
                 downloadsSoFar = 0;
                 DownloadTotal = 0;
                 DownloadIndex = 0;
@@ -1504,9 +1579,9 @@ namespace PlexDL.UI
             engine.StartAsync();
             //MessageBox.Show("Started!");
             addToLog("Download is Progressing");
-            downloadIsRunning = true;
-            engineIsRunning = true;
-            downloadIsPaused = false;
+            IsDownloadRunning = true;
+            IsEngineRunning = true;
+            IsDownloadPaused = false;
             SetPause();
         }
 
@@ -1523,15 +1598,15 @@ namespace PlexDL.UI
         private void SetDownloadCompleted()
         {
             pbMain.Value = pbMain.Maximum;
-            SetResume();
             btnPause.Enabled = false;
+            SetResume();
             SetDownloadStart();
             SetProgressLabel("Download Completed");
             addToLog("Download completed");
             engine.Clear();
-            downloadIsRunning = false;
-            downloadIsPaused = false;
-            engineIsRunning = false;
+            IsDownloadRunning = false;
+            IsDownloadPaused = false;
+            IsEngineRunning = false;
         }
 
         private void StartDownload(List<DownloadInfo> queue, string location)
@@ -1572,6 +1647,7 @@ namespace PlexDL.UI
                 }
                 engine.Add(dl.Link, fqPath);
             }
+            btnPause.Enabled = true;
             StartDownloadEngine();
         }
 
@@ -1854,14 +1930,14 @@ namespace PlexDL.UI
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
-            if (downloadIsRunning)
+            if (IsDownloadRunning)
             {
-                if (!(msgAlreadyShown))
+                if (!(IsMsgAlreadyShown))
                 {
                     DialogResult msg = MessageBox.Show("Are you sure you want to exit PlexDL? A download is still running.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (msg == DialogResult.Yes)
                     {
-                        msgAlreadyShown = true;
+                        IsMsgAlreadyShown = true;
                         addToLog("PlexDL Exited");
                         e.Cancel = false;
                     }
@@ -1992,7 +2068,7 @@ namespace PlexDL.UI
 
         private void dgvLibrary_OnRowChange(object sender, EventArgs e)
         {
-            if ((dgvLibrary.SelectedRows.Count == 1) && (libraryFilled))
+            if ((dgvLibrary.SelectedRows.Count == 1) && (IsLibraryFilled))
             {
                 addToLog("Selection Changed");
                 int index = GetTableIndexFromDGV(dgvLibrary, gSectionsTable);
@@ -2137,7 +2213,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (!connected)
+                if (!IsConnected)
                 {
                     if (CheckForInternetConnection())
                     {
@@ -2192,12 +2268,12 @@ namespace PlexDL.UI
 
         private void DoDownloadAllEpisodes()
         {
-            if (!downloadIsRunning && !engineIsRunning)
+            if (!IsDownloadRunning && !IsEngineRunning)
             {
                 SetProgressLabel("Waiting");
                 DownloadAllEpisodes = true;
                 DownloadTotal = episodesTable.Rows.Count;
-                downloadIsRunning = true;
+                IsDownloadRunning = true;
                 wkrGetMetadata.RunWorkerAsync();
                 SetDownloadCancel();
             }
@@ -2205,12 +2281,12 @@ namespace PlexDL.UI
 
         private void DoDownloadSelected()
         {
-            if (!downloadIsRunning && !engineIsRunning)
+            if (!IsDownloadRunning && !IsEngineRunning)
             {
                 SetProgressLabel("Waiting");
                 DownloadAllEpisodes = false;
                 DownloadTotal = 1;
-                downloadIsRunning = true;
+                IsDownloadRunning = true;
                 wkrGetMetadata.RunWorkerAsync();
                 SetDownloadCancel();
             }
@@ -2310,7 +2386,7 @@ namespace PlexDL.UI
         {
             if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
             {
-                if (!downloadIsRunning && !engineIsRunning)
+                if (!IsDownloadRunning && !IsEngineRunning)
                 {
                     queue = new List<DownloadInfo>();
                     if (IsTVShow)
@@ -2353,20 +2429,20 @@ namespace PlexDL.UI
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (downloadIsRunning && engineIsRunning)
+            if (IsDownloadRunning && IsEngineRunning)
             {
-                if (!downloadIsPaused)
+                if (!IsDownloadPaused)
                 {
                     engine.Pause();
                     SetResume();
                     lblProgress.Text += " (Paused)";
-                    downloadIsPaused = true;
+                    IsDownloadPaused = true;
                 }
                 else
                 {
                     engine.ResumeAsync();
                     SetPause();
-                    downloadIsPaused = false;
+                    IsDownloadPaused = false;
                 }
             }
         }
@@ -2375,7 +2451,7 @@ namespace PlexDL.UI
         {
             if (settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
             {
-                if (!downloadIsRunning)
+                if (!IsDownloadRunning)
                 {
                     Player frm = new Player();
                     frm.StreamingContent = stream;
@@ -2440,13 +2516,6 @@ namespace PlexDL.UI
             }
         }
 
-        private void ClearTVViews()
-        {
-            dgvSeasons.DataSource = null;
-            dgvEpisodes.DataSource = null;
-            dgvTVShows.DataSource = null;
-        }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             SearchProcedure();
@@ -2472,7 +2541,7 @@ namespace PlexDL.UI
         {
             if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
             {
-                if (!downloadIsRunning && !engineIsRunning)
+                if (!IsDownloadRunning && !IsEngineRunning)
                 {
                     if (result == null)
                     {

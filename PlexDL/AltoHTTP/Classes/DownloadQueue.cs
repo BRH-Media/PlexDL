@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PlexDL.AltoHttp
 {
@@ -99,6 +100,43 @@ namespace PlexDL.AltoHttp
             }
 
             createNextDownload();
+        }
+
+        private void downloader_DownloadError(object sender, EventArgs e)
+        {
+            if (QueueElementCompleted != null)
+                QueueElementCompleted(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
+            for (int i = 0; i < elements.Count; i++)
+            {
+                if (elements[i].Equals(currentElement))
+                {
+                    elements[i] = new QueueElement()
+                    {
+                        Id = elements[i].Id,
+                        Url = elements[i].Url,
+                        Destination = elements[i].Destination,
+                        Completed = true
+                    };
+                    break;
+                }
+            }
+
+            Form active = System.Windows.Forms.Form.ActiveForm;
+
+            if (active.InvokeRequired)
+            {
+                active.BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.", "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                });
+            }
+            else
+            {
+                MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.", "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (QueueCompleted != null)
+                QueueCompleted(this, new EventArgs());
         }
 
         #endregion Events
@@ -282,6 +320,7 @@ namespace PlexDL.AltoHttp
             downloader = new HttpDownloader(elt.Url, elt.Destination);
             downloader.DownloadCompleted += downloader_DownloadCompleted;
             downloader.DownloadProgressChanged += downloader_DownloadProgressChanged;
+            downloader.DownloadError += downloader_DownloadError;
             downloader.StartAsync();
             currentElement = elt;
             queuePaused = false;

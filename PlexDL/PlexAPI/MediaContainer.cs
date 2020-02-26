@@ -2,7 +2,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     public class MediaContainer : PlexItem
     {

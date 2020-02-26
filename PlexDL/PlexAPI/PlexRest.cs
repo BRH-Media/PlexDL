@@ -2,7 +2,7 @@ using RestSharp;
 using System;
 using System.Xml.Serialization;
 
-namespace PlexAPI
+namespace PlexDL.PlexAPI
 {
     [XmlInclude(typeof(Server))]
     [Serializable]
