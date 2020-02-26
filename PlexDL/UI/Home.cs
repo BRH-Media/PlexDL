@@ -736,53 +736,44 @@ namespace PlexDL.UI
                         settings.ConnectionInfo = result;
                         user.authenticationToken = result.PlexAccountToken;
 
-                        object serversResult;
-                        if (settings.ConnectionInfo.RelaysOnly)
-                            serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Relays");
-                        else
-                            serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Servers");
-
-                        List<Server> servers = (List<Server>)serversResult;
-                        if (servers.Count == 0)
+                        if (!result.DirectOnly)
                         {
-                            //to make it look nicer xD
-                            string r = "";
-                            if (settings.ConnectionInfo.RelaysOnly)
-                                r = "relays";
-                            else
-                                r = "servers";
 
-                            DialogResult msg = MessageBox.Show("No " + r + " found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                            if (msg == DialogResult.Yes)
+                            object serversResult;
+                            if (settings.ConnectionInfo.RelaysOnly)
+                                serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Relays");
+                            else
+                                serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Servers");
+
+                            List<Server> servers = (List<Server>)serversResult;
+                            if (servers.Count == 0)
                             {
-                                using (DirectConnect frmDir = new DirectConnect())
+                                //to make it look nicer xD
+                                string r = "";
+                                if (settings.ConnectionInfo.RelaysOnly)
+                                    r = "relays";
+                                else
+                                    r = "servers";
+
+                                DialogResult msg = MessageBox.Show("No " + r + " found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                                if (msg == DialogResult.Yes)
                                 {
-                                    frmDir.ConnectionInfo.PlexAccountToken = user.authenticationToken;
-                                    if (frmDir.ShowDialog() == DialogResult.OK)
-                                    {
-                                        settings.ConnectionInfo = frmDir.ConnectionInfo;
-                                        Server s = new Server()
-                                        {
-                                            accessToken = user.authenticationToken,
-                                            address = settings.ConnectionInfo.PlexAddress,
-                                            port = settings.ConnectionInfo.PlexPort,
-                                            name = "DirectConnect"
-                                        };
-                                        servers.Add(s);
-                                        plexServers = servers;
-                                        renderServersView(servers);
-                                    }
+                                    RunDirectConnect();
+                                }
+                                else if (msg == DialogResult.No)
+                                {
+                                    return;
                                 }
                             }
-                            else if (msg == DialogResult.No)
+                            else
                             {
-                                return;
+                                plexServers = servers;
+                                renderServersView(servers);
                             }
                         }
                         else
                         {
-                            plexServers = servers;
-                            renderServersView(servers);
+                            RunDirectConnect();
                         }
                     }
                 }
@@ -796,11 +787,35 @@ namespace PlexDL.UI
             }
         }
 
+        private void RunDirectConnect()
+        {
+            List<Server> servers = new List<Server>();
+            using (DirectConnect frmDir = new DirectConnect())
+            {
+                frmDir.ConnectionInfo.PlexAccountToken = user.authenticationToken;
+                if (frmDir.ShowDialog() == DialogResult.OK)
+                {
+                    settings.ConnectionInfo = frmDir.ConnectionInfo;
+                    Server s = new Server()
+                    {
+                        accessToken = user.authenticationToken,
+                        address = settings.ConnectionInfo.PlexAddress,
+                        port = settings.ConnectionInfo.PlexPort,
+                        name = "DirectConnect"
+                    };
+                    servers.Add(s);
+                    plexServers = servers;
+                    renderServersView(servers);
+                    doConnectFromSelectedServer();
+                }
+            }
+        }
+
         private void doConnectFromSelectedServer()
         {
             if (!doNotAttemptAgain)
             {
-                if (dgvServers.CurrentCell != null)
+                if (dgvServers.SelectedRows.Count == 1)
                 {
                     int index = dgvServers.CurrentCell.RowIndex;
                     Server s = plexServers[index];
@@ -2142,7 +2157,7 @@ namespace PlexDL.UI
                 int index = dgvServers.CurrentCell.RowIndex;
                 Server s = plexServers[index];
                 string address = s.address;
-                if (!(address == settings.ConnectionInfo.PlexAddress))
+                if (address != settings.ConnectionInfo.PlexAddress)
                 {
                     doNotAttemptAgain = false;
                     //MessageBox.Show("attempted connection");

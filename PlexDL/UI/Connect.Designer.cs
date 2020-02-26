@@ -33,6 +33,7 @@
             this.chkRelays = new MetroSet_UI.Controls.MetroSetCheckBox();
             this.btnConnect = new MetroSet_UI.Controls.MetroSetButton();
             this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
+            this.chkDirect = new MetroSet_UI.Controls.MetroSetCheckBox();
             this.SuspendLayout();
             // 
             // txtAccountToken
@@ -102,7 +103,7 @@
             this.btnConnect.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverTextColor = System.Drawing.Color.White;
-            this.btnConnect.Location = new System.Drawing.Point(15, 149);
+            this.btnConnect.Location = new System.Drawing.Point(15, 170);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnConnect.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -144,11 +145,34 @@
             this.ctrlMain.ThemeAuthor = null;
             this.ctrlMain.ThemeName = null;
             // 
+            // chkDirect
+            // 
+            this.chkDirect.BackColor = System.Drawing.Color.Transparent;
+            this.chkDirect.BackgroundColor = System.Drawing.Color.White;
+            this.chkDirect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.chkDirect.Checked = false;
+            this.chkDirect.CheckSignColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
+            this.chkDirect.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            this.chkDirect.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chkDirect.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.chkDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.chkDirect.Location = new System.Drawing.Point(15, 142);
+            this.chkDirect.Name = "chkDirect";
+            this.chkDirect.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
+            this.chkDirect.Size = new System.Drawing.Size(204, 16);
+            this.chkDirect.Style = MetroSet_UI.Design.Style.Light;
+            this.chkDirect.StyleManager = this.styleMain;
+            this.chkDirect.TabIndex = 28;
+            this.chkDirect.Text = "Direct Connection";
+            this.chkDirect.ThemeAuthor = null;
+            this.chkDirect.ThemeName = null;
+            // 
             // Connect
             // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(234, 187);
+            this.ClientSize = new System.Drawing.Size(234, 207);
+            this.Controls.Add(this.chkDirect);
             this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.chkRelays);
@@ -172,5 +196,6 @@
         private MetroSet_UI.Controls.MetroSetButton btnConnect;
         private MetroSet_UI.StyleManager styleMain;
         private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
+        private MetroSet_UI.Controls.MetroSetCheckBox chkDirect;
     }
 }

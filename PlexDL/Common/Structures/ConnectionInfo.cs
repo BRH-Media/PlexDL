@@ -10,5 +10,8 @@ namespace PlexDL.Common.Structures
 
         [NonSerialized]
         public bool RelaysOnly = false;
+
+        [NonSerialized]
+        public bool DirectOnly = false;
     }
 }

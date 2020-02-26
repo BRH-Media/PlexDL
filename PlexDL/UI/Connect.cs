@@ -71,6 +71,7 @@ namespace PlexDL.UI
             {
                 ConnectionInfo.PlexAccountToken = txtAccountToken.Text;
                 ConnectionInfo.RelaysOnly = chkRelays.Checked;
+                ConnectionInfo.DirectOnly = chkDirect.Checked;
                 connectionStarted = true;
                 this.DialogResult = DialogResult.OK;
                 this.Close();

@@ -158,22 +158,24 @@
             // 
             // DirectConnect
             // 
+            this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(233, 205);
+            this.ClientSize = new System.Drawing.Size(233, 196);
             this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.txtServerPort);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtServerIP);
+            this.DropShadowEffect = false;
             this.Name = "DirectConnect";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.StyleManager = this.styleMain;
-            this.Text = "Direct Connect";
+            this.Text = "Direct Connection";
             this.ThemeAuthor = null;
             this.ThemeName = null;
-            this.Load += new System.EventHandler(this.DirectConnect_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DirectConnect_FormClosing);
+            this.Load += new System.EventHandler(this.DirectConnect_Load);
             this.ResumeLayout(false);
 
         }
