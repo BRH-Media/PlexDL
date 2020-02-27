@@ -93,6 +93,7 @@
             this.chkRelays.Text = "Bind to Relays Only";
             this.chkRelays.ThemeAuthor = null;
             this.chkRelays.ThemeName = null;
+            this.chkRelays.CheckedChanged += new MetroSet_UI.Controls.MetroSetCheckBox.CheckedChangedEventHandler(this.chkRelays_CheckedChanged);
             // 
             // btnConnect
             // 
@@ -166,6 +167,7 @@
             this.chkDirect.Text = "Direct Connection";
             this.chkDirect.ThemeAuthor = null;
             this.chkDirect.ThemeName = null;
+            this.chkDirect.CheckedChanged += new MetroSet_UI.Controls.MetroSetCheckBox.CheckedChangedEventHandler(this.chkDirect_CheckedChanged);
             // 
             // Connect
             // 

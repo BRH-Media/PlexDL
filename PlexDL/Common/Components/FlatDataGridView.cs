@@ -23,6 +23,7 @@ namespace PlexDL.Common.Components
             this.RowHeadersVisible = false;
             this.Paint += new PaintEventHandler(DGVPaint);
             this.DataError += new DataGridViewDataErrorEventHandler(this.DGVDataError);
+            this.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void DGVPaint(object sender, PaintEventArgs e)

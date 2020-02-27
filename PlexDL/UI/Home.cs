@@ -229,7 +229,7 @@ namespace PlexDL.UI
                 {
                     infRow = episodesTable.DefaultView[index].Row;
 
-                    addToLog("XML Valid");      
+                    addToLog("XML Valid");
 
                     DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
 
@@ -1383,25 +1383,21 @@ namespace PlexDL.UI
             string column = (string)e.Arguments[2];
             bool directMatch = (bool)e.Arguments[1];
             string searchKey = (string)e.Arguments[0];
+            DataRow[] rowCollec;
             if (directMatch)
             {
-                OrderedEnumerableRowCollection<DataRow> rowCollec = titlesTable.AsEnumerable()
-                                    .Where(row => row.Field<String>(column) == searchKey)
-                                    .OrderByDescending(row => row.Field<String>(column));
-                e.Result = rowCollec;
+                rowCollec = titlesTable.Select(column + " = '" + searchKey + "'");
             }
             else
             {
-                OrderedEnumerableRowCollection<DataRow> rowCollec = titlesTable.AsEnumerable()
-                                .Where(row => row.Field<String>(column).ToLower().Contains(searchKey.ToLower()))
-                                .OrderByDescending(row => row.Field<String>(column));
-                e.Result = rowCollec;
+                rowCollec = titlesTable.Select(column + " LIKE '%" + searchKey + "%'");
             }
+            e.Result = rowCollec;
         }
 
         private void GetSearchTable(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
-            OrderedEnumerableRowCollection<DataRow> rowCollec = (OrderedEnumerableRowCollection<DataRow>)e.Arguments[0];
+            DataRow[] rowCollec = (DataRow[])e.Arguments[0];
             e.Result = rowCollec.CopyToDataTable();
         }
 
@@ -1766,7 +1762,7 @@ namespace PlexDL.UI
         private void GetFilteredTable(string query, string column, bool isTVShow, bool silent = true)
         {
             DataTable tblFiltered;
-            OrderedEnumerableRowCollection<DataRow> rowCollec = (OrderedEnumerableRowCollection<DataRow>)PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, isTVShow, column });
+            DataRow[] rowCollec = (DataRow[])PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, isTVShow, column });
             FilterQuery = query;
             if (rowCollec.Count() > 0)
             {

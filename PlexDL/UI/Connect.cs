@@ -127,5 +127,31 @@ namespace PlexDL.UI
         private void txtAccountToken_Click(object sender, EventArgs e)
         {
         }
+
+        private void chkRelays_CheckedChanged(object sender)
+        {
+            if (chkRelays.Checked)
+            {
+                chkDirect.Checked = false;
+                chkDirect.Enabled = false;
+            }
+            else
+            {
+                chkDirect.Enabled = true;
+            }
+        }
+
+        private void chkDirect_CheckedChanged(object sender)
+        {
+            if (chkDirect.Checked)
+            {
+                chkRelays.Checked = false;
+                chkRelays.Enabled = false;
+            }
+            else
+            {
+                chkRelays.Enabled = true;
+            }
+        }
     }
 }
