@@ -111,7 +111,7 @@
     <Compile Include="Common\Renderers\RenderStruct.cs" />
     <Compile Include="Common\Renderers\RenderWorkers\ContentRenderWorker.cs" />
     <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
-    <Compile Include="Common\SearchOptions.cs" />
+    <Compile Include="Common\Structures\SearchOptions.cs" />
     <Compile Include="Common\StringVar.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />
@@ -124,6 +124,7 @@
     <Compile Include="Common\Components\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Common\Structures\SearchRuleIDs.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\VLCLauncher.cs" />

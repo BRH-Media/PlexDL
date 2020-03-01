@@ -1,10 +1,13 @@
-﻿namespace PlexDL.Common.Structures.AppOptions
+﻿using System.Windows.Forms;
+
+namespace PlexDL.Common.Structures.AppOptions
 {
     public class GenericAppSettings
     {
         public int DefaultStringLength { get; set; } = 64;
         public bool ShowConnectionSuccess { get; set; } = false;
         public int DownloadLayoutDefinition { get; set; } = 0;
+        public string StoredAppVersion { get; set; } = Application.ProductVersion.ToString();
         public string DownloadDirectory { get; set; } = "";
         public int AnimationSpeed { get; set; } = 10;
     }

@@ -4,7 +4,7 @@
     {
         public string SearchColumn { get; set; } = "";
         public string SearchTerm { get; set; } = "";
-        public bool SearchDirect { get; set; } = false;
+        public int SearchRule { get; set; } = 0;
         public System.Data.DataTable SearchCollection { get; set; } = new System.Data.DataTable();
     }
 }

@@ -1039,20 +1039,45 @@ namespace PlexDL.UI
 
         #endregion UpdateWorkers
 
+        private void ThreadSafeMessageBox(string caption, string title = "Message", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show(caption, title, buttons, icon);
+                });
+            }
+            else
+            {
+                MessageBox.Show(caption, title, buttons, icon);
+            }
+        }
         #region BackgroundWorkers
 
         private void wkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory))
-                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory);
-            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory + @"\TV"))
-                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory + @"\TV");
-            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory + @"\Movies"))
-                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory + @"\Movies");
+            addToLog("Metadata worker started");
+            addToLog("Doing directory checks");
+            string tv = settings.Generic.DownloadDirectory + @"\TV";
+            string movies = settings.Generic.DownloadDirectory + @"\Movies";
+            if (!System.IO.Directory.Exists(tv))
+            {
+                System.IO.Directory.CreateDirectory(tv);
+                addToLog("Created " + tv);
+            }
+            if (!System.IO.Directory.Exists(movies))
+            {
+                System.IO.Directory.CreateDirectory(movies);
+                addToLog(movies);
+            }
+            addToLog("Grabbing metadata");
             if (IsTVShow)
             {
+                addToLog("Worker is to grab TV Show metadata");
                 if (DownloadAllEpisodes)
                 {
+                    addToLog("Worker is to grab metadata for All Episodes");
                     int index = 0;
                     foreach (DataRow r in episodesTable.Rows)
                     {
@@ -1071,6 +1096,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
+                    addToLog("Worker is to grab Single Episode metadata");
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         lblProgress.Text = "Getting Metadata";
@@ -1084,6 +1110,7 @@ namespace PlexDL.UI
             }
             else
             {
+                addToLog("Worker is to grab Movie metadata");
                 this.BeginInvoke((MethodInvoker)delegate
                 {
                     lblProgress.Text = "Getting Metadata";
@@ -1093,9 +1120,11 @@ namespace PlexDL.UI
                 dlInfo.DownloadPath = settings.Generic.DownloadDirectory + @"\Movies";
                 queue.Add(dlInfo);
             }
+            addToLog("Worker is to invoke downloader thread");
             this.BeginInvoke((MethodInvoker)delegate
             {
                 StartDownload(queue, settings.Generic.DownloadDirectory);
+                addToLog("Worker has started the download process");
             });
         }
 
@@ -1381,17 +1410,9 @@ namespace PlexDL.UI
         private void GetSearchEnum(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
             string column = (string)e.Arguments[2];
-            bool directMatch = (bool)e.Arguments[1];
+            int searchRule = (int)e.Arguments[1];
             string searchKey = (string)e.Arguments[0];
-            DataRow[] rowCollec;
-            if (directMatch)
-            {
-                rowCollec = titlesTable.Select(column + " = '" + searchKey + "'");
-            }
-            else
-            {
-                rowCollec = titlesTable.Select(column + " LIKE '%" + searchKey + "%'");
-            }
+            DataRow[] rowCollec = titlesTable.Select(SearchRuleIDs.SQLSearchFromRule(column, searchKey, searchRule));
             e.Result = rowCollec;
         }
 
@@ -1666,8 +1687,38 @@ namespace PlexDL.UI
 
         #region DownloadEngineMethods
 
+        private void ShowBalloon(string msg, string title, bool error = false, int timeout = 2000)
+        {
+            if (!this.InvokeRequired)
+            {
+                if (error)
+                    nfyMain.BalloonTipIcon = ToolTipIcon.Error;
+                else
+                    nfyMain.BalloonTipIcon = ToolTipIcon.Info;
+
+                nfyMain.BalloonTipText = msg;
+                nfyMain.BalloonTipTitle = title;
+                nfyMain.ShowBalloonTip(timeout);
+            }
+            else
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    if (error)
+                        nfyMain.BalloonTipIcon = ToolTipIcon.Error;
+                    else
+                        nfyMain.BalloonTipIcon = ToolTipIcon.Info;
+
+                    nfyMain.BalloonTipText = msg;
+                    nfyMain.BalloonTipTitle = title;
+                    nfyMain.ShowBalloonTip(timeout);
+                });
+            }
+        }
+
         private void Engine_DownloadCompleted(object sender, EventArgs e)
         {
+            ShowBalloon("Download completed!", "Message");
             SetDownloadCompleted();
         }
 
@@ -1734,7 +1785,7 @@ namespace PlexDL.UI
                     else
                     {
                         filteredTable = null;
-                        GetFilteredTable(result.SearchTerm, result.SearchColumn, result.SearchDirect, false);
+                        GetFilteredTable(result.SearchTerm, result.SearchColumn, result.SearchRule, false);
                         if (filteredTable != null)
                         {
                             //DisableContentSorting();
@@ -1759,10 +1810,10 @@ namespace PlexDL.UI
             }
         }
 
-        private void GetFilteredTable(string query, string column, bool isTVShow, bool silent = true)
+        private void GetFilteredTable(string query, string column, int searchRule, bool silent = true)
         {
             DataTable tblFiltered;
-            DataRow[] rowCollec = (DataRow[])PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, isTVShow, column });
+            DataRow[] rowCollec = (DataRow[])PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, searchRule, column });
             FilterQuery = query;
             if (rowCollec.Count() > 0)
             {
@@ -2279,43 +2330,38 @@ namespace PlexDL.UI
 
         private void DoDownloadAllEpisodes()
         {
+            addToLog("Awaiting download safety checks");
             if (!IsDownloadRunning && !IsEngineRunning)
             {
+                addToLog("Download process is starting");
                 SetProgressLabel("Waiting");
                 DownloadAllEpisodes = true;
                 DownloadTotal = episodesTable.Rows.Count;
                 IsDownloadRunning = true;
                 wkrGetMetadata.RunWorkerAsync();
+                addToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
+            else
+                addToLog("Download process failed; download is already running.");
         }
 
         private void DoDownloadSelected()
         {
+            addToLog("Awaiting download safety checks");
             if (!IsDownloadRunning && !IsEngineRunning)
             {
+                addToLog("Download process is starting");
                 SetProgressLabel("Waiting");
                 DownloadAllEpisodes = false;
                 DownloadTotal = 1;
                 IsDownloadRunning = true;
                 wkrGetMetadata.RunWorkerAsync();
+                addToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
-        }
-
-        private string FetchCorrectContentColumnName(string ViewName)
-        {
-            string vnLower = ViewName.ToLower();
-
-            if (vnLower == "rating")
-                return "contentRating";
             else
-                return vnLower;
-        }
-
-        private string FetchCorrectSortedColumnName()
-        {
-            return FetchCorrectContentColumnName(dgvContent.SortedColumn.Name);
+                addToLog("Download process failed; download is already running.");
         }
 
         private void dgvContent_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -2682,6 +2728,13 @@ namespace PlexDL.UI
         {
             cxtProfile.Close();
             saveProfile();
+        }
+
+        private void nfyMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //send this form to the front of the screen
+            this.TopMost = true;
+            this.TopMost = false;
         }
     }
 

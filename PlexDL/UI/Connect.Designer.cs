@@ -30,10 +30,9 @@
         {
             this.txtAccountToken = new MetroSet_UI.Controls.MetroSetTextBox();
             this.styleMain = new MetroSet_UI.StyleManager();
-            this.chkRelays = new MetroSet_UI.Controls.MetroSetCheckBox();
             this.btnConnect = new MetroSet_UI.Controls.MetroSetButton();
             this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
-            this.chkDirect = new MetroSet_UI.Controls.MetroSetCheckBox();
+            this.cbxConnectionMode = new MetroSet_UI.Controls.MetroSetComboBox();
             this.SuspendLayout();
             // 
             // txtAccountToken
@@ -71,29 +70,6 @@
             this.styleMain.Style = MetroSet_UI.Design.Style.Light;
             this.styleMain.ThemeAuthor = null;
             this.styleMain.ThemeName = null;
-            // 
-            // chkRelays
-            // 
-            this.chkRelays.BackColor = System.Drawing.Color.Transparent;
-            this.chkRelays.BackgroundColor = System.Drawing.Color.White;
-            this.chkRelays.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.chkRelays.Checked = false;
-            this.chkRelays.CheckSignColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.chkRelays.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            this.chkRelays.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkRelays.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.chkRelays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chkRelays.Location = new System.Drawing.Point(15, 120);
-            this.chkRelays.Name = "chkRelays";
-            this.chkRelays.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
-            this.chkRelays.Size = new System.Drawing.Size(204, 16);
-            this.chkRelays.Style = MetroSet_UI.Design.Style.Light;
-            this.chkRelays.StyleManager = this.styleMain;
-            this.chkRelays.TabIndex = 6;
-            this.chkRelays.Text = "Bind to Relays Only";
-            this.chkRelays.ThemeAuthor = null;
-            this.chkRelays.ThemeName = null;
-            this.chkRelays.CheckedChanged += new MetroSet_UI.Controls.MetroSetCheckBox.CheckedChangedEventHandler(this.chkRelays_CheckedChanged);
             // 
             // btnConnect
             // 
@@ -146,38 +122,45 @@
             this.ctrlMain.ThemeAuthor = null;
             this.ctrlMain.ThemeName = null;
             // 
-            // chkDirect
+            // cbxConnectionMode
             // 
-            this.chkDirect.BackColor = System.Drawing.Color.Transparent;
-            this.chkDirect.BackgroundColor = System.Drawing.Color.White;
-            this.chkDirect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.chkDirect.Checked = false;
-            this.chkDirect.CheckSignColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.chkDirect.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            this.chkDirect.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkDirect.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.chkDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chkDirect.Location = new System.Drawing.Point(15, 142);
-            this.chkDirect.Name = "chkDirect";
-            this.chkDirect.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
-            this.chkDirect.Size = new System.Drawing.Size(204, 16);
-            this.chkDirect.Style = MetroSet_UI.Design.Style.Light;
-            this.chkDirect.StyleManager = this.styleMain;
-            this.chkDirect.TabIndex = 28;
-            this.chkDirect.Text = "Direct Connection";
-            this.chkDirect.ThemeAuthor = null;
-            this.chkDirect.ThemeName = null;
-            this.chkDirect.CheckedChanged += new MetroSet_UI.Controls.MetroSetCheckBox.CheckedChangedEventHandler(this.chkDirect_CheckedChanged);
+            this.cbxConnectionMode.AllowDrop = true;
+            this.cbxConnectionMode.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.cbxConnectionMode.BackColor = System.Drawing.Color.Transparent;
+            this.cbxConnectionMode.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.cbxConnectionMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.cbxConnectionMode.CausesValidation = false;
+            this.cbxConnectionMode.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.cbxConnectionMode.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.cbxConnectionMode.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.cbxConnectionMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxConnectionMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxConnectionMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.cbxConnectionMode.FormattingEnabled = true;
+            this.cbxConnectionMode.ItemHeight = 20;
+            this.cbxConnectionMode.Items.AddRange(new object[] {
+            "Standard",
+            "Relays Only",
+            "Direct Connection"});
+            this.cbxConnectionMode.Location = new System.Drawing.Point(15, 117);
+            this.cbxConnectionMode.Name = "cbxConnectionMode";
+            this.cbxConnectionMode.SelectedItemBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
+            this.cbxConnectionMode.SelectedItemForeColor = System.Drawing.Color.White;
+            this.cbxConnectionMode.Size = new System.Drawing.Size(204, 26);
+            this.cbxConnectionMode.Style = MetroSet_UI.Design.Style.Light;
+            this.cbxConnectionMode.StyleManager = this.styleMain;
+            this.cbxConnectionMode.TabIndex = 29;
+            this.cbxConnectionMode.ThemeAuthor = null;
+            this.cbxConnectionMode.ThemeName = null;
             // 
             // Connect
             // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(234, 207);
-            this.Controls.Add(this.chkDirect);
+            this.Controls.Add(this.cbxConnectionMode);
             this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.chkRelays);
             this.Controls.Add(this.txtAccountToken);
             this.DropShadowEffect = false;
             this.Name = "Connect";
@@ -186,6 +169,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.StyleManager = this.styleMain;
             this.Text = "Plex Authentication";
+            this.ThemeAuthor = null;
+            this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmConnect_FormClosing);
             this.Load += new System.EventHandler(this.frmConnect_Load);
             this.ResumeLayout(false);
@@ -194,10 +179,9 @@
 
         #endregion
         private MetroSet_UI.Controls.MetroSetTextBox txtAccountToken;
-        private MetroSet_UI.Controls.MetroSetCheckBox chkRelays;
         private MetroSet_UI.Controls.MetroSetButton btnConnect;
         private MetroSet_UI.StyleManager styleMain;
         private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
-        private MetroSet_UI.Controls.MetroSetCheckBox chkDirect;
+        private MetroSet_UI.Controls.MetroSetComboBox cbxConnectionMode;
     }
 }

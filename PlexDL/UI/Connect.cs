@@ -22,6 +22,7 @@ namespace PlexDL.UI
             InitializeComponent();
             this.styleMain = GlobalStaticVars.GlobalStyle;
             this.styleMain.MetroForm = this;
+            this.cbxConnectionMode.SelectedIndex = 0;
         }
 
         private void fadeIn(object sender, EventArgs e)
@@ -70,8 +71,23 @@ namespace PlexDL.UI
             else
             {
                 ConnectionInfo.PlexAccountToken = txtAccountToken.Text;
-                ConnectionInfo.RelaysOnly = chkRelays.Checked;
-                ConnectionInfo.DirectOnly = chkDirect.Checked;
+                if (cbxConnectionMode.SelectedIndex == 1)
+                {
+                    ConnectionInfo.RelaysOnly = true;
+                    ConnectionInfo.DirectOnly = false;
+                
+                }
+                else if (cbxConnectionMode.SelectedIndex == 2)
+                {
+                    ConnectionInfo.RelaysOnly = false;
+                    ConnectionInfo.DirectOnly = true;
+                }
+                else if (cbxConnectionMode.SelectedIndex == 0)
+                {
+                    ConnectionInfo.RelaysOnly = false;
+                    ConnectionInfo.DirectOnly = false;
+                }
+
                 connectionStarted = true;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -113,7 +129,8 @@ namespace PlexDL.UI
                 t1.Start();
             }
             txtAccountToken.Text = ConnectionInfo.PlexAccountToken;
-            chkRelays.Checked = ConnectionInfo.RelaysOnly;
+            if (ConnectionInfo.RelaysOnly)
+                cbxConnectionMode.SelectedIndex = 1;
         }
 
         private void materialDivider1_Click(object sender, EventArgs e)
@@ -126,32 +143,6 @@ namespace PlexDL.UI
 
         private void txtAccountToken_Click(object sender, EventArgs e)
         {
-        }
-
-        private void chkRelays_CheckedChanged(object sender)
-        {
-            if (chkRelays.Checked)
-            {
-                chkDirect.Checked = false;
-                chkDirect.Enabled = false;
-            }
-            else
-            {
-                chkDirect.Enabled = true;
-            }
-        }
-
-        private void chkDirect_CheckedChanged(object sender)
-        {
-            if (chkDirect.Checked)
-            {
-                chkRelays.Checked = false;
-                chkRelays.Enabled = false;
-            }
-            else
-            {
-                chkRelays.Enabled = true;
-            }
         }
     }
 }

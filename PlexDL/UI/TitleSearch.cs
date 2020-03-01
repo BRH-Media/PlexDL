@@ -18,13 +18,14 @@ namespace PlexDL.UI
             InitializeComponent();
             this.styleMain = GlobalStaticVars.GlobalStyle;
             this.styleMain.MetroForm = this;
+            this.cbxSearchRule.SelectedIndex = 0;
         }
 
         private void btnStartSearch_Click(object sender, EventArgs e)
         {
             try
             {
-                if ((txtSearchTerm.Text == "") || (cbxSearchColumn.SelectedItem == null))
+                if ((txtSearchTerm.Text == "") || (cbxSearchColumn.SelectedItem == null) || !(cbxSearchRule.SelectedIndex >= 0))
                 {
                     MessageBox.Show("Please enter required values or exit search", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -116,7 +117,7 @@ namespace PlexDL.UI
             {
                 result.SearchColumn = frm.cbxSearchColumn.SelectedItem.ToString();
                 result.SearchTerm = frm.txtSearchTerm.Text;
-                result.SearchDirect = frm.chkDirectMatch.Checked;
+                result.SearchRule = frm.cbxSearchRule.SelectedIndex;
                 return result;
             }
             return result;
