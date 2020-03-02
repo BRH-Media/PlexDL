@@ -613,7 +613,7 @@ namespace PlexDL.UI
             }
             else
             {
-                MessageBox.Show("You can't load profiles while you're connected; please disconnect first.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You can't load profiles while you're connected; please disconnect first.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -628,7 +628,7 @@ namespace PlexDL.UI
             }
             else
             {
-                MessageBox.Show("You need to specify an account token before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You need to specify an account token before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -716,7 +716,7 @@ namespace PlexDL.UI
                 ClearContentView();
                 ClearTVViews();
                 ClearLibraryViews();
-                SetProgressLabel("Disconnected");
+                SetProgressLabel("Disconnected from Plex");
                 SetConnect();
                 SelectMoviesTab();
                 IsConnected = false;
@@ -841,13 +841,12 @@ namespace PlexDL.UI
                     XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri, false, true });
                     if (Methods.PlexXmlValid(reply))
                     {
-                        IsConnected = true;
+                        
                         if (settings.Generic.ShowConnectionSuccess)
                         {
                             MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-                        SetProgressLabel("Connected");
-                        SetDisconnect();
+                        
                         if (reply.ChildNodes.Count != 0)
                         {
                             populateLibrary(reply);
@@ -858,6 +857,9 @@ namespace PlexDL.UI
                     {
                         MessageBox.Show("Connection failed. Check that '" + s.name + "' exists, that you have the right address, that it is accessible from your network, and that you have permission to access it.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    SetProgressLabel("Connected to Plex");
+                    SetDisconnect();
+                    IsConnected = true;
                 }
             }
         }
@@ -2299,7 +2301,7 @@ namespace PlexDL.UI
                 else
                 {
                     Disconnect();
-                    MessageBox.Show("Disconnected from server", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Disconnected from Plex", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (WebException ex)
@@ -2541,6 +2543,11 @@ namespace PlexDL.UI
             else if (settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
             {
                 cxtStreamOptions.Show(MousePosition);
+            }
+            else
+            {
+                MessageBox.Show("Unrecognised Playback Mode (\"" + settings.Player.PlaybackEngine + "\")", "Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                addToLog("Invalid Playback Mode: " + settings.Player.PlaybackEngine);
             }
         }
 
