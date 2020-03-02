@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlexDL.Common.Structures
+﻿namespace PlexDL.Common.Structures
 {
-    class SearchRuleIDs
+    internal class SearchRuleIDs
     {
         public const int ContainsKey = 0;
         public const int EqualsKey = 1;
@@ -16,18 +10,21 @@ namespace PlexDL.Common.Structures
         public static string SQLSearchFromRule(string column, string key, int rule)
         {
             string sql = "";
-            if (rule <= 3  && rule >= 0)
+            if (rule <= 3 && rule >= 0)
                 switch (rule)
                 {
                     case ContainsKey:
                         sql = column + " LIKE '%" + key + "%'";
                         break;
+
                     case EqualsKey:
                         sql = column + " = '" + key + "'";
                         break;
+
                     case BeginsWith:
                         sql = column + " LIKE '" + key + "%'";
                         break;
+
                     case EndsWith:
                         sql = column + " LIKE '%" + key + "'";
                         break;

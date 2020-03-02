@@ -841,12 +841,12 @@ namespace PlexDL.UI
                     XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri, false, true });
                     if (Methods.PlexXmlValid(reply))
                     {
-                        
+
                         if (settings.Generic.ShowConnectionSuccess)
                         {
                             MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-                        
+
                         if (reply.ChildNodes.Count != 0)
                         {
                             populateLibrary(reply);
@@ -2032,6 +2032,9 @@ namespace PlexDL.UI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            TestForm frm = new TestForm();
+            //frm.ShowDialog();
+
             if (settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0

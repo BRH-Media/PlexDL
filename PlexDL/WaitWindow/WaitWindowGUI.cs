@@ -30,6 +30,7 @@ namespace PlexDL.WaitWindow
         internal object _Result;
         internal Exception _Error;
         private PVS.MediaPlayer.VideoDisplay videoDisplay1;
+        private CircularProgressBar.CircularProgressBar pbMain;
         private IAsyncResult threadResult;
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
@@ -126,46 +127,69 @@ namespace PlexDL.WaitWindow
         {
             this.MessageLabel = new MetroSet_UI.Controls.MetroSetLabel();
             this.styleMain = new MetroSet_UI.StyleManager();
-            this.Marquee = new System.Windows.Forms.ProgressBar();
+            this.pbMain = new CircularProgressBar.CircularProgressBar();
             this.SuspendLayout();
-            //
+            // 
             // MessageLabel
-            //
-            this.MessageLabel.AutoSize = true;
-            this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.MessageLabel.Location = new System.Drawing.Point(12, 70);
+            // 
+            this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MessageLabel.Location = new System.Drawing.Point(128, 97);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(101, 18);
+            this.MessageLabel.Size = new System.Drawing.Size(173, 86);
             this.MessageLabel.Style = MetroSet_UI.Design.Style.Light;
             this.MessageLabel.StyleManager = this.styleMain;
             this.MessageLabel.TabIndex = 2;
             this.MessageLabel.Text = "Updating Data";
             this.MessageLabel.ThemeAuthor = null;
             this.MessageLabel.ThemeName = null;
-            //
+            // 
             // styleMain
-            //
+            // 
             this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
             this.styleMain.MetroForm = this;
             this.styleMain.Style = MetroSet_UI.Design.Style.Light;
             this.styleMain.ThemeAuthor = null;
             this.styleMain.ThemeName = null;
-            //
-            // Marquee
-            //
-            this.Marquee.Location = new System.Drawing.Point(12, 90);
-            this.Marquee.Name = "Marquee";
-            this.Marquee.Size = new System.Drawing.Size(284, 23);
-            this.Marquee.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.Marquee.TabIndex = 3;
-            //
+            // 
+            // pbMain
+            // 
+            this.pbMain.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.QuadraticEaseInOut;
+            this.pbMain.AnimationSpeed = 500;
+            this.pbMain.BackColor = System.Drawing.Color.Transparent;
+            this.pbMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold);
+            this.pbMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pbMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pbMain.InnerMargin = 2;
+            this.pbMain.InnerWidth = -1;
+            this.pbMain.Location = new System.Drawing.Point(15, 73);
+            this.pbMain.MarqueeAnimationSpeed = 2000;
+            this.pbMain.Name = "pbMain";
+            this.pbMain.OuterColor = System.Drawing.Color.Gray;
+            this.pbMain.OuterMargin = -25;
+            this.pbMain.OuterWidth = 26;
+            this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
+            this.pbMain.ProgressWidth = 25;
+            this.pbMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.pbMain.Size = new System.Drawing.Size(107, 107);
+            this.pbMain.StartAngle = 270;
+            this.pbMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.pbMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.pbMain.SubscriptText = ".23";
+            this.pbMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.pbMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.pbMain.SuperscriptText = "°C";
+            this.pbMain.TabIndex = 3;
+            this.pbMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.pbMain.Value = 68;
+            // 
             // WaitWindowGUI
-            //
+            // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(308, 125);
-            this.Controls.Add(this.Marquee);
+            this.ClientSize = new System.Drawing.Size(316, 195);
+            this.Controls.Add(this.pbMain);
             this.Controls.Add(this.MessageLabel);
             this.DropShadowEffect = false;
             this.Name = "WaitWindowGUI";
@@ -176,11 +200,10 @@ namespace PlexDL.WaitWindow
             this.ThemeAuthor = null;
             this.ThemeName = null;
             this.ResumeLayout(false);
-            this.PerformLayout();
+
         }
 
         public MetroSet_UI.Controls.MetroSetLabel MessageLabel;
-        private System.Windows.Forms.ProgressBar Marquee;
         private MetroSet_UI.StyleManager styleMain;
     }
 }

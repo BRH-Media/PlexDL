@@ -75,7 +75,7 @@ namespace PlexDL.UI
                 {
                     ConnectionInfo.RelaysOnly = true;
                     ConnectionInfo.DirectOnly = false;
-                
+
                 }
                 else if (cbxConnectionMode.SelectedIndex == 2)
                 {

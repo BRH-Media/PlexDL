@@ -5,7 +5,6 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using PlexDL.Common;
 
 namespace PlexDL.AltoHttp
 {
