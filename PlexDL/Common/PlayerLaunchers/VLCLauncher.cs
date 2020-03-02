@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace PlexDL.Common
+namespace PlexDL.Common.PlayerLaunchers
 {
     public static class VLCLauncher
     {
@@ -23,6 +23,7 @@ namespace PlexDL.Common
                 p.StartInfo.FileName = vlc;
                 p.StartInfo.Arguments = arg;
                 p.Start();
+                LoggingHelpers.addToLog("Started streaming " + stream.ContentTitle + " (VLC)");
             }
             catch (Exception ex)
             {

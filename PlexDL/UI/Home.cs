@@ -5,6 +5,7 @@ using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
+using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
@@ -42,6 +43,7 @@ namespace PlexDL.UI
         public Timer t1 = new Timer();
         public User user = new User();
         public Server svr;
+        public PlexObject CurrentStream = null;
 
         #region Fonts
 
@@ -63,19 +65,19 @@ namespace PlexDL.UI
 
         #region GlobalBoolVariables
 
-        public bool IsConnected = false;
-        public bool InitialFill = true;
-        public bool IsLibraryFilled = false;
-        public bool IsFiltered = false;
-        public bool IsTVShow = false;
-        public bool IsContentSortingEnabled = true;
-        public bool IsDownloadQueueCancelled = false;
-        public bool IsDownloadRunning = false;
-        public bool IsDownloadPaused = false;
-        public bool IsEngineRunning = false;
-        public bool IsMsgAlreadyShown = false;
-        public bool doNotAttemptAgain = false;
-        public bool DownloadAllEpisodes = false;
+        public static bool IsConnected = false;
+        public static bool InitialFill = true;
+        public static bool IsLibraryFilled = false;
+        public static bool IsFiltered = false;
+        public static bool IsTVShow = false;
+        public static bool IsContentSortingEnabled = true;
+        public static bool IsDownloadQueueCancelled = false;
+        public static bool IsDownloadRunning = false;
+        public static bool IsDownloadPaused = false;
+        public static bool IsEngineRunning = false;
+        public static bool IsMsgAlreadyShown = false;
+        public static bool doNotAttemptAgain = false;
+        public static bool DownloadAllEpisodes = false;
 
         #endregion GlobalBoolVariables
 
@@ -1053,6 +1055,7 @@ namespace PlexDL.UI
                 MessageBox.Show(caption, title, buttons, icon);
             }
         }
+
         #region BackgroundWorkers
 
         private void wkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
@@ -2136,8 +2139,15 @@ namespace PlexDL.UI
                 int index = GetTableIndexFromDGV(dgvLibrary, gSectionsTable);
                 DataRow r = GetDataRowLibrary(index);
 
-                string key = r["key"].ToString();
-                string type = r["type"].ToString();
+                string key = "";
+                string type = "";
+                if (r != null)
+                {
+                    if (r["key"] != null)
+                        key = r["key"].ToString();
+                    if (r["type"] != null)
+                        type = r["type"].ToString();
+                }
                 if (type == "show")
                 {
                     UpdateFromLibraryKey(key, true);
@@ -2506,19 +2516,18 @@ namespace PlexDL.UI
 
         private void StartStreaming(PlexObject stream)
         {
+            //so that cxtStreamOptions can access the current stream's information, a global object has to be used.
+            CurrentStream = stream;
             if (settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
             {
+                //downloads won't work properly if you're streaming at the same time
                 if (!IsDownloadRunning)
                 {
-                    Player frm = new Player();
-                    frm.StreamingContent = stream;
-                    frm.TitlesTable = returnCorrectTable();
-                    addToLog("Started streaming " + stream.StreamInformation.ContentTitle);
-                    frm.ShowDialog();
+                    PVSLauncher.LaunchPVS(stream, returnCorrectTable());
                 }
                 else
                 {
-                    MessageBox.Show("You cannot stream " + stream.StreamInformation.ContentTitle + " because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
@@ -2528,6 +2537,10 @@ namespace PlexDL.UI
             else if (settings.Player.PlaybackEngine == PlaybackMode.Browser)
             {
                 BrowserLauncher.LaunchBrowser(stream.StreamInformation);
+            }
+            else if (settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
+            {
+                cxtStreamOptions.Show(MousePosition);
             }
         }
 
@@ -2736,18 +2749,23 @@ namespace PlexDL.UI
             this.TopMost = true;
             this.TopMost = false;
         }
-    }
 
-    public static class DataTableExtensions
-    {
-        public static void SetColumnsOrder(this DataTable table, params String[] columnNames)
+        private void itmStreamInPVS_Click(object sender, EventArgs e)
         {
-            int columnIndex = 0;
-            foreach (var columnName in columnNames)
-            {
-                table.Columns[columnName].SetOrdinal(columnIndex);
-                columnIndex++;
-            }
+            cxtStreamOptions.Close();
+            PVSLauncher.LaunchPVS(CurrentStream, returnCorrectTable());
+        }
+
+        private void itmStreamInVLC_Click(object sender, EventArgs e)
+        {
+            cxtStreamOptions.Close();
+            VLCLauncher.LaunchVLC(CurrentStream.StreamInformation);
+        }
+
+        private void itmStreamInBrowser_Click(object sender, EventArgs e)
+        {
+            cxtStreamOptions.Close();
+            BrowserLauncher.LaunchBrowser(CurrentStream.StreamInformation);
         }
     }
 }

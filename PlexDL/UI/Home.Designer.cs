@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            MetroSet_UI.Extensions.ImageSet imageSet9 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
@@ -36,13 +37,12 @@
             MetroSet_UI.Extensions.ImageSet imageSet5 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet6 = new MetroSet_UI.Extensions.ImageSet();
             MetroSet_UI.Extensions.ImageSet imageSet7 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet8 = new MetroSet_UI.Extensions.ImageSet();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSaveProfile = new System.Windows.Forms.SaveFileDialog();
@@ -93,6 +93,10 @@
             this.dgvLibrary = new PlexDL.Common.Components.FlatDataGridView();
             this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.nfyMain = new System.Windows.Forms.NotifyIcon(this.components);
+            this.cxtStreamOptions = new MetroSet_UI.Controls.MetroSetContextMenuStrip();
+            this.itmStreamInPVS = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmStreamInVLC = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmStreamInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -107,6 +111,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
+            this.cxtStreamOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // sfdSaveProfile
@@ -171,9 +176,9 @@
             this.btnMetadata.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnMetadata.HoverTextColor = System.Drawing.Color.White;
             this.btnMetadata.Image = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_book_black_18dp_white;
-            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            this.btnMetadata.ImageSet = imageSet1;
+            imageSet9.Focus = global::PlexDL.Properties.Resources.baseline_book_black_18dp_white;
+            imageSet9.Idle = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
+            this.btnMetadata.ImageSet = imageSet9;
             this.btnMetadata.ImageSize = new System.Drawing.Size(28, 28);
             this.btnMetadata.Location = new System.Drawing.Point(130, 196);
             this.btnMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -205,9 +210,9 @@
             this.btnSetDlDir.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSetDlDir.HoverTextColor = System.Drawing.Color.White;
             this.btnSetDlDir.Image = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp_white;
-            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            this.btnSetDlDir.ImageSet = imageSet2;
+            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp_white;
+            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
+            this.btnSetDlDir.ImageSet = imageSet1;
             this.btnSetDlDir.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSetDlDir.Location = new System.Drawing.Point(78, 196);
             this.btnSetDlDir.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -238,9 +243,9 @@
             this.btnSearch.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnSearch.HoverTextColor = System.Drawing.Color.White;
             this.btnSearch.Image = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
-            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            this.btnSearch.ImageSet = imageSet3;
+            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
+            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
+            this.btnSearch.ImageSet = imageSet2;
             this.btnSearch.ImageSize = new System.Drawing.Size(28, 28);
             this.btnSearch.Location = new System.Drawing.Point(182, 84);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -272,9 +277,9 @@
             this.btnLoadProfile.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnLoadProfile.HoverTextColor = System.Drawing.Color.White;
             this.btnLoadProfile.Image = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
-            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            this.btnLoadProfile.ImageSet = imageSet4;
+            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
+            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
+            this.btnLoadProfile.ImageSet = imageSet3;
             this.btnLoadProfile.ImageSize = new System.Drawing.Size(28, 28);
             this.btnLoadProfile.Location = new System.Drawing.Point(26, 196);
             this.btnLoadProfile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -307,9 +312,9 @@
             this.btnPause.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnPause.HoverTextColor = System.Drawing.Color.White;
             this.btnPause.Image = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
-            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            this.btnPause.ImageSet = imageSet5;
+            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
+            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
+            this.btnPause.ImageSet = imageSet4;
             this.btnPause.ImageSize = new System.Drawing.Size(28, 28);
             this.btnPause.Location = new System.Drawing.Point(78, 84);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -340,9 +345,9 @@
             this.btnHTTPPlay.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnHTTPPlay.HoverTextColor = System.Drawing.Color.White;
             this.btnHTTPPlay.Image = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
-            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            this.btnHTTPPlay.ImageSet = imageSet6;
+            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
+            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
+            this.btnHTTPPlay.ImageSet = imageSet5;
             this.btnHTTPPlay.ImageSize = new System.Drawing.Size(28, 28);
             this.btnHTTPPlay.Location = new System.Drawing.Point(130, 84);
             this.btnHTTPPlay.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -373,9 +378,9 @@
             this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnConnect.HoverTextColor = System.Drawing.Color.White;
             this.btnConnect.Image = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_power_black_18dp_white;
-            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            this.btnConnect.ImageSet = imageSet7;
+            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_power_black_18dp_white;
+            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
+            this.btnConnect.ImageSet = imageSet6;
             this.btnConnect.ImageSize = new System.Drawing.Size(28, 28);
             this.btnConnect.Location = new System.Drawing.Point(234, 84);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -406,9 +411,9 @@
             this.btnDownload.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.btnDownload.HoverTextColor = System.Drawing.Color.White;
             this.btnDownload.Image = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            imageSet8.Focus = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp_white;
-            imageSet8.Idle = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            this.btnDownload.ImageSet = imageSet8;
+            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp_white;
+            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
+            this.btnDownload.ImageSet = imageSet7;
             this.btnDownload.ImageSize = new System.Drawing.Size(28, 28);
             this.btnDownload.Location = new System.Drawing.Point(26, 84);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -726,14 +731,14 @@
             this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvContent.Location = new System.Drawing.Point(3, 3);
@@ -775,14 +780,14 @@
             this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvTVShows.Location = new System.Drawing.Point(0, 3);
@@ -804,14 +809,14 @@
             this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvSeasons.Location = new System.Drawing.Point(312, 3);
@@ -834,14 +839,14 @@
             this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvEpisodes.Location = new System.Drawing.Point(312, 184);
@@ -863,14 +868,14 @@
             this.dgvLibrary.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLibrary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLibrary.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvLibrary.Location = new System.Drawing.Point(304, 298);
@@ -892,14 +897,14 @@
             this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvServers.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvServers.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvServers.Location = new System.Drawing.Point(304, 94);
@@ -919,6 +924,40 @@
             this.nfyMain.Text = "PlexDL";
             this.nfyMain.Visible = true;
             this.nfyMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.nfyMain_MouseDoubleClick);
+            // 
+            // cxtStreamOptions
+            // 
+            this.cxtStreamOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmStreamInPVS,
+            this.itmStreamInVLC,
+            this.itmStreamInBrowser});
+            this.cxtStreamOptions.Name = "cxtStreamOptions";
+            this.cxtStreamOptions.Size = new System.Drawing.Size(170, 70);
+            this.cxtStreamOptions.Style = MetroSet_UI.Design.Style.Light;
+            this.cxtStreamOptions.StyleManager = null;
+            this.cxtStreamOptions.ThemeAuthor = "Narwin";
+            this.cxtStreamOptions.ThemeName = "MetroLite";
+            // 
+            // itmStreamInPVS
+            // 
+            this.itmStreamInPVS.Name = "itmStreamInPVS";
+            this.itmStreamInPVS.Size = new System.Drawing.Size(169, 22);
+            this.itmStreamInPVS.Text = "Stream in PVS";
+            this.itmStreamInPVS.Click += new System.EventHandler(this.itmStreamInPVS_Click);
+            // 
+            // itmStreamInVLC
+            // 
+            this.itmStreamInVLC.Name = "itmStreamInVLC";
+            this.itmStreamInVLC.Size = new System.Drawing.Size(169, 22);
+            this.itmStreamInVLC.Text = "Stream in VLC";
+            this.itmStreamInVLC.Click += new System.EventHandler(this.itmStreamInVLC_Click);
+            // 
+            // itmStreamInBrowser
+            // 
+            this.itmStreamInBrowser.Name = "itmStreamInBrowser";
+            this.itmStreamInBrowser.Size = new System.Drawing.Size(169, 22);
+            this.itmStreamInBrowser.Text = "Stream in Browser";
+            this.itmStreamInBrowser.Click += new System.EventHandler(this.itmStreamInBrowser_Click);
             // 
             // Home
             // 
@@ -967,6 +1006,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
+            this.cxtStreamOptions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1022,6 +1062,10 @@
         private MetroSet_UI.Child.MetroSetTabPage tabMovies;
         private MetroSet_UI.Child.MetroSetTabPage tabTV;
         private System.Windows.Forms.NotifyIcon nfyMain;
+        private MetroSet_UI.Controls.MetroSetContextMenuStrip cxtStreamOptions;
+        private System.Windows.Forms.ToolStripMenuItem itmStreamInPVS;
+        private System.Windows.Forms.ToolStripMenuItem itmStreamInVLC;
+        private System.Windows.Forms.ToolStripMenuItem itmStreamInBrowser;
     }
 }
 

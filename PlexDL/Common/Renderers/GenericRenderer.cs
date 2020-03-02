@@ -4,55 +4,86 @@ using System.Windows.Forms;
 
 namespace PlexDL.Common.Renderers
 {
+    /// <summary>
+    /// Holder class for the data renderer(s)
+    /// </summary>
     public class GenericRenderer
     {
+        /// <summary>
+        /// Renders data into a DataGridView based on the specified RenderStruct
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static DataTable RenderView(RenderStruct info, DataGridView target)
         {
+            //check if the data we need was set (problems will arise otherwise)
             if ((info != null) && (target != null))
             {
-                List<string> currentColumns = new List<string>();
-                List<string> currentCaption = new List<string>();
-                List<string> wantedColumns = info.WantedColumns;
-                List<string> wantedCaption = info.WantedCaption;
-
-                DataTable dgvBind = new DataTable();
-                DataView viewBind = new DataView(info.Data);
-
-                //check if appropriate columns are part of the table; then we can verify and add them to the view.
-                foreach (DataColumn c in info.Data.Columns)
+                //check if the two data pairs are equal length (we don't want indexing errors)
+                if (info.WantedColumns.Count == info.WantedCaption.Count)
                 {
-                    if (wantedColumns.Contains(c.ColumnName))
+                    //store the columns we want vs. the columns available (so we don't error out)
+                    List<string> currentColumns = new List<string>();
+                    List<string> currentCaption = new List<string>();
+                    List<string> wantedColumns = info.WantedColumns;
+                    List<string> wantedCaption = info.WantedCaption;
+
+                    //data storage
+                    DataTable dgvBind = new DataTable();
+                    DataView viewBind = new DataView(info.Data);
+
+                    //check if appropriate columns are part of the table; then we can verify and add them to the view.
+                    foreach (DataColumn c in info.Data.Columns)
                     {
-                        int index = wantedColumns.IndexOf(c.ColumnName);
-                        string caption = wantedCaption[index];
-                        c.Caption = caption;
-                        currentCaption.Add(caption);
-                        currentColumns.Add(c.ColumnName);
+                        //check if the column name exists in our wanted columns
+                        if (wantedColumns.Contains(c.ColumnName))
+                        {
+                            //it does, so grab its index, grab its associated caption, then add both to the available columns (Current Columns)
+                            int index = wantedColumns.IndexOf(c.ColumnName);
+                            string caption = wantedCaption[index];
+                            currentCaption.Add(caption);
+                            currentColumns.Add(c.ColumnName);
+                            //set the column's caption to the one we just got from the index
+                            c.Caption = caption;
+                        }
                     }
-                }
 
-                currentColumns = Methods.OrderMatch(wantedColumns, currentColumns);
+                    //match the order of the current columns with the wanted columns (because things get added in a different way)
+                    currentColumns = Methods.OrderMatch(wantedColumns, currentColumns);
 
-                dgvBind = viewBind.ToTable(false, currentColumns.ToArray());
+                    //create a new binding DataView based on the columns we want and have available
+                    dgvBind = viewBind.ToTable(false, currentColumns.ToArray());
 
-                if (target.InvokeRequired)
-                {
-                    target.BeginInvoke((MethodInvoker)delegate
+                    //check if the DataGridView needs to be invoked first
+                    if (target.InvokeRequired)
                     {
+                        //invoke the DataGridView so we don't thread-lock
+                        target.BeginInvoke((MethodInvoker)delegate
+                        {
+                            //bind the data to the grid ("render" the data)
+                            target.DataSource = dgvBind;
+                            //set the captions
+                            Methods.SetHeaderText(target, info.Data);
+                            target.Refresh();
+                        });
+                    }
+                    else
+                    {
+                        //we don't need to invoke, so just continue without it.
+                        //bind the data to the grid ("render" the data)
                         target.DataSource = dgvBind;
+                        //set the captions
                         Methods.SetHeaderText(target, info.Data);
                         target.Refresh();
-                    });
-                }
-                else
-                {
-                    target.DataSource = dgvBind;
-                    Methods.SetHeaderText(target, info.Data);
-                    target.Refresh();
-                }
+                    }
 
-                return dgvBind;
+                    //return the processed data (data with the wanted columns) in a DataTable
+                    return dgvBind;
+                }
             }
+
+            //some checks obviously failed or an error occurred; return the original data because we couldn't process anything.
             return info.Data;
         }
     }

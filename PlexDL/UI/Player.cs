@@ -3,6 +3,7 @@ using MetroSet_UI.Forms;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Logging;
+using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PVS.MediaPlayer;
