@@ -1,5 +1,5 @@
 # PlexDL
-#### Plex Downloader/Streamer written in C#
+### Plex Downloader/Streamer written in C#
 
 * Utilises a slightly modified fork of MetroSet-UI by N-a-r-w-i-n - [GitHub Repo](https://github.com/Brhsoftco/MetroSet-UI)
 * Utilises csharp-plex-api by ammmze for server detection - [GitHub Repo](https://github.com/ammmze/csharp-plex-api)
@@ -13,11 +13,13 @@
 PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content via the button in the "Data" section.
 
 ### Performance?
-PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and reliability, so that is also a factor.
+PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
 ### How to get started
-You will first need to build the software. PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Studio 2019. The PlexDL source comes preloaded with necessary icons and resources, AltoHttp, chsarp-plex-api, and PVS.MediaPlayer. You will need to obtain the latest DLL of MaterialSkin (by building it from source or from NuGet) and update the project reference accordingly. Another DLL you will need to obtain is the libbrhscgui project, which you can find on my project page. You will also need to install RestSharp via NuGet. Once you have configured the project, you may build it and launch the software.
-
+##### 1. Building from Source
+PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Studio 2019. The PlexDL source comes preloaded with necessary icons and resources, AltoHttp, chsarp-plex-api, WinFormAnimation, CircularProgressBar and PVS.MediaPlayer. You will need to obtain the latest DLL of MetroSet UI (by building it from source or from [here](https://github.com/Brhsoftco/MetroSet-UI)) and update the project reference accordingly. Another DLL you will need to obtain is the libbrhscgui project, which you can find [on my project page](https://github.com/Brhsoftco/libbrhscgui). You will also need to install RestSharp via NuGet. Once you have configured the project, you may build it and launch the software.
+##### 2. Downloading from Releases
+You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest).
 ### Using PlexDL
 1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 2. Select the connect button from the main panel and enter your account token.
@@ -29,5 +31,5 @@ You will first need to build the software. PlexDL targets the .NET Framework 4.7
 8. If you select a TV Show from the "TV" panel, you may browse the TV seasons (Top-Right panel) and episodes (Bottom-Right panel) associated with that title.
 9. You may only stream or download a TV/Movie title upon selecting an item from the appropriate panel.
 10. You may browse metadata associated with your selected content by clicking the "Bookmark" icon.
-11. PlexDL allows Profile loading and saving, which may allow you to save you account token for later use, or change internal settings to your liking. To do this, first load your content view, and then select the Save icon. You can then edit the *.prof* XML file in any ordinary text editor.
-12. Likewise, to load the profile, simply select the Load icon and browse to your generated *.prof* file.
+11. PlexDL allows profile loading and saving, which allows you to save your account token for later use or change internal settings to your liking. To do this, first load your content view, and then select the "Save" floppy disk icon. You can then edit the *.prof* XML file in any ordinary text editor.
+12. Likewise, to load the profile, simply select the "Load" folder icon and browse to your generated XML *.prof* file.
