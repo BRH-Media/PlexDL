@@ -122,28 +122,6 @@ namespace PlexDL.Common
             return newList;
         }
 
-        public static PlexObject MetadataFromFile(string fileName)
-        {
-            try
-            {
-                PlexObject subReq = null;
-
-                XmlSerializer serializer = new XmlSerializer(typeof(PlexObject));
-
-                StreamReader reader = new StreamReader(fileName);
-                subReq = (PlexObject)serializer.Deserialize(reader);
-                reader.Close();
-
-                return subReq;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "XMLMetadataLoadError");
-                return new PlexObject();
-            }
-        }
-
         public static string CalculateTime(double Time)
         {
             string mm, ss, CalculatedTime;

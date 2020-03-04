@@ -3,6 +3,7 @@ using MetroSet_UI.Forms;
 using PlexDL.Common;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.Common.API;
 using System;
 using System.Drawing;
 using System.IO;
@@ -40,18 +41,18 @@ namespace PlexDL.UI
                     lblGenreValue.Text = StreamingContent.ContentGenre;
                 }
             }
-            if (StreamingContent.ContentDuration != 0)
+            if (StreamingContent.StreamInformation.ContentDuration != 0)
             {
                 if (lblRuntimeValue.InvokeRequired)
                 {
                     lblRuntimeValue.BeginInvoke((MethodInvoker)delegate
                     {
-                        lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.ContentDuration);
+                        lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
                     });
                 }
                 else
                 {
-                    lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.ContentDuration);
+                    lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
                 }
             }
             if (StreamingContent.StreamInformation.ByteLength != 0)
@@ -82,18 +83,18 @@ namespace PlexDL.UI
                     lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
                 }
             }
-            if (StreamingContent.StreamPosterUri != "")
+            if (StreamingContent.StreamInformation.ContentThumbnailUri != "")
             {
                 if (picPoster.InvokeRequired)
                 {
                     picPoster.BeginInvoke((MethodInvoker)delegate
                     {
-                        picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamPosterUri);
+                        picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
                     });
                 }
                 else
                 {
-                    picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamPosterUri);
+                    picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
                 }
             }
             if (StreamingContent.StreamInformation.Container != "")
@@ -291,27 +292,11 @@ namespace PlexDL.UI
                 Opacity += 0.05;
         }
 
-        public void ExportMetadata(string fileName)
-        {
-            PlexObject subReq = StreamingContent;
-            XmlSerializer xsSubmit = new XmlSerializer(typeof(PlexObject));
-            XmlWriterSettings xmlSettings = new XmlWriterSettings();
-            StringWriter sww = new StringWriter();
-            xmlSettings.Indent = true;
-            xmlSettings.IndentChars = ("\t");
-            xmlSettings.OmitXmlDeclaration = false;
-
-            xsSubmit.Serialize(sww, subReq);
-
-            File.WriteAllText(fileName, sww.ToString());
-            MessageBox.Show("Successfully exported metadata!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void btnExportMetadata_Click(object sender, EventArgs e)
         {
             if (sfdExport.ShowDialog() == DialogResult.OK)
             {
-                ExportMetadata(sfdExport.FileName);
+                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
             }
         }
 
@@ -319,7 +304,7 @@ namespace PlexDL.UI
         {
             if (ofdMetadata.ShowDialog() == DialogResult.OK)
             {
-                PlexObject obj = Methods.MetadataFromFile(ofdMetadata.FileName);
+                PlexObject obj = ImportExport.MetadataFromFile(ofdMetadata.FileName);
                 StreamingContent = obj;
                 flpActors.Controls.Clear();
                 PlexDL.WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");

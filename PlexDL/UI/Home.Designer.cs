@@ -97,6 +97,7 @@
             this.itmStreamInPVS = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStreamInVLC = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStreamInBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -959,6 +960,12 @@
             this.itmStreamInBrowser.Text = "Stream in Browser";
             this.itmStreamInBrowser.Click += new System.EventHandler(this.itmStreamInBrowser_Click);
             // 
+            // sfdExport
+            // 
+            this.sfdExport.DefaultExt = "pmxml";
+            this.sfdExport.Filter = "PlexMovie XML|*.pmxml";
+            this.sfdExport.Title = "Export PlexMovie Metadata";
+            // 
             // Home
             // 
             this.AllowResize = false;
@@ -1066,6 +1073,7 @@
         private System.Windows.Forms.ToolStripMenuItem itmStreamInPVS;
         private System.Windows.Forms.ToolStripMenuItem itmStreamInVLC;
         private System.Windows.Forms.ToolStripMenuItem itmStreamInBrowser;
+        private System.Windows.Forms.SaveFileDialog sfdExport;
     }
 }
 

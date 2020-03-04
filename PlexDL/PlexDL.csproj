@@ -100,6 +100,7 @@
     <Compile Include="Animation\WinFormAnimation\SafeInvoker.cs" />
     <Compile Include="Animation\WinFormAnimation\SafeInvoker`1.cs" />
     <Compile Include="Animation\WinFormAnimation\Timer.cs" />
+    <Compile Include="Common\API\ImportExport.cs" />
     <Compile Include="Common\API\KeyGatherers.cs" />
     <Compile Include="Common\API\Relays.cs" />
     <Compile Include="Common\API\XmlGet.cs" />

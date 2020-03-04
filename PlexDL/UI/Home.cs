@@ -193,7 +193,7 @@ namespace PlexDL.UI
         private PlexMovie GetObjectFromSelection()
         {
             PlexMovie obj = new PlexMovie();
-            if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
+            if ((dgvContent.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1))
             {
                 int index = GetTableIndexFromDGV(dgvContent);
                 obj = GetObjectFromIndex(index);
@@ -239,8 +239,6 @@ namespace PlexDL.UI
 
                     obj.ContentGenre = getContentGenre(metadata);
                     obj.StreamInformation = dlInfo;
-                    obj.ContentDuration = dlInfo.ContentDuration;
-                    obj.StreamPosterUri = getContentThumbnailUri(metadata);
                     obj.Season = getTVShowSeason(metadata);
                     obj.EpisodesInSeason = episodesTable.Rows.Count;
                     obj.TVShowName = getTVShowTitle(metadata);
@@ -289,9 +287,6 @@ namespace PlexDL.UI
                     obj.Actors = getActorsFromMetadata(metadata);
                     obj.ContentGenre = getContentGenre(metadata);
                     obj.StreamInformation = dlInfo;
-                    obj.ContentDuration = dlInfo.ContentDuration;
-                    obj.StreamPosterUri = getContentThumbnailUri(metadata);
-
                     obj.StreamResolution = getContentResolution(metadata);
                     obj.StreamIndex = index;
                 }
@@ -817,6 +812,33 @@ namespace PlexDL.UI
                     renderServersView(servers);
                     doConnectFromSelectedServer();
                 }
+            }
+        }
+
+        private void DoStreamExport()
+        {
+            try
+            {
+                if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+                {
+                    PlexObject content = null;
+                    if (IsTVShow)
+                        content = GetTVObjectFromSelection();
+                    else
+                        content = GetObjectFromSelection();
+
+                    if (sfdExport.ShowDialog() == DialogResult.OK)
+                    {
+                        ImportExport.MetadataToFile(sfdExport.FileName, content);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and ignore
+                addToLog("Export error: " + ex.Message);
+                LoggingHelpers.recordException(ex.Message, "StreamExportError");
+                return;
             }
         }
 
@@ -1930,30 +1952,39 @@ namespace PlexDL.UI
         //DO NOT CHANGE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.F))
+            switch (keyData)
             {
-                SearchProcedure();
-                return true;
-            }
-            else if (keyData == (Keys.Control | Keys.O))
-            {
-                loadProfile();
-                return true;
-            }
-            else if (keyData == (Keys.Control | Keys.S))
-            {
-                saveProfile();
-                return true;
-            }
-            else if (keyData == (Keys.Control | Keys.C))
-            {
-                if (!IsConnected)
-                    Connect();
-            }
-            else if (keyData == (Keys.Control | Keys.D))
-            {
-                if (IsConnected)
-                    Disconnect();
+
+                case (Keys.Control | Keys.F):
+                    SearchProcedure();
+                    return true;
+
+                case (Keys.Control | Keys.M):
+                    Metadata();
+                    return true;
+
+                case (Keys.Control | Keys.O):
+                    loadProfile();
+                    return true;
+
+                case (Keys.Control | Keys.S):
+                    saveProfile();
+                    return true;
+
+                case (Keys.Control | Keys.E):
+                    if (IsConnected)
+                        DoStreamExport();
+                    return true;
+
+                case (Keys.Control | Keys.C):
+                    if (!IsConnected)
+                        Connect();
+                    return true;
+
+                case (Keys.Control | Keys.D):
+                    if (IsConnected)
+                        Disconnect();
+                    return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -2490,7 +2521,7 @@ namespace PlexDL.UI
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
+            if ((dgvContent.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1))
             {
                 if (!IsDownloadRunning && !IsEngineRunning)
                 {
@@ -2571,7 +2602,7 @@ namespace PlexDL.UI
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
             {
-                //display the options menu where the 
+                //display the options menu where the
                 Point loc = new Point(this.Location.X + btnHTTPPlay.Location.X, this.Location.Y + btnHTTPPlay.Location.Y);
                 cxtStreamOptions.Show(loc);
             }
@@ -2584,7 +2615,7 @@ namespace PlexDL.UI
 
         private void btnHTTPPlay_Click(object sender, EventArgs e)
         {
-            if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
+            if ((dgvContent.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1))
             {
                 PlexObject result;
                 if (!IsTVShow)
@@ -2647,7 +2678,7 @@ namespace PlexDL.UI
 
         private void Metadata(PlexObject result = null)
         {
-            if ((dgvContent.SelectedRows.Count == 1) || (dgvTVShows.SelectedRows.Count == 1))
+            if ((dgvContent.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1))
             {
                 if (!IsDownloadRunning && !IsEngineRunning)
                 {
