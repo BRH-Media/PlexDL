@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The Path3D class is a representation of a line in a 3D plane and the

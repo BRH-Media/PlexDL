@@ -14,11 +14,20 @@ namespace PlexDL.Common.PlayerLaunchers
             if (stream != null && titles != null)
                 try
                 {
-                    Player frm = new Player();
-                    frm.StreamingContent = stream;
-                    frm.TitlesTable = titles;
-                    LoggingHelpers.addToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
-                    frm.ShowDialog();
+                    //downloads won't work properly if you're streaming at the same time
+                    if (!Home.IsDownloadRunning && !Home.IsEngineRunning)
+                    {
+                        Player frm = new Player();
+                        frm.StreamingContent = stream;
+                        frm.TitlesTable = titles;
+                        LoggingHelpers.addToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
+                        frm.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        LoggingHelpers.addToLog("Tried to stream content via PVS, but a download is running.");
+                    }
                 }
                 catch (Exception ex)
                 {

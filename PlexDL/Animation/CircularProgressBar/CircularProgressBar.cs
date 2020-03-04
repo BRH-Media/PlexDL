@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using WinFormAnimation;
+using PlexDL.WinFormAnimation;
 
 namespace CircularProgressBar
 {
@@ -57,7 +57,7 @@ namespace CircularProgressBar
             ForeColor = Color.FromArgb(64, 64, 64);
             DoubleBuffered = true;
             Font = new Font(Font.FontFamily, 72, FontStyle.Bold);
-            SecondaryFont = new Font(Font.FontFamily, (float) (Font.Size * .5), FontStyle.Regular);
+            SecondaryFont = new Font(Font.FontFamily, (float)(Font.Size * .5), FontStyle.Regular);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             OuterMargin = -25;
@@ -194,7 +194,6 @@ namespace CircularProgressBar
         [Category("Appearance")]
         public Color SubscriptColor { get; set; }
 
-
         /// <summary>
         /// </summary>
         [Category("Layout")]
@@ -254,7 +253,7 @@ namespace CircularProgressBar
 
         private static Rectangle ToRectangle(RectangleF rect)
         {
-            return new Rectangle((int) rect.X, (int) rect.Y, (int) rect.Width, (int) rect.Height);
+            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
         }
 
         /// <inheritdoc />
@@ -263,7 +262,6 @@ namespace CircularProgressBar
             base.OnLocationChanged(e);
             Invalidate();
         }
-
 
         /// <summary>
         ///     Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
@@ -362,7 +360,7 @@ namespace CircularProgressBar
             }
 
             _animator.Paths =
-                new Path(_animatedValue ?? Value, Value, (ulong) AnimationSpeed, CustomAnimationFunction).ToArray();
+                new Path(_animatedValue ?? Value, Value, (ulong)AnimationSpeed, CustomAnimationFunction).ToArray();
             _animator.Repeat = false;
             _animator.Play(
                 new SafeInvoker<float>(
@@ -389,7 +387,7 @@ namespace CircularProgressBar
         {
             if (!firstTime &&
                 (_animator.ActivePath == null ||
-                 _animator.ActivePath.Duration == (ulong) MarqueeAnimationSpeed &&
+                 _animator.ActivePath.Duration == (ulong)MarqueeAnimationSpeed &&
                  _animator.ActivePath.Function == CustomAnimationFunction))
             {
                 return;
@@ -406,7 +404,7 @@ namespace CircularProgressBar
                 return;
             }
 
-            _animator.Paths = new Path(0, 359, (ulong) MarqueeAnimationSpeed, CustomAnimationFunction).ToArray();
+            _animator.Paths = new Path(0, 359, (ulong)MarqueeAnimationSpeed, CustomAnimationFunction).ToArray();
             _animator.Repeat = true;
             _animator.Play(
                 new SafeInvoker<float>(
@@ -414,7 +412,7 @@ namespace CircularProgressBar
                     {
                         try
                         {
-                            _animatedStartAngle = (int) (v % 360);
+                            _animatedStartAngle = (int)(v % 360);
                             Invalidate();
                         }
                         catch
@@ -478,7 +476,7 @@ namespace CircularProgressBar
                         }
 
                         _backBrush = new TextureBrush(parentImage);
-                        ((TextureBrush) _backBrush).TranslateTransform(-Bounds.X, -Bounds.Y);
+                        ((TextureBrush)_backBrush).TranslateTransform(-Bounds.X, -Bounds.Y);
                     }
                 }
                 else

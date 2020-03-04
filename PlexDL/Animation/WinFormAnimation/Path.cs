@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The Path class is a representation of a line in a 1D plane and the

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The Float3D class contains two <see langword="float" /> values and

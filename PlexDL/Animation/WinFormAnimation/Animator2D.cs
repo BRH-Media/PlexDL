@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The two dimensional animator class, useful for animating values

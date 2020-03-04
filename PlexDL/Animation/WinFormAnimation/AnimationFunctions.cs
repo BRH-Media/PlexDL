@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The functions gallery for animation

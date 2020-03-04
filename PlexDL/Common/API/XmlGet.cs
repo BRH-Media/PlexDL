@@ -35,14 +35,23 @@ namespace PlexDL.Common.API
 
             if (XMLCaching.XMLInCache(uri) && !forceNoCache)
             {
-                XmlDocument XMLResponse = XMLCaching.XMLFromCache(uri);
-                if (XMLResponse != null)
+                try
                 {
-                    return XMLResponse;
+                    XmlDocument XMLResponse = XMLCaching.XMLFromCache(uri);
+                    if (XMLResponse != null)
+                    {
+                        return XMLResponse;
+                    }
+                    else
+                    {
+                        return GetXMLTransaction(uri, "", true);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return GetXMLTransaction(uri, "", true);
+                    LoggingHelpers.recordException(ex.Message, "CacheLoadError");
+                    //force the GetXMLTransaction method to ignore cached items
+                    return GetXMLTransaction(uri, secret, true, silent);
                 }
             }
             else

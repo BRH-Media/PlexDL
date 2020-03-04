@@ -1064,6 +1064,10 @@ namespace PlexDL.UI
         {
             addToLog("Metadata worker started");
             addToLog("Doing directory checks");
+            if (string.IsNullOrEmpty(settings.Generic.DownloadDirectory) || string.IsNullOrWhiteSpace(settings.Generic.DownloadDirectory))
+            {
+                ResetDownloadDirectory();
+            }
             string tv = settings.Generic.DownloadDirectory + @"\TV";
             string movies = settings.Generic.DownloadDirectory + @"\Movies";
             if (!System.IO.Directory.Exists(tv))
@@ -2030,6 +2034,16 @@ namespace PlexDL.UI
             }
         }
 
+        private void ResetDownloadDirectory()
+        {
+            string curUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            settings.Generic.DownloadDirectory = curUser + "\\Videos\\PlexDL";
+            if (!(System.IO.Directory.Exists(settings.Generic.DownloadDirectory)))
+            {
+                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory);
+            }
+        }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             TestForm frm = new TestForm();
@@ -2045,15 +2059,7 @@ namespace PlexDL.UI
             }
             try
             {
-                string curUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-                settings.Generic.DownloadDirectory = curUser + "\\Videos\\PlexDL";
-
-                if (!(System.IO.Directory.Exists(settings.Generic.DownloadDirectory)))
-                {
-                    System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory);
-                }
-
+                ResetDownloadDirectory();
                 addToLog("PlexDL Started");
             }
             catch (Exception ex)
@@ -2525,15 +2531,7 @@ namespace PlexDL.UI
             CurrentStream = stream;
             if (settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
             {
-                //downloads won't work properly if you're streaming at the same time
-                if (!IsDownloadRunning)
-                {
-                    PVSLauncher.LaunchPVS(stream, returnCorrectTable());
-                }
-                else
-                {
-                    MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
+                PVSLauncher.LaunchPVS(stream, returnCorrectTable());
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
             {

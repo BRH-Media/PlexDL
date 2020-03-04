@@ -30,7 +30,7 @@ namespace PlexDL.WaitWindow
         internal object _Result;
         internal Exception _Error;
         private PVS.MediaPlayer.VideoDisplay videoDisplay1;
-        private CircularProgressBar.CircularProgressBar pbMain;
+        private CircularProgressBar.CircularProgressBar ProgressMain;
         private IAsyncResult threadResult;
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
@@ -127,19 +127,20 @@ namespace PlexDL.WaitWindow
         {
             this.MessageLabel = new MetroSet_UI.Controls.MetroSetLabel();
             this.styleMain = new MetroSet_UI.StyleManager();
-            this.pbMain = new CircularProgressBar.CircularProgressBar();
+            this.ProgressMain = new CircularProgressBar.CircularProgressBar();
             this.SuspendLayout();
             // 
             // MessageLabel
             // 
             this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MessageLabel.Location = new System.Drawing.Point(128, 97);
+            this.MessageLabel.Location = new System.Drawing.Point(127, 84);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(173, 86);
+            this.MessageLabel.Size = new System.Drawing.Size(174, 86);
             this.MessageLabel.Style = MetroSet_UI.Design.Style.Light;
             this.MessageLabel.StyleManager = this.styleMain;
             this.MessageLabel.TabIndex = 2;
-            this.MessageLabel.Text = "Updating Data";
+            this.MessageLabel.Text = "Working on it...";
+            this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MessageLabel.ThemeAuthor = null;
             this.MessageLabel.ThemeName = null;
             // 
@@ -151,37 +152,37 @@ namespace PlexDL.WaitWindow
             this.styleMain.ThemeAuthor = null;
             this.styleMain.ThemeName = null;
             // 
-            // pbMain
+            // ProgressMain
             // 
-            this.pbMain.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.QuadraticEaseInOut;
-            this.pbMain.AnimationSpeed = 500;
-            this.pbMain.BackColor = System.Drawing.Color.Transparent;
-            this.pbMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold);
-            this.pbMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pbMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pbMain.InnerMargin = 2;
-            this.pbMain.InnerWidth = -1;
-            this.pbMain.Location = new System.Drawing.Point(15, 73);
-            this.pbMain.MarqueeAnimationSpeed = 2000;
-            this.pbMain.Name = "pbMain";
-            this.pbMain.OuterColor = System.Drawing.Color.Gray;
-            this.pbMain.OuterMargin = -25;
-            this.pbMain.OuterWidth = 26;
-            this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.pbMain.ProgressWidth = 25;
-            this.pbMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.pbMain.Size = new System.Drawing.Size(107, 107);
-            this.pbMain.StartAngle = 270;
-            this.pbMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pbMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.pbMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.pbMain.SubscriptText = ".23";
-            this.pbMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.pbMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            this.pbMain.SuperscriptText = "°C";
-            this.pbMain.TabIndex = 3;
-            this.pbMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
-            this.pbMain.Value = 68;
+            this.ProgressMain.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.QuadraticEaseInOut;
+            this.ProgressMain.AnimationSpeed = 500;
+            this.ProgressMain.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold);
+            this.ProgressMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ProgressMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ProgressMain.InnerMargin = 2;
+            this.ProgressMain.InnerWidth = -1;
+            this.ProgressMain.Location = new System.Drawing.Point(15, 73);
+            this.ProgressMain.MarqueeAnimationSpeed = 2000;
+            this.ProgressMain.Name = "ProgressMain";
+            this.ProgressMain.OuterColor = System.Drawing.Color.Gray;
+            this.ProgressMain.OuterMargin = -25;
+            this.ProgressMain.OuterWidth = 26;
+            this.ProgressMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
+            this.ProgressMain.ProgressWidth = 25;
+            this.ProgressMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.ProgressMain.Size = new System.Drawing.Size(108, 108);
+            this.ProgressMain.StartAngle = 270;
+            this.ProgressMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.ProgressMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.ProgressMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.ProgressMain.SubscriptText = ".23";
+            this.ProgressMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.ProgressMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.ProgressMain.SuperscriptText = "°C";
+            this.ProgressMain.TabIndex = 3;
+            this.ProgressMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.ProgressMain.Value = 68;
             // 
             // WaitWindowGUI
             // 
@@ -189,7 +190,7 @@ namespace PlexDL.WaitWindow
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(316, 195);
-            this.Controls.Add(this.pbMain);
+            this.Controls.Add(this.ProgressMain);
             this.Controls.Add(this.MessageLabel);
             this.DropShadowEffect = false;
             this.Name = "WaitWindowGUI";

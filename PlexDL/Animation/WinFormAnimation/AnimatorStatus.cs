@@ -1,4 +1,4 @@
-﻿namespace WinFormAnimation
+﻿namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     The possible statuses for an animator instance

@@ -1,4 +1,4 @@
-﻿namespace WinFormAnimation
+﻿namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     Contains a list of all known animation functions

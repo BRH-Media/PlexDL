@@ -1,6 +1,8 @@
 ﻿using PlexDL.UI;
+using PlexDL.Common.Logging;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace PlexDL.Common.Caching
 {
@@ -24,10 +26,19 @@ namespace PlexDL.Common.Caching
 
         public static void CacheStructureBuilder()
         {
-            if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb"))
-                System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb");
-            if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml"))
-                System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml");
+            try
+            {
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb");
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml");
+            }
+            catch (Exception ex)
+            {
+                //log the error and exit
+                LoggingHelpers.recordException(ex.Message, "CacheDirBuildError");
+                return;
+            }
         }
     }
 }

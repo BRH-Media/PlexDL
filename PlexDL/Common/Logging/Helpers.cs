@@ -10,35 +10,59 @@ namespace PlexDL.Common.Logging
 
         public static void addToLog(string logEntry)
         {
-            logIncrementer++;
-            string[] headers = { "ID", "DateTime", "Entry" };
-            string[] logEntryToAdd = { logIncrementer.ToString(), DateTime.Now.ToString(), logEntry };
-            if (Home.settings.Logging.EnableGenericLogDel)
-                logDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+            try
+            {
+                logIncrementer++;
+                string[] headers = { "ID", "DateTime", "Entry" };
+                string[] logEntryToAdd = { logIncrementer.ToString(), DateTime.Now.ToString(), logEntry };
+                if (Home.settings.Logging.EnableGenericLogDel)
+                    logDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+            }
+            catch
+            {
+                //ignore the error
+                return;
+            }
         }
 
         public static void recordException(string message, string type)
         {
-            ////Options weren't too great performance-wise, so I ended up using a stack-walk.
-            ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
-            ////The in-app setting to prevent this method from firing.
-            if (Home.settings.Logging.EnableExceptionLogDel)
+            try
             {
-                var stackTrace = new System.Diagnostics.StackTrace();
-                string function = stackTrace.GetFrame(1).GetMethod().Name;
-                string[] headers = { "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType" };
-                string[] LogEntry = { DateTime.Now.ToString(), message, function, type };
-                logDelWriter("ExceptionLog.logdel", headers, LogEntry);
+                ////Options weren't too great performance-wise, so I ended up using a stack-walk.
+                ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
+                ////The in-app setting to prevent this method from firing.
+                if (Home.settings.Logging.EnableExceptionLogDel)
+                {
+                    var stackTrace = new System.Diagnostics.StackTrace();
+                    string function = stackTrace.GetFrame(1).GetMethod().Name;
+                    string[] headers = { "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType" };
+                    string[] LogEntry = { DateTime.Now.ToString(), message, function, type };
+                    logDelWriter("ExceptionLog.logdel", headers, LogEntry);
+                }
+            }
+            catch
+            {
+                //ignore the error
+                return;
             }
         }
 
         public static void recordTransaction(string uri, string statusCode)
         {
-            if (Home.settings.Logging.EnableXMLTransactionLogDel)
+            try
             {
-                string[] headers = { "DateTime", "Uri", "StatusCode" };
-                string[] LogEntry = { DateTime.Now.ToString(), uri, statusCode };
-                logDelWriter("TransactionLog.logdel", headers, LogEntry);
+                if (Home.settings.Logging.EnableXMLTransactionLogDel)
+                {
+                    string[] headers = { "DateTime", "Uri", "StatusCode" };
+                    string[] LogEntry = { DateTime.Now.ToString(), uri, statusCode };
+                    logDelWriter("TransactionLog.logdel", headers, LogEntry);
+                }
+            }
+            catch
+            {
+                //ignore the error
+                return;
             }
         }
 
@@ -88,6 +112,7 @@ namespace PlexDL.Common.Logging
             catch
             {
                 //ignore the error
+                return;
             }
         }
     }

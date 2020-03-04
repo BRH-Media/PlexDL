@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace WinFormAnimation
+namespace PlexDL.WinFormAnimation
 {
     /// <summary>
     ///     Contains public extensions methods about Path2D class
