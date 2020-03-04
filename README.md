@@ -21,6 +21,7 @@ PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Stu
 ##### 2. Downloading from Releases
 You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest).
 ### Using PlexDL
+##### Basic Usage
 1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 2. Select the connect button from the main panel and enter your account token.
 3. Allow the program to search for and connect to a server.
@@ -33,3 +34,12 @@ You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-Metro
 10. You may browse metadata associated with your selected content by clicking the "Bookmark" icon.
 11. PlexDL allows profile loading and saving, which allows you to save your account token for later use or change internal settings to your liking. To do this, first load your content view, and then select the "Save" floppy disk icon. You can then edit the *.prof* XML file in any ordinary text editor.
 12. Likewise, to load the profile, simply select the "Load" folder icon and browse to your generated XML *.prof* file.
+
+##### Shortcut Keys
+* Control+O - Allows Profile Loading
+* Control+S - Allows Profile Saving
+* Control+C - Allows Launching the Connection Dialog
+* Control+D - Allows Disconnecting
+* Control+M - Allows Viewing Metadata
+* Control+F - Allows Launching the Search Dialog
+* Control+E - Allows Exporting PlexMovie XML Data (for the Currently Selected Title)
