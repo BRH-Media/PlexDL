@@ -80,7 +80,7 @@
             this.btnConnect.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnConnect.HoverTextColor = System.Drawing.Color.White;
-            this.btnConnect.Location = new System.Drawing.Point(15, 170);
+            this.btnConnect.Location = new System.Drawing.Point(15, 148);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnConnect.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -157,7 +157,7 @@
             // 
             this.AllowResize = false;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(234, 207);
+            this.ClientSize = new System.Drawing.Size(234, 185);
             this.Controls.Add(this.cbxConnectionMode);
             this.Controls.Add(this.ctrlMain);
             this.Controls.Add(this.btnConnect);

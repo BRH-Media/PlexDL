@@ -648,6 +648,10 @@ namespace PlexDL.UI
                     {
                         xsSubmit.Serialize(sww, settings);
 
+                        //delete the existing file; the user was asked if they wanted to replace it.
+                        if (File.Exists(fileName))
+                            File.Delete(fileName);
+
                         File.WriteAllText(fileName, sww.ToString());
                     }
                 }
@@ -681,7 +685,7 @@ namespace PlexDL.UI
                 StreamReader reader = new StreamReader(fileName);
                 subReq = (ApplicationOptions)serializer.Deserialize(reader);
                 reader.Close();
-
+                settings = null;
                 settings = subReq;
 
                 if (!silent)
@@ -705,7 +709,7 @@ namespace PlexDL.UI
 
         #region ConnectionHelpers
 
-        private void Disconnect()
+        private void Disconnect(bool silent = false)
         {
             if (IsConnected)
             {
@@ -720,6 +724,9 @@ namespace PlexDL.UI
                 SetConnect();
                 SelectMoviesTab();
                 IsConnected = false;
+
+                if (!silent)
+                    MessageBox.Show("Disconnected from Plex", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -1938,12 +1945,34 @@ namespace PlexDL.UI
                 saveProfile();
                 return true;
             }
+            else if (keyData == (Keys.Control | Keys.C))
+            {
+                if (!IsConnected)
+                    Connect();
+            }
+            else if (keyData == (Keys.Control | Keys.D))
+            {
+                if (IsConnected)
+                    Disconnect();
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        /// <summary>
+        /// Thread-safe way of changing the progress label
+        /// </summary>
+        /// <param name="status"></param>
         private void SetProgressLabel(string status)
         {
-            lblProgress.Text = status;
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    lblProgress.Text = status;
+                });
+            }
+            else
+                lblProgress.Text = status;
         }
 
         private void SetDownloadCancel()
@@ -2310,7 +2339,6 @@ namespace PlexDL.UI
                 else
                 {
                     Disconnect();
-                    MessageBox.Show("Disconnected from Plex", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (WebException ex)
@@ -2513,7 +2541,7 @@ namespace PlexDL.UI
                 {
                     engine.Pause();
                     SetResume();
-                    lblProgress.Text += " (Paused)";
+                    SetProgressLabel(lblProgress.Text + " (Paused)");
                     IsDownloadPaused = true;
                 }
                 else
@@ -2543,7 +2571,9 @@ namespace PlexDL.UI
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
             {
-                cxtStreamOptions.Show(MousePosition);
+                //display the options menu where the 
+                Point loc = new Point(this.Location.X + btnHTTPPlay.Location.X, this.Location.Y + btnHTTPPlay.Location.Y);
+                cxtStreamOptions.Show(loc);
             }
             else
             {
