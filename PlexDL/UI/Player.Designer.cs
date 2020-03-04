@@ -96,7 +96,7 @@ namespace PlexDL.UI
             this.btnExit.TabIndex = 9;
             this.btnExit.ThemeAuthor = null;
             this.btnExit.ThemeName = null;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // styleMain
             // 
@@ -109,7 +109,7 @@ namespace PlexDL.UI
             // tmrCopied
             // 
             this.tmrCopied.Interval = 1500;
-            this.tmrCopied.Tick += new System.EventHandler(this.tmrCopied_Tick);
+            this.tmrCopied.Tick += new System.EventHandler(this.TmrCopied_Tick);
             // 
             // lblTotalDuration
             // 
@@ -124,7 +124,6 @@ namespace PlexDL.UI
             this.lblTotalDuration.Text = "00:00:00";
             this.lblTotalDuration.ThemeAuthor = null;
             this.lblTotalDuration.ThemeName = null;
-            this.lblTotalDuration.Click += new System.EventHandler(this.materialLabel1_Click);
             // 
             // lblTimeSoFar
             // 
@@ -182,7 +181,7 @@ namespace PlexDL.UI
             this.btnPrevTitle.TabIndex = 2;
             this.btnPrevTitle.ThemeAuthor = null;
             this.btnPrevTitle.ThemeName = null;
-            this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
+            this.btnPrevTitle.Click += new System.EventHandler(this.BtnPrevTitle_Click);
             // 
             // btnNextTitle
             // 
@@ -214,7 +213,7 @@ namespace PlexDL.UI
             this.btnNextTitle.TabIndex = 5;
             this.btnNextTitle.ThemeAuthor = null;
             this.btnNextTitle.ThemeName = null;
-            this.btnNextTitle.Click += new System.EventHandler(this.btnNextTitle_Click);
+            this.btnNextTitle.Click += new System.EventHandler(this.BtnNextTitle_Click);
             // 
             // btnStop
             // 
@@ -246,7 +245,7 @@ namespace PlexDL.UI
             this.btnStop.TabIndex = 1;
             this.btnStop.ThemeAuthor = null;
             this.btnStop.ThemeName = null;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // btnSkipForward
             // 
@@ -278,7 +277,7 @@ namespace PlexDL.UI
             this.btnSkipForward.TabIndex = 4;
             this.btnSkipForward.ThemeAuthor = null;
             this.btnSkipForward.ThemeName = null;
-            this.btnSkipForward.Click += new System.EventHandler(this.btnSkipForward_Click);
+            this.btnSkipForward.Click += new System.EventHandler(this.BtnSkipForward_Click);
             // 
             // btnSkipBack
             // 
@@ -310,7 +309,7 @@ namespace PlexDL.UI
             this.btnSkipBack.TabIndex = 3;
             this.btnSkipBack.ThemeAuthor = null;
             this.btnSkipBack.ThemeName = null;
-            this.btnSkipBack.Click += new System.EventHandler(this.btnSkipBack_Click);
+            this.btnSkipBack.Click += new System.EventHandler(this.BtnSkipBack_Click);
             // 
             // btnPlayPause
             // 
@@ -342,7 +341,7 @@ namespace PlexDL.UI
             this.btnPlayPause.TabIndex = 0;
             this.btnPlayPause.ThemeAuthor = null;
             this.btnPlayPause.ThemeName = null;
-            this.btnPlayPause.Click += new System.EventHandler(this.btnPlayPause_Click);
+            this.btnPlayPause.Click += new System.EventHandler(this.BtnPlayPause_Click);
             // 
             // pnlControls
             // 
@@ -409,8 +408,8 @@ namespace PlexDL.UI
             this.Text = "Unknown Title";
             this.ThemeAuthor = null;
             this.ThemeName = null;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlayer_FormClosing);
-            this.Load += new System.EventHandler(this.frmPlayer_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPlayer_FormClosing);
+            this.Load += new System.EventHandler(this.FrmPlayer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
             this.pnlControls.ResumeLayout(false);
             this.pnlControls.PerformLayout();

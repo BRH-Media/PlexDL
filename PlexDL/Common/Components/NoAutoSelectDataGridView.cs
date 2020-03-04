@@ -23,8 +23,8 @@ namespace PlexDL.Common.Components
                 Form parent = this.FindForm();
 
                 // Either the selection gets cleared on form load....
-                parent.Load -= parent_Load;
-                parent.Load += parent_Load;
+                parent.Load -= Parent_Load;
+                parent.Load += Parent_Load;
 
                 base.DataSource = value;
 
@@ -50,7 +50,7 @@ namespace PlexDL.Common.Components
             }
         }
 
-        private void parent_Load(object sender, EventArgs e)
+        private void Parent_Load(object sender, EventArgs e)
         {
             ClearSelectionAndResetSuppression();
         }

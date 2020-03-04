@@ -62,7 +62,7 @@
             this.btnConnect.Text = "Connect";
             this.btnConnect.ThemeAuthor = null;
             this.btnConnect.ThemeName = null;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // styleMain
             // 

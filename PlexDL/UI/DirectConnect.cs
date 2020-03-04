@@ -22,7 +22,7 @@ namespace PlexDL.UI
             this.styleMain.MetroForm = this;
         }
 
-        private void fadeIn(object sender, EventArgs e)
+        private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
                 t1.Stop();   //this stops the timer if the form is completely displayed
@@ -30,7 +30,7 @@ namespace PlexDL.UI
                 Opacity += 0.05;
         }
 
-        private void fadeOut(object sender, EventArgs e)
+        private void FadeOut(object sender, EventArgs e)
         {
             if (Opacity <= 0)     //check if opacity is 0
             {
@@ -41,7 +41,7 @@ namespace PlexDL.UI
                 Opacity -= 0.05;
         }
 
-        public bool WebSiteIsAvailable(string Url)
+        public static bool WebSiteIsAvailable(string Url)
         {
             string Message = string.Empty;
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(Url);
@@ -65,9 +65,9 @@ namespace PlexDL.UI
             return (Message.Length == 0);
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private void BtnConnect_Click(object sender, EventArgs e)
         {
-            if (!ValidateIPv4(txtServerIP.Text))
+            if (!Methods.ValidateIPv4(txtServerIP.Text))
             {
                 MessageBox.Show("Invalid IP Address", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -113,9 +113,11 @@ namespace PlexDL.UI
             if ((Home.settings.Generic.AnimationSpeed > 0) && !connectionStarted)
             {
                 e.Cancel = true;
-                t1 = new Timer();
-                t1.Interval = Home.settings.Generic.AnimationSpeed;
-                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1 = new Timer
+                {
+                    Interval = Home.settings.Generic.AnimationSpeed
+                };
+                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
@@ -126,24 +128,6 @@ namespace PlexDL.UI
             }
         }
 
-        public bool ValidateIPv4(string ipString)
-        {
-            if (String.IsNullOrWhiteSpace(ipString))
-            {
-                return false;
-            }
-
-            string[] splitValues = ipString.Split('.');
-            if (splitValues.Length != 4)
-            {
-                return false;
-            }
-
-            byte tempForParsing;
-
-            return splitValues.All(r => byte.TryParse(r, out tempForParsing));
-        }
-
         private void DirectConnect_Load(object sender, EventArgs e)
         {
             connectionStarted = false;
@@ -152,7 +136,7 @@ namespace PlexDL.UI
                 Opacity = 0;      //first the opacity is 0
 
                 t1.Interval = Home.settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
-                t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
+                t1.Tick += new EventHandler(FadeIn);  //this calls the function that changes opacity
                 t1.Start();
             }
         }

@@ -131,7 +131,7 @@ namespace PlexDL.Common
             T = System.Convert.ToInt32(Time);
 
             h = (T / 3600);
-            T = T % 3600;
+            T %= 3600;
             m = (T / 60);
             s = T % 60;
 
@@ -162,12 +162,12 @@ namespace PlexDL.Common
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        public static Bitmap getImageFromUrl(string url)
+        public static Bitmap GetImageFromUrl(string url)
         {
             try
             {
                 Helpers.CacheStructureBuilder();
-                if (url == "")
+                if (string.IsNullOrEmpty(url))
                 {
                     return PlexDL.Properties.Resources.image_not_available_png_8;
                 }
@@ -193,12 +193,45 @@ namespace PlexDL.Common
             }
             catch (Exception ex)
             {
-                LoggingHelpers.recordException(ex.Message, "ImageFetchError");
+                LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
                 return PlexDL.Properties.Resources.image_not_available_png_8;
             }
         }
 
-        public static string removeIllegalCharacters(string illegal)
+        public static bool ValidateIPv4(string ipString)
+        {
+            if (String.IsNullOrWhiteSpace(ipString))
+            {
+                return false;
+            }
+
+            string[] splitValues = ipString.Split('.');
+            if (splitValues.Length != 4)
+            {
+                return false;
+            }
+
+
+            return splitValues.All(r => byte.TryParse(r, out byte tempForParsing));
+        }
+
+        public static void ThreadSafeMessageBox(string caption, string title = "Message", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+        {
+            Form main = System.Windows.Forms.Form.ActiveForm;
+            if (main.InvokeRequired)
+            {
+                main.BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show(caption, title, buttons, icon);
+                });
+            }
+            else
+            {
+                MessageBox.Show(caption, title, buttons, icon);
+            }
+        }
+
+        public static string RemoveIllegalCharacters(string illegal)
         {
             string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));

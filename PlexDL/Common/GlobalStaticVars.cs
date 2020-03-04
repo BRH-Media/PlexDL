@@ -2,7 +2,7 @@
 
 namespace PlexDL.Common
 {
-    public class GlobalStaticVars
+    public static class GlobalStaticVars
     {
         public static StyleManager GlobalStyle = new StyleManager()
         {

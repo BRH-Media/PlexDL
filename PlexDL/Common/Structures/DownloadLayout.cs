@@ -2,7 +2,7 @@
 
 namespace PlexDL.Common.Structures
 {
-    public class DownloadLayout
+    public static class DownloadLayout
     {
         public static readonly int PlexStandardLayout = 0;
         public static readonly int PlexDLLayout = 1;
@@ -15,7 +15,7 @@ namespace PlexDL.Common.Structures
             {
                 string basePath = settings.Generic.DownloadDirectory + @"\TV\";
                 string season = show.Season;
-                string title = Methods.removeIllegalCharacters(show.TVShowName);
+                string title = Methods.RemoveIllegalCharacters(show.TVShowName);
                 string seasonPath = basePath + title + @"\" + season;
                 string titlePath = basePath + title;
 

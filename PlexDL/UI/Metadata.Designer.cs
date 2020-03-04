@@ -239,7 +239,7 @@
             this.btnExit.ThemeAuthor = null;
             this.btnExit.ThemeName = null;
             this.tipMain.SetToolTip(this.btnExit, "Close Metadata");
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // sfdExport
             // 
@@ -289,7 +289,7 @@
             this.btnExportMetadata.ThemeAuthor = null;
             this.btnExportMetadata.ThemeName = null;
             this.tipMain.SetToolTip(this.btnExportMetadata, "Export Metadata");
-            this.btnExportMetadata.Click += new System.EventHandler(this.btnExportMetadata_Click);
+            this.btnExportMetadata.Click += new System.EventHandler(this.BtnExportMetadata_Click);
             // 
             // btnImport
             // 
@@ -322,7 +322,7 @@
             this.btnImport.ThemeAuthor = null;
             this.btnImport.ThemeName = null;
             this.tipMain.SetToolTip(this.btnImport, "Import Metadata");
-            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            this.btnImport.Click += new System.EventHandler(this.BtnImport_Click);
             // 
             // ofdMetadata
             // 
@@ -393,7 +393,7 @@
             this.btnStreamInVLC.ThemeName = null;
             this.tipMain.SetToolTip(this.btnStreamInVLC, "Stream in VLC");
             this.btnStreamInVLC.Visible = false;
-            this.btnStreamInVLC.Click += new System.EventHandler(this.btnStreamInVLC_Click);
+            this.btnStreamInVLC.Click += new System.EventHandler(this.BtnStreamInVLC_Click);
             // 
             // styleMain
             // 
@@ -462,7 +462,7 @@
             this.ThemeAuthor = null;
             this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
-            this.Load += new System.EventHandler(this.frmTitleInformation_Load);
+            this.Load += new System.EventHandler(this.FrmTitleInformation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

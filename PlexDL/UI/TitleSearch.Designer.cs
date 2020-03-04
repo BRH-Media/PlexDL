@@ -73,7 +73,7 @@
             this.btnStartSearch.ThemeAuthor = null;
             this.btnStartSearch.ThemeName = null;
             this.tipMain.SetToolTip(this.btnStartSearch, "Start Content Search");
-            this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
+            this.btnStartSearch.Click += new System.EventHandler(this.BtnStartSearch_Click);
             // 
             // styleMain
             // 
@@ -113,7 +113,7 @@
             this.btnCancelSearch.ThemeAuthor = null;
             this.btnCancelSearch.ThemeName = null;
             this.tipMain.SetToolTip(this.btnCancelSearch, "Cancel Content Search");
-            this.btnCancelSearch.Click += new System.EventHandler(this.btnCancelSearch_Click);
+            this.btnCancelSearch.Click += new System.EventHandler(this.BtnCancelSearch_Click);
             // 
             // cbxSearchColumn
             // 
@@ -278,7 +278,7 @@
             this.Text = "Search for Content";
             this.ThemeAuthor = null;
             this.ThemeName = null;
-            this.Load += new System.EventHandler(this.frmSearch_Load);
+            this.Load += new System.EventHandler(this.FrmSearch_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

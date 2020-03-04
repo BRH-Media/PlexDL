@@ -13,12 +13,12 @@ namespace PlexDL.Common.PlayerLaunchers
             try
             {
                 Process.Start(stream.Link);
-                LoggingHelpers.addToLog("Started streaming " + stream.ContentTitle + " (Browser)");
+                LoggingHelpers.AddToLog("Started streaming " + stream.ContentTitle + " (Browser)");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error occurred whilst trying to launch the default browser\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "BrowserLaunchError");
+                LoggingHelpers.RecordException(ex.Message, "BrowserLaunchError");
                 return;
             }
         }

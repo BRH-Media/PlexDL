@@ -80,7 +80,7 @@
             this.btnRefresh.TabIndex = 1;
             this.btnRefresh.ThemeAuthor = null;
             this.btnRefresh.ThemeName = null;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // styleMain
             // 
@@ -107,7 +107,7 @@
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMain.Size = new System.Drawing.Size(501, 303);
             this.dgvMain.TabIndex = 11;
-            this.dgvMain.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMain_CellContentDoubleClick);
+            this.dgvMain.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvMain_CellContentDoubleClick);
             // 
             // btnSearch
             // 
@@ -139,7 +139,7 @@
             this.btnSearch.TabIndex = 12;
             this.btnSearch.ThemeAuthor = null;
             this.btnSearch.ThemeName = null;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // btnGoToLine
             // 
@@ -171,7 +171,7 @@
             this.btnGoToLine.TabIndex = 13;
             this.btnGoToLine.ThemeAuthor = null;
             this.btnGoToLine.ThemeName = null;
-            this.btnGoToLine.Click += new System.EventHandler(this.btnGoToLine_Click);
+            this.btnGoToLine.Click += new System.EventHandler(this.BtnGoToLine_Click);
             // 
             // btnBackup
             // 
@@ -203,7 +203,7 @@
             this.btnBackup.TabIndex = 14;
             this.btnBackup.ThemeAuthor = null;
             this.btnBackup.ThemeName = null;
-            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
+            this.btnBackup.Click += new System.EventHandler(this.BtnBackup_Click);
             // 
             // sfdBackup
             // 
@@ -245,7 +245,7 @@
             this.btnExit.TabIndex = 15;
             this.btnExit.ThemeAuthor = null;
             this.btnExit.ThemeName = null;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // lstLogFiles
             // 
@@ -272,7 +272,7 @@
             this.lstLogFiles.TabIndex = 0;
             this.lstLogFiles.ThemeAuthor = null;
             this.lstLogFiles.ThemeName = null;
-            this.lstLogFiles.SelectedIndexChanged += new MetroSet_UI.Controls.MetroSetListBox.SelectedIndexChangedEventHandler(this.lstLogFiles_SelectedIndexChanged);
+            this.lstLogFiles.SelectedIndexChanged += new MetroSet_UI.Controls.MetroSetListBox.SelectedIndexChangedEventHandler(this.LstLogFiles_SelectedIndexChanged);
             // 
             // ctrlMain
             // 

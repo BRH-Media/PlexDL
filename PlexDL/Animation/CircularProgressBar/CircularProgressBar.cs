@@ -115,13 +115,8 @@ namespace CircularProgressBar
             private get { return _animationFunction; }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
                 _knownAnimationFunction = KnownAnimationFunctions.None;
-                _animationFunction = value;
+                _animationFunction = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -551,7 +546,7 @@ namespace CircularProgressBar
                         }
                     }
 
-                    if (Text == string.Empty)
+                    if (string.IsNullOrEmpty(Text))
                     {
                         return;
                     }
@@ -571,13 +566,13 @@ namespace CircularProgressBar
                         point.X + (size.Width - textSize.Width) / 2,
                         point.Y + (size.Height - textSize.Height) / 2);
 
-                    if (SubscriptText != string.Empty || SuperscriptText != string.Empty)
+                    if (!string.IsNullOrEmpty(SubscriptText) || !string.IsNullOrEmpty(SuperscriptText))
                     {
                         float maxSWidth = 0;
                         var supSize = SizeF.Empty;
                         var subSize = SizeF.Empty;
 
-                        if (SuperscriptText != string.Empty)
+                        if (!string.IsNullOrEmpty(SuperscriptText))
                         {
                             supSize = g.MeasureString(SuperscriptText, SecondaryFont);
                             maxSWidth = Math.Max(supSize.Width, maxSWidth);
@@ -585,7 +580,7 @@ namespace CircularProgressBar
                             supSize.Height -= SuperscriptMargin.Bottom;
                         }
 
-                        if (SubscriptText != string.Empty)
+                        if (!string.IsNullOrEmpty(SubscriptText))
                         {
                             subSize = g.MeasureString(SubscriptText, SecondaryFont);
                             maxSWidth = Math.Max(subSize.Width, maxSWidth);
@@ -595,7 +590,7 @@ namespace CircularProgressBar
 
                         textPoint.X -= maxSWidth / 4;
 
-                        if (SuperscriptText != string.Empty)
+                        if (!string.IsNullOrEmpty(SuperscriptText))
                         {
                             var supPoint = new PointF(
                                 textPoint.X + textSize.Width - supSize.Width / 2,
@@ -610,7 +605,7 @@ namespace CircularProgressBar
                                 stringFormat);
                         }
 
-                        if (SubscriptText != string.Empty)
+                        if (!string.IsNullOrEmpty(SubscriptText))
                         {
                             var subPoint = new PointF(
                                 textPoint.X + textSize.Width - subSize.Width / 2,

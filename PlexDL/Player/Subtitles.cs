@@ -176,7 +176,7 @@ namespace PVS.MediaPlayer
             if (st_SubtitlesEnabled && _playing && !_webcamMode && (_hasVideo || st_AudioOnlyEnabled))
             {
                 string subtitlesFile = Subtitles_Exists();
-                if (subtitlesFile != string.Empty)
+                if (!string.IsNullOrEmpty(subtitlesFile))
                 {
                     if (Subtitles_GetFromFile(subtitlesFile))
                     {
@@ -256,8 +256,7 @@ namespace PVS.MediaPlayer
                 {
                     bool backwards = position < st_CurrentStart;
 
-                    int index;// = 0;
-                    if (Subtitle_Find(position, st_CurrentIndex, backwards, out index))
+                    if (Subtitle_Find(position, st_CurrentIndex, backwards, out int index))
                     {
                         if (!st_SubtitleOn || index != st_CurrentIndex)
                         {
@@ -470,14 +469,14 @@ namespace PVS.MediaPlayer
                     }
                     if (!error)
                     {
-                        if (text != "")
+                        if (string.IsNullOrEmpty(text))
                         {
-                            if (st_RemoveHTMLTags) st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
-                            else st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, text);
+                            st_SubtitleItems[index++] = new SubtitleItem(0, 0, string.Empty);
                         }
                         else
                         {
-                            st_SubtitleItems[index++] = new SubtitleItem(0, 0, string.Empty);
+                            if (st_RemoveHTMLTags) st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
+                            else st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, text);
                         }
                         st_SubTitleCount = count;
                         result = true;
@@ -501,8 +500,6 @@ namespace PVS.MediaPlayer
             string line;
             int readStep = 0;
             int count = 0;
-            TimeSpan startTime;  //= TimeSpan.Zero;
-            TimeSpan endTime;    //= TimeSpan.Zero;
 
             while ((line = (reader.ReadLine())) != null && !error)
             {
@@ -523,10 +520,10 @@ namespace PVS.MediaPlayer
                         if (m.Success)
                         {
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
-                            if (!TimeSpan.TryParse(m.Groups["start"].Value.Replace(",", "."), out startTime)) error = true;
+                            if (!TimeSpan.TryParse(m.Groups["start"].Value.Replace(",", "."), out TimeSpan startTime)) error = true;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
-                            if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out endTime)) error = true;
+                            if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out TimeSpan endTime)) error = true;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
                             ++count;
                         }

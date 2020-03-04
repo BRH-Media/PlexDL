@@ -52,12 +52,12 @@ namespace PlexDL.AltoHttp
         private Stream str;
         private FileStream file;
         private Stopwatch stpWatch;
-        private AsyncOperation oprtor;
+        private readonly AsyncOperation oprtor;
         private int bytesReceived, speed, speedBytes;
         private double progress;
         private long contentLength;
         private bool acceptRange;
-        private string fileURL, destPath;
+        private readonly string destPath;
         private DownloadState state;
 
         #endregion Variables
@@ -108,13 +108,7 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Get the source URL that will be downloaded when the download process is started
         /// </summary>
-        public string FileURL
-        {
-            get
-            {
-                return fileURL;
-            }
-        }
+        public string FileURL { get; }
 
         /// <summary>
         /// Gets the destination path that the file will be saved when the download process is completed
@@ -182,7 +176,7 @@ namespace PlexDL.AltoHttp
         public HttpDownloader(string url, string destPath)
         {
             this.Reset();
-            fileURL = url;
+            FileURL = url;
             this.destPath = destPath;
             oprtor = AsyncOperationManager.CreateOperation(null);
         }
@@ -210,7 +204,7 @@ namespace PlexDL.AltoHttp
                 if (!overWriteFile)
                 {
                     contentLength = resp.ContentLength;
-                    acceptRange = getAcceptRangeHeaderValue();
+                    acceptRange = GetAcceptRangeHeaderValue();
                     if (HeadersReceived != null)
                         oprtor.Post(new SendOrPostCallback(delegate
                         {
@@ -218,7 +212,7 @@ namespace PlexDL.AltoHttp
                         }), null);
                 }
             }
-            catch (Exception)
+            catch
             {
                 state = DownloadState.ErrorOccured;
                 State = state;
@@ -361,7 +355,7 @@ namespace PlexDL.AltoHttp
             }
         }
 
-        private bool getAcceptRangeHeaderValue()
+        private bool GetAcceptRangeHeaderValue()
         {
             for (int i = 0; i < resp.Headers.Count; i++)
             {
@@ -369,11 +363,6 @@ namespace PlexDL.AltoHttp
                     return resp.Headers[i].Contains("byte");
             }
             return false;
-        }
-
-        private string getFileNameFromUrl()
-        {
-            return Path.GetFileName(new Uri(this.fileURL).AbsolutePath);
         }
 
         #endregion Helper Methods

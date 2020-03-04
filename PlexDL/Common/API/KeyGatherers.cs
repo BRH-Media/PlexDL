@@ -3,9 +3,9 @@ using System.Xml;
 
 namespace PlexDL.Common.API
 {
-    public class KeyGatherers
+    public static class KeyGatherers
     {
-        public static string getLibraryKey(System.Xml.XmlDocument doc)
+        public static string GetLibraryKey(System.Xml.XmlDocument doc)
         {
             string key = "";
 
@@ -32,18 +32,18 @@ namespace PlexDL.Common.API
             }
         }
 
-        public static string getSectionKey(System.Xml.XmlDocument doc)
+        public static string GetSectionKey(System.Xml.XmlDocument doc)
         {
             string key = "";
 
-            LoggingHelpers.addToLog("Parsing XML Reply");
+            LoggingHelpers.AddToLog("Parsing XML Reply");
             using (XmlReader reader = new XmlNodeReader(doc))
             {
                 while (reader.Read())
                 {
                     if (reader.IsStartElement())
                     {
-                        LoggingHelpers.addToLog("Checking for directories");
+                        LoggingHelpers.AddToLog("Checking for directories");
 
                         switch (reader.Name.ToString())
                         {
@@ -52,7 +52,7 @@ namespace PlexDL.Common.API
                                 {
                                     string localKey = reader.GetAttribute("key");
                                     key = localKey;
-                                    LoggingHelpers.addToLog("Found " + key);
+                                    LoggingHelpers.AddToLog("Found " + key);
                                 }
                                 break;
                         }

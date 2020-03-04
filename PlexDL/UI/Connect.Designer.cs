@@ -95,7 +95,7 @@
             this.btnConnect.Text = "Connect";
             this.btnConnect.ThemeAuthor = null;
             this.btnConnect.ThemeName = null;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // ctrlMain
             // 
@@ -171,8 +171,8 @@
             this.Text = "Plex Authentication";
             this.ThemeAuthor = null;
             this.ThemeName = null;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmConnect_FormClosing);
-            this.Load += new System.EventHandler(this.frmConnect_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConnect_FormClosing);
+            this.Load += new System.EventHandler(this.FrmConnect_Load);
             this.ResumeLayout(false);
 
         }

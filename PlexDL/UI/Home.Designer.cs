@@ -197,7 +197,7 @@
             this.btnMetadata.ThemeAuthor = null;
             this.btnMetadata.ThemeName = null;
             this.tipMain.SetToolTip(this.btnMetadata, "View Metadata");
-            this.btnMetadata.Click += new System.EventHandler(this.btnMetadata_Click);
+            this.btnMetadata.Click += new System.EventHandler(this.BtnMetadata_Click);
             // 
             // btnSetDlDir
             // 
@@ -231,7 +231,7 @@
             this.btnSetDlDir.ThemeAuthor = null;
             this.btnSetDlDir.ThemeName = null;
             this.tipMain.SetToolTip(this.btnSetDlDir, "Set Download Directory");
-            this.btnSetDlDir.Click += new System.EventHandler(this.btnSetDlDir_Click);
+            this.btnSetDlDir.Click += new System.EventHandler(this.BtnSetDlDir_Click);
             // 
             // btnSearch
             // 
@@ -264,7 +264,7 @@
             this.btnSearch.ThemeAuthor = null;
             this.btnSearch.ThemeName = null;
             this.tipMain.SetToolTip(this.btnSearch, "Search");
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // btnLoadProfile
             // 
@@ -298,7 +298,7 @@
             this.btnLoadProfile.ThemeAuthor = null;
             this.btnLoadProfile.ThemeName = null;
             this.tipMain.SetToolTip(this.btnLoadProfile, "Save/Load Profile");
-            this.btnLoadProfile.Click += new System.EventHandler(this.btnProfile_Click);
+            this.btnLoadProfile.Click += new System.EventHandler(this.BtnProfile_Click);
             // 
             // btnPause
             // 
@@ -333,7 +333,7 @@
             this.btnPause.ThemeAuthor = null;
             this.btnPause.ThemeName = null;
             this.tipMain.SetToolTip(this.btnPause, "Pause/Resume Download");
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
             // 
             // btnHTTPPlay
             // 
@@ -366,7 +366,7 @@
             this.btnHTTPPlay.ThemeAuthor = null;
             this.btnHTTPPlay.ThemeName = null;
             this.tipMain.SetToolTip(this.btnHTTPPlay, "Stream Selected Title");
-            this.btnHTTPPlay.Click += new System.EventHandler(this.btnHTTPPlay_Click);
+            this.btnHTTPPlay.Click += new System.EventHandler(this.BtnHTTPPlay_Click);
             // 
             // btnConnect
             // 
@@ -399,7 +399,7 @@
             this.btnConnect.ThemeAuthor = null;
             this.btnConnect.ThemeName = null;
             this.tipMain.SetToolTip(this.btnConnect, "Connect");
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // btnDownload
             // 
@@ -432,11 +432,11 @@
             this.btnDownload.ThemeAuthor = null;
             this.btnDownload.ThemeName = null;
             this.tipMain.SetToolTip(this.btnDownload, "Download Selected Title");
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            this.btnDownload.Click += new System.EventHandler(this.BtnDownload_Click);
             // 
             // wkrGetMetadata
             // 
-            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wkrGetMetadata_DoWork);
+            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
             // 
             // cxtEpisodes
             // 
@@ -456,14 +456,14 @@
             this.itmDownloadThisEpisode.Name = "itmDownloadThisEpisode";
             this.itmDownloadThisEpisode.Size = new System.Drawing.Size(196, 22);
             this.itmDownloadThisEpisode.Text = "Download This Episode";
-            this.itmDownloadThisEpisode.Click += new System.EventHandler(this.itmDownloadThisEpisode_Click);
+            this.itmDownloadThisEpisode.Click += new System.EventHandler(this.ItmDownloadThisEpisode_Click);
             // 
             // itmDownloadAllEpisodes
             // 
             this.itmDownloadAllEpisodes.Name = "itmDownloadAllEpisodes";
             this.itmDownloadAllEpisodes.Size = new System.Drawing.Size(196, 22);
             this.itmDownloadAllEpisodes.Text = "Download This Season";
-            this.itmDownloadAllEpisodes.Click += new System.EventHandler(this.itmDownloadAllEpisodes_Click);
+            this.itmDownloadAllEpisodes.Click += new System.EventHandler(this.ItmDownloadAllEpisodes_Click);
             // 
             // cxtEpisodeOptions
             // 
@@ -477,14 +477,14 @@
             this.cxtEpisodeOptions.StyleManager = null;
             this.cxtEpisodeOptions.ThemeAuthor = "Narwin";
             this.cxtEpisodeOptions.ThemeName = "MetroLite";
-            this.cxtEpisodeOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtEpisodeOptions_Opening);
+            this.cxtEpisodeOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtEpisodeOptions_Opening);
             // 
             // itmEpisodeMetadata
             // 
             this.itmEpisodeMetadata.Name = "itmEpisodeMetadata";
             this.itmEpisodeMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeMetadata.Text = "Metadata";
-            this.itmEpisodeMetadata.Click += new System.EventHandler(this.itmEpisodeMetadata_Click);
+            this.itmEpisodeMetadata.Click += new System.EventHandler(this.ItmEpisodeMetadata_Click);
             // 
             // itmEpisodeDownload
             // 
@@ -500,14 +500,14 @@
             this.itmDGVDownloadThisEpisode.Name = "itmDGVDownloadThisEpisode";
             this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(139, 22);
             this.itmDGVDownloadThisEpisode.Text = "This Episode";
-            this.itmDGVDownloadThisEpisode.Click += new System.EventHandler(this.itmDGVDownloadThisEpisode_Click);
+            this.itmDGVDownloadThisEpisode.Click += new System.EventHandler(this.ItmDGVDownloadThisEpisode_Click);
             // 
             // itmDGVDownloadThisSeason
             // 
             this.itmDGVDownloadThisSeason.Name = "itmDGVDownloadThisSeason";
             this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(139, 22);
             this.itmDGVDownloadThisSeason.Text = "This Season";
-            this.itmDGVDownloadThisSeason.Click += new System.EventHandler(this.itmDGVDownloadThisSeason_Click);
+            this.itmDGVDownloadThisSeason.Click += new System.EventHandler(this.ItmDGVDownloadThisSeason_Click);
             // 
             // cxtLibrarySections
             // 
@@ -520,14 +520,14 @@
             this.cxtLibrarySections.StyleManager = null;
             this.cxtLibrarySections.ThemeAuthor = "Narwin";
             this.cxtLibrarySections.ThemeName = "MetroLite";
-            this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.cxtLibrarySections_Opening);
+            this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.CxtLibrarySections_Opening);
             // 
             // itmManuallyLoadSection
             // 
             this.itmManuallyLoadSection.Name = "itmManuallyLoadSection";
             this.itmManuallyLoadSection.Size = new System.Drawing.Size(194, 22);
             this.itmManuallyLoadSection.Text = "Manually Load Section";
-            this.itmManuallyLoadSection.Click += new System.EventHandler(this.itmManuallyLoadSection_Click);
+            this.itmManuallyLoadSection.Click += new System.EventHandler(this.ItmManuallyLoadSection_Click);
             // 
             // cxtContentOptions
             // 
@@ -541,21 +541,21 @@
             this.cxtContentOptions.StyleManager = null;
             this.cxtContentOptions.ThemeAuthor = "Narwin";
             this.cxtContentOptions.ThemeName = "MetroLite";
-            this.cxtContentOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtContentOptions_Opening);
+            this.cxtContentOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtContentOptions_Opening);
             // 
             // itmContentMetadata
             // 
             this.itmContentMetadata.Name = "itmContentMetadata";
             this.itmContentMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmContentMetadata.Text = "Metadata";
-            this.itmContentMetadata.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.itmContentMetadata.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // itmContentDownload
             // 
             this.itmContentDownload.Name = "itmContentDownload";
             this.itmContentDownload.Size = new System.Drawing.Size(128, 22);
             this.itmContentDownload.Text = "Download";
-            this.itmContentDownload.Click += new System.EventHandler(this.itmContentDownload_Click);
+            this.itmContentDownload.Click += new System.EventHandler(this.ItmContentDownload_Click);
             // 
             // ofdMetadata
             // 
@@ -580,14 +580,14 @@
             this.loadProfileToolStripMenuItem.Name = "loadProfileToolStripMenuItem";
             this.loadProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.loadProfileToolStripMenuItem.Text = "Load Profile";
-            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.loadProfileToolStripMenuItem_Click);
+            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.LoadProfileToolStripMenuItem_Click);
             // 
             // saveProfileToolStripMenuItem
             // 
             this.saveProfileToolStripMenuItem.Name = "saveProfileToolStripMenuItem";
             this.saveProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.saveProfileToolStripMenuItem.Text = "Save Profile";
-            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.saveProfileToolStripMenuItem_Click);
+            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.SaveProfileToolStripMenuItem_Click);
             // 
             // pbMain
             // 
@@ -642,7 +642,7 @@
             this.lnkLogViewer.ThemeAuthor = null;
             this.lnkLogViewer.ThemeName = null;
             this.lnkLogViewer.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(157)))), ((int)(((byte)(205)))));
-            this.lnkLogViewer.Click += new System.EventHandler(this.lblViewFullLog_LinkClicked);
+            this.lnkLogViewer.Click += new System.EventHandler(this.LblViewFullLog_LinkClicked);
             // 
             // lblLog
             // 
@@ -750,8 +750,7 @@
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvContent.Size = new System.Drawing.Size(632, 356);
             this.dgvContent.TabIndex = 18;
-            this.dgvContent.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvContent_ColumnHeaderMouseClick);
-            this.dgvContent.SelectionChanged += new System.EventHandler(this.dgvContent_OnRowChange);
+            this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
             // 
             // tabTV
             // 
@@ -799,7 +798,7 @@
             this.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTVShows.Size = new System.Drawing.Size(306, 356);
             this.dgvTVShows.TabIndex = 27;
-            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.dgvTVShows_OnRowChange);
+            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
             // 
             // dgvSeasons
             // 
@@ -828,7 +827,7 @@
             this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSeasons.Size = new System.Drawing.Size(320, 175);
             this.dgvSeasons.TabIndex = 20;
-            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.dgvSeasons_OnRowChange);
+            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
             // 
             // dgvEpisodes
             // 
@@ -887,7 +886,7 @@
             this.dgvLibrary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLibrary.Size = new System.Drawing.Size(320, 197);
             this.dgvLibrary.TabIndex = 16;
-            this.dgvLibrary.SelectionChanged += new System.EventHandler(this.dgvLibrary_OnRowChange);
+            this.dgvLibrary.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
             // 
             // dgvServers
             // 
@@ -916,7 +915,7 @@
             this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvServers.Size = new System.Drawing.Size(320, 197);
             this.dgvServers.TabIndex = 15;
-            this.dgvServers.SelectionChanged += new System.EventHandler(this.dgvServers_OnRowChange);
+            this.dgvServers.SelectionChanged += new System.EventHandler(this.DgvServers_OnRowChange);
             // 
             // nfyMain
             // 
@@ -924,7 +923,7 @@
             this.nfyMain.Icon = ((System.Drawing.Icon)(resources.GetObject("nfyMain.Icon")));
             this.nfyMain.Text = "PlexDL";
             this.nfyMain.Visible = true;
-            this.nfyMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.nfyMain_MouseDoubleClick);
+            this.nfyMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NfyMain_MouseDoubleClick);
             // 
             // cxtStreamOptions
             // 
@@ -944,21 +943,21 @@
             this.itmStreamInPVS.Name = "itmStreamInPVS";
             this.itmStreamInPVS.Size = new System.Drawing.Size(169, 22);
             this.itmStreamInPVS.Text = "Stream in PVS";
-            this.itmStreamInPVS.Click += new System.EventHandler(this.itmStreamInPVS_Click);
+            this.itmStreamInPVS.Click += new System.EventHandler(this.ItmStreamInPVS_Click);
             // 
             // itmStreamInVLC
             // 
             this.itmStreamInVLC.Name = "itmStreamInVLC";
             this.itmStreamInVLC.Size = new System.Drawing.Size(169, 22);
             this.itmStreamInVLC.Text = "Stream in VLC";
-            this.itmStreamInVLC.Click += new System.EventHandler(this.itmStreamInVLC_Click);
+            this.itmStreamInVLC.Click += new System.EventHandler(this.ItmStreamInVLC_Click);
             // 
             // itmStreamInBrowser
             // 
             this.itmStreamInBrowser.Name = "itmStreamInBrowser";
             this.itmStreamInBrowser.Size = new System.Drawing.Size(169, 22);
             this.itmStreamInBrowser.Text = "Stream in Browser";
-            this.itmStreamInBrowser.Click += new System.EventHandler(this.itmStreamInBrowser_Click);
+            this.itmStreamInBrowser.Click += new System.EventHandler(this.ItmStreamInBrowser_Click);
             // 
             // sfdExport
             // 
@@ -997,8 +996,8 @@
             this.ThemeAuthor = null;
             this.ThemeName = null;
             this.UseSlideAnimation = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
-            this.Load += new System.EventHandler(this.frmMain_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.cxtEpisodes.ResumeLayout(false);
             this.cxtEpisodeOptions.ResumeLayout(false);
             this.cxtLibrarySections.ResumeLayout(false);

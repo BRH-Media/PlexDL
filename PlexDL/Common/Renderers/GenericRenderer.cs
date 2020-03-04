@@ -7,7 +7,7 @@ namespace PlexDL.Common.Renderers
     /// <summary>
     /// Holder class for the data renderer(s)
     /// </summary>
-    public class GenericRenderer
+    public static class GenericRenderer
     {
         /// <summary>
         /// Renders data into a DataGridView based on the specified RenderStruct

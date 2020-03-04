@@ -27,7 +27,7 @@ namespace PlexDL.UI
 
         private void LoadWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
-            if (StreamingContent.ContentGenre != "")
+            if (!string.IsNullOrEmpty(StreamingContent.ContentGenre))
             {
                 if (lblGenreValue.InvokeRequired)
                 {
@@ -41,7 +41,7 @@ namespace PlexDL.UI
                     lblGenreValue.Text = StreamingContent.ContentGenre;
                 }
             }
-            if (StreamingContent.StreamInformation.ContentDuration != 0)
+            if (StreamingContent.StreamInformation.ContentDuration > 0)
             {
                 if (lblRuntimeValue.InvokeRequired)
                 {
@@ -55,7 +55,7 @@ namespace PlexDL.UI
                     lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
                 }
             }
-            if (StreamingContent.StreamInformation.ByteLength != 0)
+            if (StreamingContent.StreamInformation.ByteLength > 0)
             {
                 if (lblSizeValue.InvokeRequired)
                 {
@@ -69,7 +69,7 @@ namespace PlexDL.UI
                     lblSizeValue.Text = Common.Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
                 }
             }
-            if (StreamingContent.StreamResolution.Height != 0)
+            if (StreamingContent.StreamResolution.Height > 0)
             {
                 if (lblResolutionValue.InvokeRequired)
                 {
@@ -83,21 +83,21 @@ namespace PlexDL.UI
                     lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
                 }
             }
-            if (StreamingContent.StreamInformation.ContentThumbnailUri != "")
+            if (!string.IsNullOrEmpty(StreamingContent.StreamInformation.ContentThumbnailUri))
             {
                 if (picPoster.InvokeRequired)
                 {
                     picPoster.BeginInvoke((MethodInvoker)delegate
                     {
-                        picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
+                        picPoster.BackgroundImage = Common.Methods.GetImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
                     });
                 }
                 else
                 {
-                    picPoster.BackgroundImage = Common.Methods.getImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
+                    picPoster.BackgroundImage = Common.Methods.GetImageFromUrl(StreamingContent.StreamInformation.ContentThumbnailUri);
                 }
             }
-            if (StreamingContent.StreamInformation.Container != "")
+            if (!string.IsNullOrEmpty(StreamingContent.StreamInformation.Container))
             {
                 if (lblContainerValue.InvokeRequired)
                 {
@@ -140,7 +140,7 @@ namespace PlexDL.UI
                     Size = new Size(79, 119),
                     Location = new Point(3, 3),
                     BackgroundImageLayout = ImageLayout.Stretch,
-                    BackgroundImage = Common.Methods.getImageFromUrl(a.ThumbnailUri),
+                    BackgroundImage = Common.Methods.GetImageFromUrl(a.ThumbnailUri),
                     Visible = true
                 };
                 p.Controls.Add(lblActorRole);
@@ -233,7 +233,7 @@ namespace PlexDL.UI
             return p;
         }
 
-        private void frmTitleInformation_Load(object sender, EventArgs e)
+        private void FrmTitleInformation_Load(object sender, EventArgs e)
         {
             if (!StationaryMode)
                 PlexDL.WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
@@ -242,9 +242,11 @@ namespace PlexDL.UI
                 if (Home.settings.Generic.AnimationSpeed > 0)
                 {
                     Opacity = 0;      //first the opacity is 0
-                    t1 = new Timer();
-                    t1.Interval = Home.settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
-                    t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
+                    t1 = new Timer
+                    {
+                        Interval = Home.settings.Generic.AnimationSpeed  //we'll increase the opacity every 10ms
+                    };
+                    t1.Tick += new EventHandler(FadeIn);  //this calls the function that changes opacity
                     t1.Start();
                 }
             }
@@ -255,9 +257,11 @@ namespace PlexDL.UI
             if (Home.settings.Generic.AnimationSpeed > 0)
             {
                 e.Cancel = true;
-                t1 = new Timer();
-                t1.Interval = Home.settings.Generic.AnimationSpeed;
-                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1 = new Timer
+                {
+                    Interval = Home.settings.Generic.AnimationSpeed
+                };
+                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
@@ -268,12 +272,12 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void BtnExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void fadeOut(object sender, EventArgs e)
+        private void FadeOut(object sender, EventArgs e)
         {
             if (Opacity <= 0)     //check if opacity is 0
             {
@@ -284,7 +288,7 @@ namespace PlexDL.UI
                 Opacity -= 0.05;
         }
 
-        private void fadeIn(object sender, EventArgs e)
+        private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
                 t1.Stop();   //this stops the timer if the form is completely displayed
@@ -292,7 +296,7 @@ namespace PlexDL.UI
                 Opacity += 0.05;
         }
 
-        private void btnExportMetadata_Click(object sender, EventArgs e)
+        private void BtnExportMetadata_Click(object sender, EventArgs e)
         {
             if (sfdExport.ShowDialog() == DialogResult.OK)
             {
@@ -300,7 +304,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnImport_Click(object sender, EventArgs e)
+        private void BtnImport_Click(object sender, EventArgs e)
         {
             if (ofdMetadata.ShowDialog() == DialogResult.OK)
             {
@@ -311,7 +315,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnStreamInVLC_Click(object sender, EventArgs e)
+        private void BtnStreamInVLC_Click(object sender, EventArgs e)
         {
             VLCLauncher.LaunchVLC(StreamingContent.StreamInformation);
         }

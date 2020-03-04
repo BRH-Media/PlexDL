@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common.API
 {
-    public class ImportExport
+    public static class ImportExport
     {
         public static void MetadataToFile(string fileName, PlexObject contentToExport, bool silent = false)
         {
@@ -32,7 +32,7 @@ namespace PlexDL.Common.API
             {
                 if (!silent)
                     MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "XMLMetadataSaveError");
+                LoggingHelpers.RecordException(ex.Message, "XMLMetadataSaveError");
                 return;
             }
         }
@@ -54,7 +54,7 @@ namespace PlexDL.Common.API
             {
                 if (!silent)
                     MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "XMLMetadataLoadError");
+                LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
                 return new PlexObject();
             }
         }

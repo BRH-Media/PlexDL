@@ -17,26 +17,28 @@ namespace PlexDL.Common.PlayerLaunchers
                     //downloads won't work properly if you're streaming at the same time
                     if (!Home.IsDownloadRunning && !Home.IsEngineRunning)
                     {
-                        Player frm = new Player();
-                        frm.StreamingContent = stream;
-                        frm.TitlesTable = titles;
-                        LoggingHelpers.addToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
+                        Player frm = new Player
+                        {
+                            StreamingContent = stream,
+                            TitlesTable = titles
+                        };
+                        LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
                         frm.ShowDialog();
                     }
                     else
                     {
                         MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        LoggingHelpers.addToLog("Tried to stream content via PVS, but a download is running.");
+                        LoggingHelpers.AddToLog("Tried to stream content via PVS, but a download is running.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
+                    LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                     return;
                 }
             else
-                LoggingHelpers.addToLog("Tried to stream content via PVS, but one or more values were null.");
+                LoggingHelpers.AddToLog("Tried to stream content via PVS, but one or more values were null.");
         }
     }
 }

@@ -7,9 +7,9 @@ using System.Xml;
 
 namespace PlexDL.Common.API
 {
-    public class Relays
+    public static class Relays
     {
-        public static List<Server> GetServerRelays(string token, bool matchCurrentList = true)
+        public static List<Server> GetServerRelays(string token)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace PlexDL.Common.API
             catch (Exception ex)
             {
                 MessageBox.Show("Relay Retrieval Error\n\n" + ex.ToString(), "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "GetRelaysError");
+                LoggingHelpers.RecordException(ex.Message, "GetRelaysError");
                 return new List<Server>();
             }
         }

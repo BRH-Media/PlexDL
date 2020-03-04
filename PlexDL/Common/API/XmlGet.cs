@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace PlexDL.Common.API
 {
-    public class XmlGet
+    public static class XmlGet
     {
         public static void GetXMLTransactionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
@@ -49,7 +49,7 @@ namespace PlexDL.Common.API
                 }
                 catch (Exception ex)
                 {
-                    LoggingHelpers.recordException(ex.Message, "CacheLoadError");
+                    LoggingHelpers.RecordException(ex.Message, "CacheLoadError");
                     //force the GetXMLTransaction method to ignore cached items
                     return GetXMLTransaction(uri, secret, true, silent);
                 }
@@ -60,23 +60,13 @@ namespace PlexDL.Common.API
                 XmlDocument XMLResponse = null;
                 //Declare an HTTP-specific implementation of the WebRequest class.
                 HttpWebRequest objHttpWebRequest;
-                //Declare an HTTP-specific implementation of the WebResponse class
-                HttpWebResponse objHttpWebResponse = null;
                 //Declare a generic view of a sequence of bytes
                 Stream objResponseStream = null;
                 //Declare XMLReader
                 XmlTextReader objXMLReader;
 
-                string secret2;
-                if (secret == "")
-                {
-                    secret2 = Methods.MatchUriToToken(uri, Home.plexServers);
-                }
-                else
-                {
-                    secret2 = secret;
-                }
-                if (secret2 == "")
+                string secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, Home.plexServers) : secret;
+                if (string.IsNullOrEmpty(secret2))
                 {
                     secret2 = Home.settings.ConnectionInfo.PlexAccountToken;
                 }
@@ -87,6 +77,8 @@ namespace PlexDL.Common.API
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 //Creates an HttpWebRequest for the specified URL.
                 objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
+                //Declare an HTTP-specific implementation of the WebResponse class
+                HttpWebResponse objHttpWebResponse;
                 //---------- Start HttpRequest
                 try
                 {
@@ -121,23 +113,15 @@ namespace PlexDL.Common.API
                     //Close HttpWebResponse
                     objHttpWebResponse.Close();
 
-                    LoggingHelpers.recordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
+                    LoggingHelpers.RecordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
                 }
                 catch (Exception ex)
                 {
-                    LoggingHelpers.recordException(ex.Message, "XMLTransactionError");
-                    LoggingHelpers.recordTransaction(fullUri, "Undetermined");
+                    LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
+                    LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
                     if (!silent)
                         MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return new XmlDocument();
-                }
-                finally
-                {
-                    //Release objects
-                    objXMLReader = null;
-                    objResponseStream = null;
-                    objHttpWebResponse = null;
-                    objHttpWebRequest = null;
                 }
                 XMLCaching.XMLToCache(XMLResponse, uri);
                 return XMLResponse;

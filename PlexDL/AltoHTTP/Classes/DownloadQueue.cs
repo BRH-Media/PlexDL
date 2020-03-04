@@ -20,7 +20,7 @@ namespace PlexDL.AltoHttp
         #region Variables
 
         private HttpDownloader downloader;
-        private List<QueueElement> elements;
+        private readonly List<QueueElement> elements;
         private QueueElement currentElement;
         private double progress;
         private int downloadSpeed;
@@ -73,17 +73,16 @@ namespace PlexDL.AltoHttp
 
         #region Events
 
-        private void downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void Downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progress = e.Progress;
             this.CurrentProgress = progress;
             downloadSpeed = e.Speed;
         }
 
-        private void downloader_DownloadCompleted(object sender, EventArgs e)
+        private void Downloader_DownloadCompleted(object sender, EventArgs e)
         {
-            if (QueueElementCompleted != null)
-                QueueElementCompleted(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
+            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i].Equals(currentElement))
@@ -99,13 +98,12 @@ namespace PlexDL.AltoHttp
                 }
             }
 
-            createNextDownload();
+            CreateNextDownload();
         }
 
-        private void downloader_DownloadError(object sender, EventArgs e)
+        private void Downloader_DownloadError(object sender, EventArgs e)
         {
-            if (QueueElementCompleted != null)
-                QueueElementCompleted(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
+            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i].Equals(currentElement))
@@ -135,8 +133,7 @@ namespace PlexDL.AltoHttp
                 MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.", "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            if (QueueCompleted != null)
-                QueueCompleted(this, new EventArgs());
+            QueueCompleted?.Invoke(this, new EventArgs());
         }
 
         #endregion Events
@@ -247,7 +244,7 @@ namespace PlexDL.AltoHttp
             }
             elements.RemoveAt(index);
             if (!queuePaused)
-                createNextDownload();
+                CreateNextDownload();
         }
 
         /// <summary>
@@ -263,7 +260,7 @@ namespace PlexDL.AltoHttp
         /// </summary>
         public void StartAsync()
         {
-            createNextDownload();
+            CreateNextDownload();
         }
 
         /// <summary>
@@ -283,9 +280,9 @@ namespace PlexDL.AltoHttp
         /// </summary>
         public void ResumeAsync()
         {
-            if (currentElement.Url == "")
+            if (string.IsNullOrEmpty(currentElement.Url))
             {
-                createNextDownload();
+                CreateNextDownload();
                 return;
             }
             downloader.ResumeAsync();
@@ -313,29 +310,31 @@ namespace PlexDL.AltoHttp
 
         #region Helper Methods
 
-        private void createNextDownload()
+        private void CreateNextDownload()
         {
-            QueueElement elt = getFirstNotCompletedElement();
+            QueueElement elt = FirstNotCompletedElement;
             if (string.IsNullOrEmpty(elt.Url)) return;
             downloader = new HttpDownloader(elt.Url, elt.Destination);
-            downloader.DownloadCompleted += downloader_DownloadCompleted;
-            downloader.DownloadProgressChanged += downloader_DownloadProgressChanged;
-            downloader.DownloadError += downloader_DownloadError;
+            downloader.DownloadCompleted += Downloader_DownloadCompleted;
+            downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
+            downloader.DownloadError += Downloader_DownloadError;
             downloader.StartAsync();
             currentElement = elt;
             queuePaused = false;
             startEventRaised = false;
         }
 
-        private QueueElement getFirstNotCompletedElement()
+        private QueueElement FirstNotCompletedElement
         {
-            for (int i = 0; i < elements.Count; i++)
+            get
             {
-                if (!elements[i].Completed) return elements[i];
+                for (int i = 0; i < elements.Count; i++)
+                {
+                    if (!elements[i].Completed) return elements[i];
+                }
+                QueueCompleted?.Invoke(this, new EventArgs());
+                return new QueueElement();
             }
-            if (QueueCompleted != null)
-                QueueCompleted(this, new EventArgs());
-            return new QueueElement();
         }
 
         #endregion Helper Methods

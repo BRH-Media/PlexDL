@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.Common.Renderers.DGVRenderers
 {
-    public class ServerViewRenderer
+    public static class ServerViewRenderer
     {
         public static void RenderView(List<Server> data, DataGridView target)
         {

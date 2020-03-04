@@ -23,12 +23,12 @@ namespace PlexDL.Common.PlayerLaunchers
                 p.StartInfo.FileName = vlc;
                 p.StartInfo.Arguments = arg;
                 p.Start();
-                LoggingHelpers.addToLog("Started streaming " + stream.ContentTitle + " (VLC)");
+                LoggingHelpers.AddToLog("Started streaming " + stream.ContentTitle + " (VLC)");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
+                LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                 return;
             }
         }

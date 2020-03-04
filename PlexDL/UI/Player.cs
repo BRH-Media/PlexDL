@@ -39,7 +39,7 @@ namespace PlexDL.UI
             this.styleMain.MetroForm = this;
         }
 
-        private void fadeIn(object sender, EventArgs e)
+        private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
                 t1.Stop();   //this stops the timer if the form is completely displayed
@@ -47,7 +47,7 @@ namespace PlexDL.UI
                 Opacity += 0.05;
         }
 
-        private void frmPlayer_Load(object sender, EventArgs e)
+        private void FrmPlayer_Load(object sender, EventArgs e)
         {
             string FormTitle = StreamingContent.StreamInformation.ContentTitle;
             this.Text = FormTitle;
@@ -79,16 +79,16 @@ namespace PlexDL.UI
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        LoggingHelpers.recordException(ex.Message, "VLCLaunchError");
+                        LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                         this.Close();
                     }
                 }
             }
             mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
             mPlayer.Sliders.Position.TrackBar = trkDuration;
-            mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
-            mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
-            mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
+            mPlayer.Events.MediaPositionChanged += MPlayer_MediaPositionChanged;
+            mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
+            mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
             mPlayer.FullScreenMode = FullScreenMode.Form;
             mPlayer.Display.FullScreenMode = FullScreenMode.Display;
             mPlayer.Display.Window = pnlPlayer;
@@ -144,30 +144,20 @@ namespace PlexDL.UI
                         mPlayer.FullScreen = false;
                     }
                 }
-                else if (keyData == (Keys.F))
-                {
-                    if (mPlayer.Display.FullScreen)
-                        Fullscreen(false);
-                    else
-                        Fullscreen(true);
-                }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void Fullscreen(bool enabled)
-        {
-            // mPlayer.FullScreen = enabled;
-        }
-
-        private void frmPlayer_FormClosing(object sender, FormClosingEventArgs e)
+        private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
             if ((Home.settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
             {
                 e.Cancel = true;
-                t1 = new Timer();
-                t1.Interval = Home.settings.Generic.AnimationSpeed;
-                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1 = new Timer
+                {
+                    Interval = Home.settings.Generic.AnimationSpeed
+                };
+                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
@@ -182,7 +172,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void mPlayer_ContentFinished(object sender, EventArgs e)
+        private void MPlayer_ContentFinished(object sender, EventArgs e)
         {
             if (!Home.settings.Player.PlayNextTitleAutomatically)
             {
@@ -196,11 +186,12 @@ namespace PlexDL.UI
             }
         }
 
-        private void mPlayer_ContentStarted(object sender, EventArgs e)
+        private void MPlayer_ContentStarted(object sender, EventArgs e)
         {
+            //nothing just yet :)
         }
 
-        private void mPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
+        private void MPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
         {
             TimeSpan fromStart = TimeSpan.FromTicks(e.FromStart);
             TimeSpan toStop = TimeSpan.FromTicks(e.ToStop);
@@ -209,7 +200,7 @@ namespace PlexDL.UI
             lblTotalDuration.Text = toStop.ToString(@"hh\:mm\:ss");
         }
 
-        private void fadeOut(object sender, EventArgs e)
+        private void FadeOut(object sender, EventArgs e)
         {
             if (Opacity <= 0)     //check if opacity is 0
             {
@@ -220,27 +211,23 @@ namespace PlexDL.UI
                 Opacity -= 0.05;
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void BtnExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void btnCopyLink_Click(object sender, EventArgs e)
+        private void BtnCopyLink_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(StreamingContent.StreamInformation.Link);
         }
 
-        private void tmrCopied_Tick(object sender, EventArgs e)
+        private void TmrCopied_Tick(object sender, EventArgs e)
         {
             //btnCopyLink.Text = "Copy Stream Link";
             tmrCopied.Stop();
         }
 
-        private void materialLabel1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void tmrRefreshUI_Tick(object sender, EventArgs e)
+        private void TmrRefreshUI_Tick(object sender, EventArgs e)
         {
             /*
             PlayingPosition = CalculateTime(vdo.CurrentPosition);
@@ -249,7 +236,7 @@ namespace PlexDL.UI
             */
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void BtnStop_Click(object sender, EventArgs e)
         {
             Stop();
         }
@@ -378,13 +365,13 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnPrevTitle_Click(object sender, EventArgs e)
+        private void BtnPrevTitle_Click(object sender, EventArgs e)
         {
             Stop();
             PrevTitle();
         }
 
-        private string getBaseUri(bool incToken)
+        private string GetBaseUri(bool incToken)
         {
             if (incToken)
             {
@@ -412,27 +399,27 @@ namespace PlexDL.UI
         {
             PlexMovie obj = new PlexMovie();
 
-            DownloadInfo dlInfo = getContentDownloadInfo(index);
+            DownloadInfo dlInfo = GetContentDownloadInfo(index);
 
             obj.StreamInformation = dlInfo;
             obj.StreamIndex = index;
             return obj;
         }
 
-        private DownloadInfo getContentDownloadInfo(int index)
+        private DownloadInfo GetContentDownloadInfo(int index)
         {
             if ((index + 1) <= TitlesTable.Rows.Count)
             {
                 DataRow result = TitlesTable.Rows[index];
-                DownloadInfo obj = new DownloadInfo();
+                DownloadInfo obj;
                 string key = result["key"].ToString();
-                string baseUri = getBaseUri(false);
+                string baseUri = GetBaseUri(false);
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
                 XmlDocument reply = XmlGet.GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken);
 
-                obj = getContentDownloadInfo_Xml(reply);
+                obj = GetContentDownloadInfo_Xml(reply);
                 return obj;
             }
             else
@@ -442,7 +429,7 @@ namespace PlexDL.UI
             }
         }
 
-        private DownloadInfo getContentDownloadInfo_Xml(XmlDocument xml)
+        private DownloadInfo GetContentDownloadInfo_Xml(XmlDocument xml)
         {
             DownloadInfo obj = new DownloadInfo();
 
@@ -456,9 +443,9 @@ namespace PlexDL.UI
                 title = title.Substring(0, Home.settings.Generic.DefaultStringLength);
             string thumb = video["thumb"].ToString();
             string thumbnailFullUri = "";
-            if (!(thumb == ""))
+            if (!string.IsNullOrEmpty(thumb))
             {
-                string baseUri = getBaseUri(false).TrimEnd('/');
+                string baseUri = GetBaseUri(false).TrimEnd('/');
                 thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + Home.settings.ConnectionInfo.PlexAccountToken;
             }
 
@@ -468,9 +455,9 @@ namespace PlexDL.UI
             string container = partRow["container"].ToString();
             long byteLength = Convert.ToInt64(partRow["size"]);
             int contentDuration = Convert.ToInt32(partRow["duration"]);
-            string fileName = Common.Methods.removeIllegalCharacters(title + "." + container);
+            string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
 
-            string link = getBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + Home.settings.ConnectionInfo.PlexAccountToken;
+            string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + Home.settings.ConnectionInfo.PlexAccountToken;
             obj.Link = link;
             obj.Container = container;
             obj.ByteLength = byteLength;
@@ -482,7 +469,7 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private void btnNextTitle_Click(object sender, EventArgs e)
+        private void BtnNextTitle_Click(object sender, EventArgs e)
         {
             Stop();
             NextTitle();
@@ -552,12 +539,12 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnSkipBack_Click(object sender, EventArgs e)
+        private void BtnSkipBack_Click(object sender, EventArgs e)
         {
             SkipBack();
         }
 
-        private void btnSkipForward_Click(object sender, EventArgs e)
+        private void BtnSkipForward_Click(object sender, EventArgs e)
         {
             SkipForward();
         }
@@ -599,33 +586,7 @@ namespace PlexDL.UI
             }
         }
 
-        /*
-         *
-         * FUTURE FEATURE!
-         *
-        private void btnFullScreen_Click(object sender, EventArgs e)
-        {
-            if (IsFullScreen)
-            {
-                SetIconOpenFS();
-                IsFullScreen = false;
-                mPlayer.FullScreen = false;
-            }
-            else
-            {
-                if (Home.settings.Player.ShowFSMessage)
-                {
-                    MessageBox.Show("You're about to enter Fullscreen Mode! To exit fullscreen mode, use the escape key. This message will not be shown again in this session.", "Message", MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    Home.settings.Player.ShowFSMessage = false;
-                }
-                SetIconExitFS();
-                IsFullScreen = true;
-                mPlayer.FullScreen = true;
-            }
-        }
-        */
-
-        private void btnPlayPause_Click(object sender, EventArgs e)
+        private void BtnPlayPause_Click(object sender, EventArgs e)
         {
             PlayPause();
         }

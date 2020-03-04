@@ -12,9 +12,8 @@
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is QueueElement)
+            if (obj is QueueElement el)
             {
-                QueueElement el = (QueueElement)obj;
                 return el.Url == Url && el.Destination == Destination && el.Completed == Completed && el.Id == Id;
             }
             return false;

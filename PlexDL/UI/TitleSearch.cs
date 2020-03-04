@@ -21,19 +21,19 @@ namespace PlexDL.UI
             this.cbxSearchRule.SelectedIndex = 0;
         }
 
-        private void btnStartSearch_Click(object sender, EventArgs e)
+        private void BtnStartSearch_Click(object sender, EventArgs e)
         {
             try
             {
-                if ((txtSearchTerm.Text == "") || (cbxSearchColumn.SelectedItem == null) || !(cbxSearchRule.SelectedIndex >= 0))
-                {
-                    MessageBox.Show("Please enter required values or exit search", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
+                if (!string.IsNullOrEmpty(txtSearchTerm.Text) && cbxSearchColumn.SelectedItem != null && cbxSearchRule.SelectedIndex >= 0)
                 {
                     this.DialogResult = DialogResult.OK;
                     CanFadeOut = false;
                     this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Please enter required values or exit search", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void fadeOut(object sender, EventArgs e)
+        private void FadeOut(object sender, EventArgs e)
         {
             if (Opacity <= 0)     //check if opacity is 0
             {
@@ -53,7 +53,7 @@ namespace PlexDL.UI
                 Opacity -= 0.05;
         }
 
-        private void fadeIn(object sender, EventArgs e)
+        private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
                 t1.Stop();   //this stops the timer if the form is completely displayed
@@ -61,7 +61,7 @@ namespace PlexDL.UI
                 Opacity += 0.05;
         }
 
-        private void populateColumns()
+        private void PopulateColumns()
         {
             cbxSearchColumn.Items.Clear();
             foreach (DataColumn column in SearchContext.SearchCollection.Columns)
@@ -77,27 +77,31 @@ namespace PlexDL.UI
             }
         }
 
-        private void frmSearch_Load(object sender, EventArgs e)
+        private void FrmSearch_Load(object sender, EventArgs e)
         {
             if (Home.settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0
-                t1 = new Timer();
-                t1.Interval = Home.settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
-                t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
+                t1 = new Timer
+                {
+                    Interval = Home.settings.Generic.AnimationSpeed  //we'll increase the opacity every 10ms
+                };
+                t1.Tick += new EventHandler(FadeIn);  //this calls the function that changes opacity
                 t1.Start();
             }
-            populateColumns();
+            PopulateColumns();
         }
 
-        private void frmSearch_Closing(object sender, FormClosingEventArgs e)
+        private void FrmSearch_Closing(object sender, FormClosingEventArgs e)
         {
             if ((Home.settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
             {
                 e.Cancel = true;
-                t1 = new Timer();
-                t1.Interval = Home.settings.Generic.AnimationSpeed;
-                t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
+                t1 = new Timer
+                {
+                    Interval = Home.settings.Generic.AnimationSpeed
+                };
+                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
@@ -110,8 +114,10 @@ namespace PlexDL.UI
 
         public static SearchOptions ShowSearch(SearchOptions settings)
         {
-            SearchForm frm = new SearchForm();
-            frm.SearchContext = settings;
+            SearchForm frm = new SearchForm
+            {
+                SearchContext = settings
+            };
             SearchOptions result = new SearchOptions();
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -123,7 +129,7 @@ namespace PlexDL.UI
             return result;
         }
 
-        private void btnCancelSearch_Click(object sender, EventArgs e)
+        private void BtnCancelSearch_Click(object sender, EventArgs e)
         {
             CanFadeOut = true;
             this.Close();

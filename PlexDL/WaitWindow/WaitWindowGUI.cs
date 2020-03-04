@@ -23,13 +23,12 @@ namespace PlexDL.WaitWindow
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width - 32;
         }
 
-        private WaitWindow _Parent;
+        private readonly WaitWindow _Parent;
 
         private delegate T FunctionInvoker<T>();
 
         internal object _Result;
         internal Exception _Error;
-        private PVS.MediaPlayer.VideoDisplay videoDisplay1;
         private CircularProgressBar.CircularProgressBar ProgressMain;
         private IAsyncResult threadResult;
 
@@ -100,7 +99,7 @@ namespace PlexDL.WaitWindow
         /// <summary>
         /// Designer variable used to keep track of non-visual components.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private readonly System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Disposes resources used by the form.

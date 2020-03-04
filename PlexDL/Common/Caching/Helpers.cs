@@ -36,7 +36,7 @@ namespace PlexDL.Common.Caching
             catch (Exception ex)
             {
                 //log the error and exit
-                LoggingHelpers.recordException(ex.Message, "CacheDirBuildError");
+                LoggingHelpers.RecordException(ex.Message, "CacheDirBuildError");
                 return;
             }
         }
