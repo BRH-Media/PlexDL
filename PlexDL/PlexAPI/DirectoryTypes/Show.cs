@@ -15,5 +15,6 @@ namespace PlexDL.PlexAPI.DirectoryTypes
         public Show(User user, Server server, String uri) : base(user, server, uri)
         {
         }
+
     }
 }

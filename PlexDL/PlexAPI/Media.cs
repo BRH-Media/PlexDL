@@ -17,5 +17,6 @@ namespace PlexDL.PlexAPI
         public string container { get; set; }
         public string videoFrameRate { get; set; }
         public List<Part> parts { get; set; }
+
     }
 }

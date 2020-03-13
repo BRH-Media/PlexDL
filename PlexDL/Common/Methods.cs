@@ -162,7 +162,7 @@ namespace PlexDL.Common
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        public static Bitmap GetImageFromUrl(string url)
+        public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
         {
             try
             {
@@ -173,22 +173,41 @@ namespace PlexDL.Common
                 }
                 else
                 {
-                    if (ThumbCaching.ThumbInCache(url))
+                    if (!forceNoCache)
                     {
-                        return ThumbCaching.ThumbFromCache(url);
+                        if (ThumbCaching.ThumbInCache(url))
+                            return ThumbCaching.ThumbFromCache(url);
+                        else
+                            return ForceImageFromUrl(url);
                     }
                     else
-                    {
-                        var request = System.Net.WebRequest.Create(url);
+                        return ForceImageFromUrl(url);
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ThumbIOAccessError");
+                return ForceImageFromUrl(url);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
+                return PlexDL.Properties.Resources.image_not_available_png_8;
+            }
+        }
 
-                        using (var response = request.GetResponse())
-                        using (var stream = response.GetResponseStream())
-                        {
-                            Bitmap result = (Bitmap)Bitmap.FromStream(stream);
-                            ThumbCaching.ThumbToCache(result, url);
-                            return result;
-                        }
-                    }
+        private static Bitmap ForceImageFromUrl(string url)
+        {
+            try
+            {
+                var request = System.Net.WebRequest.Create(url);
+
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                {
+                    Bitmap result = (Bitmap)Bitmap.FromStream(stream);
+                    ThumbCaching.ThumbToCache(result, url);
+                    return result;
                 }
             }
             catch (Exception ex)

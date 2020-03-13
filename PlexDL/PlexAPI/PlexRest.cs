@@ -1,11 +1,10 @@
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
-using System.Xml.Serialization;
+using RestSharp.Deserializers;
 
 namespace PlexDL.PlexAPI
 {
-    [XmlInclude(typeof(Server))]
-    [Serializable]
     public abstract class PlexRest
     {
         private const string BaseUrl = "https://my.plexapp.com";
@@ -13,7 +12,7 @@ namespace PlexDL.PlexAPI
         protected RestClient GetRestClient()
         {
             var client = new RestClient();
-            client.BaseUrl = GetBaseUrl();
+            client.BaseUrl = new Uri(GetBaseUrl());
             return client;
         }
 
@@ -36,12 +35,14 @@ namespace PlexDL.PlexAPI
 
         public T Execute<T>(RestRequest request, RestClient client) where T : new()
         {
+            client.UseXml();
             var response = client.Execute<T>(request);
 
             if (response.ErrorException != null)
             {
                 throw response.ErrorException;
             }
+            //Console.WriteLine(response.ResponseUri);
             return response.Data;
         }
 
@@ -58,6 +59,7 @@ namespace PlexDL.PlexAPI
 
         public T Execute<T>(RestRequest request, String username, String password) where T : new()
         {
+
             var client = GetRestClient();
 
             request = AddPlexHeaders(request);
@@ -91,6 +93,7 @@ namespace PlexDL.PlexAPI
 
         public String Execute(RestRequest request, String username, String password)
         {
+
             var client = GetRestClient();
 
             request = AddPlexHeaders(request);
@@ -100,4 +103,5 @@ namespace PlexDL.PlexAPI
             return Execute(request, client);
         }
     }
+
 }

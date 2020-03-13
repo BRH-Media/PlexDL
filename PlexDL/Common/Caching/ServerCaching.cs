@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {
@@ -30,13 +32,22 @@ namespace PlexDL.Common.Caching
 
         public static void ServerToCache(List<PlexAPI.Server> serverList, string accountToken)
         {
-            if (Home.settings.CacheSettings.Mode.EnableServerCaching)
+            try
             {
-                string fqPath = ServerCachePath(accountToken);
-                XmlSerializer serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));
-                TextWriter filestream = new StreamWriter(fqPath);
-                serialiser.Serialize(filestream, serverList);
-                filestream.Close();
+                if (Home.settings.CacheSettings.Mode.EnableServerCaching)
+                {
+                    string fqPath = ServerCachePath(accountToken);
+                    XmlSerializer serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));
+                    TextWriter filestream = new StreamWriter(fqPath);
+                    serialiser.Serialize(filestream, serverList);
+                    filestream.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ServerCacheWriteError");
+                return;
             }
         }
 

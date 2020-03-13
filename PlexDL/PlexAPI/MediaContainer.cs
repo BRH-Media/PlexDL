@@ -69,16 +69,20 @@ namespace PlexDL.PlexAPI
         {
             var request = new RestRequest();
             request.Resource = uri;
+            Console.WriteLine("Getting items from: " + uri);
 
             showDirectories = new List<DirectoryTypes.Show>();
 
             var m = Execute<MediaContainer>(request, user);
-            Utils.CopyFrom<MediaContainer, MediaContainer>(this, m);
-
-            // Loop through directories and add the user, server and uri
-            for (var i = 0; i < directories.Count; i++)
+            if (m.directories != null)
             {
-                ProcessDirectory(directories[i], i);
+                Utils.CopyFrom(this, m);
+
+                // Loop through directories and add the user, server and uri
+                for (var i = 0; i < directories.Count; i++)
+                {
+                    ProcessDirectory(directories[i], i);
+                }
             }
         }
 

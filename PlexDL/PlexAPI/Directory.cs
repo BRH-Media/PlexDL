@@ -64,6 +64,7 @@ namespace PlexDL.PlexAPI
                 {
                     items[i].uri = uri + "/" + items[i].key;
                 }
+
             }
             return items;
         }

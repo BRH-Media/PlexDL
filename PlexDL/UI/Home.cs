@@ -227,15 +227,24 @@ namespace PlexDL.UI
 
                     DownloadInfo dlInfo = GetContentDownloadInfo_Xml(metadata);
 
-                    AddToLog("Assembling Object");
+                    if (dlInfo != null)
+                    {
 
-                    obj.ContentGenre = GetContentGenre(metadata);
-                    obj.StreamInformation = dlInfo;
-                    obj.Season = GetTVShowSeason(metadata);
-                    obj.EpisodesInSeason = episodesTable.Rows.Count;
-                    obj.TVShowName = GetTVShowTitle(metadata);
-                    obj.StreamResolution = GetContentResolution(metadata);
-                    obj.StreamIndex = index;
+                        AddToLog("Assembling Object");
+
+                        obj.ContentGenre = GetContentGenre(metadata);
+                        obj.StreamInformation = dlInfo;
+                        obj.Season = GetTVShowSeason(metadata);
+                        obj.EpisodesInSeason = episodesTable.Rows.Count;
+                        obj.TVShowName = GetTVShowTitle(metadata);
+                        obj.StreamResolution = GetContentResolution(metadata);
+                        obj.StreamIndex = index;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to get contextual information; an unknown error occurred. Check the exception log for more information.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        AddToLog("DownloadInfo is invalid");
+                    }
                 }
                 else
                     AddToLog("XML Invalid");
@@ -1042,7 +1051,7 @@ namespace PlexDL.UI
 
         #endregion UpdateWorkers
 
-        
+
 
         #region BackgroundWorkers
 
@@ -1376,7 +1385,17 @@ namespace PlexDL.UI
             {
                 if (ServerCaching.ServerInCache(user.authenticationToken))
                 {
-                    e.Result = ServerCaching.ServerFromCache(user.authenticationToken);
+                    try
+                    {
+                        e.Result = ServerCaching.ServerFromCache(user.authenticationToken);
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        List<Server> result = plex.GetServers(user);
+                        ServerCaching.ServerToCache(result, user.authenticationToken);
+                        e.Result = result;
+                        LoggingHelpers.RecordException(ex.Message, "ServerIOAccessError");
+                    }
                 }
                 else
                 {
@@ -1462,56 +1481,64 @@ namespace PlexDL.UI
 
         private DownloadInfo GetContentDownloadInfo_Xml(XmlDocument xml)
         {
-            if (Methods.PlexXmlValid(xml))
+            try
             {
-                DownloadInfo obj = new DownloadInfo();
-
-                AddToLog("Creating new datasets");
-                DataSet sections = new DataSet();
-                sections.ReadXml(new XmlNodeReader(xml));
-
-                DataTable part = sections.Tables["Part"];
-                DataRow video = sections.Tables["Video"].Rows[0];
-                string title = video["title"].ToString();
-                if (title.Length > settings.Generic.DefaultStringLength)
-                    title = title.Substring(0, settings.Generic.DefaultStringLength);
-                string thumb = video["thumb"].ToString();
-                string thumbnailFullUri = "";
-                if (string.IsNullOrEmpty(thumb))
+                if (Methods.PlexXmlValid(xml))
                 {
+                    DownloadInfo obj = new DownloadInfo();
+
+                    AddToLog("Creating new datasets");
+                    DataSet sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(xml));
+
+                    DataTable part = sections.Tables["Part"];
+                    DataRow video = sections.Tables["Video"].Rows[0];
+                    string title = video["title"].ToString();
+                    if (title.Length > settings.Generic.DefaultStringLength)
+                        title = title.Substring(0, settings.Generic.DefaultStringLength);
+                    string thumb = video["thumb"].ToString();
+                    string thumbnailFullUri = "";
+                    if (string.IsNullOrEmpty(thumb))
+                    {
+                    }
+                    else
+                    {
+                        string baseUri = GetBaseUri(false).TrimEnd('/');
+                        thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GetToken();
+                    }
+
+                    DataRow partRow = part.Rows[0];
+
+                    string filePart = "";
+                    string container = "";
+                    if (partRow["key"] != null)
+                        filePart = partRow["key"].ToString();
+                    if (partRow["container"] != null)
+                        container = partRow["container"].ToString();
+                    long byteLength = Convert.ToInt64(partRow["size"]);
+                    int contentDuration = Convert.ToInt32(partRow["duration"]);
+                    string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
+
+                    string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GetToken();
+                    obj.Link = link;
+                    obj.Container = container;
+                    obj.ByteLength = byteLength;
+                    obj.ContentDuration = contentDuration;
+                    obj.FileName = fileName;
+                    obj.ContentTitle = title;
+                    obj.ContentThumbnailUri = thumbnailFullUri;
+
+                    return obj;
                 }
                 else
                 {
-                    string baseUri = GetBaseUri(false).TrimEnd('/');
-                    thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GetToken();
+                    return new DownloadInfo();
                 }
-
-                DataRow partRow = part.Rows[0];
-
-                string filePart = "";
-                string container = "";
-                if (partRow["key"] != null)
-                    filePart = partRow["key"].ToString();
-                if (partRow["container"] != null)
-                    container = partRow["container"].ToString();
-                long byteLength = Convert.ToInt64(partRow["size"]);
-                int contentDuration = Convert.ToInt32(partRow["duration"]);
-                string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
-
-                string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GetToken();
-                obj.Link = link;
-                obj.Container = container;
-                obj.ByteLength = byteLength;
-                obj.ContentDuration = contentDuration;
-                obj.FileName = fileName;
-                obj.ContentTitle = title;
-                obj.ContentThumbnailUri = thumbnailFullUri;
-
-                return obj;
             }
-            else
+            catch (Exception ex)
             {
-                return new DownloadInfo();
+                LoggingHelpers.RecordException(ex.Message, "DownloadXmlError");
+                return null;
             }
         }
 
@@ -1991,7 +2018,7 @@ namespace PlexDL.UI
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            TestForm frm = new TestForm();
+            DLSpeedChart frm = new DLSpeedChart();
             //frm.ShowDialog();
 
             if (settings.Generic.AnimationSpeed > 0)
@@ -2127,6 +2154,74 @@ namespace PlexDL.UI
         private void DgvContent_OnRowChange(object sender, EventArgs e)
         {
             //nothing, more or less.
+        }
+
+        //when the user double-clicks a cell in dgvContent (Movies), show a messagebox with the cell content
+        private void DgvContent_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgvContent.Rows.Count > 0)
+                {
+                    string value = dgvContent.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
+        //when the user double-clicks a cell in dgvSeasons (TV), show a messagebox with the cell content
+        private void DgvSeasons_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgvSeasons.Rows.Count > 0)
+                {
+                    string value = dgvSeasons.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
+        //when the user double-clicks a cell in dgvEpisodes (TV), show a messagebox with the cell content
+        private void DgvEpisodes_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgvEpisodes.Rows.Count > 0)
+                {
+                    string value = dgvEpisodes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
+        //when the user double-clicks a cell in dgvTVShows (TV), show a messagebox with the cell content
+        private void DgvTVShows_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgvTVShows.Rows.Count > 0)
+                {
+                    string value = dgvTVShows.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch
+            {
+                //ignore
+            }
         }
 
         private void DgvTVShows_OnRowChange(object sender, EventArgs e)

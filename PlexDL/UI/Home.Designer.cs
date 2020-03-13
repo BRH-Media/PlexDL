@@ -751,6 +751,7 @@
             this.dgvContent.Size = new System.Drawing.Size(632, 356);
             this.dgvContent.TabIndex = 18;
             this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
+            this.dgvContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvContent_CellContentDoubleClick);
             // 
             // tabTV
             // 
@@ -799,6 +800,7 @@
             this.dgvTVShows.Size = new System.Drawing.Size(306, 356);
             this.dgvTVShows.TabIndex = 27;
             this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
+            this.dgvTVShows.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTVShows_CellContentDoubleClick);
             // 
             // dgvSeasons
             // 
@@ -828,6 +830,7 @@
             this.dgvSeasons.Size = new System.Drawing.Size(320, 175);
             this.dgvSeasons.TabIndex = 20;
             this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
+            this.dgvSeasons.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSeasons_CellContentDoubleClick);
             // 
             // dgvEpisodes
             // 
@@ -857,6 +860,7 @@
             this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEpisodes.Size = new System.Drawing.Size(320, 175);
             this.dgvEpisodes.TabIndex = 21;
+            this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvEpisodes_CellContentDoubleClick);
             // 
             // dgvLibrary
             // 
