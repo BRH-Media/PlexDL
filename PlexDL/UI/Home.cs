@@ -1714,15 +1714,21 @@ namespace PlexDL.UI
 
         #region Search
 
-        private void ClearSearch()
+        private void ClearSearch(bool renderTables = true)
         {
-            if (IsTVShow)
-                RenderTVView(titlesTable);
-            else
-                RenderContentView(titlesTable);
-            filteredTable = null;
-            IsFiltered = false;
-            SetStartSearch();
+            if (IsFiltered)
+            {
+                if (renderTables)
+                {
+                    if (IsTVShow)
+                        RenderTVView(titlesTable);
+                    else
+                        RenderContentView(titlesTable);
+                }
+                filteredTable = null;
+                IsFiltered = false;
+                SetStartSearch();
+            }
         }
 
         private void RunTitleSearch()
@@ -2118,6 +2124,9 @@ namespace PlexDL.UI
             if ((dgvLibrary.SelectedRows.Count == 1) && (IsLibraryFilled))
             {
                 AddToLog("Selection Changed");
+                //don't re-render the grids when clearing the search; this would end badly for performance reasons.
+                ClearSearch(false);
+                AddToLog("Cleared possible searches");
                 int index = GetTableIndexFromDGV(dgvLibrary, gSectionsTable);
                 DataRow r = GetDataRowLibrary(index);
 
