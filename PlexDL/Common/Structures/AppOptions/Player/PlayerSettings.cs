@@ -8,7 +8,7 @@
         public decimal SkipBackwardInterval { get; set; } = 10;
         public bool PlayNextTitleAutomatically { get; set; } = false;
         public PlayerKeyBindings KeyBindings { get; set; } = new PlayerKeyBindings();
-        public int PlaybackEngine { get; set; } = PlaybackMode.PVSPlayer;
+        public int PlaybackEngine { get; set; } = PlaybackMode.MenuSelector;
         public bool ShowFSMessage { get; set; } = true;
     }
 }
