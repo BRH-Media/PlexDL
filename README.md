@@ -35,6 +35,13 @@ You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-Metro
 11. PlexDL allows profile loading and saving, which allows you to save your account token for later use or change internal settings to your liking. To do this, first load your content view, and then select the "Save" floppy disk icon. You can then edit the *.prof* XML file in any ordinary text editor.
 12. Likewise, to load the profile, simply select the "Load" folder icon and browse to your generated XML *.prof* file.
 
+##### Content Filtering
+* PlexDL natively filters possibly adult-orientated content.
+* For users' convenience, PlexDL will filter content that matches a genre-based criteria by pixelating posters in the metadata section, and warning users before streaming the content.
+* PlexDL can also filter adult content based on a keyword list. E.g. a text file that contains terms related to adult content.
+* PlexDL includes a blank file named "keywordBlacklist.txt" in the "Resources" section of the source code, however, you must populate this list yourself and build the source from there.
+* PlexDL does not provide populated keyword lists by default; please do not ask for any.
+
 ##### Shortcut Keys
 * Control+O - Allows Profile Loading
 * Control+S - Allows Profile Saving
