@@ -3,7 +3,6 @@ using PlexDL.Common;
 using PlexDL.Common.Structures;
 using PlexDL.WaitWindow;
 using System;
-using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 

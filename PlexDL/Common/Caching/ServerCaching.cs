@@ -1,9 +1,9 @@
-﻿using PlexDL.UI;
+﻿using PlexDL.Common.Logging;
+using PlexDL.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using System;
-using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {

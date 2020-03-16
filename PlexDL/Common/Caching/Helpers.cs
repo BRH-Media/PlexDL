@@ -1,8 +1,8 @@
-﻿using PlexDL.UI;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
+using PlexDL.UI;
+using System;
 using System.Security.Cryptography;
 using System.Text;
-using System;
 
 namespace PlexDL.Common.Caching
 {

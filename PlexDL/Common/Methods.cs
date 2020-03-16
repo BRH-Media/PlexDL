@@ -1,6 +1,5 @@
 ﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace PlexDL.Common
 {
@@ -229,7 +227,6 @@ namespace PlexDL.Common
             {
                 return false;
             }
-
 
             return splitValues.All(r => byte.TryParse(r, out byte tempForParsing));
         }

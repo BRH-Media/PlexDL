@@ -1,15 +1,12 @@
 ﻿using MetroSet_UI.Controls;
 using MetroSet_UI.Forms;
 using PlexDL.Common;
+using PlexDL.Common.API;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures.Plex;
-using PlexDL.Common.API;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace PlexDL.UI
 {

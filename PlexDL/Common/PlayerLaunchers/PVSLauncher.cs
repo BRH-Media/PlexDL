@@ -15,7 +15,7 @@ namespace PlexDL.Common.PlayerLaunchers
                 try
                 {
                     //downloads won't work properly if you're streaming at the same time
-                    if (!Home.IsDownloadRunning && !Home.IsEngineRunning)
+                    if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                     {
                         Player frm = new Player
                         {
