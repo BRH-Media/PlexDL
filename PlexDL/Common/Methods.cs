@@ -160,6 +160,65 @@ namespace PlexDL.Common
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
+        public static bool AdultKeywordCheck(Structures.Plex.PlexObject stream)
+        {
+            string[] keywords = Properties.Resources.keywordBlacklist.Split('\n');
+            string search = stream.StreamInformation.ContentTitle.ToLower();
+            Regex rgx = new Regex("[^a-zA-Z0-9_. ]+");
+            //MessageBox.Show(keywords.Length.ToString());
+            search = rgx.Replace(search, "");
+            bool match = false;
+            if (string.Equals(stream.ContentGenre.ToLower(), "porn") || string.Equals(stream.ContentGenre.ToLower(), "adult"))
+            {
+                match = true;
+            }
+            else
+            {
+                if (keywords.Length > 0)
+                {
+                    foreach (string k in keywords)
+                    {
+                        if (!string.IsNullOrEmpty(k) && !string.IsNullOrWhiteSpace(k))
+                        {
+                            string clean = rgx.Replace(k, "").ToLower();
+                            if (search.Contains(clean))
+                            {
+                                match = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return match;
+        }
+
+        public static bool StreamAdultContentCheck(Structures.Plex.PlexObject stream)
+        {
+            if (UI.Home.settings.Generic.AdultContentProtection)
+            {
+                //just to keep things family-friendly, show a warning for possibly adult-type content :)
+                if (AdultKeywordCheck(stream))
+                {
+                    DialogResult result = MessageBox.Show("The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    if (result == DialogResult.No)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+                return true;
+        }
+
         public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
         {
             try

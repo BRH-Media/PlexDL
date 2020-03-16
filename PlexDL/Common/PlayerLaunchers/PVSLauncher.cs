@@ -14,21 +14,24 @@ namespace PlexDL.Common.PlayerLaunchers
             if (stream != null && titles != null)
                 try
                 {
-                    //downloads won't work properly if you're streaming at the same time
-                    if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
+                    if (Methods.StreamAdultContentCheck(stream))
                     {
-                        Player frm = new Player
+                        //downloads won't work properly if you're streaming at the same time
+                        if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                         {
-                            StreamingContent = stream,
-                            TitlesTable = titles
-                        };
-                        LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
-                        frm.ShowDialog();
-                    }
-                    else
-                    {
-                        MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        LoggingHelpers.AddToLog("Tried to stream content via PVS, but a download is running.");
+                            Player frm = new Player
+                            {
+                                StreamingContent = stream,
+                                TitlesTable = titles
+                            };
+                            LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
+                            frm.ShowDialog();
+                        }
+                        else
+                        {
+                            MessageBox.Show("You cannot stream \n" + stream.StreamInformation.ContentTitle + "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            LoggingHelpers.AddToLog("Tried to stream content via PVS, but a download is running.");
+                        }
                     }
                 }
                 catch (Exception ex)

@@ -60,8 +60,6 @@ namespace PlexDL.UI
 
         #endregion GlobalStringVariables
 
-
-
         #region GlobalIntVariables
 
         public int selectedIndex = 0;
@@ -170,13 +168,13 @@ namespace PlexDL.UI
             return 0;
         }
 
-        private PlexMovie GetObjectFromSelection()
+        private PlexMovie GetMovieObjectFromSelection()
         {
             PlexMovie obj = new PlexMovie();
             if ((dgvContent.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1))
             {
                 int index = GetTableIndexFromDGV(dgvContent);
-                obj = GetObjectFromIndex(index);
+                obj = GetMovieObjectFromIndex(index);
             }
             return obj;
         }
@@ -223,11 +221,13 @@ namespace PlexDL.UI
                         obj.TVShowName = GetTVShowTitle(metadata);
                         obj.StreamResolution = GetContentResolution(metadata);
                         obj.StreamIndex = index;
+                        obj.Synopsis = GetContentSynopsis(metadata);
                     }
                     else
                     {
                         MessageBox.Show("Failed to get contextual information; an unknown error occurred. Check the exception log for more information.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        AddToLog("DownloadInfo is invalid");
+                        LoggingHelpers.RecordException("DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.", "ContextDownloadInfoNull");
+                        AddToLog("DownloadInfo is invalid (no stream contexual information)");
                     }
                 }
                 else
@@ -236,14 +236,7 @@ namespace PlexDL.UI
             return obj;
         }
 
-        public int GetIndexFromPrimary(string primary)
-        {
-            DataTable table = ReturnCorrectTable();
-            DataRow row = table.Rows.Find(primary);
-            return table.Rows.IndexOf(row);
-        }
-
-        private PlexMovie GetObjectFromIndex(int index)
+        private PlexMovie GetMovieObjectFromIndex(int index)
         {
             PlexMovie obj = new PlexMovie();
             XmlDocument metadata;
@@ -256,19 +249,28 @@ namespace PlexDL.UI
                 AddToLog("Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    _ = GetDataRowContent(index, false);
 
                     AddToLog("XML Valid");
 
                     DownloadInfo dlInfo = GetContentDownloadInfo_Xml(metadata);
 
-                    AddToLog("Assembling Object");
+                    if (dlInfo != null)
+                    {
 
-                    obj.Actors = GetActorsFromMetadata(metadata);
-                    obj.ContentGenre = GetContentGenre(metadata);
-                    obj.StreamInformation = dlInfo;
-                    obj.StreamResolution = GetContentResolution(metadata);
-                    obj.StreamIndex = index;
+                        AddToLog("Assembling Object");
+
+                        obj.ContentGenre = GetContentGenre(metadata);
+                        obj.StreamInformation = dlInfo;
+                        obj.StreamResolution = GetContentResolution(metadata);
+                        obj.StreamIndex = index;
+                        obj.Synopsis = GetContentSynopsis(metadata);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to get contextual information; an unknown error occurred. Check the exception log for more information.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        LoggingHelpers.RecordException("DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.", "ContextDownloadInfoNull");
+                        AddToLog("DownloadInfo is invalid (no stream contexual information)");
+                    }
                 }
                 else
                     AddToLog("XML Invalid");
@@ -421,7 +423,7 @@ namespace PlexDL.UI
             sections.ReadXml(new XmlNodeReader(metadata));
             DataTable dtActors = sections.Tables["Role"];
 
-            if (!(dtActors == null))
+            if (dtActors != null)
             {
                 foreach (DataRow r in dtActors.Rows)
                 {
@@ -476,12 +478,28 @@ namespace PlexDL.UI
             sections.ReadXml(new XmlNodeReader(metadata));
             DataTable video = sections.Tables["Genre"];
             string genre = "Unknown";
-            if (!(video == null))
+            if (video != null)
             {
                 DataRow row = video.Rows[0];
-                genre = row["tag"].ToString();
+                if (!string.IsNullOrEmpty((string)row["tag"]))
+                    genre = row["tag"].ToString();
             }
             return genre;
+        }
+
+        private string GetContentSynopsis(XmlDocument metadata)
+        {
+            DataSet sections = new DataSet();
+            sections.ReadXml(new XmlNodeReader(metadata));
+            DataTable video = sections.Tables["Video"];
+            string synopsis = "Plot synopsis not provided";
+            if (video != null)
+            {
+                DataRow row = video.Rows[0];
+                if (!string.IsNullOrEmpty((string)row["summary"]))
+                    synopsis = row["summary"].ToString();
+            }
+            return synopsis;
         }
 
         private string GetTVShowSeason(XmlDocument metadata)
@@ -490,10 +508,11 @@ namespace PlexDL.UI
             sections.ReadXml(new XmlNodeReader(metadata));
             DataTable video = sections.Tables["Video"];
             string season = "Unknown Season";
-            if (!(video == null))
+            if (video != null)
             {
                 DataRow row = video.Rows[0];
-                season = row["parentTitle"].ToString();
+                if (!string.IsNullOrEmpty((string)row["parentTitle"]))
+                    season = row["parentTitle"].ToString();
             }
             return season;
         }
@@ -504,10 +523,11 @@ namespace PlexDL.UI
             sections.ReadXml(new XmlNodeReader(metadata));
             DataTable video = sections.Tables["Video"];
             string title = "Unknown Title";
-            if (!(video == null))
+            if (video != null)
             {
                 DataRow row = video.Rows[0];
-                title = row["grandparentTitle"].ToString();
+                if (!string.IsNullOrEmpty((string)row["grandparentTitle"]))
+                    title = row["grandparentTitle"].ToString();
             }
             return title;
         }
@@ -789,7 +809,7 @@ namespace PlexDL.UI
                     if (Flags.IsTVShow)
                         content = GetTVObjectFromSelection();
                     else
-                        content = GetObjectFromSelection();
+                        content = GetMovieObjectFromSelection();
 
                     if (sfdExport.ShowDialog() == DialogResult.OK)
                     {
@@ -1101,7 +1121,7 @@ namespace PlexDL.UI
                 {
                     lblProgress.Text = "Getting Metadata";
                 });
-                PlexMovie movie = GetObjectFromSelection();
+                PlexMovie movie = GetMovieObjectFromSelection();
                 DownloadInfo dlInfo = movie.StreamInformation;
                 dlInfo.DownloadPath = settings.Generic.DownloadDirectory + @"\Movies";
                 queue.Add(dlInfo);
@@ -1178,42 +1198,66 @@ namespace PlexDL.UI
 
                 contentViewTable = GenericRenderer.RenderView(info, dgvContent);
 
-                if (this.InvokeRequired)
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        SelectMoviesTab();
-                    });
-                else
-                {
-                    SelectMoviesTab();
-                }
+                SelectMoviesTab();
             }
         }
 
         private void SelectMoviesTab(bool checkSelected = true)
         {
-            if (checkSelected)
-            {
-                if (tabMain.SelectedTab != tabMovies)
+            if (this.InvokeRequired)
+                this.BeginInvoke((MethodInvoker)delegate
                 {
-                    tabMain.SelectedTab = tabMovies;
-                }
-            }
+                    if (checkSelected)
+                    {
+                        if (tabMain.SelectedTab != tabMovies)
+                        {
+                            tabMain.SelectedTab = tabMovies;
+                        }
+                    }
+                    else
+                        tabMain.SelectedTab = tabMovies;
+                });
             else
-                tabMain.SelectedTab = tabMovies;
+            {
+                if (checkSelected)
+                {
+                    if (tabMain.SelectedTab != tabMovies)
+                    {
+                        tabMain.SelectedTab = tabMovies;
+                    }
+                }
+                else
+                    tabMain.SelectedTab = tabMovies;
+            }
         }
 
         private void SelectTVTab(bool checkSelected = true)
         {
-            if (checkSelected)
-            {
-                if (tabMain.SelectedTab != tabTV)
+            if (this.InvokeRequired)
+                this.BeginInvoke((MethodInvoker)delegate
                 {
-                    tabMain.SelectedTab = tabTV;
-                }
-            }
+                    if (checkSelected)
+                    {
+                        if (tabMain.SelectedTab != tabTV)
+                        {
+                            tabMain.SelectedTab = tabTV;
+                        }
+                    }
+                    else
+                        tabMain.SelectedTab = tabTV;
+                });
             else
-                tabMain.SelectedTab = tabTV;
+            {
+                if (checkSelected)
+                {
+                    if (tabMain.SelectedTab != tabTV)
+                    {
+                        tabMain.SelectedTab = tabTV;
+                    }
+                }
+                else
+                    tabMain.SelectedTab = tabTV;
+            }
         }
 
         private void ClearContentView()
@@ -1252,15 +1296,7 @@ namespace PlexDL.UI
 
                 tvViewTable = GenericRenderer.RenderView(info, dgvTVShows);
 
-                if (this.InvokeRequired)
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        SelectTVTab();
-                    });
-                else
-                {
-                    SelectTVTab();
-                }
+                SelectTVTab();
             }
         }
 
@@ -1392,9 +1428,9 @@ namespace PlexDL.UI
             }
         }
 
-        private void GetObjectFromSelectionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void GetMovieObjectFromSelectionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
-            e.Result = GetObjectFromSelection();
+            e.Result = GetMovieObjectFromSelection();
         }
 
         private void GetTVObjectFromSelectionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
@@ -2475,11 +2511,11 @@ namespace PlexDL.UI
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
             {
-                VLCLauncher.LaunchVLC(stream.StreamInformation);
+                VLCLauncher.LaunchVLC(stream);
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.Browser)
             {
-                BrowserLauncher.LaunchBrowser(stream.StreamInformation);
+                BrowserLauncher.LaunchBrowser(stream);
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
             {
@@ -2501,7 +2537,7 @@ namespace PlexDL.UI
                 PlexObject result;
                 if (!Flags.IsTVShow)
                 {
-                    result = (PlexMovie)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
+                    result = (PlexMovie)PlexDL.WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker, "Getting Metadata");
                 }
                 else
                 {
@@ -2567,7 +2603,7 @@ namespace PlexDL.UI
                     {
                         if (!Flags.IsTVShow)
                         {
-                            result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
+                            result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker, "Getting Metadata");
                         }
                         else
                         {
@@ -2714,13 +2750,13 @@ namespace PlexDL.UI
         private void ItmStreamInVLC_Click(object sender, EventArgs e)
         {
             cxtStreamOptions.Close();
-            VLCLauncher.LaunchVLC(CurrentStream.StreamInformation);
+            VLCLauncher.LaunchVLC(CurrentStream);
         }
 
         private void ItmStreamInBrowser_Click(object sender, EventArgs e)
         {
             cxtStreamOptions.Close();
-            BrowserLauncher.LaunchBrowser(CurrentStream.StreamInformation);
+            BrowserLauncher.LaunchBrowser(CurrentStream);
         }
     }
 }

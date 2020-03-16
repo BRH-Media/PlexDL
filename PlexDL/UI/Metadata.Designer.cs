@@ -35,7 +35,7 @@
             MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblActors = new MetroSet_UI.Controls.MetroSetLabel();
+            this.styleMain = new MetroSet_UI.StyleManager();
             this.lblMetadata = new System.Windows.Forms.Label();
             this.lblSize = new MetroSet_UI.Controls.MetroSetLabel();
             this.lblSizeValue = new MetroSet_UI.Controls.MetroSetLabel();
@@ -56,7 +56,8 @@
             this.lblContainer = new MetroSet_UI.Controls.MetroSetLabel();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
             this.btnStreamInVLC = new MetroSet_UI.Controls.MetroSetEllipse();
-            styleMain = new MetroSet_UI.StyleManager();
+            this.txtPlotSynopsis = new MetroSet_UI.Controls.MetroSetTextBox();
+            this.lblPlotSynopsis = new MetroSet_UI.Controls.MetroSetLabel();
             this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.SuspendLayout();
@@ -65,24 +66,19 @@
             // 
             this.flpActors.AutoScroll = true;
             this.flpActors.BackColor = System.Drawing.Color.White;
-            this.flpActors.Location = new System.Drawing.Point(232, 100);
+            this.flpActors.Location = new System.Drawing.Point(197, 175);
             this.flpActors.Name = "flpActors";
-            this.flpActors.Size = new System.Drawing.Size(652, 341);
+            this.flpActors.Size = new System.Drawing.Size(574, 286);
             this.flpActors.TabIndex = 1;
+            this.tipMain.SetToolTip(this.flpActors, "Actors/Actresses in this title");
             // 
-            // lblActors
+            // styleMain
             // 
-            this.lblActors.AutoSize = true;
-            this.lblActors.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.lblActors.Location = new System.Drawing.Point(528, 98);
-            this.lblActors.Name = "lblActors";
-            this.lblActors.Size = new System.Drawing.Size(59, 18);
-            this.lblActors.Style = MetroSet_UI.Design.Style.Light;
-            this.lblActors.StyleManager = styleMain;
-            this.lblActors.TabIndex = 2;
-            this.lblActors.Text = "Starring";
-            this.lblActors.ThemeAuthor = null;
-            this.lblActors.ThemeName = null;
+            this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
+            this.styleMain.MetroForm = this;
+            this.styleMain.Style = MetroSet_UI.Design.Style.Light;
+            this.styleMain.ThemeAuthor = null;
+            this.styleMain.ThemeName = null;
             // 
             // lblMetadata
             // 
@@ -104,7 +100,7 @@
             this.lblSize.Name = "lblSize";
             this.lblSize.Size = new System.Drawing.Size(41, 18);
             this.lblSize.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSize.StyleManager = styleMain;
+            this.lblSize.StyleManager = this.styleMain;
             this.lblSize.TabIndex = 4;
             this.lblSize.Text = "Size:";
             this.lblSize.ThemeAuthor = null;
@@ -118,11 +114,12 @@
             this.lblSizeValue.Name = "lblSizeValue";
             this.lblSizeValue.Size = new System.Drawing.Size(71, 18);
             this.lblSizeValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSizeValue.StyleManager = styleMain;
+            this.lblSizeValue.StyleManager = this.styleMain;
             this.lblSizeValue.TabIndex = 5;
             this.lblSizeValue.Text = "Unknown";
             this.lblSizeValue.ThemeAuthor = null;
             this.lblSizeValue.ThemeName = null;
+            this.tipMain.SetToolTip(this.lblSizeValue, "Size");
             // 
             // lblRuntime
             // 
@@ -132,7 +129,7 @@
             this.lblRuntime.Name = "lblRuntime";
             this.lblRuntime.Size = new System.Drawing.Size(67, 18);
             this.lblRuntime.Style = MetroSet_UI.Design.Style.Light;
-            this.lblRuntime.StyleManager = styleMain;
+            this.lblRuntime.StyleManager = this.styleMain;
             this.lblRuntime.TabIndex = 6;
             this.lblRuntime.Text = "Runtime:";
             this.lblRuntime.ThemeAuthor = null;
@@ -146,11 +143,12 @@
             this.lblRuntimeValue.Name = "lblRuntimeValue";
             this.lblRuntimeValue.Size = new System.Drawing.Size(71, 18);
             this.lblRuntimeValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblRuntimeValue.StyleManager = styleMain;
+            this.lblRuntimeValue.StyleManager = this.styleMain;
             this.lblRuntimeValue.TabIndex = 7;
             this.lblRuntimeValue.Text = "Unknown";
             this.lblRuntimeValue.ThemeAuthor = null;
             this.lblRuntimeValue.ThemeName = null;
+            this.tipMain.SetToolTip(this.lblRuntimeValue, "Runtime");
             // 
             // lblGenre
             // 
@@ -160,7 +158,7 @@
             this.lblGenre.Name = "lblGenre";
             this.lblGenre.Size = new System.Drawing.Size(53, 18);
             this.lblGenre.Style = MetroSet_UI.Design.Style.Light;
-            this.lblGenre.StyleManager = styleMain;
+            this.lblGenre.StyleManager = this.styleMain;
             this.lblGenre.TabIndex = 8;
             this.lblGenre.Text = "Genre:";
             this.lblGenre.ThemeAuthor = null;
@@ -174,11 +172,12 @@
             this.lblGenreValue.Name = "lblGenreValue";
             this.lblGenreValue.Size = new System.Drawing.Size(71, 18);
             this.lblGenreValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblGenreValue.StyleManager = styleMain;
+            this.lblGenreValue.StyleManager = this.styleMain;
             this.lblGenreValue.TabIndex = 9;
             this.lblGenreValue.Text = "Unknown";
             this.lblGenreValue.ThemeAuthor = null;
             this.lblGenreValue.ThemeName = null;
+            this.tipMain.SetToolTip(this.lblGenreValue, "Genre");
             // 
             // lblResolutionValue
             // 
@@ -188,11 +187,12 @@
             this.lblResolutionValue.Name = "lblResolutionValue";
             this.lblResolutionValue.Size = new System.Drawing.Size(71, 18);
             this.lblResolutionValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblResolutionValue.StyleManager = styleMain;
+            this.lblResolutionValue.StyleManager = this.styleMain;
             this.lblResolutionValue.TabIndex = 11;
             this.lblResolutionValue.Text = "Unknown";
             this.lblResolutionValue.ThemeAuthor = null;
             this.lblResolutionValue.ThemeName = null;
+            this.tipMain.SetToolTip(this.lblResolutionValue, "Resolution");
             // 
             // lblResolution
             // 
@@ -202,7 +202,7 @@
             this.lblResolution.Name = "lblResolution";
             this.lblResolution.Size = new System.Drawing.Size(83, 18);
             this.lblResolution.Style = MetroSet_UI.Design.Style.Light;
-            this.lblResolution.StyleManager = styleMain;
+            this.lblResolution.StyleManager = this.styleMain;
             this.lblResolution.TabIndex = 10;
             this.lblResolution.Text = "Resolution:";
             this.lblResolution.ThemeAuthor = null;
@@ -223,7 +223,7 @@
             imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
             this.btnExit.ImageSet = imageSet4;
             this.btnExit.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnExit.Location = new System.Drawing.Point(836, 470);
+            this.btnExit.Location = new System.Drawing.Point(727, 470);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnExit.Name = "btnExit";
             this.btnExit.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
@@ -234,7 +234,7 @@
             this.btnExit.PressTextColor = System.Drawing.Color.White;
             this.btnExit.Size = new System.Drawing.Size(44, 36);
             this.btnExit.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExit.StyleManager = styleMain;
+            this.btnExit.StyleManager = this.styleMain;
             this.btnExit.TabIndex = 1;
             this.btnExit.ThemeAuthor = null;
             this.btnExit.ThemeName = null;
@@ -257,6 +257,7 @@
             this.picPoster.Size = new System.Drawing.Size(167, 250);
             this.picPoster.TabIndex = 12;
             this.picPoster.TabStop = false;
+            this.tipMain.SetToolTip(this.picPoster, "Poster");
             // 
             // btnExportMetadata
             // 
@@ -284,7 +285,7 @@
             this.btnExportMetadata.PressTextColor = System.Drawing.Color.White;
             this.btnExportMetadata.Size = new System.Drawing.Size(44, 36);
             this.btnExportMetadata.Style = MetroSet_UI.Design.Style.Light;
-            this.btnExportMetadata.StyleManager = styleMain;
+            this.btnExportMetadata.StyleManager = this.styleMain;
             this.btnExportMetadata.TabIndex = 13;
             this.btnExportMetadata.ThemeAuthor = null;
             this.btnExportMetadata.ThemeName = null;
@@ -317,7 +318,7 @@
             this.btnImport.PressTextColor = System.Drawing.Color.White;
             this.btnImport.Size = new System.Drawing.Size(44, 36);
             this.btnImport.Style = MetroSet_UI.Design.Style.Light;
-            this.btnImport.StyleManager = styleMain;
+            this.btnImport.StyleManager = this.styleMain;
             this.btnImport.TabIndex = 14;
             this.btnImport.ThemeAuthor = null;
             this.btnImport.ThemeName = null;
@@ -341,11 +342,12 @@
             this.lblContainerValue.Name = "lblContainerValue";
             this.lblContainerValue.Size = new System.Drawing.Size(71, 18);
             this.lblContainerValue.Style = MetroSet_UI.Design.Style.Light;
-            this.lblContainerValue.StyleManager = styleMain;
+            this.lblContainerValue.StyleManager = this.styleMain;
             this.lblContainerValue.TabIndex = 16;
             this.lblContainerValue.Text = "Unknown";
             this.lblContainerValue.ThemeAuthor = null;
             this.lblContainerValue.ThemeName = null;
+            this.tipMain.SetToolTip(this.lblContainerValue, "Container");
             // 
             // lblContainer
             // 
@@ -355,7 +357,7 @@
             this.lblContainer.Name = "lblContainer";
             this.lblContainer.Size = new System.Drawing.Size(76, 18);
             this.lblContainer.Style = MetroSet_UI.Design.Style.Light;
-            this.lblContainer.StyleManager = styleMain;
+            this.lblContainer.StyleManager = this.styleMain;
             this.lblContainer.TabIndex = 15;
             this.lblContainer.Text = "Container:";
             this.lblContainer.ThemeAuthor = null;
@@ -387,7 +389,7 @@
             this.btnStreamInVLC.PressTextColor = System.Drawing.Color.White;
             this.btnStreamInVLC.Size = new System.Drawing.Size(44, 36);
             this.btnStreamInVLC.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStreamInVLC.StyleManager = styleMain;
+            this.btnStreamInVLC.StyleManager = this.styleMain;
             this.btnStreamInVLC.TabIndex = 17;
             this.btnStreamInVLC.ThemeAuthor = null;
             this.btnStreamInVLC.ThemeName = null;
@@ -395,13 +397,49 @@
             this.btnStreamInVLC.Visible = false;
             this.btnStreamInVLC.Click += new System.EventHandler(this.BtnStreamInVLC_Click);
             // 
-            // styleMain
+            // txtPlotSynopsis
             // 
-            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
-            styleMain.MetroForm = this;
-            styleMain.Style = MetroSet_UI.Design.Style.Light;
-            styleMain.ThemeAuthor = null;
-            styleMain.ThemeName = null;
+            this.txtPlotSynopsis.AutoCompleteCustomSource = null;
+            this.txtPlotSynopsis.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtPlotSynopsis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtPlotSynopsis.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtPlotSynopsis.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.txtPlotSynopsis.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtPlotSynopsis.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.txtPlotSynopsis.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtPlotSynopsis.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.txtPlotSynopsis.Image = null;
+            this.txtPlotSynopsis.Lines = null;
+            this.txtPlotSynopsis.Location = new System.Drawing.Point(197, 95);
+            this.txtPlotSynopsis.MaxLength = 32767;
+            this.txtPlotSynopsis.Multiline = true;
+            this.txtPlotSynopsis.Name = "txtPlotSynopsis";
+            this.txtPlotSynopsis.ReadOnly = true;
+            this.txtPlotSynopsis.Size = new System.Drawing.Size(574, 74);
+            this.txtPlotSynopsis.Style = MetroSet_UI.Design.Style.Light;
+            this.txtPlotSynopsis.StyleManager = this.styleMain;
+            this.txtPlotSynopsis.TabIndex = 19;
+            this.txtPlotSynopsis.Text = "Unknown";
+            this.txtPlotSynopsis.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtPlotSynopsis.ThemeAuthor = null;
+            this.txtPlotSynopsis.ThemeName = null;
+            this.tipMain.SetToolTip(this.txtPlotSynopsis, "Plot synopsis");
+            this.txtPlotSynopsis.UseSystemPasswordChar = false;
+            this.txtPlotSynopsis.WatermarkText = "";
+            // 
+            // lblPlotSynopsis
+            // 
+            this.lblPlotSynopsis.AutoSize = true;
+            this.lblPlotSynopsis.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblPlotSynopsis.Location = new System.Drawing.Point(197, 75);
+            this.lblPlotSynopsis.Name = "lblPlotSynopsis";
+            this.lblPlotSynopsis.Size = new System.Drawing.Size(95, 17);
+            this.lblPlotSynopsis.Style = MetroSet_UI.Design.Style.Light;
+            this.lblPlotSynopsis.StyleManager = this.styleMain;
+            this.lblPlotSynopsis.TabIndex = 20;
+            this.lblPlotSynopsis.Text = "Plot Summary";
+            this.lblPlotSynopsis.ThemeAuthor = null;
+            this.lblPlotSynopsis.ThemeName = null;
             // 
             // ctrlMain
             // 
@@ -410,7 +448,7 @@
             this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
             this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
             this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
-            this.ctrlMain.Location = new System.Drawing.Point(794, 2);
+            this.ctrlMain.Location = new System.Drawing.Point(684, 2);
             this.ctrlMain.MaximizeBox = true;
             this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
@@ -422,7 +460,7 @@
             this.ctrlMain.Name = "ctrlMain";
             this.ctrlMain.Size = new System.Drawing.Size(100, 25);
             this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
-            this.ctrlMain.StyleManager = styleMain;
+            this.ctrlMain.StyleManager = this.styleMain;
             this.ctrlMain.TabIndex = 18;
             this.ctrlMain.Text = "Metadata";
             this.ctrlMain.ThemeAuthor = null;
@@ -433,8 +471,10 @@
             this.AllowResize = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(896, 515);
+            this.ClientSize = new System.Drawing.Size(786, 521);
             this.Controls.Add(this.ctrlMain);
+            this.Controls.Add(this.lblPlotSynopsis);
+            this.Controls.Add(this.txtPlotSynopsis);
             this.Controls.Add(this.btnStreamInVLC);
             this.Controls.Add(this.lblContainerValue);
             this.Controls.Add(this.lblContainer);
@@ -451,18 +491,18 @@
             this.Controls.Add(this.lblSizeValue);
             this.Controls.Add(this.lblSize);
             this.Controls.Add(this.lblMetadata);
-            this.Controls.Add(this.lblActors);
             this.Controls.Add(this.flpActors);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Metadata";
             this.Padding = new System.Windows.Forms.Padding(12, 90, 12, 12);
+            this.ShowTitle = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.StyleManager = styleMain;
+            this.StyleManager = this.styleMain;
             this.Text = "Metadata";
             this.ThemeAuthor = null;
             this.ThemeName = null;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
-            this.Load += new System.EventHandler(this.FrmTitleInformation_Load);
+            this.Load += new System.EventHandler(this.Metadata_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -471,7 +511,6 @@
 
         #endregion
         private System.Windows.Forms.FlowLayoutPanel flpActors;
-        private MetroSet_UI.Controls.MetroSetLabel lblActors;
         private System.Windows.Forms.Label lblMetadata;
         private MetroSet_UI.Controls.MetroSetLabel lblSize;
         private MetroSet_UI.Controls.MetroSetLabel lblSizeValue;
@@ -494,5 +533,7 @@
         private MetroSet_UI.Controls.MetroSetEllipse btnStreamInVLC;
         private MetroSet_UI.StyleManager styleMain;
         private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
+        private MetroSet_UI.Controls.MetroSetTextBox txtPlotSynopsis;
+        private MetroSet_UI.Controls.MetroSetLabel lblPlotSynopsis;
     }
 }

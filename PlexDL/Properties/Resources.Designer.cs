@@ -989,5 +989,50 @@ namespace PlexDL.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to abbey brooks
+        ///abused
+        ///accidental anal
+        ///accidental creampie
+        ///accidental orgasm
+        ///addison rose
+        ///adriana nicole
+        ///adriana sage
+        ///adrianna nicole
+        ///adult porn
+        ///adult tube
+        ///adult tubes
+        ///adult you tube
+        ///adult youtube
+        ///african
+        ///african anal
+        ///african porn
+        ///agent
+        ///aladdin porn
+        ///alanah rae
+        ///alaura eden
+        ///albino porn
+        ///alektra blue
+        ///aletta ocean
+        ///alexa may
+        ///alexa rae
+        ///alexis amor
+        ///alexis amore
+        ///alexis breeze
+        ///alexis love
+        ///alexis silver
+        ///alexis texas
+        ///alice in wonderland porn
+        ///alicia angel
+        ///alicia rhodes
+        ///alicia tyler
+        ///alien [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string keywordBlacklist {
+            get {
+                return ResourceManager.GetString("keywordBlacklist", resourceCulture);
+            }
+        }
     }
 }

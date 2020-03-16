@@ -121,6 +121,7 @@
     <Compile Include="Common\API\XmlGet.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
+    <Compile Include="Common\Renderers\ImagePixelation.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachingSettings.cs" />
@@ -325,6 +326,7 @@
     <None Include="Resources\baseline_folder_open_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\keywordBlacklist.txt" />
     <None Include="Resources\white\baseline_refresh_black_48dp_white.png" />
     <None Include="Resources\white\baseline_refresh_black_18dp_white.png" />
     <None Include="Resources\white\baseline_directions_black_48dp_white.png" />

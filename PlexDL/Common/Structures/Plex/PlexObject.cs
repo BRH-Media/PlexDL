@@ -14,5 +14,6 @@ namespace PlexDL.Common.Structures.Plex
         public Resolution StreamResolution { get; set; } = new Resolution();
         public string ContentGenre { get; set; } = "";
         public List<PlexActor> Actors { get; set; } = new List<PlexActor>();
+        public string Synopsis { get; set; } = "";
     }
 }

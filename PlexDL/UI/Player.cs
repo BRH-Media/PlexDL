@@ -73,7 +73,7 @@ namespace PlexDL.UI
                 {
                     try
                     {
-                        VLCLauncher.LaunchVLC(StreamingContent.StreamInformation);
+                        VLCLauncher.LaunchVLC(StreamingContent);
                         this.Close();
                     }
                     catch (Exception ex)

@@ -1,5 +1,5 @@
 ﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
 using PlexDL.UI;
 using System;
 using System.Diagnostics;
@@ -9,21 +9,24 @@ namespace PlexDL.Common.PlayerLaunchers
 {
     public static class VLCLauncher
     {
-        public static void LaunchVLC(DownloadInfo stream)
+        public static void LaunchVLC(PlexObject stream)
         {
             try
             {
-                Process p = new Process();
-                SVarController c = new SVarController();
-                string vlc = Home.settings.Player.VLCMediaPlayerPath;
-                string arg = Home.settings.Player.VLCMediaPlayerArgs;
-                c.Input = arg;
-                c.Variables = c.BuildFromDlInfo(stream);
-                arg = c.YieldString();
-                p.StartInfo.FileName = vlc;
-                p.StartInfo.Arguments = arg;
-                p.Start();
-                LoggingHelpers.AddToLog("Started streaming " + stream.ContentTitle + " (VLC)");
+                if (Methods.StreamAdultContentCheck(stream))
+                {
+                    Process p = new Process();
+                    SVarController c = new SVarController();
+                    string vlc = Home.settings.Player.VLCMediaPlayerPath;
+                    string arg = Home.settings.Player.VLCMediaPlayerArgs;
+                    c.Input = arg;
+                    c.Variables = c.BuildFromDlInfo(stream.StreamInformation);
+                    arg = c.YieldString();
+                    p.StartInfo.FileName = vlc;
+                    p.StartInfo.Arguments = arg;
+                    p.Start();
+                    LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (VLC)");
+                }
             }
             catch (Exception ex)
             {

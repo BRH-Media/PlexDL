@@ -1,5 +1,5 @@
 ﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -8,12 +8,15 @@ namespace PlexDL.Common.PlayerLaunchers
 {
     public static class BrowserLauncher
     {
-        public static void LaunchBrowser(DownloadInfo stream)
+        public static void LaunchBrowser(PlexObject stream)
         {
             try
             {
-                Process.Start(stream.Link);
-                LoggingHelpers.AddToLog("Started streaming " + stream.ContentTitle + " (Browser)");
+                if (Methods.StreamAdultContentCheck(stream))
+                {
+                    Process.Start(stream.StreamInformation.Link);
+                    LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
+                }
             }
             catch (Exception ex)
             {
