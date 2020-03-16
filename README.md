@@ -37,6 +37,7 @@ You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-Metro
 
 #### __Content Filtering__
 * PlexDL natively filters possibly adult-orientated content.
+* It is possible to disable this filter by exporting a profile, then changing "AdultContentProtection" from "true" to "false" inside the resulting _.prof_ file, then reloading that profile back into PlexDL.
 * For users' convenience, PlexDL will filter content that matches a genre-based criteria by pixelating posters in the metadata section, and warning users before streaming the content.
 * PlexDL can also filter adult content based on a keyword list. E.g. a text file that contains terms related to adult content.
 * PlexDL includes a blank file named "keywordBlacklist.txt" in the "Resources" section of the source code, however, you must populate this list yourself and build the source from there.
