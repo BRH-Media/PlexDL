@@ -22,14 +22,14 @@ namespace PlexDL.PlexAPI
 
         public string createdAt
         {
-            get { return createDate.ToString(); }
-            set { createDate = Utils.GetDateTimeFromTimestamp(value); }
+            get => createDate.ToString();
+            set => createDate = Utils.GetDateTimeFromTimestamp(value);
         }
 
         public string updatedAt
         {
-            get { return lastUpdated.ToString(); }
-            set { lastUpdated = Utils.GetDateTimeFromTimestamp(value); }
+            get => lastUpdated.ToString();
+            set => lastUpdated = Utils.GetDateTimeFromTimestamp(value);
         }
 
         public DateTime createDate { get; set; }
@@ -42,14 +42,14 @@ namespace PlexDL.PlexAPI
 
         public List<Directory> GetLibrarySections()
         {
-            MediaContainer m = new MediaContainer(user, this, "/library/sections");
+            var m = new MediaContainer(user, this, "/library/sections");
             return m.directories;
         }
 
         public List<Directory> Test()
         {
-            Directory d = new Directory(user, this, "/library/sections");
-            List<Directory> dl = d.GetChildren<Directory>();
+            var d = new Directory(user, this, "/library/sections");
+            var dl = d.GetChildren<Directory>();
             return dl;
         }
     }

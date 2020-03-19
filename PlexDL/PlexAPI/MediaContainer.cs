@@ -60,7 +60,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public MediaContainer(User user, Server server, String uri) : base(user, server, uri)
+        public MediaContainer(User user, Server server, string uri) : base(user, server, uri)
         {
             Load();
         }
@@ -80,9 +80,7 @@ namespace PlexDL.PlexAPI
 
                 // Loop through directories and add the user, server and uri
                 for (var i = 0; i < directories.Count; i++)
-                {
                     ProcessDirectory(directories[i], i);
-                }
             }
         }
 
@@ -91,13 +89,9 @@ namespace PlexDL.PlexAPI
             item.user = user;
             item.server = server;
             if (item.key.StartsWith("/"))
-            {
                 item.uri = item.key;
-            }
             else
-            {
                 item.uri = uri + "/" + item.key;
-            }
 
             switch (item.type)
             {

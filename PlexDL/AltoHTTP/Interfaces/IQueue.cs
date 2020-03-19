@@ -1,15 +1,15 @@
 ﻿using System;
+using PlexDL.AltoHTTP.Classes;
 
-namespace PlexDL.AltoHttp
+namespace PlexDL.AltoHTTP.Interfaces
 {
     internal interface IQueue
     {
+        int QueueLength { get; }
+        int CurrentIndex { get; }
         event EventHandler QueueCompleted;
 
         event QueueElementCompletedEventHandler QueueElementCompleted;
-
-        int QueueLength { get; }
-        int CurrentIndex { get; }
 
         void Add(string url, string destPath);
 

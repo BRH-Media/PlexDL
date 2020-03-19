@@ -66,79 +66,11 @@ using System.Windows.Forms;
 
 #endregion Usings
 
-namespace PVS.MediaPlayer
+namespace PlexDL.Player
 {
     // ******************************** Display Clones - Enumerations
 
     #region Display Clones - Enumerations
-
-    /// <summary>
-    /// Specifies the axis used to flip the video image of the display clone.
-    /// </summary>
-    public enum CloneFlip
-    {
-        /// <summary>
-        /// Specifies no flipping.
-        /// </summary>
-        FlipNone,
-
-        /// <summary>
-        /// Specifies a horizontal flip.
-        /// </summary>
-        FlipX,
-
-        /// <summary>
-        /// Specifies a vertical flip.
-        /// </summary>
-        FlipY,
-
-        /// <summary>
-        /// Specifies a horizontal and vertical flip.
-        /// </summary>
-        FlipXY
-    }
-
-    /// <summary>
-    /// Specifies the size and location of the video image of the display clone.
-    /// </summary>
-    public enum CloneLayout
-    {
-        /// <summary>
-        /// The video image is stretched across the display of the clone.
-        /// </summary>
-        Stretch,
-
-        /// <summary>
-        /// The video image is maximally enlarged within the display of the clone while maintaining the aspect ratio.
-        /// </summary>
-        Zoom,
-
-        /// <summary>
-        /// The video image completely fills the display of the clone while maintaining the aspect ratio, but possibly with horizontal or vertical image cropping.
-        /// </summary>
-        Cover
-    }
-
-    /// <summary>
-    /// Specifies the video quality of the display clone.
-    /// </summary>
-    public enum CloneQuality
-    {
-        /// <summary>
-        /// Specifies normal quality video.
-        /// </summary>
-        Normal,
-
-        /// <summary>
-        /// Specifies high-quality video.
-        /// </summary>
-        High,
-
-        /// <summary>
-        /// Specifies automatic quality video: high-quality video if the video image of the display clone is smaller than the original video image, otherwise normal video quality.
-        /// </summary>
-        Auto
-    }
 
     #endregion Display Clones - Enumerations
 
@@ -169,7 +101,7 @@ namespace PVS.MediaPlayer
             internal bool Drag;
             internal Cursor DragCursor;
             internal bool Refresh;
-            internal int Errors;     // count errors because there can be 'no-true-error glitches' (?)
+            internal int Errors; // count errors because there can be 'no-true-error glitches' (?)
         }
 
         private const int DC_DEFAULT_FRAMERATE = 30;
@@ -238,6 +170,7 @@ namespace PVS.MediaPlayer
                     _lastError = HResult.S_FALSE;
                     return _lastError;
                 }
+
                 _lastError = Player.NO_ERROR;
                 if (clones == null || clones.Length == 0) return _lastError;
 
@@ -260,6 +193,7 @@ namespace PVS.MediaPlayer
                             }
                         }
                     }
+
                     if (!duplicate)
                     {
                         for (int j = i + 1; j < clones.Length; j++) // check for duplicates in specified clones
@@ -271,6 +205,7 @@ namespace PVS.MediaPlayer
                             }
                         }
                     }
+
                     if (!duplicate)
                     {
                         addClones[i] = clones[i];
@@ -316,6 +251,7 @@ namespace PVS.MediaPlayer
                                 newClones[index].Control.MouseDown += DisplayClones_MouseDown;
                                 newClones[index].Drag = true;
                             }
+
                             newClones[index].DragCursor = properties.DragCursor;
                             if (properties._shape != DisplayShape.Normal)
                             {
@@ -325,6 +261,7 @@ namespace PVS.MediaPlayer
                                 newClones[index].HasShape = true;
                                 //newClones[index].Control.Invalidate();
                             }
+
                             newClones[index++].Refresh = true;
                         }
                     }
@@ -335,6 +272,7 @@ namespace PVS.MediaPlayer
 
                     if (!dc_DisplayClonesRunning) DisplayClones_Start(); // was not paused (resume == false)
                 }
+
                 if (resume) DisplayClones_Resume();
                 return _lastError;
             }
@@ -381,6 +319,7 @@ namespace PVS.MediaPlayer
                                     dc_DisplayClones[i].Control.MouseDown -= DisplayClones_MouseDown;
                                     dc_DisplayClones[i].Drag = false;
                                 }
+
                                 if (dc_DisplayClones[i].HasShape)
                                 {
                                     dc_DisplayClones[i].HasShape = false;
@@ -392,16 +331,22 @@ namespace PVS.MediaPlayer
                                     }
                                 }
                             }
-                            catch { /* ignore */ }
+                            catch
+                            {
+                                /* ignore */
+                            }
+
                             dc_DisplayClones[i].Control = null;
                             dc_DisplayClones[i] = null;
                         }
                     }
+
                     dc_HasDisplayClones = false;
                     dc_DisplayClones = null;
 
                     //if (MediaDisplayClonesChanged != null) MediaDisplayClonesChanged(this, EventArgs.Empty);
                 }
+
                 return _lastError;
             }
         }
@@ -433,6 +378,7 @@ namespace PVS.MediaPlayer
                                             dc_DisplayClones[j].Control.MouseDown -= DisplayClones_MouseDown;
                                             dc_DisplayClones[j].Drag = false;
                                         }
+
                                         if (dc_DisplayClones[j].HasShape)
                                         {
                                             dc_DisplayClones[j].HasShape = false;
@@ -443,9 +389,13 @@ namespace PVS.MediaPlayer
                                                 dc_DisplayClones[j].Control.Region = null;
                                             }
                                         }
+
                                         dc_DisplayClones[j].Control.Invalidate();
                                     }
-                                    catch { /* ignore */ }
+                                    catch
+                                    {
+                                        /* ignore */
+                                    }
 
                                     dc_DisplayClones[j].Control = null;
                                     dc_DisplayClones[j] = null;
@@ -462,6 +412,7 @@ namespace PVS.MediaPlayer
                         {
                             if (dc_DisplayClones[i] != null) count++;
                         }
+
                         if (count > 0)
                         {
                             Clone[] newDisplayClones = new Clone[count];
@@ -470,6 +421,7 @@ namespace PVS.MediaPlayer
                             {
                                 if (dc_DisplayClones[i] != null) newDisplayClones[index++] = dc_DisplayClones[i];
                             }
+
                             dc_DisplayClones = newDisplayClones;
                         }
                         else
@@ -486,10 +438,13 @@ namespace PVS.MediaPlayer
                                 dc_RefreshRegion = null;
                             }
                         }
+
                         //if (MediaDisplayClonesChanged != null) MediaDisplayClonesChanged(this, EventArgs.Empty);
                     }
+
                     if (resume) DisplayClones_Resume();
                 }
+
                 return _lastError;
             }
         }
@@ -525,6 +480,7 @@ namespace PVS.MediaPlayer
                             temp[index++] = dc_DisplayClones[i];
                         }
                     }
+
                     dc_DisplayClones = temp;
                     //removed = true;
                 }
@@ -582,11 +538,13 @@ namespace PVS.MediaPlayer
                             dc_RefreshRegion.Dispose();
                             dc_RefreshRegion = null;
                         }
+
                         if (dc_BackBuffer != null)
                         {
                             dc_BackBuffer.Dispose();
                             dc_BackBuffer = null;
                         }
+
                         dc_DisplayClonesRunning = false;
 
                         if (dc_DisplayClones != null)
@@ -600,7 +558,10 @@ namespace PVS.MediaPlayer
                                         dc_DisplayClones[i].Control.Invalidate();
                                     }
                                 }
-                                catch { /* ignore */ }
+                                catch
+                                {
+                                    /* ignore */
+                                }
                             }
                         }
 
@@ -625,9 +586,11 @@ namespace PVS.MediaPlayer
                         Thread.Sleep(1);
                         Application.DoEvents();
                     }
+
                     paused = true;
                 }
             }
+
             return paused;
         }
 
@@ -728,7 +691,10 @@ namespace PVS.MediaPlayer
                         clone.Control.Region = update;
                     }
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
             }
         }
 
@@ -823,15 +789,20 @@ namespace PVS.MediaPlayer
                             {
                                 dc_RefreshRegion.MakeEmpty();
                                 dc_RefreshRegion.Union(dc_DisplayClones[i].Control.DisplayRectangle);
-                                dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[] { i });
+                                dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
+                                {
+                                    i
+                                });
                                 dc_DisplayClones[i].Refresh = false;
                             }
                         }
                     }
+
                     if (dc_TimerRestart) dc_Timer.Change(dc_TimerInterval, Timeout.Infinite);
                     dc_PaintBusy = false;
                     return;
                 }
+
                 dc_NoSizeDisplay = false;
             }
             catch
@@ -892,13 +863,15 @@ namespace PVS.MediaPlayer
                             if (dc_BackBuffer != null) dc_BackBuffer.Dispose();
                             dc_BackBuffer = new Bitmap(sourceRect.Width, sourceRect.Height);
                         }
+
                         sourceGraphics = Graphics.FromImage(dc_BackBuffer);
                         sourceHdc = sourceGraphics.GetHdc();
 
                         // copy display to buffer
                         tempGraphics = _display.CreateGraphics();
                         tempHdc = tempGraphics.GetHdc();
-                        SafeNativeMethods.BitBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, sourceRect.X, sourceRect.Y, SafeNativeMethods.SRCCOPY);
+                        SafeNativeMethods.BitBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, sourceRect.X, sourceRect.Y,
+                            SafeNativeMethods.SRCCOPY);
                         tempGraphics.ReleaseHdc(tempHdc);
                         tempGraphics.Dispose();
                         tempGraphics = null;
@@ -909,7 +882,8 @@ namespace PVS.MediaPlayer
 
                         if (_overlay.Opacity == 1 || _overlayBlend == OverlayBlend.None)
                         {
-                            SafeNativeMethods.TransparentBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, transparentColor);
+                            SafeNativeMethods.TransparentBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width,
+                                _overlay.Height, transparentColor);
                         }
                         else
                         {
@@ -948,7 +922,8 @@ namespace PVS.MediaPlayer
                             //backBuffer.Dispose();
 
                             _blendFunction.SourceConstantAlpha = (byte)(_overlay.Opacity * 0xFF);
-                            SafeNativeMethods.AlphaBlend(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, _blendFunction);
+                            SafeNativeMethods.AlphaBlend(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width,
+                                _overlay.Height, _blendFunction);
                         }
 
                         tempGraphics.ReleaseHdc(tempHdc);
@@ -967,6 +942,7 @@ namespace PVS.MediaPlayer
                             tempGraphics.Dispose();
                             //tempGraphics = null;
                         }
+
                         if (sourceGraphics != null)
                         {
                             if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
@@ -987,6 +963,7 @@ namespace PVS.MediaPlayer
                                 if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
                                 sourceGraphics.Dispose();
                             }
+
                             if (dc_TimerRestart) dc_Timer.Change(dc_TimerInterval, Timeout.Infinite);
                             dc_PaintBusy = false;
                             return;
@@ -1008,6 +985,7 @@ namespace PVS.MediaPlayer
                             if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
                             sourceGraphics.Dispose();
                         }
+
                         if (dc_TimerRestart) dc_Timer.Change(dc_TimerInterval, Timeout.Infinite);
                         dc_PaintBusy = false;
                         return;
@@ -1068,7 +1046,8 @@ namespace PVS.MediaPlayer
                                 }
                                 else //if (flip == FlipType.FlipXY)
                                 {
-                                    SafeNativeMethods.StretchBlt(destHdc, destRect.X + destRect.Width - 1, destRect.Y + destRect.Height - 1, -destRect.Width, -destRect.Height,
+                                    SafeNativeMethods.StretchBlt(destHdc, destRect.X + destRect.Width - 1, destRect.Y + destRect.Height - 1, -destRect.Width,
+                                        -destRect.Height,
                                         sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
                                 }
                             }
@@ -1077,7 +1056,8 @@ namespace PVS.MediaPlayer
                                 difX = (double)destRect.Width / sourceRect.Width;
                                 difY = (double)destRect.Height / sourceRect.Height;
 
-                                if ((dc_DisplayClones[i].Layout == CloneLayout.Zoom && (difX < difY)) || (dc_DisplayClones[i].Layout == CloneLayout.Cover && (difX > difY)))
+                                if ((dc_DisplayClones[i].Layout == CloneLayout.Zoom && (difX < difY)) ||
+                                    (dc_DisplayClones[i].Layout == CloneLayout.Cover && (difX > difY)))
                                 //if (difX < difY)
                                 {
                                     newSize = (int)(sourceRect.Height * difX);
@@ -1094,7 +1074,10 @@ namespace PVS.MediaPlayer
                                         dc_RefreshRegion.Union(destRect);
                                         dc_RefreshRegion.Exclude(dc_RefreshRect);
 
-                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[] { i });
+                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
+                                        {
+                                            i
+                                        });
                                     }
 
                                     // set quality
@@ -1125,7 +1108,8 @@ namespace PVS.MediaPlayer
                                     }
                                     else //if (flip == FlipType.FlipXY)
                                     {
-                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.Width, dc_RefreshRect.Y + newSize - 1, -dc_RefreshRect.Width, -newSize,
+                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.Width, dc_RefreshRect.Y + newSize - 1, -dc_RefreshRect.Width,
+                                            -newSize,
                                             sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
                                     }
                                 }
@@ -1144,7 +1128,10 @@ namespace PVS.MediaPlayer
                                         dc_RefreshRegion.Union(destRect);
                                         dc_RefreshRegion.Exclude(dc_RefreshRect);
 
-                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[] { i });
+                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
+                                        {
+                                            i
+                                        });
                                     }
 
                                     // set quality
@@ -1175,11 +1162,13 @@ namespace PVS.MediaPlayer
                                     }
                                     else //if (flip == FlipType.FlipXY)
                                     {
-                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, dc_RefreshRect.Height, -newSize, -dc_RefreshRect.Height,
+                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, dc_RefreshRect.Height, -newSize,
+                                            -dc_RefreshRect.Height,
                                             sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
                                     }
                                 }
                             }
+
                             dc_DisplayClones[i].Errors = 0;
                         }
                     }
@@ -1213,6 +1202,7 @@ namespace PVS.MediaPlayer
 
                 #endregion Release source items
             }
+
             if (dc_TimerRestart) dc_Timer.Change(dc_TimerInterval, Timeout.Infinite);
             dc_PaintBusy = false;
         }
@@ -1224,7 +1214,10 @@ namespace PVS.MediaPlayer
             {
                 dc_DisplayClones[index].Control.Invalidate(dc_RefreshRegion);
             }
-            catch { /* ignore */ }
+            catch
+            {
+                /* ignore */
+            }
         }
 
         #endregion Display Clones - Paint

@@ -14,11 +14,11 @@ namespace PlexDL.Common.API
         {
             try
             {
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(PlexObject));
-                XmlWriterSettings xmlSettings = new XmlWriterSettings();
-                StringWriter sww = new StringWriter();
+                var xsSubmit = new XmlSerializer(typeof(PlexObject));
+                var xmlSettings = new XmlWriterSettings();
+                var sww = new StringWriter();
                 xmlSettings.Indent = true;
-                xmlSettings.IndentChars = ("\t");
+                xmlSettings.IndentChars = "\t";
                 xmlSettings.OmitXmlDeclaration = false;
 
                 xsSubmit.Serialize(sww, contentToExport);
@@ -43,9 +43,9 @@ namespace PlexDL.Common.API
             {
                 PlexObject subReq = null;
 
-                XmlSerializer serializer = new XmlSerializer(typeof(PlexObject));
+                var serializer = new XmlSerializer(typeof(PlexObject));
 
-                StreamReader reader = new StreamReader(fileName);
+                var reader = new StreamReader(fileName);
                 subReq = (PlexObject)serializer.Deserialize(reader);
                 reader.Close();
                 return subReq;

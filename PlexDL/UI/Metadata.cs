@@ -19,152 +19,118 @@ namespace PlexDL.UI
         public Metadata()
         {
             InitializeComponent();
-            this.styleMain = GlobalStaticVars.GlobalStyle;
-            this.styleMain.MetroForm = this;
+            styleMain = GlobalStaticVars.GlobalStyle;
+            styleMain.MetroForm = this;
         }
 
-        private void LoadWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void LoadWorker(object sender, WaitWindow.WaitWindowEventArgs e)
         {
             //fill the genre infobox
             if (!string.IsNullOrEmpty(StreamingContent.ContentGenre))
             {
                 if (lblGenreValue.InvokeRequired)
-                {
                     lblGenreValue.BeginInvoke((MethodInvoker)delegate
                     {
                         lblGenreValue.Text = StreamingContent.ContentGenre;
                     });
-                }
                 else
-                {
                     lblGenreValue.Text = StreamingContent.ContentGenre;
-                }
             }
 
             //fill the runtime duration infobox
             if (StreamingContent.StreamInformation.ContentDuration > 0)
             {
                 if (lblRuntimeValue.InvokeRequired)
-                {
                     lblRuntimeValue.BeginInvoke((MethodInvoker)delegate
                     {
-                        lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
+                        lblRuntimeValue.Text = Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
                     });
-                }
                 else
-                {
-                    lblRuntimeValue.Text = Common.Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
-                }
+                    lblRuntimeValue.Text = Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
             }
 
             //fill the size infobox
             if (StreamingContent.StreamInformation.ByteLength > 0)
             {
                 if (lblSizeValue.InvokeRequired)
-                {
                     lblSizeValue.BeginInvoke((MethodInvoker)delegate
                     {
-                        lblSizeValue.Text = Common.Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
+                        lblSizeValue.Text = Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
                     });
-                }
                 else
-                {
-                    lblSizeValue.Text = Common.Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
-                }
+                    lblSizeValue.Text = Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
             }
 
             //fill the resolution infobox
             if (StreamingContent.StreamResolution.Height > 0)
             {
                 if (lblResolutionValue.InvokeRequired)
-                {
                     lblResolutionValue.BeginInvoke((MethodInvoker)delegate
                     {
                         lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
                     });
-                }
                 else
-                {
                     lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
-                }
             }
 
             //fill the poster picturebox
             if (!string.IsNullOrEmpty(StreamingContent.StreamInformation.ContentThumbnailUri))
             {
                 if (picPoster.InvokeRequired)
-                {
                     picPoster.BeginInvoke((MethodInvoker)delegate
                     {
                         picPoster.BackgroundImage = GetPoster(StreamingContent);
                     });
-                }
                 else
-                {
                     picPoster.BackgroundImage = GetPoster(StreamingContent);
-                }
             }
 
             //fill the container infobox
             if (!string.IsNullOrEmpty(StreamingContent.StreamInformation.Container))
             {
                 if (lblContainerValue.InvokeRequired)
-                {
                     lblContainerValue.BeginInvoke((MethodInvoker)delegate
                     {
                         lblContainerValue.Text = StreamingContent.StreamInformation.Container;
                     });
-                }
                 else
-                {
                     lblContainerValue.Text = StreamingContent.StreamInformation.Container;
-                }
             }
 
             //fill the plot synopsis infobox
             if (!string.IsNullOrEmpty(StreamingContent.Synopsis))
             {
                 if (txtPlotSynopsis.InvokeRequired)
-                {
                     txtPlotSynopsis.BeginInvoke((MethodInvoker)delegate
                     {
                         txtPlotSynopsis.Text = StreamingContent.Synopsis;
                     });
-                }
                 else
-                {
                     txtPlotSynopsis.Text = StreamingContent.Synopsis;
-                }
             }
 
             //Clear all previous actors (maybe there's a dud panel in place?)
             if (flpActors.Controls.Count > 0)
             {
                 if (flpActors.InvokeRequired)
-                {
                     flpActors.BeginInvoke((MethodInvoker)delegate
                     {
                         flpActors.Controls.Clear();
                     });
-                }
                 else
-                {
                     flpActors.Controls.Clear();
-                }
             }
 
             if (StreamingContent.Actors.Count > 0)
             {
                 //start filling the actors panel from the real data
-                foreach (PlexActor a in StreamingContent.Actors)
+                foreach (var a in StreamingContent.Actors)
                 {
-                    Panel p = new Panel()
+                    var p = new Panel()
                     {
-                        AutoSize = true,
-                        Location = new Point(3, 3),
-                        BackColor = Color.White
+                        AutoSize = true, Location = new Point(3, 3), BackColor = Color.White
                     };
-                    Label lblActorName = new Label()
+                    var lblActorName = new Label()
                     {
                         Text = a.ActorName,
                         AutoSize = true,
@@ -173,19 +139,16 @@ namespace PlexDL.UI
                         Visible = true
                     };
 
-                    MetroSetLabel lblActorRole = new MetroSetLabel()
+                    var lblActorRole = new MetroSetLabel()
                     {
-                        Text = a.ActorRole,
-                        AutoSize = true,
-                        Location = new Point(112, 29),
-                        Visible = true
+                        Text = a.ActorRole, AutoSize = true, Location = new Point(112, 29), Visible = true
                     };
-                    PictureBox actorPortrait = new PictureBox()
+                    var actorPortrait = new PictureBox()
                     {
                         Size = new Size(79, 119),
                         Location = new Point(3, 3),
                         BackgroundImageLayout = ImageLayout.Stretch,
-                        BackgroundImage = Common.Methods.GetImageFromUrl(a.ThumbnailUri),
+                        BackgroundImage = Methods.GetImageFromUrl(a.ThumbnailUri),
                         Visible = true
                     };
                     p.Controls.Add(lblActorRole);
@@ -193,60 +156,51 @@ namespace PlexDL.UI
                     p.Controls.Add(actorPortrait);
 
                     if (flpActors.InvokeRequired)
-                    {
                         flpActors.BeginInvoke((MethodInvoker)delegate
                         {
                             flpActors.Controls.Add(p);
                         });
-                    }
                     else
-                    {
                         flpActors.Controls.Add(p);
-                    }
                 }
             }
             else
             {
                 //no actors, so tell the user with a dud panel
                 if (flpActors.InvokeRequired)
-                {
                     flpActors.BeginInvoke((MethodInvoker)delegate
                     {
                         flpActors.Controls.Add(NoActorsFound());
                     });
-                }
                 else
-                {
                     flpActors.Controls.Add(NoActorsFound());
-                }
             }
+
             //apply content title and enable VLC streaming
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)delegate
+                BeginInvoke((MethodInvoker)delegate
                 {
                     btnStreamInVLC.Visible = true;
-                    this.Text = StreamingContent.StreamInformation.ContentTitle;
-                    this.Refresh();
+                    Text = StreamingContent.StreamInformation.ContentTitle;
+                    Refresh();
                 });
             }
             else
             {
                 btnStreamInVLC.Visible = true;
-                this.Text = StreamingContent.StreamInformation.ContentTitle;
-                this.Refresh();
+                Text = StreamingContent.StreamInformation.ContentTitle;
+                Refresh();
             }
         }
 
         private Panel NoActorsFound()
         {
-            Panel p = new Panel()
+            var p = new Panel()
             {
-                AutoSize = true,
-                Location = new Point(3, 3),
-                BackColor = Color.White
+                AutoSize = true, Location = new Point(3, 3), BackColor = Color.White
             };
-            Label lblActorName = new Label()
+            var lblActorName = new Label()
             {
                 Text = "No Actors Found",
                 AutoSize = true,
@@ -255,19 +209,16 @@ namespace PlexDL.UI
                 Visible = true
             };
 
-            MetroSetLabel lblActorRole = new MetroSetLabel()
+            var lblActorRole = new MetroSetLabel()
             {
-                Text = "We Couldn't Find Any Actors/Actresses For This Title",
-                AutoSize = true,
-                Location = new Point(112, 29),
-                Visible = true
+                Text = "We Couldn't Find Any Actors/Actresses For This Title", AutoSize = true, Location = new Point(112, 29), Visible = true
             };
-            PictureBox actorPortrait = new PictureBox()
+            var actorPortrait = new PictureBox()
             {
                 Size = new Size(79, 119),
                 Location = new Point(3, 3),
                 BackgroundImageLayout = ImageLayout.Stretch,
-                BackgroundImage = PlexDL.Properties.Resources.image_not_available_png_8,
+                BackgroundImage = Properties.Resources.image_not_available_png_8,
                 Visible = true
             };
             p.Controls.Add(lblActorRole);
@@ -279,41 +230,45 @@ namespace PlexDL.UI
 
         private Bitmap GetPoster(PlexObject stream)
         {
-            Bitmap result = Common.Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-            if (result != PlexDL.Properties.Resources.image_not_available_png_8)
+            var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
+            if (result != Properties.Resources.image_not_available_png_8)
             {
-                if (Home.settings.Generic.AdultContentProtection)
+                if (Home.Settings.Generic.AdultContentProtection)
                 {
                     if (Methods.AdultKeywordCheck(stream))
-                    {
                         return ImagePixelation.Pixelate(result, 64);
-                    }
                     else
                         return result;
                 }
                 else
+                {
                     return result;
+                }
             }
             else
+            {
                 return result;
+            }
         }
 
         private void Metadata_Load(object sender, EventArgs e)
         {
             if (!StationaryMode)
-                PlexDL.WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+            {
+                WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+            }
             else
             {
                 flpActors.Controls.Clear();
                 flpActors.Controls.Add(NoActorsFound());
-                if (Home.settings.Generic.AnimationSpeed > 0)
+                if (Home.Settings.Generic.AnimationSpeed > 0)
                 {
-                    Opacity = 0;      //first the opacity is 0
+                    Opacity = 0; //first the opacity is 0
                     t1 = new Timer
                     {
-                        Interval = Home.settings.Generic.AnimationSpeed  //we'll increase the opacity every 10ms
+                        Interval = Home.Settings.Generic.AnimationSpeed //we'll increase the opacity every 10ms
                     };
-                    t1.Tick += new EventHandler(FadeIn);  //this calls the function that changes opacity
+                    t1.Tick += new EventHandler(FadeIn); //this calls the function that changes opacity
                     t1.Start();
                 }
             }
@@ -321,44 +276,44 @@ namespace PlexDL.UI
 
         private void Metadata_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Home.settings.Generic.AnimationSpeed > 0)
+            if (Home.Settings.Generic.AnimationSpeed > 0)
             {
                 e.Cancel = true;
                 t1 = new Timer
                 {
-                    Interval = Home.settings.Generic.AnimationSpeed
+                    Interval = Home.Settings.Generic.AnimationSpeed
                 };
-                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
+                t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
-                {
-                    //resume the event - the program can be closed
+                //resume the event - the program can be closed
                     e.Cancel = false;
-                }
             }
         }
 
         private void BtnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void FadeOut(object sender, EventArgs e)
         {
-            if (Opacity <= 0)     //check if opacity is 0
+            if (Opacity <= 0) //check if opacity is 0
             {
-                t1.Stop();    //if it is, we stop the timer
-                Close();   //and we try to close the form
+                t1.Stop(); //if it is, we stop the timer
+                Close(); //and we try to close the form
             }
             else
+            {
                 Opacity -= 0.05;
+            }
         }
 
         private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
-                t1.Stop();   //this stops the timer if the form is completely displayed
+                t1.Stop(); //this stops the timer if the form is completely displayed
             else
                 Opacity += 0.05;
         }
@@ -366,20 +321,18 @@ namespace PlexDL.UI
         private void BtnExportMetadata_Click(object sender, EventArgs e)
         {
             if (sfdExport.ShowDialog() == DialogResult.OK)
-            {
                 ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
-            }
         }
 
         private void BtnImport_Click(object sender, EventArgs e)
         {
             if (ofdMetadata.ShowDialog() == DialogResult.OK)
             {
-                PlexObject obj = ImportExport.MetadataFromFile(ofdMetadata.FileName);
+                var obj = ImportExport.MetadataFromFile(ofdMetadata.FileName);
                 StreamingContent = obj;
                 flpActors.Controls.Clear();
                 txtPlotSynopsis.Text = "Plot synopsis not provided";
-                PlexDL.WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+                WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
             }
         }
 

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The Float2D class contains two <see langword="float" /> values and
     ///     represents a point in a 2D plane
     /// </summary>
     public class Float2D : IConvertible, IEquatable<Float2D>, IEquatable<Point>, IEquatable<PointF>, IEquatable<Size>,
-        IEquatable<SizeF>
+    IEquatable<SizeF>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Float2D" /> class.
@@ -325,21 +325,17 @@ namespace PlexDL.WinFormAnimation
         public object ToType(Type conversionType, IFormatProvider provider)
         {
             if (conversionType == typeof(Point))
-            {
                 return (Point)this;
-            }
+
             if (conversionType == typeof(Size))
-            {
                 return (Size)this;
-            }
+
             if (conversionType == typeof(PointF))
-            {
                 return (PointF)this;
-            }
+
             if (conversionType == typeof(SizeF))
-            {
                 return (SizeF)this;
-            }
+
             throw new InvalidCastException();
         }
 
@@ -418,21 +414,17 @@ namespace PlexDL.WinFormAnimation
             if (ReferenceEquals(this, obj)) return true;
             var conversionType = obj.GetType();
             if (conversionType == typeof(Point))
-            {
                 return this == (Point)obj;
-            }
+
             if (conversionType == typeof(PointF))
-            {
                 return this == (PointF)obj;
-            }
+
             if (conversionType == typeof(Size))
-            {
                 return this == (Size)obj;
-            }
+
             if (conversionType == typeof(SizeF))
-            {
                 return this == (SizeF)obj;
-            }
+
             return obj.GetType() == GetType() && Equals((Float2D)obj);
         }
 
@@ -462,11 +454,10 @@ namespace PlexDL.WinFormAnimation
         public static bool operator ==(Float2D left, Float2D right)
         {
             if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
-            {
                 return ReferenceEquals(left, null) && ReferenceEquals(right, null);
-            }
+
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            return ReferenceEquals(left, right) || ((double)(left.X) == right.X && (double)(left.Y) == right.Y);
+            return ReferenceEquals(left, right) || (double)left.X == right.X && (double)left.Y == right.Y;
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 

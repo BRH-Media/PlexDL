@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The timer class, will execute your code in specific time frames
@@ -30,7 +30,7 @@ namespace PlexDL.WinFormAnimation
         ///     The max ticks per second
         /// </param>
         public Timer(Action<ulong> callback, FPSLimiterKnownValues fpsKnownLimit = FPSLimiterKnownValues.LimitThirty)
-            : this(callback, (int)fpsKnownLimit)
+        : this(callback, (int)fpsKnownLimit)
         {
         }
 
@@ -46,18 +46,17 @@ namespace PlexDL.WinFormAnimation
         public Timer(Action<ulong> callback, int fpsLimit)
         {
             if (callback == null)
-            {
                 throw new ArgumentNullException(nameof(callback));
-            }
 
             _callback = callback;
             FrameLimiter = fpsLimit;
             lock (LockHandle)
             {
                 if (_timerThread == null)
-                {
-                    (_timerThread = new Thread(ThreadCycle) { IsBackground = true }).Start();
-                }
+                    (_timerThread = new Thread(ThreadCycle)
+                    {
+                        IsBackground = true
+                    }).Start();
             }
         }
 
@@ -78,7 +77,7 @@ namespace PlexDL.WinFormAnimation
 
         private void Tick()
         {
-            if ((1000 / FrameLimiter) < (GetTimeDifferenceAsMs() - LastTick))
+            if (1000 / FrameLimiter < GetTimeDifferenceAsMs() - LastTick)
             {
                 LastTick = GetTimeDifferenceAsMs();
                 _callback((ulong)(LastTick - FirstTick));
@@ -93,7 +92,6 @@ namespace PlexDL.WinFormAnimation
         private static void ThreadCycle()
         {
             while (true)
-            {
                 try
                 {
                     bool hibernate;
@@ -101,12 +99,8 @@ namespace PlexDL.WinFormAnimation
                     {
                         hibernate = Subscribers.Count == 0;
                         if (!hibernate)
-                        {
                             foreach (var t in Subscribers.ToList())
-                            {
                                 t.Tick();
-                            }
-                        }
                     }
 
                     Thread.Sleep(hibernate ? 50 : 1);
@@ -115,7 +109,7 @@ namespace PlexDL.WinFormAnimation
                 {
                     // ignored
                 }
-            }
+
             // ReSharper disable once FunctionNeverReturns
         }
 
@@ -133,11 +127,13 @@ namespace PlexDL.WinFormAnimation
         public void Resume()
         {
             lock (Subscribers)
+            {
                 if (!Subscribers.Contains(this))
                 {
                     FirstTick += GetTimeDifferenceAsMs() - LastTick;
                     Subscribers.Add(this);
                 }
+            }
         }
 
         /// <summary>
@@ -146,11 +142,13 @@ namespace PlexDL.WinFormAnimation
         public void Start()
         {
             lock (Subscribers)
+            {
                 if (!Subscribers.Contains(this))
                 {
                     FirstTick = GetTimeDifferenceAsMs();
                     Subscribers.Add(this);
                 }
+            }
         }
 
         /// <summary>
@@ -159,10 +157,10 @@ namespace PlexDL.WinFormAnimation
         public void Stop()
         {
             lock (Subscribers)
+            {
                 if (Subscribers.Contains(this))
-                {
                     Subscribers.Remove(this);
-                }
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using PlexDL.AltoHTTP.Classes;
+using PlexDL.AltoHTTP.Enums;
 
-namespace PlexDL.AltoHttp
+namespace PlexDL.AltoHTTP.Interfaces
 {
     internal interface IDownloader
     {

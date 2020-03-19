@@ -82,11 +82,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AltoHTTP\Classes\DownloadProgressEventArgs.cs" />
+    <Compile Include="AltoHTTP\Classes\DownloadProgressChangedEventArgs.cs" />
     <Compile Include="AltoHTTP\Classes\DownloadQueue.cs" />
     <Compile Include="AltoHTTP\Classes\HttpDownloader.cs" />
+    <Compile Include="AltoHTTP\Classes\ProgressChangedEventHandler.cs" />
     <Compile Include="AltoHTTP\Classes\QueueElement.cs" />
     <Compile Include="AltoHTTP\Classes\QueueElementCompletedEventArgs.cs" />
+    <Compile Include="AltoHTTP\Classes\QueueElementCompletedEventHandler.cs" />
     <Compile Include="AltoHTTP\Classes\SizeUnitConverter.cs" />
     <Compile Include="AltoHTTP\Enums\DownloadState.cs" />
     <Compile Include="AltoHTTP\Enums\FromTo.cs" />
@@ -119,19 +121,22 @@
     <Compile Include="Common\API\KeyGatherers.cs" />
     <Compile Include="Common\API\Relays.cs" />
     <Compile Include="Common\API\XmlGet.cs" />
+    <Compile Include="Common\DefaultStringVariables.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
+    <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachingSettings.cs" />
+    <Compile Include="Common\Structures\AppOptions\Display\ColumnAdapter.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\ContentDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\EpisodesDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\LibraryDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\SeriesDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\TVDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\GridViewDisplays.cs" />
-    <Compile Include="Common\Structures\AppOptions\Logging\LoggingSettings.cs" />
+    <Compile Include="Common\Logging\LoggingSettings.cs" />
     <Compile Include="Common\Structures\AppOptions\Player\PlaybackMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Player\PlayerKeyBindings.cs" />
     <Compile Include="Common\Structures\AppOptions\Player\PlayerSettings.cs" />
@@ -146,7 +151,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Common\GlobalStaticVars.cs" />
-    <Compile Include="Common\Logging\Helpers.cs" />
+    <Compile Include="Common\Logging\LoggingHelpers.cs" />
     <Compile Include="Common\Methods.cs" />
     <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />
     <Compile Include="Common\Renderers\GenericRenderer.cs" />
@@ -154,7 +159,7 @@
     <Compile Include="Common\Renderers\RenderWorkers\ContentRenderWorker.cs" />
     <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
     <Compile Include="Common\Structures\SearchOptions.cs" />
-    <Compile Include="Common\StringVar.cs" />
+    <Compile Include="Common\SVarController.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />
     <Compile Include="Common\Structures\AppOptions\GenericAppSettings.cs" />
@@ -168,16 +173,182 @@
     </Compile>
     <Compile Include="Common\Structures\SearchRuleIDs.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
+    <Compile Include="Common\TypeConverters\GridViewTypeConverter.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
+    <Compile Include="Player\Audio.cs" />
+    <Compile Include="Player\AudioDevice.cs" />
+    <Compile Include="Player\AudioInput.cs" />
+    <Compile Include="Player\AudioInputDevice.cs" />
+    <Compile Include="Player\AudioStream.cs" />
+    <Compile Include="Player\AudioTrack.cs" />
+    <Compile Include="Player\CameraControlFlags.cs" />
+    <Compile Include="Player\CameraControlProperty.cs" />
+    <Compile Include="Player\CloneFlip.cs" />
+    <Compile Include="Player\CloneLayout.cs" />
+    <Compile Include="Player\CloneProperties.cs" />
+    <Compile Include="Player\CloneQuality.cs" />
+    <Compile Include="Player\ConstPropVariant.cs" />
     <Compile Include="Player\CursorHide.cs" />
+    <Compile Include="Player\DeviceInfo.cs" />
+    <Compile Include="Player\DeviceState.cs" />
+    <Compile Include="Player\Display.cs" />
     <Compile Include="Player\DisplayClones.cs" />
+    <Compile Include="Player\DisplayMode.cs" />
+    <Compile Include="Player\DisplayShape.cs" />
+    <Compile Include="Player\DXVA2ProcAmp.cs" />
+    <Compile Include="Player\DXVA2ProcAmpValues.cs" />
+    <Compile Include="Player\DXVA2ValueRange.cs" />
+    <Compile Include="Player\DXVA2VideoProcessorCaps.cs" />
+    <Compile Include="Player\EDataFlow.cs" />
+    <Compile Include="Player\EndedEventArgs.cs" />
+    <Compile Include="Player\ERole.cs" />
+    <Compile Include="Player\Events.cs" />
+    <Compile Include="Player\FourCC.cs" />
+    <Compile Include="Player\FullScreenMode.cs" />
+    <Compile Include="Player\Has.cs" />
+    <Compile Include="Player\HideObjectEventArgs.cs" />
+    <Compile Include="Player\HideObjectMembers.cs" />
+    <Compile Include="Player\HResult.cs" />
+    <Compile Include="Player\IAMCameraControl.cs" />
+    <Compile Include="Player\IAMVideoProcAmp.cs" />
+    <Compile Include="Player\IAudioEndpointVolume.cs" />
+    <Compile Include="Player\IAudioMeterInformation.cs" />
+    <Compile Include="Player\ImageSource.cs" />
+    <Compile Include="Player\IMFActivate.cs" />
+    <Compile Include="Player\IMFAsyncCallback.cs" />
+    <Compile Include="Player\IMFAsyncResult.cs" />
+    <Compile Include="Player\IMFAttributes.cs" />
+    <Compile Include="Player\IMFAudioStreamVolume.cs" />
+    <Compile Include="Player\IMFByteStream.cs" />
+    <Compile Include="Player\IMFClock.cs" />
+    <Compile Include="Player\IMFCollection.cs" />
+    <Compile Include="Player\IMFMediaBuffer.cs" />
+    <Compile Include="Player\IMFMediaEvent.cs" />
+    <Compile Include="Player\IMFMediaEventGenerator.cs" />
+    <Compile Include="Player\IMFMediaSession.cs" />
+    <Compile Include="Player\IMFMediaSource.cs" />
+    <Compile Include="Player\IMFMediaType.cs" />
+    <Compile Include="Player\IMFMediaTypeHandler.cs" />
+    <Compile Include="Player\IMFPresentationDescriptor.cs" />
+    <Compile Include="Player\IMFRateControl.cs" />
+    <Compile Include="Player\IMFRateSupport.cs" />
+    <Compile Include="Player\IMFSample.cs" />
+    <Compile Include="Player\IMFSimpleAudioVolume.cs" />
+    <Compile Include="Player\IMFSinkWriter.cs" />
+    <Compile Include="Player\IMFSourceReader.cs" />
+    <Compile Include="Player\IMFSourceReaderAsync.cs" />
+    <Compile Include="Player\IMFSourceReaderCallback.cs" />
+    <Compile Include="Player\IMFSourceResolver.cs" />
+    <Compile Include="Player\IMFStreamDescriptor.cs" />
+    <Compile Include="Player\IMFTopology.cs" />
+    <Compile Include="Player\IMFTopologyNode.cs" />
+    <Compile Include="Player\IMFVideoDisplayControl.cs" />
+    <Compile Include="Player\IMFVideoProcessor.cs" />
+    <Compile Include="Player\IMMDevice.cs" />
+    <Compile Include="Player\IMMDeviceCollection.cs" />
+    <Compile Include="Player\IMMDeviceEnumerator.cs" />
+    <Compile Include="Player\IMMNotificationClient.cs" />
     <Compile Include="Player\InfoLabel.cs" />
-    <Compile Include="Player\Interop.cs" />
+    <Compile Include="Player\SafeNativeMethods.cs" />
+    <Compile Include="Player\IPropertyStore.cs" />
+    <Compile Include="Player\ISequentialStream.cs" />
+    <Compile Include="Player\IStream.cs" />
+    <Compile Include="Player\Media.cs" />
+    <Compile Include="Player\MediaEventType.cs" />
+    <Compile Include="Player\MediaName.cs" />
+    <Compile Include="Player\MediaPart.cs" />
+    <Compile Include="Player\Metadata.cs" />
+    <Compile Include="Player\MFASync.cs" />
+    <Compile Include="Player\MFAsyncCallbackQueue.cs" />
+    <Compile Include="Player\MFAttributesClsid.cs" />
+    <Compile Include="Player\MFAttributesMatchType.cs" />
+    <Compile Include="Player\MFAttributeType.cs" />
+    <Compile Include="Player\MFByteStreamCapabilities.cs" />
+    <Compile Include="Player\MFByteStreamSeekingFlags.cs" />
+    <Compile Include="Player\MFByteStreamSeekOrigin.cs" />
+    <Compile Include="Player\MFCallback.cs" />
+    <Compile Include="Player\MFClockCharacteristicsFlags.cs" />
+    <Compile Include="Player\MFClockRelationalFlags.cs" />
+    <Compile Include="Player\MFClockState.cs" />
+    <Compile Include="Player\MFEventFlag.cs" />
+    <Compile Include="Player\MFExtern.cs" />
+    <Compile Include="Player\MfFloat.cs" />
+    <Compile Include="Player\MFInt.cs" />
+    <Compile Include="Player\MFMediaEqual.cs" />
+    <Compile Include="Player\MFMediaSourceCharacteristics.cs" />
+    <Compile Include="Player\MFMediaType.cs" />
+    <Compile Include="Player\MFObjectType.cs" />
+    <Compile Include="Player\MFRateDirection.cs" />
+    <Compile Include="Player\MFRect.cs" />
+    <Compile Include="Player\MFResolution.cs" />
+    <Compile Include="Player\MFServices.cs" />
+    <Compile Include="Player\MFSessionCapabilities.cs" />
+    <Compile Include="Player\MFSessionGetFullTopologyFlags.cs" />
+    <Compile Include="Player\MFSessionSetTopologyFlags.cs" />
+    <Compile Include="Player\MFSize.cs" />
+    <Compile Include="Player\MFStartup.cs" />
+    <Compile Include="Player\MFTopologyType.cs" />
+    <Compile Include="Player\MFTranscodeContainerType.cs" />
+    <Compile Include="Player\MFVideoAspectRatioMode.cs" />
+    <Compile Include="Player\MFVideoNormalizedRect.cs" />
+    <Compile Include="Player\MFVideoRenderPrefs.cs" />
+    <Compile Include="Player\MF_SINK_WRITER_STATISTICS.cs" />
+    <Compile Include="Player\MF_SOURCE_READER_CONTROL_FLAG.cs" />
+    <Compile Include="Player\MF_SOURCE_READER_FLAG.cs" />
+    <Compile Include="Player\MMDeviceEnumerator.cs" />
+    <Compile Include="Player\Overlay.cs" />
+    <Compile Include="Player\OverlayBlend.cs" />
+    <Compile Include="Player\OverlayMode.cs" />
+    <Compile Include="Player\PeakLevelEventArgs.cs" />
     <Compile Include="Player\PeakMeter.cs" />
     <Compile Include="Player\Player.cs" />
+    <Compile Include="Player\Playlist.cs" />
+    <Compile Include="Player\PointTo.cs" />
+    <Compile Include="Player\Position.cs" />
+    <Compile Include="Player\PositionEventArgs.cs" />
+    <Compile Include="Player\PositionSlider.cs" />
+    <Compile Include="Player\PositionSliderMode.cs" />
+    <Compile Include="Player\PropertyKey.cs" />
+    <Compile Include="Player\PropertyKeys.cs" />
+    <Compile Include="Player\PropVariant.cs" />
+    <Compile Include="Player\PVMarshaler.cs" />
+    <Compile Include="Player\ScreenCopy.cs" />
+    <Compile Include="Player\ScreenCopyMode.cs" />
+    <Compile Include="Player\ShapeCallback.cs" />
+    <Compile Include="Player\SilentSeek.cs" />
+    <Compile Include="Player\Sliders.cs" />
+    <Compile Include="Player\SliderValue.cs" />
+    <Compile Include="Player\Speed.cs" />
+    <Compile Include="Player\STATFLAG.cs" />
+    <Compile Include="Player\STGM.cs" />
+    <Compile Include="Player\StopReason.cs" />
     <Compile Include="Player\SubClasses.cs" />
+    <Compile Include="Player\SubtitleEventArgs.cs" />
     <Compile Include="Player\Subtitles.cs" />
+    <Compile Include="Player\SystemAudioDevicesEventArgs.cs" />
+    <Compile Include="Player\SystemAudioDevicesNotification.cs" />
+    <Compile Include="Player\SystemPanels.cs" />
+    <Compile Include="Player\TaskbarIndicator.cs" />
+    <Compile Include="Player\TaskbarProgress.cs" />
+    <Compile Include="Player\TaskbarProgressMode.cs" />
+    <Compile Include="Player\TaskbarStates.cs" />
+    <Compile Include="Player\UnmanagedNameAttribute.cs" />
+    <Compile Include="Player\Video.cs" />
+    <Compile Include="Player\VideoColorAttribute.cs" />
+    <Compile Include="Player\VideoColorEventArgs.cs" />
+    <Compile Include="Player\VideoDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Player\VideoProcAmpFlags.cs" />
+    <Compile Include="Player\VideoProcAmpProperty.cs" />
+    <Compile Include="Player\VideoStream.cs" />
+    <Compile Include="Player\VideoTrack.cs" />
+    <Compile Include="Player\Webcam.cs" />
+    <Compile Include="Player\WebcamDevice.cs" />
+    <Compile Include="Player\WebcamFormat.cs" />
+    <Compile Include="Player\WebcamProperty.cs" />
+    <Compile Include="Player\WebcamQuality.cs" />
     <Compile Include="PlexAPI\Country.cs" />
     <Compile Include="PlexAPI\Director.cs" />
     <Compile Include="PlexAPI\Directory.cs" />
@@ -240,17 +411,23 @@
     <Compile Include="UI\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\TestForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TitleSearch.cs">
+    <Compile Include="UI\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\TitleSearch.Designer.cs">
-      <DependentUpon>TitleSearch.cs</DependentUpon>
+    <Compile Include="UI\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Metadata.cs">
       <SubType>Form</SubType>
@@ -283,11 +460,14 @@
     <EmbeddedResource Include="UI\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\TitleSearch.resx">
-      <DependentUpon>TitleSearch.cs</DependentUpon>
+    <EmbeddedResource Include="UI\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Metadata.resx">
       <DependentUpon>Metadata.cs</DependentUpon>
@@ -326,6 +506,10 @@
     <None Include="Resources\baseline_folder_open_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\white\baseline_settings_black_48dp_white.png" />
+    <None Include="Resources\white\baseline_settings_black_18dp_white.png" />
+    <None Include="Resources\baseline_settings_black_48dp.png" />
+    <None Include="Resources\baseline_settings_black_18dp.png" />
     <None Include="Resources\keywordBlacklist.txt" />
     <None Include="Resources\white\baseline_refresh_black_48dp_white.png" />
     <None Include="Resources\white\baseline_refresh_black_18dp_white.png" />

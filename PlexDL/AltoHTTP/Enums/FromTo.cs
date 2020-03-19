@@ -1,4 +1,4 @@
-﻿namespace PlexDL.AltoHttp.Classes
+﻿namespace PlexDL.AltoHTTP.Enums
 {
     internal enum FromTo
     {

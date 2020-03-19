@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The one dimensional animator class, useful for animating raw values
@@ -74,7 +74,9 @@ namespace PlexDL.WinFormAnimation
         ///     Initializes a new instance of the <see cref="Animator" /> class.
         /// </summary>
         public Animator()
-            : this(new Path[] { })
+        : this(new Path[]
+        {
+        })
         {
         }
 
@@ -85,7 +87,9 @@ namespace PlexDL.WinFormAnimation
         ///     Limits the maximum frames per seconds
         /// </param>
         public Animator(FPSLimiterKnownValues fpsLimiter)
-            : this(new Path[] { }, fpsLimiter)
+        : this(new Path[]
+        {
+        }, fpsLimiter)
         {
         }
 
@@ -96,7 +100,10 @@ namespace PlexDL.WinFormAnimation
         ///     The path of the animation
         /// </param>
         public Animator(Path path)
-            : this(new[] { path })
+        : this(new[]
+        {
+            path
+        })
         {
         }
 
@@ -110,7 +117,10 @@ namespace PlexDL.WinFormAnimation
         ///     Limits the maximum frames per seconds
         /// </param>
         public Animator(Path path, FPSLimiterKnownValues fpsLimiter)
-            : this(new[] { path }, fpsLimiter)
+        : this(new[]
+        {
+            path
+        }, fpsLimiter)
         {
         }
 
@@ -146,7 +156,7 @@ namespace PlexDL.WinFormAnimation
         /// <exception cref="InvalidOperationException">Animation is running</exception>
         public Path[] Paths
         {
-            get { return _paths.ToArray(); }
+            get => _paths.ToArray();
             set
             {
                 if (CurrentStatus == AnimatorStatus.Stopped)
@@ -222,10 +232,10 @@ namespace PlexDL.WinFormAnimation
         {
             TargetObject = targetObject;
             var prop = TargetObject.GetType()
-                .GetProperty(
-                    propertyName,
-                    BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance |
-                    BindingFlags.SetProperty);
+            .GetProperty(
+                propertyName,
+                BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance |
+                BindingFlags.SetProperty);
             if (prop == null) return;
             Play(
                 new SafeInvoker<float>(
@@ -273,12 +283,10 @@ namespace PlexDL.WinFormAnimation
             TargetObject = targetObject;
 
             var property =
-                ((propertySetter.Body as MemberExpression) ??
-                 (((UnaryExpression)propertySetter.Body).Operand as MemberExpression))?.Member as PropertyInfo;
+            (propertySetter.Body as MemberExpression ??
+             ((UnaryExpression)propertySetter.Body).Operand as MemberExpression)?.Member as PropertyInfo;
             if (property == null)
-            {
                 throw new ArgumentException(nameof(propertySetter));
-            }
 
             Play(
                 new SafeInvoker<float>(
@@ -293,9 +301,7 @@ namespace PlexDL.WinFormAnimation
         public virtual void Resume()
         {
             if (CurrentStatus == AnimatorStatus.Paused)
-            {
                 _timer.Resume();
-            }
         }
 
         /// <summary>
@@ -308,6 +314,7 @@ namespace PlexDL.WinFormAnimation
             {
                 _tempPaths.Clear();
             }
+
             ActivePath = null;
             CurrentStatus = AnimatorStatus.Stopped;
             _tempReverseRepeat = false;
@@ -374,6 +381,7 @@ namespace PlexDL.WinFormAnimation
             {
                 _tempPaths.AddRange(_paths);
             }
+
             _timer.Start();
         }
 
@@ -384,7 +392,6 @@ namespace PlexDL.WinFormAnimation
                 lock (_tempPaths)
                 {
                     if (_tempPaths != null && ActivePath == null && _tempPaths.Count > 0)
-                    {
                         while (ActivePath == null)
                         {
                             if (_tempReverseRepeat)
@@ -397,10 +404,11 @@ namespace PlexDL.WinFormAnimation
                                 ActivePath = _tempPaths.FirstOrDefault();
                                 _tempPaths.RemoveAt(0);
                             }
+
                             _timer.ResetClock();
                             millSinceBeginning = 0;
                         }
-                    }
+
                     var ended = ActivePath == null;
                     if (ActivePath != null)
                     {
@@ -409,16 +417,19 @@ namespace PlexDL.WinFormAnimation
                             CurrentStatus = AnimatorStatus.OnHold;
                             return;
                         }
+
                         if (millSinceBeginning - (!_tempReverseRepeat ? ActivePath.Delay : 0) <= ActivePath.Duration)
                         {
                             if (CurrentStatus != AnimatorStatus.Playing)
-                            {
                                 CurrentStatus = AnimatorStatus.Playing;
-                            }
-                            var value = ActivePath.Function(_tempReverseRepeat ? ActivePath.Duration - millSinceBeginning : millSinceBeginning - ActivePath.Delay, ActivePath.Start, ActivePath.Change, ActivePath.Duration);
+
+                            var value = ActivePath.Function(
+                                _tempReverseRepeat ? ActivePath.Duration - millSinceBeginning : millSinceBeginning - ActivePath.Delay, ActivePath.Start,
+                                ActivePath.Change, ActivePath.Duration);
                             FrameCallback.Invoke(value);
                             return;
                         }
+
                         if (CurrentStatus == AnimatorStatus.Playing)
                         {
                             if (_tempPaths.Count == 0)
@@ -429,25 +440,25 @@ namespace PlexDL.WinFormAnimation
                             }
                             else
                             {
-                                if ((_tempReverseRepeat && ActivePath.Delay > 0) || !_tempReverseRepeat && _tempPaths.FirstOrDefault()?.Delay > 0)
-                                {
-                                    // Or if the next path or this one in revese order has a delay
+                                if (_tempReverseRepeat && ActivePath.Delay > 0 || !_tempReverseRepeat && _tempPaths.FirstOrDefault()?.Delay > 0)
+                                // Or if the next path or this one in revese order has a delay
                                     FrameCallback.Invoke(_tempReverseRepeat ? ActivePath.Start : ActivePath.End);
-                                }
                             }
                         }
-                        if (_tempReverseRepeat && (millSinceBeginning - ActivePath.Duration) < ActivePath.Delay)
+
+                        if (_tempReverseRepeat && millSinceBeginning - ActivePath.Duration < ActivePath.Delay)
                         {
                             CurrentStatus = AnimatorStatus.OnHold;
                             return;
                         }
+
                         ActivePath = null;
                     }
+
                     if (!ended)
-                    {
                         return;
-                    }
                 }
+
                 if (Repeat)
                 {
                     lock (_tempPaths)
@@ -455,9 +466,11 @@ namespace PlexDL.WinFormAnimation
                         _tempPaths.AddRange(_paths);
                         _tempReverseRepeat = ReverseRepeat && !_tempReverseRepeat;
                     }
+
                     millSinceBeginning = 0;
                     continue;
                 }
+
                 Stop();
                 EndCallback?.Invoke();
                 break;

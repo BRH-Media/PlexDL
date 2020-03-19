@@ -20,47 +20,47 @@ namespace PlexDL.UI
         public Connect()
         {
             InitializeComponent();
-            this.styleMain = GlobalStaticVars.GlobalStyle;
-            this.styleMain.MetroForm = this;
-            this.cbxConnectionMode.SelectedIndex = 0;
+            styleMain = GlobalStaticVars.GlobalStyle;
+            styleMain.MetroForm = this;
+            cbxConnectionMode.SelectedIndex = 0;
         }
 
         private void FadeIn(object sender, EventArgs e)
         {
             if (Opacity >= 1)
-                t1.Stop();   //this stops the timer if the form is completely displayed
+                t1.Stop(); //this stops the timer if the form is completely displayed
             else
                 Opacity += 0.05;
         }
 
         private void FadeOut(object sender, EventArgs e)
         {
-            if (Opacity <= 0)     //check if opacity is 0
+            if (Opacity <= 0) //check if opacity is 0
             {
-                t1.Stop();    //if it is, we stop the timer
-                Close();   //and we try to close the form
+                t1.Stop(); //if it is, we stop the timer
+                Close(); //and we try to close the form
             }
             else
+            {
                 Opacity -= 0.05;
+            }
         }
 
         private void FrmConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((settings.Generic.AnimationSpeed > 0) && !connectionStarted)
+            if (settings.Generic.AnimationSpeed > 0 && !connectionStarted)
             {
                 e.Cancel = true;
                 t1 = new Timer
                 {
                     Interval = settings.Generic.AnimationSpeed
                 };
-                t1.Tick += new EventHandler(FadeOut);  //this calls the fade out function
+                t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
                 t1.Start();
 
                 if (Opacity == 0)
-                {
-                    //resume the event - the program can be closed
+                //resume the event - the program can be closed
                     e.Cancel = false;
-                }
             }
         }
 
@@ -68,7 +68,8 @@ namespace PlexDL.UI
         {
             if (!VerifyText(txtAccountToken.Text))
             {
-                MessageBox.Show("Please enter a valid account token. A token must be 20 characters in length with no spaces.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter a valid account token. A token must be 20 characters in length with no spaces.", "Validation Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -77,7 +78,6 @@ namespace PlexDL.UI
                 {
                     ConnectionInfo.RelaysOnly = true;
                     ConnectionInfo.DirectOnly = false;
-
                 }
                 else if (cbxConnectionMode.SelectedIndex == 2)
                 {
@@ -91,8 +91,8 @@ namespace PlexDL.UI
                 }
 
                 connectionStarted = true;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 
@@ -105,15 +105,16 @@ namespace PlexDL.UI
         private void FrmConnect_Load(object sender, EventArgs e)
         {
             connectionStarted = false;
-            settings = Home.settings;
+            settings = Home.Settings;
             if (settings.Generic.AnimationSpeed > 0)
             {
-                Opacity = 0;      //first the opacity is 0
+                Opacity = 0; //first the opacity is 0
 
-                t1.Interval = settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
-                t1.Tick += new EventHandler(FadeIn);  //this calls the function that changes opacity
+                t1.Interval = settings.Generic.AnimationSpeed; //we'll increase the opacity every 10ms
+                t1.Tick += new EventHandler(FadeIn); //this calls the function that changes opacity
                 t1.Start();
             }
+
             txtAccountToken.Text = ConnectionInfo.PlexAccountToken;
             if (ConnectionInfo.RelaysOnly)
                 cbxConnectionMode.SelectedIndex = 1;

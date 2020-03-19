@@ -743,6 +743,46 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap baseline_settings_black_18dp {
+            get {
+                object obj = ResourceManager.GetObject("baseline_settings_black_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap baseline_settings_black_18dp_white {
+            get {
+                object obj = ResourceManager.GetObject("baseline_settings_black_18dp_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap baseline_settings_black_48dp {
+            get {
+                object obj = ResourceManager.GetObject("baseline_settings_black_48dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap baseline_settings_black_48dp_white {
+            get {
+                object obj = ResourceManager.GetObject("baseline_settings_black_48dp_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_18dp", resourceCulture);
@@ -991,43 +1031,7 @@ namespace PlexDL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to abbey brooks
-        ///abused
-        ///accidental anal
-        ///accidental creampie
-        ///accidental orgasm
-        ///addison rose
-        ///adriana nicole
-        ///adriana sage
-        ///adrianna nicole
-        ///adult porn
-        ///adult tube
-        ///adult tubes
-        ///adult you tube
-        ///adult youtube
-        ///african
-        ///african anal
-        ///african porn
-        ///agent
-        ///aladdin porn
-        ///alanah rae
-        ///alaura eden
-        ///albino porn
-        ///alektra blue
-        ///aletta ocean
-        ///alexa may
-        ///alexa rae
-        ///alexis amor
-        ///alexis amore
-        ///alexis breeze
-        ///alexis love
-        ///alexis silver
-        ///alexis texas
-        ///alice in wonderland porn
-        ///alicia angel
-        ///alicia rhodes
-        ///alicia tyler
-        ///alien [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string keywordBlacklist {
             get {

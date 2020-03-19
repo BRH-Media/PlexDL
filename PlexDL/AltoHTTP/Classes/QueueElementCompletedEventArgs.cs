@@ -1,4 +1,4 @@
-﻿namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHTTP.Classes
 {
     /// <summary>
     /// Queue element completed event arguments
@@ -21,11 +21,11 @@
         /// <summary>
         /// The index of the completed element
         /// </summary>
-        public int Index { get { return _index; } }
+        public int Index => _index;
 
         /// <summary>
         /// The index of the completed element
         /// </summary>
-        public QueueElement Element { get { return _element; } }
+        public QueueElement Element => _element;
     }
 }

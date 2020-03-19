@@ -69,7 +69,7 @@ using System.Windows.Forms;
 
 #endregion Usings
 
-namespace PVS.MediaPlayer
+namespace PlexDL.Player
 {
     // ******************************** Player Peak Meter
 
@@ -137,18 +137,21 @@ namespace PVS.MediaPlayer
                                 pm_PeakMeterValuesStop[i] = STOP_VALUE;
                             }
                         }
+
                         pm_HasPeakMeter = true;
 
                         StartSystemDevicesChangedHandlerCheck();
                     }
                 }
                 catch
-                { /* ignore */
+                {
+                    /* ignore */
                 }
 
                 if (levelDevice != null) Marshal.ReleaseComObject(levelDevice);
                 if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
             }
+
             return pm_HasPeakMeter;
         }
 
@@ -175,7 +178,10 @@ namespace PVS.MediaPlayer
 
                     StopSystemDevicesChangedHandlerCheck();
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
             }
         }
 
@@ -204,7 +210,8 @@ namespace PVS.MediaPlayer
 
         internal void StartSystemDevicesChangedHandlerCheck()
         {
-            if (!_hasDeviceChangedHandler && (_audioDevice != null || _mediaAudioDeviceChanged != null || _mediaSystemAudioDevicesChanged != null || pm_HasPeakMeter))
+            if (!_hasDeviceChangedHandler &&
+                (_audioDevice != null || _mediaAudioDeviceChanged != null || _mediaSystemAudioDevicesChanged != null || pm_HasPeakMeter))
             {
                 if (AudioDevicesClientOpen())
                 {
@@ -216,7 +223,8 @@ namespace PVS.MediaPlayer
 
         internal void StopSystemDevicesChangedHandlerCheck()
         {
-            if (_hasDeviceChangedHandler && _audioDevice == null && _mediaAudioDeviceChanged == null && _mediaSystemAudioDevicesChanged != null && pm_HasPeakMeter)
+            if (_hasDeviceChangedHandler && _audioDevice == null && _mediaAudioDeviceChanged == null && _mediaSystemAudioDevicesChanged != null &&
+                pm_HasPeakMeter)
             {
                 _mediaSystemAudioDevicesChanged -= SystemDevicesChangedHandler;
                 AudioDevicesClientClose();
@@ -255,11 +263,13 @@ namespace PVS.MediaPlayer
                             FormCollection forms = Application.OpenForms;
                             if (forms != null && forms.Count > 0) control = forms[0];
                         }
+
                         if (control != null)
                         {
                             control.BeginInvoke(new MethodInvoker(delegate { AV_UpdateTopology(); }));
                         }
                     }
+
                     if (_mediaAudioDeviceChanged != null) _mediaAudioDeviceChanged(this, EventArgs.Empty);
                 }
             }
@@ -272,12 +282,14 @@ namespace PVS.MediaPlayer
                         PeakMeter_Open(_audioDevice, true);
                     }
                     else pm_PeakMeterChannelCount = 0;
+
                     if (_mediaAudioDeviceChanged != null) _mediaAudioDeviceChanged(this, EventArgs.Empty);
                 }
             }
             else
             {
-                if (e._deviceId == _audioDevice.Id && (e._notification == SystemAudioDevicesNotification.Removed || e._notification == SystemAudioDevicesNotification.Disabled))
+                if (e._deviceId == _audioDevice.Id && (e._notification == SystemAudioDevicesNotification.Removed ||
+                                                       e._notification == SystemAudioDevicesNotification.Disabled))
                 {
                     if (count != 0)
                     {
@@ -285,6 +297,7 @@ namespace PVS.MediaPlayer
                         if (pm_HasPeakMeter) PeakMeter_Open(_audioDevice, true);
                     }
                     else pm_PeakMeterChannelCount = 0;
+
                     if (_mediaAudioDeviceChanged != null) _mediaAudioDeviceChanged(this, EventArgs.Empty);
                 }
             }
@@ -292,36 +305,40 @@ namespace PVS.MediaPlayer
 
         internal static bool AudioDevicesClientOpen()
         {
-            bool result = true;
+            var result = true;
             if (pm_AudioDevicesCallback == null)
-            {
                 try
                 {
-                    IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
+                    var deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
                     pm_AudioDevicesCallback = new AudioDevicesClient();
                     deviceEnumerator.RegisterEndpointNotificationCallback(pm_AudioDevicesCallback);
                     pm_AudioDevicesEventArgs = new SystemAudioDevicesEventArgs();
                     if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
                 }
                 catch { result = false; }
-            }
+
             return result;
         }
 
         internal static void AudioDevicesClientClose()
         {
             if (pm_AudioDevicesCallback != null)
-            {
                 try
                 {
-                    IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
+                    var deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
                     deviceEnumerator.UnregisterEndpointNotificationCallback(pm_AudioDevicesCallback);
                     pm_AudioDevicesCallback = null;
                     pm_AudioDevicesEventArgs = null;
-                    if (deviceEnumerator != null) { Marshal.ReleaseComObject(deviceEnumerator); deviceEnumerator = null; }
+                    if (deviceEnumerator != null)
+                    {
+                        Marshal.ReleaseComObject(deviceEnumerator);
+                        deviceEnumerator = null;
+                    }
                 }
-                catch { /* ignore */ }
-            }
+                catch
+                {
+                    /* ignore */
+                }
         }
 
         private static bool IsAudioInputDevice(string deviceId)
@@ -348,6 +365,7 @@ namespace PVS.MediaPlayer
                     break;
                 }
             }
+
             if (deviceCollection != null) Marshal.ReleaseComObject(deviceCollection);
             return result;
         }
@@ -476,7 +494,10 @@ namespace PVS.MediaPlayer
                     levelDevice.Activate(ref IID_IAudioEndpointVolume, 3, IntPtr.Zero, out levelDeviceInfo);
                     ((IAudioEndpointVolume)levelDeviceInfo).GetChannelCount(out channels);
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
 
                 if (levelDeviceInfo != null) Marshal.ReleaseComObject(levelDeviceInfo);
                 if (levelDevice != null) Marshal.ReleaseComObject(levelDevice);

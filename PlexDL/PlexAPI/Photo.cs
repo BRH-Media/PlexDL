@@ -16,7 +16,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public Photo(User user, Server server, String uri) : base(user, server, uri)
+        public Photo(User user, Server server, string uri) : base(user, server, uri)
         {
         }
     }

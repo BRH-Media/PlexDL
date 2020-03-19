@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The Path2D class is a representation of a line in a 2D plane and the
@@ -43,7 +43,7 @@ namespace PlexDL.WinFormAnimation
             ulong duration,
             ulong delay,
             AnimationFunctions.Function function)
-            : this(new Path(startX, endX, duration, delay, function), new Path(startY, endY, duration, delay, function))
+        : this(new Path(startX, endX, duration, delay, function), new Path(startY, endY, duration, delay, function))
         {
         }
 
@@ -78,7 +78,7 @@ namespace PlexDL.WinFormAnimation
             float endY,
             ulong duration,
             ulong delay)
-            : this(new Path(startX, endX, duration, delay), new Path(startY, endY, duration, delay))
+        : this(new Path(startX, endX, duration, delay), new Path(startY, endY, duration, delay))
         {
         }
 
@@ -113,7 +113,7 @@ namespace PlexDL.WinFormAnimation
             float endY,
             ulong duration,
             AnimationFunctions.Function function)
-            : this(new Path(startX, endX, duration, function), new Path(startY, endY, duration, function))
+        : this(new Path(startX, endX, duration, function), new Path(startY, endY, duration, function))
         {
         }
 
@@ -144,7 +144,7 @@ namespace PlexDL.WinFormAnimation
             float startY,
             float endY,
             ulong duration)
-            : this(new Path(startX, endX, duration), new Path(startY, endY, duration))
+        : this(new Path(startX, endX, duration), new Path(startY, endY, duration))
         {
         }
 
@@ -170,9 +170,9 @@ namespace PlexDL.WinFormAnimation
         ///     Duration is less than zero
         /// </exception>
         public Path2D(Float2D start, Float2D end, ulong duration, ulong delay, AnimationFunctions.Function function)
-            : this(
-                new Path(start.X, end.X, duration, delay, function),
-                new Path(start.Y, end.Y, duration, delay, function))
+        : this(
+            new Path(start.X, end.X, duration, delay, function),
+            new Path(start.Y, end.Y, duration, delay, function))
         {
         }
 
@@ -195,9 +195,9 @@ namespace PlexDL.WinFormAnimation
         ///     Duration is less than zero
         /// </exception>
         public Path2D(Float2D start, Float2D end, ulong duration, ulong delay)
-            : this(
-                new Path(start.X, end.X, duration, delay),
-                new Path(start.Y, end.Y, duration, delay))
+        : this(
+            new Path(start.X, end.X, duration, delay),
+            new Path(start.Y, end.Y, duration, delay))
         {
         }
 
@@ -220,9 +220,9 @@ namespace PlexDL.WinFormAnimation
         ///     Duration is less than zero
         /// </exception>
         public Path2D(Float2D start, Float2D end, ulong duration, AnimationFunctions.Function function)
-            : this(
-                new Path(start.X, end.X, duration, function),
-                new Path(start.Y, end.Y, duration, function))
+        : this(
+            new Path(start.X, end.X, duration, function),
+            new Path(start.Y, end.Y, duration, function))
         {
         }
 
@@ -242,9 +242,9 @@ namespace PlexDL.WinFormAnimation
         ///     Duration is less than zero
         /// </exception>
         public Path2D(Float2D start, Float2D end, ulong duration)
-            : this(
-                new Path(start.X, end.X, duration),
-                new Path(start.Y, end.Y, duration))
+        : this(
+            new Path(start.X, end.X, duration),
+            new Path(start.Y, end.Y, duration))
         {
         }
 

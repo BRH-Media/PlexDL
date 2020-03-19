@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The Path class is a representation of a line in a 1D plane and the
@@ -53,7 +53,7 @@ namespace PlexDL.WinFormAnimation
         ///     Duration is less than zero
         /// </exception>
         public Path(float start, float end, ulong duration, AnimationFunctions.Function function)
-            : this(start, end, duration, 0, function)
+        : this(start, end, duration, 0, function)
         {
         }
 

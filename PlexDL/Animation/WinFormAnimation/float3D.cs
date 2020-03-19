@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The Float3D class contains two <see langword="float" /> values and
@@ -333,9 +333,8 @@ namespace PlexDL.WinFormAnimation
         public object ToType(Type conversionType, IFormatProvider provider)
         {
             if (conversionType == typeof(Color))
-            {
                 return (Color)this;
-            }
+
             throw new InvalidCastException();
         }
 
@@ -378,9 +377,8 @@ namespace PlexDL.WinFormAnimation
             if (ReferenceEquals(this, obj)) return true;
             var conversionType = obj.GetType();
             if (conversionType == typeof(Color))
-            {
                 return this == (Color)obj;
-            }
+
             return obj.GetType() == GetType() && Equals((Float3D)obj);
         }
 
@@ -413,12 +411,11 @@ namespace PlexDL.WinFormAnimation
         public static bool operator ==(Float3D left, Float3D right)
         {
             if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
-            {
                 return ReferenceEquals(left, null) && ReferenceEquals(right, null);
-            }
+
             // ReSharper disable CompareOfFloatsByEqualityOperator
             return ReferenceEquals(left, right) ||
-                   ((double)(left.X) == right.X && (double)(left.Y) == right.Y && (double)(left.Z) == right.Z);
+                   (double)left.X == right.X && (double)left.Y == right.Y && (double)left.Z == right.Z;
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 

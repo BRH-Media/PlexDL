@@ -66,7 +66,7 @@ using System.Text.RegularExpressions;
 
 #endregion Usings
 
-namespace PVS.MediaPlayer
+namespace PlexDL.Player
 {
     public partial class Player
     {
@@ -123,15 +123,15 @@ namespace PVS.MediaPlayer
         internal bool st_SubtitlesEnabled;
 
         internal bool st_HasSubtitles;
-        internal string st_SubtitlesName;   // filename of subtitles being used
+        internal string st_SubtitlesName; // filename of subtitles being used
         internal SubtitleItem[] st_SubtitleItems;
         internal int st_SubTitleCount;
         private bool st_SubtitlesBusy;
 
         // find and decode subtitles file
-        internal string st_FileName;        // set by user
+        internal string st_FileName; // set by user
 
-        internal string st_Directory;       // set by user
+        internal string st_Directory; // set by user
         internal int st_DirectoryDepth = ST_DEFAULT_DIRECTORY_DEPTH;
         internal Encoding st_Encoding = Encoding.Default;
         internal long st_TimeShift;
@@ -299,6 +299,7 @@ namespace PVS.MediaPlayer
                         }
                     }
                 }
+
                 st_SubtitlesBusy = false;
             }
         }
@@ -353,6 +354,7 @@ namespace PVS.MediaPlayer
                     }
                 }
             }
+
             return found;
         }
 
@@ -392,7 +394,10 @@ namespace PVS.MediaPlayer
                     }
                 }
             }
-            catch { /* ignore */ }
+            catch
+            {
+                /* ignore */
+            }
         }
 
         #endregion Subtitles - Find File / Search File
@@ -439,6 +444,7 @@ namespace PVS.MediaPlayer
                                 {
                                     readStep = 1;
                                 }
+
                                 break;
 
                             case 1: // Time
@@ -449,6 +455,7 @@ namespace PVS.MediaPlayer
                                     if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out endTime)) error = true;
                                 }
                                 else error = true;
+
                                 readStep = 2;
                                 break;
 
@@ -457,16 +464,20 @@ namespace PVS.MediaPlayer
                                 if (int.TryParse(line, out testId)) // if not id (subtitle number)
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
                                 {
-                                    if (st_RemoveHTMLTags) st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
+                                    if (st_RemoveHTMLTags)
+                                        st_SubtitleItems[index++] =
+                                        new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
                                     else st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, text);
                                     text = "";
                                     readStep = 1;
                                 }
                                 //else text += line + '\r';
                                 else text += line + "\r\n";
+
                                 break;
                         }
                     }
+
                     if (!error)
                     {
                         if (string.IsNullOrEmpty(text))
@@ -475,13 +486,16 @@ namespace PVS.MediaPlayer
                         }
                         else
                         {
-                            if (st_RemoveHTMLTags) st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
+                            if (st_RemoveHTMLTags)
+                                st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
                             else st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, text);
                         }
+
                         st_SubTitleCount = count;
                         result = true;
                     }
                 }
+
                 reader.Close();
 
                 if (st_SubtitleItems[st_SubTitleCount - 1] == null)
@@ -490,6 +504,7 @@ namespace PVS.MediaPlayer
                     else st_SubtitleItems[st_SubTitleCount - 1] = new SubtitleItem(0, 0, string.Empty);
                 }
             }
+
             return result;
         }
 
@@ -528,6 +543,7 @@ namespace PVS.MediaPlayer
                             ++count;
                         }
                         else error = true;
+
                         readStep = 2;
                         break;
 
@@ -538,9 +554,11 @@ namespace PVS.MediaPlayer
                         {
                             readStep = 1;
                         }
+
                         break;
                 }
             }
+
             reader.DiscardBufferedData();
             reader.BaseStream.Seek(0, SeekOrigin.Begin);
             reader.BaseStream.Position = 0;

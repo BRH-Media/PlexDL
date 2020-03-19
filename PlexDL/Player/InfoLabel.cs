@@ -64,7 +64,7 @@ using System.Windows.Forms;
 
 #endregion Usings
 
-namespace PVS.MediaPlayer
+namespace PlexDL.Player
 {
     /// <summary>
     /// Represents a pop-up window that displays a short text. One instance of this class is sufficient to use infolabels throughout an application, but if desired, more can be created.
@@ -130,7 +130,7 @@ namespace PVS.MediaPlayer
                     const int WM_MOUSEACTIVATE = 0x0021;
                     const int MA_NOACTIVATEANDEAT = 0x0004;
                     const int WM_NCHITTEST = 0x0084;
-                    const int HTTRANSPARENT = (-1);
+                    const int HTTRANSPARENT = -1;
 
                     if (m.Msg == WM_MOUSEACTIVATE) m.Result = (IntPtr)MA_NOACTIVATEANDEAT;
                     else if (m.Msg == WM_NCHITTEST) m.Result = (IntPtr)HTTRANSPARENT;
@@ -180,10 +180,7 @@ namespace PVS.MediaPlayer
                 Controls.Add(Label);
             }
 
-            protected override bool ShowWithoutActivation
-            {
-                get { return true; }
-            }
+            protected override bool ShowWithoutActivation => true;
 
             // has to be top window because of player overlay.canfocus option
             protected override CreateParams CreateParams
@@ -192,7 +189,7 @@ namespace PVS.MediaPlayer
                 {
                     const int WS_EX_TOPMOST = 0x0008;
 
-                    CreateParams cp = base.CreateParams;
+                    var cp = base.CreateParams;
                     cp.ExStyle |= WS_EX_TOPMOST;
                     return cp;
                 }
@@ -204,7 +201,7 @@ namespace PVS.MediaPlayer
                 const int WM_MOUSEACTIVATE = 0x0021;
                 const int MA_NOACTIVATEANDEAT = 0x0004;
                 const int WM_NCHITTEST = 0x0084;
-                const int HTTRANSPARENT = (-1);
+                const int HTTRANSPARENT = -1;
 
                 if (m.Msg == WM_MOUSEACTIVATE) m.Result = (IntPtr)MA_NOACTIVATEANDEAT;
                 else if (m.Msg == WM_NCHITTEST) m.Result = (IntPtr)HTTRANSPARENT;
@@ -225,6 +222,7 @@ namespace PVS.MediaPlayer
                         if (Label != null) Label.Dispose();
                     }
                 }
+
                 base.Dispose(disposing);
             }
 
@@ -258,7 +256,10 @@ namespace PVS.MediaPlayer
         private int il_OffsetY;
 
         private Color il_BorderColor = SystemColors.WindowFrame;
-        private Padding il_BorderThickness = new Padding(IL_BORDER_THICKNESS_LEFT, IL_BORDER_THICKNESS_TOP, IL_BORDER_THICKNESS_RIGHT, IL_BORDER_THICKNESS_BOTTOM);
+
+        private Padding il_BorderThickness =
+        new Padding(IL_BORDER_THICKNESS_LEFT, IL_BORDER_THICKNESS_TOP, IL_BORDER_THICKNESS_RIGHT, IL_BORDER_THICKNESS_BOTTOM);
+
         private int il_BorderThicknessWidth = IL_BORDER_THICKNESS_LEFT + IL_BORDER_THICKNESS_RIGHT;
         private int il_BorderThicknessHeight = IL_BORDER_THICKNESS_TOP + IL_BORDER_THICKNESS_BOTTOM;
 
@@ -311,7 +312,12 @@ namespace PVS.MediaPlayer
             {
                 il_Disposed = true;
 
-                if (il_Timer != null) { il_Timer.Dispose(); il_Timer = null; }
+                if (il_Timer != null)
+                {
+                    il_Timer.Dispose();
+                    il_Timer = null;
+                }
+
                 if (il_InfoForm != null)
                 {
                     try
@@ -319,7 +325,11 @@ namespace PVS.MediaPlayer
                         il_InfoForm.Visible = false;
                         il_InfoForm.Dispose();
                     }
-                    catch { /* ignore */ }
+                    catch
+                    {
+                        /* ignore */
+                    }
+
                     il_InfoForm = null;
                 }
 
@@ -332,7 +342,11 @@ namespace PVS.MediaPlayer
                         il_BaseForm.Deactivate -= BaseForm_HideLabel;
                         il_BaseForm.Move -= BaseForm_HideLabel;
                     }
-                    catch { /* ignore */ }
+                    catch
+                    {
+                        /* ignore */
+                    }
+
                     il_BaseForm = null;
                 }
             }
@@ -379,7 +393,7 @@ namespace PVS.MediaPlayer
         private void SetSize()
         {
             il_InfoForm.Size = new Size
-                (il_InfoForm.Label.Width + il_BorderThicknessWidth + il_TextMarginsWidth,
+            (il_InfoForm.Label.Width + il_BorderThicknessWidth + il_TextMarginsWidth,
                 il_InfoForm.Label.Height + il_BorderThicknessHeight + il_TextMarginsHeight);
 
             //if (_infoForm.RoundCorners) SetRegion();
@@ -396,12 +410,13 @@ namespace PVS.MediaPlayer
             if (il_InfoForm.RoundCorners)
             {
                 // Form region
-                IntPtr handle1 = SafeNativeMethods.CreateRoundRectRgn(0, 0, il_InfoForm.Width + 1, il_InfoForm.Height + 1, 4, 4);
+                var handle1 = SafeNativeMethods.CreateRoundRectRgn(0, 0, il_InfoForm.Width + 1, il_InfoForm.Height + 1, 4, 4);
                 il_InfoForm.FormRegion = Region.FromHrgn(handle1);
                 il_InfoForm.Region = il_InfoForm.FormRegion.Clone();
 
                 // Border region
-                IntPtr handle2 = SafeNativeMethods.CreateRoundRectRgn(BorderThickness.Left, BorderThickness.Top, il_InfoForm.Width - BorderThickness.Right + 1, il_InfoForm.Height - BorderThickness.Bottom + 1, 3, 3);
+                var handle2 = SafeNativeMethods.CreateRoundRectRgn(BorderThickness.Left, BorderThickness.Top,
+                    il_InfoForm.Width - BorderThickness.Right + 1, il_InfoForm.Height - BorderThickness.Bottom + 1, 3, 3);
                 il_InfoForm.FormRegion.Exclude(Region.FromHrgn(handle2));
 
                 SafeNativeMethods.DeleteObject(handle1); // is this necessary?
@@ -436,7 +451,11 @@ namespace PVS.MediaPlayer
                     il_BaseForm.Deactivate -= BaseForm_HideLabel;
                     il_BaseForm.Move -= BaseForm_HideLabel;
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
+
                 il_BaseForm = null;
             }
         }
@@ -500,7 +519,7 @@ namespace PVS.MediaPlayer
         /// <param name="duration">The duration, in milliseconds, to display the infolabel.</param>
         public int Show(string text, Control control, Point location, ContentAlignment alignment, int duration)
         {
-            HResult result = HResult.S_OK;
+            var result = HResult.S_OK;
 
             if (!il_Busy)
             {
@@ -518,13 +537,14 @@ namespace PVS.MediaPlayer
                 }
 
                 il_InfoForm.Label.Text = text;
-                if (il_InfoForm.Label.AutoSize && (Math.Abs(il_InfoForm.Label.Width - il_OldTextSize.Width) > IL_TEXT_ROOM_WIDTH || Math.Abs(il_InfoForm.Label.Height - il_OldTextSize.Height) > IL_TEXT_ROOM_HEIGHT))
+                if (il_InfoForm.Label.AutoSize && (Math.Abs(il_InfoForm.Label.Width - il_OldTextSize.Width) > IL_TEXT_ROOM_WIDTH ||
+                                                   Math.Abs(il_InfoForm.Label.Height - il_OldTextSize.Height) > IL_TEXT_ROOM_HEIGHT))
                 {
                     il_OldTextSize = il_InfoForm.Label.Size;
                     SetSize();
                 }
 
-                Point position = control.PointToScreen(location);
+                var position = control.PointToScreen(location);
                 switch (alignment)
                 {
                     case ContentAlignment.TopLeft:
@@ -577,7 +597,7 @@ namespace PVS.MediaPlayer
                 }
 
                 // check if within all screens
-                Rectangle screen = SystemInformation.VirtualScreen;
+                var screen = SystemInformation.VirtualScreen;
                 if (position.X < screen.X) position.X = screen.X;
                 else if (position.X + il_InfoForm.Width > screen.Right) position.X = screen.Right - il_InfoForm.Width;
                 if (position.Y < screen.Y) position.Y = screen.Y;
@@ -588,7 +608,7 @@ namespace PVS.MediaPlayer
                 if (il_Control != control)
                 {
                     il_Control = control;
-                    Form form = control.FindForm();
+                    var form = control.FindForm();
                     if (il_BaseForm != form)
                     {
                         if (il_BaseForm != null)
@@ -599,9 +619,14 @@ namespace PVS.MediaPlayer
                                 il_BaseForm.Deactivate -= BaseForm_HideLabel;
                                 il_BaseForm.Move -= BaseForm_HideLabel;
                             }
-                            catch { /* ignore */ }
+                            catch
+                            {
+                                /* ignore */
+                            }
+
                             il_BaseForm = null;
                         }
+
                         if (form != null)
                         {
                             il_BaseForm = form;
@@ -622,7 +647,10 @@ namespace PVS.MediaPlayer
 
                 il_Busy = false;
             }
-            else result = HResult.ERROR_BUSY;
+            else
+            {
+                result = HResult.ERROR_BUSY;
+            }
 
             return (int)result;
         }
@@ -663,17 +691,14 @@ namespace PVS.MediaPlayer
         /// <summary>
         /// Gets a value indicating whether the infolabel is active (visible).
         /// </summary>
-        public bool Active
-        {
-            get { return il_InfoForm.Visible; }
-        }
+        public bool Active => il_InfoForm.Visible;
 
         /// <summary>
         /// Gets or sets the text associated with the infoLabel.
         /// </summary>
         public string Text
         {
-            get { return il_InfoForm.Label.Text; }
+            get => il_InfoForm.Label.Text;
             set
             {
                 il_InfoForm.Label.Text = value;
@@ -686,15 +711,13 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Padding TextMargin
         {
-            get
-            {
-                // adjust for minimum margin values
-                return new Padding(
-                    il_TextMargins.Left - IL_TEXT_MARGIN_LEFT,
-                    il_TextMargins.Top - IL_TEXT_MARGIN_TOP,
-                    il_TextMargins.Right - IL_TEXT_MARGIN_RIGHT,
-                    il_TextMargins.Bottom - IL_TEXT_MARGIN_BOTTOM);
-            }
+            get =>
+            // adjust for minimum margin values
+            new Padding(
+                il_TextMargins.Left - IL_TEXT_MARGIN_LEFT,
+                il_TextMargins.Top - IL_TEXT_MARGIN_TOP,
+                il_TextMargins.Right - IL_TEXT_MARGIN_RIGHT,
+                il_TextMargins.Bottom - IL_TEXT_MARGIN_BOTTOM);
 
             set
             {
@@ -729,10 +752,7 @@ namespace PVS.MediaPlayer
         /// <summary>
         /// Gets the current size of the (variable sized) infoLabel.
         /// </summary>
-        public Size Size
-        {
-            get { return il_InfoForm.Size; }
-        }
+        public Size Size => il_InfoForm.Size;
 
         /// <summary>
         /// Gets the true location (top-left screen coordinates) of the infoLabel (when visible).
@@ -751,7 +771,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public bool AutoSize
         {
-            get { return il_InfoForm.Label.AutoSize; }
+            get => il_InfoForm.Label.AutoSize;
             set
             {
                 if (value != il_InfoForm.Label.AutoSize)
@@ -767,7 +787,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Size TextSize
         {
-            get { return il_InfoForm.Label.Size; }
+            get => il_InfoForm.Label.Size;
             set
             {
                 if (value.Width < 32) value.Width = 32;
@@ -783,7 +803,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public ContentAlignment TextAlign
         {
-            get { return il_InfoForm.Label.TextAlign; }
+            get => il_InfoForm.Label.TextAlign;
             set
             {
                 if (value != il_InfoForm.Label.TextAlign)
@@ -799,7 +819,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Image Image
         {
-            get { return il_InfoForm.Label.Image; }
+            get => il_InfoForm.Label.Image;
             set
             {
                 if (value != il_InfoForm.Label.Image)
@@ -815,7 +835,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public ContentAlignment ImageAlign
         {
-            get { return il_InfoForm.Label.ImageAlign; }
+            get => il_InfoForm.Label.ImageAlign;
             set
             {
                 if (value != il_InfoForm.Label.ImageAlign)
@@ -837,18 +857,19 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Font Font
         {
-            get { return il_InfoForm.Label.Font; }
+            get => il_InfoForm.Label.Font;
             set
             {
                 if (value != null)
-                {
                     try
                     {
                         il_InfoForm.Label.Font = value;
                         if (il_InfoForm.Label.AutoSize) SetSize();
                     }
-                    catch { /* ignore */ }
-                }
+                    catch
+                    {
+                        /* ignore */
+                    }
             }
         }
 
@@ -857,7 +878,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public float FontSize
         {
-            get { return il_InfoForm.Label.Font.Size; }
+            get => il_InfoForm.Label.Font.Size;
             set
             {
                 if (value <= 6) value = 6;
@@ -868,7 +889,10 @@ namespace PVS.MediaPlayer
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font.FontFamily, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
             }
         }
 
@@ -877,7 +901,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public FontStyle FontStyle
         {
-            get { return il_InfoForm.Label.Font.Style; }
+            get => il_InfoForm.Label.Font.Style;
             set
             {
                 try
@@ -885,7 +909,10 @@ namespace PVS.MediaPlayer
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch { /* ignore */ }
+                catch
+                {
+                    /* ignore */
+                }
             }
         }
 
@@ -894,8 +921,8 @@ namespace PVS.MediaPlayer
         /// </summary>
         public bool UseCompatibleTextRendering
         {
-            get { return il_InfoForm.Label.UseCompatibleTextRendering; }
-            set { il_InfoForm.Label.UseCompatibleTextRendering = value; }
+            get => il_InfoForm.Label.UseCompatibleTextRendering;
+            set => il_InfoForm.Label.UseCompatibleTextRendering = value;
         }
 
         /// <summary>
@@ -903,18 +930,19 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Color ForeColor
         {
-            get { return il_InfoForm.Label.ForeColor; }
+            get => il_InfoForm.Label.ForeColor;
             set
             {
                 if (value != il_InfoForm.ForeColor)
-                {
                     try
                     {
                         il_InfoForm.ForeColor = value;
                         if (il_InfoForm.Visible) il_InfoForm.Invalidate();
                     }
-                    catch { /* ignore */ }
-                }
+                    catch
+                    {
+                        /* ignore */
+                    }
             }
         }
 
@@ -923,7 +951,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Color BackColor
         {
-            get { return il_InfoForm.BackColor; }
+            get => il_InfoForm.BackColor;
             set
             {
                 if (value == Color.Transparent)
@@ -936,6 +964,7 @@ namespace PVS.MediaPlayer
                             il_OldImage = il_InfoForm.BackgroundImage;
                             il_InfoForm.BackgroundImage = null;
                         }
+
                         il_InfoForm.TransparencyKey = il_InfoForm.BackColor;
                         il_InfoForm.Transparent = true;
                     }
@@ -961,11 +990,16 @@ namespace PVS.MediaPlayer
                                 il_InfoForm.BackBrush.Dispose();
                                 il_InfoForm.BackBrush = null;
                             }
+
                             il_InfoForm.BackMode = InfoForm.BackgroundMode.Solid;
                         }
                     }
-                    catch { /* ignore */ }
+                    catch
+                    {
+                        /* ignore */
+                    }
                 }
+
                 if (il_InfoForm.Visible) il_InfoForm.Invalidate();
             }
         }
@@ -975,7 +1009,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Brush BackBrush
         {
-            get { return il_InfoForm.BackBrush; }
+            get => il_InfoForm.BackBrush;
             set
             {
                 if (value != null)
@@ -988,6 +1022,7 @@ namespace PVS.MediaPlayer
                             il_InfoForm.BackgroundImage = null;
                             il_OldImage = null;
                         }
+
                         il_InfoForm.BackBrush = value;
                         il_InfoForm.BackMode = InfoForm.BackgroundMode.Brush;
                     }
@@ -1007,7 +1042,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Color BorderColor
         {
-            get { return il_BorderColor; }
+            get => il_BorderColor;
 
             set
             {
@@ -1024,7 +1059,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Brush BorderBrush
         {
-            get { return il_InfoForm.BorderBrush; }
+            get => il_InfoForm.BorderBrush;
             set
             {
                 if (value != null)
@@ -1041,7 +1076,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public bool RoundedCorners
         {
-            get { return il_InfoForm.RoundCorners; }
+            get => il_InfoForm.RoundCorners;
             set
             {
                 if (value != il_InfoForm.RoundCorners)
@@ -1057,7 +1092,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Padding BorderThickness
         {
-            get { return il_BorderThickness; }
+            get => il_BorderThickness;
             set
             {
                 if (value.Left > IL_BORDER_THICKNESS_MAXIMUM) value.Left = IL_BORDER_THICKNESS_MAXIMUM;
@@ -1089,7 +1124,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Image BackImage
         {
-            get { return il_InfoForm.BackgroundImage; }
+            get => il_InfoForm.BackgroundImage;
             set
             {
                 il_InfoForm.BackgroundImage = value;
@@ -1112,7 +1147,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public ImageLayout BackImageLayout
         {
-            get { return il_InfoForm.BackgroundImageLayout; }
+            get => il_InfoForm.BackgroundImageLayout;
             set
             {
                 il_InfoForm.BackgroundImageLayout = value;
@@ -1131,7 +1166,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public int Duration
         {
-            get { return il_Duration; }
+            get => il_Duration;
             set
             {
                 if (value < IL_DURATION_MINIMUM) value = IL_DURATION_MINIMUM;
@@ -1144,8 +1179,8 @@ namespace PVS.MediaPlayer
         /// </summary>
         public ContentAlignment Align
         {
-            get { return il_Alignment; }
-            set { il_Alignment = value; }
+            get => il_Alignment;
+            set => il_Alignment = value;
         }
 
         /// <summary>
@@ -1153,7 +1188,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public Point AlignOffset
         {
-            get { return new Point(il_OffsetX, il_OffsetY); }
+            get => new Point(il_OffsetX, il_OffsetY);
             set
             {
                 il_OffsetX = value.X; // any value
@@ -1166,7 +1201,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public int FadeOutSpeed
         {
-            get { return (int)(il_FadeOutValue * 100); }
+            get => (int)(il_FadeOutValue * 100);
             set
             {
                 if (value < 1) value = 1;
@@ -1180,7 +1215,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public double Opacity
         {
-            get { return il_Opacity; }
+            get => il_Opacity;
             set
             {
                 if (value < 0.0) value = 0.0;
@@ -1195,7 +1230,7 @@ namespace PVS.MediaPlayer
         /// </summary>
         public bool Transparent
         {
-            get { return il_InfoForm.Transparent; }
+            get => il_InfoForm.Transparent;
             set
             {
                 if (value != il_InfoForm.Transparent)
@@ -1209,6 +1244,7 @@ namespace PVS.MediaPlayer
                             il_OldImage = il_InfoForm.BackgroundImage;
                             il_InfoForm.BackgroundImage = null;
                         }
+
                         il_InfoForm.TransparencyKey = il_InfoForm.BackColor;
                     }
                     else
@@ -1219,8 +1255,10 @@ namespace PVS.MediaPlayer
                             il_InfoForm.BackgroundImage = il_OldImage;
                             il_OldImage = null;
                         }
+
                         il_InfoForm.TransparencyKey = Color.Empty;
                     }
+
                     if (il_InfoForm.Visible) il_InfoForm.Invalidate();
                 }
             }

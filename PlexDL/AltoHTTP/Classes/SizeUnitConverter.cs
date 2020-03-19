@@ -1,15 +1,16 @@
 ﻿using System;
+using PlexDL.AltoHTTP.Enums;
 
-namespace PlexDL.AltoHttp.Classes
+namespace PlexDL.AltoHTTP.Classes
 {
     internal static class SizeUnitConverter
     {
         public static string ConvertBestScaledSize(this long bytes)
         {
-            int unit = 1024;
-            bool inBytes = bytes < unit;
-            bool inKb = bytes < unit * unit;
-            bool inMb = bytes < unit * unit * unit;
+            var unit = 1024;
+            var inBytes = bytes < unit;
+            var inKb = bytes < unit * unit;
+            var inMb = bytes < unit * unit * unit;
             if (inBytes)
                 return bytes + " bytes";
             else if (inKb)
@@ -22,15 +23,15 @@ namespace PlexDL.AltoHttp.Classes
 
         public static double ConvertMemorySize(this long size, FromTo fromTo)
         {
-            int degree = (int)fromTo;
+            var degree = (int)fromTo;
             if (degree < 0)
             {
-                double divide = Math.Pow(1024, -degree);
+                var divide = Math.Pow(1024, -degree);
                 return size / divide;
             }
             else
             {
-                double multiplier = Math.Pow(1024, degree);
+                var multiplier = Math.Pow(1024, degree);
                 return size * multiplier;
             }
         }

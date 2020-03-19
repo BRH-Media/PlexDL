@@ -8,45 +8,49 @@ namespace PlexDL.Common.Caching
     {
         public static bool XMLInCache(string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableXMLCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
             {
-                string fqPath = XMLCachePath(sourceUrl);
+                var fqPath = XMLCachePath(sourceUrl);
                 return File.Exists(fqPath);
             }
             else
+            {
                 return false;
+            }
         }
 
         public static string XMLCachePath(string sourceUrl)
         {
-            string fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            string accountHash = Helpers.CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken);
-            string serverHash = Helpers.CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress);
-            string cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\xml";
-            string fqPath = cachePath + @"\" + fileName;
+            var fileName = Helpers.CalculateMD5Hash(sourceUrl);
+            var accountHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress);
+            var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\xml";
+            var fqPath = cachePath + @"\" + fileName;
             return fqPath;
         }
 
         public static void XMLToCache(XmlDocument doc, string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableXMLCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
             {
-                string fqPath = XMLCachePath(sourceUrl);
+                var fqPath = XMLCachePath(sourceUrl);
                 doc.Save(fqPath);
             }
         }
 
         public static XmlDocument XMLFromCache(string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableXMLCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
             {
-                string fqPath = XMLCachePath(sourceUrl);
-                XmlDocument doc = new XmlDocument();
+                var fqPath = XMLCachePath(sourceUrl);
+                var doc = new XmlDocument();
                 doc.Load(fqPath);
                 return doc;
             }
             else
+            {
                 return new XmlDocument();
+            }
         }
     }
 }

@@ -9,19 +9,17 @@ namespace PlexDL.Common.Renderers.DGVRenderers
     {
         public static void RenderView(List<Server> data, DataGridView target)
         {
-            DataColumn Name = new DataColumn("Name", typeof(string));
-            DataColumn Address = new DataColumn("Address", typeof(string));
-            DataColumn Port = new DataColumn("Port", typeof(string));
+            var Name = new DataColumn("Name", typeof(string));
+            var Address = new DataColumn("Address", typeof(string));
+            var Port = new DataColumn("Port", typeof(string));
 
-            DataTable dgvBind = new DataTable("Servers");
+            var dgvBind = new DataTable("Servers");
             dgvBind.Columns.Add(Name);
             dgvBind.Columns.Add(Address);
             dgvBind.Columns.Add(Port);
 
-            foreach (Server r1 in data)
-            {
+            foreach (var r1 in data)
                 dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString());
-            }
 
             if (target.InvokeRequired)
             {

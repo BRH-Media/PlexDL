@@ -66,7 +66,7 @@ using System.Windows.Forms;
 
 #endregion Usings
 
-namespace PVS.MediaPlayer
+namespace PlexDL.Player
 {
     public partial class Player
     {
@@ -137,6 +137,7 @@ namespace PVS.MediaPlayer
                         //}
                     }
                 }
+
                 return false;
             }
         }
@@ -223,6 +224,7 @@ namespace PVS.MediaPlayer
                 }
             }
             else result = HResult.S_FALSE;
+
             return result;
         }
 
@@ -243,11 +245,13 @@ namespace PVS.MediaPlayer
                         {
                             CH_Stop();
                         }
+
                         break;
                     }
                 }
             }
             else result = HResult.S_FALSE;
+
             return result;
         }
 
@@ -292,6 +296,7 @@ namespace PVS.MediaPlayer
                     }
                 }
             }
+
             return result;
         }
 
@@ -490,6 +495,7 @@ namespace PVS.MediaPlayer
                     }
                 }
             }
+
             ch_Busy = false;
         }
 

@@ -1,4 +1,4 @@
-﻿namespace PlexDL.WinFormAnimation
+﻿namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     FPS limiter known values

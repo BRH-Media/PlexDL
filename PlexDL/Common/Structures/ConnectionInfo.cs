@@ -8,10 +8,8 @@ namespace PlexDL.Common.Structures
         public string PlexAddress { get; set; } = "";
         public string PlexAccountToken { get; set; } = "";
 
-        [NonSerialized]
-        public bool RelaysOnly = false;
+        [NonSerialized] public bool RelaysOnly = false;
 
-        [NonSerialized]
-        public bool DirectOnly = false;
+        [NonSerialized] public bool DirectOnly = false;
     }
 }

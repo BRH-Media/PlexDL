@@ -23,7 +23,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public PlexItem(User user, Server server, String uri)
+        public PlexItem(User user, Server server, string uri)
         {
             this.user = user;
             this.server = server;

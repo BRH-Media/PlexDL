@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The two dimensional animator class, useful for animating values
@@ -63,7 +63,9 @@ namespace PlexDL.WinFormAnimation
         ///     Initializes a new instance of the <see cref="Animator2D" /> class.
         /// </summary>
         public Animator2D()
-            : this(new Path2D[] { })
+        : this(new Path2D[]
+        {
+        })
         {
         }
 
@@ -74,7 +76,9 @@ namespace PlexDL.WinFormAnimation
         ///     Limits the maximum frames per seconds
         /// </param>
         public Animator2D(FPSLimiterKnownValues fpsLimiter)
-            : this(new Path2D[] { }, fpsLimiter)
+        : this(new Path2D[]
+        {
+        }, fpsLimiter)
         {
         }
 
@@ -85,7 +89,10 @@ namespace PlexDL.WinFormAnimation
         ///     The path of the animation
         /// </param>
         public Animator2D(Path2D path)
-            : this(new[] { path })
+        : this(new[]
+        {
+            path
+        })
         {
         }
 
@@ -99,7 +106,10 @@ namespace PlexDL.WinFormAnimation
         ///     Limits the maximum frames per seconds
         /// </param>
         public Animator2D(Path2D path, FPSLimiterKnownValues fpsLimiter)
-            : this(new[] { path }, fpsLimiter)
+        : this(new[]
+        {
+            path
+        }, fpsLimiter)
         {
         }
 
@@ -150,7 +160,7 @@ namespace PlexDL.WinFormAnimation
         /// <exception cref="InvalidOperationException">Animation is running</exception>
         public Path2D[] Paths
         {
-            get { return _paths.ToArray(); }
+            get => _paths.ToArray();
             set
             {
                 if (CurrentStatus == AnimatorStatus.Stopped)
@@ -164,6 +174,7 @@ namespace PlexDL.WinFormAnimation
                         pathsH.Add(p.HorizontalPath);
                         pathsV.Add(p.VerticalPath);
                     }
+
                     HorizontalAnimator.Paths = pathsH.ToArray();
                     VerticalAnimator.Paths = pathsV.ToArray();
                 }
@@ -179,9 +190,9 @@ namespace PlexDL.WinFormAnimation
         /// </summary>
         public virtual bool Repeat
         {
-            get { return HorizontalAnimator.Repeat && VerticalAnimator.Repeat; }
+            get => HorizontalAnimator.Repeat && VerticalAnimator.Repeat;
 
-            set { HorizontalAnimator.Repeat = VerticalAnimator.Repeat = value; }
+            set => HorizontalAnimator.Repeat = VerticalAnimator.Repeat = value;
         }
 
         /// <summary>
@@ -189,9 +200,9 @@ namespace PlexDL.WinFormAnimation
         /// </summary>
         public virtual bool ReverseRepeat
         {
-            get { return HorizontalAnimator.ReverseRepeat && VerticalAnimator.ReverseRepeat; }
+            get => HorizontalAnimator.ReverseRepeat && VerticalAnimator.ReverseRepeat;
 
-            set { HorizontalAnimator.ReverseRepeat = VerticalAnimator.ReverseRepeat = value; }
+            set => HorizontalAnimator.ReverseRepeat = VerticalAnimator.ReverseRepeat = value;
         }
 
         /// <summary>
@@ -203,21 +214,15 @@ namespace PlexDL.WinFormAnimation
             {
                 if (HorizontalAnimator.CurrentStatus == AnimatorStatus.Stopped
                     && VerticalAnimator.CurrentStatus == AnimatorStatus.Stopped)
-                {
                     return AnimatorStatus.Stopped;
-                }
 
                 if (HorizontalAnimator.CurrentStatus == AnimatorStatus.Paused
                     && VerticalAnimator.CurrentStatus == AnimatorStatus.Paused)
-                {
                     return AnimatorStatus.Paused;
-                }
 
                 if (HorizontalAnimator.CurrentStatus == AnimatorStatus.OnHold
                     && VerticalAnimator.CurrentStatus == AnimatorStatus.OnHold)
-                {
                     return AnimatorStatus.OnHold;
-                }
 
                 return AnimatorStatus.Playing;
             }
@@ -265,16 +270,16 @@ namespace PlexDL.WinFormAnimation
         {
             TargetObject = targetObject;
             var prop = TargetObject.GetType()
-                .GetProperty(
-                    propertyName,
-                    BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance |
-                    BindingFlags.SetProperty);
+            .GetProperty(
+                propertyName,
+                BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance |
+                BindingFlags.SetProperty);
             if (prop == null) return;
 
             Play(
                 new SafeInvoker<Float2D>(
                     value =>
-                        prop.SetValue(TargetObject, Convert.ChangeType(value, prop.PropertyType), null),
+                    prop.SetValue(TargetObject, Convert.ChangeType(value, prop.PropertyType), null),
                     TargetObject),
                 endCallback);
         }
@@ -318,17 +323,15 @@ namespace PlexDL.WinFormAnimation
             TargetObject = targetObject;
 
             var property =
-                ((propertySetter.Body as MemberExpression) ??
-                 (((UnaryExpression)propertySetter.Body).Operand as MemberExpression))?.Member as PropertyInfo;
+            (propertySetter.Body as MemberExpression ??
+             ((UnaryExpression)propertySetter.Body).Operand as MemberExpression)?.Member as PropertyInfo;
             if (property == null)
-            {
                 throw new ArgumentException(nameof(propertySetter));
-            }
 
             Play(
                 new SafeInvoker<Float2D>(
                     value =>
-                        property.SetValue(TargetObject, Convert.ChangeType(value, property.PropertyType), null),
+                    property.SetValue(TargetObject, Convert.ChangeType(value, property.PropertyType), null),
                     TargetObject),
                 endCallback);
         }
@@ -432,7 +435,6 @@ namespace PlexDL.WinFormAnimation
         private void InvokeFinisher()
         {
             if (EndCallback != null && !IsEnded)
-            {
                 lock (EndCallback)
                 {
                     if (CurrentStatus == AnimatorStatus.Stopped)
@@ -441,15 +443,12 @@ namespace PlexDL.WinFormAnimation
                         EndCallback.Invoke();
                     }
                 }
-            }
         }
 
         private void InvokeSetter()
         {
             if (XValue != null && YValue != null)
-            {
                 FrameCallback.Invoke(new Float2D(XValue.Value, YValue.Value));
-            }
         }
     }
 }

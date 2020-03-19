@@ -21,14 +21,14 @@ namespace PlexDL.Common
             try
             {
                 //Creating the HttpWebRequest
-                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                var request = WebRequest.Create(url) as HttpWebRequest;
                 //Setting the Request method HEAD, you can also use GET too.
                 request.Method = "HEAD";
                 //Getting the Web Response.
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                var response = request.GetResponse() as HttpWebResponse;
                 //Returns TRUE if the Status code == 200
                 response.Close();
-                return (response.StatusCode == HttpStatusCode.OK);
+                return response.StatusCode == HttpStatusCode.OK;
             }
             catch
             {
@@ -39,15 +39,16 @@ namespace PlexDL.Common
 
         public static bool IsPrivateIP(string ipAddress)
         {
-            int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
-                                     .Select(s => int.Parse(s)).ToArray();
+            var ipParts = ipAddress.Split(new string[]
+            {
+                "."
+            }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(s => int.Parse(s)).ToArray();
             // in private ip range
             if (ipParts[0] == 10 ||
-                (ipParts[0] == 192 && ipParts[1] == 168) ||
-                (ipParts[0] == 172 && (ipParts[1] >= 16 && ipParts[1] <= 31)))
-            {
+                ipParts[0] == 192 && ipParts[1] == 168 ||
+                ipParts[0] == 172 && ipParts[1] >= 16 && ipParts[1] <= 31)
                 return true;
-            }
 
             // IP Address is probably public.
             // This doesn't catch some VPN ranges like OpenVPN and Hamachi.
@@ -56,14 +57,13 @@ namespace PlexDL.Common
 
         public static string MatchUriToToken(string uri, List<Server> plexServers)
         {
-            foreach (Server s in plexServers)
+            foreach (var s in plexServers)
             {
-                string serverUri = "http://" + s.address + ":" + s.port + "/";
+                var serverUri = "http://" + s.address + ":" + s.port + "/";
                 if (uri.Contains(serverUri))
-                {
                     return s.accessToken;
-                }
             }
+
             return "";
         }
 
@@ -71,7 +71,7 @@ namespace PlexDL.Common
         {
             url = url.Split('?')[0];
             url = url.Split('/').Last();
-            string final = url.Contains('.') ? url.Substring(url.LastIndexOf('.')) : "";
+            var final = url.Contains('.') ? url.Substring(url.LastIndexOf('.')) : "";
             return final;
         }
 
@@ -79,43 +79,33 @@ namespace PlexDL.Common
         {
             //Copy column captions into DataGridView
             foreach (DataGridViewColumn col in dgv.Columns)
-            {
                 if (table.Columns[col.Name].Caption != null)
                     col.HeaderText = table.Columns[col.Name].Caption;
-            }
         }
 
         public static void SortingEnabled(DataGridView dgv, bool enabled)
         {
             if (enabled)
-            {
                 foreach (DataGridViewColumn c in dgv.Columns)
                     c.SortMode = DataGridViewColumnSortMode.Automatic;
-            }
             else
-            {
                 foreach (DataGridViewColumn c in dgv.Columns)
                     c.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
         }
 
         public static bool PlexXmlValid(XmlDocument doc)
         {
-            XmlNodeList checkNodes = doc.GetElementsByTagName("MediaContainer");
+            var checkNodes = doc.GetElementsByTagName("MediaContainer");
 
             if (checkNodes.Count > 0)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
         public static List<string> OrderMatch(List<string> ordered, List<string> unordered)
         {
-            List<string> newList = new List<string>();
+            var newList = new List<string>();
             newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
             return newList;
         }
@@ -125,12 +115,12 @@ namespace PlexDL.Common
             string mm, ss, CalculatedTime;
             int h, m, s, T;
 
-            Time = System.Math.Round(Time) / 1000;
-            T = System.Convert.ToInt32(Time);
+            Time = Math.Round(Time) / 1000;
+            T = Convert.ToInt32(Time);
 
-            h = (T / 3600);
+            h = T / 3600;
             T %= 3600;
-            m = (T / 60);
+            m = T / 60;
             s = T % 60;
 
             if (m < 10)
@@ -149,25 +139,26 @@ namespace PlexDL.Common
 
         public static string FormatBytes(long bytes)
         {
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+            string[] Suffix =
+            {
+                "B", "KB", "MB", "GB", "TB"
+            };
             int i;
             double dblSByte = bytes;
             for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
-            {
                 dblSByte = bytes / 1024.0;
-            }
 
-            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
         public static bool AdultKeywordCheck(Structures.Plex.PlexObject stream)
         {
-            string[] keywords = Properties.Resources.keywordBlacklist.Split('\n');
-            string search = stream.StreamInformation.ContentTitle.ToLower();
-            Regex rgx = new Regex("[^a-zA-Z0-9_. ]+");
+            var keywords = Properties.Resources.keywordBlacklist.Split('\n');
+            var search = stream.StreamInformation.ContentTitle.ToLower();
+            var rgx = new Regex("[^a-zA-Z0-9_. ]+");
             //MessageBox.Show(keywords.Length.ToString());
             search = rgx.Replace(search, "");
-            bool match = false;
+            var match = false;
             if (string.Equals(stream.ContentGenre.ToLower(), "porn") || string.Equals(stream.ContentGenre.ToLower(), "adult"))
             {
                 match = true;
@@ -175,40 +166,35 @@ namespace PlexDL.Common
             else
             {
                 if (keywords.Length > 0)
-                {
-                    foreach (string k in keywords)
-                    {
+                    foreach (var k in keywords)
                         if (!string.IsNullOrEmpty(k) && !string.IsNullOrWhiteSpace(k))
                         {
-                            string clean = rgx.Replace(k, "").ToLower();
+                            var clean = rgx.Replace(k, "").ToLower();
                             if (search.Contains(clean))
                             {
                                 match = true;
                                 break;
                             }
                         }
-                    }
-                }
             }
+
             return match;
         }
 
         public static bool StreamAdultContentCheck(Structures.Plex.PlexObject stream)
         {
-            if (UI.Home.settings.Generic.AdultContentProtection)
+            if (UI.Home.Settings.Generic.AdultContentProtection)
             {
                 //just to keep things family-friendly, show a warning for possibly adult-type content :)
                 if (AdultKeywordCheck(stream))
                 {
-                    DialogResult result = MessageBox.Show("The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    var result =
+                    MessageBox.Show("The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", "Warning",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                     if (result == DialogResult.No)
-                    {
                         return false;
-                    }
                     else
-                    {
                         return true;
-                    }
                 }
                 else
                 {
@@ -216,7 +202,9 @@ namespace PlexDL.Common
                 }
             }
             else
+            {
                 return true;
+            }
         }
 
         public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
@@ -226,7 +214,7 @@ namespace PlexDL.Common
                 Helpers.CacheStructureBuilder();
                 if (string.IsNullOrEmpty(url))
                 {
-                    return PlexDL.Properties.Resources.image_not_available_png_8;
+                    return Properties.Resources.image_not_available_png_8;
                 }
                 else
                 {
@@ -238,7 +226,9 @@ namespace PlexDL.Common
                             return ForceImageFromUrl(url);
                     }
                     else
+                    {
                         return ForceImageFromUrl(url);
+                    }
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -249,7 +239,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return PlexDL.Properties.Resources.image_not_available_png_8;
+                return Properties.Resources.image_not_available_png_8;
             }
         }
 
@@ -257,12 +247,12 @@ namespace PlexDL.Common
         {
             try
             {
-                var request = System.Net.WebRequest.Create(url);
+                var request = WebRequest.Create(url);
 
                 using (var response = request.GetResponse())
                 using (var stream = response.GetResponseStream())
                 {
-                    Bitmap result = (Bitmap)Bitmap.FromStream(stream);
+                    var result = (Bitmap)Image.FromStream(stream);
                     ThumbCaching.ThumbToCache(result, url);
                     return result;
                 }
@@ -270,46 +260,39 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return PlexDL.Properties.Resources.image_not_available_png_8;
+                return Properties.Resources.image_not_available_png_8;
             }
         }
 
         public static bool ValidateIPv4(string ipString)
         {
-            if (String.IsNullOrWhiteSpace(ipString))
-            {
+            if (string.IsNullOrWhiteSpace(ipString))
                 return false;
-            }
 
-            string[] splitValues = ipString.Split('.');
+            var splitValues = ipString.Split('.');
             if (splitValues.Length != 4)
-            {
                 return false;
-            }
 
-            return splitValues.All(r => byte.TryParse(r, out byte tempForParsing));
+            return splitValues.All(r => byte.TryParse(r, out var tempForParsing));
         }
 
-        public static void ThreadSafeMessageBox(string caption, string title = "Message", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+        public static void ThreadSafeMessageBox(string caption, string title = "Message", MessageBoxButtons buttons = MessageBoxButtons.OK,
+            MessageBoxIcon icon = MessageBoxIcon.None)
         {
-            Form main = System.Windows.Forms.Form.ActiveForm;
+            var main = Form.ActiveForm;
             if (main.InvokeRequired)
-            {
                 main.BeginInvoke((MethodInvoker)delegate
                 {
                     MessageBox.Show(caption, title, buttons, icon);
                 });
-            }
             else
-            {
                 MessageBox.Show(caption, title, buttons, icon);
-            }
         }
 
         public static string RemoveIllegalCharacters(string illegal)
         {
-            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             return r.Replace(illegal, "");
         }
     }

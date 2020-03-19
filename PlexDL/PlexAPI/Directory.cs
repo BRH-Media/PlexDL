@@ -37,7 +37,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public Directory(User user, Server server, String uri) : base(user, server, uri)
+        public Directory(User user, Server server, string uri) : base(user, server, uri)
         {
         }
 
@@ -57,15 +57,11 @@ namespace PlexDL.PlexAPI
                 items[i].user = user;
                 items[i].server = server;
                 if (items[i].key.StartsWith("/"))
-                {
                     items[i].uri = items[i].key;
-                }
                 else
-                {
                     items[i].uri = uri + "/" + items[i].key;
-                }
-
             }
+
             return items;
         }
     }

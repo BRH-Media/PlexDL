@@ -33,7 +33,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public Video(User user, Server server, String uri) : base(user, server, uri)
+        public Video(User user, Server server, string uri) : base(user, server, uri)
         {
         }
     }

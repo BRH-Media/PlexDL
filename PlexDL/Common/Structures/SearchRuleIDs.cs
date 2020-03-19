@@ -9,7 +9,7 @@
 
         public static string SQLSearchFromRule(string column, string key, int rule)
         {
-            string sql = "";
+            var sql = "";
             if (rule <= 3 && rule >= 0)
                 switch (rule)
                 {
@@ -29,6 +29,7 @@
                         sql = column + " LIKE '%" + key + "'";
                         break;
                 }
+
             return sql;
         }
     }

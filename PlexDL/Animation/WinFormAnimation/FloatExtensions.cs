@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     Contains public extension methods about Float2D and Fload3D classes

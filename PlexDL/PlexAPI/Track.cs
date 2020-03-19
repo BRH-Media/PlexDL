@@ -16,7 +16,7 @@ namespace PlexDL.PlexAPI
         {
         }
 
-        public Track(User user, Server server, String uri) : base(user, server, uri)
+        public Track(User user, Server server, string uri) : base(user, server, uri)
         {
         }
     }

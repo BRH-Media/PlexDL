@@ -39,9 +39,8 @@ namespace PlexDL.PlexAPI
             var response = client.Execute<T>(request);
 
             if (response.ErrorException != null)
-            {
                 throw response.ErrorException;
-            }
+
             //Console.WriteLine(response.ResponseUri);
             return response.Data;
         }
@@ -57,9 +56,8 @@ namespace PlexDL.PlexAPI
             return Execute<T>(request, client);
         }
 
-        public T Execute<T>(RestRequest request, String username, String password) where T : new()
+        public T Execute<T>(RestRequest request, string username, string password) where T : new()
         {
-
             var client = GetRestClient();
 
             request = AddPlexHeaders(request);
@@ -69,18 +67,17 @@ namespace PlexDL.PlexAPI
             return Execute<T>(request, client);
         }
 
-        public String Execute(RestRequest request, RestClient client)
+        public string Execute(RestRequest request, RestClient client)
         {
             var response = client.Execute(request);
 
             if (response.ErrorException != null)
-            {
                 throw response.ErrorException;
-            }
+
             return response.Content;
         }
 
-        public String Execute(RestRequest request, User user)
+        public string Execute(RestRequest request, User user)
         {
             var client = GetRestClient();
 
@@ -91,9 +88,8 @@ namespace PlexDL.PlexAPI
             return Execute(request, client);
         }
 
-        public String Execute(RestRequest request, String username, String password)
+        public string Execute(RestRequest request, string username, string password)
         {
-
             var client = GetRestClient();
 
             request = AddPlexHeaders(request);
@@ -103,5 +99,4 @@ namespace PlexDL.PlexAPI
             return Execute(request, client);
         }
     }
-
 }

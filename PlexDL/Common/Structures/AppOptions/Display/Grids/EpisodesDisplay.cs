@@ -2,9 +2,19 @@
 
 namespace PlexDL.Common.Structures.AppOptions.Display.Grids
 {
-    public class EpisodesDisplay
+    public class EpisodesDisplay : ColumnAdapter
     {
-        public List<string> EpisodesDisplayColumns { get; set; } = new List<string>() { "title", "year", "contentRating" };
-        public List<string> EpisodesDisplayCaption { get; set; } = new List<string>() { "Title", "Year", "Rating" };
+        public EpisodesDisplay()
+        {
+            DisplayColumns = new List<string>()
+            {
+                "title", "year", "contentRating"
+            };
+
+            DisplayCaptions = new List<string>()
+            {
+                "Title", "Year", "Rating"
+            };
+        }
     }
 }

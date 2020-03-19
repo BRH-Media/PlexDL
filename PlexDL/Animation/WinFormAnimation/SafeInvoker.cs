@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Threading;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The safe invoker class is a delegate reference holder that always
@@ -41,9 +41,7 @@ namespace PlexDL.WinFormAnimation
         {
             UnderlyingDelegate = action;
             if (targetControl != null)
-            {
                 TargetControl = targetControl;
-            }
         }
 
         /// <summary>
@@ -61,22 +59,23 @@ namespace PlexDL.WinFormAnimation
         /// </summary>
         protected object TargetControl
         {
-            get { return _targetControl; }
+            get => _targetControl;
             set
             {
                 _invokeRequiredProperty = value.GetType()
-                    .GetProperty("InvokeRequired", BindingFlags.Instance | BindingFlags.Public);
+                .GetProperty("InvokeRequired", BindingFlags.Instance | BindingFlags.Public);
                 _invokeMethod = value.GetType()
-                    .GetMethod(
-                        "Invoke",
-                        BindingFlags.Instance | BindingFlags.Public,
-                        Type.DefaultBinder,
-                        new[] { typeof(Delegate) },
-                        null);
+                .GetMethod(
+                    "Invoke",
+                    BindingFlags.Instance | BindingFlags.Public,
+                    Type.DefaultBinder,
+                    new[]
+                    {
+                        typeof(Delegate)
+                    },
+                    null);
                 if (_invokeRequiredProperty != null && _invokeMethod != null)
-                {
                     _targetControl = value;
-                }
             }
         }
 
@@ -112,8 +111,13 @@ namespace PlexDL.WinFormAnimation
                                     TargetControl,
                                     new object[]
                                     {
-                                    new Action(
-                                        () => UnderlyingDelegate.DynamicInvoke(value != null ? new[] {value} : null))
+                                        new Action(
+                                            () => UnderlyingDelegate.DynamicInvoke(value != null
+                                            ? new[]
+                                            {
+                                                value
+                                            }
+                                            : null))
                                     });
                                 return;
                             }
@@ -122,7 +126,13 @@ namespace PlexDL.WinFormAnimation
                         {
                             // ignored
                         }
-                        UnderlyingDelegate.DynamicInvoke(value != null ? new[] { value } : null);
+
+                        UnderlyingDelegate.DynamicInvoke(value != null
+                        ? new[]
+                        {
+                            value
+                        }
+                        : null);
                     });
             }
             catch

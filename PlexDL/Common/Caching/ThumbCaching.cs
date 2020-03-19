@@ -8,43 +8,47 @@ namespace PlexDL.Common.Caching
     {
         public static string ThumbCachePath(string sourceUrl)
         {
-            string fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            string accountHash = Helpers.CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken);
-            string serverHash = Helpers.CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress);
-            string cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\thumb";
-            string fqPath = cachePath + @"\" + fileName;
+            var fileName = Helpers.CalculateMD5Hash(sourceUrl);
+            var accountHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress);
+            var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\thumb";
+            var fqPath = cachePath + @"\" + fileName;
             return fqPath;
         }
 
         public static bool ThumbInCache(string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableThumbCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
-                string fqPath = ThumbCachePath(sourceUrl);
+                var fqPath = ThumbCachePath(sourceUrl);
                 return File.Exists(fqPath);
             }
             else
+            {
                 return false;
+            }
         }
 
         public static void ThumbToCache(Bitmap thumb, string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableThumbCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
-                string fqPath = ThumbCachePath(sourceUrl);
+                var fqPath = ThumbCachePath(sourceUrl);
                 thumb.Save(fqPath);
             }
         }
 
         public static Bitmap ThumbFromCache(string sourceUrl)
         {
-            if (Home.settings.CacheSettings.Mode.EnableThumbCaching)
+            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
-                string fqPath = ThumbCachePath(sourceUrl);
-                return (Bitmap)Bitmap.FromFile(fqPath);
+                var fqPath = ThumbCachePath(sourceUrl);
+                return (Bitmap)Image.FromFile(fqPath);
             }
             else
+            {
                 return null;
+            }
         }
     }
 }

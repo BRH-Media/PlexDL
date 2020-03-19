@@ -11,16 +11,15 @@ namespace PlexDL.Common.Caching
         public static string CalculateMD5Hash(string input)
         {
             // step 1, calculate MD5 hash from input
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hash = md5.ComputeHash(inputBytes);
+            var md5 = MD5.Create();
+            var inputBytes = Encoding.ASCII.GetBytes(input);
+            var hash = md5.ComputeHash(inputBytes);
 
             // step 2, convert byte array to hex string
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
+            var sb = new StringBuilder();
+            for (var i = 0; i < hash.Length; i++)
                 sb.Append(hash[i].ToString("X2"));
-            }
+
             return sb.ToString();
         }
 
@@ -28,10 +27,14 @@ namespace PlexDL.Common.Caching
         {
             try
             {
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\thumb");
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAccountToken) + @"\" + CalculateMD5Hash(Home.settings.ConnectionInfo.PlexAddress) + @"\xml");
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\thumb"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                        CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\thumb");
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\xml"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                        CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\xml");
             }
             catch (Exception ex)
             {

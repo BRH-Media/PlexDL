@@ -10,14 +10,14 @@ namespace PlexDL.Common.Structures
 
         public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(Plex.PlexTVShow show, AppOptions.ApplicationOptions settings, int layout)
         {
-            TVShowDirectoryLayout dirLayout = new TVShowDirectoryLayout();
-            if (layout == DownloadLayout.PlexStandardLayout)
+            var dirLayout = new TVShowDirectoryLayout();
+            if (layout == PlexStandardLayout)
             {
-                string basePath = settings.Generic.DownloadDirectory + @"\TV\";
-                string season = show.Season;
-                string title = Methods.RemoveIllegalCharacters(show.TVShowName);
-                string seasonPath = basePath + title + @"\" + season;
-                string titlePath = basePath + title;
+                var basePath = settings.Generic.DownloadDirectory + @"\TV\";
+                var season = show.Season;
+                var title = Methods.RemoveIllegalCharacters(show.TVShowName);
+                var seasonPath = basePath + title + @"\" + season;
+                var titlePath = basePath + title;
 
                 if (!Directory.Exists(basePath))
                     Directory.CreateDirectory(basePath);
@@ -29,6 +29,7 @@ namespace PlexDL.Common.Structures
                 dirLayout.SeasonPath = seasonPath;
                 dirLayout.BasePath = basePath;
             }
+
             return dirLayout;
         }
     }

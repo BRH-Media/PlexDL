@@ -15,10 +15,10 @@ namespace PlexDL.Common.PlayerLaunchers
             {
                 if (Methods.StreamAdultContentCheck(stream))
                 {
-                    Process p = new Process();
-                    SVarController c = new SVarController();
-                    string vlc = Home.settings.Player.VLCMediaPlayerPath;
-                    string arg = Home.settings.Player.VLCMediaPlayerArgs;
+                    var p = new Process();
+                    var c = new SVarController();
+                    var vlc = Home.Settings.Player.VLCMediaPlayerPath;
+                    var arg = Home.Settings.Player.VLCMediaPlayerArgs;
                     c.Input = arg;
                     c.Variables = c.BuildFromDlInfo(stream.StreamInformation);
                     arg = c.YieldString();
@@ -30,7 +30,8 @@ namespace PlexDL.Common.PlayerLaunchers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                 return;
             }

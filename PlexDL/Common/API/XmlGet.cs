@@ -11,21 +11,18 @@ namespace PlexDL.Common.API
 {
     public static class XmlGet
     {
-        public static void GetXMLTransactionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        public static void GetXMLTransactionWorker(object sender, WaitWindow.WaitWindowEventArgs e)
         {
-            string uri = (string)e.Arguments[0];
-            bool forceNoCache = false;
-            bool silent = false;
+            var uri = (string)e.Arguments[0];
+            var forceNoCache = false;
+            var silent = false;
             if (e.Arguments.Count > 1)
-            {
                 forceNoCache = (bool)e.Arguments[1];
-            }
-            if (e.Arguments.Count > 2)
-            {
-                silent = (bool)e.Arguments[2];
-            }
 
-            e.Result = GetXMLTransaction(uri, Home.settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
+            if (e.Arguments.Count > 2)
+                silent = (bool)e.Arguments[2];
+
+            e.Result = GetXMLTransaction(uri, Home.Settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
         }
 
         public static XmlDocument GetXMLTransaction(string uri, string secret = "", bool forceNoCache = false, bool silent = false)
@@ -37,15 +34,11 @@ namespace PlexDL.Common.API
             {
                 try
                 {
-                    XmlDocument XMLResponse = XMLCaching.XMLFromCache(uri);
+                    var XMLResponse = XMLCaching.XMLFromCache(uri);
                     if (XMLResponse != null)
-                    {
                         return XMLResponse;
-                    }
                     else
-                    {
                         return GetXMLTransaction(uri, "", true);
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -65,16 +58,15 @@ namespace PlexDL.Common.API
                 //Declare XMLReader
                 XmlTextReader objXMLReader;
 
-                string secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, Home.plexServers) : secret;
+                var secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, Home.plexServers) : secret;
                 if (string.IsNullOrEmpty(secret2))
-                {
-                    secret2 = Home.settings.ConnectionInfo.PlexAccountToken;
-                }
-                string fullUri = uri + secret2;
+                    secret2 = Home.Settings.ConnectionInfo.PlexAccountToken;
+
+                var fullUri = uri + secret2;
 
                 //6MessageBox.Show(fullUri);
 
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 //Creates an HttpWebRequest for the specified URL.
                 objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
                 //Declare an HTTP-specific implementation of the WebResponse class
@@ -96,7 +88,7 @@ namespace PlexDL.Common.API
                         //Load response stream into XMLReader
                         objXMLReader = new XmlTextReader(objResponseStream);
                         //Declare XMLDocument
-                        XmlDocument xmldoc = new XmlDocument();
+                        var xmldoc = new XmlDocument();
                         xmldoc.Load(objXMLReader);
                         //Set XMLResponse object returned from XMLReader
                         XMLResponse = xmldoc;
@@ -108,6 +100,7 @@ namespace PlexDL.Common.API
                         if (!silent)
                             MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
                     }
+
                     //Close Steam
                     objResponseStream.Close();
                     //Close HttpWebResponse
@@ -120,9 +113,11 @@ namespace PlexDL.Common.API
                     LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
                     LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
                     if (!silent)
-                        MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
                     return new XmlDocument();
                 }
+
                 XMLCaching.XMLToCache(XMLResponse, uri);
                 return XMLResponse;
             }

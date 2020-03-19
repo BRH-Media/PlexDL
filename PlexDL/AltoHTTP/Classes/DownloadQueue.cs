@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
 
-namespace PlexDL.AltoHttp
+namespace PlexDL.AltoHTTP.Classes
 {
-    /// <summary>
-    /// Passes the QueueElementCompleted event args
-    /// </summary>
-    /// <param name="sender">The objects which the event is occured in</param>
-    /// <param name="e">Event arguments</param>
-    public delegate void QueueElementCompletedEventHandler(object sender, QueueElementCompletedEventArgs e);
-
     /// <summary>
     /// Provides methods to create and process download queue
     /// </summary>
@@ -66,7 +61,7 @@ namespace PlexDL.AltoHttp
         /// </summary>
         ~DownloadQueue()
         {
-            this.Cancel();
+            Cancel();
         }
 
         #endregion Constructor + Destructor
@@ -76,62 +71,50 @@ namespace PlexDL.AltoHttp
         private void Downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progress = e.Progress;
-            this.CurrentProgress = progress;
+            CurrentProgress = progress;
             downloadSpeed = e.Speed;
         }
 
         private void Downloader_DownloadCompleted(object sender, EventArgs e)
         {
-            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
-            for (int i = 0; i < elements.Count; i++)
-            {
+            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(CurrentIndex, currentElement));
+            for (var i = 0; i < elements.Count; i++)
                 if (elements[i].Equals(currentElement))
                 {
                     elements[i] = new QueueElement()
                     {
-                        Id = elements[i].Id,
-                        Url = elements[i].Url,
-                        Destination = elements[i].Destination,
-                        Completed = true
+                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
                     };
                     break;
                 }
-            }
 
             CreateNextDownload();
         }
 
         private void Downloader_DownloadError(object sender, EventArgs e)
         {
-            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
-            for (int i = 0; i < elements.Count; i++)
-            {
+            QueueElementCompleted?.Invoke(this, new QueueElementCompletedEventArgs(CurrentIndex, currentElement));
+            for (var i = 0; i < elements.Count; i++)
                 if (elements[i].Equals(currentElement))
                 {
                     elements[i] = new QueueElement()
                     {
-                        Id = elements[i].Id,
-                        Url = elements[i].Url,
-                        Destination = elements[i].Destination,
-                        Completed = true
+                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
                     };
                     break;
                 }
-            }
 
-            Form active = System.Windows.Forms.Form.ActiveForm;
+            var active = Form.ActiveForm;
 
             if (active.InvokeRequired)
-            {
                 active.BeginInvoke((MethodInvoker)delegate
                 {
-                    MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.", "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.",
+                        "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 });
-            }
             else
-            {
-                MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.", "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                MessageBox.Show("Download error occurred. Please check your connection, and that the content requested is available for download.",
+                    "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             QueueCompleted?.Invoke(this, new EventArgs());
         }
@@ -143,10 +126,7 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Gets the number of elements in the queue
         /// </summary>
-        public int QueueLength
-        {
-            get { return elements.Count; }
-        }
+        public int QueueLength => elements.Count;
 
         /// <summary>
         /// Gets the index number of the element that is currently processing
@@ -155,10 +135,10 @@ namespace PlexDL.AltoHttp
         {
             get
             {
-                for (int i = 0; i < elements.Count; i++)
-                {
-                    if (!elements[i].Completed) return i;
-                }
+                for (var i = 0; i < elements.Count; i++)
+                    if (!elements[i].Completed)
+                        return i;
+
                 return -1;
             }
         }
@@ -168,14 +148,11 @@ namespace PlexDL.AltoHttp
         /// </summary>
         public double CurrentProgress
         {
-            get
-            {
-                return progress;
-            }
+            get => progress;
             private set
             {
                 value = progress;
-                if (QueueProgressChanged != null && this.CurrentIndex >= 0 && !queuePaused)
+                if (QueueProgressChanged != null && CurrentIndex >= 0 && !queuePaused)
                     QueueProgressChanged(this, EventArgs.Empty);
                 if (QueueElementStartedDownloading != null && progress > 0 && !startEventRaised)
                 {
@@ -188,29 +165,17 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Gets the download speed of the current download progress
         /// </summary>
-        public int CurrentDownloadSpeed
-        {
-            get { return downloadSpeed; }
-        }
+        public int CurrentDownloadSpeed => downloadSpeed;
 
         /// <summary>
         /// Gets the Range header value of the current download
         /// </summary>
-        public bool CurrentAcceptRange
-        {
-            get { return downloader.AcceptRange; }
-        }
+        public bool CurrentAcceptRange => downloader.AcceptRange;
 
         /// <summary>
         /// Gets the State of the current download
         /// </summary>
-        public DownloadState State
-        {
-            get
-            {
-                return downloader.State;
-            }
-        }
+        public DownloadState State => downloader.State;
 
         #endregion Properties
 
@@ -225,9 +190,7 @@ namespace PlexDL.AltoHttp
         {
             elements.Add(new QueueElement()
             {
-                Id = Guid.NewGuid().ToString(),
-                Url = url,
-                Destination = destPath
+                Id = Guid.NewGuid().ToString(), Url = url, Destination = destPath
             });
         }
 
@@ -240,8 +203,12 @@ namespace PlexDL.AltoHttp
             if (elements[index].Equals(currentElement) && downloader != null)
             {
                 downloader.Cancel();
-                currentElement = new QueueElement() { Url = "" };
+                currentElement = new QueueElement()
+                {
+                    Url = ""
+                };
             }
+
             elements.RemoveAt(index);
             if (!queuePaused)
                 CreateNextDownload();
@@ -285,6 +252,7 @@ namespace PlexDL.AltoHttp
                 CreateNextDownload();
                 return;
             }
+
             downloader.ResumeAsync();
             queuePaused = false;
         }
@@ -303,7 +271,7 @@ namespace PlexDL.AltoHttp
         /// </summary>
         public void Dispose()
         {
-            this.Cancel();
+            Cancel();
         }
 
         #endregion Methods
@@ -312,7 +280,7 @@ namespace PlexDL.AltoHttp
 
         private void CreateNextDownload()
         {
-            QueueElement elt = FirstNotCompletedElement;
+            var elt = FirstNotCompletedElement;
             if (string.IsNullOrEmpty(elt.Url)) return;
             downloader = new HttpDownloader(elt.Url, elt.Destination);
             downloader.DownloadCompleted += Downloader_DownloadCompleted;
@@ -328,10 +296,10 @@ namespace PlexDL.AltoHttp
         {
             get
             {
-                for (int i = 0; i < elements.Count; i++)
-                {
-                    if (!elements[i].Completed) return elements[i];
-                }
+                for (var i = 0; i < elements.Count; i++)
+                    if (!elements[i].Completed)
+                        return elements[i];
+
                 QueueCompleted?.Invoke(this, new EventArgs());
                 return new QueueElement();
             }

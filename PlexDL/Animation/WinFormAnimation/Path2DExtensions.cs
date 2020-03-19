@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     Contains public extensions methods about Path2D class
@@ -16,7 +16,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the newly created one</returns>
         public static Path2D[] ContinueTo(this Path2D[] paths, Float2D end, ulong duration)
         {
-            return paths.Concat(new[] { new Path2D(paths.Last().End, end, duration) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, end, duration)
+            }).ToArray();
         }
 
         /// <summary>
@@ -30,7 +33,10 @@ namespace PlexDL.WinFormAnimation
         public static Path2D[] ContinueTo(this Path2D[] paths, Float2D end, ulong duration,
             AnimationFunctions.Function function)
         {
-            return paths.Concat(new[] { new Path2D(paths.Last().End, end, duration, function) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, end, duration, function)
+            }).ToArray();
         }
 
         /// <summary>
@@ -43,7 +49,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the newly created one</returns>
         public static Path2D[] ContinueTo(this Path2D[] paths, Float2D end, ulong duration, ulong delay)
         {
-            return paths.Concat(new[] { new Path2D(paths.Last().End, end, duration, delay) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, end, duration, delay)
+            }).ToArray();
         }
 
         /// <summary>
@@ -58,7 +67,10 @@ namespace PlexDL.WinFormAnimation
         public static Path2D[] ContinueTo(this Path2D[] paths, Float2D end, ulong duration, ulong delay,
             AnimationFunctions.Function function)
         {
-            return paths.Concat(new[] { new Path2D(paths.Last().End, end, duration, delay, function) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, end, duration, delay, function)
+            }).ToArray();
         }
 
         /// <summary>
@@ -71,7 +83,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the newly created one</returns>
         public static Path2D[] ContinueTo(this Path2D[] paths, float endX, float endY, ulong duration)
         {
-            return paths.Concat(new[] { new Path2D(paths.Last().End, new Float2D(endX, endY), duration) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, new Float2D(endX, endY), duration)
+            }).ToArray();
         }
 
         /// <summary>
@@ -87,8 +102,11 @@ namespace PlexDL.WinFormAnimation
             AnimationFunctions.Function function)
         {
             return
-                paths.Concat(new[] { new Path2D(paths.Last().End, new Float2D(endX, endY), duration, function) })
-                    .ToArray();
+            paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, new Float2D(endX, endY), duration, function)
+            })
+            .ToArray();
         }
 
         /// <summary>
@@ -103,7 +121,10 @@ namespace PlexDL.WinFormAnimation
         public static Path2D[] ContinueTo(this Path2D[] paths, float endX, float endY, ulong duration, ulong delay)
         {
             return
-                paths.Concat(new[] { new Path2D(paths.Last().End, new Float2D(endX, endY), duration, delay) }).ToArray();
+            paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, new Float2D(endX, endY), duration, delay)
+            }).ToArray();
         }
 
         /// <summary>
@@ -120,8 +141,11 @@ namespace PlexDL.WinFormAnimation
             AnimationFunctions.Function function)
         {
             return
-                paths.Concat(new[] { new Path2D(paths.Last().End, new Float2D(endX, endY), duration, delay, function) })
-                    .ToArray();
+            paths.Concat(new[]
+            {
+                new Path2D(paths.Last().End, new Float2D(endX, endY), duration, delay, function)
+            })
+            .ToArray();
         }
 
         /// <summary>
@@ -265,7 +289,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the new ones</returns>
         public static Path2D[] ToArray(this Path2D path)
         {
-            return new[] { path };
+            return new[]
+            {
+                path
+            };
         }
     }
 }

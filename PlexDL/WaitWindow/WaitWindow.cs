@@ -25,7 +25,7 @@ namespace PlexDL.WaitWindow
         /// <returns>The result argument from the worker method.</returns>
         public static object Show(EventHandler<WaitWindowEventArgs> workerMethod)
         {
-            return WaitWindow.Show(workerMethod, null);
+            return Show(workerMethod, null);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace PlexDL.WaitWindow
         /// <returns>The result argument from the worker method.</returns>
         public static object Show(EventHandler<WaitWindowEventArgs> workerMethod, string message)
         {
-            WaitWindow instance = new WaitWindow();
+            var instance = new WaitWindow();
             return instance.Show(workerMethod, message, new List<object>());
         }
 
@@ -49,10 +49,10 @@ namespace PlexDL.WaitWindow
         /// <returns>The result argument from the worker method.</returns>
         public static object Show(EventHandler<WaitWindowEventArgs> workerMethod, string message, params object[] args)
         {
-            List<object> arguments = new List<object>();
+            var arguments = new List<object>();
             arguments.AddRange(args);
 
-            WaitWindow instance = new WaitWindow();
+            var instance = new WaitWindow();
             return instance.Show(workerMethod, message, arguments);
         }
 
@@ -74,10 +74,7 @@ namespace PlexDL.WaitWindow
         /// </summary>
         public string Message
         {
-            set
-            {
-                this._GUI.Invoke(new MethodInvoker<string>(this._GUI.SetMessage), value);
-            }
+            set => _GUI.Invoke(new MethodInvoker<string>(_GUI.SetMessage), value);
         }
 
         /// <summary>
@@ -85,50 +82,40 @@ namespace PlexDL.WaitWindow
         /// </summary>
         public void Cancel()
         {
-            this._GUI.Invoke(new MethodInvoker(this._GUI.Cancel), null);
+            _GUI.Invoke(new MethodInvoker(_GUI.Cancel), null);
         }
 
         private object Show(EventHandler<WaitWindowEventArgs> workerMethod, string message, List<object> args)
         {
             //	Validate Parameters
             if (workerMethod == null)
-            {
                 throw new ArgumentException("No worker method has been specified.", "workerMethod");
-            }
             else
-            {
-                this._WorkerMethod = workerMethod;
-            }
+                _WorkerMethod = workerMethod;
 
-            this._Args = args;
+            _Args = args;
 
             if (string.IsNullOrEmpty(message))
-            {
                 message = "Please wait...";
-            }
 
             //	Set up the window
-            this._GUI = new WaitWindowGUI(this);
-            this._GUI.MessageLabel.Text = message;
+            _GUI = new WaitWindowGUI(this);
+            _GUI.MessageLabel.Text = message;
 
             //	Call it
-            this._GUI.ShowDialog();
+            _GUI.ShowDialog();
 
-            object result = this._GUI._Result;
+            var result = _GUI._Result;
 
             //	clean up
-            Exception _Error = this._GUI._Error;
-            this._GUI.Dispose();
+            var _Error = _GUI._Error;
+            _GUI.Dispose();
 
             //	Return result or throw and exception
             if (_Error != null)
-            {
                 throw _Error;
-            }
             else
-            {
                 return result;
-            }
         }
 
         #endregion Instance implementation

@@ -18,36 +18,33 @@ namespace PlexDL.Common.Renderers
         public static DataTable RenderView(RenderStruct info, DataGridView target)
         {
             //check if the data we need was set (problems will arise otherwise)
-            if ((info != null) && (target != null))
-            {
-                //check if the two data pairs are equal length (we don't want indexing errors)
+            if (info != null && target != null)
+            //check if the two data pairs are equal length (we don't want indexing errors)
                 if (info.WantedColumns.Count == info.WantedCaption.Count)
                 {
                     //store the columns we want vs. the columns available (so we don't error out)
-                    List<string> currentColumns = new List<string>();
-                    List<string> currentCaption = new List<string>();
-                    List<string> wantedColumns = info.WantedColumns;
-                    List<string> wantedCaption = info.WantedCaption;
+                    var currentColumns = new List<string>();
+                    var currentCaption = new List<string>();
+                    var wantedColumns = info.WantedColumns;
+                    var wantedCaption = info.WantedCaption;
 
                     //data storage
-                    DataTable dgvBind = new DataTable();
-                    DataView viewBind = new DataView(info.Data);
+                    var dgvBind = new DataTable();
+                    var viewBind = new DataView(info.Data);
 
                     //check if appropriate columns are part of the table; then we can verify and add them to the view.
                     foreach (DataColumn c in info.Data.Columns)
-                    {
-                        //check if the column name exists in our wanted columns
+                    //check if the column name exists in our wanted columns
                         if (wantedColumns.Contains(c.ColumnName))
                         {
                             //it does, so grab its index, grab its associated caption, then add both to the available columns (Current Columns)
-                            int index = wantedColumns.IndexOf(c.ColumnName);
-                            string caption = wantedCaption[index];
+                            var index = wantedColumns.IndexOf(c.ColumnName);
+                            var caption = wantedCaption[index];
                             currentCaption.Add(caption);
                             currentColumns.Add(c.ColumnName);
                             //set the column's caption to the one we just got from the index
                             c.Caption = caption;
                         }
-                    }
 
                     //match the order of the current columns with the wanted columns (because things get added in a different way)
                     currentColumns = Methods.OrderMatch(wantedColumns, currentColumns);
@@ -81,7 +78,6 @@ namespace PlexDL.Common.Renderers
                     //return the processed data (data with the wanted columns) in a DataTable
                     return dgvBind;
                 }
-            }
 
             //some checks obviously failed or an error occurred; return the original data because we couldn't process anything.
             return info.Data;

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     Contains public extensions methods about Path class
@@ -16,7 +16,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the newly created one</returns>
         public static Path[] ContinueTo(this Path[] paths, float end, ulong duration)
         {
-            return paths.Concat(new[] { new Path(paths.Last().End, end, duration) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path(paths.Last().End, end, duration)
+            }).ToArray();
         }
 
         /// <summary>
@@ -30,7 +33,10 @@ namespace PlexDL.WinFormAnimation
         public static Path[] ContinueTo(this Path[] paths, float end, ulong duration,
             AnimationFunctions.Function function)
         {
-            return paths.Concat(new[] { new Path(paths.Last().End, end, duration, function) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path(paths.Last().End, end, duration, function)
+            }).ToArray();
         }
 
         /// <summary>
@@ -43,7 +49,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the newly created one</returns>
         public static Path[] ContinueTo(this Path[] paths, float end, ulong duration, ulong delay)
         {
-            return paths.Concat(new[] { new Path(paths.Last().End, end, duration, delay) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path(paths.Last().End, end, duration, delay)
+            }).ToArray();
         }
 
         /// <summary>
@@ -58,7 +67,10 @@ namespace PlexDL.WinFormAnimation
         public static Path[] ContinueTo(this Path[] paths, float end, ulong duration, ulong delay,
             AnimationFunctions.Function function)
         {
-            return paths.Concat(new[] { new Path(paths.Last().End, end, duration, delay, function) }).ToArray();
+            return paths.Concat(new[]
+            {
+                new Path(paths.Last().End, end, duration, delay, function)
+            }).ToArray();
         }
 
         /// <summary>
@@ -143,7 +155,10 @@ namespace PlexDL.WinFormAnimation
         /// <returns>An array of paths including the new ones</returns>
         public static Path[] ToArray(this Path path)
         {
-            return new[] { path };
+            return new[]
+            {
+                path
+            };
         }
     }
 }

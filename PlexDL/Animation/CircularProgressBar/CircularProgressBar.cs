@@ -1,12 +1,12 @@
-﻿using PlexDL.WinFormAnimation;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using PlexDL.Animation.WinFormAnimation;
 
-namespace CircularProgressBar
+namespace PlexDL.Animation.CircularProgressBar
 {
     /// <summary>
     ///     The circular progress bar windows form control
@@ -269,21 +269,15 @@ namespace CircularProgressBar
                 if (!DesignMode)
                 {
                     if (Style == ProgressBarStyle.Marquee)
-                    {
                         InitializeMarquee(_lastStyle != Style);
-                    }
                     else
-                    {
                         InitializeContinues(_lastStyle != Style);
-                    }
 
                     _lastStyle = Style;
                 }
 
                 if (_backBrush == null)
-                {
                     RecreateBackgroundBrush();
-                }
 
                 StartPaint(e.Graphics);
             }
@@ -337,9 +331,7 @@ namespace CircularProgressBar
         protected virtual void InitializeContinues(bool firstTime)
         {
             if (_lastValue == Value && !firstTime)
-            {
                 return;
-            }
 
             _lastValue = Value;
 
@@ -355,7 +347,7 @@ namespace CircularProgressBar
             }
 
             _animator.Paths =
-                new Path(_animatedValue ?? Value, Value, (ulong)AnimationSpeed, CustomAnimationFunction).ToArray();
+            new Path(_animatedValue ?? Value, Value, (ulong)AnimationSpeed, CustomAnimationFunction).ToArray();
             _animator.Repeat = false;
             _animator.Play(
                 new SafeInvoker<float>(
@@ -384,9 +376,7 @@ namespace CircularProgressBar
                 (_animator.ActivePath == null ||
                  _animator.ActivePath.Duration == (ulong)MarqueeAnimationSpeed &&
                  _animator.ActivePath.Function == CustomAnimationFunction))
-            {
                 return;
-            }
 
             _animator.Stop();
             _animatedValue = null;
@@ -449,12 +439,9 @@ namespace CircularProgressBar
                 _backBrush = new SolidBrush(BackColor);
 
                 if (BackColor.A == 255)
-                {
                     return;
-                }
 
                 if (Parent != null && Parent.Width > 0 && Parent.Height > 0)
-                {
                     using (var parentImage = new Bitmap(Parent.Width, Parent.Height))
                     {
                         using (var parentGraphic = Graphics.FromImage(parentImage))
@@ -465,19 +452,14 @@ namespace CircularProgressBar
                             InvokePaint(Parent, pe);
 
                             if (BackColor.A > 0) // Translucent
-                            {
                                 parentGraphic.FillRectangle(_backBrush, Bounds);
-                            }
                         }
 
                         _backBrush = new TextureBrush(parentImage);
                         ((TextureBrush)_backBrush).TranslateTransform(-Bounds.X, -Bounds.Y);
                     }
-                }
                 else
-                {
                     _backBrush = new SolidBrush(Color.FromArgb(255, BackColor));
-                }
             }
         }
 
@@ -547,20 +529,17 @@ namespace CircularProgressBar
                     }
 
                     if (string.IsNullOrEmpty(Text))
-                    {
                         return;
-                    }
 
                     point.X += TextMargin.Left;
                     point.Y += TextMargin.Top;
                     size.Width -= TextMargin.Right;
                     size.Height -= TextMargin.Bottom;
                     var stringFormat =
-                        new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
-                        {
-                            Alignment = StringAlignment.Center,
-                            LineAlignment = StringAlignment.Near
-                        };
+                    new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
+                    {
+                        Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near
+                    };
                     var textSize = g.MeasureString(Text, Font);
                     var textPoint = new PointF(
                         point.X + (size.Width - textSize.Width) / 2,

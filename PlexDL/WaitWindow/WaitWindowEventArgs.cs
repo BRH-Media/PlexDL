@@ -24,28 +24,22 @@ namespace PlexDL.WaitWindow
         /// <param name="args">A list of arguments to be passed.</param>
         public WaitWindowEventArgs(WaitWindow GUI, List<object> args) : base()
         {
-            this._Window = GUI;
-            this._Arguments = args;
+            _Window = GUI;
+            _Arguments = args;
         }
 
         private WaitWindow _Window;
         private List<object> _Arguments;
         private object _Result;
 
-        public WaitWindow Window
-        {
-            get { return _Window; }
-        }
+        public WaitWindow Window => _Window;
 
-        public List<object> Arguments
-        {
-            get { return _Arguments; }
-        }
+        public List<object> Arguments => _Arguments;
 
         public object Result
         {
-            get { return _Result; }
-            set { _Result = value; }
+            get => _Result;
+            set => _Result = value;
         }
     }
 }

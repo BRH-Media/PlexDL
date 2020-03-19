@@ -13,14 +13,11 @@ namespace PlexDL.Common.Components
 
         public new /*shadowing*/ object DataSource
         {
-            get
-            {
-                return base.DataSource;
-            }
+            get => base.DataSource;
             set
             {
                 SuppressAutoSelection = true;
-                Form parent = this.FindForm();
+                var parent = FindForm();
 
                 // Either the selection gets cleared on form load....
                 parent.Load -= Parent_Load;
@@ -43,9 +40,9 @@ namespace PlexDL.Common.Components
 
         private void ClearSelectionAndResetSuppression()
         {
-            if (this.SelectedRows.Count > 0 || this.SelectedCells.Count > 0)
+            if (SelectedRows.Count > 0 || SelectedCells.Count > 0)
             {
-                this.ClearSelection();
+                ClearSelection();
                 SuppressAutoSelection = false;
             }
         }

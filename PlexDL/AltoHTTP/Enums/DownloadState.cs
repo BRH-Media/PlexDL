@@ -1,4 +1,4 @@
-﻿namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHTTP.Enums
 {
     /// <summary>
     /// Download states

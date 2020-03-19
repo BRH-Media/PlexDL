@@ -1,4 +1,4 @@
-﻿namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHTTP.Classes
 {
     /// <summary>
     /// Struct to store the informations for download operations
@@ -13,9 +13,8 @@
         public override bool Equals(object obj)
         {
             if (obj is QueueElement el)
-            {
                 return el.Url == Url && el.Destination == Destination && el.Completed == Completed && el.Id == Id;
-            }
+
             return false;
         }
 

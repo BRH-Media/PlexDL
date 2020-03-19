@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Structures.AppOptions.Caching;
+﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.AppOptions.Caching;
 using PlexDL.Common.Structures.AppOptions.Display;
-using PlexDL.Common.Structures.AppOptions.Logging;
 using PlexDL.Common.Structures.AppOptions.Player;
 
 namespace PlexDL.Common.Structures.AppOptions

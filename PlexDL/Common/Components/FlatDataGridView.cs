@@ -8,38 +8,38 @@ namespace PlexDL.Common.Components
 
         public FlatDataGridView()
         {
-            this.AllowUserToAddRows = false;
-            this.AllowUserToDeleteRows = false;
-            this.AllowUserToOrderColumns = true;
-            this.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
-            this.MultiSelect = false;
-            this.Name = "dgvMain";
-            this.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.RowHeadersVisible = false;
-            this.Paint += new PaintEventHandler(DGVPaint);
-            this.DataError += new DataGridViewDataErrorEventHandler(this.DGVDataError);
-            this.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            AllowUserToAddRows = false;
+            AllowUserToDeleteRows = false;
+            AllowUserToOrderColumns = true;
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            BackgroundColor = System.Drawing.Color.FromArgb((int)(byte)224, (int)(byte)224, (int)(byte)224);
+            BorderStyle = BorderStyle.None;
+            CellBorderStyle = DataGridViewCellBorderStyle.None;
+            EditMode = DataGridViewEditMode.EditProgrammatically;
+            Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+            MultiSelect = false;
+            Name = "dgvMain";
+            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            RowHeadersVisible = false;
+            Paint += new PaintEventHandler(DGVPaint);
+            DataError += new DataGridViewDataErrorEventHandler(DGVDataError);
+            DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void DGVPaint(object sender, PaintEventArgs e)
         {
-            if (this.Rows.Count == 0)
+            if (Rows.Count == 0)
             {
                 TextRenderer.DrawText(e.Graphics, RowsEmptyText,
-                    this.Font, this.ClientRectangle,
-                    this.ForeColor, this.BackgroundColor,
+                    Font, ClientRectangle,
+                    ForeColor, BackgroundColor,
                     TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
-                this.BorderStyle = BorderStyle.None;
+                Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
+                BorderStyle = BorderStyle.None;
             }
             else
             {
-                this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+                Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
             }
         }
 

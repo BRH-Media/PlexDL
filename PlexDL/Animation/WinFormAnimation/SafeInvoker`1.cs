@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlexDL.WinFormAnimation
+namespace PlexDL.Animation.WinFormAnimation
 {
     /// <summary>
     ///     The safe invoker class is a delegate reference holder that always

@@ -4,7 +4,7 @@ namespace PlexDL.Common.Structures.AppOptions
 {
     public class GenericAppSettings
     {
-        public string StoredAppVersion { get; set; } = Application.ProductVersion.ToString();
+        public string StoredAppVersion { get; set; } = Application.ProductVersion;
         public string DownloadDirectory { get; set; } = "";
         public bool AdultContentProtection { get; set; } = true;
         public bool ShowConnectionSuccess { get; set; } = false;
