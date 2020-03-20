@@ -1,4 +1,6 @@
-﻿namespace PlexDL.UI
+﻿using System;
+
+namespace PlexDL.UI
 {
     partial class Home
     {
@@ -29,37 +31,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet3 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet4 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet5 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet6 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet7 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet8 = new MetroSet_UI.Extensions.ImageSet();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSaveProfile = new System.Windows.Forms.SaveFileDialog();
             this.fbdSave = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdLoadProfile = new System.Windows.Forms.OpenFileDialog();
             this.wkrDownloadAsync = new System.ComponentModel.BackgroundWorker();
-            this.lstLog = new MetroSet_UI.Controls.MetroSetListBox();
-            this.styleMain = new MetroSet_UI.StyleManager();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.btnMetadata = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnSetDlDir = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnSearch = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnLoadProfile = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnPause = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnHTTPPlay = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnConnect = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnDownload = new MetroSet_UI.Controls.MetroSetEllipse();
+            this.lstLog = new MetroSet_UI.Controls.MetroSetListBox();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
             this.cxtEpisodes = new MetroSet_UI.Controls.MetroSetContextMenuStrip();
             this.itmDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,48 +59,73 @@
             this.itmContentMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.ofdMetadata = new System.Windows.Forms.OpenFileDialog();
-            this.cxtProfile = new MetroSet_UI.Controls.MetroSetContextMenuStrip();
-            this.loadProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbMain = new MetroSet_UI.Controls.MetroSetProgressBar();
-            this.lblProgress = new MetroSet_UI.Controls.MetroSetLabel();
-            this.lnkLogViewer = new MetroSet_UI.Controls.MetroSetLink();
-            this.lblLog = new MetroSet_UI.Controls.MetroSetLabel();
-            this.ctrlMain = new MetroSet_UI.Controls.MetroSetControlBox();
-            this.tabMain = new MetroSet_UI.Controls.MetroSetTabControl();
-            this.tabMovies = new MetroSet_UI.Child.MetroSetTabPage();
-            this.dgvContent = new PlexDL.Common.Components.FlatDataGridView();
-            this.tabTV = new MetroSet_UI.Child.MetroSetTabPage();
-            this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
-            this.tabLog = new MetroSet_UI.Child.MetroSetTabPage();
-            this.dgvLibrary = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.nfyMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cxtStreamOptions = new MetroSet_UI.Controls.MetroSetContextMenuStrip();
             this.itmStreamInPVS = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStreamInVLC = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStreamInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
+            this.statusMain = new System.Windows.Forms.StatusStrip();
+            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
+            this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.gbStreamControl = new System.Windows.Forms.GroupBox();
+            this.tlpContentOptionsControls = new System.Windows.Forms.TableLayoutPanel();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.btnHTTPPlay = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.tabMain = new System.Windows.Forms.TabControl();
+            this.tabMovies = new System.Windows.Forms.TabPage();
+            this.tabTV = new System.Windows.Forms.TabPage();
+            this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
+            this.tabLog = new System.Windows.Forms.TabPage();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpContentOptions = new System.Windows.Forms.TableLayoutPanel();
+            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSetDlDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmProfile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContent = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmStartSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSearchStatus = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLogging = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLogViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCaching = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCacheMetrics = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmClearCache = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCacheOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvContent = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvLibrary = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
             this.cxtContentOptions.SuspendLayout();
-            this.cxtProfile.SuspendLayout();
+            this.cxtStreamOptions.SuspendLayout();
+            this.statusMain.SuspendLayout();
+            this.gbStreamControl.SuspendLayout();
+            this.tlpContentOptionsControls.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabMovies.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             this.tabTV.SuspendLayout();
             this.tlpTV.SuspendLayout();
+            this.tabLog.SuspendLayout();
+            this.tlpMain.SuspendLayout();
+            this.tlpContentOptions.SuspendLayout();
+            this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
-            this.tabLog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
-            this.cxtStreamOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // sfdSaveProfile
@@ -139,12 +148,13 @@
             this.lstLog.BorderColor = System.Drawing.Color.LightGray;
             this.lstLog.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.lstLog.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.lstLog.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lstLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.lstLog.HoveredItemBackColor = System.Drawing.Color.LightGray;
             this.lstLog.HoveredItemColor = System.Drawing.Color.DimGray;
             this.lstLog.ItemHeight = 20;
-            this.lstLog.Location = new System.Drawing.Point(0, 26);
+            this.lstLog.Location = new System.Drawing.Point(0, 0);
+            this.lstLog.Margin = new System.Windows.Forms.Padding(2);
             this.lstLog.MultiSelect = false;
             this.lstLog.Name = "lstLog";
             this.lstLog.SelectedIndex = -1;
@@ -154,290 +164,13 @@
             this.lstLog.SelectedValue = null;
             this.lstLog.ShowBorder = true;
             this.lstLog.ShowScrollBar = true;
-            this.lstLog.Size = new System.Drawing.Size(683, 336);
+            this.lstLog.Size = new System.Drawing.Size(660, 355);
             this.lstLog.Style = MetroSet_UI.Design.Style.Light;
-            this.lstLog.StyleManager = this.styleMain;
+            this.lstLog.StyleManager = null;
             this.lstLog.TabIndex = 13;
             this.lstLog.ThemeAuthor = null;
             this.lstLog.ThemeName = null;
             this.tipMain.SetToolTip(this.lstLog, "PlexDL Log");
-            // 
-            // styleMain
-            // 
-            this.styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
-            this.styleMain.MetroForm = this;
-            this.styleMain.Style = MetroSet_UI.Design.Style.Light;
-            this.styleMain.ThemeAuthor = null;
-            this.styleMain.ThemeName = null;
-            // 
-            // btnMetadata
-            // 
-            this.btnMetadata.BackColor = System.Drawing.Color.Transparent;
-            this.btnMetadata.BorderThickness = 0;
-            this.btnMetadata.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnMetadata.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnMetadata.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnMetadata.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnMetadata.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnMetadata.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnMetadata.HoverTextColor = System.Drawing.Color.White;
-            this.btnMetadata.Image = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_book_black_18dp_white;
-            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_book_black_18dp;
-            this.btnMetadata.ImageSet = imageSet1;
-            this.btnMetadata.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnMetadata.Location = new System.Drawing.Point(530, 84);
-            this.btnMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnMetadata.Name = "btnMetadata";
-            this.btnMetadata.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnMetadata.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnMetadata.NormalTextColor = System.Drawing.Color.Black;
-            this.btnMetadata.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnMetadata.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnMetadata.PressTextColor = System.Drawing.Color.White;
-            this.btnMetadata.Size = new System.Drawing.Size(44, 36);
-            this.btnMetadata.Style = MetroSet_UI.Design.Style.Light;
-            this.btnMetadata.StyleManager = this.styleMain;
-            this.btnMetadata.TabIndex = 10;
-            this.btnMetadata.ThemeAuthor = null;
-            this.btnMetadata.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnMetadata, "View Metadata");
-            this.btnMetadata.Click += new System.EventHandler(this.BtnMetadata_Click);
-            // 
-            // btnSetDlDir
-            // 
-            this.btnSetDlDir.BackColor = System.Drawing.Color.Transparent;
-            this.btnSetDlDir.BorderThickness = 0;
-            this.btnSetDlDir.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnSetDlDir.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnSetDlDir.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnSetDlDir.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnSetDlDir.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnSetDlDir.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnSetDlDir.HoverTextColor = System.Drawing.Color.White;
-            this.btnSetDlDir.Image = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp_white;
-            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            this.btnSetDlDir.ImageSet = imageSet2;
-            this.btnSetDlDir.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnSetDlDir.Location = new System.Drawing.Point(478, 84);
-            this.btnSetDlDir.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSetDlDir.Name = "btnSetDlDir";
-            this.btnSetDlDir.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnSetDlDir.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnSetDlDir.NormalTextColor = System.Drawing.Color.Black;
-            this.btnSetDlDir.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnSetDlDir.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnSetDlDir.PressTextColor = System.Drawing.Color.White;
-            this.btnSetDlDir.Size = new System.Drawing.Size(44, 36);
-            this.btnSetDlDir.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSetDlDir.StyleManager = this.styleMain;
-            this.btnSetDlDir.TabIndex = 9;
-            this.btnSetDlDir.ThemeAuthor = null;
-            this.btnSetDlDir.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnSetDlDir, "Set Download Directory");
-            this.btnSetDlDir.Click += new System.EventHandler(this.BtnSetDlDir_Click);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.BorderThickness = 0;
-            this.btnSearch.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnSearch.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnSearch.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnSearch.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnSearch.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnSearch.HoverTextColor = System.Drawing.Color.White;
-            this.btnSearch.Image = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            imageSet3.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
-            imageSet3.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            this.btnSearch.ImageSet = imageSet3;
-            this.btnSearch.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnSearch.Location = new System.Drawing.Point(78, 84);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnSearch.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnSearch.NormalTextColor = System.Drawing.Color.Black;
-            this.btnSearch.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnSearch.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnSearch.PressTextColor = System.Drawing.Color.White;
-            this.btnSearch.Size = new System.Drawing.Size(44, 36);
-            this.btnSearch.Style = MetroSet_UI.Design.Style.Light;
-            this.btnSearch.StyleManager = this.styleMain;
-            this.btnSearch.TabIndex = 3;
-            this.btnSearch.ThemeAuthor = null;
-            this.btnSearch.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnSearch, "Search");
-            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
-            // 
-            // btnLoadProfile
-            // 
-            this.btnLoadProfile.BackColor = System.Drawing.Color.Transparent;
-            this.btnLoadProfile.BorderThickness = 0;
-            this.btnLoadProfile.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnLoadProfile.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnLoadProfile.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnLoadProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnLoadProfile.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnLoadProfile.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnLoadProfile.HoverTextColor = System.Drawing.Color.White;
-            this.btnLoadProfile.Image = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            imageSet4.Focus = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp_white;
-            imageSet4.Idle = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            this.btnLoadProfile.ImageSet = imageSet4;
-            this.btnLoadProfile.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnLoadProfile.Location = new System.Drawing.Point(426, 84);
-            this.btnLoadProfile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnLoadProfile.Name = "btnLoadProfile";
-            this.btnLoadProfile.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnLoadProfile.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnLoadProfile.NormalTextColor = System.Drawing.Color.Black;
-            this.btnLoadProfile.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnLoadProfile.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnLoadProfile.PressTextColor = System.Drawing.Color.White;
-            this.btnLoadProfile.Size = new System.Drawing.Size(44, 36);
-            this.btnLoadProfile.Style = MetroSet_UI.Design.Style.Light;
-            this.btnLoadProfile.StyleManager = this.styleMain;
-            this.btnLoadProfile.TabIndex = 8;
-            this.btnLoadProfile.ThemeAuthor = null;
-            this.btnLoadProfile.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnLoadProfile, "Save/Load Profile");
-            this.btnLoadProfile.Click += new System.EventHandler(this.BtnProfile_Click);
-            // 
-            // btnPause
-            // 
-            this.btnPause.BackColor = System.Drawing.Color.Transparent;
-            this.btnPause.BorderThickness = 0;
-            this.btnPause.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnPause.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnPause.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnPause.Enabled = false;
-            this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnPause.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnPause.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnPause.HoverTextColor = System.Drawing.Color.White;
-            this.btnPause.Image = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            imageSet5.Focus = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white;
-            imageSet5.Idle = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
-            this.btnPause.ImageSet = imageSet5;
-            this.btnPause.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnPause.Location = new System.Drawing.Point(234, 84);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnPause.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnPause.NormalTextColor = System.Drawing.Color.Black;
-            this.btnPause.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnPause.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnPause.PressTextColor = System.Drawing.Color.White;
-            this.btnPause.Size = new System.Drawing.Size(44, 36);
-            this.btnPause.Style = MetroSet_UI.Design.Style.Light;
-            this.btnPause.StyleManager = this.styleMain;
-            this.btnPause.TabIndex = 1;
-            this.btnPause.ThemeAuthor = null;
-            this.btnPause.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnPause, "Pause/Resume Download");
-            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
-            // 
-            // btnHTTPPlay
-            // 
-            this.btnHTTPPlay.BorderThickness = 0;
-            this.btnHTTPPlay.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnHTTPPlay.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnHTTPPlay.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnHTTPPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnHTTPPlay.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnHTTPPlay.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnHTTPPlay.HoverTextColor = System.Drawing.Color.White;
-            this.btnHTTPPlay.Image = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            imageSet6.Focus = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp_white;
-            imageSet6.Idle = global::PlexDL.Properties.Resources.baseline_rss_feed_black_18dp;
-            this.btnHTTPPlay.ImageSet = imageSet6;
-            this.btnHTTPPlay.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnHTTPPlay.Location = new System.Drawing.Point(130, 84);
-            this.btnHTTPPlay.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnHTTPPlay.Name = "btnHTTPPlay";
-            this.btnHTTPPlay.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnHTTPPlay.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnHTTPPlay.NormalTextColor = System.Drawing.Color.Black;
-            this.btnHTTPPlay.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnHTTPPlay.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnHTTPPlay.PressTextColor = System.Drawing.Color.White;
-            this.btnHTTPPlay.Size = new System.Drawing.Size(44, 36);
-            this.btnHTTPPlay.Style = MetroSet_UI.Design.Style.Light;
-            this.btnHTTPPlay.StyleManager = this.styleMain;
-            this.btnHTTPPlay.TabIndex = 2;
-            this.btnHTTPPlay.ThemeAuthor = null;
-            this.btnHTTPPlay.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnHTTPPlay, "Stream Selected Title");
-            this.btnHTTPPlay.Click += new System.EventHandler(this.BtnHTTPPlay_Click);
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.BorderThickness = 0;
-            this.btnConnect.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnConnect.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnConnect.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnConnect.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnConnect.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnConnect.HoverTextColor = System.Drawing.Color.White;
-            this.btnConnect.Image = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            imageSet7.Focus = global::PlexDL.Properties.Resources.baseline_power_black_18dp_white;
-            imageSet7.Idle = global::PlexDL.Properties.Resources.baseline_power_black_18dp;
-            this.btnConnect.ImageSet = imageSet7;
-            this.btnConnect.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnConnect.Location = new System.Drawing.Point(26, 84);
-            this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnConnect.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnConnect.NormalTextColor = System.Drawing.Color.Black;
-            this.btnConnect.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnConnect.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnConnect.PressTextColor = System.Drawing.Color.White;
-            this.btnConnect.Size = new System.Drawing.Size(44, 36);
-            this.btnConnect.Style = MetroSet_UI.Design.Style.Light;
-            this.btnConnect.StyleManager = this.styleMain;
-            this.btnConnect.TabIndex = 4;
-            this.btnConnect.ThemeAuthor = null;
-            this.btnConnect.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnConnect, "Connect/Disconnect");
-            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
-            // 
-            // btnDownload
-            // 
-            this.btnDownload.BorderThickness = 0;
-            this.btnDownload.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnDownload.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnDownload.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnDownload.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnDownload.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnDownload.HoverTextColor = System.Drawing.Color.White;
-            this.btnDownload.Image = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            imageSet8.Focus = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp_white;
-            imageSet8.Idle = global::PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
-            this.btnDownload.ImageSet = imageSet8;
-            this.btnDownload.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnDownload.Location = new System.Drawing.Point(182, 84);
-            this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnDownload.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnDownload.NormalTextColor = System.Drawing.Color.Black;
-            this.btnDownload.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnDownload.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnDownload.PressTextColor = System.Drawing.Color.White;
-            this.btnDownload.Size = new System.Drawing.Size(44, 36);
-            this.btnDownload.Style = MetroSet_UI.Design.Style.Light;
-            this.btnDownload.StyleManager = this.styleMain;
-            this.btnDownload.TabIndex = 0;
-            this.btnDownload.ThemeAuthor = null;
-            this.btnDownload.ThemeName = null;
-            this.tipMain.SetToolTip(this.btnDownload, "Download Selected Title");
-            this.btnDownload.Click += new System.EventHandler(this.BtnDownload_Click);
             // 
             // wkrGetMetadata
             // 
@@ -567,406 +300,6 @@
             this.ofdMetadata.Filter = "PlexMovie XML|*.pmxml";
             this.ofdMetadata.Title = "Load Metadata File";
             // 
-            // cxtProfile
-            // 
-            this.cxtProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtProfile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadProfileToolStripMenuItem,
-            this.saveProfileToolStripMenuItem});
-            this.cxtProfile.Name = "cxtProfile";
-            this.cxtProfile.Size = new System.Drawing.Size(138, 48);
-            this.cxtProfile.Style = MetroSet_UI.Design.Style.Light;
-            this.cxtProfile.StyleManager = null;
-            this.cxtProfile.ThemeAuthor = "Narwin";
-            this.cxtProfile.ThemeName = "MetroLite";
-            // 
-            // loadProfileToolStripMenuItem
-            // 
-            this.loadProfileToolStripMenuItem.Name = "loadProfileToolStripMenuItem";
-            this.loadProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.loadProfileToolStripMenuItem.Text = "Load Profile";
-            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.LoadProfileToolStripMenuItem_Click);
-            // 
-            // saveProfileToolStripMenuItem
-            // 
-            this.saveProfileToolStripMenuItem.Name = "saveProfileToolStripMenuItem";
-            this.saveProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.saveProfileToolStripMenuItem.Text = "Save Profile";
-            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.SaveProfileToolStripMenuItem_Click);
-            // 
-            // pbMain
-            // 
-            this.pbMain.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.pbMain.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.pbMain.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.pbMain.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.pbMain.DisabledProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.pbMain.Location = new System.Drawing.Point(26, 129);
-            this.pbMain.Maximum = 100;
-            this.pbMain.Minimum = 0;
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Orientation = MetroSet_UI.Enums.ProgressOrientation.Horizontal;
-            this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.pbMain.Size = new System.Drawing.Size(549, 10);
-            this.pbMain.Style = MetroSet_UI.Design.Style.Light;
-            this.pbMain.StyleManager = this.styleMain;
-            this.pbMain.TabIndex = 22;
-            this.pbMain.Text = "metroSetProgressBar1";
-            this.pbMain.ThemeAuthor = null;
-            this.pbMain.ThemeName = null;
-            this.pbMain.Value = 0;
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.AutoSize = true;
-            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblProgress.Location = new System.Drawing.Point(26, 142);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(30, 17);
-            this.lblProgress.Style = MetroSet_UI.Design.Style.Light;
-            this.lblProgress.StyleManager = this.styleMain;
-            this.lblProgress.TabIndex = 23;
-            this.lblProgress.Text = "Idle";
-            this.lblProgress.ThemeAuthor = null;
-            this.lblProgress.ThemeName = null;
-            // 
-            // lnkLogViewer
-            // 
-            this.lnkLogViewer.AutoSize = true;
-            this.lnkLogViewer.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lnkLogViewer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lnkLogViewer.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lnkLogViewer.Location = new System.Drawing.Point(560, 6);
-            this.lnkLogViewer.Name = "lnkLogViewer";
-            this.lnkLogViewer.Size = new System.Drawing.Size(78, 17);
-            this.lnkLogViewer.Style = MetroSet_UI.Design.Style.Light;
-            this.lnkLogViewer.StyleManager = this.styleMain;
-            this.lnkLogViewer.TabIndex = 24;
-            this.lnkLogViewer.TabStop = true;
-            this.lnkLogViewer.Text = "Log Viewer";
-            this.lnkLogViewer.ThemeAuthor = null;
-            this.lnkLogViewer.ThemeName = null;
-            this.lnkLogViewer.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(157)))), ((int)(((byte)(205)))));
-            this.lnkLogViewer.Click += new System.EventHandler(this.LblViewFullLog_LinkClicked);
-            // 
-            // lblLog
-            // 
-            this.lblLog.AutoSize = true;
-            this.lblLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblLog.Location = new System.Drawing.Point(0, 6);
-            this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(80, 17);
-            this.lblLog.Style = MetroSet_UI.Design.Style.Light;
-            this.lblLog.StyleManager = this.styleMain;
-            this.lblLog.TabIndex = 25;
-            this.lblLog.Text = "PlexDL Log";
-            this.lblLog.ThemeAuthor = null;
-            this.lblLog.ThemeName = null;
-            // 
-            // ctrlMain
-            // 
-            this.ctrlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ctrlMain.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.ctrlMain.CloseHoverForeColor = System.Drawing.Color.White;
-            this.ctrlMain.CloseNormalForeColor = System.Drawing.Color.Gray;
-            this.ctrlMain.DisabledForeColor = System.Drawing.Color.DimGray;
-            this.ctrlMain.Location = new System.Drawing.Point(1182, 2);
-            this.ctrlMain.MaximizeBox = false;
-            this.ctrlMain.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.ctrlMain.MaximizeHoverForeColor = System.Drawing.Color.Gray;
-            this.ctrlMain.MaximizeNormalForeColor = System.Drawing.Color.Gray;
-            this.ctrlMain.MinimizeBox = true;
-            this.ctrlMain.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.ctrlMain.MinimizeHoverForeColor = System.Drawing.Color.Gray;
-            this.ctrlMain.MinimizeNormalForeColor = System.Drawing.Color.Gray;
-            this.ctrlMain.Name = "ctrlMain";
-            this.ctrlMain.Size = new System.Drawing.Size(100, 25);
-            this.ctrlMain.Style = MetroSet_UI.Design.Style.Light;
-            this.ctrlMain.StyleManager = this.styleMain;
-            this.ctrlMain.TabIndex = 26;
-            this.ctrlMain.Text = "Player";
-            this.ctrlMain.ThemeAuthor = null;
-            this.ctrlMain.ThemeName = null;
-            // 
-            // tabMain
-            // 
-            this.tabMain.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
-            this.tabMain.AnimateTime = 200;
-            this.tabMain.Controls.Add(this.tabMovies);
-            this.tabMain.Controls.Add(this.tabTV);
-            this.tabMain.Controls.Add(this.tabLog);
-            this.tabMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.tabMain.ItemSize = new System.Drawing.Size(100, 38);
-            this.tabMain.Location = new System.Drawing.Point(581, 94);
-            this.tabMain.Name = "tabMain";
-            this.tabMain.SelectedIndex = 1;
-            this.tabMain.Size = new System.Drawing.Size(691, 408);
-            this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabMain.Speed = 20;
-            this.tabMain.Style = MetroSet_UI.Design.Style.Light;
-            this.tabMain.StyleManager = this.styleMain;
-            this.tabMain.TabIndex = 28;
-            this.tabMain.TabStyle = MetroSet_UI.Enums.TabStyle.Style1;
-            this.tabMain.ThemeAuthor = null;
-            this.tabMain.ThemeName = null;
-            this.tabMain.UseAnimation = true;
-            // 
-            // tabMovies
-            // 
-            this.tabMovies.BaseColor = System.Drawing.Color.White;
-            this.tabMovies.Controls.Add(this.dgvContent);
-            this.tabMovies.ImageIndex = 0;
-            this.tabMovies.ImageKey = null;
-            this.tabMovies.Location = new System.Drawing.Point(4, 42);
-            this.tabMovies.Name = "tabMovies";
-            this.tabMovies.Size = new System.Drawing.Size(683, 362);
-            this.tabMovies.Style = MetroSet_UI.Design.Style.Light;
-            this.tabMovies.StyleManager = this.styleMain;
-            this.tabMovies.TabIndex = 0;
-            this.tabMovies.Text = "Movies";
-            this.tabMovies.ThemeAuthor = null;
-            this.tabMovies.ThemeName = null;
-            this.tabMovies.ToolTipText = null;
-            // 
-            // dgvContent
-            // 
-            this.dgvContent.AllowUserToAddRows = false;
-            this.dgvContent.AllowUserToDeleteRows = false;
-            this.dgvContent.AllowUserToOrderColumns = true;
-            this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvContent.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvContent.Location = new System.Drawing.Point(0, 0);
-            this.dgvContent.MultiSelect = false;
-            this.dgvContent.Name = "dgvContent";
-            this.dgvContent.RowHeadersVisible = false;
-            this.dgvContent.RowsEmptyText = "No Movies Found";
-            this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvContent.Size = new System.Drawing.Size(683, 362);
-            this.dgvContent.TabIndex = 18;
-            this.dgvContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvContent_CellContentDoubleClick);
-            this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
-            // 
-            // tabTV
-            // 
-            this.tabTV.BaseColor = System.Drawing.Color.White;
-            this.tabTV.Controls.Add(this.tlpTV);
-            this.tabTV.ImageIndex = 0;
-            this.tabTV.ImageKey = null;
-            this.tabTV.Location = new System.Drawing.Point(4, 42);
-            this.tabTV.Name = "tabTV";
-            this.tabTV.Size = new System.Drawing.Size(683, 362);
-            this.tabTV.Style = MetroSet_UI.Design.Style.Light;
-            this.tabTV.StyleManager = this.styleMain;
-            this.tabTV.TabIndex = 1;
-            this.tabTV.Text = "TV";
-            this.tabTV.ThemeAuthor = null;
-            this.tabTV.ThemeName = null;
-            this.tabTV.ToolTipText = null;
-            // 
-            // tlpTV
-            // 
-            this.tlpTV.BackColor = System.Drawing.Color.White;
-            this.tlpTV.ColumnCount = 2;
-            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.Controls.Add(this.dgvTVShows, 0, 0);
-            this.tlpTV.Controls.Add(this.dgvSeasons, 1, 0);
-            this.tlpTV.Controls.Add(this.dgvEpisodes, 1, 1);
-            this.tlpTV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTV.Location = new System.Drawing.Point(0, 0);
-            this.tlpTV.Name = "tlpTV";
-            this.tlpTV.RowCount = 2;
-            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.Size = new System.Drawing.Size(683, 362);
-            this.tlpTV.TabIndex = 0;
-            // 
-            // dgvTVShows
-            // 
-            this.dgvTVShows.AllowUserToAddRows = false;
-            this.dgvTVShows.AllowUserToDeleteRows = false;
-            this.dgvTVShows.AllowUserToOrderColumns = true;
-            this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvTVShows.Location = new System.Drawing.Point(3, 3);
-            this.dgvTVShows.MultiSelect = false;
-            this.dgvTVShows.Name = "dgvTVShows";
-            this.dgvTVShows.RowHeadersVisible = false;
-            this.dgvTVShows.RowsEmptyText = "No TV Shows Found";
-            this.tlpTV.SetRowSpan(this.dgvTVShows, 2);
-            this.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTVShows.Size = new System.Drawing.Size(335, 356);
-            this.dgvTVShows.TabIndex = 27;
-            this.dgvTVShows.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTVShows_CellContentDoubleClick);
-            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
-            // 
-            // dgvSeasons
-            // 
-            this.dgvSeasons.AllowUserToAddRows = false;
-            this.dgvSeasons.AllowUserToDeleteRows = false;
-            this.dgvSeasons.AllowUserToOrderColumns = true;
-            this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvSeasons.Location = new System.Drawing.Point(344, 3);
-            this.dgvSeasons.MultiSelect = false;
-            this.dgvSeasons.Name = "dgvSeasons";
-            this.dgvSeasons.RowHeadersVisible = false;
-            this.dgvSeasons.RowsEmptyText = "No TV Seasons Found";
-            this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeasons.Size = new System.Drawing.Size(336, 175);
-            this.dgvSeasons.TabIndex = 20;
-            this.dgvSeasons.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSeasons_CellContentDoubleClick);
-            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
-            // 
-            // dgvEpisodes
-            // 
-            this.dgvEpisodes.AllowUserToAddRows = false;
-            this.dgvEpisodes.AllowUserToDeleteRows = false;
-            this.dgvEpisodes.AllowUserToOrderColumns = true;
-            this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvEpisodes.Location = new System.Drawing.Point(344, 184);
-            this.dgvEpisodes.MultiSelect = false;
-            this.dgvEpisodes.Name = "dgvEpisodes";
-            this.dgvEpisodes.RowHeadersVisible = false;
-            this.dgvEpisodes.RowsEmptyText = "No TV Episodes Found";
-            this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEpisodes.Size = new System.Drawing.Size(336, 175);
-            this.dgvEpisodes.TabIndex = 21;
-            this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvEpisodes_CellContentDoubleClick);
-            // 
-            // tabLog
-            // 
-            this.tabLog.BaseColor = System.Drawing.Color.White;
-            this.tabLog.Controls.Add(this.lstLog);
-            this.tabLog.Controls.Add(this.lnkLogViewer);
-            this.tabLog.Controls.Add(this.lblLog);
-            this.tabLog.ImageIndex = 0;
-            this.tabLog.ImageKey = null;
-            this.tabLog.Location = new System.Drawing.Point(4, 42);
-            this.tabLog.Name = "tabLog";
-            this.tabLog.Size = new System.Drawing.Size(683, 362);
-            this.tabLog.Style = MetroSet_UI.Design.Style.Light;
-            this.tabLog.StyleManager = this.styleMain;
-            this.tabLog.TabIndex = 2;
-            this.tabLog.Text = "Log";
-            this.tabLog.ThemeAuthor = null;
-            this.tabLog.ThemeName = null;
-            this.tabLog.ToolTipText = null;
-            // 
-            // dgvLibrary
-            // 
-            this.dgvLibrary.AllowUserToAddRows = false;
-            this.dgvLibrary.AllowUserToDeleteRows = false;
-            this.dgvLibrary.AllowUserToOrderColumns = true;
-            this.dgvLibrary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvLibrary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvLibrary.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvLibrary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvLibrary.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvLibrary.Location = new System.Drawing.Point(305, 166);
-            this.dgvLibrary.MultiSelect = false;
-            this.dgvLibrary.Name = "dgvLibrary";
-            this.dgvLibrary.RowHeadersVisible = false;
-            this.dgvLibrary.RowsEmptyText = "No Library Sections Found";
-            this.dgvLibrary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLibrary.Size = new System.Drawing.Size(270, 332);
-            this.dgvLibrary.TabIndex = 16;
-            this.dgvLibrary.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
-            // 
-            // dgvServers
-            // 
-            this.dgvServers.AllowUserToAddRows = false;
-            this.dgvServers.AllowUserToDeleteRows = false;
-            this.dgvServers.AllowUserToOrderColumns = true;
-            this.dgvServers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvServers.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvServers.Location = new System.Drawing.Point(26, 166);
-            this.dgvServers.MultiSelect = false;
-            this.dgvServers.Name = "dgvServers";
-            this.dgvServers.RowHeadersVisible = false;
-            this.dgvServers.RowsEmptyText = "No Servers Found";
-            this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvServers.Size = new System.Drawing.Size(270, 332);
-            this.dgvServers.TabIndex = 15;
-            this.dgvServers.SelectionChanged += new System.EventHandler(this.DgvServers_OnRowChange);
-            // 
             // nfyMain
             // 
             this.nfyMain.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
@@ -1015,54 +348,558 @@
             this.sfdExport.Filter = "PlexMovie XML|*.pmxml";
             this.sfdExport.Title = "Export PlexMovie Metadata";
             // 
+            // statusMain
+            // 
+            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pbMain,
+            this.lblProgress});
+            this.statusMain.Location = new System.Drawing.Point(0, 411);
+            this.statusMain.Name = "statusMain";
+            this.statusMain.Size = new System.Drawing.Size(956, 22);
+            this.statusMain.TabIndex = 28;
+            this.statusMain.Text = "Status";
+            // 
+            // pbMain
+            // 
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(250, 16);
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(26, 17);
+            this.lblProgress.Text = "Idle";
+            // 
+            // gbStreamControl
+            // 
+            this.gbStreamControl.Controls.Add(this.tlpContentOptionsControls);
+            this.gbStreamControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbStreamControl.Location = new System.Drawing.Point(3, 3);
+            this.gbStreamControl.Name = "gbStreamControl";
+            this.gbStreamControl.Size = new System.Drawing.Size(270, 57);
+            this.gbStreamControl.TabIndex = 33;
+            this.gbStreamControl.TabStop = false;
+            this.gbStreamControl.Text = "Content Options";
+            // 
+            // tlpContentOptionsControls
+            // 
+            this.tlpContentOptionsControls.ColumnCount = 3;
+            this.tlpContentOptionsControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpContentOptionsControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpContentOptionsControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpContentOptionsControls.Controls.Add(this.btnPause, 1, 0);
+            this.tlpContentOptionsControls.Controls.Add(this.btnHTTPPlay, 2, 0);
+            this.tlpContentOptionsControls.Controls.Add(this.btnDownload, 0, 0);
+            this.tlpContentOptionsControls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpContentOptionsControls.Location = new System.Drawing.Point(3, 16);
+            this.tlpContentOptionsControls.Name = "tlpContentOptionsControls";
+            this.tlpContentOptionsControls.RowCount = 1;
+            this.tlpContentOptionsControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpContentOptionsControls.Size = new System.Drawing.Size(264, 38);
+            this.tlpContentOptionsControls.TabIndex = 0;
+            // 
+            // btnPause
+            // 
+            this.btnPause.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPause.Enabled = false;
+            this.btnPause.Location = new System.Drawing.Point(91, 3);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(82, 32);
+            this.btnPause.TabIndex = 31;
+            this.btnPause.Text = "Resume";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // btnHTTPPlay
+            // 
+            this.btnHTTPPlay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHTTPPlay.Location = new System.Drawing.Point(179, 3);
+            this.btnHTTPPlay.Name = "btnHTTPPlay";
+            this.btnHTTPPlay.Size = new System.Drawing.Size(82, 32);
+            this.btnHTTPPlay.TabIndex = 32;
+            this.btnHTTPPlay.Text = "Stream";
+            this.btnHTTPPlay.UseVisualStyleBackColor = true;
+            this.btnHTTPPlay.Click += new System.EventHandler(this.btnHTTPPlay_Click);
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDownload.Location = new System.Drawing.Point(3, 3);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(82, 32);
+            this.btnDownload.TabIndex = 30;
+            this.btnDownload.Text = "Download";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // tabMain
+            // 
+            this.tabMain.Controls.Add(this.tabMovies);
+            this.tabMain.Controls.Add(this.tabTV);
+            this.tabMain.Controls.Add(this.tabLog);
+            this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabMain.Location = new System.Drawing.Point(285, 3);
+            this.tabMain.Name = "tabMain";
+            this.tlpMain.SetRowSpan(this.tabMain, 4);
+            this.tabMain.SelectedIndex = 0;
+            this.tabMain.Size = new System.Drawing.Size(668, 381);
+            this.tabMain.TabIndex = 26;
+            // 
+            // tabMovies
+            // 
+            this.tabMovies.Controls.Add(this.dgvContent);
+            this.tabMovies.Location = new System.Drawing.Point(4, 22);
+            this.tabMovies.Name = "tabMovies";
+            this.tabMovies.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMovies.Size = new System.Drawing.Size(660, 355);
+            this.tabMovies.TabIndex = 0;
+            this.tabMovies.Text = "Movies";
+            this.tabMovies.UseVisualStyleBackColor = true;
+            // 
+            // tabTV
+            // 
+            this.tabTV.Controls.Add(this.tlpTV);
+            this.tabTV.Location = new System.Drawing.Point(4, 22);
+            this.tabTV.Name = "tabTV";
+            this.tabTV.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTV.Size = new System.Drawing.Size(660, 355);
+            this.tabTV.TabIndex = 1;
+            this.tabTV.Text = "TV";
+            this.tabTV.UseVisualStyleBackColor = true;
+            // 
+            // tlpTV
+            // 
+            this.tlpTV.BackColor = System.Drawing.Color.White;
+            this.tlpTV.ColumnCount = 2;
+            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.Controls.Add(this.dgvTVShows, 0, 0);
+            this.tlpTV.Controls.Add(this.dgvSeasons, 1, 0);
+            this.tlpTV.Controls.Add(this.dgvEpisodes, 1, 1);
+            this.tlpTV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTV.Location = new System.Drawing.Point(3, 3);
+            this.tlpTV.Margin = new System.Windows.Forms.Padding(2);
+            this.tlpTV.Name = "tlpTV";
+            this.tlpTV.RowCount = 2;
+            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.Size = new System.Drawing.Size(654, 349);
+            this.tlpTV.TabIndex = 0;
+            // 
+            // tabLog
+            // 
+            this.tabLog.Controls.Add(this.lstLog);
+            this.tabLog.Location = new System.Drawing.Point(4, 22);
+            this.tabLog.Name = "tabLog";
+            this.tabLog.Size = new System.Drawing.Size(660, 355);
+            this.tabLog.TabIndex = 2;
+            this.tabLog.Text = "Log";
+            this.tabLog.UseVisualStyleBackColor = true;
+            // 
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.60251F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.39749F));
+            this.tlpMain.Controls.Add(this.tlpContentOptions, 0, 0);
+            this.tlpMain.Controls.Add(this.tabMain, 1, 0);
+            this.tlpMain.Controls.Add(this.dgvLibrary, 0, 1);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(0, 24);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.Size = new System.Drawing.Size(956, 387);
+            this.tlpMain.TabIndex = 29;
+            this.tlpMain.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpMain_Paint);
+            // 
+            // tlpContentOptions
+            // 
+            this.tlpContentOptions.ColumnCount = 1;
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpContentOptions.Controls.Add(this.gbStreamControl, 0, 0);
+            this.tlpContentOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpContentOptions.Location = new System.Drawing.Point(3, 3);
+            this.tlpContentOptions.Name = "tlpContentOptions";
+            this.tlpContentOptions.RowCount = 2;
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpContentOptions.Size = new System.Drawing.Size(276, 90);
+            this.tlpContentOptions.TabIndex = 31;
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmFile,
+            this.itmProfile,
+            this.itmServers,
+            this.itmContent,
+            this.itmLogging,
+            this.itmCaching,
+            this.itmAbout});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(956, 24);
+            this.menuMain.TabIndex = 30;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // itmFile
+            // 
+            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmExportObj,
+            this.itmSetDlDirectory});
+            this.itmFile.Name = "itmFile";
+            this.itmFile.Size = new System.Drawing.Size(37, 20);
+            this.itmFile.Text = "File";
+            // 
+            // itmExportObj
+            // 
+            this.itmExportObj.Name = "itmExportObj";
+            this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.itmExportObj.Size = new System.Drawing.Size(198, 22);
+            this.itmExportObj.Text = "Export PMXML";
+            this.itmExportObj.Click += new System.EventHandler(this.itmExportObj_Click);
+            // 
+            // itmSetDlDirectory
+            // 
+            this.itmSetDlDirectory.Name = "itmSetDlDirectory";
+            this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
+            this.itmSetDlDirectory.Text = "Set Download Directory";
+            this.itmSetDlDirectory.Click += new System.EventHandler(this.itmSetDlDirectory_Click);
+            // 
+            // itmProfile
+            // 
+            this.itmProfile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLoadProfile,
+            this.itmSaveProfile});
+            this.itmProfile.Name = "itmProfile";
+            this.itmProfile.Size = new System.Drawing.Size(53, 20);
+            this.itmProfile.Text = "Profile";
+            // 
+            // itmLoadProfile
+            // 
+            this.itmLoadProfile.Name = "itmLoadProfile";
+            this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.itmLoadProfile.Size = new System.Drawing.Size(143, 22);
+            this.itmLoadProfile.Text = "Load";
+            this.itmLoadProfile.Click += new System.EventHandler(this.itmLoadProfile_Click);
+            // 
+            // itmSaveProfile
+            // 
+            this.itmSaveProfile.Name = "itmSaveProfile";
+            this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.itmSaveProfile.Size = new System.Drawing.Size(143, 22);
+            this.itmSaveProfile.Text = "Save";
+            this.itmSaveProfile.Click += new System.EventHandler(this.itmSaveProfile_Click);
+            // 
+            // itmServers
+            // 
+            this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmServerManager});
+            this.itmServers.Name = "itmServers";
+            this.itmServers.Size = new System.Drawing.Size(56, 20);
+            this.itmServers.Text = "Servers";
+            // 
+            // itmServerManager
+            // 
+            this.itmServerManager.Name = "itmServerManager";
+            this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.itmServerManager.Size = new System.Drawing.Size(198, 22);
+            this.itmServerManager.Text = "Server Manager";
+            this.itmServerManager.Click += new System.EventHandler(this.itmServerManager_Click);
+            // 
+            // itmContent
+            // 
+            this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmMetadata,
+            this.itmStartSearch,
+            this.itmSearchStatus});
+            this.itmContent.Name = "itmContent";
+            this.itmContent.Size = new System.Drawing.Size(62, 20);
+            this.itmContent.Text = "Content";
+            // 
+            // itmMetadata
+            // 
+            this.itmMetadata.Name = "itmMetadata";
+            this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
+            this.itmMetadata.Text = "Metadata";
+            this.itmMetadata.Click += new System.EventHandler(this.itmMetadata_Click);
+            // 
+            // itmStartSearch
+            // 
+            this.itmStartSearch.Name = "itmStartSearch";
+            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
+            this.itmStartSearch.Text = "Start Search";
+            this.itmStartSearch.Click += new System.EventHandler(this.itmStartSearch_Click);
+            // 
+            // itmSearchStatus
+            // 
+            this.itmSearchStatus.Enabled = false;
+            this.itmSearchStatus.Name = "itmSearchStatus";
+            this.itmSearchStatus.Size = new System.Drawing.Size(176, 22);
+            this.itmSearchStatus.Text = "Not Filtered";
+            // 
+            // itmLogging
+            // 
+            this.itmLogging.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLogViewer});
+            this.itmLogging.Name = "itmLogging";
+            this.itmLogging.Size = new System.Drawing.Size(63, 20);
+            this.itmLogging.Text = "Logging";
+            // 
+            // itmLogViewer
+            // 
+            this.itmLogViewer.Name = "itmLogViewer";
+            this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
+            this.itmLogViewer.Text = "Log Viewer";
+            this.itmLogViewer.Click += new System.EventHandler(this.itmLogViewer_Click);
+            // 
+            // itmCaching
+            // 
+            this.itmCaching.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCacheMetrics,
+            this.itmClearCache,
+            this.itmCacheOptions});
+            this.itmCaching.Name = "itmCaching";
+            this.itmCaching.Size = new System.Drawing.Size(63, 20);
+            this.itmCaching.Text = "Caching";
+            // 
+            // itmCacheMetrics
+            // 
+            this.itmCacheMetrics.Name = "itmCacheMetrics";
+            this.itmCacheMetrics.Size = new System.Drawing.Size(180, 22);
+            this.itmCacheMetrics.Text = "Metrics";
+            // 
+            // itmClearCache
+            // 
+            this.itmClearCache.Name = "itmClearCache";
+            this.itmClearCache.Size = new System.Drawing.Size(180, 22);
+            this.itmClearCache.Text = "Clear Cache";
+            // 
+            // itmCacheOptions
+            // 
+            this.itmCacheOptions.Name = "itmCacheOptions";
+            this.itmCacheOptions.Size = new System.Drawing.Size(180, 22);
+            this.itmCacheOptions.Text = "Options";
+            this.itmCacheOptions.Click += new System.EventHandler(this.itmCacheOptions_Click);
+            // 
+            // itmAbout
+            // 
+            this.itmAbout.Name = "itmAbout";
+            this.itmAbout.Size = new System.Drawing.Size(52, 20);
+            this.itmAbout.Text = "About";
+            // 
+            // dgvContent
+            // 
+            this.dgvContent.AllowUserToAddRows = false;
+            this.dgvContent.AllowUserToDeleteRows = false;
+            this.dgvContent.AllowUserToOrderColumns = true;
+            this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvContent.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvContent.Location = new System.Drawing.Point(3, 3);
+            this.dgvContent.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvContent.MultiSelect = false;
+            this.dgvContent.Name = "dgvContent";
+            this.dgvContent.RowHeadersVisible = false;
+            this.dgvContent.RowsEmptyText = "No Movies Found";
+            this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvContent.Size = new System.Drawing.Size(654, 349);
+            this.dgvContent.TabIndex = 18;
+            this.dgvContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvContent_CellContentDoubleClick);
+            this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
+            // 
+            // dgvTVShows
+            // 
+            this.dgvTVShows.AllowUserToAddRows = false;
+            this.dgvTVShows.AllowUserToDeleteRows = false;
+            this.dgvTVShows.AllowUserToOrderColumns = true;
+            this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvTVShows.Location = new System.Drawing.Point(2, 2);
+            this.dgvTVShows.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvTVShows.MultiSelect = false;
+            this.dgvTVShows.Name = "dgvTVShows";
+            this.dgvTVShows.RowHeadersVisible = false;
+            this.dgvTVShows.RowsEmptyText = "No TV Shows Found";
+            this.tlpTV.SetRowSpan(this.dgvTVShows, 2);
+            this.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTVShows.Size = new System.Drawing.Size(323, 345);
+            this.dgvTVShows.TabIndex = 27;
+            this.dgvTVShows.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTVShows_CellContentDoubleClick);
+            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
+            // 
+            // dgvSeasons
+            // 
+            this.dgvSeasons.AllowUserToAddRows = false;
+            this.dgvSeasons.AllowUserToDeleteRows = false;
+            this.dgvSeasons.AllowUserToOrderColumns = true;
+            this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvSeasons.Location = new System.Drawing.Point(329, 2);
+            this.dgvSeasons.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvSeasons.MultiSelect = false;
+            this.dgvSeasons.Name = "dgvSeasons";
+            this.dgvSeasons.RowHeadersVisible = false;
+            this.dgvSeasons.RowsEmptyText = "No TV Seasons Found";
+            this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSeasons.Size = new System.Drawing.Size(323, 170);
+            this.dgvSeasons.TabIndex = 20;
+            this.dgvSeasons.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSeasons_CellContentDoubleClick);
+            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
+            // 
+            // dgvEpisodes
+            // 
+            this.dgvEpisodes.AllowUserToAddRows = false;
+            this.dgvEpisodes.AllowUserToDeleteRows = false;
+            this.dgvEpisodes.AllowUserToOrderColumns = true;
+            this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvEpisodes.Location = new System.Drawing.Point(329, 176);
+            this.dgvEpisodes.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvEpisodes.MultiSelect = false;
+            this.dgvEpisodes.Name = "dgvEpisodes";
+            this.dgvEpisodes.RowHeadersVisible = false;
+            this.dgvEpisodes.RowsEmptyText = "No TV Episodes Found";
+            this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvEpisodes.Size = new System.Drawing.Size(323, 171);
+            this.dgvEpisodes.TabIndex = 21;
+            this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvEpisodes_CellContentDoubleClick);
+            // 
+            // dgvLibrary
+            // 
+            this.dgvLibrary.AllowUserToAddRows = false;
+            this.dgvLibrary.AllowUserToDeleteRows = false;
+            this.dgvLibrary.AllowUserToOrderColumns = true;
+            this.dgvLibrary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLibrary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvLibrary.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLibrary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvLibrary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvLibrary.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvLibrary.Location = new System.Drawing.Point(2, 98);
+            this.dgvLibrary.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvLibrary.MultiSelect = false;
+            this.dgvLibrary.Name = "dgvLibrary";
+            this.dgvLibrary.RowHeadersVisible = false;
+            this.dgvLibrary.RowsEmptyText = "No Library Sections Found";
+            this.tlpMain.SetRowSpan(this.dgvLibrary, 3);
+            this.dgvLibrary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLibrary.Size = new System.Drawing.Size(278, 287);
+            this.dgvLibrary.TabIndex = 16;
+            this.dgvLibrary.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
+            // 
             // Home
             // 
-            this.AllowResize = false;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1284, 514);
-            this.Controls.Add(this.tabMain);
-            this.Controls.Add(this.ctrlMain);
-            this.Controls.Add(this.lblProgress);
-            this.Controls.Add(this.pbMain);
-            this.Controls.Add(this.btnMetadata);
-            this.Controls.Add(this.btnSetDlDir);
-            this.Controls.Add(this.dgvLibrary);
-            this.Controls.Add(this.dgvServers);
-            this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.btnLoadProfile);
-            this.Controls.Add(this.btnPause);
-            this.Controls.Add(this.btnHTTPPlay);
-            this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.btnDownload);
+            this.ClientSize = new System.Drawing.Size(956, 433);
+            this.Controls.Add(this.tlpMain);
+            this.Controls.Add(this.menuMain);
+            this.Controls.Add(this.statusMain);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Home";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.StyleManager = this.styleMain;
             this.Text = "PlexDL by BRH Media";
-            this.ThemeAuthor = null;
-            this.ThemeName = null;
-            this.UseSlideAnimation = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.cxtEpisodes.ResumeLayout(false);
             this.cxtEpisodeOptions.ResumeLayout(false);
             this.cxtLibrarySections.ResumeLayout(false);
             this.cxtContentOptions.ResumeLayout(false);
-            this.cxtProfile.ResumeLayout(false);
+            this.cxtStreamOptions.ResumeLayout(false);
+            this.statusMain.ResumeLayout(false);
+            this.statusMain.PerformLayout();
+            this.gbStreamControl.ResumeLayout(false);
+            this.tlpContentOptionsControls.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMovies.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
             this.tabTV.ResumeLayout(false);
             this.tlpTV.ResumeLayout(false);
+            this.tabLog.ResumeLayout(false);
+            this.tlpMain.ResumeLayout(false);
+            this.tlpContentOptions.ResumeLayout(false);
+            this.menuMain.ResumeLayout(false);
+            this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
-            this.tabLog.ResumeLayout(false);
-            this.tabLog.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
-            this.cxtStreamOptions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1074,19 +911,8 @@
         public System.Windows.Forms.FolderBrowserDialog fbdSave;
         private System.Windows.Forms.OpenFileDialog ofdLoadProfile;
         private System.ComponentModel.BackgroundWorker wkrDownloadAsync;
-        public MetroSet_UI.Controls.MetroSetEllipse btnDownload;
-        private MetroSet_UI.Controls.MetroSetEllipse btnConnect;
-        private MetroSet_UI.Controls.MetroSetEllipse btnHTTPPlay;
-        private MetroSet_UI.Controls.MetroSetEllipse btnLoadProfile;
-        private MetroSet_UI.Controls.MetroSetListBox lstLog;
-        private MetroSet_UI.Controls.MetroSetEllipse btnSearch;
         private System.Windows.Forms.ToolTip tipMain;
-        private MetroSet_UI.Controls.MetroSetEllipse btnPause;
         private libbrhscgui.Components.AbortableBackgroundWorker wkrGetMetadata;
-        private PlexDL.Common.Components.FlatDataGridView dgvContent;
-        private PlexDL.Common.Components.FlatDataGridView dgvSeasons;
-        private PlexDL.Common.Components.FlatDataGridView dgvEpisodes;
-        private MetroSet_UI.Controls.MetroSetEllipse btnSetDlDir;
         private MetroSet_UI.Controls.MetroSetContextMenuStrip cxtEpisodes;
         private System.Windows.Forms.ToolStripMenuItem itmDownloadThisEpisode;
         private System.Windows.Forms.ToolStripMenuItem itmDownloadAllEpisodes;
@@ -1100,31 +926,54 @@
         private MetroSet_UI.Controls.MetroSetContextMenuStrip cxtContentOptions;
         private System.Windows.Forms.ToolStripMenuItem itmContentMetadata;
         private System.Windows.Forms.ToolStripMenuItem itmContentDownload;
-        private MetroSet_UI.Controls.MetroSetEllipse btnMetadata;
         private System.Windows.Forms.OpenFileDialog ofdMetadata;
-        private MetroSet_UI.Controls.MetroSetContextMenuStrip cxtProfile;
-        private System.Windows.Forms.ToolStripMenuItem loadProfileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveProfileToolStripMenuItem;
         private PlexDL.Common.Components.FlatDataGridView dgvLibrary;
-        private PlexDL.Common.Components.FlatDataGridView dgvServers;
-        private MetroSet_UI.Controls.MetroSetProgressBar pbMain;
-        private MetroSet_UI.Controls.MetroSetLabel lblProgress;
-        private MetroSet_UI.Controls.MetroSetLink lnkLogViewer;
-        private MetroSet_UI.Controls.MetroSetLabel lblLog;
-        private MetroSet_UI.Controls.MetroSetControlBox ctrlMain;
-        public MetroSet_UI.StyleManager styleMain;
-        private Common.Components.FlatDataGridView dgvTVShows;
-        private MetroSet_UI.Controls.MetroSetTabControl tabMain;
-        private MetroSet_UI.Child.MetroSetTabPage tabMovies;
-        private MetroSet_UI.Child.MetroSetTabPage tabTV;
         private System.Windows.Forms.NotifyIcon nfyMain;
         private MetroSet_UI.Controls.MetroSetContextMenuStrip cxtStreamOptions;
         private System.Windows.Forms.ToolStripMenuItem itmStreamInPVS;
         private System.Windows.Forms.ToolStripMenuItem itmStreamInVLC;
         private System.Windows.Forms.ToolStripMenuItem itmStreamInBrowser;
         private System.Windows.Forms.SaveFileDialog sfdExport;
-        private MetroSet_UI.Child.MetroSetTabPage tabLog;
+        private System.Windows.Forms.StatusStrip statusMain;
+        private System.Windows.Forms.ToolStripProgressBar pbMain;
+        private System.Windows.Forms.ToolStripStatusLabel lblProgress;
+        private System.Windows.Forms.GroupBox gbStreamControl;
+        private System.Windows.Forms.Button btnHTTPPlay;
+        private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.TabControl tabMain;
+        private System.Windows.Forms.TabPage tabMovies;
+        private Common.Components.FlatDataGridView dgvContent;
+        private System.Windows.Forms.TabPage tabTV;
         private System.Windows.Forms.TableLayoutPanel tlpTV;
+        private Common.Components.FlatDataGridView dgvTVShows;
+        private Common.Components.FlatDataGridView dgvSeasons;
+        private Common.Components.FlatDataGridView dgvEpisodes;
+        private System.Windows.Forms.TabPage tabLog;
+        private MetroSet_UI.Controls.MetroSetListBox lstLog;
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
+        private System.Windows.Forms.MenuStrip menuMain;
+        private System.Windows.Forms.ToolStripMenuItem itmFile;
+        private System.Windows.Forms.ToolStripMenuItem itmExportObj;
+        private System.Windows.Forms.ToolStripMenuItem itmSetDlDirectory;
+        private System.Windows.Forms.ToolStripMenuItem itmProfile;
+        private System.Windows.Forms.ToolStripMenuItem itmLoadProfile;
+        private System.Windows.Forms.ToolStripMenuItem itmSaveProfile;
+        private System.Windows.Forms.ToolStripMenuItem itmServers;
+        private System.Windows.Forms.ToolStripMenuItem itmServerManager;
+        private System.Windows.Forms.ToolStripMenuItem itmContent;
+        private System.Windows.Forms.ToolStripMenuItem itmMetadata;
+        private System.Windows.Forms.ToolStripMenuItem itmStartSearch;
+        private System.Windows.Forms.ToolStripMenuItem itmSearchStatus;
+        private System.Windows.Forms.ToolStripMenuItem itmLogging;
+        private System.Windows.Forms.ToolStripMenuItem itmLogViewer;
+        private System.Windows.Forms.ToolStripMenuItem itmCaching;
+        private System.Windows.Forms.ToolStripMenuItem itmCacheMetrics;
+        private System.Windows.Forms.ToolStripMenuItem itmClearCache;
+        private System.Windows.Forms.ToolStripMenuItem itmCacheOptions;
+        private System.Windows.Forms.ToolStripMenuItem itmAbout;
+        private System.Windows.Forms.TableLayoutPanel tlpContentOptions;
+        private System.Windows.Forms.TableLayoutPanel tlpContentOptionsControls;
     }
 }
 

@@ -8,7 +8,7 @@ namespace PlexDL.Common.Caching
     {
         public static bool XMLInCache(string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
                 var fqPath = XMLCachePath(sourceUrl);
                 return File.Exists(fqPath);
@@ -22,8 +22,8 @@ namespace PlexDL.Common.Caching
         public static string XMLCachePath(string sourceUrl)
         {
             var fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            var accountHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress);
+            var accountHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\xml";
             var fqPath = cachePath + @"\" + fileName;
             return fqPath;
@@ -31,7 +31,7 @@ namespace PlexDL.Common.Caching
 
         public static void XMLToCache(XmlDocument doc, string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
                 var fqPath = XMLCachePath(sourceUrl);
                 doc.Save(fqPath);
@@ -40,7 +40,7 @@ namespace PlexDL.Common.Caching
 
         public static XmlDocument XMLFromCache(string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableXMLCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
                 var fqPath = XMLCachePath(sourceUrl);
                 var doc = new XmlDocument();

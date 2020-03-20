@@ -72,12 +72,12 @@ namespace PlexDL.UI
 
         private void LogViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Home.Settings.Generic.AnimationSpeed > 0)
+            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
             {
                 e.Cancel = true;
                 t1 = new Timer
                 {
-                    Interval = Home.Settings.Generic.AnimationSpeed
+                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed
                 };
                 t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
                 t1.Start();
@@ -138,12 +138,12 @@ namespace PlexDL.UI
         private void LogViewer_Load(object sender, EventArgs e)
         {
             RefreshLogItems();
-            if (Home.Settings.Generic.AnimationSpeed > 0)
+            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0; //first the opacity is 0
                 t1 = new Timer
                 {
-                    Interval = Home.Settings.Generic.AnimationSpeed //we'll increase the opacity every 10ms
+                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed //we'll increase the opacity every 10ms
                 };
                 t1.Tick += new EventHandler(FadeIn); //this calls the function that changes opacity
                 t1.Start();

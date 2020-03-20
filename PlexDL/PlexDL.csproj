@@ -173,9 +173,13 @@
     </Compile>
     <Compile Include="Common\Structures\SearchRuleIDs.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
-    <Compile Include="Common\TypeConverters\GridViewTypeConverter.cs" />
+    <Compile Include="Common\TypeConverters\AppOptionsTypeConverter.cs" />
+    <Compile Include="Common\TypeConverters\ColumnAdapterTypeConverter.cs" />
+    <Compile Include="Common\TypeConverters\GenericAppSettingsTypeConverter.cs" />
+    <Compile Include="Common\TypeConverters\LoggingTypeConverter.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
+    <Compile Include="Common\wininet.cs" />
     <Compile Include="Player\Audio.cs" />
     <Compile Include="Player\AudioDevice.cs" />
     <Compile Include="Player\AudioInput.cs" />
@@ -375,11 +379,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\Connect.cs">
+    <Compile Include="UI\Authenticate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Connect.Designer.cs">
-      <DependentUpon>Connect.cs</DependentUpon>
+    <Compile Include="UI\Authenticate.Designer.cs">
+      <DependentUpon>Authenticate.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\DirectConnect.cs">
       <SubType>Form</SubType>
@@ -411,11 +415,17 @@
     <Compile Include="UI\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Settings.cs">
+    <Compile Include="UI\CacheSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
+    <Compile Include="UI\CacheSettings.Designer.cs">
+      <DependentUpon>CacheSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ServerManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ServerManager.Designer.cs">
+      <DependentUpon>ServerManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\TestForm.cs">
       <SubType>Form</SubType>
@@ -441,8 +451,8 @@
     <Compile Include="WaitWindow\WaitWindowGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="UI\Connect.resx">
-      <DependentUpon>Connect.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Authenticate.resx">
+      <DependentUpon>Authenticate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
@@ -460,8 +470,11 @@
     <EmbeddedResource Include="UI\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
+    <EmbeddedResource Include="UI\CacheSettings.resx">
+      <DependentUpon>CacheSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ServerManager.resx">
+      <DependentUpon>ServerManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>

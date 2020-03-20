@@ -116,28 +116,28 @@ namespace PlexDL.UI
         {
             if (!IsWMP)
             {
-                if (keyData == (Home.Settings.Player.KeyBindings.PlayPause))
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PlayPause))
                 {
                     PlayPause();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.SkipForward))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipForward))
                 {
                     SkipForward();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.SkipBackward))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward))
                 {
                     SkipBack();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.NextTitle))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.NextTitle))
                 {
                     Stop();
                     NextTitle();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.PrevTitle))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle))
                 {
                     Stop();
                     PrevTitle();
@@ -157,12 +157,12 @@ namespace PlexDL.UI
 
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((Home.Settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
+            if ((GlobalStaticVars.Settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
             {
                 e.Cancel = true;
                 t1 = new Timer
                 {
-                    Interval = Home.Settings.Generic.AnimationSpeed
+                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed
                 };
                 t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
                 t1.Start();
@@ -182,7 +182,7 @@ namespace PlexDL.UI
 
         private void MPlayer_ContentFinished(object sender, EventArgs e)
         {
-            if (!Home.Settings.Player.PlayNextTitleAutomatically)
+            if (!GlobalStaticVars.Settings.Player.PlayNextTitleAutomatically)
             {
                 SetIconPlay();
             }
@@ -397,11 +397,11 @@ namespace PlexDL.UI
         {
             if (incToken)
             {
-                return "http://" + Home.Settings.ConnectionInfo.PlexAddress + ":" + Home.Settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
+                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
             }
             else
             {
-                return "http://" + Home.Settings.ConnectionInfo.PlexAddress + ":" + Home.Settings.ConnectionInfo.PlexPort + "/";
+                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/";
             }
         }
 
@@ -442,7 +442,7 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
-                XmlDocument reply = XmlGet.GetXMLTransaction(uri, Home.Settings.ConnectionInfo.PlexAccountToken);
+                XmlDocument reply = XmlGet.GetXMLTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
 
                 obj = GetContentDownloadInfo_Xml(reply);
                 return obj;
@@ -464,14 +464,14 @@ namespace PlexDL.UI
             DataTable part = sections.Tables["Part"];
             DataRow video = sections.Tables["Video"].Rows[0];
             string title = video["title"].ToString();
-            if (title.Length > Home.Settings.Generic.DefaultStringLength)
-                title = title.Substring(0, Home.Settings.Generic.DefaultStringLength);
+            if (title.Length > GlobalStaticVars.Settings.Generic.DefaultStringLength)
+                title = title.Substring(0, GlobalStaticVars.Settings.Generic.DefaultStringLength);
             string thumb = video["thumb"].ToString();
             string thumbnailFullUri = "";
             if (!string.IsNullOrEmpty(thumb))
             {
                 string baseUri = GetBaseUri(false).TrimEnd('/');
-                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + Home.Settings.ConnectionInfo.PlexAccountToken;
+                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
             }
 
             DataRow partRow = part.Rows[0];
@@ -482,7 +482,7 @@ namespace PlexDL.UI
             int contentDuration = Convert.ToInt32(partRow["duration"]);
             string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
 
-            string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + Home.Settings.ConnectionInfo.PlexAccountToken;
+            string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
             obj.Link = link;
             obj.Container = container;
             obj.ByteLength = byteLength;
@@ -548,7 +548,7 @@ namespace PlexDL.UI
         {
             if (mPlayer.Playing)
             {
-                decimal rewindAmount = (Home.Settings.Player.SkipBackwardInterval) * -1;
+                decimal rewindAmount = (GlobalStaticVars.Settings.Player.SkipBackwardInterval) * -1;
 
                 mPlayer.Position.Skip((int)rewindAmount);
             }
@@ -558,7 +558,7 @@ namespace PlexDL.UI
         {
             if (mPlayer.Playing)
             {
-                decimal stepAmount = Home.Settings.Player.SkipForwardInterval;
+                decimal stepAmount = GlobalStaticVars.Settings.Player.SkipForwardInterval;
 
                 mPlayer.Position.Skip((int)stepAmount);
             }

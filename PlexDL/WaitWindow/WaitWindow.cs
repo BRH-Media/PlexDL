@@ -89,7 +89,7 @@ namespace PlexDL.WaitWindow
         {
             //	Validate Parameters
             if (workerMethod == null)
-                throw new ArgumentException("No worker method has been specified.", "workerMethod");
+                throw new ArgumentException(@"No worker method has been specified.", "workerMethod");
             else
                 _WorkerMethod = workerMethod;
 
@@ -100,7 +100,7 @@ namespace PlexDL.WaitWindow
 
             //	Set up the window
             _GUI = new WaitWindowGUI(this);
-            _GUI.MessageLabel.Text = message;
+            _GUI.SetMessage(message);
 
             //	Call it
             _GUI.ShowDialog();

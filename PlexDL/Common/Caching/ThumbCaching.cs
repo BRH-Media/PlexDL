@@ -9,8 +9,8 @@ namespace PlexDL.Common.Caching
         public static string ThumbCachePath(string sourceUrl)
         {
             var fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            var accountHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = Helpers.CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress);
+            var accountHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\thumb";
             var fqPath = cachePath + @"\" + fileName;
             return fqPath;
@@ -18,7 +18,7 @@ namespace PlexDL.Common.Caching
 
         public static bool ThumbInCache(string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 return File.Exists(fqPath);
@@ -31,7 +31,7 @@ namespace PlexDL.Common.Caching
 
         public static void ThumbToCache(Bitmap thumb, string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 thumb.Save(fqPath);
@@ -40,7 +40,7 @@ namespace PlexDL.Common.Caching
 
         public static Bitmap ThumbFromCache(string sourceUrl)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 return (Bitmap)Image.FromFile(fqPath);

@@ -115,12 +115,12 @@ namespace PlexDL.UI
 
         private void DirectConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Home.Settings.Generic.AnimationSpeed > 0 && !ConnectionStarted)
+            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0 && !ConnectionStarted)
             {
                 e.Cancel = true;
                 t1 = new Timer
                 {
-                    Interval = Home.Settings.Generic.AnimationSpeed
+                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed
                 };
                 t1.Tick += FadeOut; //this calls the fade out function
                 t1.Start();
@@ -134,11 +134,11 @@ namespace PlexDL.UI
         private void DirectConnect_Load(object sender, EventArgs e)
         {
             ConnectionStarted = false;
-            if (Home.Settings.Generic.AnimationSpeed > 0)
+            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0; //first the opacity is 0
 
-                t1.Interval = Home.Settings.Generic.AnimationSpeed; //we'll increase the opacity every 10ms
+                t1.Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed; //we'll increase the opacity every 10ms
                 t1.Tick += FadeIn; //this calls the function that changes opacity
                 t1.Start();
             }

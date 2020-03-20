@@ -1,4 +1,6 @@
-﻿namespace PlexDL.Common.Logging
+﻿using System.ComponentModel;
+
+namespace PlexDL.Common.Logging
 {
     public class LoggingSettings
     {

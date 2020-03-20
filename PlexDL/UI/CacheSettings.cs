@@ -1,18 +1,19 @@
-﻿using System;
+﻿using PlexDL.Common;
+using System;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class Settings : Form
+    public partial class CacheSettings : Form
     {
-        public Settings()
+        public CacheSettings()
         {
             InitializeComponent();
         }
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            settingsGrid.SelectedObject = Home.Settings;
+            settingsGrid.SelectedObject = GlobalStaticVars.Settings;
         }
     }
 }
