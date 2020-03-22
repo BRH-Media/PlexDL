@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
 
-namespace PlexDL.Animation.CircularProgressBar
+namespace PlexDL.Common.Components
 {
     /// <summary>
     ///     The circular progress bar windows form control

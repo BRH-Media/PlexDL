@@ -19,5 +19,18 @@ namespace PlexDL.Common.Globals
         public static Server Svr { get; set; }
         public static PlexObject CurrentStream { get; set; }
         public static List<Server> PlexServers { get; set; }
-    };
+
+        public static string GetToken()
+        {
+            return Svr.accessToken;
+        }
+
+        public static string GetBaseUri(bool incToken)
+        {
+            if (incToken)
+                return "http://" + Settings.ConnectionInfo.PlexAddress + ":" + Settings.ConnectionInfo.PlexPort +
+                       "/?X-Plex-Token=";
+            return "http://" + Settings.ConnectionInfo.PlexAddress + ":" + Settings.ConnectionInfo.PlexPort + "/";
+        }
+    }
 }

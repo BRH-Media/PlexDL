@@ -81,7 +81,10 @@
     <Compile Include="AltoHTTP\Enums\FromTo.cs" />
     <Compile Include="AltoHTTP\Interfaces\IDownloader.cs" />
     <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
-    <Compile Include="Animation\CircularProgressBar\CircularProgressBar.cs">
+    <Compile Include="Common\API\DownloadInfoGatherers.cs" />
+    <Compile Include="Common\API\ObjectBuilders.cs" />
+    <Compile Include="Common\API\XmlMetadataGatherers.cs" />
+    <Compile Include="Common\Components\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Animation\WinFormAnimation\AnimationFunctions.cs" />
@@ -110,9 +113,13 @@
     <Compile Include="Common\API\XmlGet.cs" />
     <Compile Include="Common\Caching\CachingFileExt.cs" />
     <Compile Include="Common\Caching\CachingMetrics.cs" />
+    <Compile Include="Common\Components\Custom\SmoothProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Common\DefaultStringVariables.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />
+    <Compile Include="Common\Globals\RowGet.cs" />
     <Compile Include="Common\Logging\LogFileParser.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
@@ -594,8 +601,6 @@
     <None Include="Resources\baseline_book_black_48dp.png" />
     <None Include="Resources\baseline_backup_black_18dp.png" />
     <None Include="Resources\baseline_backup_black_48dp.png" />
-    <Content Include="Animation\CircularProgressBar\CircularProgressBar.bmp" />
-    <Content Include="Animation\CircularProgressBar\Icon.png" />
     <Content Include="Resources\baseline_cloud_download_black_48dp.ico" />
     <Content Include="Resources\baseline_cancel_black_48dp.png" />
     <None Include="Resources\baseline_pause_black_18dp.png" />
