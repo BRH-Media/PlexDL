@@ -195,8 +195,6 @@ namespace PlexDL.UI
 
         #endregion PlexMovieBuilders
 
-        
-
         #endregion XML/Metadata
 
         #region ProfileHelpers
@@ -733,19 +731,47 @@ namespace PlexDL.UI
 
         private void ClearContentView()
         {
-            dgvContent.DataSource = null;
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    dgvContent.DataSource = null;
+                });
+            }
+            else
+                dgvContent.DataSource = null;
         }
 
         private void ClearTVViews()
         {
-            dgvSeasons.DataSource = null;
-            dgvEpisodes.DataSource = null;
-            dgvTVShows.DataSource = null;
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    dgvSeasons.DataSource = null;
+                    dgvEpisodes.DataSource = null;
+                    dgvTVShows.DataSource = null;
+                });
+            }
+            else
+            {
+                dgvSeasons.DataSource = null;
+                dgvEpisodes.DataSource = null;
+                dgvTVShows.DataSource = null;
+            }
         }
 
         private void ClearLibraryViews()
         {
-            dgvLibrary.DataSource = null;
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    dgvLibrary.DataSource = null;
+                });
+            }
+            else
+                dgvLibrary.DataSource = null;
         }
 
         private void RenderTVView(DataTable content)
@@ -953,12 +979,6 @@ namespace PlexDL.UI
         #endregion Logging
 
         #region Download
-
-        #region DownloadInfoGatherers
-
-        
-
-        #endregion DownloadInfoGatherers
 
         #region DownloadMethods
 
@@ -1284,8 +1304,6 @@ namespace PlexDL.UI
         }
 
         #endregion UIMethods
-
-        
 
         private void doConnectFromServer(Server s)
         {
@@ -1638,25 +1656,6 @@ namespace PlexDL.UI
             else
             {
                 AddToLog("Download process failed; download is already running.");
-            }
-        }
-
-        private void ResetContentGridViews()
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke((MethodInvoker)delegate
-                {
-                    dgvContent.DataSource = null;
-                    dgvSeasons.DataSource = null;
-                    dgvEpisodes.DataSource = null;
-                });
-            }
-            else
-            {
-                dgvContent.DataSource = null;
-                dgvSeasons.DataSource = null;
-                dgvEpisodes.DataSource = null;
             }
         }
 
