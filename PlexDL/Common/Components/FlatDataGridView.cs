@@ -31,19 +31,32 @@ namespace PlexDL.Common.Components
         {
             try
             {
-                if (Rows.Count == 0)
+                if (Rows != null)
                 {
-                    TextRenderer.DrawText(e.Graphics, RowsEmptyText,
-                        Font, ClientRectangle,
-                        ForeColor, BackgroundColor,
-                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                    Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
-                    BorderStyle = BorderStyle.None;
+                    if (Rows.Count == 0)
+                    {
+                        TextRenderer.DrawText(e.Graphics, RowsEmptyText,
+                            Font, ClientRectangle,
+                            ForeColor, BackgroundColor,
+                            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
+                        BorderStyle = BorderStyle.None;
+                    }
+                    else
+                    {
+                        Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+                    }
                 }
                 else
                 {
-                    Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+                    TextRenderer.DrawText(e.Graphics, RowsEmptyText,
+                            Font, ClientRectangle,
+                            ForeColor, BackgroundColor,
+                            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                    Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
+                    BorderStyle = BorderStyle.None;
                 }
+                
                 base.OnPaint(e);
             }
             catch (Exception ex)
