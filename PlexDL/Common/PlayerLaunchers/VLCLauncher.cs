@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Diagnostics;

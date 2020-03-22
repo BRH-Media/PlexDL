@@ -1,7 +1,6 @@
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
-using RestSharp.Deserializers;
 
 namespace PlexDL.PlexAPI
 {

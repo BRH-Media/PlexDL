@@ -420,9 +420,7 @@ namespace PlexDL.Player
 
     //#endregion
 
-    #region Static Classes
 
-    #endregion Static Classes
 
     #region Classes
 
@@ -1224,7 +1222,4 @@ namespace PlexDL.Player
 
     // ******************************** Windows Core Audio API - Com Import
 
-    #region Windows Core Audio API
-
-    #endregion Windows Core Audio API
 }

@@ -13,7 +13,7 @@ namespace PlexDL.Common.API
             {
                 while (reader.Read())
                     if (reader.IsStartElement())
-                    //return only when you have START tag
+                        //return only when you have START tag
                         switch (reader.Name.ToString())
                         {
                             case "Directory":

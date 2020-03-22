@@ -1,5 +1,3 @@
-using System;
-
 namespace PlexDL.PlexAPI.DirectoryTypes
 {
     public class Show : Directory

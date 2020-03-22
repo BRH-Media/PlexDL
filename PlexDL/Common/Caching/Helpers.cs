@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using System;
 using System.Security.Cryptography;
 using System.Text;

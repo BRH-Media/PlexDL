@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Structures;
-using PlexDL.UI;
 using System.Collections.Generic;
 
 namespace PlexDL.Common

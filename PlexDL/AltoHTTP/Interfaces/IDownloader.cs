@@ -1,6 +1,6 @@
-﻿using System;
-using PlexDL.AltoHTTP.Classes;
+﻿using PlexDL.AltoHTTP.Classes;
 using PlexDL.AltoHTTP.Enums;
+using System;
 
 namespace PlexDL.AltoHTTP.Interfaces
 {

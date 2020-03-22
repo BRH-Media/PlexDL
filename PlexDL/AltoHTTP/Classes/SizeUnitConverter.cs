@@ -1,5 +1,5 @@
-﻿using System;
-using PlexDL.AltoHTTP.Enums;
+﻿using PlexDL.AltoHTTP.Enums;
+using System;
 
 namespace PlexDL.AltoHTTP.Classes
 {

@@ -1,91 +1,24 @@
-﻿using MetroSet_UI.Forms;
-using PlexDL.Common;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.SearchFramework;
 using System;
-using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class LogViewer : MetroSetForm
+    public partial class LogViewer : Form
     {
-        public libbrhscgui.Components.UserInteraction objUI = new libbrhscgui.Components.UserInteraction();
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
+        private DataTable logRecords = null;
+        private DataTable logFiltered = null;
+        private bool IsFiltered = false;
 
         public LogViewer()
         {
             InitializeComponent();
-            styleMain = GlobalStaticVars.GlobalStyle;
-            styleMain.MetroForm = this;
-        }
-
-        private void FadeOut(object sender, EventArgs e)
-        {
-            if (Opacity <= 0) //check if opacity is 0
-            {
-                t1.Stop(); //if it is, we stop the timer
-                Close(); //and we try to close the form
-            }
-            else
-            {
-                Opacity -= 0.05;
-            }
-        }
-
-        private void FadeIn(object sender, EventArgs e)
-        {
-            if (Opacity >= 1)
-                t1.Stop(); //this stops the timer if the form is completely displayed
-            else
-                Opacity += 0.05;
-        }
-
-        public void BtnBackup_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(dir))
-                {
-                    if (sfdBackup.ShowDialog() == DialogResult.OK)
-                    {
-                        if (File.Exists(sfdBackup.FileName))
-                            File.Delete(sfdBackup.FileName);
-                        ZipFile.CreateFromDirectory(dir, sfdBackup.FileName, CompressionLevel.Optimal, false);
-                        MessageBox.Show("Successfully backed up logs to " + sfdBackup.FileName, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Could not backup logs due to no folder existing. This is a clear sign that no logs have been created, however you can check by clicking the Refresh button on the bottom left of this form.",
-                        "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred whilst backing up log files. Details:\n\n" + ex.ToString(), "IO Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-        }
-
-        private void LogViewer_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
-            {
-                e.Cancel = true;
-                t1 = new Timer
-                {
-                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed
-                };
-                t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
-                t1.Start();
-
-                if (Opacity == 0)
-                //resume the event - the program can be closed
-                    e.Cancel = false;
-            }
         }
 
         public void RefreshLogItems()
@@ -98,7 +31,8 @@ namespace PlexDL.UI
                 lstLogFiles.Items.Clear();
                 if (Directory.Exists("Logs"))
                     foreach (var file in Directory.GetFiles("Logs"))
-                        if (((Path.GetExtension(file).ToLower() ?? "") == ".log") | ((Path.GetExtension(file).ToLower() ?? "") == ".logdel"))
+                        if (string.Equals((Path.GetExtension(file).ToLower() ?? ""), ".log") ||
+                            string.Equals((Path.GetExtension(file).ToLower() ?? ""), ".logdel"))
                             lstLogFiles.Items.Add(Path.GetFileName(file));
 
                 if (already > -1)
@@ -114,7 +48,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    if (lstLogFiles.Count > 0)
+                    if (lstLogFiles.Items.Count > 0)
                     {
                         lstLogFiles.SelectedIndex = 0;
                         DoLoadFromSelected();
@@ -123,36 +57,26 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred whilst refreshing log files. Details:\n\n" + ex.ToString(), "Data Error", MessageBoxButtons.OK,
+                MessageBox.Show("An error occurred whilst refreshing log files. Details:\n\n" + ex.ToString(), @"Data Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 lstLogFiles.Items.Clear();
                 return;
             }
         }
 
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshLogItems();
-        }
-
         private void LogViewer_Load(object sender, EventArgs e)
         {
             RefreshLogItems();
-            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
-            {
-                Opacity = 0; //first the opacity is 0
-                t1 = new Timer
-                {
-                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed //we'll increase the opacity every 10ms
-                };
-                t1.Tick += new EventHandler(FadeIn); //this calls the function that changes opacity
-                t1.Start();
-            }
         }
 
-        private void LstLogFiles_SelectedIndexChanged(object sender)
+        private void LstLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             DoLoadFromSelected();
+        }
+
+        private DataTable TableFromSelected()
+        {
+            return LogFileParser.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex].ToString(), false);
         }
 
         private void DoLoadFromSelected()
@@ -161,133 +85,45 @@ namespace PlexDL.UI
             {
                 if (lstLogFiles.SelectedIndex > -1)
                 {
-                    dgvMain.Columns.Clear();
-                    dgvMain.Rows.Clear();
-                    dgvMain.Columns.Add("LINE", "LINE");
-                    var intRowCount = 1;
-                    var headersFound = false;
-                    foreach (var line in File.ReadAllLines(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex].ToString()))
+                    DataTable table = TableFromSelected();
+                    if (table != null)
                     {
-                        if (intRowCount == 2 && !headersFound)
-                        {
-                            var arrSplit = line.Split('!');
-                            var headerCount = 0;
-                            foreach (var i in arrSplit)
-                            {
-                                dgvMain.Columns.Add("field" + headerCount.ToString(), "field" + headerCount.ToString());
-                                ++headerCount;
-                            }
-                        }
-
-                        if (line.StartsWith("###") && intRowCount == 1 && !headersFound)
-                        {
-                            headersFound = true;
-                            var arrSplit = line.Split('!');
-                            //Remove hashtags (header indicator)
-                            arrSplit[0] = arrSplit[0].Remove(0, 3);
-                            //Add headers to datagridview
-                            foreach (var item in arrSplit)
-                                dgvMain.Columns.Add(item, item);
-                        }
-                        else if (line.Contains("!"))
-                        {
-                            var strSplit = line.Split('!');
-                            var arrItems = new List<string>
-                            {
-                                (intRowCount - 1).ToString()
-                            };
-                            arrItems.AddRange(strSplit);
-                            dgvMain.Rows.Add(arrItems.ToArray());
-                        }
-                        else
-                        {
-                            var arrValues = new List<string>
-                            {
-                                (intRowCount - 1).ToString(), line
-                            };
-                            dgvMain.Rows.Add(arrValues.ToArray());
-                        }
-
-                        intRowCount += 1;
+                        dgvMain.DataSource = table;
+                        logRecords = table;
                     }
-                }
-
-                try
-                {
-                    File.Delete(AppDomain.CurrentDomain.BaseDirectory + @"\" + lstLogFiles.SelectedItem + ".tmp");
-                }
-                catch
-                {
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred whilst loading the log file. Details:\n\n" + ex.ToString(), "Data Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                dgvMain.Columns.Clear();
-                dgvMain.Rows.Clear();
-                lstLogFiles.Items.Clear();
+                dgvMain.DataSource = null;
                 return;
             }
         }
 
-        private void BtnExit_Click(object sender, EventArgs e)
+        private void RunTitleSearch()
         {
-            Close();
-        }
-
-        private void BtnGoToLine_Click(object sender, EventArgs e)
-        {
-            var ipt = objUI.showInputForm("Enter Row Number", "Go To Row");
-            if (ipt.txt == "!cancel=user")
+            try
             {
-                return;
-            }
-            else if (string.IsNullOrEmpty(ipt.txt))
-            {
-                MessageBox.Show("Nothing was entered", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else if (!int.TryParse(ipt.txt, out _))
-            {
-                MessageBox.Show("Specified Value is not numeric", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                foreach (DataGridViewRow row in dgvMain.Rows)
-                    if (dgvMain.Rows.IndexOf(row) == Convert.ToInt32(ipt.txt) - 1)
+                if (dgvMain.Rows.Count > 0)
+                {
+                    if (Search.RunTitleSearch(dgvMain, logRecords))
                     {
-                        dgvMain.CurrentCell = row.Cells[0];
-                        return;
+                        IsFiltered = true;
+                        itmSearch.Text = @"Cancel Search";
                     }
-
-                MessageBox.Show("Could not find row '" + ipt.txt + "'", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void BtnSearch_Click(object sender, EventArgs e)
-        {
-            var ipt = objUI.showInputForm("Enter Search Term", "Search");
-            if (ipt.txt == "!cancel=user")
-            {
-                return;
-            }
-            else if (string.IsNullOrEmpty(ipt.txt))
-            {
-                MessageBox.Show("Nothing was entered", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else
-            {
-                foreach (DataGridViewRow row in dgvMain.Rows)
-                foreach (DataGridViewCell c in row.Cells)
-                    if (c.Value.ToString().ToLower().Contains(ipt.txt.ToLower()))
+                    else
                     {
-                        dgvMain.CurrentCell = c;
-                        return;
+                        IsFiltered = false;
+                        itmSearch.Text = @"Start Search";
                     }
-
-                MessageBox.Show("Could not find '" + ipt.txt + "'", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "SearchError");
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -296,7 +132,95 @@ namespace PlexDL.UI
             if (dgvMain.Rows.Count > 0)
             {
                 var value = dgvMain.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(value, @"Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void itmRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshLogItems();
+        }
+
+        private void itmSearch_Click(object sender, EventArgs e)
+        {
+            if (IsFiltered)
+            {
+                IsFiltered = false;
+                logFiltered = null;
+                itmSearch.Text = @"Start Search";
+                dgvMain.DataSource = logRecords;
+            }
+            else
+            {
+                RunTitleSearch();
+            }
+        }
+
+        private void itmGoToLine_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var ipt = GlobalStaticVars.LibUI.showInputForm(@"Enter Row Number", @"Go To Row");
+                if (string.Equals(ipt.txt, "!cancel=user"))
+                {
+                    return;
+                }
+                else if (string.IsNullOrEmpty(ipt.txt))
+                {
+                    MessageBox.Show(@"Nothing was entered", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (!int.TryParse(ipt.txt, out _))
+                {
+                    MessageBox.Show(@"Specified Value is not numeric", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    foreach (DataGridViewRow row in dgvMain.Rows)
+                        if (dgvMain.Rows.IndexOf(row) == Convert.ToInt32(ipt.txt) - 1)
+                        {
+                            dgvMain.CurrentCell = row.Cells[0];
+                            return;
+                        }
+
+                    MessageBox.Show(@"Could not find row '" + ipt.txt + @"'", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "SearchError");
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private void itmBackup_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(dir))
+                {
+                    if (sfdBackup.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(sfdBackup.FileName))
+                            File.Delete(sfdBackup.FileName);
+                        ZipFile.CreateFromDirectory(dir, sfdBackup.FileName, CompressionLevel.Optimal, false);
+                        MessageBox.Show(@"Successfully backed up logs to " + sfdBackup.FileName, @"Message", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        @"Could not backup logs due to no folder existing. This is a clear sign that no logs have been created, however you can check by clicking the Refresh button on the bottom left of this form.",
+                        @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred whilst backing up log files. Details:\n\n" + ex.ToString(), "IO Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
             }
         }
     }

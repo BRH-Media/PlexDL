@@ -70,10 +70,6 @@ namespace PlexDL.Player
 {
     // ******************************** Display Clones - Enumerations
 
-    #region Display Clones - Enumerations
-
-    #endregion Display Clones - Enumerations
-
     public partial class Player
     {
         /*

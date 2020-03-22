@@ -88,87 +88,31 @@ namespace PlexDL.Player
 {
     // ******************************** Device Info Class
 
-    #region Device Info Class
-
-    #endregion Device Info Class
-
     // ******************************** Video Track Class
-
-    #region Video Track Class
-
-    #endregion Video Track Class
 
     // ******************************** Video Stream Struct
 
-    #region Video Stream Struct
-
-    #endregion Video Stream Struct
-
     // ******************************** Video Display Class
-
-    #region Video Display Class
-
-    #endregion Video Display Class
 
     // ******************************** Webcam Device Class
 
-    #region Webcam Device Class
-
-    #endregion Webcam Device Class
-
     // ******************************** Webcam Property Class
-
-    #region Webcam Property Class
-
-    #endregion Webcam Property Class
 
     // ******************************** Webcam Video Format Class
 
-    #region Webcam Video Format Class
-
-    #endregion Webcam Video Format Class
-
     // ******************************** Audio Track Class
-
-    #region Audio Track Class
-
-    #endregion Audio Track Class
 
     // ******************************** Audio Stream Struct
 
-    #region Audio Stream Struct
-
-    #endregion Audio Stream Struct
-
     // ******************************** Audio Device Class
-
-    #region Audio Device Class
-
-    #endregion Audio Device Class
 
     // ******************************** Audio Input Device Class
 
-    #region Audio Input Device Class
-
-    #endregion Audio Input Device Class
-
     // ******************************** Slider Value Class
-
-    #region Slider Value Class
-
-    #endregion Slider Value Class
 
     // ******************************** Metadata Class
 
-    #region Metadata Class
-
-    #endregion Metadata Class
-
     // ******************************** Clone Properties Class
-
-    #region Clone Properties Class
-
-    #endregion Clone Properties Class
 
     // ******************************** Player MF Callback Class
 
@@ -180,31 +124,9 @@ namespace PlexDL.Player
 
     // ******************************** Hide System Object Members Classes
 
-    #region Hide System Object Members Classes
-
-    #endregion Hide System Object Members Classes
-
     // ******************************** Player Grouping Classes
 
-    #region Audio Class
 
-    #endregion Audio Class
-
-    #region Audio Input Class
-
-    #endregion Audio Input Class
-
-    #region Video Class
-
-    #endregion Video Class
-
-    #region Webcam Class
-
-    #endregion Webcam Class
-
-    #region Display Class
-
-    #endregion Display Class
 
     #region CursorHide Class
 
@@ -345,9 +267,7 @@ namespace PlexDL.Player
 
     #endregion CursorHide Class
 
-    #region Overlay Class
 
-    #endregion Overlay Class
 
     #region DisplayClones Class
 
@@ -825,25 +745,7 @@ namespace PlexDL.Player
 
     #endregion DisplayClones Class
 
-    #region PointTo Class
 
-    #endregion PointTo Class
-
-    #region ScreenCopy Class
-
-    #endregion ScreenCopy Class
-
-    #region Sliders Classes
-
-    #endregion Sliders Classes
-
-    #region TaskbarProgress Class
-
-    #endregion TaskbarProgress Class
-
-    #region SystemPanels Class
-
-    #endregion SystemPanels Class
 
     #region Subtitles Class
 
@@ -1180,27 +1082,4 @@ namespace PlexDL.Player
 
     #endregion Subtitles Class
 
-    #region Position Class
-
-    #endregion Position Class
-
-    #region Media Class
-
-    #endregion Media Class
-
-    #region Playlist Class
-
-    #endregion Playlist Class
-
-    #region Has Class
-
-    #endregion Has Class
-
-    #region Speed Class
-
-    #endregion Speed Class
-
-    #region Events Class
-
-    #endregion Events Class
 }

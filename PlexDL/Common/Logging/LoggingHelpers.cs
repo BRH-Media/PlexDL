@@ -1,6 +1,7 @@
-﻿using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace PlexDL.Common.Logging
 {
@@ -84,6 +85,18 @@ namespace PlexDL.Common.Logging
             }
         }
 
+        private static string CleanseLogDel(string line)
+        {
+            string clean = line;
+            char[] bannedChars = new char[] { '#', '!' };
+            foreach (char c in line)
+            {
+                if (bannedChars.Contains(c))
+                    clean.Remove(c);
+            }
+            return clean;
+        }
+
         public static void LogDelWriter(string fileName, string[] headers, string[] logEntry)
         {
             try
@@ -97,13 +110,13 @@ namespace PlexDL.Common.Logging
                 foreach (var l in logEntry)
                     logdelLine += l + "!";
 
-                logdelLine = logdelLine.TrimEnd('!');
+                logdelLine = CleanseLogDel((logdelLine.TrimEnd('!')));
 
                 var headersString = "###";
                 foreach (var h in headers)
                     headersString += h + "!";
 
-                headersString = headersString.TrimEnd('!');
+                headersString = CleanseLogDel((headersString.TrimEnd('!')));
 
                 if (File.Exists(fqFile))
                 {

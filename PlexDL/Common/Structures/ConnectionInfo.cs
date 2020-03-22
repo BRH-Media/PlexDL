@@ -10,14 +10,17 @@ namespace PlexDL.Common.Structures
         {
             return "";
         }
+
         [DisplayName("Port")]
         [Description("The port of the Plex server")]
         [ReadOnly(true)]
         public int PlexPort { get; set; } = 32400;
+
         [DisplayName("Address")]
         [Description("The IP address/hostname of the Plex server")]
         [ReadOnly(true)]
         public string PlexAddress { get; set; } = "0.0.0.0";
+
         [DisplayName("Token")]
         [Description("Your unique 20-character Plex account token")]
         [ReadOnly(true)]

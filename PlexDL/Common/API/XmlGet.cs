@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
-using PlexDL.UI;
 using System;
 using System.IO;
 using System.Net;

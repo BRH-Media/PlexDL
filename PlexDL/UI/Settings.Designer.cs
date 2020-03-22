@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class DLSpeedChart
+    partial class Settings
     {
         /// <summary>
         /// Required designer variable.
@@ -28,36 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DLSpeedChart));
-            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.settingsGrid = new System.Windows.Forms.PropertyGrid();
             this.SuspendLayout();
             // 
-            // cartesianChart1
+            // settingsGrid
             // 
-            this.cartesianChart1.Location = new System.Drawing.Point(15, 73);
-            this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(770, 362);
-            this.cartesianChart1.TabIndex = 0;
-            this.cartesianChart1.Text = "cartesianChart1";
+            this.settingsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingsGrid.Location = new System.Drawing.Point(0, 0);
+            this.settingsGrid.Name = "settingsGrid";
+            this.settingsGrid.Size = new System.Drawing.Size(319, 285);
+            this.settingsGrid.TabIndex = 0;
             // 
-            // DLSpeedChart
+            // Settings
             // 
-            this.AllowResize = false;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.cartesianChart1);
-            this.DropShadowEffect = false;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "DLSpeedChart";
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(319, 285);
+            this.Controls.Add(this.settingsGrid);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Settings";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Download Speed Analytics";
+            this.Text = "PlexDL Settings";
+            this.Load += new System.EventHandler(this.Settings_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private System.Windows.Forms.PropertyGrid settingsGrid;
     }
 }

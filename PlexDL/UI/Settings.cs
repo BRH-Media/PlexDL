@@ -1,12 +1,12 @@
-﻿using PlexDL.Common;
+﻿using PlexDL.Common.Globals;
 using System;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class CacheSettings : Form
+    public partial class Settings : Form
     {
-        public CacheSettings()
+        public Settings()
         {
             InitializeComponent();
         }

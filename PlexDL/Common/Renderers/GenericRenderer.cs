@@ -19,7 +19,7 @@ namespace PlexDL.Common.Renderers
         {
             //check if the data we need was set (problems will arise otherwise)
             if (info != null && target != null)
-            //check if the two data pairs are equal length (we don't want indexing errors)
+                //check if the two data pairs are equal length (we don't want indexing errors)
                 if (info.WantedColumns.Count == info.WantedCaption.Count)
                 {
                     //store the columns we want vs. the columns available (so we don't error out)
@@ -34,7 +34,7 @@ namespace PlexDL.Common.Renderers
 
                     //check if appropriate columns are part of the table; then we can verify and add them to the view.
                     foreach (DataColumn c in info.Data.Columns)
-                    //check if the column name exists in our wanted columns
+                        //check if the column name exists in our wanted columns
                         if (wantedColumns.Contains(c.ColumnName))
                         {
                             //it does, so grab its index, grab its associated caption, then add both to the available columns (Current Columns)

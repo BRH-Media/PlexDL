@@ -1,4 +1,4 @@
-﻿using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
 using System.Drawing;
 using System.IO;
 
@@ -12,7 +12,7 @@ namespace PlexDL.Common.Caching
             var accountHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
             var serverHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\thumb";
-            var fqPath = cachePath + @"\" + fileName;
+            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ThumbExt;
             return fqPath;
         }
 

@@ -1,9 +1,6 @@
-﻿using MetroSet_UI.Forms;
+﻿using PlexDL.Animation.CircularProgressBar;
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
-using PlexDL.Animation.CircularProgressBar;
-using PlexDL.Animation.WinFormAnimation;
 
 namespace PlexDL.WaitWindow
 {
@@ -128,12 +125,12 @@ namespace PlexDL.WaitWindow
         {
             this.components = new System.ComponentModel.Container();
             this.MessageLabel = new System.Windows.Forms.Label();
-            this.ProgressMain = new PlexDL.Animation.CircularProgressBar.CircularProgressBar();
             this.tmrDots = new System.Windows.Forms.Timer(this.components);
+            this.ProgressMain = new PlexDL.Animation.CircularProgressBar.CircularProgressBar();
             this.SuspendLayout();
-            // 
+            //
             // MessageLabel
-            // 
+            //
             this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MessageLabel.Location = new System.Drawing.Point(130, 12);
             this.MessageLabel.Name = "MessageLabel";
@@ -141,9 +138,14 @@ namespace PlexDL.WaitWindow
             this.MessageLabel.TabIndex = 2;
             this.MessageLabel.Text = "Working on it";
             this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
+            // tmrDots
+            //
+            this.tmrDots.Interval = 200;
+            this.tmrDots.Tick += new System.EventHandler(this.tmrDots_Tick);
+            //
             // ProgressMain
-            // 
+            //
             this.ProgressMain.AnimationFunction = PlexDL.Animation.WinFormAnimation.KnownAnimationFunctions.QuadraticEaseInOut;
             this.ProgressMain.AnimationSpeed = 500;
             this.ProgressMain.BackColor = System.Drawing.Color.Transparent;
@@ -173,14 +175,9 @@ namespace PlexDL.WaitWindow
             this.ProgressMain.TabIndex = 3;
             this.ProgressMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.ProgressMain.Value = 68;
-            // 
-            // tmrDots
-            // 
-            this.tmrDots.Interval = 200;
-            this.tmrDots.Tick += new System.EventHandler(this.tmrDots_Tick);
-            // 
+            //
             // WaitWindowGUI
-            // 
+            //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(316, 129);

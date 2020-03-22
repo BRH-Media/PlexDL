@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.PlexAPI;
 using System;

@@ -1,8 +1,6 @@
-﻿using MetroSet_UI.Controls;
-using MetroSet_UI.Forms;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.API;
-using PlexDL.Common.PlayerLaunchers;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
 using System;
@@ -11,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class Metadata : MetroSetForm
+    public partial class Metadata : Form
     {
         public PlexObject StreamingContent { get; set; } = new PlexObject();
         public bool StationaryMode { get; set; } = false;
@@ -19,8 +17,6 @@ namespace PlexDL.UI
         public Metadata()
         {
             InitializeComponent();
-            styleMain = GlobalStaticVars.GlobalStyle;
-            styleMain.MetroForm = this;
         }
 
         private void LoadWorker(object sender, WaitWindow.WaitWindowEventArgs e)
@@ -128,7 +124,9 @@ namespace PlexDL.UI
                 {
                     var p = new Panel()
                     {
-                        AutoSize = true, Location = new Point(3, 3), BackColor = Color.White
+                        Size = new Size(flpActors.Width, 119),
+                        Location = new Point(3, 3),
+                        BackColor = Color.White
                     };
                     var lblActorName = new Label()
                     {
@@ -139,15 +137,18 @@ namespace PlexDL.UI
                         Visible = true
                     };
 
-                    var lblActorRole = new MetroSetLabel()
+                    var lblActorRole = new Label()
                     {
-                        Text = a.ActorRole, AutoSize = true, Location = new Point(112, 29), Visible = true
+                        Text = a.ActorRole,
+                        AutoSize = true,
+                        Location = new Point(112, 29),
+                        Visible = true
                     };
                     var actorPortrait = new PictureBox()
                     {
                         Size = new Size(79, 119),
                         Location = new Point(3, 3),
-                        BackgroundImageLayout = ImageLayout.Stretch,
+                        BackgroundImageLayout = ImageLayout.Zoom,
                         BackgroundImage = Methods.GetImageFromUrl(a.ThumbnailUri),
                         Visible = true
                     };
@@ -181,24 +182,29 @@ namespace PlexDL.UI
             {
                 BeginInvoke((MethodInvoker)delegate
                 {
-                    btnStreamInVLC.Visible = true;
+                    itmStream.Enabled = true;
                     Text = StreamingContent.StreamInformation.ContentTitle;
                     Refresh();
                 });
             }
             else
             {
-                btnStreamInVLC.Visible = true;
+                itmStream.Enabled = true;
                 Text = StreamingContent.StreamInformation.ContentTitle;
                 Refresh();
             }
+
+            //there's content now; so the window isn't stationary anymore.
+            StationaryMode = false;
         }
 
         private Panel NoActorsFound()
         {
             var p = new Panel()
             {
-                AutoSize = true, Location = new Point(3, 3), BackColor = Color.White
+                AutoSize = true,
+                Location = new Point(3, 3),
+                BackColor = Color.White
             };
             var lblActorName = new Label()
             {
@@ -209,9 +215,12 @@ namespace PlexDL.UI
                 Visible = true
             };
 
-            var lblActorRole = new MetroSetLabel()
+            var lblActorRole = new Label()
             {
-                Text = "We Couldn't Find Any Actors/Actresses For This Title", AutoSize = true, Location = new Point(112, 29), Visible = true
+                Text = "We Couldn't Find Any Actors/Actresses For This Title",
+                AutoSize = true,
+                Location = new Point(112, 29),
+                Visible = true
             };
             var actorPortrait = new PictureBox()
             {
@@ -261,35 +270,12 @@ namespace PlexDL.UI
             {
                 flpActors.Controls.Clear();
                 flpActors.Controls.Add(NoActorsFound());
-                if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
-                {
-                    Opacity = 0; //first the opacity is 0
-                    t1 = new Timer
-                    {
-                        Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed //we'll increase the opacity every 10ms
-                    };
-                    t1.Tick += new EventHandler(FadeIn); //this calls the function that changes opacity
-                    t1.Start();
-                }
             }
         }
 
         private void Metadata_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (GlobalStaticVars.Settings.Generic.AnimationSpeed > 0)
-            {
-                e.Cancel = true;
-                t1 = new Timer
-                {
-                    Interval = GlobalStaticVars.Settings.Generic.AnimationSpeed
-                };
-                t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
-                t1.Start();
 
-                if (Opacity == 0)
-                //resume the event - the program can be closed
-                    e.Cancel = false;
-            }
         }
 
         private void BtnExit_Click(object sender, EventArgs e)
@@ -297,48 +283,46 @@ namespace PlexDL.UI
             Close();
         }
 
-        private void FadeOut(object sender, EventArgs e)
+        private void DoExport()
         {
-            if (Opacity <= 0) //check if opacity is 0
-            {
-                t1.Stop(); //if it is, we stop the timer
-                Close(); //and we try to close the form
-            }
-            else
-            {
-                Opacity -= 0.05;
-            }
+            //check if the form has anything loaded (stationary mode), and if there is content loaded (note that the link is checked because StreamingContent is never null,
+            //but the link will always be filled if there is valid content loaded)
+            if (!StationaryMode && StreamingContent.StreamInformation.Link != "")
+                if (sfdExport.ShowDialog() == DialogResult.OK)
+                    ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
 
-        private void FadeIn(object sender, EventArgs e)
+        private void DoImport()
         {
-            if (Opacity >= 1)
-                t1.Stop(); //this stops the timer if the form is completely displayed
-            else
-                Opacity += 0.05;
-        }
-
-        private void BtnExportMetadata_Click(object sender, EventArgs e)
-        {
-            if (sfdExport.ShowDialog() == DialogResult.OK)
-                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
-        }
-
-        private void BtnImport_Click(object sender, EventArgs e)
-        {
-            if (ofdMetadata.ShowDialog() == DialogResult.OK)
+            if (ofdImport.ShowDialog() == DialogResult.OK)
             {
-                var obj = ImportExport.MetadataFromFile(ofdMetadata.FileName);
+                var obj = ImportExport.MetadataFromFile(ofdImport.FileName);
                 StreamingContent = obj;
                 flpActors.Controls.Clear();
+                //set this in-case the loader doesn't find anything; that way the user still gets feedback.
                 txtPlotSynopsis.Text = "Plot synopsis not provided";
                 WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
             }
         }
 
-        private void BtnStreamInVLC_Click(object sender, EventArgs e)
+        private void itmImport_Click(object sender, EventArgs e)
         {
-            VLCLauncher.LaunchVLC(StreamingContent);
+            DoImport();
+        }
+
+        private void itmExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void itmExport_Click(object sender, EventArgs e)
+        {
+            DoExport();
+        }
+
+        private void itmPvs_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -113,7 +113,7 @@ namespace PlexDL.Player
                 //case MediaLength.FromBegin:
                 default:
                     return (TimeSpan.FromTicks(_base.PositionX));
-                //break;
+                    //break;
             }
         }
 

@@ -44,19 +44,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\source\repos\PlexDL_materialskin\PlexDL\bin\Release\libbrhscgui.dll</HintPath>
     </Reference>
-    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.WinForms, Version=0.9.7.1, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.WinForms.0.9.7.1\lib\net45\LiveCharts.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroSet UI, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Coding\MetroSet-UI\MetroSet UI\bin\Debug\MetroSet UI.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
@@ -121,10 +108,17 @@
     <Compile Include="Common\API\KeyGatherers.cs" />
     <Compile Include="Common\API\Relays.cs" />
     <Compile Include="Common\API\XmlGet.cs" />
+    <Compile Include="Common\Caching\CachingFileExt.cs" />
+    <Compile Include="Common\Caching\CachingMetrics.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
     <Compile Include="Common\Flags.cs" />
+    <Compile Include="Common\Globals\GlobalTables.cs" />
+    <Compile Include="Common\Logging\LogFileParser.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
+    <Compile Include="Common\SearchFramework\Search.cs" />
+    <Compile Include="Common\SearchFramework\SearchData.cs" />
+    <Compile Include="Common\SearchFramework\Workers.cs" />
     <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
@@ -150,7 +144,7 @@
     <Compile Include="Common\Components\NoAutoSelectDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\GlobalStaticVars.cs" />
+    <Compile Include="Common\Globals\GlobalStaticVars.cs" />
     <Compile Include="Common\Logging\LoggingHelpers.cs" />
     <Compile Include="Common\Methods.cs" />
     <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />
@@ -158,7 +152,7 @@
     <Compile Include="Common\Renderers\RenderStruct.cs" />
     <Compile Include="Common\Renderers\RenderWorkers\ContentRenderWorker.cs" />
     <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
-    <Compile Include="Common\Structures\SearchOptions.cs" />
+    <Compile Include="Common\SearchFramework\SearchOptions.cs" />
     <Compile Include="Common\SVarController.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />
@@ -171,10 +165,10 @@
     <Compile Include="Common\Components\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\Structures\SearchRuleIDs.cs" />
+    <Compile Include="Common\SearchFramework\SearchRuleIDs.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\TypeConverters\AppOptionsTypeConverter.cs" />
-    <Compile Include="Common\TypeConverters\ColumnAdapterTypeConverter.cs" />
+    <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
     <Compile Include="Common\TypeConverters\GenericAppSettingsTypeConverter.cs" />
     <Compile Include="Common\TypeConverters\LoggingTypeConverter.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />
@@ -379,23 +373,29 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Authenticate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Authenticate.Designer.cs">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CachingMetricsUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CachingMetricsUI.Designer.cs">
+      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DirectConnect.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\DirectConnect.Designer.cs">
       <DependentUpon>DirectConnect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\DLSpeedChart.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\DLSpeedChart.Designer.cs">
-      <DependentUpon>DLSpeedChart.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Home.cs">
       <SubType>Form</SubType>
@@ -415,11 +415,11 @@
     <Compile Include="UI\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CacheSettings.cs">
+    <Compile Include="UI\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CacheSettings.Designer.cs">
-      <DependentUpon>CacheSettings.cs</DependentUpon>
+    <Compile Include="UI\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ServerManager.cs">
       <SubType>Form</SubType>
@@ -451,14 +451,17 @@
     <Compile Include="WaitWindow\WaitWindowGUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="UI\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Authenticate.resx">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\CachingMetricsUI.resx">
+      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\DLSpeedChart.resx">
-      <DependentUpon>DLSpeedChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
@@ -470,8 +473,8 @@
     <EmbeddedResource Include="UI\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CacheSettings.resx">
-      <DependentUpon>CacheSettings.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ServerManager.resx">
       <DependentUpon>ServerManager.cs</DependentUpon>

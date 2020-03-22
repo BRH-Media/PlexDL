@@ -131,6 +131,7 @@
             // 
             this.itmConnect.Enabled = false;
             this.itmConnect.Name = "itmConnect";
+            this.itmConnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.itmConnect.Size = new System.Drawing.Size(134, 20);
             this.itmConnect.Text = "Connect to this server";
             this.itmConnect.Click += new System.EventHandler(this.itmConnect_Click);

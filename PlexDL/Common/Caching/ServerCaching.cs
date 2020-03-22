@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,7 @@ namespace PlexDL.Common.Caching
             var cachePath = @"cache\" + fileName;
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
-            var fqPath = cachePath + @"\" + fileName;
+            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ServerListExt;
             return fqPath;
         }
 
