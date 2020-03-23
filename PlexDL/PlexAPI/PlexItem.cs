@@ -1,5 +1,3 @@
-using System;
-
 namespace PlexDL.PlexAPI
 {
     public class PlexItem : PlexRest

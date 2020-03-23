@@ -1,10 +1,13 @@
-﻿using System.Windows.Forms;
+﻿using PlexDL.Common.Logging;
+using System;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.Components
 {
     public class FlatDataGridView : DataGridView
     {
         public string RowsEmptyText { get; set; } = "No Data Found";
+        public string ErrorText { get; set; } = "Render Error";
 
         public FlatDataGridView()
         {
@@ -21,25 +24,46 @@ namespace PlexDL.Common.Components
             Name = "dgvMain";
             SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RowHeadersVisible = false;
-            Paint += new PaintEventHandler(DGVPaint);
             DataError += new DataGridViewDataErrorEventHandler(DGVDataError);
             DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
-        private void DGVPaint(object sender, PaintEventArgs e)
+        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
-            if (Rows.Count == 0)
+            try
             {
-                TextRenderer.DrawText(e.Graphics, RowsEmptyText,
-                    Font, ClientRectangle,
-                    ForeColor, BackgroundColor,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
-                BorderStyle = BorderStyle.None;
+                if (Rows != null)
+                {
+                    if (Rows.Count == 0)
+                    {
+                        TextRenderer.DrawText(e.Graphics, RowsEmptyText,
+                            Font, ClientRectangle,
+                            ForeColor, BackgroundColor,
+                            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
+                        BorderStyle = BorderStyle.None;
+                    }
+                    else
+                    {
+                        Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+                    }
+                }
+                else
+                {
+                    TextRenderer.DrawText(e.Graphics, RowsEmptyText,
+                            Font, ClientRectangle,
+                            ForeColor, BackgroundColor,
+                            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                    Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
+                    BorderStyle = BorderStyle.None;
+                }
+                
+                base.OnPaint(e);
             }
-            else
+            catch (Exception ex)
             {
-                Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)8.25);
+                this.Invalidate();
+                LoggingHelpers.RecordException(ex.Message, "DGVPaintError");
             }
         }
 

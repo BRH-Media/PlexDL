@@ -36,14 +36,14 @@
             this.settingsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsGrid.Location = new System.Drawing.Point(0, 0);
             this.settingsGrid.Name = "settingsGrid";
-            this.settingsGrid.Size = new System.Drawing.Size(800, 450);
+            this.settingsGrid.Size = new System.Drawing.Size(319, 285);
             this.settingsGrid.TabIndex = 0;
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(319, 285);
             this.Controls.Add(this.settingsGrid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -52,7 +52,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Settings";
+            this.Text = "PlexDL Settings";
             this.Load += new System.EventHandler(this.Settings_Load);
             this.ResumeLayout(false);
 

@@ -1,5 +1,4 @@
 using RestSharp;
-using System;
 using System.Collections.Generic;
 
 namespace PlexDL.PlexAPI

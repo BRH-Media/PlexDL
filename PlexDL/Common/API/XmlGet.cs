@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
-using PlexDL.UI;
 using System;
 using System.IO;
 using System.Net;
@@ -22,7 +22,7 @@ namespace PlexDL.Common.API
             if (e.Arguments.Count > 2)
                 silent = (bool)e.Arguments[2];
 
-            e.Result = GetXMLTransaction(uri, Home.Settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
+            e.Result = GetXMLTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
         }
 
         public static XmlDocument GetXMLTransaction(string uri, string secret = "", bool forceNoCache = false, bool silent = false)
@@ -58,9 +58,9 @@ namespace PlexDL.Common.API
                 //Declare XMLReader
                 XmlTextReader objXMLReader;
 
-                var secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, Home.plexServers) : secret;
+                var secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, GlobalStaticVars.PlexServers) : secret;
                 if (string.IsNullOrEmpty(secret2))
-                    secret2 = Home.Settings.ConnectionInfo.PlexAccountToken;
+                    secret2 = GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
 
                 var fullUri = uri + secret2;
 

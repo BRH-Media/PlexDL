@@ -1,6 +1,7 @@
-﻿using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace PlexDL.Common.Logging
 {
@@ -21,7 +22,7 @@ namespace PlexDL.Common.Logging
                 {
                     logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
                 };
-                if (Home.Settings.Logging.EnableGenericLogDel)
+                if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
                     LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
             }
             catch
@@ -38,7 +39,7 @@ namespace PlexDL.Common.Logging
                 ////Options weren't too great performance-wise, so I ended up using a stack-walk.
                 ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
                 ////The in-app setting to prevent this method from firing.
-                if (Home.Settings.Logging.EnableExceptionLogDel)
+                if (GlobalStaticVars.Settings.Logging.EnableExceptionLogDel)
                 {
                     var stackTrace = new System.Diagnostics.StackTrace();
                     var function = stackTrace.GetFrame(1).GetMethod().Name;
@@ -64,7 +65,7 @@ namespace PlexDL.Common.Logging
         {
             try
             {
-                if (Home.Settings.Logging.EnableXMLTransactionLogDel)
+                if (GlobalStaticVars.Settings.Logging.EnableXMLTransactionLogDel)
                 {
                     string[] headers =
                     {
@@ -84,6 +85,18 @@ namespace PlexDL.Common.Logging
             }
         }
 
+        private static string CleanseLogDel(string line)
+        {
+            string clean = line;
+            char[] bannedChars = new char[] { '#', '!' };
+            foreach (char c in line)
+            {
+                if (bannedChars.Contains(c))
+                    clean.Remove(c);
+            }
+            return clean;
+        }
+
         public static void LogDelWriter(string fileName, string[] headers, string[] logEntry)
         {
             try
@@ -97,13 +110,13 @@ namespace PlexDL.Common.Logging
                 foreach (var l in logEntry)
                     logdelLine += l + "!";
 
-                logdelLine = logdelLine.TrimEnd('!');
+                logdelLine = CleanseLogDel((logdelLine.TrimEnd('!')));
 
                 var headersString = "###";
                 foreach (var h in headers)
                     headersString += h + "!";
 
-                headersString = headersString.TrimEnd('!');
+                headersString = CleanseLogDel((headersString.TrimEnd('!')));
 
                 if (File.Exists(fqFile))
                 {

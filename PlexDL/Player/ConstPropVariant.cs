@@ -201,15 +201,15 @@ namespace PlexDL.Player
                 case VariantType.String:
                 case VariantType.Blob:
                 case VariantType.IUnknown:
-                {
-                    return (MFAttributeType)type;
-                }
+                    {
+                        return (MFAttributeType)type;
+                    }
 
                 default:
-                {
-                    //throw new Exception("Type is not a MFAttributeType");
-                    return MFAttributeType.None;
-                }
+                    {
+                        //throw new Exception("Type is not a MFAttributeType");
+                        return MFAttributeType.None;
+                    }
             }
         }
 
@@ -354,7 +354,7 @@ namespace PlexDL.Player
                 if (blobValue.cbSize > offset)
                 {
                     if (blobValue.cbSize >= Marshal.SizeOf(t) + offset)
-                    //o = Marshal.PtrToStructure(blobValue.pBlobData + offset, t);
+                        //o = Marshal.PtrToStructure(blobValue.pBlobData + offset, t);
                         o = Marshal.PtrToStructure(new IntPtr(blobValue.pBlobData.ToInt64() + offset), t);
                     else
                         throw new ArgumentException("Blob wrong size");

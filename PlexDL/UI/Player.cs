@@ -1,20 +1,19 @@
-﻿using MetroSet_UI.Extensions;
-using MetroSet_UI.Forms;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.API;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.Player;
 using System;
 using System.Data;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Player;
 
 namespace PlexDL.UI
 {
-    public partial class Player : MetroSetForm
+    public partial class Player : Form
     {
         public Timer t1 = new Timer();
 
@@ -35,16 +34,6 @@ namespace PlexDL.UI
         public Player()
         {
             InitializeComponent();
-            this.styleMain = GlobalStaticVars.GlobalStyle;
-            this.styleMain.MetroForm = this;
-        }
-
-        private void FadeIn(object sender, EventArgs e)
-        {
-            if (Opacity >= 1)
-                t1.Stop(); //this stops the timer if the form is completely displayed
-            else
-                Opacity += 0.05;
         }
 
         private void FrmPlayer_Load(object sender, EventArgs e)
@@ -116,28 +105,28 @@ namespace PlexDL.UI
         {
             if (!IsWMP)
             {
-                if (keyData == (Home.Settings.Player.KeyBindings.PlayPause))
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PlayPause))
                 {
                     PlayPause();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.SkipForward))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipForward))
                 {
                     SkipForward();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.SkipBackward))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward))
                 {
                     SkipBack();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.NextTitle))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.NextTitle))
                 {
                     Stop();
                     NextTitle();
                     return true;
                 }
-                else if (keyData == (Home.Settings.Player.KeyBindings.PrevTitle))
+                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle))
                 {
                     Stop();
                     PrevTitle();
@@ -157,22 +146,6 @@ namespace PlexDL.UI
 
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((Home.Settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
-            {
-                e.Cancel = true;
-                t1 = new Timer
-                {
-                    Interval = Home.Settings.Generic.AnimationSpeed
-                };
-                t1.Tick += new EventHandler(FadeOut); //this calls the fade out function
-                t1.Start();
-
-                if (Opacity == 0)
-                {
-                    //resume the event - the program can be closed
-                    e.Cancel = false;
-                }
-            }
 
             if (mPlayer != null)
             {
@@ -182,7 +155,7 @@ namespace PlexDL.UI
 
         private void MPlayer_ContentFinished(object sender, EventArgs e)
         {
-            if (!Home.Settings.Player.PlayNextTitleAutomatically)
+            if (!GlobalStaticVars.Settings.Player.PlayNextTitleAutomatically)
             {
                 SetIconPlay();
             }
@@ -208,27 +181,6 @@ namespace PlexDL.UI
             lblTotalDuration.Text = toStop.ToString(@"hh\:mm\:ss");
         }
 
-        private void FadeOut(object sender, EventArgs e)
-        {
-            if (Opacity <= 0) //check if opacity is 0
-            {
-                t1.Stop(); //if it is, we stop the timer
-                Close(); //and we try to close the form
-            }
-            else
-                Opacity -= 0.05;
-        }
-
-        private void BtnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void BtnCopyLink_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(StreamingContent.StreamInformation.Link);
-        }
-
         private void TmrCopied_Tick(object sender, EventArgs e)
         {
             //btnCopyLink.Text = "Copy Stream Link";
@@ -242,11 +194,6 @@ namespace PlexDL.UI
             lblTimeSoFar.Text = PlayingPosition;
             pbDuration.Value = (int)vdo.CurrentPosition;
             */
-        }
-
-        private void BtnStop_Click(object sender, EventArgs e)
-        {
-            Stop();
         }
 
         private void Stop()
@@ -269,40 +216,12 @@ namespace PlexDL.UI
 
         private void SetIconPause()
         {
-            ImageSet images = new ImageSet()
-            {
-                Focus = PlexDL.Properties.Resources.baseline_pause_black_18dp_white, Idle = PlexDL.Properties.Resources.baseline_pause_black_18dp
-            };
-            if (btnPlayPause.InvokeRequired)
-            {
-                btnPlayPause.BeginInvoke((MethodInvoker)delegate
-                {
-                    btnPlayPause.ImageSet = images;
-                });
-            }
-            else
-            {
-                btnPlayPause.ImageSet = images;
-            }
+            btnPlayPause.BackgroundImage = Properties.Resources.baseline_pause_black_18dp;
         }
 
         private void SetIconPlay()
         {
-            ImageSet images = new ImageSet()
-            {
-                Focus = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white, Idle = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp
-            };
-            if (btnPlayPause.InvokeRequired)
-            {
-                btnPlayPause.BeginInvoke((MethodInvoker)delegate
-                {
-                    btnPlayPause.ImageSet = images;
-                });
-            }
-            else
-            {
-                btnPlayPause.ImageSet = images;
-            }
+            btnPlayPause.BackgroundImage = Properties.Resources.baseline_play_arrow_black_18dp;
         }
 
         /*
@@ -387,21 +306,15 @@ namespace PlexDL.UI
             }
         }
 
-        private void BtnPrevTitle_Click(object sender, EventArgs e)
-        {
-            Stop();
-            PrevTitle();
-        }
-
         private string GetBaseUri(bool incToken)
         {
             if (incToken)
             {
-                return "http://" + Home.Settings.ConnectionInfo.PlexAddress + ":" + Home.Settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
+                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
             }
             else
             {
-                return "http://" + Home.Settings.ConnectionInfo.PlexAddress + ":" + Home.Settings.ConnectionInfo.PlexPort + "/";
+                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/";
             }
         }
 
@@ -442,7 +355,7 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
-                XmlDocument reply = XmlGet.GetXMLTransaction(uri, Home.Settings.ConnectionInfo.PlexAccountToken);
+                XmlDocument reply = XmlGet.GetXMLTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
 
                 obj = GetContentDownloadInfo_Xml(reply);
                 return obj;
@@ -464,14 +377,14 @@ namespace PlexDL.UI
             DataTable part = sections.Tables["Part"];
             DataRow video = sections.Tables["Video"].Rows[0];
             string title = video["title"].ToString();
-            if (title.Length > Home.Settings.Generic.DefaultStringLength)
-                title = title.Substring(0, Home.Settings.Generic.DefaultStringLength);
+            if (title.Length > GlobalStaticVars.Settings.Generic.DefaultStringLength)
+                title = title.Substring(0, GlobalStaticVars.Settings.Generic.DefaultStringLength);
             string thumb = video["thumb"].ToString();
             string thumbnailFullUri = "";
             if (!string.IsNullOrEmpty(thumb))
             {
                 string baseUri = GetBaseUri(false).TrimEnd('/');
-                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + Home.Settings.ConnectionInfo.PlexAccountToken;
+                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
             }
 
             DataRow partRow = part.Rows[0];
@@ -482,7 +395,7 @@ namespace PlexDL.UI
             int contentDuration = Convert.ToInt32(partRow["duration"]);
             string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
 
-            string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + Home.Settings.ConnectionInfo.PlexAccountToken;
+            string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
             obj.Link = link;
             obj.Container = container;
             obj.ByteLength = byteLength;
@@ -492,12 +405,6 @@ namespace PlexDL.UI
             obj.ContentThumbnailUri = thumbnailFullUri;
 
             return obj;
-        }
-
-        private void BtnNextTitle_Click(object sender, EventArgs e)
-        {
-            Stop();
-            NextTitle();
         }
 
         private void NextTitle()
@@ -548,7 +455,7 @@ namespace PlexDL.UI
         {
             if (mPlayer.Playing)
             {
-                decimal rewindAmount = (Home.Settings.Player.SkipBackwardInterval) * -1;
+                decimal rewindAmount = (GlobalStaticVars.Settings.Player.SkipBackwardInterval) * -1;
 
                 mPlayer.Position.Skip((int)rewindAmount);
             }
@@ -558,20 +465,10 @@ namespace PlexDL.UI
         {
             if (mPlayer.Playing)
             {
-                decimal stepAmount = Home.Settings.Player.SkipForwardInterval;
+                decimal stepAmount = GlobalStaticVars.Settings.Player.SkipForwardInterval;
 
                 mPlayer.Position.Skip((int)stepAmount);
             }
-        }
-
-        private void BtnSkipBack_Click(object sender, EventArgs e)
-        {
-            SkipBack();
-        }
-
-        private void BtnSkipForward_Click(object sender, EventArgs e)
-        {
-            SkipForward();
         }
 
         private void Resume()
@@ -592,6 +489,43 @@ namespace PlexDL.UI
             }
         }
 
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnPlayPause_Click(object sender, EventArgs e)
+        {
+            PlayPause();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
+        private void btnPrevTitle_Click(object sender, EventArgs e)
+        {
+            Stop();
+            PrevTitle();
+        }
+
+        private void btnNextTitle_Click(object sender, EventArgs e)
+        {
+            Stop();
+            NextTitle();
+        }
+
+        private void btnSkipForward_Click(object sender, EventArgs e)
+        {
+            SkipForward();
+        }
+
+        private void btnSkipBack_Click(object sender, EventArgs e)
+        {
+            SkipBack();
+        }
+
         private void PlayPause()
         {
             if ((mPlayer.Playing) && (!mPlayer.Paused))
@@ -609,11 +543,6 @@ namespace PlexDL.UI
                     Play(StreamingContent.StreamInformation.Link);
                 }
             }
-        }
-
-        private void BtnPlayPause_Click(object sender, EventArgs e)
-        {
-            PlayPause();
         }
     }
 }

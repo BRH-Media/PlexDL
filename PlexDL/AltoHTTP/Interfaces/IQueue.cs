@@ -1,5 +1,5 @@
-﻿using System;
-using PlexDL.AltoHTTP.Classes;
+﻿using PlexDL.AltoHTTP.Classes;
+using System;
 
 namespace PlexDL.AltoHTTP.Interfaces
 {
@@ -7,6 +7,7 @@ namespace PlexDL.AltoHTTP.Interfaces
     {
         int QueueLength { get; }
         int CurrentIndex { get; }
+
         event EventHandler QueueCompleted;
 
         event QueueElementCompletedEventHandler QueueElementCompleted;

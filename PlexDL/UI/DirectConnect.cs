@@ -1,46 +1,22 @@
-﻿using System;
-using System.Net;
-using System.Windows.Forms;
-using MetroSet_UI.Forms;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.Structures;
 using PlexDL.WaitWindow;
+using System;
+using System.Net;
+using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class DirectConnect : MetroSetForm
+    public partial class DirectConnect : Form
     {
         public bool ConnectionStarted;
 
         public DirectConnect()
         {
             InitializeComponent();
-            styleMain = GlobalStaticVars.GlobalStyle;
-            styleMain.MetroForm = this;
         }
 
         public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
-
-        private void FadeIn(object sender, EventArgs e)
-        {
-            if (Opacity >= 1)
-                t1.Stop(); //this stops the timer if the form is completely displayed
-            else
-                Opacity += 0.05;
-        }
-
-        private void FadeOut(object sender, EventArgs e)
-        {
-            if (Opacity <= 0) //check if opacity is 0
-            {
-                t1.Stop(); //if it is, we stop the timer
-                Close(); //and we try to close the form
-            }
-            else
-            {
-                Opacity -= 0.05;
-            }
-        }
 
         public static bool WebSiteIsAvailable(string Url)
         {
@@ -115,33 +91,12 @@ namespace PlexDL.UI
 
         private void DirectConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Home.Settings.Generic.AnimationSpeed > 0 && !ConnectionStarted)
-            {
-                e.Cancel = true;
-                t1 = new Timer
-                {
-                    Interval = Home.Settings.Generic.AnimationSpeed
-                };
-                t1.Tick += FadeOut; //this calls the fade out function
-                t1.Start();
-
-                if (Opacity == 0)
-                //resume the event - the program can be closed
-                    e.Cancel = false;
-            }
+            //nothing
         }
 
         private void DirectConnect_Load(object sender, EventArgs e)
         {
             ConnectionStarted = false;
-            if (Home.Settings.Generic.AnimationSpeed > 0)
-            {
-                Opacity = 0; //first the opacity is 0
-
-                t1.Interval = Home.Settings.Generic.AnimationSpeed; //we'll increase the opacity every 10ms
-                t1.Tick += FadeIn; //this calls the function that changes opacity
-                t1.Start();
-            }
         }
     }
 }

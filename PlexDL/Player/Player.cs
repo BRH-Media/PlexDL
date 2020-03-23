@@ -83,35 +83,7 @@ namespace PlexDL.Player
 
     // ******************************** Player - EventArgs
 
-    #region Player - PositionEventArgs
-
-    #endregion Player - PositionEventArgs
-
-    #region Player - EndedEventArgs
-
-    #endregion Player - EndedEventArgs
-
-    #region Player - PeakLevelEventArgs
-
-    #endregion Player - PeakLevelEventArgs
-
-    #region Player - SubtitleEventArgs
-
-    #endregion Player - SubtitleEventArgs
-
-    #region Player - SystemAudioDevicesEventArgs
-
-    #endregion Player - SystemAudioDevicesEventArgs
-
-    #region Player - VideoColorEventArgs
-
-    #endregion Player - VideoColorEventArgs
-
     // ******************************** Player - Delegates (Callbacks)
-
-    #region Player - Delegates (Callbacks)
-
-    #endregion Player - Delegates (Callbacks)
 
     // ******************************** Player - Player Class
 

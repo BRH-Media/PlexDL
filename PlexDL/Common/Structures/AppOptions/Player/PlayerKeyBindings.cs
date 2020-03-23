@@ -4,6 +4,12 @@ namespace PlexDL.Common.Structures.AppOptions.Player
 {
     public class PlayerKeyBindings
     {
+        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
+        public override string ToString()
+        {
+            return "";
+        }
+
         public Keys PlayPause { get; set; } = Keys.Space;
         public Keys SkipForward { get; set; } = Keys.Right;
         public Keys SkipBackward { get; set; } = Keys.Left;

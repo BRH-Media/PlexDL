@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,13 +15,13 @@ namespace PlexDL.Common.Caching
             var cachePath = @"cache\" + fileName;
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
-            var fqPath = cachePath + @"\" + fileName;
+            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ServerListExt;
             return fqPath;
         }
 
         public static bool ServerInCache(string accountToken)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 var fqPath = ServerCachePath(accountToken);
                 return File.Exists(fqPath);
@@ -36,7 +36,7 @@ namespace PlexDL.Common.Caching
         {
             try
             {
-                if (Home.Settings.CacheSettings.Mode.EnableServerCaching)
+                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
                 {
                     var fqPath = ServerCachePath(accountToken);
                     var serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));
@@ -54,7 +54,7 @@ namespace PlexDL.Common.Caching
 
         public static List<PlexAPI.Server> ServerFromCache(string accountToken)
         {
-            if (Home.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 var fqPath = ServerCachePath(accountToken);
                 var serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));

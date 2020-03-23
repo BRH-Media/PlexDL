@@ -1,4 +1,4 @@
-﻿namespace PlexDL.Common.Structures
+﻿namespace PlexDL.Common.SearchFramework
 {
     public class SearchOptions
     {

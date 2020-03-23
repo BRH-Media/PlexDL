@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.PlexAPI;
 using System;
@@ -183,7 +184,7 @@ namespace PlexDL.Common
 
         public static bool StreamAdultContentCheck(Structures.Plex.PlexObject stream)
         {
-            if (UI.Home.Settings.Generic.AdultContentProtection)
+            if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
             {
                 //just to keep things family-friendly, show a warning for possibly adult-type content :)
                 if (AdultKeywordCheck(stream))

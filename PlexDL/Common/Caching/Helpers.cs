@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.UI;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -27,14 +27,14 @@ namespace PlexDL.Common.Caching
         {
             try
             {
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\thumb"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                        CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\thumb");
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\xml"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                        CalculateMD5Hash(Home.Settings.ConnectionInfo.PlexAddress) + @"\xml");
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                        CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb");
+                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml"))
+                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                                        CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml");
             }
             catch (Exception ex)
             {

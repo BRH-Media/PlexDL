@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using System;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
@@ -12,7 +13,7 @@ namespace PlexDL.UI
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            settingsGrid.SelectedObject = Home.Settings;
+            settingsGrid.SelectedObject = GlobalStaticVars.Settings;
         }
     }
 }

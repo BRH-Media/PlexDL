@@ -1,12 +1,12 @@
-﻿using System;
+﻿using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {
