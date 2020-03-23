@@ -1,7 +1,7 @@
 # PlexDL
 ### Plex Downloader/Streamer written in C#
 
-### Update 23/03/2020: PlexDL will be migrating to a native GUI and featureset very soon.
+#### Update 23/03/2020: PlexDL will be migrating to a native GUI and featureset very soon.
 #### What does this mean for you?
 PlexDL will function as normal (in some cases better than previous versions), however expect bugs to arise as this is far from a flawless process. I am in the process of breaking up PlexDL code into segments that can easily be updated, and to allow future coders to use PlexDL source more easily. This way, the GUI does not necessarily have to be used, and the underlying API functionality may be more easily ported to other projects. It is because of this, that in the coming weeks, the master branch will be replaced with .NET native GUI components rather than MetroSet UI components. Previous releases will still be available as always, and you can revert back to a previous version if you so wish. In doing this, be aware that using old versions of PlexDL may subject you to bugs and problems that have been fixed in later releases. With that being said, please note that in the future, PlexDL's GUI featureset will eventually become fully "skinnable", meaning a theming framework is in the works (via the libbrhscgui framework rewritten in C#). The user will eventually have control of themed colours and styles without having to wait for a GUI update (though it is recommended to always update PlexDL).
 
