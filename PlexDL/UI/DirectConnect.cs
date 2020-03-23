@@ -26,6 +26,7 @@ namespace PlexDL.UI
             // Set the credentials to the current user account
             request.Credentials = CredentialCache.DefaultCredentials;
             request.Method = "GET";
+            request.Timeout = 4500;
 
             try
             {
@@ -71,7 +72,7 @@ namespace PlexDL.UI
                     {
                         //MessageBox.Show(uri);
                         MessageBox.Show(
-                            @"Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by the button in the top-right.",
+                            "Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by the button in the top-right.",
                             @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }

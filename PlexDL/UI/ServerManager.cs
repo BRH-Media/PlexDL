@@ -267,5 +267,10 @@ namespace PlexDL.UI
                 return;
             }
         }
+
+        private void itmDirectConnection_Click(object sender, EventArgs e)
+        {
+            RunDirectConnect();
+        }
     }
 }

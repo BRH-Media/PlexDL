@@ -61,6 +61,7 @@
             this.dgvServers.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvServers.ErrorText = "Render Error";
             this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvServers.Location = new System.Drawing.Point(0, 24);
             this.dgvServers.Margin = new System.Windows.Forms.Padding(2);
@@ -126,6 +127,7 @@
             this.itmDirectConnection.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.itmDirectConnection.Size = new System.Drawing.Size(212, 22);
             this.itmDirectConnection.Text = "Direct Connection";
+            this.itmDirectConnection.Click += new System.EventHandler(this.itmDirectConnection_Click);
             // 
             // itmConnect
             // 
