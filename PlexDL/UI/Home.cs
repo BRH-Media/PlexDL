@@ -460,24 +460,32 @@ namespace PlexDL.UI
 
             GetTitlesTable(doc, isTVShow);
 
-            Flags.IsTVShow = isTVShow;
-
-            if (Flags.IsTVShow)
+            if (GlobalTables.TitlesTable != null)
             {
-                AddToLog("Rendering TV Shows");
-                RenderTVView(GlobalTables.TitlesTable);
+                //set this in the toolstrip so the user can see how many items are loaded
+                lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
+
+                Flags.IsTVShow = isTVShow;
+
+                if (Flags.IsTVShow)
+                {
+                    AddToLog("Rendering TV Shows");
+                    RenderTVView(GlobalTables.TitlesTable);
+                }
+                else
+                {
+                    AddToLog("Rendering Movies");
+                    RenderContentView(GlobalTables.TitlesTable);
+                }
+
+                _contentXmlDoc = doc;
+
+                DGVLibraryEnabled(true);
+
+                //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
             }
             else
-            {
-                AddToLog("Rendering Movies");
-                RenderContentView(GlobalTables.TitlesTable);
-            }
-
-            _contentXmlDoc = doc;
-
-            DGVLibraryEnabled(true);
-
-            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                AddToLog("Library contents were null; rendering did not occur");
         }
 
         private void UpdateEpisodeViewWorker(XmlDocument doc)
@@ -1283,13 +1291,16 @@ namespace PlexDL.UI
         private void SetStartSearch()
         {
             itmStartSearch.Text = @"Start Search";
-            itmSearchStatus.Text = @"Not Filtered";
+            if (GlobalTables.TitlesTable != null)
+                if (GlobalTables.TitlesTable.Rows != null)
+                    lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
         }
 
         private void SetCancelSearch()
         {
             if (GlobalTables.FilteredTable != null && GlobalTables.TitlesTable != null)
-                itmSearchStatus.Text = @"Filtered " + GlobalTables.FilteredTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
+                if (GlobalTables.FilteredTable.Rows != null && GlobalTables.TitlesTable.Rows != null)
+                    lblViewingValue.Text = GlobalTables.FilteredTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
             itmStartSearch.Text = @"Clear Search";
         }
 
@@ -1326,17 +1337,16 @@ namespace PlexDL.UI
             //MessageBox.Show(uri);
             XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri });
             Flags.IsConnected = true;
+
             if (GlobalStaticVars.Settings.Generic.ShowConnectionSuccess)
-            {
                 MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+
             SetProgressLabel("Connected");
             SetDisconnect();
+
             if (reply.ChildNodes.Count != 0)
-            {
                 PopulateLibrary(reply);
-            }
-            Flags.IsConnectAgainDisabled = true;
+
         }
 
         #region FormEvents
@@ -1467,8 +1477,7 @@ namespace PlexDL.UI
                         type = r["type"].ToString();
                 }
 
-                if (type == "show")
-                    UpdateFromLibraryKey(key, true);
+                if (type == "show") UpdateFromLibraryKey(key, true);
                 else if (type == "movie") UpdateFromLibraryKey(key, false);
             }
         }
@@ -1921,6 +1930,30 @@ namespace PlexDL.UI
         {
             using (Settings frm = new Settings())
                 frm.ShowDialog();
+        }
+
+        private void itmClearCache_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(@"cache"))
+                {
+                    var result = MessageBox.Show("Are you sure you want to clear the cache?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        Directory.Delete(@"cache", true);
+                        MessageBox.Show("Successfully deleted cached data", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                    MessageBox.Show("There's no cached data to clear", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error whilst trying to delete cached data:\n\n" + ex.Message);
+                LoggingHelpers.RecordException(ex.Message, "ClearCacheError");
+                return;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace PlexDL.Common.Components
     public class FlatDataGridView : DataGridView
     {
         public string RowsEmptyText { get; set; } = "No Data Found";
+        public string ErrorText { get; set; } = "Render Error";
 
         public FlatDataGridView()
         {
