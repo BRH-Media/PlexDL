@@ -1638,6 +1638,7 @@ namespace PlexDL.UI
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();
+                tmrWorkerTimeout.Start();
                 AddToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
@@ -1659,6 +1660,7 @@ namespace PlexDL.UI
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();
+                tmrWorkerTimeout.Start();
                 AddToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
@@ -1952,6 +1954,28 @@ namespace PlexDL.UI
             {
                 MessageBox.Show("Error whilst trying to delete cached data:\n\n" + ex.Message);
                 LoggingHelpers.RecordException(ex.Message, "ClearCacheError");
+                return;
+            }
+        }
+
+        private void tmrWorkerTimeout_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                tmrWorkerTimeout.Stop();
+                if (string.Equals(lblProgress.Text.ToLower(), "waiting"))
+                {
+                    if (wkrGetMetadata.IsBusy)
+                        wkrGetMetadata.Abort();
+                    MessageBox.Show("Failed to get metadata; the worker timed out.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AddToLog("Metadata worker timed out");
+                    SetProgressLabel("Worker Timeout");
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and then ignore
+                LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
                 return;
             }
         }
