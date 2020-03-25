@@ -1,7 +1,6 @@
 PlexAPI_Rebase/
 PlexDL/bin/
 PlexDL/obj/
-PlexDL/packages.config
 packages/
 c/
 .vs/
