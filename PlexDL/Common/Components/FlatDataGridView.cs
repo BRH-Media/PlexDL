@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Logging;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,9 +8,13 @@ namespace PlexDL.Common.Components
 {
     public class FlatDataGridView : DataGridView
     {
+        [Category("PlexDL")]
+        [Description("The text to display if the RowCount is 0")]
         public string RowsEmptyText { get; set; } = "No Data Found";
+
+        [Category("PlexDL")]
+        [Description("The ForeColor of RowsEmptyText")]
         public Color RowsEmptyTextForeColor { get; set; } = Color.FromArgb(134, 134, 134);
-        public string ErrorText { get; set; } = "Render Error";
 
         public FlatDataGridView()
         {

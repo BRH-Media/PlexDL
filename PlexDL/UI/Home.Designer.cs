@@ -430,7 +430,6 @@ namespace PlexDL.UI
             this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvContent.ErrorText = "Render Error";
             this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvContent.Location = new System.Drawing.Point(2, 2);
             this.dgvContent.Margin = new System.Windows.Forms.Padding(2);
@@ -493,7 +492,6 @@ namespace PlexDL.UI
             this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvTVShows.ErrorText = "Render Error";
             this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvTVShows.Location = new System.Drawing.Point(2, 2);
             this.dgvTVShows.Margin = new System.Windows.Forms.Padding(2);
@@ -527,7 +525,6 @@ namespace PlexDL.UI
             this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSeasons.ErrorText = "Render Error";
             this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvSeasons.Location = new System.Drawing.Point(326, 2);
             this.dgvSeasons.Margin = new System.Windows.Forms.Padding(2);
@@ -561,7 +558,6 @@ namespace PlexDL.UI
             this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvEpisodes.ErrorText = "Render Error";
             this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvEpisodes.Location = new System.Drawing.Point(326, 171);
             this.dgvEpisodes.Margin = new System.Windows.Forms.Padding(2);
@@ -619,7 +615,6 @@ namespace PlexDL.UI
             this.dgvLog.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvLog.ErrorText = "Render Error";
             this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvLog.Location = new System.Drawing.Point(3, 3);
             this.dgvLog.MultiSelect = false;
@@ -696,7 +691,6 @@ namespace PlexDL.UI
             this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvLibrary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvLibrary.ErrorText = "Render Error";
             this.dgvLibrary.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvLibrary.Location = new System.Drawing.Point(6, 100);
             this.dgvLibrary.Margin = new System.Windows.Forms.Padding(2);
