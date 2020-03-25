@@ -25,9 +25,12 @@ namespace PlexDL.Common.Logging
                 if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
                     LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
             }
-            catch
+            catch (Exception ex)
             {
+                //for debugging only!
+                //MessageBox.Show(ex.ToString());
                 //ignore the error
+
                 return;
             }
         }
@@ -92,7 +95,10 @@ namespace PlexDL.Common.Logging
             foreach (char c in line)
             {
                 if (bannedChars.Contains(c))
-                    clean.Remove(c);
+                {
+                    int index = clean.IndexOf(c);
+                    clean.Remove(index, 1);
+                }
             }
             return clean;
         }
@@ -138,9 +144,12 @@ namespace PlexDL.Common.Logging
                     File.WriteAllText(fqFile, contentToWrite);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                //for debugging only!
+                //MessageBox.Show(ex.ToString());
                 //ignore the error
+
                 return;
             }
         }

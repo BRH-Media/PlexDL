@@ -256,7 +256,7 @@ namespace PlexDL.UI
                     MessageBox.Show("Successfully saved profile!", "Message", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                AddToLog("Saved profile " + fileName);
+                LoggingHelpers.AddToLog("Saved profile " + fileName);
             }
             catch (Exception ex)
             {
@@ -295,7 +295,7 @@ namespace PlexDL.UI
                             return;
                     }
 
-                    AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion.ToString() + " > " + vThisVersion.ToString());
+                    LoggingHelpers.AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion.ToString() + " > " + vThisVersion.ToString());
                 }
                 else if (vCompare > 0)
                 {
@@ -311,14 +311,14 @@ namespace PlexDL.UI
                             return;
                     }
 
-                    AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion.ToString() + " < " + vThisVersion.ToString());
+                    LoggingHelpers.AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion.ToString() + " < " + vThisVersion.ToString());
                 }
                 GlobalStaticVars.Settings = subReq;
 
                 if (!silent)
                     MessageBox.Show("Successfully loaded profile!", "Message", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-                AddToLog("Loaded profile " + fileName);
+                LoggingHelpers.AddToLog("Loaded profile " + fileName);
             }
             catch (Exception ex)
             {
@@ -371,7 +371,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 //log and ignore
-                AddToLog("Export error: " + ex.Message);
+                LoggingHelpers.AddToLog("Export error: " + ex.Message);
                 LoggingHelpers.RecordException(ex.Message, "StreamExportError");
             }
         }
@@ -387,7 +387,7 @@ namespace PlexDL.UI
             if (doc != null)
                 try
                 {
-                    AddToLog("Library population requested");
+                    LoggingHelpers.AddToLog("Library population requested");
                     var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
                     var baseUri = GlobalStaticVars.GetBaseUri(false);
                     var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
@@ -397,7 +397,7 @@ namespace PlexDL.UI
                     var uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
                     var xmlSections = XmlGet.GetXMLTransaction(uriSections);
 
-                    AddToLog("Creating new datasets");
+                    LoggingHelpers.AddToLog("Creating new datasets");
                     var sections = new DataSet();
                     sections.ReadXml(new XmlNodeReader(xmlSections));
 
@@ -405,7 +405,7 @@ namespace PlexDL.UI
                     sectionsTable = sections.Tables["Directory"];
                     GlobalTables.SectionsTable = sectionsTable;
 
-                    AddToLog("Binding to grid");
+                    LoggingHelpers.AddToLog("Binding to grid");
                     RenderLibraryView(sectionsTable);
                     Flags.IsLibraryFilled = true;
                     Uri = baseUri + libraryDir + "/" + sectionDir + "/";
@@ -456,7 +456,7 @@ namespace PlexDL.UI
         {
             DGVLibraryEnabled(false);
 
-            AddToLog("Updating library contents");
+            LoggingHelpers.AddToLog("Updating library contents");
 
             GetTitlesTable(doc, isTVShow);
 
@@ -469,12 +469,12 @@ namespace PlexDL.UI
 
                 if (Flags.IsTVShow)
                 {
-                    AddToLog("Rendering TV Shows");
+                    LoggingHelpers.AddToLog("Rendering TV Shows");
                     RenderTVView(GlobalTables.TitlesTable);
                 }
                 else
                 {
-                    AddToLog("Rendering Movies");
+                    LoggingHelpers.AddToLog("Rendering Movies");
                     RenderContentView(GlobalTables.TitlesTable);
                 }
 
@@ -485,23 +485,23 @@ namespace PlexDL.UI
                 //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
             }
             else
-                AddToLog("Library contents were null; rendering did not occur");
+                LoggingHelpers.AddToLog("Library contents were null; rendering did not occur");
         }
 
         private void UpdateEpisodeViewWorker(XmlDocument doc)
         {
             DGVSeasonsEnabled(false);
-            AddToLog("Updating episode contents");
+            LoggingHelpers.AddToLog("Updating episode contents");
 
-            AddToLog("Creating datasets");
+            LoggingHelpers.AddToLog("Creating datasets");
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
             GlobalTables.EpisodesTable = sections.Tables["Video"];
 
-            AddToLog("Cleaning unwanted data");
+            LoggingHelpers.AddToLog("Cleaning unwanted data");
 
-            AddToLog("Binding to grid");
+            LoggingHelpers.AddToLog("Binding to grid");
             RenderEpisodesView(GlobalTables.EpisodesTable);
 
             _contentXmlDoc = doc;
@@ -514,17 +514,17 @@ namespace PlexDL.UI
         private void UpdateSeriesViewWorker(XmlDocument doc)
         {
             DGVContentEnabled(false);
-            AddToLog("Updating series contents");
+            LoggingHelpers.AddToLog("Updating series contents");
 
-            AddToLog("Creating datasets");
+            LoggingHelpers.AddToLog("Creating datasets");
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
             GlobalTables.SeriesTable = sections.Tables["Directory"];
 
-            AddToLog("Cleaning unwanted data");
+            LoggingHelpers.AddToLog("Cleaning unwanted data");
 
-            AddToLog("Binding to grid");
+            LoggingHelpers.AddToLog("Binding to grid");
             RenderSeriesView(GlobalTables.SeriesTable);
 
             _contentXmlDoc = doc;
@@ -540,8 +540,8 @@ namespace PlexDL.UI
 
         private void WkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
-            AddToLog(@"Metadata worker started");
-            AddToLog(@"Doing directory checks");
+            LoggingHelpers.AddToLog(@"Metadata worker started");
+            LoggingHelpers.AddToLog(@"Doing directory checks");
             if (string.IsNullOrEmpty(GlobalStaticVars.Settings.Generic.DownloadDirectory) ||
                 string.IsNullOrWhiteSpace(GlobalStaticVars.Settings.Generic.DownloadDirectory)) ResetDownloadDirectory();
             var tv = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\TV";
@@ -549,22 +549,22 @@ namespace PlexDL.UI
             if (!Directory.Exists(tv))
             {
                 Directory.CreateDirectory(tv);
-                AddToLog("Created " + tv);
+                LoggingHelpers.AddToLog("Created " + tv);
             }
 
             if (!Directory.Exists(movies))
             {
                 Directory.CreateDirectory(movies);
-                AddToLog(movies);
+                LoggingHelpers.AddToLog(movies);
             }
 
-            AddToLog(@"Grabbing metadata");
+            LoggingHelpers.AddToLog(@"Grabbing metadata");
             if (Flags.IsTVShow)
             {
-                AddToLog(@"Worker is to grab TV Show metadata");
+                LoggingHelpers.AddToLog(@"Worker is to grab TV Show metadata");
                 if (Flags.IsDownloadAllEpisodes)
                 {
-                    AddToLog(@"Worker is to grab metadata for All Episodes");
+                    LoggingHelpers.AddToLog(@"Worker is to grab metadata for All Episodes");
                     var index = 0;
                     foreach (DataRow r in GlobalTables.EpisodesTable.Rows)
                     {
@@ -584,7 +584,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    AddToLog(@"Worker is to grab Single Episode metadata");
+                    LoggingHelpers.AddToLog(@"Worker is to grab Single Episode metadata");
                     BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
                     var show = GetTVObjectFromSelection();
                     var dlInfo = show.StreamInformation;
@@ -596,7 +596,7 @@ namespace PlexDL.UI
             }
             else
             {
-                AddToLog(@"Worker is to grab Movie metadata");
+                LoggingHelpers.AddToLog(@"Worker is to grab Movie metadata");
                 BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
                 var movie = GetMovieObjectFromSelection();
                 var dlInfo = movie.StreamInformation;
@@ -604,11 +604,11 @@ namespace PlexDL.UI
                 GlobalStaticVars.Queue.Add(dlInfo);
             }
 
-            AddToLog("Worker is to invoke downloader thread");
+            LoggingHelpers.AddToLog("Worker is to invoke downloader thread");
             BeginInvoke((MethodInvoker)delegate
             {
                 StartDownload(GlobalStaticVars.Queue, GlobalStaticVars.Settings.Generic.DownloadDirectory);
-                AddToLog("Worker has started the download process");
+                LoggingHelpers.AddToLog("Worker has started the download process");
             });
         }
 
@@ -956,31 +956,11 @@ namespace PlexDL.UI
 
         #region Logging
 
-        private void AddToLog(string logEntry)
-        {
-            logIncrementer += 1;
-            string[] headers =
-            {
-                "ID", "DateTime", "Entry"
-            };
-            string[] logEntryToAdd =
-            {
-                logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
-            };
-            var logLine = ">>" + logEntry;
-            if (lstLog.InvokeRequired)
-                lstLog.BeginInvoke((MethodInvoker)delegate { lstLog.Items.Add(logLine); });
-            else
-                lstLog.Items.Add(logLine);
-            if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
-                LoggingHelpers.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
-        }
-
         private void DGVDataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             var parent = (DataGridView)sender;
             //don't show the event to the user; but log it.
-            AddToLog("Experienced data error in " + parent.Name);
+            LoggingHelpers.AddToLog("Experienced data error in " + parent.Name);
             e.Cancel = true;
         }
 
@@ -1006,7 +986,7 @@ namespace PlexDL.UI
                 SetResume();
                 pbMain.Value = pbMain.Maximum;
                 btnPause.Enabled = false;
-                AddToLog("Download Cancelled");
+                LoggingHelpers.AddToLog("Download Cancelled");
                 Flags.IsDownloadRunning = false;
                 Flags.IsDownloadPaused = false;
                 Flags.IsEngineRunning = false;
@@ -1025,7 +1005,7 @@ namespace PlexDL.UI
 
             GlobalStaticVars.Engine.StartAsync();
             //MessageBox.Show("Started!");
-            AddToLog("Download is Progressing");
+            LoggingHelpers.AddToLog("Download is Progressing");
             Flags.IsDownloadRunning = true;
             Flags.IsEngineRunning = true;
             Flags.IsDownloadPaused = false;
@@ -1039,7 +1019,7 @@ namespace PlexDL.UI
                 GlobalStaticVars.Settings.Generic.DownloadDirectory = fbdSave.SelectedPath;
                 MessageBox.Show("Download directory updated to " + GlobalStaticVars.Settings.Generic.DownloadDirectory, "Message",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AddToLog("Download directory updated to " + GlobalStaticVars.Settings.Generic.DownloadDirectory);
+                LoggingHelpers.AddToLog("Download directory updated to " + GlobalStaticVars.Settings.Generic.DownloadDirectory);
             }
         }
 
@@ -1050,7 +1030,7 @@ namespace PlexDL.UI
             SetResume();
             SetDownloadStart();
             SetProgressLabel("Download Completed");
-            AddToLog("Download completed");
+            LoggingHelpers.AddToLog("Download completed");
             GlobalStaticVars.Engine.Clear();
             Flags.IsDownloadRunning = false;
             Flags.IsDownloadPaused = false;
@@ -1059,10 +1039,10 @@ namespace PlexDL.UI
 
         private void StartDownload(List<DownloadInfo> queue, string location)
         {
-            AddToLog("Download Process Started");
+            LoggingHelpers.AddToLog("Download Process Started");
             pbMain.Value = 0;
 
-            AddToLog("Starting HTTP Engine");
+            LoggingHelpers.AddToLog("Starting HTTP Engine");
             GlobalStaticVars.Engine = new DownloadQueue();
             if (queue.Count > 1)
             {
@@ -1070,7 +1050,7 @@ namespace PlexDL.UI
                 {
                     var fqPath = dl.DownloadPath + @"\" + dl.FileName;
                     if (File.Exists(fqPath))
-                        AddToLog(dl.FileName + " already exists; will not download.");
+                        LoggingHelpers.AddToLog(dl.FileName + " already exists; will not download.");
                     else
                         GlobalStaticVars.Engine.Add(dl.Link, fqPath);
                 }
@@ -1081,7 +1061,7 @@ namespace PlexDL.UI
                 var fqPath = dl.DownloadPath + @"\" + dl.FileName;
                 if (File.Exists(fqPath))
                 {
-                    AddToLog(dl.FileName + " already exists; get user confirmation.");
+                    LoggingHelpers.AddToLog(dl.FileName + " already exists; get user confirmation.");
                     var msg = MessageBox.Show(dl.FileName + " already exists. Skip this title?", "Message",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (msg == DialogResult.Yes)
@@ -1178,7 +1158,7 @@ namespace PlexDL.UI
         {
             try
             {
-                AddToLog("Title search requested");
+                LoggingHelpers.AddToLog("Title search requested");
                 if (dgvContent.Rows.Count > 0 || dgvTVShows.Rows.Count > 0)
                 {
                     RenderStruct info;
@@ -1217,7 +1197,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    AddToLog("No data to search");
+                    LoggingHelpers.AddToLog("No data to search");
                 }
             }
             catch (Exception ex)
@@ -1362,14 +1342,14 @@ namespace PlexDL.UI
                     if (msg == DialogResult.Yes)
                     {
                         Flags.IsMsgAlreadyShown = true;
-                        AddToLog("PlexDL Exited");
+                        LoggingHelpers.AddToLog("PlexDL Exited");
                         e.Cancel = false;
                     }
                 }
             }
             else
             {
-                AddToLog("PlexDL Exited");
+                LoggingHelpers.AddToLog("PlexDL Exited");
             }
         }
 
@@ -1386,7 +1366,7 @@ namespace PlexDL.UI
             try
             {
                 ResetDownloadDirectory();
-                AddToLog("PlexDL Started");
+                LoggingHelpers.AddToLog("PlexDL Started");
             }
             catch (Exception ex)
             {
@@ -1410,7 +1390,7 @@ namespace PlexDL.UI
             var key = (string)e.Arguments[0];
             try
             {
-                AddToLog("Requesting ibrary contents");
+                LoggingHelpers.AddToLog("Requesting ibrary contents");
                 var contentUri = Uri + key + "/all/?X-Plex-Token=";
                 var contentXml = XmlGet.GetXMLTransaction(contentUri);
 
@@ -1460,10 +1440,10 @@ namespace PlexDL.UI
         {
             if (dgvLibrary.SelectedRows.Count == 1 && Flags.IsLibraryFilled)
             {
-                AddToLog("Selection Changed");
+                LoggingHelpers.AddToLog("Selection Changed");
                 //don't re-render the grids when clearing the search; this would end badly for performance reasons.
                 ClearSearch(false);
-                AddToLog("Cleared possible searches");
+                LoggingHelpers.AddToLog("Cleared possible searches");
                 var index = GlobalTables.GetTableIndexFromDGV(dgvLibrary, GlobalTables.SectionsTable);
                 var r = RowGet.GetDataRowLibrary(index);
 
@@ -1628,43 +1608,45 @@ namespace PlexDL.UI
 
         private void DoDownloadAllEpisodes()
         {
-            AddToLog("Awaiting download safety checks");
+            LoggingHelpers.AddToLog("Awaiting download safety checks");
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
-                AddToLog("Download process is starting");
+                LoggingHelpers.AddToLog("Download process is starting");
                 SetProgressLabel("Waiting");
                 Flags.IsDownloadAllEpisodes = true;
                 DownloadTotal = GlobalTables.EpisodesTable.Rows.Count;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();
-                AddToLog("Worker invoke process started");
+                tmrWorkerTimeout.Start();
+                LoggingHelpers.AddToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
             else
             {
-                AddToLog("Download process failed; download is already running.");
+                LoggingHelpers.AddToLog("Download process failed; download is already running.");
             }
         }
 
         private void DoDownloadSelected()
         {
-            AddToLog("Awaiting download safety checks");
+            LoggingHelpers.AddToLog("Awaiting download safety checks");
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
-                AddToLog("Download process is starting");
+                LoggingHelpers.AddToLog("Download process is starting");
                 SetProgressLabel("Waiting");
                 Flags.IsDownloadAllEpisodes = false;
                 DownloadTotal = 1;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();
-                AddToLog("Worker invoke process started");
+                tmrWorkerTimeout.Start();
+                LoggingHelpers.AddToLog("Worker invoke process started");
                 SetDownloadCancel();
             }
             else
             {
-                AddToLog("Download process failed; download is already running.");
+                LoggingHelpers.AddToLog("Download process failed; download is already running.");
             }
         }
 
@@ -1694,7 +1676,7 @@ namespace PlexDL.UI
             {
                 MessageBox.Show("Unrecognised Playback Mode (\"" + GlobalStaticVars.Settings.Player.PlaybackEngine + "\")",
                     "Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                AddToLog("Invalid Playback Mode: " + GlobalStaticVars.Settings.Player.PlaybackEngine);
+                LoggingHelpers.AddToLog("Invalid Playback Mode: " + GlobalStaticVars.Settings.Player.PlaybackEngine);
             }
         }
 
@@ -1952,6 +1934,43 @@ namespace PlexDL.UI
             {
                 MessageBox.Show("Error whilst trying to delete cached data:\n\n" + ex.Message);
                 LoggingHelpers.RecordException(ex.Message, "ClearCacheError");
+                return;
+            }
+        }
+
+        private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabMain.SelectedTab == tabLog)
+            {
+                if (File.Exists(@"Logs\PlexDL.logdel"))
+                {
+                    dgvLog.DataSource = LogFileParser.TableFromFile(@"Logs\PlexDL.logdel", false);
+                }
+                else
+                    dgvLog.DataSource = null;
+            }
+            else
+                dgvLog.DataSource = null;
+        }
+
+        private void tmrWorkerTimeout_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                tmrWorkerTimeout.Stop();
+                if (string.Equals(lblProgress.Text.ToLower(), "waiting"))
+                {
+                    if (wkrGetMetadata.IsBusy)
+                        wkrGetMetadata.Abort();
+                    MessageBox.Show("Failed to get metadata; the worker timed out.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LoggingHelpers.AddToLog("Metadata worker timed out");
+                    SetProgressLabel("Worker Timeout");
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and then ignore
+                LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
                 return;
             }
         }

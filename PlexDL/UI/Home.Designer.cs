@@ -37,13 +37,13 @@ namespace PlexDL.UI
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSaveProfile = new System.Windows.Forms.SaveFileDialog();
             this.fbdSave = new System.Windows.Forms.FolderBrowserDialog();
             this.ofdLoadProfile = new System.Windows.Forms.OpenFileDialog();
             this.wkrDownloadAsync = new System.ComponentModel.BackgroundWorker();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.lstLog = new System.Windows.Forms.ListBox();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
             this.cxtEpisodes = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,19 +72,27 @@ namespace PlexDL.UI
             this.btnDownload = new System.Windows.Forms.Button();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabMovies = new System.Windows.Forms.TabPage();
+            this.tlpMovies = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvContent = new PlexDL.Common.Components.FlatDataGridView();
             this.tabTV = new System.Windows.Forms.TabPage();
             this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
             this.tabLog = new System.Windows.Forms.TabPage();
+            this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpContentOptions = new System.Windows.Forms.TableLayoutPanel();
+            this.pbMain = new System.Windows.Forms.ProgressBar();
+            this.dgvLibrary = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSetDlDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmProfile = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,16 +106,11 @@ namespace PlexDL.UI
             this.itmClearCache = new System.Windows.Forms.ToolStripMenuItem();
             this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
+            this.lblViewing = new System.Windows.Forms.ToolStripLabel();
+            this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
             this.tsSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.lblProgress = new System.Windows.Forms.ToolStripLabel();
-            this.pbMain = new System.Windows.Forms.ProgressBar();
-            this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
-            this.lblViewing = new System.Windows.Forms.ToolStripLabel();
-            this.dgvContent = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvLibrary = new PlexDL.Common.Components.FlatDataGridView();
+            this.tmrWorkerTimeout = new System.Windows.Forms.Timer(this.components);
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -117,18 +120,21 @@ namespace PlexDL.UI
             this.tlpContentOptionsControls.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabMovies.SuspendLayout();
+            this.tlpMovies.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             this.tabTV.SuspendLayout();
             this.tlpTV.SuspendLayout();
-            this.tabLog.SuspendLayout();
-            this.tlpMain.SuspendLayout();
-            this.tlpContentOptions.SuspendLayout();
-            this.menuMain.SuspendLayout();
-            this.tsMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
+            this.tabLog.SuspendLayout();
+            this.tlpLog.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
+            this.tlpMain.SuspendLayout();
+            this.tlpContentOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).BeginInit();
+            this.menuMain.SuspendLayout();
+            this.tsMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // sfdSaveProfile
@@ -145,19 +151,6 @@ namespace PlexDL.UI
             // 
             this.ofdLoadProfile.Filter = "XML Profile|*.prof";
             this.ofdLoadProfile.Title = "Load XML Profile";
-            // 
-            // lstLog
-            // 
-            this.lstLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lstLog.ItemHeight = 16;
-            this.lstLog.Location = new System.Drawing.Point(0, 0);
-            this.lstLog.Margin = new System.Windows.Forms.Padding(2);
-            this.lstLog.Name = "lstLog";
-            this.lstLog.ScrollAlwaysVisible = true;
-            this.lstLog.Size = new System.Drawing.Size(654, 344);
-            this.lstLog.TabIndex = 13;
-            this.tipMain.SetToolTip(this.lstLog, "PlexDL Log");
             // 
             // wkrGetMetadata
             // 
@@ -390,10 +383,11 @@ namespace PlexDL.UI
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(662, 370);
             this.tabMain.TabIndex = 26;
+            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
             // tabMovies
             // 
-            this.tabMovies.Controls.Add(this.dgvContent);
+            this.tabMovies.Controls.Add(this.tlpMovies);
             this.tabMovies.Location = new System.Drawing.Point(4, 22);
             this.tabMovies.Name = "tabMovies";
             this.tabMovies.Padding = new System.Windows.Forms.Padding(3);
@@ -401,6 +395,54 @@ namespace PlexDL.UI
             this.tabMovies.TabIndex = 0;
             this.tabMovies.Text = "Movies";
             this.tabMovies.UseVisualStyleBackColor = true;
+            // 
+            // tlpMovies
+            // 
+            this.tlpMovies.ColumnCount = 1;
+            this.tlpMovies.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMovies.Controls.Add(this.dgvContent, 0, 0);
+            this.tlpMovies.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMovies.Location = new System.Drawing.Point(3, 3);
+            this.tlpMovies.Name = "tlpMovies";
+            this.tlpMovies.RowCount = 1;
+            this.tlpMovies.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMovies.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 338F));
+            this.tlpMovies.Size = new System.Drawing.Size(648, 338);
+            this.tlpMovies.TabIndex = 19;
+            // 
+            // dgvContent
+            // 
+            this.dgvContent.AllowUserToAddRows = false;
+            this.dgvContent.AllowUserToDeleteRows = false;
+            this.dgvContent.AllowUserToOrderColumns = true;
+            this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvContent.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvContent.ErrorText = "Render Error";
+            this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvContent.Location = new System.Drawing.Point(2, 2);
+            this.dgvContent.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvContent.MultiSelect = false;
+            this.dgvContent.Name = "dgvContent";
+            this.dgvContent.RowHeadersVisible = false;
+            this.dgvContent.RowsEmptyText = "No Movies Found";
+            this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvContent.Size = new System.Drawing.Size(644, 334);
+            this.dgvContent.TabIndex = 18;
+            this.dgvContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvContent_CellContentDoubleClick);
+            this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
             // 
             // tabTV
             // 
@@ -431,304 +473,6 @@ namespace PlexDL.UI
             this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpTV.Size = new System.Drawing.Size(648, 338);
             this.tlpTV.TabIndex = 0;
-            // 
-            // tabLog
-            // 
-            this.tabLog.Controls.Add(this.lstLog);
-            this.tabLog.Location = new System.Drawing.Point(4, 22);
-            this.tabLog.Name = "tabLog";
-            this.tabLog.Size = new System.Drawing.Size(654, 344);
-            this.tabLog.TabIndex = 2;
-            this.tabLog.Text = "Log";
-            this.tabLog.UseVisualStyleBackColor = true;
-            // 
-            // tlpMain
-            // 
-            this.tlpMain.ColumnCount = 2;
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.60251F));
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.39749F));
-            this.tlpMain.Controls.Add(this.tlpContentOptions, 0, 0);
-            this.tlpMain.Controls.Add(this.tabMain, 1, 0);
-            this.tlpMain.Controls.Add(this.dgvLibrary, 0, 1);
-            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMain.Location = new System.Drawing.Point(0, 24);
-            this.tlpMain.Name = "tlpMain";
-            this.tlpMain.Padding = new System.Windows.Forms.Padding(4);
-            this.tlpMain.RowCount = 4;
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.Size = new System.Drawing.Size(956, 384);
-            this.tlpMain.TabIndex = 29;
-            this.tlpMain.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpMain_Paint);
-            // 
-            // tlpContentOptions
-            // 
-            this.tlpContentOptions.ColumnCount = 2;
-            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContentOptions.Controls.Add(this.gbStreamControl, 0, 0);
-            this.tlpContentOptions.Controls.Add(this.pbMain, 0, 1);
-            this.tlpContentOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpContentOptions.Location = new System.Drawing.Point(7, 7);
-            this.tlpContentOptions.Name = "tlpContentOptions";
-            this.tlpContentOptions.RowCount = 2;
-            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlpContentOptions.Size = new System.Drawing.Size(274, 88);
-            this.tlpContentOptions.TabIndex = 31;
-            // 
-            // menuMain
-            // 
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmFile,
-            this.itmProfile,
-            this.itmServers,
-            this.itmContent,
-            this.itmLogging,
-            this.itmCaching,
-            this.itmAbout});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(956, 24);
-            this.menuMain.TabIndex = 30;
-            this.menuMain.Text = "menuStrip1";
-            // 
-            // itmFile
-            // 
-            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmExportObj,
-            this.itmSetDlDirectory,
-            this.itmSettings});
-            this.itmFile.Name = "itmFile";
-            this.itmFile.Size = new System.Drawing.Size(37, 20);
-            this.itmFile.Text = "File";
-            // 
-            // itmExportObj
-            // 
-            this.itmExportObj.Name = "itmExportObj";
-            this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmExportObj.Size = new System.Drawing.Size(198, 22);
-            this.itmExportObj.Text = "Export PMXML";
-            this.itmExportObj.Click += new System.EventHandler(this.itmExportObj_Click);
-            // 
-            // itmSetDlDirectory
-            // 
-            this.itmSetDlDirectory.Name = "itmSetDlDirectory";
-            this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
-            this.itmSetDlDirectory.Text = "Set Download Directory";
-            this.itmSetDlDirectory.Click += new System.EventHandler(this.itmSetDlDirectory_Click);
-            // 
-            // itmSettings
-            // 
-            this.itmSettings.Name = "itmSettings";
-            this.itmSettings.Size = new System.Drawing.Size(198, 22);
-            this.itmSettings.Text = "Settings";
-            this.itmSettings.Click += new System.EventHandler(this.itmSettings_Click);
-            // 
-            // itmProfile
-            // 
-            this.itmProfile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmLoadProfile,
-            this.itmSaveProfile});
-            this.itmProfile.Name = "itmProfile";
-            this.itmProfile.Size = new System.Drawing.Size(53, 20);
-            this.itmProfile.Text = "Profile";
-            // 
-            // itmLoadProfile
-            // 
-            this.itmLoadProfile.Name = "itmLoadProfile";
-            this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmLoadProfile.Size = new System.Drawing.Size(143, 22);
-            this.itmLoadProfile.Text = "Load";
-            this.itmLoadProfile.Click += new System.EventHandler(this.itmLoadProfile_Click);
-            // 
-            // itmSaveProfile
-            // 
-            this.itmSaveProfile.Name = "itmSaveProfile";
-            this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(143, 22);
-            this.itmSaveProfile.Text = "Save";
-            this.itmSaveProfile.Click += new System.EventHandler(this.itmSaveProfile_Click);
-            // 
-            // itmServers
-            // 
-            this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmServerManager,
-            this.itmDisconnect});
-            this.itmServers.Name = "itmServers";
-            this.itmServers.Size = new System.Drawing.Size(56, 20);
-            this.itmServers.Text = "Servers";
-            // 
-            // itmServerManager
-            // 
-            this.itmServerManager.Name = "itmServerManager";
-            this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.itmServerManager.Size = new System.Drawing.Size(198, 22);
-            this.itmServerManager.Text = "Server Manager";
-            this.itmServerManager.Click += new System.EventHandler(this.itmServerManager_Click);
-            // 
-            // itmDisconnect
-            // 
-            this.itmDisconnect.Enabled = false;
-            this.itmDisconnect.Name = "itmDisconnect";
-            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
-            this.itmDisconnect.Text = "Disconnect";
-            this.itmDisconnect.Click += new System.EventHandler(this.itmDisconnect_Click);
-            // 
-            // itmContent
-            // 
-            this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmMetadata,
-            this.itmStartSearch});
-            this.itmContent.Name = "itmContent";
-            this.itmContent.Size = new System.Drawing.Size(62, 20);
-            this.itmContent.Text = "Content";
-            // 
-            // itmMetadata
-            // 
-            this.itmMetadata.Name = "itmMetadata";
-            this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
-            this.itmMetadata.Text = "Metadata";
-            this.itmMetadata.Click += new System.EventHandler(this.itmMetadata_Click);
-            // 
-            // itmStartSearch
-            // 
-            this.itmStartSearch.Name = "itmStartSearch";
-            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
-            this.itmStartSearch.Text = "Start Search";
-            this.itmStartSearch.Click += new System.EventHandler(this.itmStartSearch_Click);
-            // 
-            // itmLogging
-            // 
-            this.itmLogging.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmLogViewer});
-            this.itmLogging.Name = "itmLogging";
-            this.itmLogging.Size = new System.Drawing.Size(63, 20);
-            this.itmLogging.Text = "Logging";
-            // 
-            // itmLogViewer
-            // 
-            this.itmLogViewer.Name = "itmLogViewer";
-            this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
-            this.itmLogViewer.Text = "Log Viewer";
-            this.itmLogViewer.Click += new System.EventHandler(this.itmLogViewer_Click);
-            // 
-            // itmCaching
-            // 
-            this.itmCaching.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmCacheMetrics,
-            this.itmClearCache});
-            this.itmCaching.Name = "itmCaching";
-            this.itmCaching.Size = new System.Drawing.Size(63, 20);
-            this.itmCaching.Text = "Caching";
-            // 
-            // itmCacheMetrics
-            // 
-            this.itmCacheMetrics.Name = "itmCacheMetrics";
-            this.itmCacheMetrics.Size = new System.Drawing.Size(180, 22);
-            this.itmCacheMetrics.Text = "Metrics";
-            this.itmCacheMetrics.Click += new System.EventHandler(this.itmCacheMetrics_Click);
-            // 
-            // itmClearCache
-            // 
-            this.itmClearCache.Name = "itmClearCache";
-            this.itmClearCache.Size = new System.Drawing.Size(180, 22);
-            this.itmClearCache.Text = "Clear Cache";
-            this.itmClearCache.Click += new System.EventHandler(this.itmClearCache_Click);
-            // 
-            // itmAbout
-            // 
-            this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(52, 20);
-            this.itmAbout.Text = "About";
-            this.itmAbout.Click += new System.EventHandler(this.itmAbout_Click);
-            // 
-            // tsMain
-            // 
-            this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblViewing,
-            this.lblViewingValue,
-            this.tsSeparator1,
-            this.lblProgress});
-            this.tsMain.Location = new System.Drawing.Point(0, 408);
-            this.tsMain.Name = "tsMain";
-            this.tsMain.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.tsMain.Size = new System.Drawing.Size(956, 25);
-            this.tsMain.TabIndex = 31;
-            this.tsMain.Text = "toolStrip1";
-            // 
-            // tsSeparator1
-            // 
-            this.tsSeparator1.Name = "tsSeparator1";
-            this.tsSeparator1.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(26, 20);
-            this.lblProgress.Text = "Idle";
-            // 
-            // pbMain
-            // 
-            this.tlpContentOptions.SetColumnSpan(this.pbMain, 2);
-            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbMain.Location = new System.Drawing.Point(3, 64);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(268, 21);
-            this.pbMain.TabIndex = 34;
-            // 
-            // lblViewingValue
-            // 
-            this.lblViewingValue.Name = "lblViewingValue";
-            this.lblViewingValue.Size = new System.Drawing.Size(24, 20);
-            this.lblViewingValue.Text = "0/0";
-            // 
-            // lblViewing
-            // 
-            this.lblViewing.Name = "lblViewing";
-            this.lblViewing.Size = new System.Drawing.Size(52, 20);
-            this.lblViewing.Text = "Viewing:";
-            // 
-            // dgvContent
-            // 
-            this.dgvContent.AllowUserToAddRows = false;
-            this.dgvContent.AllowUserToDeleteRows = false;
-            this.dgvContent.AllowUserToOrderColumns = true;
-            this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvContent.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvContent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvContent.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvContent.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvContent.ErrorText = "Render Error";
-            this.dgvContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvContent.Location = new System.Drawing.Point(3, 3);
-            this.dgvContent.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvContent.MultiSelect = false;
-            this.dgvContent.Name = "dgvContent";
-            this.dgvContent.RowHeadersVisible = false;
-            this.dgvContent.RowsEmptyText = "No Movies Found";
-            this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvContent.Size = new System.Drawing.Size(648, 338);
-            this.dgvContent.TabIndex = 18;
-            this.dgvContent.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvContent_CellContentDoubleClick);
-            this.dgvContent.SelectionChanged += new System.EventHandler(this.DgvContent_OnRowChange);
             // 
             // dgvTVShows
             // 
@@ -830,6 +574,108 @@ namespace PlexDL.UI
             this.dgvEpisodes.TabIndex = 21;
             this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvEpisodes_CellContentDoubleClick);
             // 
+            // tabLog
+            // 
+            this.tabLog.Controls.Add(this.tlpLog);
+            this.tabLog.Location = new System.Drawing.Point(4, 22);
+            this.tabLog.Name = "tabLog";
+            this.tabLog.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLog.Size = new System.Drawing.Size(654, 344);
+            this.tabLog.TabIndex = 2;
+            this.tabLog.Text = "Log";
+            this.tabLog.UseVisualStyleBackColor = true;
+            // 
+            // tlpLog
+            // 
+            this.tlpLog.ColumnCount = 1;
+            this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLog.Controls.Add(this.dgvLog, 0, 0);
+            this.tlpLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpLog.Location = new System.Drawing.Point(3, 3);
+            this.tlpLog.Name = "tlpLog";
+            this.tlpLog.RowCount = 1;
+            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpLog.Size = new System.Drawing.Size(648, 338);
+            this.tlpLog.TabIndex = 1;
+            // 
+            // dgvLog
+            // 
+            this.dgvLog.AllowUserToAddRows = false;
+            this.dgvLog.AllowUserToDeleteRows = false;
+            this.dgvLog.AllowUserToOrderColumns = true;
+            this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLog.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvLog.ErrorText = "Render Error";
+            this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvLog.Location = new System.Drawing.Point(3, 3);
+            this.dgvLog.MultiSelect = false;
+            this.dgvLog.Name = "dgvLog";
+            this.dgvLog.RowHeadersVisible = false;
+            this.dgvLog.RowsEmptyText = "No Log Data";
+            this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLog.Size = new System.Drawing.Size(642, 332);
+            this.dgvLog.TabIndex = 0;
+            // 
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.60251F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.39749F));
+            this.tlpMain.Controls.Add(this.tlpContentOptions, 0, 0);
+            this.tlpMain.Controls.Add(this.tabMain, 1, 0);
+            this.tlpMain.Controls.Add(this.dgvLibrary, 0, 1);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(0, 24);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.Padding = new System.Windows.Forms.Padding(4);
+            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.Size = new System.Drawing.Size(956, 384);
+            this.tlpMain.TabIndex = 29;
+            this.tlpMain.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpMain_Paint);
+            // 
+            // tlpContentOptions
+            // 
+            this.tlpContentOptions.ColumnCount = 2;
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpContentOptions.Controls.Add(this.gbStreamControl, 0, 0);
+            this.tlpContentOptions.Controls.Add(this.pbMain, 0, 1);
+            this.tlpContentOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpContentOptions.Location = new System.Drawing.Point(7, 7);
+            this.tlpContentOptions.Name = "tlpContentOptions";
+            this.tlpContentOptions.RowCount = 2;
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpContentOptions.Size = new System.Drawing.Size(274, 88);
+            this.tlpContentOptions.TabIndex = 31;
+            // 
+            // pbMain
+            // 
+            this.tlpContentOptions.SetColumnSpan(this.pbMain, 2);
+            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbMain.Location = new System.Drawing.Point(3, 64);
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(268, 21);
+            this.pbMain.TabIndex = 34;
+            // 
             // dgvLibrary
             // 
             this.dgvLibrary.AllowUserToAddRows = false;
@@ -840,14 +686,14 @@ namespace PlexDL.UI
             this.dgvLibrary.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLibrary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLibrary.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvLibrary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLibrary.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLibrary.ErrorText = "Render Error";
@@ -863,6 +709,211 @@ namespace PlexDL.UI
             this.dgvLibrary.Size = new System.Drawing.Size(276, 278);
             this.dgvLibrary.TabIndex = 16;
             this.dgvLibrary.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmFile,
+            this.itmServers,
+            this.itmContent,
+            this.itmLogging,
+            this.itmCaching,
+            this.itmAbout});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(956, 24);
+            this.menuMain.TabIndex = 30;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // itmFile
+            // 
+            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLoadProfile,
+            this.itmSaveProfile,
+            this.itmExportObj,
+            this.itmSetDlDirectory,
+            this.itmSettings});
+            this.itmFile.Name = "itmFile";
+            this.itmFile.Size = new System.Drawing.Size(37, 20);
+            this.itmFile.Text = "File";
+            // 
+            // itmLoadProfile
+            // 
+            this.itmLoadProfile.Name = "itmLoadProfile";
+            this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.itmLoadProfile.Size = new System.Drawing.Size(198, 22);
+            this.itmLoadProfile.Text = "Load";
+            this.itmLoadProfile.Click += new System.EventHandler(this.itmLoadProfile_Click);
+            // 
+            // itmSaveProfile
+            // 
+            this.itmSaveProfile.Name = "itmSaveProfile";
+            this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.itmSaveProfile.Size = new System.Drawing.Size(198, 22);
+            this.itmSaveProfile.Text = "Save";
+            this.itmSaveProfile.Click += new System.EventHandler(this.itmSaveProfile_Click);
+            // 
+            // itmExportObj
+            // 
+            this.itmExportObj.Name = "itmExportObj";
+            this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.itmExportObj.Size = new System.Drawing.Size(198, 22);
+            this.itmExportObj.Text = "Export";
+            this.itmExportObj.Click += new System.EventHandler(this.itmExportObj_Click);
+            // 
+            // itmSetDlDirectory
+            // 
+            this.itmSetDlDirectory.Name = "itmSetDlDirectory";
+            this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
+            this.itmSetDlDirectory.Text = "Set Download Directory";
+            this.itmSetDlDirectory.Click += new System.EventHandler(this.itmSetDlDirectory_Click);
+            // 
+            // itmSettings
+            // 
+            this.itmSettings.Name = "itmSettings";
+            this.itmSettings.Size = new System.Drawing.Size(198, 22);
+            this.itmSettings.Text = "Settings";
+            this.itmSettings.Click += new System.EventHandler(this.itmSettings_Click);
+            // 
+            // itmServers
+            // 
+            this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmServerManager,
+            this.itmDisconnect});
+            this.itmServers.Name = "itmServers";
+            this.itmServers.Size = new System.Drawing.Size(56, 20);
+            this.itmServers.Text = "Servers";
+            // 
+            // itmServerManager
+            // 
+            this.itmServerManager.Name = "itmServerManager";
+            this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.itmServerManager.Size = new System.Drawing.Size(198, 22);
+            this.itmServerManager.Text = "Server Manager";
+            this.itmServerManager.Click += new System.EventHandler(this.itmServerManager_Click);
+            // 
+            // itmDisconnect
+            // 
+            this.itmDisconnect.Enabled = false;
+            this.itmDisconnect.Name = "itmDisconnect";
+            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
+            this.itmDisconnect.Text = "Disconnect";
+            this.itmDisconnect.Click += new System.EventHandler(this.itmDisconnect_Click);
+            // 
+            // itmContent
+            // 
+            this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmMetadata,
+            this.itmStartSearch});
+            this.itmContent.Name = "itmContent";
+            this.itmContent.Size = new System.Drawing.Size(62, 20);
+            this.itmContent.Text = "Content";
+            // 
+            // itmMetadata
+            // 
+            this.itmMetadata.Name = "itmMetadata";
+            this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
+            this.itmMetadata.Text = "Metadata";
+            this.itmMetadata.Click += new System.EventHandler(this.itmMetadata_Click);
+            // 
+            // itmStartSearch
+            // 
+            this.itmStartSearch.Name = "itmStartSearch";
+            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
+            this.itmStartSearch.Text = "Start Search";
+            this.itmStartSearch.Click += new System.EventHandler(this.itmStartSearch_Click);
+            // 
+            // itmLogging
+            // 
+            this.itmLogging.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLogViewer});
+            this.itmLogging.Name = "itmLogging";
+            this.itmLogging.Size = new System.Drawing.Size(63, 20);
+            this.itmLogging.Text = "Logging";
+            // 
+            // itmLogViewer
+            // 
+            this.itmLogViewer.Name = "itmLogViewer";
+            this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
+            this.itmLogViewer.Text = "Log Viewer";
+            this.itmLogViewer.Click += new System.EventHandler(this.itmLogViewer_Click);
+            // 
+            // itmCaching
+            // 
+            this.itmCaching.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCacheMetrics,
+            this.itmClearCache});
+            this.itmCaching.Name = "itmCaching";
+            this.itmCaching.Size = new System.Drawing.Size(63, 20);
+            this.itmCaching.Text = "Caching";
+            // 
+            // itmCacheMetrics
+            // 
+            this.itmCacheMetrics.Name = "itmCacheMetrics";
+            this.itmCacheMetrics.Size = new System.Drawing.Size(137, 22);
+            this.itmCacheMetrics.Text = "Metrics";
+            this.itmCacheMetrics.Click += new System.EventHandler(this.itmCacheMetrics_Click);
+            // 
+            // itmClearCache
+            // 
+            this.itmClearCache.Name = "itmClearCache";
+            this.itmClearCache.Size = new System.Drawing.Size(137, 22);
+            this.itmClearCache.Text = "Clear Cache";
+            this.itmClearCache.Click += new System.EventHandler(this.itmClearCache_Click);
+            // 
+            // itmAbout
+            // 
+            this.itmAbout.Name = "itmAbout";
+            this.itmAbout.Size = new System.Drawing.Size(52, 20);
+            this.itmAbout.Text = "About";
+            this.itmAbout.Click += new System.EventHandler(this.itmAbout_Click);
+            // 
+            // tsMain
+            // 
+            this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblViewing,
+            this.lblViewingValue,
+            this.tsSeparator1,
+            this.lblProgress});
+            this.tsMain.Location = new System.Drawing.Point(0, 408);
+            this.tsMain.Name = "tsMain";
+            this.tsMain.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.tsMain.Size = new System.Drawing.Size(956, 25);
+            this.tsMain.TabIndex = 31;
+            this.tsMain.Text = "toolStrip1";
+            // 
+            // lblViewing
+            // 
+            this.lblViewing.Name = "lblViewing";
+            this.lblViewing.Size = new System.Drawing.Size(52, 20);
+            this.lblViewing.Text = "Viewing:";
+            // 
+            // lblViewingValue
+            // 
+            this.lblViewingValue.Name = "lblViewingValue";
+            this.lblViewingValue.Size = new System.Drawing.Size(24, 20);
+            this.lblViewingValue.Text = "0/0";
+            // 
+            // tsSeparator1
+            // 
+            this.tsSeparator1.Name = "tsSeparator1";
+            this.tsSeparator1.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(26, 20);
+            this.lblProgress.Text = "Idle";
+            // 
+            // tmrWorkerTimeout
+            // 
+            this.tmrWorkerTimeout.Interval = 3000;
+            this.tmrWorkerTimeout.Tick += new System.EventHandler(this.tmrWorkerTimeout_Tick);
             // 
             // Home
             // 
@@ -891,20 +942,23 @@ namespace PlexDL.UI
             this.tlpContentOptionsControls.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMovies.ResumeLayout(false);
+            this.tlpMovies.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
             this.tabTV.ResumeLayout(false);
             this.tlpTV.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             this.tabLog.ResumeLayout(false);
+            this.tlpLog.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.tlpMain.ResumeLayout(false);
             this.tlpContentOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -952,13 +1006,11 @@ namespace PlexDL.UI
         private Common.Components.FlatDataGridView dgvSeasons;
         private Common.Components.FlatDataGridView dgvEpisodes;
         private System.Windows.Forms.TabPage tabLog;
-        private System.Windows.Forms.ListBox lstLog;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.MenuStrip menuMain;
         private System.Windows.Forms.ToolStripMenuItem itmFile;
         private System.Windows.Forms.ToolStripMenuItem itmExportObj;
         private System.Windows.Forms.ToolStripMenuItem itmSetDlDirectory;
-        private System.Windows.Forms.ToolStripMenuItem itmProfile;
         private System.Windows.Forms.ToolStripMenuItem itmLoadProfile;
         private System.Windows.Forms.ToolStripMenuItem itmSaveProfile;
         private System.Windows.Forms.ToolStripMenuItem itmServers;
@@ -982,6 +1034,10 @@ namespace PlexDL.UI
         private System.Windows.Forms.ProgressBar pbMain;
         private System.Windows.Forms.ToolStripLabel lblViewingValue;
         private System.Windows.Forms.ToolStripLabel lblViewing;
+        private System.Windows.Forms.Timer tmrWorkerTimeout;
+        private Common.Components.FlatDataGridView dgvLog;
+        private System.Windows.Forms.TableLayoutPanel tlpLog;
+        private System.Windows.Forms.TableLayoutPanel tlpMovies;
     }
 }
 

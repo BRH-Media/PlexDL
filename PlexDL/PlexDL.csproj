@@ -157,8 +157,6 @@
     <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />
     <Compile Include="Common\Renderers\GenericRenderer.cs" />
     <Compile Include="Common\Renderers\RenderStruct.cs" />
-    <Compile Include="Common\Renderers\RenderWorkers\ContentRenderWorker.cs" />
-    <Compile Include="Common\Renderers\RenderWorkers\ServerRenderWorker.cs" />
     <Compile Include="Common\SearchFramework\SearchOptions.cs" />
     <Compile Include="Common\SVarController.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
