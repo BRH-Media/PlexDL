@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: File a bug report for PlexDL
-title: ''
+title: "[BUG]"
 labels: ''
 assignees: ''
 
