@@ -1,11 +1,14 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace PlexDL.UI
 {
     partial class Metadata
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -454,35 +457,35 @@
         }
 
         #endregion
-        private System.Windows.Forms.FlowLayoutPanel flpActors;
-        private System.Windows.Forms.Label lblSize;
-        private System.Windows.Forms.Label lblSizeValue;
-        private System.Windows.Forms.Label lblRuntime;
-        private System.Windows.Forms.Label lblRuntimeValue;
-        private System.Windows.Forms.Label lblGenre;
-        private System.Windows.Forms.Label lblGenreValue;
-        private System.Windows.Forms.Label lblResolutionValue;
-        private System.Windows.Forms.Label lblResolution;
-        private System.Windows.Forms.PictureBox picPoster;
-        private System.Windows.Forms.SaveFileDialog sfdExport;
-        private System.Windows.Forms.OpenFileDialog ofdImport;
-        private System.Windows.Forms.Label lblContainerValue;
-        private System.Windows.Forms.Label lblContainer;
-        private System.Windows.Forms.ToolTip tipMain;
-        private System.Windows.Forms.GroupBox gbPlot;
-        private System.Windows.Forms.TextBox txtPlotSynopsis;
-        private System.Windows.Forms.GroupBox gbStarring;
-        private System.Windows.Forms.GroupBox gbMetadata;
-        private System.Windows.Forms.TableLayoutPanel tlpMetadata;
-        private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem itmFile;
-        private System.Windows.Forms.ToolStripMenuItem itmImport;
-        private System.Windows.Forms.ToolStripMenuItem itmExport;
-        private System.Windows.Forms.ToolStripMenuItem itmStream;
-        private System.Windows.Forms.ToolStripMenuItem itmPvs;
-        private System.Windows.Forms.ToolStripMenuItem itmBrowser;
-        private System.Windows.Forms.ToolStripMenuItem itmVlc;
-        private System.Windows.Forms.ToolStripMenuItem itmExit;
+        private FlowLayoutPanel flpActors;
+        private Label lblSize;
+        private Label lblSizeValue;
+        private Label lblRuntime;
+        private Label lblRuntimeValue;
+        private Label lblGenre;
+        private Label lblGenreValue;
+        private Label lblResolutionValue;
+        private Label lblResolution;
+        private PictureBox picPoster;
+        private SaveFileDialog sfdExport;
+        private OpenFileDialog ofdImport;
+        private Label lblContainerValue;
+        private Label lblContainer;
+        private ToolTip tipMain;
+        private GroupBox gbPlot;
+        private TextBox txtPlotSynopsis;
+        private GroupBox gbStarring;
+        private GroupBox gbMetadata;
+        private TableLayoutPanel tlpMetadata;
+        private TableLayoutPanel tlpMain;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmFile;
+        private ToolStripMenuItem itmImport;
+        private ToolStripMenuItem itmExport;
+        private ToolStripMenuItem itmStream;
+        private ToolStripMenuItem itmPvs;
+        private ToolStripMenuItem itmBrowser;
+        private ToolStripMenuItem itmVlc;
+        private ToolStripMenuItem itmExit;
     }
 }

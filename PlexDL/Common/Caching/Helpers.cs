@@ -1,14 +1,15 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using System;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {
     public static class Helpers
     {
-        public static string CalculateMD5Hash(string input)
+        public static string CalculateMd5Hash(string input)
         {
             // step 1, calculate MD5 hash from input
             var md5 = MD5.Create();
@@ -27,20 +28,19 @@ namespace PlexDL.Common.Caching
         {
             try
             {
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                        CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb");
-                if (!System.IO.Directory.Exists(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml"))
-                    System.IO.Directory.CreateDirectory(@"cache\" + CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
-                                                        CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml");
+                if (!Directory.Exists(@"cache\" + CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                      CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb"))
+                    Directory.CreateDirectory(@"cache\" + CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                              CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\thumb");
+                if (!Directory.Exists(@"cache\" + CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                      CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml"))
+                    Directory.CreateDirectory(@"cache\" + CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) + @"\" +
+                                              CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress) + @"\xml");
             }
             catch (Exception ex)
             {
                 //log the error and exit
                 LoggingHelpers.RecordException(ex.Message, "CacheDirBuildError");
-                return;
             }
         }
     }

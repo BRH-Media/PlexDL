@@ -33,6 +33,6 @@
         /// <summary>
         /// The duration of the playing media from its start time to its stop time.
         /// </summary>
-        StartToStop,
+        StartToStop
     }
 }

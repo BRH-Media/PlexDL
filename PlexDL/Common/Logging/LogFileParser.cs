@@ -16,7 +16,7 @@ namespace PlexDL.Common.Logging
                 if (File.Exists(fileName))
                 {
                     table = new DataTable();
-                    DataColumn lineNumber = new DataColumn()
+                    DataColumn lineNumber = new DataColumn
                     {
                         ColumnName = "Line",
                         Caption = "Line",
@@ -33,10 +33,10 @@ namespace PlexDL.Common.Logging
                             var headerCount = 0;
                             foreach (var i in arrSplit)
                             {
-                                DataColumn c = new DataColumn()
+                                DataColumn c = new DataColumn
                                 {
-                                    ColumnName = "field" + headerCount.ToString(),
-                                    Caption = "field" + headerCount.ToString(),
+                                    ColumnName = "field" + headerCount,
+                                    Caption = "field" + headerCount,
                                     DataType = typeof(string)
                                 };
                                 table.Columns.Add(c);
@@ -53,7 +53,7 @@ namespace PlexDL.Common.Logging
                             //Add headers to datagridview
                             foreach (var item in arrSplit)
                             {
-                                DataColumn c = new DataColumn()
+                                DataColumn c = new DataColumn
                                 {
                                     ColumnName = item,
                                     Caption = item,

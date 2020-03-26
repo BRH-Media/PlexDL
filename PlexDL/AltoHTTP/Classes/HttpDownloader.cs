@@ -1,12 +1,12 @@
-﻿using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {
@@ -83,11 +83,11 @@ namespace PlexDL.AltoHTTP.Classes
             private set
             {
                 progress = value;
-                oprtor.Post(new SendOrPostCallback(delegate
+                oprtor.Post(delegate
                 {
                     if (DownloadProgressChanged != null)
                         DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(progress, speed));
-                }), null);
+                }, null);
             }
         }
 
@@ -116,23 +116,23 @@ namespace PlexDL.AltoHTTP.Classes
             {
                 state = value;
                 if (state == DownloadState.Completed && DownloadCompleted != null)
-                    oprtor.Post(new SendOrPostCallback(delegate
+                    oprtor.Post(delegate
                     {
                         if (DownloadCompleted != null)
                             DownloadCompleted(this, EventArgs.Empty);
-                    }), null);
+                    }, null);
                 else if (state == DownloadState.Cancelled && DownloadCancelled != null)
-                    oprtor.Post(new SendOrPostCallback(delegate
+                    oprtor.Post(delegate
                     {
                         if (DownloadCancelled != null)
                             DownloadCancelled(this, EventArgs.Empty);
-                    }), null);
+                    }, null);
                 else if (state == DownloadState.ErrorOccured && DownloadError != null)
-                    oprtor.Post(new SendOrPostCallback(delegate
+                    oprtor.Post(delegate
                     {
                         if (DownloadError != null)
                             DownloadError(this, EventArgs.Empty);
-                    }), null);
+                    }, null);
             }
         }
 
@@ -178,10 +178,10 @@ namespace PlexDL.AltoHTTP.Classes
                     contentLength = resp.ContentLength;
                     acceptRange = GetAcceptRangeHeaderValue();
                     if (HeadersReceived != null)
-                        oprtor.Post(new SendOrPostCallback(delegate
+                        oprtor.Post(delegate
                         {
                             HeadersReceived(this, EventArgs.Empty);
-                        }), null);
+                        }, null);
                 }
             }
             catch
@@ -221,7 +221,7 @@ namespace PlexDL.AltoHTTP.Classes
                 file.Flush();
                 bytesReceived += bytesRead;
                 speedBytes += bytesRead;
-                Progress = progress = (double)((double)bytesReceived * 100 / (double)contentLength);
+                Progress = progress = (double)bytesReceived * 100 / contentLength;
                 speed = (int)(speedBytes / 1.0 / stpWatch.Elapsed.TotalSeconds);
             }
 
@@ -277,7 +277,7 @@ namespace PlexDL.AltoHTTP.Classes
             state = DownloadState.Started;
             Task.Run(() =>
             {
-                Download((int)bytesReceived, true);
+                Download(bytesReceived, true);
             });
         }
 

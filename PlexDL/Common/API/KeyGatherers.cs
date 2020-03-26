@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Logging;
-using System.Xml;
+﻿using System.Xml;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.API
 {
@@ -14,7 +14,7 @@ namespace PlexDL.Common.API
                 while (reader.Read())
                     if (reader.IsStartElement())
                         //return only when you have START tag
-                        switch (reader.Name.ToString())
+                        switch (reader.Name)
                         {
                             case "Directory":
                                 if (reader.GetAttribute("title") == "library")
@@ -42,7 +42,7 @@ namespace PlexDL.Common.API
                     {
                         LoggingHelpers.AddToLog("Checking for directories");
 
-                        switch (reader.Name.ToString())
+                        switch (reader.Name)
                         {
                             case "Directory":
                                 if (reader.GetAttribute("title") == "Library Sections")

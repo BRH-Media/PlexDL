@@ -1,9 +1,9 @@
-﻿using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {
@@ -81,7 +81,7 @@ namespace PlexDL.AltoHTTP.Classes
             for (var i = 0; i < elements.Count; i++)
                 if (elements[i].Equals(currentElement))
                 {
-                    elements[i] = new QueueElement()
+                    elements[i] = new QueueElement
                     {
                         Id = elements[i].Id,
                         Url = elements[i].Url,
@@ -100,7 +100,7 @@ namespace PlexDL.AltoHTTP.Classes
             for (var i = 0; i < elements.Count; i++)
                 if (elements[i].Equals(currentElement))
                 {
-                    elements[i] = new QueueElement()
+                    elements[i] = new QueueElement
                     {
                         Id = elements[i].Id,
                         Url = elements[i].Url,
@@ -194,7 +194,7 @@ namespace PlexDL.AltoHTTP.Classes
         /// <param name="destPath">The destination path to save the downloaded file</param>
         public void Add(string url, string destPath)
         {
-            elements.Add(new QueueElement()
+            elements.Add(new QueueElement
             {
                 Id = Guid.NewGuid().ToString(),
                 Url = url,
@@ -211,7 +211,7 @@ namespace PlexDL.AltoHTTP.Classes
             if (elements[index].Equals(currentElement) && downloader != null)
             {
                 downloader.Cancel();
-                currentElement = new QueueElement()
+                currentElement = new QueueElement
                 {
                     Url = ""
                 };

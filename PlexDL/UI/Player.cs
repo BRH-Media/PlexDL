@@ -1,4 +1,8 @@
-﻿using PlexDL.Common;
+﻿using System;
+using System.Data;
+using System.Windows.Forms;
+using System.Xml;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
@@ -6,10 +10,8 @@ using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Player;
-using System;
-using System.Data;
-using System.Windows.Forms;
-using System.Xml;
+using PlexDL.Properties;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.UI
 {
@@ -39,7 +41,7 @@ namespace PlexDL.UI
         private void FrmPlayer_Load(object sender, EventArgs e)
         {
             string FormTitle = StreamingContent.StreamInformation.ContentTitle;
-            this.Text = FormTitle;
+            Text = FormTitle;
             //player.URL = StreamingContent.StreamUrl;
 
             if (!PlexDL.Player.Player.MFPresent)
@@ -47,7 +49,7 @@ namespace PlexDL.UI
                 MessageBox.Show("MediaFoundation is not installed. The player will not be able to stream the selected content :(", "System Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 CanFadeOut = false;
-                this.Close();
+                Close();
             }
 
             if (StreamingContent.StreamInformation.Container == "mkv")
@@ -60,21 +62,21 @@ namespace PlexDL.UI
 
                 if (msg == DialogResult.No)
                 {
-                    this.Close();
+                    Close();
                 }
                 else
                 {
                     try
                     {
-                        VLCLauncher.LaunchVLC(StreamingContent);
-                        this.Close();
+                        VlcLauncher.LaunchVlc(StreamingContent);
+                        Close();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK,
+                        MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex, "Launch Error", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
                         LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
-                        this.Close();
+                        Close();
                     }
                 }
             }
@@ -110,29 +112,34 @@ namespace PlexDL.UI
                     PlayPause();
                     return true;
                 }
-                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipForward))
+
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipForward))
                 {
                     SkipForward();
                     return true;
                 }
-                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward))
+
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward))
                 {
                     SkipBack();
                     return true;
                 }
-                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.NextTitle))
+
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.NextTitle))
                 {
                     Stop();
                     NextTitle();
                     return true;
                 }
-                else if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle))
+
+                if (keyData == (GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle))
                 {
                     Stop();
                     PrevTitle();
                     return true;
                 }
-                else if (keyData == Keys.Escape)
+
+                if (keyData == Keys.Escape)
                 {
                     if (mPlayer.FullScreen)
                     {
@@ -208,20 +215,17 @@ namespace PlexDL.UI
 
         private void Play(string FileName)
         {
-            PlexDL.WaitWindow.WaitWindow.Show(PlayWorker, "Loading Stream", new object[]
-            {
-                FileName
-            });
+            WaitWindow.WaitWindow.Show(PlayWorker, "Loading Stream", FileName);
         }
 
         private void SetIconPause()
         {
-            btnPlayPause.BackgroundImage = Properties.Resources.baseline_pause_black_18dp;
+            btnPlayPause.BackgroundImage = Resources.baseline_pause_black_18dp;
         }
 
         private void SetIconPlay()
         {
-            btnPlayPause.BackgroundImage = Properties.Resources.baseline_play_arrow_black_18dp;
+            btnPlayPause.BackgroundImage = Resources.baseline_play_arrow_black_18dp;
         }
 
         /*
@@ -266,10 +270,7 @@ namespace PlexDL.UI
             if (pnlPlayer.InvokeRequired)
             {
                 var d = new SafePlayDelegate(StartPlayer);
-                pnlPlayer.Invoke(d, new object[]
-                {
-                    fileName
-                });
+                pnlPlayer.Invoke(d, fileName);
             }
             else
             {
@@ -277,7 +278,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void PlayWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void PlayWorker(object sender, WaitWindowEventArgs e)
         {
             if (!mPlayer.Playing)
             {
@@ -289,9 +290,9 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    if (this.InvokeRequired)
+                    if (InvokeRequired)
                     {
-                        this.BeginInvoke((MethodInvoker)delegate
+                        BeginInvoke((MethodInvoker)delegate
                         {
                             MessageBox.Show("Couldn't load the stream because the remote file doesn't exist or returned an error", "Network Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -312,13 +313,11 @@ namespace PlexDL.UI
             {
                 return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
             }
-            else
-            {
-                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/";
-            }
+
+            return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/";
         }
 
-        private void GetObjectFromIndexCallback(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void GetObjectFromIndexCallback(object sender, WaitWindowEventArgs e)
         {
             int index = (int)e.Arguments[0];
             e.Result = GetObjectFromIndexWorker(index);
@@ -326,10 +325,7 @@ namespace PlexDL.UI
 
         private PlexMovie GetObjectFromIndex(int index)
         {
-            PlexMovie result = (PlexMovie)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromIndexCallback, "Getting Metadata", new object[]
-            {
-                index
-            });
+            PlexMovie result = (PlexMovie)WaitWindow.WaitWindow.Show(GetObjectFromIndexCallback, "Getting Metadata", index);
             return result;
         }
 
@@ -355,16 +351,14 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
-                XmlDocument reply = XmlGet.GetXMLTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+                XmlDocument reply = XmlGet.GetXmlTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
 
                 obj = GetContentDownloadInfo_Xml(reply);
                 return obj;
             }
-            else
-            {
-                MessageBox.Show("Index was higher than row count; could not process data.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return new DownloadInfo();
-            }
+
+            MessageBox.Show("Index was higher than row count; could not process data.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return new DownloadInfo();
         }
 
         private DownloadInfo GetContentDownloadInfo_Xml(XmlDocument xml)
@@ -393,7 +387,7 @@ namespace PlexDL.UI
             string container = partRow["container"].ToString();
             long byteLength = Convert.ToInt64(partRow["size"]);
             int contentDuration = Convert.ToInt32(partRow["duration"]);
-            string fileName = Common.Methods.RemoveIllegalCharacters(title + "." + container);
+            string fileName = Methods.RemoveIllegalCharacters(title + "." + container);
 
             string link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
             obj.Link = link;
@@ -414,8 +408,8 @@ namespace PlexDL.UI
                 PlexMovie next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
                 StreamingContent = next;
                 string FormTitle = StreamingContent.StreamInformation.ContentTitle;
-                this.Text = FormTitle;
-                this.Refresh();
+                Text = FormTitle;
+                Refresh();
                 //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else if ((StreamingContent.StreamIndex + 1) == TitlesTable.Rows.Count)
@@ -423,8 +417,8 @@ namespace PlexDL.UI
                 PlexMovie next = GetObjectFromIndex(0);
                 StreamingContent = next;
                 string FormTitle = StreamingContent.StreamInformation.ContentTitle;
-                this.Text = FormTitle;
-                this.Refresh();
+                Text = FormTitle;
+                Refresh();
                 //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
@@ -436,8 +430,8 @@ namespace PlexDL.UI
                 PlexMovie next = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
                 StreamingContent = next;
                 string FormTitle = StreamingContent.StreamInformation.ContentTitle;
-                this.Text = FormTitle;
-                this.Refresh();
+                Text = FormTitle;
+                Refresh();
                 //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else
@@ -445,8 +439,8 @@ namespace PlexDL.UI
                 PlexMovie next = GetObjectFromIndex(TitlesTable.Rows.Count - 1);
                 StreamingContent = next;
                 string FormTitle = StreamingContent.StreamInformation.ContentTitle;
-                this.Text = FormTitle;
-                this.Refresh();
+                Text = FormTitle;
+                Refresh();
                 //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
@@ -491,7 +485,7 @@ namespace PlexDL.UI
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void btnPlayPause_Click(object sender, EventArgs e)

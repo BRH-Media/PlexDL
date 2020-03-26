@@ -6,12 +6,12 @@ namespace PlexDL.Common.Structures.AppOptions.Display.Grids
     {
         public LibraryDisplay()
         {
-            DisplayColumns = new List<string>()
+            DisplayColumns = new List<string>
             {
                 "title", "type"
             };
 
-            DisplayCaptions = new List<string>()
+            DisplayCaptions = new List<string>
             {
                 "Title", "Type"
             };

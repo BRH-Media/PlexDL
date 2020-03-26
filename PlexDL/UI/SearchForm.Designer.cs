@@ -1,11 +1,14 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace PlexDL.UI
 {
     partial class SearchForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -163,14 +166,14 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnStartSearch;
-        private System.Windows.Forms.TextBox txtSearchTerm;
-        private System.Windows.Forms.ToolTip tipMain;
-        private System.Windows.Forms.GroupBox gbSearchTerm;
-        private System.Windows.Forms.GroupBox gbSearchRule;
-        private System.Windows.Forms.GroupBox gbSearchColumn;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.ComboBox cbxSearchRule;
-        private System.Windows.Forms.ComboBox cbxSearchColumn;
+        private Button btnStartSearch;
+        private TextBox txtSearchTerm;
+        private ToolTip tipMain;
+        private GroupBox gbSearchTerm;
+        private GroupBox gbSearchRule;
+        private GroupBox gbSearchColumn;
+        private Button btnCancel;
+        private ComboBox cbxSearchRule;
+        private ComboBox cbxSearchColumn;
     }
 }

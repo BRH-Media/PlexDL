@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Globals;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.Common.Globals;
 
 namespace PlexDL.UI
 {

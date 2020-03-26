@@ -1,17 +1,19 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
+using Directory = System.IO.Directory;
 
-namespace PlexDL.Common.Caching
+namespace PlexDL.Common.Caching.Handlers
 {
     public static class ServerCaching
     {
         public static string ServerCachePath(string accountToken)
         {
-            var fileName = Helpers.CalculateMD5Hash(accountToken);
+            var fileName = Helpers.CalculateMd5Hash(accountToken);
             var cachePath = @"cache\" + fileName;
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
@@ -26,20 +28,18 @@ namespace PlexDL.Common.Caching
                 var fqPath = ServerCachePath(accountToken);
                 return File.Exists(fqPath);
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
-        public static void ServerToCache(List<PlexAPI.Server> serverList, string accountToken)
+        public static void ServerToCache(List<Server> serverList, string accountToken)
         {
             try
             {
                 if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
                 {
                     var fqPath = ServerCachePath(accountToken);
-                    var serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));
+                    var serialiser = new XmlSerializer(typeof(List<Server>));
                     TextWriter filestream = new StreamWriter(fqPath);
                     serialiser.Serialize(filestream, serverList);
                     filestream.Close();
@@ -48,25 +48,22 @@ namespace PlexDL.Common.Caching
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ServerCacheWriteError");
-                return;
             }
         }
 
-        public static List<PlexAPI.Server> ServerFromCache(string accountToken)
+        public static List<Server> ServerFromCache(string accountToken)
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 var fqPath = ServerCachePath(accountToken);
-                var serialiser = new XmlSerializer(typeof(List<PlexAPI.Server>));
+                var serialiser = new XmlSerializer(typeof(List<Server>));
                 TextReader filestream = new StreamReader(fqPath);
-                var result = (List<PlexAPI.Server>)serialiser.Deserialize(filestream);
+                var result = (List<Server>)serialiser.Deserialize(filestream);
                 filestream.Close();
                 return result;
             }
-            else
-            {
-                return new List<PlexAPI.Server>();
-            }
+
+            return new List<Server>();
         }
     }
 }

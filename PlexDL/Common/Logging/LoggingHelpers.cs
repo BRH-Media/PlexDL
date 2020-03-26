@@ -1,13 +1,14 @@
-﻿using PlexDL.Common.Globals;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Logging
 {
     public static class LoggingHelpers
     {
-        private static int logIncrementer = 0;
+        private static int logIncrementer;
 
         public static void AddToLog(string logEntry)
         {
@@ -28,10 +29,8 @@ namespace PlexDL.Common.Logging
             catch (Exception ex)
             {
                 //for debugging only!
-                //MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex);
                 //ignore the error
-
-                return;
             }
         }
 
@@ -44,7 +43,7 @@ namespace PlexDL.Common.Logging
                 ////The in-app setting to prevent this method from firing.
                 if (GlobalStaticVars.Settings.Logging.EnableExceptionLogDel)
                 {
-                    var stackTrace = new System.Diagnostics.StackTrace();
+                    var stackTrace = new StackTrace();
                     var function = stackTrace.GetFrame(1).GetMethod().Name;
                     string[] headers =
                     {
@@ -60,7 +59,6 @@ namespace PlexDL.Common.Logging
             catch
             {
                 //ignore the error
-                return;
             }
         }
 
@@ -84,14 +82,13 @@ namespace PlexDL.Common.Logging
             catch
             {
                 //ignore the error
-                return;
             }
         }
 
         private static string CleanseLogDel(string line)
         {
             string clean = line;
-            char[] bannedChars = new char[] { '#', '!' };
+            char[] bannedChars = { '#', '!' };
             foreach (char c in line)
             {
                 if (bannedChars.Contains(c))
@@ -147,10 +144,8 @@ namespace PlexDL.Common.Logging
             catch (Exception ex)
             {
                 //for debugging only!
-                //MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex);
                 //ignore the error
-
-                return;
             }
         }
     }

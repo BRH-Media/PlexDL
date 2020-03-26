@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Security;
+using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace PlexDL.Player
 {
     [ComImport]
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("0c733a30-2a1c-11ce-ade5-00aa0044773d")]
     internal interface IStream : ISequentialStream
@@ -32,7 +35,7 @@ namespace PlexDL.Player
         [PreserveSig]
         HResult Seek(
             [In] long offset,
-            [In] System.IO.SeekOrigin origin,
+            [In] SeekOrigin origin,
             [In] IntPtr newPosition
         );
 
@@ -75,7 +78,7 @@ namespace PlexDL.Player
 
         [PreserveSig]
         HResult Stat(
-            [Out] out System.Runtime.InteropServices.ComTypes.STATSTG statstg,
+            [Out] out STATSTG statstg,
             [In] STATFLAG statFlag
         );
 

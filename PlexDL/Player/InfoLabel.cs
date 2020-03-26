@@ -591,9 +591,6 @@ namespace PlexDL.Player
                         position.X += il_OffsetX;
                         position.Y += il_OffsetY;
                         break;
-
-                    default:
-                        break;
                 }
 
                 // check if within all screens

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using PlexDL.Common.Structures.AppOptions;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.Structures
 {
@@ -8,7 +10,7 @@ namespace PlexDL.Common.Structures
         public static readonly int PlexDLLayout = 1;
         public static readonly int NoLayout = 2;
 
-        public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(Plex.PlexTVShow show, AppOptions.ApplicationOptions settings, int layout)
+        public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(PlexTVShow show, ApplicationOptions settings, int layout)
         {
             var dirLayout = new TVShowDirectoryLayout();
             if (layout == PlexStandardLayout)

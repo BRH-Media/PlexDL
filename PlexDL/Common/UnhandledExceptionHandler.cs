@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common
 {
@@ -11,7 +11,7 @@ namespace PlexDL.Common
             var obj = (Exception)e.ExceptionObject;
             MessageBox.Show(
                 "An unhandled exception has occurred. Please report this issue on GitHub, including any relevant logs or other information.\n\n" +
-                obj.ToString(), "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                obj, "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             LoggingHelpers.RecordException(obj.Message, "UnhandledException");
         }
     }

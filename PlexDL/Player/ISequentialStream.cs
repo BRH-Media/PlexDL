@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
     [ComImport]
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("0000000c-0000-0000-C000-000000000046")]
     internal interface ISequentialStream

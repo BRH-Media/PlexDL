@@ -1,8 +1,4 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -12,6 +8,13 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
+using PlexDL.Properties;
 
 namespace PlexDL.Common
 {
@@ -38,13 +41,13 @@ namespace PlexDL.Common
             }
         }
 
-        public static bool IsPrivateIP(string ipAddress)
+        public static bool IsPrivateIp(string ipAddress)
         {
-            var ipParts = ipAddress.Split(new string[]
+            var ipParts = ipAddress.Split(new[]
             {
                 "."
             }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => int.Parse(s)).ToArray();
+            .Select(int.Parse).ToArray();
             // in private ip range
             if (ipParts[0] == 10 ||
                 ipParts[0] == 192 && ipParts[1] == 168 ||
@@ -100,14 +103,12 @@ namespace PlexDL.Common
 
             if (checkNodes.Count > 0)
                 return true;
-            else
-                return false;
+            return false;
         }
 
         public static List<string> OrderMatch(List<string> ordered, List<string> unordered)
         {
-            var newList = new List<string>();
-            newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
+            var newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
             return newList;
         }
 
@@ -152,9 +153,9 @@ namespace PlexDL.Common
             return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        public static bool AdultKeywordCheck(Structures.Plex.PlexObject stream)
+        public static bool AdultKeywordCheck(PlexObject stream)
         {
-            var keywords = Properties.Resources.keywordBlacklist.Split('\n');
+            var keywords = Resources.keywordBlacklist.Split('\n');
             var search = stream.StreamInformation.ContentTitle.ToLower();
             var rgx = new Regex("[^a-zA-Z0-9_. ]+");
             //MessageBox.Show(keywords.Length.ToString());
@@ -182,7 +183,7 @@ namespace PlexDL.Common
             return match;
         }
 
-        public static bool StreamAdultContentCheck(Structures.Plex.PlexObject stream)
+        public static bool StreamAdultContentCheck(PlexObject stream)
         {
             if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
             {
@@ -194,18 +195,9 @@ namespace PlexDL.Common
                         MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                     if (result == DialogResult.No)
                         return false;
-                    else
-                        return true;
-                }
-                else
-                {
-                    return true;
                 }
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
@@ -215,21 +207,13 @@ namespace PlexDL.Common
                 Helpers.CacheStructureBuilder();
                 if (string.IsNullOrEmpty(url))
                 {
-                    return Properties.Resources.image_not_available_png_8;
+                    return Resources.image_not_available_png_8;
                 }
-                else
+
+                if (!forceNoCache)
                 {
-                    if (!forceNoCache)
-                    {
-                        if (ThumbCaching.ThumbInCache(url))
-                            return ThumbCaching.ThumbFromCache(url);
-                        else
-                            return ForceImageFromUrl(url);
-                    }
-                    else
-                    {
-                        return ForceImageFromUrl(url);
-                    }
+                    if (ThumbCaching.ThumbInCache(url))
+                        return ThumbCaching.ThumbFromCache(url);
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -240,8 +224,9 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Properties.Resources.image_not_available_png_8;
+                return Resources.image_not_available_png_8;
             }
+            return ForceImageFromUrl(url);
         }
 
         private static Bitmap ForceImageFromUrl(string url)
@@ -261,7 +246,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Properties.Resources.image_not_available_png_8;
+                return Resources.image_not_available_png_8;
             }
         }
 
@@ -277,23 +262,10 @@ namespace PlexDL.Common
             return splitValues.All(r => byte.TryParse(r, out var tempForParsing));
         }
 
-        public static void ThreadSafeMessageBox(string caption, string title = "Message", MessageBoxButtons buttons = MessageBoxButtons.OK,
-            MessageBoxIcon icon = MessageBoxIcon.None)
-        {
-            var main = Form.ActiveForm;
-            if (main.InvokeRequired)
-                main.BeginInvoke((MethodInvoker)delegate
-                {
-                    MessageBox.Show(caption, title, buttons, icon);
-                });
-            else
-                MessageBox.Show(caption, title, buttons, icon);
-        }
-
         public static string RemoveIllegalCharacters(string illegal)
         {
             var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            var r = new Regex($"[{Regex.Escape(regexSearch)}]");
             return r.Replace(illegal, "");
         }
     }

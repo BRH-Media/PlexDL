@@ -11,6 +11,6 @@ namespace PlexDL.Player
         SignalCallback = 0x00000002,
         BlockingCallback = 0x00000004,
         ReplyCallback = 0x00000008,
-        LocalizeRemoteCallback = 0x00000010,
+        LocalizeRemoteCallback = 0x00000010
     }
 }

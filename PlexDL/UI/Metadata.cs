@@ -1,25 +1,27 @@
-﻿using PlexDL.Common;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+using PlexDL.Properties;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.UI
 {
     public partial class Metadata : Form
     {
         public PlexObject StreamingContent { get; set; } = new PlexObject();
-        public bool StationaryMode { get; set; } = false;
+        public bool StationaryMode { get; set; }
 
         public Metadata()
         {
             InitializeComponent();
         }
 
-        private void LoadWorker(object sender, WaitWindow.WaitWindowEventArgs e)
+        private void LoadWorker(object sender, WaitWindowEventArgs e)
         {
             //fill the genre infobox
             if (!string.IsNullOrEmpty(StreamingContent.ContentGenre))
@@ -122,13 +124,13 @@ namespace PlexDL.UI
                 //start filling the actors panel from the real data
                 foreach (var a in StreamingContent.Actors)
                 {
-                    var p = new Panel()
+                    var p = new Panel
                     {
                         Size = new Size(flpActors.Width, 119),
                         Location = new Point(3, 3),
                         BackColor = Color.White
                     };
-                    var lblActorName = new Label()
+                    var lblActorName = new Label
                     {
                         Text = a.ActorName,
                         AutoSize = true,
@@ -137,14 +139,14 @@ namespace PlexDL.UI
                         Visible = true
                     };
 
-                    var lblActorRole = new Label()
+                    var lblActorRole = new Label
                     {
                         Text = a.ActorRole,
                         AutoSize = true,
                         Location = new Point(112, 29),
                         Visible = true
                     };
-                    var actorPortrait = new PictureBox()
+                    var actorPortrait = new PictureBox
                     {
                         Size = new Size(79, 119),
                         Location = new Point(3, 3),
@@ -200,13 +202,13 @@ namespace PlexDL.UI
 
         private Panel NoActorsFound()
         {
-            var p = new Panel()
+            var p = new Panel
             {
                 AutoSize = true,
                 Location = new Point(3, 3),
                 BackColor = Color.White
             };
-            var lblActorName = new Label()
+            var lblActorName = new Label
             {
                 Text = "No Actors Found",
                 AutoSize = true,
@@ -215,19 +217,19 @@ namespace PlexDL.UI
                 Visible = true
             };
 
-            var lblActorRole = new Label()
+            var lblActorRole = new Label
             {
                 Text = "We Couldn't Find Any Actors/Actresses For This Title",
                 AutoSize = true,
                 Location = new Point(112, 29),
                 Visible = true
             };
-            var actorPortrait = new PictureBox()
+            var actorPortrait = new PictureBox
             {
                 Size = new Size(79, 119),
                 Location = new Point(3, 3),
                 BackgroundImageLayout = ImageLayout.Stretch,
-                BackgroundImage = Properties.Resources.image_not_available_png_8,
+                BackgroundImage = Resources.image_not_available_png_8,
                 Visible = true
             };
             p.Controls.Add(lblActorRole);
@@ -240,24 +242,19 @@ namespace PlexDL.UI
         private Bitmap GetPoster(PlexObject stream)
         {
             var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-            if (result != Properties.Resources.image_not_available_png_8)
+            if (result != Resources.image_not_available_png_8)
             {
                 if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
                 {
                     if (Methods.AdultKeywordCheck(stream))
                         return ImagePixelation.Pixelate(result, 64);
-                    else
-                        return result;
-                }
-                else
-                {
                     return result;
                 }
-            }
-            else
-            {
+
                 return result;
             }
+
+            return result;
         }
 
         private void Metadata_Load(object sender, EventArgs e)
@@ -312,7 +309,7 @@ namespace PlexDL.UI
 
         private void itmExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void itmExport_Click(object sender, EventArgs e)

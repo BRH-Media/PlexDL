@@ -32,13 +32,11 @@ namespace PlexDL.Player
                 {
                     _base._lastError = Player.NO_ERROR;
                     if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
-                    else return TimeSpan.FromTicks(_base.PositionX);
+                    return TimeSpan.FromTicks(_base.PositionX);
                 }
-                else
-                {
-                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                    return TimeSpan.Zero;
-                }
+
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                return TimeSpan.Zero;
             }
             set
             {
@@ -84,13 +82,11 @@ namespace PlexDL.Player
                 {
                     _base._lastError = Player.NO_ERROR;
                     if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
-                    else return TimeSpan.FromTicks(_base.PositionX - _base._startTime);
+                    return TimeSpan.FromTicks(_base.PositionX - _base._startTime);
                 }
-                else
-                {
-                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                    return TimeSpan.Zero;
-                }
+
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                return TimeSpan.Zero;
             }
             set
             {
@@ -142,11 +138,9 @@ namespace PlexDL.Player
                     _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                     return 0;
                 }
-                else
-                {
-                    _base._lastError = Player.NO_ERROR;
-                    return (float)_base.PositionX / _base._mediaLength;
-                }
+
+                _base._lastError = Player.NO_ERROR;
+                return (float)_base.PositionX / _base._mediaLength;
             }
             set
             {
@@ -174,17 +168,15 @@ namespace PlexDL.Player
                     _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                     return 0;
                 }
-                else
-                {
-                    _base._lastError = Player.NO_ERROR;
 
-                    long pos = _base._stopTime == 0 ? _base._mediaLength : _base._stopTime;
-                    if (pos == 0 || pos <= _base._startTime) return 0;
+                _base._lastError = Player.NO_ERROR;
 
-                    float pos2 = (_base.PositionX - _base._startTime) / (pos - _base._startTime);
-                    if (pos2 < 0) return 0;
-                    return pos2 > 1 ? 1 : pos2;
-                }
+                long pos = _base._stopTime == 0 ? _base._mediaLength : _base._stopTime;
+                if (pos == 0 || pos <= _base._startTime) return 0;
+
+                float pos2 = (_base.PositionX - _base._startTime) / (pos - _base._startTime);
+                if (pos2 < 0) return 0;
+                return pos2 > 1 ? 1 : pos2;
             }
             set
             {
@@ -237,7 +229,8 @@ namespace PlexDL.Player
                 _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                 return (int)_base._lastError;
             }
-            else return _base.Step(frames);
+
+            return _base.Step(frames);
         }
     }
 }

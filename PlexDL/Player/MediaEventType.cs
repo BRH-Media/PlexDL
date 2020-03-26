@@ -125,7 +125,7 @@
         //METransformMarker,
         //METransformInputStreamStateChanged,
         //MEByteStreamCharacteristicsChanged = 700,
-        MEVideoCaptureDeviceRemoved = 800,
+        MEVideoCaptureDeviceRemoved = 800
 
         //MEVideoCaptureDevicePreempted = 801,
         //MEStreamSinkFormatInvalidated = 802,

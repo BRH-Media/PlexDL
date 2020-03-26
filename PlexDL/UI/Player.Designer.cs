@@ -1,11 +1,15 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using WMPLib;
+
+namespace PlexDL.UI
 {
     partial class Player
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -211,20 +215,20 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlPlayer;
-        private System.Windows.Forms.Timer tmrCopied;
-        private System.Windows.Forms.Label lblTotalDuration;
-        private System.Windows.Forms.Label lblTimeSoFar;
-        private System.Windows.Forms.Timer tmrRefreshUI;
-        private new System.Windows.Forms.TrackBar trkDuration;
-        private WMPLib.WindowsMediaPlayer axWindowsMediaPlayer1;
-        private System.Windows.Forms.Panel pnlControls;
-        private System.Windows.Forms.Button btnPlayPause;
-        private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Button btnPrevTitle;
-        private System.Windows.Forms.Button btnSkipBack;
-        private System.Windows.Forms.Button btnSkipForward;
-        private System.Windows.Forms.Button btnNextTitle;
-        private System.Windows.Forms.Button btnExit;
+        private Panel pnlPlayer;
+        private Timer tmrCopied;
+        private Label lblTotalDuration;
+        private Label lblTimeSoFar;
+        private Timer tmrRefreshUI;
+        private TrackBar trkDuration;
+        private WindowsMediaPlayer axWindowsMediaPlayer1;
+        private Panel pnlControls;
+        private Button btnPlayPause;
+        private Button btnStop;
+        private Button btnPrevTitle;
+        private Button btnSkipBack;
+        private Button btnSkipForward;
+        private Button btnNextTitle;
+        private Button btnExit;
     }
 }

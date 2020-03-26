@@ -18,5 +18,5 @@ namespace PlexDL.Player
 
         [PreserveSig]
         int QueryHardwareSupport(out int pdwHardwareSupportMask);
-    };
+    }
 }

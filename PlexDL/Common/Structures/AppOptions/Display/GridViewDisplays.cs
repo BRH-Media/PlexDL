@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.Structures.AppOptions.Display.Grids;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using PlexDL.Common.Structures.AppOptions.Display.Grids;
 
 namespace PlexDL.Common.Structures.AppOptions.Display
 {

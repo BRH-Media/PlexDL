@@ -1,15 +1,17 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Renderers;
-using PlexDL.UI;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Renderers;
+using PlexDL.UI;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.Common.SearchFramework
 {
     public static class Search
     {
-        private static void RenderWithNoStruct(object sender, WaitWindow.WaitWindowEventArgs e)
+        private static void RenderWithNoStruct(object sender, WaitWindowEventArgs e)
         {
             var dataToRender = (DataTable)e.Arguments[1];
             var gridToRender = (DataGridView)e.Arguments[0];
@@ -24,7 +26,7 @@ namespace PlexDL.Common.SearchFramework
                 gridToRender.DataSource = dataToRender;
         }
 
-        private static void RenderWithStruct(object sender, WaitWindow.WaitWindowEventArgs e)
+        private static void RenderWithStruct(object sender, WaitWindowEventArgs e)
         {
             var gridToRender = (DataGridView)e.Arguments[0];
             var renderInfo = (RenderStruct)e.Arguments[1];
@@ -36,14 +38,14 @@ namespace PlexDL.Common.SearchFramework
             string message = "Preparing results";
             if (dgvTarget != null && info != null)
                 if (info.Data != null)
-                    WaitWindow.WaitWindow.Show(RenderWithStruct, message, new object[] { dgvTarget, info });
+                    WaitWindow.WaitWindow.Show(RenderWithStruct, message, dgvTarget, info);
         }
 
         private static void RenderResult(DataGridView dgvTarget, DataTable data)
         {
             string message = "Preparing results";
             if (dgvTarget != null && data != null)
-                WaitWindow.WaitWindow.Show(RenderWithNoStruct, message, new object[] { dgvTarget, data });
+                WaitWindow.WaitWindow.Show(RenderWithNoStruct, message, dgvTarget, data);
         }
 
         public static bool RunTitleSearch(DataGridView dgvTarget, DataTable tableToSearch, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
@@ -59,7 +61,7 @@ namespace PlexDL.Common.SearchFramework
                     var result = SearchForm.ShowSearch(start);
                     if (!string.IsNullOrEmpty(result.SearchTerm) && !string.IsNullOrEmpty(result.SearchColumn))
                     {
-                        SearchData data = new SearchData()
+                        SearchData data = new SearchData
                         {
                             SearchColumn = result.SearchColumn,
                             SearchTerm = result.SearchTerm,
@@ -80,19 +82,17 @@ namespace PlexDL.Common.SearchFramework
                                 RenderResult(dgvTarget, dgvRenderInfo);
                             }
                             if (copyToGlobalTables)
-                                Globals.GlobalTables.FilteredTable = filteredTable;
+                                GlobalTables.FilteredTable = filteredTable;
                             return true;
                         }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
+
                         return false;
-                }
-                else
+                    }
+
                     return false;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {

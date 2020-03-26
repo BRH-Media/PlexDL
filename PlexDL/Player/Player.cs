@@ -60,12 +60,15 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 #endregion Usings
 
@@ -299,7 +302,7 @@ namespace PlexDL.Player
         internal IMFClock mf_Clock;
         private MFCallback mf_Callback;
         internal bool mf_AwaitCallback;
-        internal System.Threading.AutoResetEvent WaitForEvent;
+        internal AutoResetEvent WaitForEvent;
 
         // Used with all players fullscreen management
         private static Form[] _fullScreenForms = new Form[MAX_FULLSCREEN_PLAYERS];
@@ -576,7 +579,7 @@ namespace PlexDL.Player
 
                 mf_StartTime = new PropVariant();
 
-                WaitForEvent = new System.Threading.AutoResetEvent(false);
+                WaitForEvent = new AutoResetEvent(false);
                 mf_Callback = new MFCallback(this);
 
                 _textBuffer1 = new StringBuilder(MEDIUM_BUFFER_SIZE);
@@ -1498,7 +1501,7 @@ namespace PlexDL.Player
                     if (!_paused)
                     {
                         mf_MediaSession.Pause();
-                        System.Threading.Thread.Sleep(5);
+                        Thread.Sleep(5);
                     }
 
                     mf_StartTime.type = ConstPropVariant.VariantType.Int64;
@@ -1513,7 +1516,7 @@ namespace PlexDL.Player
                         //if (!_paused) mf_RateControl.SetRate(false, 0); // don't use this at all?
                         mf_StartTime.longValue = value;
                         mf_MediaSession.Start(Guid.Empty, mf_StartTime);
-                        System.Threading.Thread.Sleep(50);
+                        Thread.Sleep(50);
 
                         if (_hasTaskbarProgress) _taskbarProgress.SetValue(value);
                         if (_mediaPositionChanged != null) OnMediaPositionChanged();
@@ -1652,7 +1655,7 @@ namespace PlexDL.Player
                     long stepTicks = _hasVideo ? _videoFrameStep : AUDIO_STEP_TICKS;
 
                     SetPosition(pos + (frames * stepTicks));
-                    System.Threading.Thread.Sleep(40);
+                    Thread.Sleep(40);
                     Application.DoEvents();
                 }
 
@@ -1990,7 +1993,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Gets a description of the last error of the player that has occurred.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public string LastErrorString
         {
             get { return new Win32Exception((int)_lastError).Message; }
@@ -2415,7 +2418,8 @@ namespace PlexDL.Player
 
                 return AV_Play();
             }
-            else return _lastError;
+
+            return _lastError;
         }
 
         private HResult AV_PlayMedia()
@@ -2952,7 +2956,7 @@ namespace PlexDL.Player
                     if (!WaitForEvent.WaitOne(TIMEOUT_15_SECONDS)) result = HResult.MF_E_TOPO_CANNOT_CONNECT;
                     else result = _lastError;
 
-                    System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
+                    Thread.Sleep(MF_UPDATE_WAIT_MS);
 
                     if (result == HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE && setVideo)
                     {
@@ -3179,7 +3183,7 @@ namespace PlexDL.Player
                     mf_AwaitCallback = true;
                     WaitForEvent.WaitOne(TIMEOUT_10_SECONDS);
 
-                    System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
+                    Thread.Sleep(MF_UPDATE_WAIT_MS);
 
                     _lastError = mf_MediaSession.Pause();
                     mf_AwaitCallback = true;
@@ -3187,13 +3191,13 @@ namespace PlexDL.Player
 
                     if (_hasAudio && _audioEnabled)
                     {
-                        System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
+                        Thread.Sleep(MF_UPDATE_WAIT_MS);
                         mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
                     }
                 }
                 else
                 {
-                    System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
+                    Thread.Sleep(MF_UPDATE_WAIT_MS);
                 }
                 StartMainTimerCheck();
             }
@@ -5856,7 +5860,7 @@ namespace PlexDL.Player
                     if (_repeatCount++ > 0)
                     {
                         // without this, audio will start to stutter after a few repeats
-                        System.Threading.Thread.Sleep(MF_REPEAT_WAIT_MS);
+                        Thread.Sleep(MF_REPEAT_WAIT_MS);
                     }
 
                     mf_StartTime.type = ConstPropVariant.VariantType.Int64;
@@ -6184,7 +6188,7 @@ namespace PlexDL.Player
 
             if (_psMuted)
             {
-                if (_paused) System.Threading.Thread.Sleep(300); // prevent audio 'click'
+                if (_paused) Thread.Sleep(300); // prevent audio 'click'
                 mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
                 _psMuted = false;
             }
@@ -6295,7 +6299,7 @@ namespace PlexDL.Player
                             if (pos > 0) // catch errors
                             {
                                 SetPosition(pos + (sliderVal * stepTicks));
-                                System.Threading.Thread.Sleep(40);
+                                Thread.Sleep(40);
                             }
                         }
                         Application.DoEvents();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -19,7 +20,7 @@ namespace PlexDL.Player
     {
         #region Declarations
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("ole32.dll", ExactSpelling = true, PreserveSig = false)]
         [SuppressUnmanagedCodeSecurity]
         protected static extern void PropVariantCopy(
@@ -50,7 +51,7 @@ namespace PlexDL.Player
             StringArray = 0x1000 + 31
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        [SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         [StructLayout(LayoutKind.Sequential)]
         [UnmanagedName("BLOB")]
         protected struct Blob
@@ -59,7 +60,7 @@ namespace PlexDL.Player
             public IntPtr pBlobData;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        [SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         [StructLayout(LayoutKind.Sequential)]
         [UnmanagedName("CALPWSTR")]
         protected struct CALPWstr
@@ -233,10 +234,8 @@ namespace PlexDL.Player
                 return sa;
             }
             //throw new ArgumentException("PropVariant contents not a string array");
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public string GetString()
@@ -244,7 +243,7 @@ namespace PlexDL.Player
             if (type == VariantType.String)
                 return Marshal.PtrToStringUni(ptr);
             //throw new ArgumentException("PropVariant contents not a string");
-            else return null;
+            return null;
         }
 
         public byte GetUByte()
@@ -252,7 +251,7 @@ namespace PlexDL.Player
             if (type == VariantType.UByte)
                 return bVal;
             //throw new ArgumentException("PropVariant contents not a byte");
-            else return 0;
+            return 0;
         }
 
         public short GetShort()
@@ -260,7 +259,7 @@ namespace PlexDL.Player
             if (type == VariantType.Short)
                 return iVal;
             //throw new ArgumentException("PropVariant contents not a Short");
-            else return 0;
+            return 0;
         }
 
         public ushort GetUShort()
@@ -268,7 +267,7 @@ namespace PlexDL.Player
             if (type == VariantType.UShort)
                 return uiVal;
             //throw new ArgumentException("PropVariant contents not a UShort");
-            else return 0;
+            return 0;
         }
 
         public int GetInt()
@@ -276,7 +275,7 @@ namespace PlexDL.Player
             if (type == VariantType.Int32)
                 return intValue;
             //throw new ArgumentException("PropVariant contents not an int32");
-            else return 0;
+            return 0;
         }
 
         public uint GetUInt()
@@ -284,7 +283,7 @@ namespace PlexDL.Player
             if (type == VariantType.UInt32)
                 return uintVal;
             //throw new ArgumentException("PropVariant contents not a uint32");
-            else return 0;
+            return 0;
         }
 
         public long GetLong()
@@ -292,7 +291,7 @@ namespace PlexDL.Player
             if (type == VariantType.Int64)
                 return longValue;
             //throw new ArgumentException("PropVariant contents not an int64");
-            else return 0;
+            return 0;
         }
 
         public ulong GetULong()
@@ -300,7 +299,7 @@ namespace PlexDL.Player
             if (type == VariantType.UInt64)
                 return ulongValue;
             //throw new ArgumentException("PropVariant contents not a uint64");
-            else return 0;
+            return 0;
         }
 
         public float GetFloat()
@@ -308,7 +307,7 @@ namespace PlexDL.Player
             if (type == VariantType.Float)
                 return fltVal;
             //throw new ArgumentException("PropVariant contents not a Float");
-            else return 0;
+            return 0;
         }
 
         public double GetDouble()
@@ -316,7 +315,7 @@ namespace PlexDL.Player
             if (type == VariantType.Double)
                 return doubleValue;
             //throw new ArgumentException("PropVariant contents not a double");
-            else return 0;
+            return 0;
         }
 
         public Guid GetGuid()
@@ -324,7 +323,7 @@ namespace PlexDL.Player
             if (type == VariantType.Guid)
                 return (Guid)Marshal.PtrToStructure(ptr, typeof(Guid));
             //throw new ArgumentException("PropVariant contents not a Guid");
-            else return Guid.Empty;
+            return Guid.Empty;
         }
 
         public byte[] GetBlob()
@@ -339,10 +338,8 @@ namespace PlexDL.Player
                 return b;
             }
             //throw new ArgumentException("PropVariant contents not a Blob");
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object GetBlob(Type t, int offset)
@@ -367,10 +364,8 @@ namespace PlexDL.Player
                 return o;
             }
             //throw new ArgumentException("PropVariant contents not a Blob");
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object GetBlob(Type t)
@@ -384,14 +379,11 @@ namespace PlexDL.Player
             {
                 if (ptr != IntPtr.Zero)
                     return Marshal.GetObjectForIUnknown(ptr);
-                else
-                    return null;
-            }
-            //throw new ArgumentException("PropVariant contents not an IUnknown");
-            else
-            {
                 return null;
             }
+            //throw new ArgumentException("PropVariant contents not an IUnknown");
+
+            return null;
         }
 
         public void Copy(PropVariant pdest)
@@ -839,7 +831,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2216:DisposableTypesShouldDeclareFinalizer")]
+        [SuppressMessage("Microsoft.Usage", "CA2216:DisposableTypesShouldDeclareFinalizer")]
         public void Dispose()
         {
             Dispose(true);

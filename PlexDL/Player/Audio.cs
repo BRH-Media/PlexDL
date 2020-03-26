@@ -96,7 +96,7 @@ namespace PlexDL.Player
                 _base._lastError = Player.NO_ERROR;
 
                 if (_base.pm_HasPeakMeter) return _base.pm_PeakMeterChannelCount;
-                else return Player.Device_GetChannelCount(_base._audioDevice);
+                return Player.Device_GetChannelCount(_base._audioDevice);
             }
         }
 

@@ -1,10 +1,10 @@
-﻿using libbrhscgui.Components;
+﻿using System.Collections.Generic;
+using libbrhscgui.Components;
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
-using System.Collections.Generic;
 
 namespace PlexDL.Common.Globals
 {

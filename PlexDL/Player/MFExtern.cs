@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -6,12 +7,12 @@ namespace PlexDL.Player
 {
     internal static class MFExtern
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mfplat.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFShutdown();
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mfplat.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFStartup(int Version, MFStartup dwFlags);
@@ -24,7 +25,7 @@ namespace PlexDL.Player
         //    out IMFPresentationDescriptor ppPresentationDescriptor
         //);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFGetService(
@@ -38,7 +39,7 @@ namespace PlexDL.Player
             out object ppvObject
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateVideoRendererActivate(
@@ -46,7 +47,7 @@ namespace PlexDL.Player
             out IMFActivate ppActivate
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateTopologyNode(
@@ -54,14 +55,14 @@ namespace PlexDL.Player
             out IMFTopologyNode ppNode
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateSourceResolver(
             out IMFSourceResolver ppISourceResolver
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateMediaSession(
@@ -69,21 +70,21 @@ namespace PlexDL.Player
             out IMFMediaSession ppMediaSession
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateTopology(
             out IMFTopology ppTopo
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateAudioRendererActivate(
             out IMFActivate ppActivate
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mfplat.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateAttributes(
@@ -137,7 +138,7 @@ namespace PlexDL.Player
         //);
 
         // use with NET 2.0, 3.0 and  3.5 (returns only 1 device) (because of SizeParamIndex)
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true, EntryPoint = "MFEnumDeviceSources")]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFEnumDeviceSourcesEx(
@@ -146,7 +147,7 @@ namespace PlexDL.Player
             out int pcSourceActivate);
 
         // Works only with .NET Framework version 4.0 or higher (because of SizeParamIndex)
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFEnumDeviceSources(
@@ -162,7 +163,7 @@ namespace PlexDL.Player
         //    out IMFActivate ppActivate
         //);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateDeviceSource(
@@ -178,7 +179,7 @@ namespace PlexDL.Player
         //    out IMFSourceReaderAsync ppSourceReader
         //);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("Mfreadwrite.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateSourceReaderFromMediaSource(
@@ -194,7 +195,7 @@ namespace PlexDL.Player
         //    out IMFSourceReader ppSourceReader
         //);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("Mfreadwrite.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateSinkWriterFromURL(
@@ -204,21 +205,21 @@ namespace PlexDL.Player
             out IMFSinkWriter ppSinkWriter
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mfplat.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateMediaType(
             out IMFMediaType ppMFType
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mfplat.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateCollection(
             out IMFCollection ppIMFCollection
         );
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("mf.dll", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern HResult MFCreateAggregateSource(

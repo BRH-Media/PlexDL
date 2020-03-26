@@ -5,11 +5,7 @@ namespace PlexDL.Common.Components
 {
     public class NoAutoSelectDataGridView : DataGridView
     {
-        public bool SuppressAutoSelection { get; set; } = false;
-
-        public NoAutoSelectDataGridView() : base()
-        {
-        }
+        public bool SuppressAutoSelection { get; set; }
 
         public new /*shadowing*/ object DataSource
         {

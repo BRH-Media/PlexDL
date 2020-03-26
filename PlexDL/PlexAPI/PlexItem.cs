@@ -30,7 +30,7 @@ namespace PlexDL.PlexAPI
 
         public PlexItem(PlexItem item)
         {
-            Utils.CopyFrom<PlexItem, PlexItem>(this, item);
+            this.CopyFrom(item);
         }
 
         protected override string GetBaseUrl()

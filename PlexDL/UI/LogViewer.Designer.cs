@@ -1,11 +1,14 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace PlexDL.UI
 {
     partial class LogViewer
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -171,14 +174,14 @@
         }
 
         #endregion
-        public System.Windows.Forms.DataGridView dgvMain;
-        private System.Windows.Forms.SaveFileDialog sfdBackup;
-        private System.Windows.Forms.ListBox lstLogFiles;
-        private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem itmRefresh;
-        private System.Windows.Forms.ToolStripMenuItem itmSearch;
-        private System.Windows.Forms.ToolStripMenuItem itmGoToLine;
-        private System.Windows.Forms.ToolStripMenuItem itmBackup;
+        public DataGridView dgvMain;
+        private SaveFileDialog sfdBackup;
+        private ListBox lstLogFiles;
+        private TableLayoutPanel tlpMain;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmRefresh;
+        private ToolStripMenuItem itmSearch;
+        private ToolStripMenuItem itmGoToLine;
+        private ToolStripMenuItem itmBackup;
     }
 }

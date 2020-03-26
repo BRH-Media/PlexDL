@@ -1,9 +1,9 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.API
 {
@@ -61,7 +61,7 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex.ToString(), "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Content metadata error:\n\n" + ex, "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "TVObjectError");
                 return null;
             }
@@ -115,7 +115,7 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex.ToString(), "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Content metadata error:\n\n" + ex, "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "MovieObjectError");
                 return null;
             }

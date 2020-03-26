@@ -14,7 +14,7 @@ namespace PlexDL.Player
         public MFCallback(Player player)
         {
             _basePlayer = player;
-            CallEndOfMedia = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
+            CallEndOfMedia = _basePlayer.AV_EndOfMedia;
         }
 
         public void Dispose()

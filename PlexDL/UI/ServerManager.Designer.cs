@@ -1,11 +1,15 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using PlexDL.Common.Components;
+
+namespace PlexDL.UI
 {
     partial class ServerManager
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -164,13 +168,13 @@
 
         #endregion
 
-        private Common.Components.FlatDataGridView dgvServers;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem itmAuthenticate;
-        private System.Windows.Forms.ToolStripMenuItem itmLoad;
-        private System.Windows.Forms.ToolStripMenuItem itmServers;
-        private System.Windows.Forms.ToolStripMenuItem itmRelays;
-        private System.Windows.Forms.ToolStripMenuItem itmDirectConnection;
-        private System.Windows.Forms.ToolStripMenuItem itmConnect;
+        private FlatDataGridView dgvServers;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmAuthenticate;
+        private ToolStripMenuItem itmLoad;
+        private ToolStripMenuItem itmServers;
+        private ToolStripMenuItem itmRelays;
+        private ToolStripMenuItem itmDirectConnection;
+        private ToolStripMenuItem itmConnect;
     }
 }

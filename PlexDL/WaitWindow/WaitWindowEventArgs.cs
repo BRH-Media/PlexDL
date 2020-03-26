@@ -22,7 +22,7 @@ namespace PlexDL.WaitWindow
         /// </summary>
         /// <param name="GUI">The associated WaitWindow instance.</param>
         /// <param name="args">A list of arguments to be passed.</param>
-        public WaitWindowEventArgs(WaitWindow GUI, List<object> args) : base()
+        public WaitWindowEventArgs(WaitWindow GUI, List<object> args)
         {
             _Window = GUI;
             _Arguments = args;

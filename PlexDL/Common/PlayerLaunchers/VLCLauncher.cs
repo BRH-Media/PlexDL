@@ -1,16 +1,16 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
-    public static class VLCLauncher
+    public static class VlcLauncher
     {
-        public static void LaunchVLC(PlexObject stream)
+        public static void LaunchVlc(PlexObject stream)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     else
                     {
                         MessageBox.Show(@"PlexDL could not find VLC Media Player. Please locate VLC and then try again.");
-                        var ofd = new OpenFileDialog()
+                        var ofd = new OpenFileDialog
                         {
                             Filter = @"vlc.exe",
                             Title = @"Locate VLC Media Player",
@@ -47,12 +47,11 @@ namespace PlexDL.Common.PlayerLaunchers
                             if (baseName == "vlc.exe")
                             {
                                 GlobalStaticVars.Settings.Player.VLCMediaPlayerPath = fileName;
-                                LaunchVLC(stream);
+                                LaunchVlc(stream);
                             }
                             else
                             {
                                 MessageBox.Show(@"Invalid VLC Media Player executable", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
                             }
                         }
                     }
@@ -60,10 +59,9 @@ namespace PlexDL.Common.PlayerLaunchers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK,
+                MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex, "Launch Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
-                return;
             }
         }
     }

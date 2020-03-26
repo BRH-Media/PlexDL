@@ -1,16 +1,16 @@
-﻿using PlexDL.Common.Globals;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
+using PlexDL.Common.Globals;
 
-namespace PlexDL.Common.Caching
+namespace PlexDL.Common.Caching.Handlers
 {
     public static class XMLCaching
     {
         public static string XMLCachePath(string sourceUrl)
         {
-            var fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            var accountHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            var fileName = Helpers.CalculateMd5Hash(sourceUrl);
+            var accountHash = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\xml";
             var fqPath = cachePath + @"\" + fileName + CachingFileExt.ApiXmlExt;
             return fqPath;

@@ -8,10 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace PlexDL.Properties {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,27 +25,27 @@ namespace PlexDL.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     public class Resources {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
         
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PlexDL.Properties.Resources", typeof(Resources).Assembly);
+                if (ReferenceEquals(resourceMan, null)) {
+                    ResourceManager temp = new ResourceManager("PlexDL.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,8 +56,8 @@ namespace PlexDL.Properties {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,970 +69,970 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_backup_black_18dp {
+        public static Bitmap baseline_backup_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_backup_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_backup_black_18dp_white {
+        public static Bitmap baseline_backup_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_backup_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_backup_black_48dp {
+        public static Bitmap baseline_backup_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_backup_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_backup_black_48dp_white {
+        public static Bitmap baseline_backup_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_backup_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_book_black_18dp {
+        public static Bitmap baseline_book_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_book_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_book_black_18dp_white {
+        public static Bitmap baseline_book_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_book_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_book_black_48dp {
+        public static Bitmap baseline_book_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_book_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_book_black_48dp_white {
+        public static Bitmap baseline_book_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_book_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cancel_black_18dp {
+        public static Bitmap baseline_cancel_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cancel_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cancel_black_18dp_white {
+        public static Bitmap baseline_cancel_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_cancel_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cancel_black_48dp {
+        public static Bitmap baseline_cancel_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cancel_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cancel_black_48dp_white {
+        public static Bitmap baseline_cancel_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_cancel_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cloud_download_black_18dp {
+        public static Bitmap baseline_cloud_download_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cloud_download_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cloud_download_black_18dp_white {
+        public static Bitmap baseline_cloud_download_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_cloud_download_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cloud_download_black_48dp {
+        public static Bitmap baseline_cloud_download_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cloud_download_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_cloud_download_black_48dp_white {
+        public static Bitmap baseline_cloud_download_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_cloud_download_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_directions_black_18dp {
+        public static Bitmap baseline_directions_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_directions_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_directions_black_18dp_white {
+        public static Bitmap baseline_directions_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_directions_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_directions_black_48dp {
+        public static Bitmap baseline_directions_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_directions_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_directions_black_48dp_white {
+        public static Bitmap baseline_directions_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_directions_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_dvr_black_18dp {
+        public static Bitmap baseline_dvr_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_dvr_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_dvr_black_18dp_white {
+        public static Bitmap baseline_dvr_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_dvr_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_dvr_black_48dp {
+        public static Bitmap baseline_dvr_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_dvr_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_dvr_black_48dp_white {
+        public static Bitmap baseline_dvr_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_dvr_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_forward_black_18dp {
+        public static Bitmap baseline_fast_forward_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_forward_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_forward_black_18dp_white {
+        public static Bitmap baseline_fast_forward_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_forward_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_forward_black_48dp {
+        public static Bitmap baseline_fast_forward_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_forward_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_forward_black_48dp_white {
+        public static Bitmap baseline_fast_forward_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_forward_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_rewind_black_18dp {
+        public static Bitmap baseline_fast_rewind_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_rewind_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_rewind_black_18dp_white {
+        public static Bitmap baseline_fast_rewind_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_rewind_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_rewind_black_48dp {
+        public static Bitmap baseline_fast_rewind_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_rewind_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_fast_rewind_black_48dp_white {
+        public static Bitmap baseline_fast_rewind_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_rewind_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_folder_open_black_18dp {
+        public static Bitmap baseline_folder_open_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_folder_open_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_folder_open_black_18dp_white {
+        public static Bitmap baseline_folder_open_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_folder_open_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_folder_open_black_48dp {
+        public static Bitmap baseline_folder_open_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_folder_open_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_folder_open_black_48dp_white {
+        public static Bitmap baseline_folder_open_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_folder_open_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_pause_black_18dp {
+        public static Bitmap baseline_pause_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_pause_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_pause_black_18dp_white {
+        public static Bitmap baseline_pause_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_pause_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_pause_black_48dp {
+        public static Bitmap baseline_pause_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_pause_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_pause_black_48dp_white {
+        public static Bitmap baseline_pause_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_pause_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_play_arrow_black_18dp {
+        public static Bitmap baseline_play_arrow_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_play_arrow_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_play_arrow_black_18dp_white {
+        public static Bitmap baseline_play_arrow_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_play_arrow_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_play_arrow_black_48dp {
+        public static Bitmap baseline_play_arrow_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_play_arrow_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_play_arrow_black_48dp_white {
+        public static Bitmap baseline_play_arrow_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_play_arrow_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_black_18dp {
+        public static Bitmap baseline_power_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_black_18dp_white {
+        public static Bitmap baseline_power_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_black_48dp {
+        public static Bitmap baseline_power_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_black_48dp_white {
+        public static Bitmap baseline_power_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_off_black_18dp {
+        public static Bitmap baseline_power_off_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_off_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_off_black_18dp_white {
+        public static Bitmap baseline_power_off_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_off_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_off_black_48dp {
+        public static Bitmap baseline_power_off_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_off_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_power_off_black_48dp_white {
+        public static Bitmap baseline_power_off_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_off_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_refresh_black_18dp {
+        public static Bitmap baseline_refresh_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_refresh_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_refresh_black_18dp_white {
+        public static Bitmap baseline_refresh_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_refresh_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_refresh_black_48dp {
+        public static Bitmap baseline_refresh_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_refresh_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_refresh_black_48dp_white {
+        public static Bitmap baseline_refresh_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_refresh_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_rss_feed_black_18dp {
+        public static Bitmap baseline_rss_feed_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_rss_feed_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_rss_feed_black_18dp_white {
+        public static Bitmap baseline_rss_feed_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_rss_feed_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_rss_feed_black_48dp {
+        public static Bitmap baseline_rss_feed_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_rss_feed_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_rss_feed_black_48dp_white {
+        public static Bitmap baseline_rss_feed_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_rss_feed_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_save_black_18dp {
+        public static Bitmap baseline_save_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_save_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_save_black_18dp_white {
+        public static Bitmap baseline_save_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_save_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_save_black_48dp {
+        public static Bitmap baseline_save_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_save_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_save_black_48dp_white {
+        public static Bitmap baseline_save_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_save_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_search_black_18dp {
+        public static Bitmap baseline_search_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_search_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_search_black_18dp_white {
+        public static Bitmap baseline_search_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_search_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_search_black_48dp {
+        public static Bitmap baseline_search_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_search_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_search_black_48dp_white {
+        public static Bitmap baseline_search_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_search_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_settings_black_18dp {
+        public static Bitmap baseline_settings_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_settings_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_settings_black_18dp_white {
+        public static Bitmap baseline_settings_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_settings_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_settings_black_48dp {
+        public static Bitmap baseline_settings_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_settings_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_settings_black_48dp_white {
+        public static Bitmap baseline_settings_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_settings_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_18dp {
+        public static Bitmap baseline_signal_wifi_4_bar_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_18dp_white {
+        public static Bitmap baseline_signal_wifi_4_bar_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_48dp {
+        public static Bitmap baseline_signal_wifi_4_bar_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_48dp_white {
+        public static Bitmap baseline_signal_wifi_4_bar_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_off_black_18dp {
+        public static Bitmap baseline_signal_wifi_off_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_off_black_18dp_white {
+        public static Bitmap baseline_signal_wifi_off_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_off_black_48dp {
+        public static Bitmap baseline_signal_wifi_off_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_signal_wifi_off_black_48dp_white {
+        public static Bitmap baseline_signal_wifi_off_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_next_black_18dp {
+        public static Bitmap baseline_skip_next_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_next_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_next_black_18dp_white {
+        public static Bitmap baseline_skip_next_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_next_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_next_black_48dp {
+        public static Bitmap baseline_skip_next_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_next_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_next_black_48dp_white {
+        public static Bitmap baseline_skip_next_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_next_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_previous_black_18dp {
+        public static Bitmap baseline_skip_previous_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_previous_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_previous_black_18dp_white {
+        public static Bitmap baseline_skip_previous_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_previous_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_previous_black_48dp {
+        public static Bitmap baseline_skip_previous_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_previous_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_skip_previous_black_48dp_white {
+        public static Bitmap baseline_skip_previous_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_previous_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_stop_black_18dp {
+        public static Bitmap baseline_stop_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_stop_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_stop_black_18dp_white {
+        public static Bitmap baseline_stop_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_stop_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_stop_black_48dp {
+        public static Bitmap baseline_stop_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_stop_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_stop_black_48dp_white {
+        public static Bitmap baseline_stop_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_stop_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_video_library_black_18dp {
+        public static Bitmap baseline_video_library_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_video_library_black_18dp_white {
+        public static Bitmap baseline_video_library_black_18dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_video_library_black_48dp {
+        public static Bitmap baseline_video_library_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap baseline_video_library_black_48dp_white {
+        public static Bitmap baseline_video_library_black_48dp_white {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap image_not_available_png_8 {
+        public static Bitmap image_not_available_png_8 {
             get {
                 object obj = ResourceManager.GetObject("image_not_available_png_8", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((Bitmap)(obj));
             }
         }
         

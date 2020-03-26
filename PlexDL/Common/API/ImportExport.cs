@@ -1,10 +1,10 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.API
 {
@@ -31,9 +31,8 @@ namespace PlexDL.Common.API
             catch (Exception ex)
             {
                 if (!silent)
-                    MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred\n\n" + ex, "Metadata Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "XMLMetadataSaveError");
-                return;
             }
         }
 
@@ -41,7 +40,7 @@ namespace PlexDL.Common.API
         {
             try
             {
-                PlexObject subReq = null;
+                PlexObject subReq;
 
                 var serializer = new XmlSerializer(typeof(PlexObject));
 
@@ -53,7 +52,7 @@ namespace PlexDL.Common.API
             catch (Exception ex)
             {
                 if (!silent)
-                    MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred\n\n" + ex, "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
                 return new PlexObject();
             }

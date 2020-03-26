@@ -1,6 +1,4 @@
-﻿using PlexDL.Common;
-using PlexDL.Common.Structures;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
 using PlexDL.Common.SearchFramework;

@@ -62,8 +62,11 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Threading;
 using System.Windows.Forms;
 
 #endregion Usings
@@ -74,7 +77,7 @@ namespace PlexDL.Player
 
     #region Native Methods
 
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     internal static class SafeNativeMethods
     {
         // ******************************** Win32 Windows
@@ -208,7 +211,7 @@ namespace PlexDL.Player
             {
                 var hWndCurrent = GetForegroundWindow();
 
-                var showControlPanel = new System.Diagnostics.Process
+                var showControlPanel = new Process
                 {
                     StartInfo =
                     {
@@ -225,7 +228,7 @@ namespace PlexDL.Player
                     while (i < 100 && hWnd == hWndCurrent)
                     {
                         ++i;
-                        System.Threading.Thread.Sleep(10);
+                        Thread.Sleep(10);
                         hWnd = GetForegroundWindow();
                     }
 

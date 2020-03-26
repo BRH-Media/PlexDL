@@ -1,9 +1,9 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
 
 namespace PlexDL.Common.API
 {
@@ -17,7 +17,7 @@ namespace PlexDL.Common.API
                 var uri = "https://plex.tv/api/resources?includeHttps=1&amp;includeRelay=1&amp;X-Plex-Token=";
 
                 //cache is disabled for relays. This is because they're always changing, and cache would need to be frequently cleared.
-                var reply = XmlGet.GetXMLTransaction(uri, token, true, true);
+                var reply = XmlGet.GetXmlTransaction(uri, token, true, true);
                 if (Methods.PlexXmlValid(reply))
                 {
                     var root = reply.SelectSingleNode("MediaContainer");
@@ -29,26 +29,26 @@ namespace PlexDL.Common.API
                             //MessageBox.Show(node.Name);
                             var accessToken = "";
                             if (node.Attributes["accessToken"] != null)
-                                accessToken = node.Attributes["accessToken"].Value.ToString();
+                                accessToken = node.Attributes["accessToken"].Value;
 
-                            var name = node.Attributes["name"].Value.ToString();
-                            var address = "";
-                            var local = "";
-                            var port = 0;
+                            var name = node.Attributes["name"].Value;
+                            string address;
+                            string local;
+                            int port;
                             if (node.HasChildNodes)
                                 foreach (XmlNode n in node.ChildNodes)
                                 {
-                                    var u = new Uri(n.Attributes["uri"].Value.ToString());
+                                    var u = new Uri(n.Attributes["uri"].Value);
                                     var u_parse = u.Host;
                                     var u_parse_split = u_parse.Split('.');
-                                    local = n.Attributes["address"].Value.ToString();
+                                    local = n.Attributes["address"].Value;
 
                                     //MessageBox.Show(u_parse_temp);
-                                    if (u_parse.Contains(".plex.direct") && !Methods.IsPrivateIP(local))
+                                    if (u_parse.Contains(".plex.direct") && !Methods.IsPrivateIp(local))
                                     {
                                         address = u_parse;
                                         port = Convert.ToInt32(n.Attributes["port"].Value);
-                                        var svrRelay = new Server()
+                                        var svrRelay = new Server
                                         {
                                             address = address,
                                             port = port,
@@ -61,16 +61,12 @@ namespace PlexDL.Common.API
                                 }
                         }
 
-                    return relays;
                 }
-                else
-                {
-                    return new List<Server>();
-                }
+                return relays;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Relay Retrieval Error\n\n" + ex.ToString(), "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Relay Retrieval Error\n\n" + ex, "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "GetRelaysError");
                 return new List<Server>();
             }

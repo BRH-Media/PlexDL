@@ -1,20 +1,20 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.SearchFramework;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {
     public partial class LogViewer : Form
     {
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
-        private DataTable logRecords = null;
-        private DataTable logFiltered = null;
-        private bool IsFiltered = false;
+        private DataTable logRecords;
+        private DataTable logFiltered;
+        private bool IsFiltered;
 
         public LogViewer()
         {
@@ -43,7 +43,6 @@ namespace PlexDL.UI
                     }
                     catch
                     {
-                        return;
                     }
                 }
                 else
@@ -57,10 +56,9 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred whilst refreshing log files. Details:\n\n" + ex.ToString(), @"Data Error", MessageBoxButtons.OK,
+                MessageBox.Show("An error occurred whilst refreshing log files. Details:\n\n" + ex, @"Data Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 lstLogFiles.Items.Clear();
-                return;
             }
         }
 
@@ -76,7 +74,7 @@ namespace PlexDL.UI
 
         private DataTable TableFromSelected()
         {
-            return LogFileParser.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex].ToString(), false);
+            return LogFileParser.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex], false);
         }
 
         private void DoLoadFromSelected()
@@ -95,10 +93,9 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred whilst loading the log file. Details:\n\n" + ex.ToString(), "Data Error", MessageBoxButtons.OK,
+                MessageBox.Show("An error occurred whilst loading the log file. Details:\n\n" + ex, "Data Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 dgvMain.DataSource = null;
-                return;
             }
         }
 
@@ -163,12 +160,10 @@ namespace PlexDL.UI
                 var ipt = GlobalStaticVars.LibUI.showInputForm(@"Enter Row Number", @"Go To Row");
                 if (string.Equals(ipt.txt, "!cancel=user"))
                 {
-                    return;
                 }
                 else if (string.IsNullOrEmpty(ipt.txt))
                 {
                     MessageBox.Show(@"Nothing was entered", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
                 else if (!int.TryParse(ipt.txt, out _))
                 {
@@ -190,7 +185,6 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
                 MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -218,9 +212,8 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred whilst backing up log files. Details:\n\n" + ex.ToString(), "IO Error", MessageBoxButtons.OK,
+                MessageBox.Show("An error occurred whilst backing up log files. Details:\n\n" + ex, "IO Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                return;
             }
         }
     }

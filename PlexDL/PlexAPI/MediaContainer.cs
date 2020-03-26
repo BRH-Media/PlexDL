@@ -1,13 +1,14 @@
-using RestSharp;
 using System;
 using System.Collections.Generic;
+using PlexDL.PlexAPI.DirectoryTypes;
+using RestSharp;
 
 namespace PlexDL.PlexAPI
 {
     public class MediaContainer : PlexItem
     {
         public List<Directory> directories { get; set; }
-        public List<DirectoryTypes.Show> showDirectories { get; set; }
+        public List<Show> showDirectories { get; set; }
 
         public int size { get; set; }
         public bool allowSync { get; set; }
@@ -71,12 +72,12 @@ namespace PlexDL.PlexAPI
             request.Resource = uri;
             Console.WriteLine("Getting items from: " + uri);
 
-            showDirectories = new List<DirectoryTypes.Show>();
+            showDirectories = new List<Show>();
 
             var m = Execute<MediaContainer>(request, user);
             if (m.directories != null)
             {
-                Utils.CopyFrom(this, m);
+                this.CopyFrom(m);
 
                 // Loop through directories and add the user, server and uri
                 for (var i = 0; i < directories.Count; i++)
@@ -96,7 +97,7 @@ namespace PlexDL.PlexAPI
             switch (item.type)
             {
                 case "show":
-                    showDirectories.Add(new DirectoryTypes.Show(item));
+                    showDirectories.Add(new Show(item));
                     break;
             }
 

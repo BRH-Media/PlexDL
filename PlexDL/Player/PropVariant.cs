@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -9,7 +10,7 @@ namespace PlexDL.Player
     {
         #region Declarations
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("ole32.dll", ExactSpelling = true, PreserveSig = false)]
         [SuppressUnmanagedCodeSecurity]
         protected static extern void PropVariantClear([In] [MarshalAs(UnmanagedType.LPStruct)]

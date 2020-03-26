@@ -11,7 +11,7 @@ namespace PlexDL.Animation.WinFormAnimation
         /// <summary>
         ///     Initializes a new instance of the <see cref="Path" /> class.
         /// </summary>
-        public Path() : this(default(float), default(float), default(ulong), 0, null)
+        public Path() : this(default, default, default, 0, null)
         {
         }
 

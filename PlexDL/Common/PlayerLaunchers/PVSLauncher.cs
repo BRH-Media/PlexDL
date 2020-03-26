@@ -1,14 +1,14 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
-    public static class PVSLauncher
+    public static class PvsLauncher
     {
-        public static void LaunchPVS(PlexObject stream, DataTable titles)
+        public static void LaunchPvs(PlexObject stream, DataTable titles)
         {
             if (stream != null && titles != null)
                 try
@@ -38,10 +38,9 @@ namespace PlexDL.Common.PlayerLaunchers
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK,
+                    MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex, "Launch Error", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
-                    return;
                 }
             else
                 LoggingHelpers.AddToLog("Tried to stream content via PVS, but one or more values were null.");

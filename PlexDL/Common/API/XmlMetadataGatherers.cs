@@ -1,11 +1,11 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.API
 {
@@ -27,7 +27,7 @@ namespace PlexDL.Common.API
             //MessageBox.Show(uri);
 
             LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXMLTransaction(uri);
+            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
 
@@ -46,7 +46,7 @@ namespace PlexDL.Common.API
             //MessageBox.Show(uri);
 
             LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXMLTransaction(uri);
+            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
 
@@ -64,7 +64,7 @@ namespace PlexDL.Common.API
             var uri = baseUri + key + "/?X-Plex-Token=";
 
             LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXMLTransaction(uri);
+            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
 
@@ -201,7 +201,7 @@ namespace PlexDL.Common.API
             var uri = baseUri + key + "/?X-Plex-Token=";
 
             LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXMLTransaction(uri);
+            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
 
@@ -219,7 +219,7 @@ namespace PlexDL.Common.API
             var uri = baseUri + key + "/?X-Plex-Token=";
 
             LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXMLTransaction(uri);
+            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
     }

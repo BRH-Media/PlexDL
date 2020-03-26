@@ -1,16 +1,16 @@
-﻿using PlexDL.Common.Globals;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
+using PlexDL.Common.Globals;
 
-namespace PlexDL.Common.Caching
+namespace PlexDL.Common.Caching.Handlers
 {
     public static class ThumbCaching
     {
         public static string ThumbCachePath(string sourceUrl)
         {
-            var fileName = Helpers.CalculateMD5Hash(sourceUrl);
-            var accountHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = Helpers.CalculateMD5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            var fileName = Helpers.CalculateMd5Hash(sourceUrl);
+            var accountHash = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\thumb";
             var fqPath = cachePath + @"\" + fileName + CachingFileExt.ThumbExt;
             return fqPath;

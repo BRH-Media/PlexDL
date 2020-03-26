@@ -1,8 +1,8 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
@@ -20,10 +20,9 @@ namespace PlexDL.Common.PlayerLaunchers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error occurred whilst trying to launch the default browser\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK,
+                MessageBox.Show("Error occurred whilst trying to launch the default browser\n\n" + ex, "Launch Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "BrowserLaunchError");
-                return;
             }
         }
     }

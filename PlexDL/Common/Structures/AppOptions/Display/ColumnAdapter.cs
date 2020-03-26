@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.TypeConverters;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using PlexDL.Common.TypeConverters;
 
 namespace PlexDL.Common.Structures.AppOptions.Display
 {

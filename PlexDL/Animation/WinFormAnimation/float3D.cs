@@ -31,7 +31,7 @@ namespace PlexDL.Animation.WinFormAnimation
         /// <summary>
         ///     Initializes a new instance of the <see cref="Float3D" /> class.
         /// </summary>
-        public Float3D() : this(default(float), default(float), default(float))
+        public Float3D() : this(default, default, default)
         {
         }
 

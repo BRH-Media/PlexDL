@@ -1,11 +1,14 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace PlexDL.UI
 {
     partial class Authenticate 
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -87,8 +90,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.TextBox txtAccountToken;
-        private System.Windows.Forms.GroupBox gbToken;
+        private Button btnConnect;
+        private TextBox txtAccountToken;
+        private GroupBox gbToken;
     }
 }

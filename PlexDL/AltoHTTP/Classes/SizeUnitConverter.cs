@@ -1,5 +1,5 @@
-﻿using PlexDL.AltoHTTP.Enums;
-using System;
+﻿using System;
+using PlexDL.AltoHTTP.Enums;
 
 namespace PlexDL.AltoHTTP.Classes
 {
@@ -13,12 +13,11 @@ namespace PlexDL.AltoHTTP.Classes
             var inMb = bytes < unit * unit * unit;
             if (inBytes)
                 return bytes + " bytes";
-            else if (inKb)
+            if (inKb)
                 return (bytes / 1024d).ToString("0.00") + " kb";
-            else if (inMb)
+            if (inMb)
                 return (bytes / 1024d / 1024).ToString("0.00") + " mb";
-            else
-                return (bytes / 1024d / 1024 / 1024).ToString("0.00") + " gb";
+            return (bytes / 1024d / 1024 / 1024).ToString("0.00") + " gb";
         }
 
         public static double ConvertMemorySize(this long size, FromTo fromTo)
@@ -29,11 +28,9 @@ namespace PlexDL.AltoHTTP.Classes
                 var divide = Math.Pow(1024, -degree);
                 return size / divide;
             }
-            else
-            {
-                var multiplier = Math.Pow(1024, degree);
-                return size * multiplier;
-            }
+
+            var multiplier = Math.Pow(1024, degree);
+            return size * multiplier;
         }
     }
 }

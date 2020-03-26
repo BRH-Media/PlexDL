@@ -16,6 +16,6 @@ namespace PlexDL.Player
         PluginControlPolicyWebOnly = 0x100,
         PluginControlPolicyWebOnlyEdgemode = 0x00000200,
         Read = 0x00010000,
-        Write = 0x00020000,
+        Write = 0x00020000
     }
 }

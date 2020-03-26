@@ -1,11 +1,14 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace PlexDL.UI
 {
     partial class CachingMetricsUI
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -400,30 +403,30 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbServerLists;
-        private System.Windows.Forms.Label lblNumberServerLists;
-        private System.Windows.Forms.Label lblNumberServerListsValue;
-        private System.Windows.Forms.TableLayoutPanel tlpServerLists;
-        private System.Windows.Forms.Label lblSizeServerListsValue;
-        private System.Windows.Forms.Label lblSizeServerLists;
-        private System.Windows.Forms.GroupBox gbThumbails;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lblSizeThumbsCachedValue;
-        private System.Windows.Forms.Label lblSizeThumbsCached;
-        private System.Windows.Forms.Label lblNumberThumbsCachedValue;
-        private System.Windows.Forms.Label lblNumberThumbsCached;
-        private System.Windows.Forms.GroupBox gbApiXml;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label lblSizeXmlCachedValue;
-        private System.Windows.Forms.Label lblSizeXmlCached;
-        private System.Windows.Forms.Label lblNumberXmlCachedValue;
-        private System.Windows.Forms.Label lblNumberXmlCached;
-        private System.Windows.Forms.GroupBox gbTotal;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label lblTotalSizeCachedValue;
-        private System.Windows.Forms.Label lblTotalSizeCached;
-        private System.Windows.Forms.Label lblTotalAmountCachedValue;
-        private System.Windows.Forms.Label lblTotalAmountCached;
-        private System.Windows.Forms.Button btnOK;
+        private GroupBox gbServerLists;
+        private Label lblNumberServerLists;
+        private Label lblNumberServerListsValue;
+        private TableLayoutPanel tlpServerLists;
+        private Label lblSizeServerListsValue;
+        private Label lblSizeServerLists;
+        private GroupBox gbThumbails;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label lblSizeThumbsCachedValue;
+        private Label lblSizeThumbsCached;
+        private Label lblNumberThumbsCachedValue;
+        private Label lblNumberThumbsCached;
+        private GroupBox gbApiXml;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Label lblSizeXmlCachedValue;
+        private Label lblSizeXmlCached;
+        private Label lblNumberXmlCachedValue;
+        private Label lblNumberXmlCached;
+        private GroupBox gbTotal;
+        private TableLayoutPanel tableLayoutPanel3;
+        private Label lblTotalSizeCachedValue;
+        private Label lblTotalSizeCached;
+        private Label lblTotalAmountCachedValue;
+        private Label lblTotalAmountCached;
+        private Button btnOK;
     }
 }

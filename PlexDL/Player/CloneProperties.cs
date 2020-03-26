@@ -16,7 +16,7 @@ namespace PlexDL.Player
         internal CloneFlip _flip = CloneFlip.FlipNone;
         internal DisplayShape _shape = DisplayShape.Normal;
         internal bool _videoShape = true;
-        internal bool _dragEnabled = false;
+        internal bool _dragEnabled;
         internal Cursor _dragCursor = Cursors.SizeAll;
 
         #endregion Fields (Clone Properties Class)

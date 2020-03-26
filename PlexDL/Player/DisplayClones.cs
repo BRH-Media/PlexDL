@@ -63,6 +63,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 #endregion Usings
 
@@ -112,7 +113,7 @@ namespace PlexDL.Player
         private volatile bool dc_PaintBusy;
         internal volatile Clone[] dc_DisplayClones;
 
-        private volatile System.Threading.Timer dc_Timer;
+        private volatile Timer dc_Timer;
         internal volatile int dc_TimerInterval = 1000 / DC_DEFAULT_FRAMERATE;
         private volatile bool dc_TimerRestart;
 
@@ -167,7 +168,7 @@ namespace PlexDL.Player
                     return _lastError;
                 }
 
-                _lastError = Player.NO_ERROR;
+                _lastError = NO_ERROR;
                 if (clones == null || clones.Length == 0) return _lastError;
 
                 int addCount = 0;
@@ -609,9 +610,9 @@ namespace PlexDL.Player
         {
             if (dc_Timer == null)
             {
-                if (dc_RefreshCallback == null) dc_RefreshCallback = new RefreshCloneCallback(DisplayClones_Invalidate);
+                if (dc_RefreshCallback == null) dc_RefreshCallback = DisplayClones_Invalidate;
                 dc_TimerRestart = true;
-                dc_Timer = new System.Threading.Timer(DisplayClones_Paint, null, 0, Timeout.Infinite);
+                dc_Timer = new Timer(DisplayClones_Paint, null, 0, Timeout.Infinite);
             }
         }
 
@@ -785,10 +786,7 @@ namespace PlexDL.Player
                             {
                                 dc_RefreshRegion.MakeEmpty();
                                 dc_RefreshRegion.Union(dc_DisplayClones[i].Control.DisplayRectangle);
-                                dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
-                                {
-                                    i
-                                });
+                                dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, i);
                                 dc_DisplayClones[i].Refresh = false;
                             }
                         }
@@ -1070,10 +1068,7 @@ namespace PlexDL.Player
                                         dc_RefreshRegion.Union(destRect);
                                         dc_RefreshRegion.Exclude(dc_RefreshRect);
 
-                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
-                                        {
-                                            i
-                                        });
+                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, i);
                                     }
 
                                     // set quality
@@ -1124,10 +1119,7 @@ namespace PlexDL.Player
                                         dc_RefreshRegion.Union(destRect);
                                         dc_RefreshRegion.Exclude(dc_RefreshRect);
 
-                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[]
-                                        {
-                                            i
-                                        });
+                                        dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, i);
                                     }
 
                                     // set quality

@@ -15,6 +15,6 @@ namespace PlexDL.Player
         HasSlowSeek = 0x00000100,
         IsPartiallyDownloaded = 0x00000200,
         ShareWrite = 0x00000400,
-        DoesNotUseNetwork = 0x00000800,
+        DoesNotUseNetwork = 0x00000800
     }
 }

@@ -68,7 +68,7 @@
         ERROR_FILE_NOT_FOUND = 0x02,
         ERROR_INVALID_NAME = unchecked((int)0x8007007B),
         ERROR_PATH_NOT_FOUND = unchecked((int)0x80070003),
-        ERROR_SYSTEM_DEVICE_NOT_FOUND = unchecked(0x00003BC3),
+        ERROR_SYSTEM_DEVICE_NOT_FOUND = 0x00003BC3,
         ERROR_DEVICE_NOT_CONNECTED = 0x0000048F,
         ERROR_NOT_READY = 0x15,
         ERROR_BUSY = unchecked((int)0x800700AA),

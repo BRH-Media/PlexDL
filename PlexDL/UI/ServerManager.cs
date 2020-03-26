@@ -1,20 +1,22 @@
-﻿using PlexDL.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.UI
 {
     public partial class ServerManager : Form
     {
-        public Server SelectedServer { get; set; } = null;
+        public Server SelectedServer { get; set; }
 
         public ServerManager()
         {
@@ -62,16 +64,16 @@ namespace PlexDL.UI
 
         private void RenderServersView(List<Server> servers)
         {
-            PlexDL.WaitWindow.WaitWindow.Show(this.WorkerRenderServersView, "Updating Servers", new object[] { servers });
+            WaitWindow.WaitWindow.Show(WorkerRenderServersView, "Updating Servers", servers);
         }
 
-        private void WorkerRenderServersView(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void WorkerRenderServersView(object sender, WaitWindowEventArgs e)
         {
             List<Server> servers = (List<Server>)e.Arguments[0];
             ServerViewRenderer.RenderView(servers, dgvServers);
         }
 
-        private void GetServerListWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void GetServerListWorker(object sender, WaitWindowEventArgs e)
         {
             Helpers.CacheStructureBuilder();
             if (ServerCaching.ServerInCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) && GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
@@ -87,7 +89,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void GetRelaysListWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
+        private void GetRelaysListWorker(object sender, WaitWindowEventArgs e)
         {
             List<Server> result = Relays.GetServerRelays(GlobalStaticVars.User.authenticationToken);
             e.Result = result;
@@ -102,7 +104,7 @@ namespace PlexDL.UI
                 {
                     if (GlobalStaticVars.User.authenticationToken != "")
                     {
-                        object serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Fetching Servers");
+                        object serversResult = WaitWindow.WaitWindow.Show(GetServerListWorker, "Fetching Servers");
                         List<Server> servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
@@ -126,9 +128,8 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Server retrieval error\n\n" + ex.ToString(), @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Server retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "ServerGetError");
-                return;
             }
         }
 
@@ -141,7 +142,7 @@ namespace PlexDL.UI
                 {
                     if (GlobalStaticVars.User.authenticationToken != "")
                     {
-                        object serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetRelaysListWorker, "Fetching Relays");
+                        object serversResult = WaitWindow.WaitWindow.Show(GetRelaysListWorker, "Fetching Relays");
                         List<Server> servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
@@ -165,9 +166,8 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Relay retrieval error\n\n" + ex.ToString(), @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Relay retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "RelayGetError");
-                return;
             }
         }
 
@@ -182,8 +182,8 @@ namespace PlexDL.UI
                         int index = dgvServers.CurrentCell.RowIndex;
                         Server s = GlobalStaticVars.PlexServers[index];
                         SelectedServer = s;
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
+                        DialogResult = DialogResult.OK;
+                        Close();
                     }
                 }
                 else
@@ -195,8 +195,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"ConnectionError");
-                MessageBox.Show("Server connection attempt failed\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                MessageBox.Show("Server connection attempt failed\n\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -220,8 +219,8 @@ namespace PlexDL.UI
                     servers.Add(s);
                     GlobalStaticVars.PlexServers = servers;
                     SelectedServer = s;
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
             }
         }
@@ -257,14 +256,13 @@ namespace PlexDL.UI
                 {
                     // trying to connect on no connection will not end well; close this window if there's no connection and alert the user.
                     MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    this.Close();
+                    Close();
                 }
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"ServerManagerLoadError");
-                MessageBox.Show("Server manager failed to load necessary data\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                MessageBox.Show("Server manager failed to load necessary data\n\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

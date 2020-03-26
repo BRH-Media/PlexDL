@@ -181,7 +181,7 @@ namespace PlexDL.Player
                     if (Subtitles_GetFromFile(subtitlesFile))
                     {
                         st_CurrentIndex = 0;
-                        this._mediaPositionChanged += Subtitles_MediaPositionChanged;
+                        _mediaPositionChanged += Subtitles_MediaPositionChanged;
 
                         st_HasSubtitles = true;
                         st_SubtitlesName = subtitlesFile;
@@ -202,10 +202,10 @@ namespace PlexDL.Player
             string initialDirectory;
 
             if (!string.IsNullOrEmpty(st_FileName)) searchFile = st_FileName;
-            else searchFile = this.Media.GetName(MediaName.FileNameWithoutExtension) + SUBTITLES_FILE_EXTENSION;
+            else searchFile = Media.GetName(MediaName.FileNameWithoutExtension) + SUBTITLES_FILE_EXTENSION;
 
             if (!string.IsNullOrEmpty(st_Directory)) initialDirectory = st_Directory;
-            else initialDirectory = this.Media.GetName(MediaName.DirectoryName);
+            else initialDirectory = Media.GetName(MediaName.DirectoryName);
 
             return Subtitles_FindFile(searchFile, initialDirectory);
             // TODO check contents of file (Count > 0)
@@ -215,7 +215,7 @@ namespace PlexDL.Player
         {
             if (st_HasSubtitles)
             {
-                this._mediaPositionChanged -= Subtitles_MediaPositionChanged;
+                _mediaPositionChanged -= Subtitles_MediaPositionChanged;
 
                 if (st_SubtitleOn)
                 {
@@ -286,7 +286,7 @@ namespace PlexDL.Player
                             if (st_CurrentIndex < 1) st_CurrentStart = 0;
                             else st_CurrentStart = st_SubtitleItems[st_CurrentIndex].EndTime;
 
-                            if (st_CurrentIndex > st_SubtitleItems.Length - 1) st_CurrentEnd = this.Length;
+                            if (st_CurrentIndex > st_SubtitleItems.Length - 1) st_CurrentEnd = Length;
                             else st_CurrentEnd = st_SubtitleItems[st_CurrentIndex].StartTime;
 
                             if (st_SubtitleOn)

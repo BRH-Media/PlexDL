@@ -1,4 +1,14 @@
-﻿using PlexDL.AltoHTTP.Classes;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
+using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
@@ -13,16 +23,6 @@ using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Net;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
 using Directory = System.IO.Directory;
 
 //using System.Threading.Tasks;
@@ -114,13 +114,13 @@ namespace PlexDL.UI
         private void ItmStreamInPVS_Click(object sender, EventArgs e)
         {
             cxtStreamOptions.Close();
-            PVSLauncher.LaunchPVS(GlobalStaticVars.CurrentStream, GlobalTables.ReturnCorrectTable());
+            PvsLauncher.LaunchPvs(GlobalStaticVars.CurrentStream, GlobalTables.ReturnCorrectTable());
         }
 
         private void ItmStreamInVLC_Click(object sender, EventArgs e)
         {
             cxtStreamOptions.Close();
-            VLCLauncher.LaunchVLC(GlobalStaticVars.CurrentStream);
+            VlcLauncher.LaunchVlc(GlobalStaticVars.CurrentStream);
         }
 
         private void ItmStreamInBrowser_Click(object sender, EventArgs e)
@@ -295,7 +295,7 @@ namespace PlexDL.UI
                             return;
                     }
 
-                    LoggingHelpers.AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion.ToString() + " > " + vThisVersion.ToString());
+                    LoggingHelpers.AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion + " > " + vThisVersion);
                 }
                 else if (vCompare > 0)
                 {
@@ -311,7 +311,7 @@ namespace PlexDL.UI
                             return;
                     }
 
-                    LoggingHelpers.AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion.ToString() + " < " + vThisVersion.ToString());
+                    LoggingHelpers.AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion + " < " + vThisVersion);
                 }
                 GlobalStaticVars.Settings = subReq;
 
@@ -391,11 +391,11 @@ namespace PlexDL.UI
                     var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
                     var baseUri = GlobalStaticVars.GetBaseUri(false);
                     var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
-                    var xmlSectionKey = XmlGet.GetXMLTransaction(uriSectionKey);
+                    var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey);
 
                     var sectionDir = KeyGatherers.GetSectionKey(xmlSectionKey).TrimEnd('/');
                     var uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
-                    var xmlSections = XmlGet.GetXMLTransaction(uriSections);
+                    var xmlSections = XmlGet.GetXmlTransaction(uriSections);
 
                     LoggingHelpers.AddToLog("Creating new datasets");
                     var sections = new DataSet();
@@ -463,7 +463,7 @@ namespace PlexDL.UI
             if (GlobalTables.TitlesTable != null)
             {
                 //set this in the toolstrip so the user can see how many items are loaded
-                lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
+                lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count + "/" + GlobalTables.TitlesTable.Rows.Count;
 
                 Flags.IsTVShow = isTVShow;
 
@@ -739,9 +739,9 @@ namespace PlexDL.UI
 
         private void ClearContentView()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)delegate
+                BeginInvoke((MethodInvoker)delegate
                 {
                     dgvContent.DataSource = null;
                 });
@@ -752,9 +752,9 @@ namespace PlexDL.UI
 
         private void ClearTVViews()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)delegate
+                BeginInvoke((MethodInvoker)delegate
                 {
                     dgvSeasons.DataSource = null;
                     dgvEpisodes.DataSource = null;
@@ -771,9 +771,9 @@ namespace PlexDL.UI
 
         private void ClearLibraryViews()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)delegate
+                BeginInvoke((MethodInvoker)delegate
                 {
                     dgvLibrary.DataSource = null;
                 });
@@ -906,39 +906,6 @@ namespace PlexDL.UI
         #endregion UpdateWaitWorkers
 
         #region PlexAPIWorkers
-
-        private void GetServerListWorker(object sender, WaitWindowEventArgs e)
-        {
-            Helpers.CacheStructureBuilder();
-            if (!GlobalStaticVars.Settings.ConnectionInfo.RelaysOnly)
-            {
-                if (ServerCaching.ServerInCache(GlobalStaticVars.User.authenticationToken))
-                {
-                    try
-                    {
-                        e.Result = ServerCaching.ServerFromCache(GlobalStaticVars.User.authenticationToken);
-                    }
-                    catch (UnauthorizedAccessException ex)
-                    {
-                        var result = GlobalStaticVars.Plex.GetServers(GlobalStaticVars.User);
-                        ServerCaching.ServerToCache(result, GlobalStaticVars.User.authenticationToken);
-                        e.Result = result;
-                        LoggingHelpers.RecordException(ex.Message, "ServerIOAccessError");
-                    }
-                }
-                else
-                {
-                    var result = GlobalStaticVars.Plex.GetServers(GlobalStaticVars.User);
-                    ServerCaching.ServerToCache(result, GlobalStaticVars.User.authenticationToken);
-                    e.Result = result;
-                }
-            }
-            else
-            {
-                var result = Relays.GetServerRelays(GlobalStaticVars.User.authenticationToken);
-                e.Result = result;
-            }
-        }
 
         private void GetMovieObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
@@ -1166,7 +1133,7 @@ namespace PlexDL.UI
                     if (Flags.IsTVShow)
                     {
                         dgv = dgvTVShows;
-                        info = new RenderStruct()
+                        info = new RenderStruct
                         {
                             Data = GlobalTables.TvViewTable,
                             WantedCaption = GlobalStaticVars.Settings.DataDisplay.TVView.DisplayCaptions,
@@ -1176,7 +1143,7 @@ namespace PlexDL.UI
                     else
                     {
                         dgv = dgvContent;
-                        info = new RenderStruct()
+                        info = new RenderStruct
                         {
                             Data = GlobalTables.ContentViewTable,
                             WantedCaption = GlobalStaticVars.Settings.DataDisplay.ContentView.DisplayCaptions,
@@ -1273,14 +1240,14 @@ namespace PlexDL.UI
             itmStartSearch.Text = @"Start Search";
             if (GlobalTables.TitlesTable != null)
                 if (GlobalTables.TitlesTable.Rows != null)
-                    lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
+                    lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count + "/" + GlobalTables.TitlesTable.Rows.Count;
         }
 
         private void SetCancelSearch()
         {
             if (GlobalTables.FilteredTable != null && GlobalTables.TitlesTable != null)
                 if (GlobalTables.FilteredTable.Rows != null && GlobalTables.TitlesTable.Rows != null)
-                    lblViewingValue.Text = GlobalTables.FilteredTable.Rows.Count.ToString() + "/" + GlobalTables.TitlesTable.Rows.Count.ToString();
+                    lblViewingValue.Text = GlobalTables.FilteredTable.Rows.Count + "/" + GlobalTables.TitlesTable.Rows.Count;
             itmStartSearch.Text = @"Clear Search";
         }
 
@@ -1303,7 +1270,7 @@ namespace PlexDL.UI
 
             ConnectionInfo connectInfo;
 
-            connectInfo = new ConnectionInfo()
+            connectInfo = new ConnectionInfo
             {
                 PlexAccountToken = GlobalStaticVars.GetToken(),
                 PlexAddress = address,
@@ -1315,7 +1282,7 @@ namespace PlexDL.UI
 
             string uri = GlobalStaticVars.GetBaseUri(true);
             //MessageBox.Show(uri);
-            XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", new object[] { uri });
+            XmlDocument reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", uri);
             Flags.IsConnected = true;
 
             if (GlobalStaticVars.Settings.Generic.ShowConnectionSuccess)
@@ -1392,7 +1359,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.AddToLog("Requesting ibrary contents");
                 var contentUri = Uri + key + "/all/?X-Plex-Token=";
-                var contentXml = XmlGet.GetXMLTransaction(contentUri);
+                var contentXml = XmlGet.GetXmlTransaction(contentUri);
 
                 _contentXmlDoc = contentXml;
                 UpdateContentView(contentXml, isTVShow);
@@ -1656,11 +1623,11 @@ namespace PlexDL.UI
             GlobalStaticVars.CurrentStream = stream;
             if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
             {
-                PVSLauncher.LaunchPVS(stream, GlobalTables.ReturnCorrectTable());
+                PvsLauncher.LaunchPvs(stream, GlobalTables.ReturnCorrectTable());
             }
             else if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
             {
-                VLCLauncher.LaunchVLC(stream);
+                VlcLauncher.LaunchVlc(stream);
             }
             else if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.Browser)
             {
@@ -1934,7 +1901,6 @@ namespace PlexDL.UI
             {
                 MessageBox.Show("Error whilst trying to delete cached data:\n\n" + ex.Message);
                 LoggingHelpers.RecordException(ex.Message, "ClearCacheError");
-                return;
             }
         }
 
@@ -1971,7 +1937,6 @@ namespace PlexDL.UI
             {
                 //log and then ignore
                 LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
-                return;
             }
         }
     }

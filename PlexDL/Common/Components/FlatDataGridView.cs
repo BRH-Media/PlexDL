@@ -1,8 +1,8 @@
-﻿using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Components
 {
@@ -22,21 +22,27 @@ namespace PlexDL.Common.Components
             AllowUserToDeleteRows = false;
             AllowUserToOrderColumns = true;
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            BackgroundColor = Color.FromArgb((int)(byte)224, (int)(byte)224, (int)(byte)224);
+            BackgroundColor = Color.FromArgb(224, 224, 224);
             BorderStyle = BorderStyle.None;
             CellBorderStyle = DataGridViewCellBorderStyle.None;
             EditMode = DataGridViewEditMode.EditProgrammatically;
             Font = new Font(FontFamily.GenericSansSerif, (float)8.25);
             MultiSelect = false;
             Name = "dgvMain";
-            Paint += new PaintEventHandler(this.DGVPaint);
+            Paint += DgvPaint;
             SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             RowHeadersVisible = false;
-            DataError += new DataGridViewDataErrorEventHandler(DGVDataError);
+            DataError += DGVDataError;
             DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
-        private void DGVPaint(object sender, PaintEventArgs e)
+        public sealed override Font Font
+        {
+            get => base.Font;
+            set => base.Font = value;
+        }
+
+        private void DgvPaint(object sender, PaintEventArgs e)
         {
             try
             {
@@ -46,7 +52,7 @@ namespace PlexDL.Common.Components
                         Font, ClientRectangle,
                         RowsEmptyTextForeColor, BackgroundColor,
                         TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                    Font = new Font(FontFamily.GenericSansSerif, (float)13);
+                    Font = new Font(FontFamily.GenericSansSerif, 13);
                     BorderStyle = BorderStyle.None;
                 }
                 else
@@ -56,7 +62,7 @@ namespace PlexDL.Common.Components
             }
             catch (Exception ex)
             {
-                this.Invalidate();
+                Invalidate();
                 LoggingHelpers.RecordException(ex.Message, "DGVPaintError");
             }
         }

@@ -1,8 +1,6 @@
-﻿using PlexDL.Common;
-using PlexDL.Common.Structures;
-using PlexDL.Common.Structures.AppOptions;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.Common.Structures;
 
 namespace PlexDL.UI
 {
@@ -10,7 +8,7 @@ namespace PlexDL.UI
     {
         public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
-        public bool connectionStarted = false;
+        public bool connectionStarted;
 
         public Authenticate()
         {

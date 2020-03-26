@@ -4,10 +4,6 @@ namespace PlexDL.PlexAPI
 {
     public class User
     {
-        public User()
-        {
-        }
-
         public string username { get; set; }
         public string email { get; set; }
         public int id { get; set; }

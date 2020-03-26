@@ -1,9 +1,10 @@
 ﻿using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
     [ComImport]
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("C6E13360-30AC-11D0-A18C-00A0C9118956")]
     internal interface IAMVideoProcAmp

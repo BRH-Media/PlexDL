@@ -302,7 +302,7 @@ namespace PlexDL.Player
         /// <param name="clone">The form or control to add as a display clone.</param>
         public int Add(Control clone)
         {
-            return (int)_base.DisplayClones_Add(new Control[]
+            return (int)_base.DisplayClones_Add(new[]
             {
                 clone
             }, _defaultProps);
@@ -318,7 +318,7 @@ namespace PlexDL.Player
             _base._lastError = HResult.S_FALSE;
 
             if (clone != null)
-                _base.DisplayClones_Add(new Control[]
+                _base.DisplayClones_Add(new[]
                 {
                     clone
                 }, properties);
@@ -355,7 +355,7 @@ namespace PlexDL.Player
             _base._lastError = Player.NO_ERROR;
 
             if (clone != null)
-                _base.DisplayClones_Remove(new Control[]
+                _base.DisplayClones_Remove(new[]
                 {
                     clone
                 });

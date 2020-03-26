@@ -1,11 +1,15 @@
-﻿namespace PlexDL.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using libbrhscgui.Components;
+
+namespace PlexDL.UI
 {
     partial class DirectConnect
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -103,9 +107,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnConnect;
-        private libbrhscgui.Components.WaterMarkTextBox txtServerPort;
-        private libbrhscgui.Components.WaterMarkTextBox txtServerIP;
-        private System.Windows.Forms.GroupBox gbConnectionInformation;
+        private Button btnConnect;
+        private WaterMarkTextBox txtServerPort;
+        private WaterMarkTextBox txtServerIP;
+        private GroupBox gbConnectionInformation;
     }
 }

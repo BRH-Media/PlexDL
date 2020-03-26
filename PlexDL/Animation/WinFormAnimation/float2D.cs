@@ -28,7 +28,7 @@ namespace PlexDL.Animation.WinFormAnimation
         /// <summary>
         ///     Initializes a new instance of the <see cref="Float2D" /> class.
         /// </summary>
-        public Float2D() : this(default(float), default(float))
+        public Float2D() : this(default, default)
         {
         }
 

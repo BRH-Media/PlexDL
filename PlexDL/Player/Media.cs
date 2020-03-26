@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace PlexDL.Player
 {
@@ -344,11 +345,9 @@ namespace PlexDL.Player
             {
                 return GetMetadata(_base._fileName, ImageSource.MediaOrFolder);
             }
-            else
-            {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                return new Metadata();
-            }
+
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            return new Metadata();
         }
 
         /// <summary>
@@ -361,12 +360,10 @@ namespace PlexDL.Player
             {
                 return GetMetadata(_base._fileName, imageSource);
             }
-            else
-            {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                ;
-                return new Metadata();
-            }
+
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            ;
+            return new Metadata();
         }
 
         /// <summary>
@@ -496,7 +493,7 @@ namespace PlexDL.Player
                                 {
                                     IStream stream = (IStream)Marshal.GetObjectForIUnknown(propVariant.ptr);
 
-                                    System.Runtime.InteropServices.ComTypes.STATSTG streamInfo;
+                                    STATSTG streamInfo;
                                     stream.Stat(out streamInfo, STATFLAG.NoName);
 
                                     int streamSize = (int)streamInfo.cbSize;

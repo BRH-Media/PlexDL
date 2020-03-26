@@ -5,10 +5,6 @@ namespace PlexDL.PlexAPI
 {
     public class Server : PlexRest
     {
-        public Server()
-        {
-        }
-
         public string accessToken { get; set; }
         public string name { get; set; }
         public string address { get; set; }

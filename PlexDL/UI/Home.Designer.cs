@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using libbrhscgui.Components;
+using PlexDL.Common.Components;
 
 namespace PlexDL.UI
 {
@@ -7,7 +10,7 @@ namespace PlexDL.UI
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -959,79 +962,79 @@ namespace PlexDL.UI
         }
 
         #endregion
-        public System.ComponentModel.BackgroundWorker wkrUpdateContentView;
-        private System.Windows.Forms.SaveFileDialog sfdSaveProfile;
-        public System.Windows.Forms.FolderBrowserDialog fbdSave;
-        private System.Windows.Forms.OpenFileDialog ofdLoadProfile;
-        private System.ComponentModel.BackgroundWorker wkrDownloadAsync;
-        private System.Windows.Forms.ToolTip tipMain;
-        private libbrhscgui.Components.AbortableBackgroundWorker wkrGetMetadata;
-        private System.Windows.Forms.ContextMenuStrip cxtEpisodes;
-        private System.Windows.Forms.ToolStripMenuItem itmDownloadThisEpisode;
-        private System.Windows.Forms.ToolStripMenuItem itmDownloadAllEpisodes;
-        private System.Windows.Forms.ContextMenuStrip cxtLibrarySections;
-        private System.Windows.Forms.ToolStripMenuItem itmManuallyLoadSection;
-        private System.Windows.Forms.ContextMenuStrip cxtEpisodeOptions;
-        private System.Windows.Forms.ToolStripMenuItem itmEpisodeMetadata;
-        private System.Windows.Forms.ToolStripMenuItem itmEpisodeDownload;
-        private System.Windows.Forms.ToolStripMenuItem itmDGVDownloadThisEpisode;
-        private System.Windows.Forms.ToolStripMenuItem itmDGVDownloadThisSeason;
-        private System.Windows.Forms.ContextMenuStrip cxtContentOptions;
-        private System.Windows.Forms.ToolStripMenuItem itmContentMetadata;
-        private System.Windows.Forms.ToolStripMenuItem itmContentDownload;
-        private System.Windows.Forms.OpenFileDialog ofdMetadata;
-        private PlexDL.Common.Components.FlatDataGridView dgvLibrary;
-        private System.Windows.Forms.NotifyIcon nfyMain;
-        private System.Windows.Forms.ContextMenuStrip cxtStreamOptions;
-        private System.Windows.Forms.ToolStripMenuItem itmStreamInPVS;
-        private System.Windows.Forms.ToolStripMenuItem itmStreamInVLC;
-        private System.Windows.Forms.ToolStripMenuItem itmStreamInBrowser;
-        private System.Windows.Forms.SaveFileDialog sfdExport;
-        private System.Windows.Forms.GroupBox gbStreamControl;
-        private System.Windows.Forms.Button btnHTTPPlay;
-        private System.Windows.Forms.Button btnDownload;
-        private System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.TabControl tabMain;
-        private System.Windows.Forms.TabPage tabMovies;
-        private Common.Components.FlatDataGridView dgvContent;
-        private System.Windows.Forms.TabPage tabTV;
-        private System.Windows.Forms.TableLayoutPanel tlpTV;
-        private Common.Components.FlatDataGridView dgvTVShows;
-        private Common.Components.FlatDataGridView dgvSeasons;
-        private Common.Components.FlatDataGridView dgvEpisodes;
-        private System.Windows.Forms.TabPage tabLog;
-        private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem itmFile;
-        private System.Windows.Forms.ToolStripMenuItem itmExportObj;
-        private System.Windows.Forms.ToolStripMenuItem itmSetDlDirectory;
-        private System.Windows.Forms.ToolStripMenuItem itmLoadProfile;
-        private System.Windows.Forms.ToolStripMenuItem itmSaveProfile;
-        private System.Windows.Forms.ToolStripMenuItem itmServers;
-        private System.Windows.Forms.ToolStripMenuItem itmServerManager;
-        private System.Windows.Forms.ToolStripMenuItem itmContent;
-        private System.Windows.Forms.ToolStripMenuItem itmMetadata;
-        private System.Windows.Forms.ToolStripMenuItem itmStartSearch;
-        private System.Windows.Forms.ToolStripMenuItem itmLogging;
-        private System.Windows.Forms.ToolStripMenuItem itmLogViewer;
-        private System.Windows.Forms.ToolStripMenuItem itmCaching;
-        private System.Windows.Forms.ToolStripMenuItem itmCacheMetrics;
-        private System.Windows.Forms.ToolStripMenuItem itmClearCache;
-        private System.Windows.Forms.ToolStripMenuItem itmAbout;
-        private System.Windows.Forms.TableLayoutPanel tlpContentOptions;
-        private System.Windows.Forms.TableLayoutPanel tlpContentOptionsControls;
-        private System.Windows.Forms.ToolStripMenuItem itmDisconnect;
-        private System.Windows.Forms.ToolStripMenuItem itmSettings;
-        private System.Windows.Forms.ToolStrip tsMain;
-        private System.Windows.Forms.ToolStripSeparator tsSeparator1;
-        private System.Windows.Forms.ToolStripLabel lblProgress;
-        private System.Windows.Forms.ProgressBar pbMain;
-        private System.Windows.Forms.ToolStripLabel lblViewingValue;
-        private System.Windows.Forms.ToolStripLabel lblViewing;
-        private System.Windows.Forms.Timer tmrWorkerTimeout;
-        private Common.Components.FlatDataGridView dgvLog;
-        private System.Windows.Forms.TableLayoutPanel tlpLog;
-        private System.Windows.Forms.TableLayoutPanel tlpMovies;
+        public BackgroundWorker wkrUpdateContentView;
+        private SaveFileDialog sfdSaveProfile;
+        public FolderBrowserDialog fbdSave;
+        private OpenFileDialog ofdLoadProfile;
+        private BackgroundWorker wkrDownloadAsync;
+        private ToolTip tipMain;
+        private AbortableBackgroundWorker wkrGetMetadata;
+        private ContextMenuStrip cxtEpisodes;
+        private ToolStripMenuItem itmDownloadThisEpisode;
+        private ToolStripMenuItem itmDownloadAllEpisodes;
+        private ContextMenuStrip cxtLibrarySections;
+        private ToolStripMenuItem itmManuallyLoadSection;
+        private ContextMenuStrip cxtEpisodeOptions;
+        private ToolStripMenuItem itmEpisodeMetadata;
+        private ToolStripMenuItem itmEpisodeDownload;
+        private ToolStripMenuItem itmDGVDownloadThisEpisode;
+        private ToolStripMenuItem itmDGVDownloadThisSeason;
+        private ContextMenuStrip cxtContentOptions;
+        private ToolStripMenuItem itmContentMetadata;
+        private ToolStripMenuItem itmContentDownload;
+        private OpenFileDialog ofdMetadata;
+        private FlatDataGridView dgvLibrary;
+        private NotifyIcon nfyMain;
+        private ContextMenuStrip cxtStreamOptions;
+        private ToolStripMenuItem itmStreamInPVS;
+        private ToolStripMenuItem itmStreamInVLC;
+        private ToolStripMenuItem itmStreamInBrowser;
+        private SaveFileDialog sfdExport;
+        private GroupBox gbStreamControl;
+        private Button btnHTTPPlay;
+        private Button btnDownload;
+        private Button btnPause;
+        private TabControl tabMain;
+        private TabPage tabMovies;
+        private FlatDataGridView dgvContent;
+        private TabPage tabTV;
+        private TableLayoutPanel tlpTV;
+        private FlatDataGridView dgvTVShows;
+        private FlatDataGridView dgvSeasons;
+        private FlatDataGridView dgvEpisodes;
+        private TabPage tabLog;
+        private TableLayoutPanel tlpMain;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmFile;
+        private ToolStripMenuItem itmExportObj;
+        private ToolStripMenuItem itmSetDlDirectory;
+        private ToolStripMenuItem itmLoadProfile;
+        private ToolStripMenuItem itmSaveProfile;
+        private ToolStripMenuItem itmServers;
+        private ToolStripMenuItem itmServerManager;
+        private ToolStripMenuItem itmContent;
+        private ToolStripMenuItem itmMetadata;
+        private ToolStripMenuItem itmStartSearch;
+        private ToolStripMenuItem itmLogging;
+        private ToolStripMenuItem itmLogViewer;
+        private ToolStripMenuItem itmCaching;
+        private ToolStripMenuItem itmCacheMetrics;
+        private ToolStripMenuItem itmClearCache;
+        private ToolStripMenuItem itmAbout;
+        private TableLayoutPanel tlpContentOptions;
+        private TableLayoutPanel tlpContentOptionsControls;
+        private ToolStripMenuItem itmDisconnect;
+        private ToolStripMenuItem itmSettings;
+        private ToolStrip tsMain;
+        private ToolStripSeparator tsSeparator1;
+        private ToolStripLabel lblProgress;
+        private ProgressBar pbMain;
+        private ToolStripLabel lblViewingValue;
+        private ToolStripLabel lblViewing;
+        private Timer tmrWorkerTimeout;
+        private FlatDataGridView dgvLog;
+        private TableLayoutPanel tlpLog;
+        private TableLayoutPanel tlpMovies;
     }
 }
 

@@ -16,6 +16,6 @@ namespace PlexDL.Player
         ForceScaling = 0x00000040,
         AllowScaling = 0x00000080,
         DoNotRepaintOnStop = 0x00000100,
-        Mask = 0x000001ff,
+        Mask = 0x000001ff
     }
 }

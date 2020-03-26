@@ -272,7 +272,7 @@ namespace PlexDL.Player
                 {
                     try
                     {
-                        result = (HResult)((IAMVideoProcAmp)_base.mf_MediaSource).Set(property, value._current,
+                        result = ((IAMVideoProcAmp)_base.mf_MediaSource).Set(property, value._current,
                             value._auto ? VideoProcAmpFlags.Auto : VideoProcAmpFlags.Manual);
                     }
                     catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }

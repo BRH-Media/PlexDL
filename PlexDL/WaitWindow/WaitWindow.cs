@@ -90,8 +90,7 @@ namespace PlexDL.WaitWindow
             //	Validate Parameters
             if (workerMethod == null)
                 throw new ArgumentException(@"No worker method has been specified.", "workerMethod");
-            else
-                _WorkerMethod = workerMethod;
+            _WorkerMethod = workerMethod;
 
             _Args = args;
 
@@ -114,8 +113,7 @@ namespace PlexDL.WaitWindow
             //	Return result or throw and exception
             if (_Error != null)
                 throw _Error;
-            else
-                return result;
+            return result;
         }
 
         #endregion Instance implementation

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -337,7 +338,7 @@ namespace PlexDL.Player
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat)
+        public int ToFile(string fileName, ImageFormat imageFormat)
         {
             if ((fileName != null) && (fileName.Length > 3))
             {

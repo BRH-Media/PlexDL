@@ -24,12 +24,11 @@ namespace PlexDL.Common.Renderers
                 {
                     //store the columns we want vs. the columns available (so we don't error out)
                     var currentColumns = new List<string>();
-                    var currentCaption = new List<string>();
                     var wantedColumns = info.WantedColumns;
                     var wantedCaption = info.WantedCaption;
 
                     //data storage
-                    var dgvBind = new DataTable();
+                    DataTable dgvBind;
                     var viewBind = new DataView(info.Data);
 
                     //check if appropriate columns are part of the table; then we can verify and add them to the view.
@@ -40,7 +39,6 @@ namespace PlexDL.Common.Renderers
                             //it does, so grab its index, grab its associated caption, then add both to the available columns (Current Columns)
                             var index = wantedColumns.IndexOf(c.ColumnName);
                             var caption = wantedCaption[index];
-                            currentCaption.Add(caption);
                             currentColumns.Add(c.ColumnName);
                             //set the column's caption to the one we just got from the index
                             c.Caption = caption;
@@ -80,7 +78,9 @@ namespace PlexDL.Common.Renderers
                 }
 
             //some checks obviously failed or an error occurred; return the original data because we couldn't process anything.
-            return info.Data;
+            if (info != null)
+                return info.Data;
+            return new DataTable();
         }
     }
 }
