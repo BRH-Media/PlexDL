@@ -17,7 +17,7 @@ PlexDL is in **no way** stable enough to be called high-performance. It is, howe
 
 ### How to get started
 #### __1. Building from Source__
-PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Studio 2019. The PlexDL source comes preloaded with necessary icons and resources, AltoHttp, chsarp-plex-api, WinFormAnimation, CircularProgressBar and PVS.MediaPlayer. You will need to obtain the latest DLL of MetroSet UI (by building it from source or from [here](https://github.com/Brhsoftco/MetroSet-UI)) and update the project reference accordingly. Another DLL you will need to obtain is the libbrhscgui project, which you can find [on my project page](https://github.com/Brhsoftco/libbrhscgui). You will also need to install RestSharp via NuGet. Once you have configured the project, you may build it and launch the software.
+PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Studio 2019. The PlexDL source comes preloaded with necessary icons and resources, AltoHttp, chsarp-plex-api, WinFormAnimation, CircularProgressBar and PVS.MediaPlayer. PlexDL includes the appropriate NuGet references to libbrhscgui (prebuilt for you) and RestSharp, and upon cloning this repo, you'll just need to restore the packages. After doing all of this, you can successfully build the software. If you have any issues building or using the software, please file a GitHub issue report.
 #### __2. Downloading from Releases__
 You can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest).
 ### __Using PlexDL__
