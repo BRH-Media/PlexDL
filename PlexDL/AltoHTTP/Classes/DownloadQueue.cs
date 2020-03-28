@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
-using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {

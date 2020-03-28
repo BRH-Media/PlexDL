@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Xml;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
+using System;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {
@@ -25,7 +25,7 @@ namespace PlexDL.Common.API
                 {
                     LoggingHelpers.AddToLog("XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo_Xml(metadata);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {
@@ -82,7 +82,7 @@ namespace PlexDL.Common.API
                 {
                     LoggingHelpers.AddToLog("XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo_Xml(metadata);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {

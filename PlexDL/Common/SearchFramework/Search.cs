@@ -1,11 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers;
 using PlexDL.UI;
 using PlexDL.WaitWindow;
+using System;
+using System.Data;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.SearchFramework
 {

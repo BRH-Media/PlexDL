@@ -1,11 +1,11 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.SearchFramework;
+using System;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {

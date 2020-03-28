@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using System;
 using System.IO;
-using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {

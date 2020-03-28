@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions.Caching;
 using PlexDL.Common.Structures.AppOptions.Display;
 using PlexDL.Common.Structures.AppOptions.Player;
+using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions
 {

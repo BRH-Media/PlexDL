@@ -126,8 +126,6 @@ namespace PlexDL.Player
 
     // ******************************** Player Grouping Classes
 
-
-
     #region CursorHide Class
 
     /// <summary>
@@ -266,8 +264,6 @@ namespace PlexDL.Player
     }
 
     #endregion CursorHide Class
-
-
 
     #region DisplayClones Class
 
@@ -744,8 +740,6 @@ namespace PlexDL.Player
     }
 
     #endregion DisplayClones Class
-
-
 
     #region Subtitles Class
 

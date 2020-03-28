@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
 
 namespace PlexDL.Common.API
 {

@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PlexDL.PlexAPI;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.PlexAPI;
 
 namespace PlexDL.Common.Renderers.DGVRenderers
 {

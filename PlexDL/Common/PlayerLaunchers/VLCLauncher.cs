@@ -1,10 +1,10 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {

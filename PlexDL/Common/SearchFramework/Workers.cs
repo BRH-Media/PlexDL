@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.WaitWindow;
+using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using PlexDL.WaitWindow;
 
 namespace PlexDL.Common.SearchFramework
 {

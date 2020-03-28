@@ -1,4 +1,11 @@
-﻿using System;
+﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
+using PlexDL.Properties;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -8,13 +15,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.Caching;
-using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using PlexDL.PlexAPI;
-using PlexDL.Properties;
 
 namespace PlexDL.Common
 {

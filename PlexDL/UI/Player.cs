@@ -1,8 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
-using System.Xml;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
@@ -12,6 +8,10 @@ using PlexDL.Common.Structures.Plex;
 using PlexDL.Player;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
+using System;
+using System.Data;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace PlexDL.UI
 {

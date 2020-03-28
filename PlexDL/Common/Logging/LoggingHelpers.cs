@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Logging
 {

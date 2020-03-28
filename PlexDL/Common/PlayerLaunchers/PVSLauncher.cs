@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {

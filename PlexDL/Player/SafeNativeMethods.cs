@@ -423,8 +423,6 @@ namespace PlexDL.Player
 
     //#endregion
 
-
-
     #region Classes
 
     //[StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("BITMAPINFOHEADER")]

@@ -1,5 +1,5 @@
-﻿using System;
-using PlexDL.AltoHTTP.Classes;
+﻿using PlexDL.AltoHTTP.Classes;
+using System;
 
 namespace PlexDL.AltoHTTP.Interfaces
 {

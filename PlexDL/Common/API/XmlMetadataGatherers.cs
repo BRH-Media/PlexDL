@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Xml;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {

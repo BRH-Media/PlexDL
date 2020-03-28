@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PlexDL.Common.SearchFramework;
+using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {
@@ -33,7 +33,7 @@ namespace PlexDL.UI
             {
                 MessageBox.Show(ex.ToString());
             }
-        }   
+        }
 
         private void PopulateColumns()
         {

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Data;
-using System.Xml;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
+using System;
+using System.Data;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {
     public static class DownloadInfoGatherers
     {
-        public static DownloadInfo GetContentDownloadInfo_Xml(XmlDocument xml)
+        public static DownloadInfo GetContentDownloadInfo(XmlDocument xml)
         {
             try
             {
