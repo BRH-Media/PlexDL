@@ -41,8 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="libbrhscgui, Version=1.0.7261.35271, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\source\repos\PlexDL_materialskin\PlexDL\bin\Release\libbrhscgui.dll</HintPath>
+      <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
