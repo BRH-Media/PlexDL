@@ -1,10 +1,22 @@
-using RestSharp;
 using System.Collections.Generic;
+using RestSharp;
 
 namespace PlexDL.PlexAPI
 {
     public class Directory : PlexItem
     {
+        public Directory()
+        {
+        }
+
+        public Directory(PlexItem item) : base(item)
+        {
+        }
+
+        public Directory(User user, Server server, string uri) : base(user, server, uri)
+        {
+        }
+
         public bool secondary { get; set; }
         public bool search { get; set; }
         public string prompt { get; set; }
@@ -27,18 +39,6 @@ namespace PlexDL.PlexAPI
         public string viewedLeafCount { get; set; }
         public List<Genre> genres { get; set; }
         public List<Location> locations { get; set; }
-
-        public Directory()
-        {
-        }
-
-        public Directory(PlexItem item) : base(item)
-        {
-        }
-
-        public Directory(User user, Server server, string uri) : base(user, server, uri)
-        {
-        }
 
         /*public Directory (Directory d)
 		{

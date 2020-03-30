@@ -22,7 +22,7 @@ namespace PlexDL.Common.Renderers
                     var offsetX = pixelateSize / 2;
                     var offsetY = pixelateSize / 2;
 
-                    // make sure that the offset is within the boundry of the image
+                    // make sure that the offset is within the boundary of the image
                     while (xx + offsetX >= image.Width) offsetX--;
                     while (yy + offsetY >= image.Height) offsetY--;
 

@@ -1,13 +1,13 @@
-﻿using PlexDL.UI;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.UI;
 
 namespace PlexDL.Common
 {
     internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main()

@@ -5,66 +5,41 @@ using PlexDL.Common.Structures.Plex;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace PlexDL.Common.API
 {
     public static class XmlMetadataGatherers
     {
-        public static XmlDocument GetSeriesXml(int index)
+        public static XmlDocument GetMetadata(DataRow result, string msgNoKey = @"Error occurred whilst getting the unique content key",
+            string logNoKeyMsg = @"Error occurred whilst getting the unique content key", string logNoKeyType = @"NoUnqKeyError", string column = @"key")
         {
-            LoggingHelpers.AddToLog("Sorting existing data");
+            XmlDocument reply = null;
 
-            DataRow result;
+            var key = @"";
 
-            result = RowGet.GetDataRowContent(index, true);
+            if (!string.IsNullOrEmpty((string)result[column]))
+                key = (string)result[column];
 
-            var key = result["key"].ToString();
-            var baseUri = GlobalStaticVars.GetBaseUri(false);
-            key = key.TrimStart('/');
-            var uri = baseUri + key + "/?X-Plex-Token=";
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show(msgNoKey, @"Data Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoggingHelpers.AddToLog(@"Unique key error");
+                LoggingHelpers.RecordException(logNoKeyMsg, logNoKeyType);
+            }
+            else
+            {
 
-            //MessageBox.Show(uri);
+                var baseUri = GlobalStaticVars.GetBaseUri(false);
+                key = key.TrimStart('/');
+                var uri = baseUri + key + @"/?X-Plex-Token=";
 
-            LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXmlTransaction(uri);
-            return reply;
-        }
+                LoggingHelpers.AddToLog(@"Contacting the API");
+                reply = XmlGet.GetXmlTransaction(uri);
+            }
 
-        public static XmlDocument GetEpisodeXml(int index)
-        {
-            LoggingHelpers.AddToLog("Sorting existing data");
-
-            DataRow result;
-            result = RowGet.GetDataRowSeries(index);
-
-            var key = result["key"].ToString();
-            var baseUri = GlobalStaticVars.GetBaseUri(false);
-            key = key.TrimStart('/');
-            var uri = baseUri + key + "/?X-Plex-Token=";
-
-            //MessageBox.Show(uri);
-
-            LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXmlTransaction(uri);
-            return reply;
-        }
-
-        public static XmlDocument GetTVShowMetadata(int index)
-        {
-            LoggingHelpers.AddToLog("Sorting existing data");
-
-            DataRow result;
-
-            result = RowGet.GetDataRowSeries(index);
-
-            var key = result["key"].ToString();
-            var baseUri = GlobalStaticVars.GetBaseUri(false);
-            key = key.TrimStart('/');
-            var uri = baseUri + key + "/?X-Plex-Token=";
-
-            LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXmlTransaction(uri);
             return reply;
         }
 
@@ -74,29 +49,33 @@ namespace PlexDL.Common.API
 
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var dtActors = sections.Tables["Role"];
+            var dtActors = sections.Tables[@"Role"];
 
-            if (dtActors != null)
-                foreach (DataRow r in dtActors.Rows)
+            if (dtActors == null)
+                return actors;
+            foreach (DataRow r in dtActors.Rows)
+            {
+
+                var thumb = "";
+                var role = @"Unknown";
+                var name = @"Unknown";
+                if (dtActors.Columns.Contains(@"thumb"))
+                    if (!string.IsNullOrEmpty((string)r[@"thumb"]))
+                        thumb = (string)r[@"thumb"];
+                if (dtActors.Columns.Contains(@"role"))
+                    if (!string.IsNullOrEmpty((string)r[@"role"]))
+                        role = (string)r[@"role"];
+                if (dtActors.Columns.Contains(@"tag"))
+                    if (!string.IsNullOrEmpty((string)r[@"tag"]))
+                        name = (string)r[@"tag"];
+                var a = new PlexActor
                 {
-                    var a = new PlexActor();
-                    var thumb = "";
-                    var role = "Unknown";
-                    var name = "Unknown";
-                    if (dtActors.Columns.Contains("thumb"))
-                        if (r["thumb"] != null)
-                            thumb = r["thumb"].ToString();
-                    if (dtActors.Columns.Contains("role"))
-                        if (r["role"] != null)
-                            role = r["role"].ToString();
-                    if (dtActors.Columns.Contains("tag"))
-                        if (r["tag"] != null)
-                            name = r["tag"].ToString();
-                    a.ThumbnailUri = thumb;
-                    a.ActorRole = role;
-                    a.ActorName = name;
-                    actors.Add(a);
-                }
+                    ThumbnailUri = thumb,
+                    ActorRole = role,
+                    ActorName = name
+                };
+                actors.Add(a);
+            }
 
             return actors;
         }
@@ -105,16 +84,16 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Media"];
+            var video = sections.Tables[@"Media"];
             var row = video.Rows[0];
             var width = 0;
-            if (video.Columns.Contains("width"))
-                if (row["width"] != null)
-                    width = Convert.ToInt32(row["width"]);
+            if (video.Columns.Contains(@"width"))
+                if (!string.IsNullOrEmpty((string)row[@"width"]))
+                    width = Convert.ToInt32(row[@"width"]);
             var height = 0;
-            if (video.Columns.Contains("height"))
-                if (row["height"] != null)
-                    height = Convert.ToInt32(row["height"]);
+            if (video.Columns.Contains(@"height"))
+                if (!string.IsNullOrEmpty((string)row[@"height"]))
+                    height = Convert.ToInt32(row[@"height"]);
             var result = new Resolution
             {
                 Width = width,
@@ -127,14 +106,13 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Genre"];
-            var genre = "Unknown";
-            if (video != null)
-            {
-                var row = video.Rows[0];
-                if (!string.IsNullOrEmpty((string)row["tag"]))
-                    genre = row["tag"].ToString();
-            }
+            var video = sections.Tables[@"Genre"];
+            var genre = @"Unknown";
+            if (video == null)
+                return genre;
+            var row = video.Rows[0];
+            if (!string.IsNullOrEmpty((string)row[@"tag"]))
+                genre = (string)row[@"tag"];
 
             return genre;
         }
@@ -143,84 +121,80 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var synopsis = "Plot synopsis not provided";
-            if (video != null)
-            {
-                var row = video.Rows[0];
-                if (!string.IsNullOrEmpty((string)row["summary"]))
-                    synopsis = row["summary"].ToString();
-            }
+            var video = sections.Tables[@"Video"];
+            var synopsis = @"Plot synopsis not provided";
+            if (video == null)
+                return synopsis;
+            var row = video.Rows[0];
+            if (!string.IsNullOrEmpty((string)row[@"summary"]))
+                synopsis = (string)row[@"summary"];
 
             return synopsis;
         }
 
-        public static string GetTVShowSeason(XmlDocument metadata)
+        public static string GetTvShowSeason(XmlDocument metadata)
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var season = "Unknown Season";
-            if (video != null)
-            {
-                var row = video.Rows[0];
-                if (!string.IsNullOrEmpty((string)row["parentTitle"]))
-                    season = row["parentTitle"].ToString();
-            }
+            var video = sections.Tables[@"Video"];
+            var season = @"Unknown Season";
+            if (video == null)
+                return season;
+            var row = video.Rows[0];
+            if (!string.IsNullOrEmpty((string)row[@"parentTitle"]))
+                season = (string)row[@"parentTitle"];
 
             return season;
         }
 
-        public static string GetTVShowTitle(XmlDocument metadata)
+        public static string GetTvShowTitle(XmlDocument metadata)
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var title = "Unknown Title";
-            if (video != null)
-            {
-                var row = video.Rows[0];
-                if (!string.IsNullOrEmpty((string)row["grandparentTitle"]))
-                    title = row["grandparentTitle"].ToString();
-            }
+            var video = sections.Tables[@"Video"];
+            var title = @"Unknown Title";
+            if (video == null)
+                return title;
+            var row = video.Rows[0];
+            if (!string.IsNullOrEmpty((string)row[@"grandparentTitle"]))
+                title = (string)row[@"grandparentTitle"];
 
             return title;
         }
 
+        public static XmlDocument GetSeriesXml(int index)
+        {
+            LoggingHelpers.AddToLog(@"Getting series list");
+
+            var result = RowGet.GetDataRowContent(index, true);
+
+            return GetMetadata(result);
+        }
+
+        public static XmlDocument GetEpisodeXml(int index)
+        {
+            LoggingHelpers.AddToLog(@"Getting episode metadata");
+
+            var result = RowGet.GetDataRowSeries(index);
+            return GetMetadata(result);
+        }
+
         public static XmlDocument GetContentMetadata(int index)
         {
-            LoggingHelpers.AddToLog("Sorting existing data");
+            LoggingHelpers.AddToLog(@"Getting movie metadata");
 
-            DataRow result;
+            var result = RowGet.GetDataRowContent(index, false);
 
-            result = RowGet.GetDataRowContent(index, false);
-
-            var key = result["key"].ToString();
-            var baseUri = GlobalStaticVars.GetBaseUri(false);
-            key = key.TrimStart('/');
-            var uri = baseUri + key + "/?X-Plex-Token=";
-
-            LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXmlTransaction(uri);
-            return reply;
+            return GetMetadata(result);
         }
 
         public static XmlDocument GetEpisodeMetadata(int index)
         {
-            LoggingHelpers.AddToLog("Sorting existing data");
+            LoggingHelpers.AddToLog(@"Getting episode metadata");
 
-            DataRow result;
+            var result = RowGet.GetDataRowEpisodes(index);
 
-            result = RowGet.GetDataRowEpisodes(index);
-
-            var key = result["key"].ToString();
-            var baseUri = GlobalStaticVars.GetBaseUri(false);
-            key = key.TrimStart('/');
-            var uri = baseUri + key + "/?X-Plex-Token=";
-
-            LoggingHelpers.AddToLog("Contacting server");
-            var reply = XmlGet.GetXmlTransaction(uri);
-            return reply;
+            return GetMetadata(result);
         }
     }
 }

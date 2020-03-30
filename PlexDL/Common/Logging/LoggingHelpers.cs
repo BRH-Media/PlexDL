@@ -1,8 +1,8 @@
-﻿using PlexDL.Common.Globals;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Logging
 {
@@ -87,16 +87,18 @@ namespace PlexDL.Common.Logging
 
         private static string CleanseLogDel(string line)
         {
-            string clean = line;
-            char[] bannedChars = { '#', '!' };
-            foreach (char c in line)
+            var clean = line;
+            char[] bannedChars =
             {
+                '#', '!'
+            };
+            foreach (var c in line)
                 if (bannedChars.Contains(c))
                 {
-                    int index = clean.IndexOf(c);
+                    var index = clean.IndexOf(c);
                     clean.Remove(index, 1);
                 }
-            }
+
             return clean;
         }
 
@@ -113,13 +115,13 @@ namespace PlexDL.Common.Logging
                 foreach (var l in logEntry)
                     logdelLine += l + "!";
 
-                logdelLine = CleanseLogDel((logdelLine.TrimEnd('!')));
+                logdelLine = CleanseLogDel(logdelLine.TrimEnd('!'));
 
                 var headersString = "###";
                 foreach (var h in headers)
                     headersString += h + "!";
 
-                headersString = CleanseLogDel((headersString.TrimEnd('!')));
+                headersString = CleanseLogDel(headersString.TrimEnd('!'));
 
                 if (File.Exists(fqFile))
                 {

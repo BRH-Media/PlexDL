@@ -1,11 +1,4 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using PlexDL.PlexAPI;
-using PlexDL.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,6 +8,13 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
+using PlexDL.Properties;
 
 namespace PlexDL.Common
 {
@@ -186,8 +186,7 @@ namespace PlexDL.Common
         public static bool StreamAdultContentCheck(PlexObject stream)
         {
             if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
-            {
-                //just to keep things family-friendly, show a warning for possibly adult-type content :)
+            //just to keep things family-friendly, show a warning for possibly adult-type content :)
                 if (AdultKeywordCheck(stream))
                 {
                     var result =
@@ -196,7 +195,7 @@ namespace PlexDL.Common
                     if (result == DialogResult.No)
                         return false;
                 }
-            }
+
             return true;
         }
 
@@ -206,15 +205,11 @@ namespace PlexDL.Common
             {
                 Helpers.CacheStructureBuilder();
                 if (string.IsNullOrEmpty(url))
-                {
                     return Resources.image_not_available_png_8;
-                }
 
                 if (!forceNoCache)
-                {
                     if (ThumbCaching.ThumbInCache(url))
                         return ThumbCaching.ThumbFromCache(url);
-                }
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -226,6 +221,7 @@ namespace PlexDL.Common
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
                 return Resources.image_not_available_png_8;
             }
+
             return ForceImageFromUrl(url);
         }
 

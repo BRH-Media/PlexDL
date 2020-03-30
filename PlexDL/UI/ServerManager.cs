@@ -1,4 +1,7 @@
-﻿using PlexDL.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
@@ -8,20 +11,17 @@ using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
     public partial class ServerManager : Form
     {
-        public Server SelectedServer { get; set; }
-
         public ServerManager()
         {
             InitializeComponent();
         }
+
+        public Server SelectedServer { get; set; }
 
         private void itmAuthenticate_Click(object sender, EventArgs e)
         {
@@ -29,7 +29,6 @@ namespace PlexDL.UI
             {
                 //check if there's a connection before trying to update the authentication token
                 if (wininet.CheckForInternetConnection())
-                {
                     using (var frm = new Authenticate())
                     {
                         var existingInfo = new ConnectionInfo
@@ -47,12 +46,10 @@ namespace PlexDL.UI
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-                }
                 else
-                {
-                    // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
+                // trying to connect on no connection will not end well; alert the user.
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             catch (Exception ex)
             {
@@ -69,20 +66,21 @@ namespace PlexDL.UI
 
         private void WorkerRenderServersView(object sender, WaitWindowEventArgs e)
         {
-            List<Server> servers = (List<Server>)e.Arguments[0];
+            var servers = (List<Server>)e.Arguments[0];
             ServerViewRenderer.RenderView(servers, dgvServers);
         }
 
         private void GetServerListWorker(object sender, WaitWindowEventArgs e)
         {
             Helpers.CacheStructureBuilder();
-            if (ServerCaching.ServerInCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) && GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (ServerCaching.ServerInCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) &&
+                GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 e.Result = ServerCaching.ServerFromCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
             }
             else
             {
-                List<Server> result = GlobalStaticVars.Plex.GetServers(GlobalStaticVars.User);
+                var result = GlobalStaticVars.Plex.GetServers(GlobalStaticVars.User);
                 if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
                     ServerCaching.ServerToCache(result, GlobalStaticVars.User.authenticationToken);
                 e.Result = result;
@@ -91,7 +89,7 @@ namespace PlexDL.UI
 
         private void GetRelaysListWorker(object sender, WaitWindowEventArgs e)
         {
-            List<Server> result = Relays.GetServerRelays(GlobalStaticVars.User.authenticationToken);
+            var result = Relays.GetServerRelays(GlobalStaticVars.User.authenticationToken);
             e.Result = result;
         }
 
@@ -104,11 +102,11 @@ namespace PlexDL.UI
                 {
                     if (GlobalStaticVars.User.authenticationToken != "")
                     {
-                        object serversResult = WaitWindow.WaitWindow.Show(GetServerListWorker, "Fetching Servers");
-                        List<Server> servers = (List<Server>)serversResult;
+                        var serversResult = WaitWindow.WaitWindow.Show(GetServerListWorker, "Fetching Servers");
+                        var servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            DialogResult msg =
+                            var msg =
                             MessageBox.Show(@"No servers found for current account token. Please update your token or try a direct connection.",
                                 @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -123,7 +121,8 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load servers.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load servers.", @"Network Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
@@ -142,11 +141,11 @@ namespace PlexDL.UI
                 {
                     if (GlobalStaticVars.User.authenticationToken != "")
                     {
-                        object serversResult = WaitWindow.WaitWindow.Show(GetRelaysListWorker, "Fetching Relays");
-                        List<Server> servers = (List<Server>)serversResult;
+                        var serversResult = WaitWindow.WaitWindow.Show(GetRelaysListWorker, "Fetching Relays");
+                        var servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            DialogResult msg =
+                            var msg =
                             MessageBox.Show(@"No relays found for current account token. Please update your token or try a direct connection.",
                                 @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -161,7 +160,8 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load relays.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load relays.", @"Network Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
@@ -179,8 +179,8 @@ namespace PlexDL.UI
                 {
                     if (dgvServers.SelectedRows.Count == 1)
                     {
-                        int index = dgvServers.CurrentCell.RowIndex;
-                        Server s = GlobalStaticVars.PlexServers[index];
+                        var index = dgvServers.CurrentCell.RowIndex;
+                        var s = GlobalStaticVars.PlexServers[index];
                         SelectedServer = s;
                         DialogResult = DialogResult.OK;
                         Close();
@@ -189,7 +189,8 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
@@ -242,20 +243,19 @@ namespace PlexDL.UI
                 {
                     // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
                     if (GlobalStaticVars.PlexServers != null)
-                    {
-                        if ((GlobalStaticVars.PlexServers.Count > 0) && (GlobalStaticVars.Svr != null))
+                        if (GlobalStaticVars.PlexServers.Count > 0 && GlobalStaticVars.Svr != null)
                         {
                             RenderServersView(GlobalStaticVars.PlexServers);
-                            int svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
+                            var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
                             dgvServers.Rows[svrIndex].Selected = true;
                             itmConnect.Enabled = true;
                         }
-                    }
                 }
                 else
                 {
                     // trying to connect on no connection will not end well; close this window if there's no connection and alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.", @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     Close();
                 }
             }

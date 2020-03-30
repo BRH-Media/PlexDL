@@ -1,18 +1,18 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.Common.Caching;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.UI
 {
     public partial class CachingMetricsUI : Form
     {
-        public CachingMetrics Metrics { get; set; } = null;
-
         public CachingMetricsUI()
         {
             InitializeComponent();
         }
+
+        public CachingMetrics Metrics { get; set; } = null;
 
         private void btnOK_Click(object sender, EventArgs e)
         {

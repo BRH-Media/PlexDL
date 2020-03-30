@@ -1,20 +1,20 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.SearchFramework;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {
     public partial class LogViewer : Form
     {
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
-        private DataTable logRecords;
-        private DataTable logFiltered;
         private bool IsFiltered;
+        private DataTable logFiltered;
+        private DataTable logRecords;
 
         public LogViewer()
         {
@@ -31,8 +31,8 @@ namespace PlexDL.UI
                 lstLogFiles.Items.Clear();
                 if (Directory.Exists("Logs"))
                     foreach (var file in Directory.GetFiles("Logs"))
-                        if (string.Equals((Path.GetExtension(file).ToLower() ?? ""), ".log") ||
-                            string.Equals((Path.GetExtension(file).ToLower() ?? ""), ".logdel"))
+                        if (string.Equals(Path.GetExtension(file).ToLower() ?? "", ".log") ||
+                            string.Equals(Path.GetExtension(file).ToLower() ?? "", ".logdel"))
                             lstLogFiles.Items.Add(Path.GetFileName(file));
 
                 if (already > -1)
@@ -83,7 +83,7 @@ namespace PlexDL.UI
             {
                 if (lstLogFiles.SelectedIndex > -1)
                 {
-                    DataTable table = TableFromSelected();
+                    var table = TableFromSelected();
                     if (table != null)
                     {
                         dgvMain.DataSource = table;

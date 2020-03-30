@@ -16,11 +16,9 @@ namespace PlexDL.Common.Logging
                 if (File.Exists(fileName))
                 {
                     table = new DataTable();
-                    DataColumn lineNumber = new DataColumn
+                    var lineNumber = new DataColumn
                     {
-                        ColumnName = "Line",
-                        Caption = "Line",
-                        DataType = typeof(string)
+                        ColumnName = "Line", Caption = "Line", DataType = typeof(string)
                     };
                     table.Columns.Add(lineNumber);
                     var intRowCount = 1;
@@ -33,11 +31,9 @@ namespace PlexDL.Common.Logging
                             var headerCount = 0;
                             foreach (var i in arrSplit)
                             {
-                                DataColumn c = new DataColumn
+                                var c = new DataColumn
                                 {
-                                    ColumnName = "field" + headerCount,
-                                    Caption = "field" + headerCount,
-                                    DataType = typeof(string)
+                                    ColumnName = "field" + headerCount, Caption = "field" + headerCount, DataType = typeof(string)
                                 };
                                 table.Columns.Add(c);
                                 ++headerCount;
@@ -53,11 +49,9 @@ namespace PlexDL.Common.Logging
                             //Add headers to datagridview
                             foreach (var item in arrSplit)
                             {
-                                DataColumn c = new DataColumn
+                                var c = new DataColumn
                                 {
-                                    ColumnName = item,
-                                    Caption = item,
-                                    DataType = typeof(string)
+                                    ColumnName = item, Caption = item, DataType = typeof(string)
                                 };
                                 table.Columns.Add(c);
                             }
@@ -70,11 +64,9 @@ namespace PlexDL.Common.Logging
                                 (intRowCount - 1).ToString()
                             };
                             arrItems.AddRange(strSplit);
-                            string[] items = arrItems.ToArray();
+                            var items = arrItems.ToArray();
                             if (items.Length == table.Columns.Count)
-                            {
                                 table.Rows.Add(items);
-                            }
                         }
                         else
                         {
@@ -82,11 +74,9 @@ namespace PlexDL.Common.Logging
                             {
                                 (intRowCount - 1).ToString(), line
                             };
-                            string[] items = arrItems.ToArray();
+                            var items = arrItems.ToArray();
                             if (items.Length == table.Columns.Count)
-                            {
                                 table.Rows.Add(items);
-                            }
                         }
 
                         intRowCount += 1;

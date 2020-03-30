@@ -1,15 +1,15 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.1
-    December 2019, The Netherlands
-    © Copyright 2019 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 0.98.2
+    February 2020, The Netherlands
+    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms any CPU.
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -22,8 +22,8 @@
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
-    4. PeakMeter.cs     - audio peak level values
-    5. DisplayClones.cs - multiple video displays
+    4. AudioDevices.cs  - audio devices and peak meters
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -53,7 +53,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    December 2019, The Netherlands
+    February 2020, The Netherlands
 
     ****************************************************************/
 
@@ -64,7 +64,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-#endregion Usings
+#endregion
 
 namespace PlexDL.Player
 {
@@ -81,7 +81,7 @@ namespace PlexDL.Player
 
         private sealed class CH_Item
         {
-            internal Form _form;
+            internal Form   _form;
             internal Player _player;
 
             internal CH_Item(Form form, Player player)
@@ -93,7 +93,7 @@ namespace PlexDL.Player
 
         private sealed class CH_MessageFilter : IMessageFilter
         {
-            private const int WM_MOUSEMOVE = 0x0200;
+            private const int WM_MOUSEMOVE  = 0x0200;
             private const int WM_MOUSEWHEEL = 0x020A;
 
             public bool PreFilterMessage(ref Message m)
@@ -137,33 +137,34 @@ namespace PlexDL.Player
                         //}
                     }
                 }
-
                 return false;
             }
         }
 
-        #endregion Cursor Hide - Item Class / MessageFilter
+        #endregion
+
 
         // ******************************** Cursor Hide - Fields
 
         #region Cursor Hide - Fields
 
-        private const int CH_DEFAULT_HIDE_DELAY_SEC = 3;
+        private const int                   CH_DEFAULT_HIDE_DELAY_SEC = 3;
 
-        internal static Timer ch_Timer;
-        private static bool ch_Busy;
-        internal static int ch_Delay = CH_DEFAULT_HIDE_DELAY_SEC; // default hide delay seconds
-        private static DateTime ch_Moved;
-        private static Point ch_OldPosition;
-        private static bool ch_Active;
-        internal static bool ch_Disabled;
-        private static int ch_DisabledCount;
-        internal static bool ch_Hidden;
-        private static CH_MessageFilter ch_MessageFilter;
-        private static List<CH_Item> ch_Items;
-        private static bool ch_ModalThread;
+        internal static Timer               ch_Timer;
+        private static bool                 ch_Busy;
+        internal static int                 ch_Delay = CH_DEFAULT_HIDE_DELAY_SEC; // default hide delay seconds
+        private static DateTime             ch_Moved;
+        private static Point                ch_OldPosition;
+        private static bool                 ch_Active;
+        internal static bool                ch_Disabled;
+        private static int                  ch_DisabledCount;
+        internal static bool                ch_Hidden;
+        private static CH_MessageFilter     ch_MessageFilter;
+        private static List<CH_Item>        ch_Items;
+        private static bool                 ch_ModalThread;
 
-        #endregion Cursor Hide - Fields
+        #endregion
+
 
         // ******************************** Cursor Hide - Main
 
@@ -181,7 +182,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Cursor Hide - Main
+        #endregion
+
 
         // ******************************** Cursor Hide - Add / Remove / Has Items / Form Closed Handler
 
@@ -224,7 +226,6 @@ namespace PlexDL.Player
                 }
             }
             else result = HResult.S_FALSE;
-
             return result;
         }
 
@@ -245,13 +246,11 @@ namespace PlexDL.Player
                         {
                             CH_Stop();
                         }
-
                         break;
                     }
                 }
             }
             else result = HResult.S_FALSE;
-
             return result;
         }
 
@@ -296,7 +295,6 @@ namespace PlexDL.Player
                     }
                 }
             }
-
             return result;
         }
 
@@ -322,7 +320,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Cursor Hide - Add / Remove / Has Items / Form Closed Handler
+        #endregion
+
 
         // ******************************** Cursor Hide - Show Cursor / Hide Cursor (Forced)
 
@@ -350,7 +349,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Cursor Hide - Show Cursor / Hide Cursor (Forced)
+        #endregion
+
 
         // ******************************** Cursor Hide - Start / Stop / Disable / Modal Thread
 
@@ -463,7 +463,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Cursor Hide - Start / Stop / Disable / Modal Thread
+        #endregion
+
 
         // ******************************** Cursor Hide - Timer Tick
 
@@ -495,10 +496,11 @@ namespace PlexDL.Player
                     }
                 }
             }
-
             ch_Busy = false;
         }
 
-        #endregion Cursor Hide - Timer Tick
+        #endregion
+
     }
 }
+

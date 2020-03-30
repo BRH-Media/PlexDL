@@ -1,14 +1,14 @@
-﻿using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {
     /// <summary>
-    /// Provides methods to create and process download queue
+    ///     Provides methods to create and process download queue
     /// </summary>
     public class DownloadQueue : IQueue, IDisposable
     {
@@ -18,26 +18,25 @@ namespace PlexDL.AltoHTTP.Classes
         private readonly List<QueueElement> elements;
         private QueueElement currentElement;
         private double progress;
-        private int downloadSpeed;
         private bool queuePaused, startEventRaised;
 
         /// <summary>
-        /// Occurs when queue element's progress is changed
+        ///     Occurs when queue element's progress is changed
         /// </summary>
         public event EventHandler QueueProgressChanged;
 
         /// <summary>
-        /// Occurs when the queue is completely completed
+        ///     Occurs when the queue is completely completed
         /// </summary>
         public event EventHandler QueueCompleted;
 
         /// <summary>
-        /// Occurs when the queue element is completed
+        ///     Occurs when the queue element is completed
         /// </summary>
         public event QueueElementCompletedEventHandler QueueElementCompleted;
 
         /// <summary>
-        /// Occurs when the queue has been started
+        ///     Occurs when the queue has been started
         /// </summary>
         public event EventHandler QueueElementStartedDownloading;
 
@@ -46,18 +45,18 @@ namespace PlexDL.AltoHTTP.Classes
         #region Constructor + Destructor
 
         /// <summary>
-        /// Creates a queue and initializes resources
+        ///     Creates a queue and initializes resources
         /// </summary>
         public DownloadQueue()
         {
             downloader = null;
             elements = new List<QueueElement>();
-            downloadSpeed = 0;
+            CurrentDownloadSpeed = 0;
             queuePaused = true;
         }
 
         /// <summary>
-        /// Destructor for the object
+        ///     Destructor for the object
         /// </summary>
         ~DownloadQueue()
         {
@@ -72,7 +71,7 @@ namespace PlexDL.AltoHTTP.Classes
         {
             progress = e.Progress;
             CurrentProgress = progress;
-            downloadSpeed = e.Speed;
+            CurrentDownloadSpeed = e.Speed;
         }
 
         private void Downloader_DownloadCompleted(object sender, EventArgs e)
@@ -83,10 +82,7 @@ namespace PlexDL.AltoHTTP.Classes
                 {
                     elements[i] = new QueueElement
                     {
-                        Id = elements[i].Id,
-                        Url = elements[i].Url,
-                        Destination = elements[i].Destination,
-                        Completed = true
+                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
                     };
                     break;
                 }
@@ -102,10 +98,7 @@ namespace PlexDL.AltoHTTP.Classes
                 {
                     elements[i] = new QueueElement
                     {
-                        Id = elements[i].Id,
-                        Url = elements[i].Url,
-                        Destination = elements[i].Destination,
-                        Completed = true
+                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
                     };
                     break;
                 }
@@ -130,12 +123,12 @@ namespace PlexDL.AltoHTTP.Classes
         #region Properties
 
         /// <summary>
-        /// Gets the number of elements in the queue
+        ///     Gets the number of elements in the queue
         /// </summary>
         public int QueueLength => elements.Count;
 
         /// <summary>
-        /// Gets the index number of the element that is currently processing
+        ///     Gets the index number of the element that is currently processing
         /// </summary>
         public int CurrentIndex
         {
@@ -150,7 +143,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Gets the download progress of the current download process
+        ///     Gets the download progress of the current download process
         /// </summary>
         public double CurrentProgress
         {
@@ -169,17 +162,17 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Gets the download speed of the current download progress
+        ///     Gets the download speed of the current download progress
         /// </summary>
-        public int CurrentDownloadSpeed => downloadSpeed;
+        public int CurrentDownloadSpeed { get; private set; }
 
         /// <summary>
-        /// Gets the Range header value of the current download
+        ///     Gets the Range header value of the current download
         /// </summary>
         public bool CurrentAcceptRange => downloader.AcceptRange;
 
         /// <summary>
-        /// Gets the State of the current download
+        ///     Gets the State of the current download
         /// </summary>
         public DownloadState State => downloader.State;
 
@@ -188,7 +181,7 @@ namespace PlexDL.AltoHTTP.Classes
         #region Methods
 
         /// <summary>
-        /// Adds new download elements into the queue
+        ///     Adds new download elements into the queue
         /// </summary>
         /// <param name="url">The URL source that contains the object will be downloaded</param>
         /// <param name="destPath">The destination path to save the downloaded file</param>
@@ -196,14 +189,12 @@ namespace PlexDL.AltoHTTP.Classes
         {
             elements.Add(new QueueElement
             {
-                Id = Guid.NewGuid().ToString(),
-                Url = url,
-                Destination = destPath
+                Id = Guid.NewGuid().ToString(), Url = url, Destination = destPath
             });
         }
 
         /// <summary>
-        /// Deletes the queue element at the given index
+        ///     Deletes the queue element at the given index
         /// </summary>
         /// <param name="index">The index of the element that will be deleted</param>
         public void Delete(int index)
@@ -223,7 +214,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Deletes all elements in the queue
+        ///     Deletes all elements in the queue
         /// </summary>
         public void Clear()
         {
@@ -231,7 +222,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Starts the queue async
+        ///     Starts the queue async
         /// </summary>
         public void StartAsync()
         {
@@ -239,7 +230,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Stops and deletes all elements in the queue
+        ///     Stops and deletes all elements in the queue
         /// </summary>
         public void Cancel()
         {
@@ -251,7 +242,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// The queue process resumes
+        ///     The queue process resumes
         /// </summary>
         public void ResumeAsync()
         {
@@ -266,7 +257,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// The queue process pauses
+        ///     The queue process pauses
         /// </summary>
         public void Pause()
         {
@@ -275,7 +266,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Removes all resources used
+        ///     Removes all resources used
         /// </summary>
         public void Dispose()
         {

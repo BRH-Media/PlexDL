@@ -14,12 +14,12 @@ using System.Windows.Forms;
 namespace PlexDL.WaitWindow
 {
     /// <summary>
-    /// Displays a window telling the user to wait while a process is executing.
+    ///     Displays a window telling the user to wait while a process is executing.
     /// </summary>
     public sealed class WaitWindow
     {
         /// <summary>
-        /// Shows a wait window with the text 'Please wait...' while executing the passed method.
+        ///     Shows a wait window with the text 'Please wait...' while executing the passed method.
         /// </summary>
         /// <param name="workerMethod">Pointer to the method to execute while displaying the wait window.</param>
         /// <returns>The result argument from the worker method.</returns>
@@ -29,7 +29,7 @@ namespace PlexDL.WaitWindow
         }
 
         /// <summary>
-        /// Shows a wait window with the specified text while executing the passed method.
+        ///     Shows a wait window with the specified text while executing the passed method.
         /// </summary>
         /// <param name="workerMethod">Pointer to the method to execute while displaying the wait window.</param>
         /// <param name="message">The text to display.</param>
@@ -41,7 +41,7 @@ namespace PlexDL.WaitWindow
         }
 
         /// <summary>
-        /// Shows a wait window with the specified text while executing the passed method.
+        ///     Shows a wait window with the specified text while executing the passed method.
         /// </summary>
         /// <param name="workerMethod">Pointer to the method to execute while displaying the wait window.</param>
         /// <param name="message">The text to display.</param>
@@ -70,7 +70,7 @@ namespace PlexDL.WaitWindow
         internal List<object> _Args;
 
         /// <summary>
-        /// Updates the message displayed in the wait window.
+        ///     Updates the message displayed in the wait window.
         /// </summary>
         public string Message
         {
@@ -78,7 +78,7 @@ namespace PlexDL.WaitWindow
         }
 
         /// <summary>
-        /// Cancels the work and exits the wait windows immediately
+        ///     Cancels the work and exits the wait windows immediately
         /// </summary>
         public void Cancel()
         {

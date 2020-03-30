@@ -4,9 +4,9 @@ using System.Xml;
 
 namespace PlexDL.Common.Caching.Handlers
 {
-    public static class XMLCaching
+    public static class XmlCaching
     {
-        public static string XMLCachePath(string sourceUrl)
+        public static string XmlCachePath(string sourceUrl)
         {
             var fileName = Helpers.CalculateMd5Hash(sourceUrl);
             var accountHash = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
@@ -16,41 +16,37 @@ namespace PlexDL.Common.Caching.Handlers
             return fqPath;
         }
 
-        public static bool XMLInCache(string sourceUrl)
+        public static bool XmlInCache(string sourceUrl)
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
-                var fqPath = XMLCachePath(sourceUrl);
+                var fqPath = XmlCachePath(sourceUrl);
                 return File.Exists(fqPath);
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
-        public static void XMLToCache(XmlDocument doc, string sourceUrl)
+        public static void XmlToCache(XmlDocument doc, string sourceUrl)
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
-                var fqPath = XMLCachePath(sourceUrl);
+                var fqPath = XmlCachePath(sourceUrl);
                 doc.Save(fqPath);
             }
         }
 
-        public static XmlDocument XMLFromCache(string sourceUrl)
+        public static XmlDocument XmlFromCache(string sourceUrl)
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
-                var fqPath = XMLCachePath(sourceUrl);
+                var fqPath = XmlCachePath(sourceUrl);
                 var doc = new XmlDocument();
                 doc.Load(fqPath);
                 return doc;
             }
-            else
-            {
-                return new XmlDocument();
-            }
+
+            return new XmlDocument();
         }
     }
 }

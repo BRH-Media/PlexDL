@@ -1,21 +1,13 @@
-﻿using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Components
 {
     public class FlatDataGridView : DataGridView
     {
-        [Category("PlexDL")]
-        [Description("The text to display if the RowCount is 0")]
-        public string RowsEmptyText { get; set; } = "No Data Found";
-
-        [Category("PlexDL")]
-        [Description("The ForeColor of RowsEmptyText")]
-        public Color RowsEmptyTextForeColor { get; set; } = Color.FromArgb(134, 134, 134);
-
         public FlatDataGridView()
         {
             AllowUserToAddRows = false;
@@ -35,6 +27,14 @@ namespace PlexDL.Common.Components
             DataError += DGVDataError;
             DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
+
+        [Category("PlexDL")]
+        [Description("The text to display if the RowCount is 0")]
+        public string RowsEmptyText { get; set; } = "No Data Found";
+
+        [Category("PlexDL")]
+        [Description("The ForeColor of RowsEmptyText")]
+        public Color RowsEmptyTextForeColor { get; set; } = Color.FromArgb(134, 134, 134);
 
         public sealed override Font Font
         {
@@ -77,6 +77,7 @@ namespace PlexDL.Common.Components
             {
                 //nothing
             }
+
             e.Cancel = true;
         }
     }

@@ -1,13 +1,13 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.WaitWindow;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.Common.API
 {
@@ -32,11 +32,10 @@ namespace PlexDL.Common.API
             //Create the cache folder structure
             Helpers.CacheStructureBuilder();
 
-            if (XMLCaching.XMLInCache(uri) && !forceNoCache)
-            {
+            if (XmlCaching.XmlInCache(uri) && !forceNoCache)
                 try
                 {
-                    var xmlResponse = XMLCaching.XMLFromCache(uri);
+                    var xmlResponse = XmlCaching.XmlFromCache(uri);
                     if (xmlResponse != null)
                         return xmlResponse;
                     return GetXmlTransaction(uri, "", true);
@@ -47,7 +46,6 @@ namespace PlexDL.Common.API
                     //force the GetXMLTransaction method to ignore cached items
                     return GetXmlTransaction(uri, secret, true, silent);
                 }
-            }
 
             //Declare XMLResponse document
             XmlDocument XMLResponse = null;
@@ -118,7 +116,7 @@ namespace PlexDL.Common.API
                 return new XmlDocument();
             }
 
-            XMLCaching.XMLToCache(XMLResponse, uri);
+            XmlCaching.XmlToCache(XMLResponse, uri);
             return XMLResponse;
         }
     }

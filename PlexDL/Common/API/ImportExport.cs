@@ -1,10 +1,10 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.API
 {

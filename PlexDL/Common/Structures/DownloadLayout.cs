@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Structures.AppOptions;
+﻿using System.IO;
+using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
-using System.IO;
 
 namespace PlexDL.Common.Structures
 {

@@ -3,39 +3,37 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace PlexDL.Common.API
 {
     public static class ObjectBuilders
     {
-        public static PlexTVShow GetTVObjectFromIndex(int index)
+        public static PlexTVShow GetTvObjectFromIndex(int index)
         {
             try
             {
                 var obj = new PlexTVShow();
-                XmlDocument metadata;
-                LoggingHelpers.AddToLog("Content Parse Started");
-                LoggingHelpers.AddToLog("Grabbing Titles");
+                LoggingHelpers.AddToLog(@"Content Parse Started");
+                LoggingHelpers.AddToLog(@"Grabbing Titles");
 
-                metadata = XmlMetadataGatherers.GetEpisodeMetadata(index);
+                var metadata = XmlMetadataGatherers.GetEpisodeMetadata(index);
 
-                LoggingHelpers.AddToLog("Checking XML validity");
+                LoggingHelpers.AddToLog(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.AddToLog("XML Valid");
+                    LoggingHelpers.AddToLog(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.AddToLog("Assembling Object");
+                        LoggingHelpers.AddToLog(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataGatherers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
-                        obj.Season = XmlMetadataGatherers.GetTVShowSeason(metadata);
+                        obj.Season = XmlMetadataGatherers.GetTvShowSeason(metadata);
                         obj.EpisodesInSeason = GlobalTables.EpisodesTable.Rows.Count;
-                        obj.TVShowName = XmlMetadataGatherers.GetTVShowTitle(metadata);
+                        obj.TVShowName = XmlMetadataGatherers.GetTvShowTitle(metadata);
                         obj.StreamResolution = XmlMetadataGatherers.GetContentResolution(metadata);
                         obj.Actors = XmlMetadataGatherers.GetActorsFromMetadata(metadata);
                         obj.StreamIndex = index;
@@ -44,12 +42,12 @@ namespace PlexDL.Common.API
                     else
                     {
                         MessageBox.Show(
-                            "Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
-                            "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            @"Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
+                            @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         LoggingHelpers.RecordException(
                             "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             "ContextDownloadInfoNull");
-                        LoggingHelpers.AddToLog("DownloadInfo is invalid (no stream contexual information)");
+                        LoggingHelpers.AddToLog("DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
@@ -61,7 +59,7 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex, "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Content metadata error:\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "TVObjectError");
                 return null;
             }
@@ -72,21 +70,20 @@ namespace PlexDL.Common.API
             try
             {
                 var obj = new PlexMovie();
-                XmlDocument metadata;
-                LoggingHelpers.AddToLog("Content Parse Started");
-                LoggingHelpers.AddToLog("Grabbing Titles");
-                metadata = XmlMetadataGatherers.GetContentMetadata(index);
+                LoggingHelpers.AddToLog(@"Content Parse Started");
+                LoggingHelpers.AddToLog(@"Grabbing Titles");
+                var metadata = XmlMetadataGatherers.GetContentMetadata(index);
 
-                LoggingHelpers.AddToLog("Checking XML validity");
+                LoggingHelpers.AddToLog(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.AddToLog("XML Valid");
+                    LoggingHelpers.AddToLog(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.AddToLog("Assembling Object");
+                        LoggingHelpers.AddToLog(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataGatherers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -98,11 +95,11 @@ namespace PlexDL.Common.API
                     else
                     {
                         MessageBox.Show(
-                            "Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
-                            "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            @"Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
+                            @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         LoggingHelpers.RecordException(
-                            "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
-                            "ContextDownloadInfoNull");
+                            @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
+                            @"ContextDownloadInfoNull");
                         LoggingHelpers.AddToLog("DownloadInfo is invalid (no stream contexual information)");
                     }
                 }
@@ -115,8 +112,8 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex, "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.RecordException(ex.Message, "MovieObjectError");
+                MessageBox.Show("Content metadata error:\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoggingHelpers.RecordException(ex.Message, @"MovieObjectError");
                 return null;
             }
         }

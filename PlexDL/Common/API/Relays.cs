@@ -1,9 +1,9 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
 
 namespace PlexDL.Common.API
 {
@@ -50,18 +50,15 @@ namespace PlexDL.Common.API
                                         port = Convert.ToInt32(n.Attributes["port"].Value);
                                         var svrRelay = new Server
                                         {
-                                            address = address,
-                                            port = port,
-                                            name = name,
-                                            accessToken = accessToken
+                                            address = address, port = port, name = name, accessToken = accessToken
                                         };
                                         relays.Add(svrRelay);
                                         break;
                                     }
                                 }
                         }
-
                 }
+
                 return relays;
             }
             catch (Exception ex)

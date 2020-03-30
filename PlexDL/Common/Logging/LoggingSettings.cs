@@ -4,12 +4,6 @@ namespace PlexDL.Common.Logging
 {
     public class LoggingSettings
     {
-        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
-        public override string ToString()
-        {
-            return "";
-        }
-
         [DisplayName("Transaction Logging")]
         [Description("If this is enabled, PlexDL will log every XML API request that is sent.")]
         public bool EnableXMLTransactionLogDel { get; set; } = true;
@@ -21,5 +15,11 @@ namespace PlexDL.Common.Logging
         [DisplayName("Generic Logging")]
         [Description("If this is enabled, PlexDL will log everything to a file in addition to the \"Log\" section.")]
         public bool EnableGenericLogDel { get; set; } = true;
+
+        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
+        public override string ToString()
+        {
+            return "";
+        }
     }
 }

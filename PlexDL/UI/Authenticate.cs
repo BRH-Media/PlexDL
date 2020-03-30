@@ -1,13 +1,11 @@
-﻿using PlexDL.Common.Structures;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using PlexDL.Common.Structures;
 
 namespace PlexDL.UI
 {
     public partial class Authenticate : Form
     {
-        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
-
         public bool connectionStarted;
 
         public Authenticate()
@@ -15,9 +13,10 @@ namespace PlexDL.UI
             InitializeComponent();
         }
 
+        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
+
         private void FrmConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
-
         }
 
         private void BtnConnect_Click(object sender, EventArgs e)

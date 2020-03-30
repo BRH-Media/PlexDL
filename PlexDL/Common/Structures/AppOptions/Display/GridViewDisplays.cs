@@ -1,25 +1,21 @@
-﻿using PlexDL.Common.Structures.AppOptions.Display.Grids;
+﻿using PlexDL.Common.Structures.AppOptions.Display.Grids.Library;
+using PlexDL.Common.Structures.AppOptions.Display.Grids.Movies;
+using PlexDL.Common.Structures.AppOptions.Display.Grids.TV;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Display
 {
     public class GridViewDisplays
     {
-        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
-        public override string ToString()
-        {
-            return "";
-        }
-
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Movies")]
         [Description("Rendering information. It is advised not to change these values.")]
-        public ContentDisplay ContentView { get; set; } = new ContentDisplay();
+        public MoviesDisplay MoviesView { get; set; } = new MoviesDisplay();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("TV Shows")]
         [Description("Rendering information. It is advised not to change these values.")]
-        public TvDisplay TVView { get; set; } = new TvDisplay();
+        public TvDisplay TvView { get; set; } = new TvDisplay();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("TV Seasons")]
@@ -35,5 +31,11 @@ namespace PlexDL.Common.Structures.AppOptions.Display
         [DisplayName("Library Sections")]
         [Description("Rendering information. It is advised not to change these values.")]
         public LibraryDisplay LibraryView { get; set; } = new LibraryDisplay();
+
+        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
+        public override string ToString()
+        {
+            return "";
+        }
     }
 }

@@ -1,9 +1,9 @@
-﻿using PlexDL.Common;
-using PlexDL.Common.Structures;
-using PlexDL.WaitWindow;
-using System;
+﻿using System;
 using System.Net;
 using System.Windows.Forms;
+using PlexDL.Common;
+using PlexDL.Common.Structures;
+using PlexDL.WaitWindow;
 
 namespace PlexDL.UI
 {

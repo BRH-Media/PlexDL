@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.IO;
+using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {
@@ -37,10 +37,10 @@ namespace PlexDL.Common.Caching
 
         public static CachingMetrics FromLatest()
         {
-            string[] servers = ServerLists();
-            string[] apixml = ApiXml();
-            string[] thumbs = Thumbs();
-            string[] total = AllCached();
+            var servers = ServerLists();
+            var apixml = ApiXml();
+            var thumbs = Thumbs();
+            var total = AllCached();
             return new CachingMetrics
             {
                 SERVER_LISTS = servers.Length,
@@ -59,60 +59,59 @@ namespace PlexDL.Common.Caching
             long size = 0;
             try
             {
-                foreach (string f in files)
-                {
+                foreach (var f in files)
                     if (File.Exists(f))
                     {
-                        FileInfo fi = new FileInfo(f);
+                        var fi = new FileInfo(f);
                         size += fi.Length;
                     }
-                }
             }
             catch (Exception ex)
             {
                 //log it and then continue as normal
                 LoggingHelpers.RecordException(ex.Message, "CacheSizeCalcError");
             }
+
             return size;
         }
 
         public static string[] AllCached()
         {
-            string[] files = { };
-            if (Directory.Exists(@"cache"))
+            string[] files =
             {
+            };
+            if (Directory.Exists(@"cache"))
                 files = Directory.GetFiles(@"cache", "*", SearchOption.AllDirectories);
-            }
             return files;
         }
 
         public static string[] ServerLists()
         {
-            string[] files = { };
-            if (Directory.Exists(@"cache"))
+            string[] files =
             {
+            };
+            if (Directory.Exists(@"cache"))
                 files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ServerListExt, SearchOption.AllDirectories);
-            }
             return files;
         }
 
         public static string[] Thumbs()
         {
-            string[] files = { };
-            if (Directory.Exists(@"cache"))
+            string[] files =
             {
+            };
+            if (Directory.Exists(@"cache"))
                 files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ThumbExt, SearchOption.AllDirectories);
-            }
             return files;
         }
 
         public static string[] ApiXml()
         {
-            string[] files = { };
-            if (Directory.Exists(@"cache"))
+            string[] files =
             {
+            };
+            if (Directory.Exists(@"cache"))
                 files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ApiXmlExt, SearchOption.AllDirectories);
-            }
             return files;
         }
     }

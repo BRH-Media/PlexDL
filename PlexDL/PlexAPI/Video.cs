@@ -4,6 +4,14 @@ namespace PlexDL.PlexAPI
 {
     public class Video : PlexItem
     {
+        public Video()
+        {
+        }
+
+        public Video(User user, Server server, string uri) : base(user, server, uri)
+        {
+        }
+
         public int ratingKey { get; set; }
         public int parentRatingKey { get; set; }
         public string parentKey { get; set; }
@@ -27,13 +35,5 @@ namespace PlexDL.PlexAPI
         public bool secondary { get; set; }
         public bool search { get; set; }
         public string prompt { get; set; }
-
-        public Video()
-        {
-        }
-
-        public Video(User user, Server server, string uri) : base(user, server, uri)
-        {
-        }
     }
 }

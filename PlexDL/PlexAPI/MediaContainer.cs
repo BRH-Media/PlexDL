@@ -1,12 +1,21 @@
-using PlexDL.PlexAPI.DirectoryTypes;
-using RestSharp;
 using System;
 using System.Collections.Generic;
+using PlexDL.PlexAPI.DirectoryTypes;
+using RestSharp;
 
 namespace PlexDL.PlexAPI
 {
     public class MediaContainer : PlexItem
     {
+        public MediaContainer()
+        {
+        }
+
+        public MediaContainer(User user, Server server, string uri) : base(user, server, uri)
+        {
+            Load();
+        }
+
         public List<Directory> directories { get; set; }
         public List<Show> showDirectories { get; set; }
 
@@ -56,15 +65,6 @@ namespace PlexDL.PlexAPI
         public List<Video> videos { get; set; }
         public List<Track> tracks { get; set; }
         public List<Photo> photos { get; set; }
-
-        public MediaContainer()
-        {
-        }
-
-        public MediaContainer(User user, Server server, string uri) : base(user, server, uri)
-        {
-            Load();
-        }
 
         public void Load()
         {

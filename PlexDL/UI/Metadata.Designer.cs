@@ -370,7 +370,7 @@ namespace PlexDL.UI
             // 
             this.itmImport.Name = "itmImport";
             this.itmImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmImport.Size = new System.Drawing.Size(180, 22);
+            this.itmImport.Size = new System.Drawing.Size(153, 22);
             this.itmImport.Text = "Import";
             this.itmImport.Click += new System.EventHandler(this.itmImport_Click);
             // 
@@ -378,7 +378,7 @@ namespace PlexDL.UI
             // 
             this.itmExport.Name = "itmExport";
             this.itmExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmExport.Size = new System.Drawing.Size(180, 22);
+            this.itmExport.Size = new System.Drawing.Size(153, 22);
             this.itmExport.Text = "Export";
             this.itmExport.Click += new System.EventHandler(this.itmExport_Click);
             // 
@@ -407,6 +407,7 @@ namespace PlexDL.UI
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
             this.itmBrowser.Size = new System.Drawing.Size(180, 22);
             this.itmBrowser.Text = "Browser";
+            this.itmBrowser.Click += new System.EventHandler(this.itmBrowser_Click);
             // 
             // itmVlc
             // 
@@ -414,6 +415,7 @@ namespace PlexDL.UI
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.itmVlc.Size = new System.Drawing.Size(180, 22);
             this.itmVlc.Text = "VLC";
+            this.itmVlc.Click += new System.EventHandler(this.itmVlc_Click);
             // 
             // itmExit
             // 

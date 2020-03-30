@@ -1,18 +1,33 @@
-﻿using PlexDL.Animation.WinFormAnimation;
-using PlexDL.Common.Components;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Animation.WinFormAnimation;
+using PlexDL.Common.Components;
 using Timer = System.Windows.Forms.Timer;
 
 namespace PlexDL.WaitWindow
 {
     /// <summary>
-    /// The dialogue displayed by a WaitWindow instance.
+    ///     The dialogue displayed by a WaitWindow instance.
     /// </summary>
     internal class WaitWindowGUI : Form
     {
+        private readonly WaitWindow _Parent;
+        internal Exception _Error;
+
+        internal object _Result;
+
+        private IContainer components;
+
+        private int dotCount;
+        private string LabelText = "";
+
+        public Label MessageLabel;
+        private CircularProgressBar ProgressMain;
+        private IAsyncResult threadResult;
+        private Timer tmrDots;
+
         public WaitWindowGUI(WaitWindow parent)
         {
             //
@@ -26,19 +41,6 @@ namespace PlexDL.WaitWindow
             Top = Screen.PrimaryScreen.WorkingArea.Top + 32;
             Left = Screen.PrimaryScreen.WorkingArea.Right - Width - 32;
         }
-
-        private readonly WaitWindow _Parent;
-
-        private delegate T FunctionInvoker<T>();
-
-        private int dotCount;
-        private string LabelText = "";
-
-        internal object _Result;
-        internal Exception _Error;
-        private CircularProgressBar ProgressMain;
-        private Timer tmrDots;
-        private IAsyncResult threadResult;
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -105,10 +107,8 @@ namespace PlexDL.WaitWindow
             Invoke(new MethodInvoker(Close), null);
         }
 
-        private IContainer components;
-
         /// <summary>
-        /// Disposes resources used by the form.
+        ///     Disposes resources used by the form.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -121,9 +121,9 @@ namespace PlexDL.WaitWindow
         }
 
         /// <summary>
-        /// This method is required for Windows Forms designer support.
-        /// Do not change the method contents inside the source code editor. The Forms designer might
-        /// not be able to load this method if it was changed manually.
+        ///     This method is required for Windows Forms designer support.
+        ///     Do not change the method contents inside the source code editor. The Forms designer might
+        ///     not be able to load this method if it was changed manually.
         /// </summary>
         private void InitializeComponent()
         {
@@ -198,10 +198,7 @@ namespace PlexDL.WaitWindow
             FormClosing += WaitWindowGUI_FormClosing;
             Load += WaitWindowGUI_Load;
             ResumeLayout(false);
-
         }
-
-        public Label MessageLabel;
 
         private void WaitWindowGUI_Load(object sender, EventArgs e)
         {
@@ -226,5 +223,7 @@ namespace PlexDL.WaitWindow
                 MessageLabel.Text = LabelText;
             }
         }
+
+        private delegate T FunctionInvoker<T>();
     }
 }

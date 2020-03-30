@@ -11,9 +11,7 @@ namespace PlexDL.PlexAPI
             try
             {
                 if (DateTime.TryParse(timestamp, out var result))
-                {
                     return result;
-                }
 
                 // First make a System.DateTime equivalent to the UNIX Epoch.
                 var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);

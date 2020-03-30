@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Globals;
+using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Properties;
@@ -13,13 +14,13 @@ namespace PlexDL.UI
 {
     public partial class Metadata : Form
     {
-        public PlexObject StreamingContent { get; set; } = new PlexObject();
-        public bool StationaryMode { get; set; }
-
         public Metadata()
         {
             InitializeComponent();
         }
+
+        public PlexObject StreamingContent { get; set; } = new PlexObject();
+        public bool StationaryMode { get; set; }
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
         {
@@ -210,7 +211,7 @@ namespace PlexDL.UI
             };
             var lblActorName = new Label
             {
-                Text = "No Actors Found",
+                Text = @"No Actors Found",
                 AutoSize = true,
                 Location = new Point(88, 3),
                 Font = new Font(FontFamily.GenericSansSerif, 13),
@@ -219,7 +220,7 @@ namespace PlexDL.UI
 
             var lblActorRole = new Label
             {
-                Text = "We Couldn't Find Any Actors/Actresses For This Title",
+                Text = @"We Couldn't Find Any Actors/Actresses For This Title",
                 AutoSize = true,
                 Location = new Point(112, 29),
                 Visible = true
@@ -272,12 +273,6 @@ namespace PlexDL.UI
 
         private void Metadata_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-        }
-
-        private void BtnExit_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void DoExport()
@@ -297,7 +292,7 @@ namespace PlexDL.UI
                 StreamingContent = obj;
                 flpActors.Controls.Clear();
                 //set this in-case the loader doesn't find anything; that way the user still gets feedback.
-                txtPlotSynopsis.Text = "Plot synopsis not provided";
+                txtPlotSynopsis.Text = @"Plot synopsis not provided";
                 WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
             }
         }
@@ -319,7 +314,17 @@ namespace PlexDL.UI
 
         private void itmPvs_Click(object sender, EventArgs e)
         {
+            PvsLauncher.LaunchPvs(StreamingContent, GlobalTables.ReturnCorrectTable());
+        }
 
+        private void itmBrowser_Click(object sender, EventArgs e)
+        {
+            BrowserLauncher.LaunchBrowser(StreamingContent);
+        }
+
+        private void itmVlc_Click(object sender, EventArgs e)
+        {
+            VlcLauncher.LaunchVlc(StreamingContent);
         }
     }
 }

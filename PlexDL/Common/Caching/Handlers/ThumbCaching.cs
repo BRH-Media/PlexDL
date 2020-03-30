@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Globals;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
+using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Caching.Handlers
 {
@@ -23,10 +23,8 @@ namespace PlexDL.Common.Caching.Handlers
                 var fqPath = ThumbCachePath(sourceUrl);
                 return File.Exists(fqPath);
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public static void ThumbToCache(Bitmap thumb, string sourceUrl)
@@ -45,10 +43,8 @@ namespace PlexDL.Common.Caching.Handlers
                 var fqPath = ThumbCachePath(sourceUrl);
                 return (Bitmap)Image.FromFile(fqPath);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }

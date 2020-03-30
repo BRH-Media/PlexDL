@@ -1,10 +1,10 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.PlexAPI;
 using Directory = System.IO.Directory;
 
 namespace PlexDL.Common.Caching.Handlers
@@ -40,7 +40,7 @@ namespace PlexDL.Common.Caching.Handlers
                 {
                     var fqPath = ServerCachePath(accountToken);
                     var serialiser = new XmlSerializer(typeof(List<Server>));
-                    TextWriter filestream = new StreamWriter(fqPath);
+                    var filestream = new StreamWriter(fqPath);
                     serialiser.Serialize(filestream, serverList);
                     filestream.Close();
                 }
@@ -57,7 +57,7 @@ namespace PlexDL.Common.Caching.Handlers
             {
                 var fqPath = ServerCachePath(accountToken);
                 var serialiser = new XmlSerializer(typeof(List<Server>));
-                TextReader filestream = new StreamReader(fqPath);
+                var filestream = new StreamReader(fqPath);
                 var result = (List<Server>)serialiser.Deserialize(filestream);
                 filestream.Close();
                 return result;

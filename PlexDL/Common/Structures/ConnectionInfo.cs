@@ -5,11 +5,9 @@ namespace PlexDL.Common.Structures
 {
     public class ConnectionInfo
     {
-        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
-        public override string ToString()
-        {
-            return "";
-        }
+        [NonSerialized] public bool DirectOnly = false;
+
+        [NonSerialized] public bool RelaysOnly = false;
 
         [DisplayName("Port")]
         [Description("The port of the Plex server")]
@@ -26,8 +24,10 @@ namespace PlexDL.Common.Structures
         [ReadOnly(true)]
         public string PlexAccountToken { get; set; } = "";
 
-        [NonSerialized] public bool RelaysOnly = false;
-
-        [NonSerialized] public bool DirectOnly = false;
+        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
+        public override string ToString()
+        {
+            return "";
+        }
     }
 }

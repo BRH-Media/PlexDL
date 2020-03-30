@@ -33,16 +33,14 @@ namespace PlexDL.UI
                         return titleAttribute.Title;
                     }
                 }
+
                 return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 
         public string AssemblyVersion
         {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
+            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
         }
 
         public string AssemblyDescription
@@ -54,6 +52,7 @@ namespace PlexDL.UI
                 {
                     return "";
                 }
+
                 return ((AssemblyDescriptionAttribute)attributes[0]).Description;
             }
         }
@@ -67,6 +66,7 @@ namespace PlexDL.UI
                 {
                     return "";
                 }
+
                 return ((AssemblyProductAttribute)attributes[0]).Product;
             }
         }
@@ -80,6 +80,7 @@ namespace PlexDL.UI
                 {
                     return "";
                 }
+
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
         }
@@ -93,6 +94,7 @@ namespace PlexDL.UI
                 {
                     return "";
                 }
+
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }

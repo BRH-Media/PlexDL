@@ -1,7 +1,7 @@
-﻿using PlexDL.Common.SearchFramework;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {

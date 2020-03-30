@@ -1,7 +1,7 @@
 ﻿//using System.Threading.Tasks;
 
-using RestSharp;
 using System.Collections.Generic;
+using RestSharp;
 
 namespace PlexDL.PlexAPI
 {

@@ -1,37 +1,37 @@
 ﻿namespace PlexDL.AltoHTTP.Enums
 {
     /// <summary>
-    /// Download states
+    ///     Download states
     /// </summary>
     public enum DownloadState
     {
         /// <summary>
-        /// Download is started
+        ///     Download is started
         /// </summary>
         Started,
 
         /// <summary>
-        /// Download is paused
+        ///     Download is paused
         /// </summary>
         Paused,
 
         /// <summary>
-        /// Download is going on
+        ///     Download is going on
         /// </summary>
         Downloading,
 
         /// <summary>
-        /// Download is completed
+        ///     Download is completed
         /// </summary>
         Completed,
 
         /// <summary>
-        /// Download is cancelled
+        ///     Download is cancelled
         /// </summary>
         Cancelled,
 
         /// <summary>
-        /// An error occured while downloading
+        ///     An error occured while downloading
         /// </summary>
         ErrorOccured
     }

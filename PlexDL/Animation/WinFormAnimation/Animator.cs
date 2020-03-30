@@ -441,7 +441,7 @@ namespace PlexDL.Animation.WinFormAnimation
                             else
                             {
                                 if (_tempReverseRepeat && ActivePath.Delay > 0 || !_tempReverseRepeat && _tempPaths.FirstOrDefault()?.Delay > 0)
-                                    // Or if the next path or this one in revese order has a delay
+                                // Or if the next path or this one in revese order has a delay
                                     FrameCallback.Invoke(_tempReverseRepeat ? ActivePath.Start : ActivePath.End);
                             }
                         }

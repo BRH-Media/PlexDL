@@ -2,21 +2,6 @@ namespace PlexDL.PlexAPI
 {
     public class PlexItem : PlexRest
     {
-        public string uri { get; set; }
-
-        public string key { get; set; }
-        public string title { get; set; }
-        public string type { get; set; }
-        public string thumb { get; set; }
-        public string banner { get; set; }
-        public string art { get; set; }
-        public string createdAt { get; set; }
-        public string updatedAt { get; set; }
-        public int index { get; set; }
-
-        public Server server { get; set; }
-        public User user { get; set; }
-
         public PlexItem()
         {
         }
@@ -32,6 +17,21 @@ namespace PlexDL.PlexAPI
         {
             this.CopyFrom(item);
         }
+
+        public string uri { get; set; }
+
+        public string key { get; set; }
+        public string title { get; set; }
+        public string type { get; set; }
+        public string thumb { get; set; }
+        public string banner { get; set; }
+        public string art { get; set; }
+        public string createdAt { get; set; }
+        public string updatedAt { get; set; }
+        public int index { get; set; }
+
+        public Server server { get; set; }
+        public User user { get; set; }
 
         protected override string GetBaseUrl()
         {

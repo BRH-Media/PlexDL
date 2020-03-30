@@ -1,8 +1,8 @@
-﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
@@ -20,8 +20,7 @@ namespace PlexDL.Common.PlayerLaunchers
                         {
                             var frm = new UI.Player
                             {
-                                StreamingContent = stream,
-                                TitlesTable = titles
+                                StreamingContent = stream, TitlesTable = titles
                             };
                             LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
                             frm.ShowDialog();

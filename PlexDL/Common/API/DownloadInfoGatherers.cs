@@ -1,9 +1,9 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures;
-using System;
+﻿using System;
 using System.Data;
 using System.Xml;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures;
 
 namespace PlexDL.Common.API
 {

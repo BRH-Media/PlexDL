@@ -4,12 +4,6 @@ namespace PlexDL.Common.Structures.AppOptions.Player
 {
     public class PlayerSettings
     {
-        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
-        public override string ToString()
-        {
-            return "";
-        }
-
         [DisplayName("VLC Arguments")]
         [Description("When launching VLC Media Player, PlexDL will execute these arguments.")]
         public string VLCMediaPlayerArgs { get; set; } = @"%FILE% --meta-title=%TITLE%";
@@ -38,10 +32,16 @@ namespace PlexDL.Common.Structures.AppOptions.Player
 
         [DisplayName("Player Engine")]
         [Description("A value indicating what PlaybackMode PlexDL should use when streaming content. Current modes:\n" +
-            "[0] - PVS Player\n" +
-            "[1] - VLC Media Player\n" +
-            "[2] - Default Browser\n" +
-            "[3] - MenuSelector")]
+                     "[0] - PVS Player\n" +
+                     "[1] - VLC Media Player\n" +
+                     "[2] - Default Browser\n" +
+                     "[3] - MenuSelector")]
         public int PlaybackEngine { get; set; } = PlaybackMode.MenuSelector;
+
+        // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
+        public override string ToString()
+        {
+            return "";
+        }
     }
 }

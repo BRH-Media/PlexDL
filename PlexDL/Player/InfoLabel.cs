@@ -1,15 +1,15 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.1
-    December 2019, The Netherlands
-    © Copyright 2019 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 0.98.2
+    February 2020, The Netherlands
+    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms any CPU.
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -22,8 +22,8 @@
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
-    4. PeakMeter.cs     - audio peak level values
-    5. DisplayClones.cs - multiple video displays
+    4. AudioDevices.cs  - audio devices and peak meters
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -52,7 +52,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    December 2019, The Netherlands
+    February 2020, The Netherlands
 
     ****************************************************************/
 
@@ -62,7 +62,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-#endregion Usings
+#endregion
 
 namespace PlexDL.Player
 {
@@ -72,6 +72,7 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class InfoLabel : HideObjectMembers, IDisposable
     {
+
         // ******************************** Info Label - Fields
 
         #region Info Label - Fields
@@ -79,37 +80,33 @@ namespace PlexDL.Player
         #region Constants
 
         // Default border margins - also minimum size
-        private const int IL_TEXT_MARGIN_LEFT = 2;
-
-        private const int IL_TEXT_MARGIN_RIGHT = 1;
-        private const int IL_TEXT_MARGIN_TOP = 1;
-        private const int IL_TEXT_MARGIN_BOTTOM = 1;
+        private const int       IL_TEXT_MARGIN_LEFT         = 2;
+        private const int       IL_TEXT_MARGIN_RIGHT        = 1;
+        private const int       IL_TEXT_MARGIN_TOP          = 1;
+        private const int       IL_TEXT_MARGIN_BOTTOM       = 1;
 
         // Maximum border margin per side
-        private const int IL_BORDER_MARGIN_MAXIMUM = 150;
+        private const int       IL_BORDER_MARGIN_MAXIMUM    = 150;
 
         // Default border thickness
-        private const int IL_BORDER_THICKNESS_LEFT = 1;
-
-        private const int IL_BORDER_THICKNESS_TOP = 1;
-        private const int IL_BORDER_THICKNESS_RIGHT = 1;
-        private const int IL_BORDER_THICKNESS_BOTTOM = 1;
+        private const int       IL_BORDER_THICKNESS_LEFT    = 1;
+        private const int       IL_BORDER_THICKNESS_TOP     = 1;
+        private const int       IL_BORDER_THICKNESS_RIGHT   = 1;
+        private const int       IL_BORDER_THICKNESS_BOTTOM  = 1;
 
         // Maximum border thickness per side
-        private const int IL_BORDER_THICKNESS_MAXIMUM = 150;
+        private const int       IL_BORDER_THICKNESS_MAXIMUM = 150;
 
         // Text label resize - if label size change is greater also resize infolabel form
-        private const int IL_TEXT_ROOM_WIDTH = 3;
-
-        private const int IL_TEXT_ROOM_HEIGHT = 2;
+        private const int       IL_TEXT_ROOM_WIDTH          = 3;
+        private const int       IL_TEXT_ROOM_HEIGHT         = 2;
 
         // Default duration and fading steps
-        private const int IL_DURATION = 1000;
+        private const int       IL_DURATION                 = 1000;
+        private const int       IL_DURATION_MINIMUM         = 10;
+        private const double    IL_FADE_OUT_VALUE           = 0.2;
 
-        private const int IL_DURATION_MINIMUM = 10;
-        private const double IL_FADE_OUT_VALUE = 0.2;
-
-        #endregion Constants
+        #endregion
 
         private sealed class InfoForm : Form
         {
@@ -121,7 +118,6 @@ namespace PlexDL.Player
                 Brush,
                 Image
             }
-
             internal sealed class DisplayLabel : Label
             {
                 // Prevent mouseclick activation / detection
@@ -130,7 +126,7 @@ namespace PlexDL.Player
                     const int WM_MOUSEACTIVATE = 0x0021;
                     const int MA_NOACTIVATEANDEAT = 0x0004;
                     const int WM_NCHITTEST = 0x0084;
-                    const int HTTRANSPARENT = -1;
+                    const int HTTRANSPARENT = (-1);
 
                     if (m.Msg == WM_MOUSEACTIVATE) m.Result = (IntPtr)MA_NOACTIVATEANDEAT;
                     else if (m.Msg == WM_NCHITTEST) m.Result = (IntPtr)HTTRANSPARENT;
@@ -139,19 +135,19 @@ namespace PlexDL.Player
             }
 
             //private InfoLabel       _base;
-            internal DisplayLabel Label;
+            internal DisplayLabel   Label;
 
-            internal Region FormRegion;
-            internal bool RoundCorners;
+            internal Region         FormRegion;
+            internal bool           RoundCorners;
 
-            internal Brush BorderBrush = new SolidBrush(SystemColors.WindowFrame);
+            internal Brush          BorderBrush = new SolidBrush(SystemColors.WindowFrame);
             internal BackgroundMode BackMode = BackgroundMode.Solid;
-            internal Brush BackBrush;
-            internal bool Transparent;
+            internal Brush          BackBrush;
+            internal bool           Transparent;
 
-            private bool _disposed;
+            private bool            _disposed;
 
-            #endregion Fields
+            #endregion
 
             #region Main
 
@@ -159,28 +155,31 @@ namespace PlexDL.Player
             {
                 //_base                   = baseForm;
 
-                DoubleBuffered = true;
-                ShowInTaskbar = false;
-                MinimumSize = new Size(32, 20);
+                DoubleBuffered          = true;
+                ShowInTaskbar           = false;
+                MinimumSize             = new Size(32, 20);
 
-                StartPosition = FormStartPosition.Manual;
-                FormBorderStyle = FormBorderStyle.None;
-                BackgroundImageLayout = ImageLayout.Stretch;
+                StartPosition           = FormStartPosition.Manual;
+                FormBorderStyle         = FormBorderStyle.None;
+                BackgroundImageLayout   = ImageLayout.Stretch;
 
-                ForeColor = SystemColors.InfoText;
-                BackColor = SystemColors.Info;
+                ForeColor               = SystemColors.InfoText;
+                BackColor               = SystemColors.Info;
 
-                Label = new DisplayLabel();
-                Label.BackColor = Color.Transparent;
-                Label.TextAlign = ContentAlignment.MiddleCenter;
-                Label.AutoSize = true;
-                Label.MinimumSize = new Size(32, 20);
-                Label.Left = IL_BORDER_THICKNESS_LEFT + IL_TEXT_MARGIN_LEFT;
-                Label.Top = IL_BORDER_THICKNESS_TOP + IL_TEXT_MARGIN_TOP;
+                Label                   = new DisplayLabel();
+                Label.BackColor         = Color.Transparent;
+                Label.TextAlign         = ContentAlignment.MiddleCenter;
+                Label.AutoSize          = true;
+                Label.MinimumSize       = new Size(32, 20);
+                Label.Left              = IL_BORDER_THICKNESS_LEFT + IL_TEXT_MARGIN_LEFT;
+                Label.Top               = IL_BORDER_THICKNESS_TOP + IL_TEXT_MARGIN_TOP;
                 Controls.Add(Label);
             }
 
-            protected override bool ShowWithoutActivation => true;
+            protected override bool ShowWithoutActivation
+            {
+                get { return true; }
+            }
 
             // has to be top window because of player overlay.canfocus option
             protected override CreateParams CreateParams
@@ -189,7 +188,7 @@ namespace PlexDL.Player
                 {
                     const int WS_EX_TOPMOST = 0x0008;
 
-                    var cp = base.CreateParams;
+                    CreateParams cp = base.CreateParams;
                     cp.ExStyle |= WS_EX_TOPMOST;
                     return cp;
                 }
@@ -201,7 +200,7 @@ namespace PlexDL.Player
                 const int WM_MOUSEACTIVATE = 0x0021;
                 const int MA_NOACTIVATEANDEAT = 0x0004;
                 const int WM_NCHITTEST = 0x0084;
-                const int HTTRANSPARENT = -1;
+                const int HTTRANSPARENT = (-1);
 
                 if (m.Msg == WM_MOUSEACTIVATE) m.Result = (IntPtr)MA_NOACTIVATEANDEAT;
                 else if (m.Msg == WM_NCHITTEST) m.Result = (IntPtr)HTTRANSPARENT;
@@ -222,11 +221,10 @@ namespace PlexDL.Player
                         if (Label != null) Label.Dispose();
                     }
                 }
-
                 base.Dispose(disposing);
             }
 
-            #endregion Main
+            #endregion
 
             #region Paint
 
@@ -246,46 +244,44 @@ namespace PlexDL.Player
                 else base.OnPaintBackground(e);
             }
 
-            #endregion Paint
+            #endregion
         }
 
-        private InfoForm il_InfoForm;
+        private InfoForm        il_InfoForm;
 
-        private ContentAlignment il_Alignment = ContentAlignment.TopCenter;
-        private int il_OffsetX;
-        private int il_OffsetY;
+        private ContentAlignment il_Alignment               = ContentAlignment.TopCenter;
+        private int             il_OffsetX;
+        private int             il_OffsetY;
 
-        private Color il_BorderColor = SystemColors.WindowFrame;
+        private Color           il_BorderColor              = SystemColors.WindowFrame;
+        private Padding         il_BorderThickness          = new Padding(IL_BORDER_THICKNESS_LEFT, IL_BORDER_THICKNESS_TOP, IL_BORDER_THICKNESS_RIGHT, IL_BORDER_THICKNESS_BOTTOM);
+        private int             il_BorderThicknessWidth     = IL_BORDER_THICKNESS_LEFT + IL_BORDER_THICKNESS_RIGHT;
+        private int             il_BorderThicknessHeight    = IL_BORDER_THICKNESS_TOP + IL_BORDER_THICKNESS_BOTTOM;
 
-        private Padding il_BorderThickness =
-        new Padding(IL_BORDER_THICKNESS_LEFT, IL_BORDER_THICKNESS_TOP, IL_BORDER_THICKNESS_RIGHT, IL_BORDER_THICKNESS_BOTTOM);
+        private Padding         il_TextMargins              = new Padding(IL_TEXT_MARGIN_LEFT, IL_TEXT_MARGIN_TOP, IL_TEXT_MARGIN_RIGHT, IL_TEXT_MARGIN_BOTTOM);
+        private int             il_TextMarginsWidth         = IL_TEXT_MARGIN_LEFT + IL_TEXT_MARGIN_RIGHT;
+        private int             il_TextMarginsHeight        = IL_TEXT_MARGIN_TOP + IL_TEXT_MARGIN_BOTTOM;
 
-        private int il_BorderThicknessWidth = IL_BORDER_THICKNESS_LEFT + IL_BORDER_THICKNESS_RIGHT;
-        private int il_BorderThicknessHeight = IL_BORDER_THICKNESS_TOP + IL_BORDER_THICKNESS_BOTTOM;
+        private Control         il_Control;
+        private Form            il_BaseForm;
 
-        private Padding il_TextMargins = new Padding(IL_TEXT_MARGIN_LEFT, IL_TEXT_MARGIN_TOP, IL_TEXT_MARGIN_RIGHT, IL_TEXT_MARGIN_BOTTOM);
-        private int il_TextMarginsWidth = IL_TEXT_MARGIN_LEFT + IL_TEXT_MARGIN_RIGHT;
-        private int il_TextMarginsHeight = IL_TEXT_MARGIN_TOP + IL_TEXT_MARGIN_BOTTOM;
+        private Size            il_OldTextSize              = Size.Empty;
+        private Color           il_OldBackColor;
+        private Image           il_OldImage;
 
-        private Control il_Control;
-        private Form il_BaseForm;
+        private bool            il_Busy;
 
-        private Size il_OldTextSize = Size.Empty;
-        private Color il_OldBackColor;
-        private Image il_OldImage;
+        private Timer           il_Timer;
+        private int             il_Duration                 = IL_DURATION;
+        private double          il_FadeOutValue             = IL_FADE_OUT_VALUE;
+        private bool            il_Fading;
 
-        private bool il_Busy;
+        private double          il_Opacity                  = 1;
 
-        private Timer il_Timer;
-        private int il_Duration = IL_DURATION;
-        private double il_FadeOutValue = IL_FADE_OUT_VALUE;
-        private bool il_Fading;
+        private bool            il_Disposed;
 
-        private double il_Opacity = 1;
+        #endregion;
 
-        private bool il_Disposed;
-
-        #endregion Info Label - Fields
 
         // ******************************** Info Label - Main
 
@@ -301,6 +297,7 @@ namespace PlexDL.Player
 
             il_Timer = new Timer();
             il_Timer.Tick += TimerTick;
+
         }
 
         /// <summary>
@@ -312,12 +309,7 @@ namespace PlexDL.Player
             {
                 il_Disposed = true;
 
-                if (il_Timer != null)
-                {
-                    il_Timer.Dispose();
-                    il_Timer = null;
-                }
-
+                if (il_Timer != null) { il_Timer.Dispose(); il_Timer = null; }
                 if (il_InfoForm != null)
                 {
                     try
@@ -325,11 +317,7 @@ namespace PlexDL.Player
                         il_InfoForm.Visible = false;
                         il_InfoForm.Dispose();
                     }
-                    catch
-                    {
-                        /* ignore */
-                    }
-
+                    catch { /* ignore */ }
                     il_InfoForm = null;
                 }
 
@@ -342,17 +330,14 @@ namespace PlexDL.Player
                         il_BaseForm.Deactivate -= BaseForm_HideLabel;
                         il_BaseForm.Move -= BaseForm_HideLabel;
                     }
-                    catch
-                    {
-                        /* ignore */
-                    }
-
+                    catch { /* ignore */ }
                     il_BaseForm = null;
                 }
             }
         }
 
-        #endregion Info Label - Main
+        #endregion
+
 
         // ******************************** Info Label - TimerTick (Fading) / Reset Fading
 
@@ -384,7 +369,8 @@ namespace PlexDL.Player
             il_Fading = false;
         }
 
-        #endregion Info Label - TimerTick (Fading) / Reset Fading
+        #endregion
+
 
         // ******************************** Info Label - Set InfoLabel Size / Border / BaseForm Deactivated
 
@@ -393,7 +379,7 @@ namespace PlexDL.Player
         private void SetSize()
         {
             il_InfoForm.Size = new Size
-            (il_InfoForm.Label.Width + il_BorderThicknessWidth + il_TextMarginsWidth,
+                (il_InfoForm.Label.Width + il_BorderThicknessWidth + il_TextMarginsWidth,
                 il_InfoForm.Label.Height + il_BorderThicknessHeight + il_TextMarginsHeight);
 
             //if (_infoForm.RoundCorners) SetRegion();
@@ -410,13 +396,12 @@ namespace PlexDL.Player
             if (il_InfoForm.RoundCorners)
             {
                 // Form region
-                var handle1 = SafeNativeMethods.CreateRoundRectRgn(0, 0, il_InfoForm.Width + 1, il_InfoForm.Height + 1, 4, 4);
+                IntPtr handle1 = SafeNativeMethods.CreateRoundRectRgn(0, 0, il_InfoForm.Width + 1, il_InfoForm.Height + 1, 4, 4);
                 il_InfoForm.FormRegion = Region.FromHrgn(handle1);
                 il_InfoForm.Region = il_InfoForm.FormRegion.Clone();
 
                 // Border region
-                var handle2 = SafeNativeMethods.CreateRoundRectRgn(BorderThickness.Left, BorderThickness.Top,
-                    il_InfoForm.Width - BorderThickness.Right + 1, il_InfoForm.Height - BorderThickness.Bottom + 1, 3, 3);
+                IntPtr handle2 = SafeNativeMethods.CreateRoundRectRgn(BorderThickness.Left, BorderThickness.Top, il_InfoForm.Width - BorderThickness.Right + 1, il_InfoForm.Height - BorderThickness.Bottom + 1, 3, 3);
                 il_InfoForm.FormRegion.Exclude(Region.FromHrgn(handle2));
 
                 SafeNativeMethods.DeleteObject(handle1); // is this necessary?
@@ -451,11 +436,7 @@ namespace PlexDL.Player
                     il_BaseForm.Deactivate -= BaseForm_HideLabel;
                     il_BaseForm.Move -= BaseForm_HideLabel;
                 }
-                catch
-                {
-                    /* ignore */
-                }
-
+                catch { /* ignore */ }
                 il_BaseForm = null;
             }
         }
@@ -466,7 +447,8 @@ namespace PlexDL.Player
             Hide(false);
         }
 
-        #endregion Info Label - Set InfoLabel Size / Border / BaseForm Deactivated
+        #endregion
+
 
         // ******************************** Info Label - Public Members
 
@@ -519,44 +501,41 @@ namespace PlexDL.Player
         /// <param name="duration">The duration, in milliseconds, to display the infolabel.</param>
         public int Show(string text, Control control, Point location, ContentAlignment alignment, int duration)
         {
-            var result = HResult.S_OK;
+            HResult result = HResult.S_OK;
 
             if (!il_Busy)
             {
                 il_Busy = true;
 
                 if (string.IsNullOrEmpty(text)
-                    || control == null
+                    || control  == null
                     || location == null
                     || duration < IL_DURATION_MINIMUM
                     || control.FindForm() != Form.ActiveForm)
                 {
-                    result = HResult.E_INVALIDARG;
+                    result  = HResult.E_INVALIDARG;
                     il_Busy = false;
                     return (int)result;
                 }
 
                 il_InfoForm.Label.Text = text;
-                if (il_InfoForm.Label.AutoSize && (Math.Abs(il_InfoForm.Label.Width - il_OldTextSize.Width) > IL_TEXT_ROOM_WIDTH ||
-                                                   Math.Abs(il_InfoForm.Label.Height - il_OldTextSize.Height) > IL_TEXT_ROOM_HEIGHT))
+                if (il_InfoForm.Label.AutoSize && (Math.Abs(il_InfoForm.Label.Width - il_OldTextSize.Width) > IL_TEXT_ROOM_WIDTH || Math.Abs(il_InfoForm.Label.Height - il_OldTextSize.Height) > IL_TEXT_ROOM_HEIGHT))
                 {
                     il_OldTextSize = il_InfoForm.Label.Size;
                     SetSize();
                 }
 
-                var position = control.PointToScreen(location);
+                Point position = control.PointToScreen(location);
                 switch (alignment)
                 {
                     case ContentAlignment.TopLeft:
                         position.X -= il_InfoForm.Width - il_OffsetX;
                         position.Y -= il_InfoForm.Height - il_OffsetY;
                         break;
-
                     case ContentAlignment.TopCenter:
                         position.X -= (int)(il_InfoForm.Width * 0.5) - il_OffsetX;
                         position.Y -= il_InfoForm.Height - il_OffsetY;
                         break;
-
                     case ContentAlignment.TopRight:
                         position.X += il_OffsetX;
                         position.Y -= il_InfoForm.Height - il_OffsetY;
@@ -566,12 +545,10 @@ namespace PlexDL.Player
                         position.X -= il_InfoForm.Width - il_OffsetX;
                         position.Y -= (int)(il_InfoForm.Height * 0.5) - il_OffsetY;
                         break;
-
                     case ContentAlignment.MiddleCenter:
                         position.X -= (int)(il_InfoForm.Width * 0.5) - il_OffsetX;
                         position.Y -= (int)(il_InfoForm.Height * 0.5) - il_OffsetY;
                         break;
-
                     case ContentAlignment.MiddleRight:
                         position.X += il_OffsetX;
                         position.Y -= (int)(il_InfoForm.Height * 0.5) - il_OffsetY;
@@ -581,20 +558,20 @@ namespace PlexDL.Player
                         position.X -= il_InfoForm.Width - il_OffsetX;
                         position.Y += il_OffsetY;
                         break;
-
                     case ContentAlignment.BottomCenter:
                         position.X -= (int)(il_InfoForm.Width * 0.5) - il_OffsetX;
                         position.Y += il_OffsetY;
                         break;
-
                     case ContentAlignment.BottomRight:
                         position.X += il_OffsetX;
                         position.Y += il_OffsetY;
                         break;
+                    default:
+                        break;
                 }
 
                 // check if within all screens
-                var screen = SystemInformation.VirtualScreen;
+                Rectangle screen = SystemInformation.VirtualScreen;
                 if (position.X < screen.X) position.X = screen.X;
                 else if (position.X + il_InfoForm.Width > screen.Right) position.X = screen.Right - il_InfoForm.Width;
                 if (position.Y < screen.Y) position.Y = screen.Y;
@@ -604,8 +581,8 @@ namespace PlexDL.Player
 
                 if (il_Control != control)
                 {
-                    il_Control = control;
-                    var form = control.FindForm();
+                    il_Control  = control;
+                    Form form   = control.FindForm();
                     if (il_BaseForm != form)
                     {
                         if (il_BaseForm != null)
@@ -613,23 +590,18 @@ namespace PlexDL.Player
                             try
                             {
                                 il_BaseForm.FormClosing -= BaseForm_FormClosing;
-                                il_BaseForm.Deactivate -= BaseForm_HideLabel;
-                                il_BaseForm.Move -= BaseForm_HideLabel;
+                                il_BaseForm.Deactivate  -= BaseForm_HideLabel;
+                                il_BaseForm.Move        -= BaseForm_HideLabel;
                             }
-                            catch
-                            {
-                                /* ignore */
-                            }
-
+                            catch { /* ignore */ }
                             il_BaseForm = null;
                         }
-
                         if (form != null)
                         {
                             il_BaseForm = form;
                             il_BaseForm.FormClosing += BaseForm_FormClosing;
-                            il_BaseForm.Deactivate += BaseForm_HideLabel;
-                            il_BaseForm.Move += BaseForm_HideLabel;
+                            il_BaseForm.Deactivate  += BaseForm_HideLabel;
+                            il_BaseForm.Move        += BaseForm_HideLabel;
                         }
                     }
                 }
@@ -644,10 +616,7 @@ namespace PlexDL.Player
 
                 il_Busy = false;
             }
-            else
-            {
-                result = HResult.ERROR_BUSY;
-            }
+            else result = HResult.ERROR_BUSY;
 
             return (int)result;
         }
@@ -665,7 +634,7 @@ namespace PlexDL.Player
                     if (!il_Fading)
                     {
                         il_Timer.Stop();
-                        il_Timer.Interval = 50;
+                        il_Timer.Interval   = 50;
                         il_Timer.Start();
                         il_InfoForm.Opacity -= il_FadeOutValue;
                         il_Fading = true;
@@ -679,7 +648,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Info Label - Show / Hide
+        #endregion
+
 
         // ******************************** Info Label - Active / Text / Size / Location / Image
 
@@ -688,14 +658,17 @@ namespace PlexDL.Player
         /// <summary>
         /// Gets a value indicating whether the infolabel is active (visible).
         /// </summary>
-        public bool Active => il_InfoForm.Visible;
+        public bool Active
+        {
+            get { return il_InfoForm.Visible; }
+        }
 
         /// <summary>
         /// Gets or sets the text associated with the infoLabel.
         /// </summary>
         public string Text
         {
-            get => il_InfoForm.Label.Text;
+            get { return il_InfoForm.Label.Text; }
             set
             {
                 il_InfoForm.Label.Text = value;
@@ -708,13 +681,15 @@ namespace PlexDL.Player
         /// </summary>
         public Padding TextMargin
         {
-            get =>
-            // adjust for minimum margin values
-            new Padding(
-                il_TextMargins.Left - IL_TEXT_MARGIN_LEFT,
-                il_TextMargins.Top - IL_TEXT_MARGIN_TOP,
-                il_TextMargins.Right - IL_TEXT_MARGIN_RIGHT,
-                il_TextMargins.Bottom - IL_TEXT_MARGIN_BOTTOM);
+            get
+            {
+                // adjust for minimum margin values
+                return new Padding(
+                    il_TextMargins.Left - IL_TEXT_MARGIN_LEFT,
+                    il_TextMargins.Top - IL_TEXT_MARGIN_TOP,
+                    il_TextMargins.Right - IL_TEXT_MARGIN_RIGHT,
+                    il_TextMargins.Bottom - IL_TEXT_MARGIN_BOTTOM);
+            }
 
             set
             {
@@ -749,7 +724,10 @@ namespace PlexDL.Player
         /// <summary>
         /// Gets the current size of the (variable sized) infoLabel.
         /// </summary>
-        public Size Size => il_InfoForm.Size;
+        public Size Size
+        {
+            get { return il_InfoForm.Size; }
+        }
 
         /// <summary>
         /// Gets the true location (top-left screen coordinates) of the infoLabel (when visible).
@@ -768,7 +746,7 @@ namespace PlexDL.Player
         /// </summary>
         public bool AutoSize
         {
-            get => il_InfoForm.Label.AutoSize;
+            get { return il_InfoForm.Label.AutoSize; }
             set
             {
                 if (value != il_InfoForm.Label.AutoSize)
@@ -784,7 +762,7 @@ namespace PlexDL.Player
         /// </summary>
         public Size TextSize
         {
-            get => il_InfoForm.Label.Size;
+            get { return il_InfoForm.Label.Size; }
             set
             {
                 if (value.Width < 32) value.Width = 32;
@@ -800,7 +778,7 @@ namespace PlexDL.Player
         /// </summary>
         public ContentAlignment TextAlign
         {
-            get => il_InfoForm.Label.TextAlign;
+            get { return il_InfoForm.Label.TextAlign; }
             set
             {
                 if (value != il_InfoForm.Label.TextAlign)
@@ -816,7 +794,7 @@ namespace PlexDL.Player
         /// </summary>
         public Image Image
         {
-            get => il_InfoForm.Label.Image;
+            get { return il_InfoForm.Label.Image; }
             set
             {
                 if (value != il_InfoForm.Label.Image)
@@ -832,7 +810,7 @@ namespace PlexDL.Player
         /// </summary>
         public ContentAlignment ImageAlign
         {
-            get => il_InfoForm.Label.ImageAlign;
+            get { return il_InfoForm.Label.ImageAlign; }
             set
             {
                 if (value != il_InfoForm.Label.ImageAlign)
@@ -843,7 +821,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Info Label - Active / Text / Size / Location / Image
+        #endregion
+
 
         // ******************************** Info Label - Font / Colors / Border / RoundedCorners / BackImage
 
@@ -854,19 +833,18 @@ namespace PlexDL.Player
         /// </summary>
         public Font Font
         {
-            get => il_InfoForm.Label.Font;
+            get { return il_InfoForm.Label.Font; }
             set
             {
                 if (value != null)
+                {
                     try
                     {
                         il_InfoForm.Label.Font = value;
                         if (il_InfoForm.Label.AutoSize) SetSize();
                     }
-                    catch
-                    {
-                        /* ignore */
-                    }
+                    catch { /* ignore */ }
+                }
             }
         }
 
@@ -875,7 +853,7 @@ namespace PlexDL.Player
         /// </summary>
         public float FontSize
         {
-            get => il_InfoForm.Label.Font.Size;
+            get { return il_InfoForm.Label.Font.Size; }
             set
             {
                 if (value <= 6) value = 6;
@@ -886,10 +864,7 @@ namespace PlexDL.Player
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font.FontFamily, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch
-                {
-                    /* ignore */
-                }
+                catch { /* ignore */ }
             }
         }
 
@@ -898,7 +873,7 @@ namespace PlexDL.Player
         /// </summary>
         public FontStyle FontStyle
         {
-            get => il_InfoForm.Label.Font.Style;
+            get { return il_InfoForm.Label.Font.Style; }
             set
             {
                 try
@@ -906,10 +881,7 @@ namespace PlexDL.Player
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch
-                {
-                    /* ignore */
-                }
+                catch { /* ignore */ }
             }
         }
 
@@ -918,8 +890,8 @@ namespace PlexDL.Player
         /// </summary>
         public bool UseCompatibleTextRendering
         {
-            get => il_InfoForm.Label.UseCompatibleTextRendering;
-            set => il_InfoForm.Label.UseCompatibleTextRendering = value;
+            get { return il_InfoForm.Label.UseCompatibleTextRendering; }
+            set { il_InfoForm.Label.UseCompatibleTextRendering = value; }
         }
 
         /// <summary>
@@ -927,19 +899,18 @@ namespace PlexDL.Player
         /// </summary>
         public Color ForeColor
         {
-            get => il_InfoForm.Label.ForeColor;
+            get { return il_InfoForm.Label.ForeColor; }
             set
             {
                 if (value != il_InfoForm.ForeColor)
+                {
                     try
                     {
                         il_InfoForm.ForeColor = value;
                         if (il_InfoForm.Visible) il_InfoForm.Invalidate();
                     }
-                    catch
-                    {
-                        /* ignore */
-                    }
+                    catch { /* ignore */ }
+                }
             }
         }
 
@@ -948,7 +919,7 @@ namespace PlexDL.Player
         /// </summary>
         public Color BackColor
         {
-            get => il_InfoForm.BackColor;
+            get { return il_InfoForm.BackColor; }
             set
             {
                 if (value == Color.Transparent)
@@ -961,7 +932,6 @@ namespace PlexDL.Player
                             il_OldImage = il_InfoForm.BackgroundImage;
                             il_InfoForm.BackgroundImage = null;
                         }
-
                         il_InfoForm.TransparencyKey = il_InfoForm.BackColor;
                         il_InfoForm.Transparent = true;
                     }
@@ -987,16 +957,11 @@ namespace PlexDL.Player
                                 il_InfoForm.BackBrush.Dispose();
                                 il_InfoForm.BackBrush = null;
                             }
-
                             il_InfoForm.BackMode = InfoForm.BackgroundMode.Solid;
                         }
                     }
-                    catch
-                    {
-                        /* ignore */
-                    }
+                    catch { /* ignore */ }
                 }
-
                 if (il_InfoForm.Visible) il_InfoForm.Invalidate();
             }
         }
@@ -1006,7 +971,7 @@ namespace PlexDL.Player
         /// </summary>
         public Brush BackBrush
         {
-            get => il_InfoForm.BackBrush;
+            get { return il_InfoForm.BackBrush; }
             set
             {
                 if (value != null)
@@ -1019,7 +984,6 @@ namespace PlexDL.Player
                             il_InfoForm.BackgroundImage = null;
                             il_OldImage = null;
                         }
-
                         il_InfoForm.BackBrush = value;
                         il_InfoForm.BackMode = InfoForm.BackgroundMode.Brush;
                     }
@@ -1039,7 +1003,7 @@ namespace PlexDL.Player
         /// </summary>
         public Color BorderColor
         {
-            get => il_BorderColor;
+            get { return il_BorderColor; }
 
             set
             {
@@ -1056,7 +1020,7 @@ namespace PlexDL.Player
         /// </summary>
         public Brush BorderBrush
         {
-            get => il_InfoForm.BorderBrush;
+            get { return il_InfoForm.BorderBrush; }
             set
             {
                 if (value != null)
@@ -1073,7 +1037,7 @@ namespace PlexDL.Player
         /// </summary>
         public bool RoundedCorners
         {
-            get => il_InfoForm.RoundCorners;
+            get { return il_InfoForm.RoundCorners; }
             set
             {
                 if (value != il_InfoForm.RoundCorners)
@@ -1089,7 +1053,7 @@ namespace PlexDL.Player
         /// </summary>
         public Padding BorderThickness
         {
-            get => il_BorderThickness;
+            get { return il_BorderThickness; }
             set
             {
                 if (value.Left > IL_BORDER_THICKNESS_MAXIMUM) value.Left = IL_BORDER_THICKNESS_MAXIMUM;
@@ -1121,7 +1085,7 @@ namespace PlexDL.Player
         /// </summary>
         public Image BackImage
         {
-            get => il_InfoForm.BackgroundImage;
+            get { return il_InfoForm.BackgroundImage; }
             set
             {
                 il_InfoForm.BackgroundImage = value;
@@ -1144,15 +1108,17 @@ namespace PlexDL.Player
         /// </summary>
         public ImageLayout BackImageLayout
         {
-            get => il_InfoForm.BackgroundImageLayout;
+            get { return il_InfoForm.BackgroundImageLayout; }
             set
             {
                 il_InfoForm.BackgroundImageLayout = value;
                 if (il_InfoForm.Visible && il_InfoForm.BackMode == InfoForm.BackgroundMode.Image) il_InfoForm.Invalidate();
             }
+
         }
 
-        #endregion Info Label - Font / Colors / Border / RoundedCorners / BackImage
+        #endregion
+
 
         // ******************************** Info Label - Duration / Alignment / FadeOut Speed / Opacity / Transparent
 
@@ -1163,7 +1129,7 @@ namespace PlexDL.Player
         /// </summary>
         public int Duration
         {
-            get => il_Duration;
+            get { return il_Duration; }
             set
             {
                 if (value < IL_DURATION_MINIMUM) value = IL_DURATION_MINIMUM;
@@ -1176,8 +1142,8 @@ namespace PlexDL.Player
         /// </summary>
         public ContentAlignment Align
         {
-            get => il_Alignment;
-            set => il_Alignment = value;
+            get { return il_Alignment; }
+            set { il_Alignment = value; }
         }
 
         /// <summary>
@@ -1185,7 +1151,7 @@ namespace PlexDL.Player
         /// </summary>
         public Point AlignOffset
         {
-            get => new Point(il_OffsetX, il_OffsetY);
+            get { return new Point (il_OffsetX, il_OffsetY); }
             set
             {
                 il_OffsetX = value.X; // any value
@@ -1198,7 +1164,7 @@ namespace PlexDL.Player
         /// </summary>
         public int FadeOutSpeed
         {
-            get => (int)(il_FadeOutValue * 100);
+            get { return (int)(il_FadeOutValue * 100); }
             set
             {
                 if (value < 1) value = 1;
@@ -1212,7 +1178,7 @@ namespace PlexDL.Player
         /// </summary>
         public double Opacity
         {
-            get => il_Opacity;
+            get { return il_Opacity; }
             set
             {
                 if (value < 0.0) value = 0.0;
@@ -1227,7 +1193,7 @@ namespace PlexDL.Player
         /// </summary>
         public bool Transparent
         {
-            get => il_InfoForm.Transparent;
+            get { return il_InfoForm.Transparent; }
             set
             {
                 if (value != il_InfoForm.Transparent)
@@ -1241,7 +1207,6 @@ namespace PlexDL.Player
                             il_OldImage = il_InfoForm.BackgroundImage;
                             il_InfoForm.BackgroundImage = null;
                         }
-
                         il_InfoForm.TransparencyKey = il_InfoForm.BackColor;
                     }
                     else
@@ -1252,15 +1217,15 @@ namespace PlexDL.Player
                             il_InfoForm.BackgroundImage = il_OldImage;
                             il_OldImage = null;
                         }
-
                         il_InfoForm.TransparencyKey = Color.Empty;
                     }
-
                     if (il_InfoForm.Visible) il_InfoForm.Invalidate();
                 }
             }
         }
 
-        #endregion Info Label - Duration / Alignment / FadeOut Speed / Opacity / Transparent
+        #endregion
+
     }
 }
+

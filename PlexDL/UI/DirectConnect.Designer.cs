@@ -42,11 +42,12 @@ namespace PlexDL.UI
             // 
             // btnConnect
             // 
+            this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnConnect.Location = new System.Drawing.Point(12, 94);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(210, 23);
-            this.btnConnect.TabIndex = 11;
+            this.btnConnect.TabIndex = 1;
             this.btnConnect.Text = "Connect";
             this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
@@ -56,7 +57,7 @@ namespace PlexDL.UI
             this.txtServerIP.Location = new System.Drawing.Point(6, 19);
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(198, 20);
-            this.txtServerIP.TabIndex = 13;
+            this.txtServerIP.TabIndex = 0;
             this.txtServerIP.WaterMarkColor = System.Drawing.Color.Gray;
             this.txtServerIP.WaterMarkText = "Address";
             // 
@@ -66,7 +67,7 @@ namespace PlexDL.UI
             this.txtServerPort.Location = new System.Drawing.Point(6, 45);
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(198, 20);
-            this.txtServerPort.TabIndex = 14;
+            this.txtServerPort.TabIndex = 1;
             this.txtServerPort.Text = "32400";
             this.txtServerPort.WaterMarkColor = System.Drawing.Color.Gray;
             this.txtServerPort.WaterMarkText = "Port";
@@ -84,6 +85,7 @@ namespace PlexDL.UI
             // 
             // DirectConnect
             // 
+            this.AcceptButton = this.btnConnect;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(234, 127);
             this.Controls.Add(this.gbConnectionInformation);

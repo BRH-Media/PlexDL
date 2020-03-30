@@ -33,6 +33,7 @@ namespace PlexDL.Common.Globals
                     var titleValue = sel.Cells[key].Value.ToString();
                     if (r[key].ToString() == titleValue) return table.Rows.IndexOf(r);
                 }
+
             //failsafe if nothing is discovered
             return 0;
         }
