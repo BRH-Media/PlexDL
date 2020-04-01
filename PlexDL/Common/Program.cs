@@ -1,6 +1,7 @@
-﻿using System;
+﻿using PlexDL.UI;
+using System;
+using System.Net;
 using System.Windows.Forms;
-using PlexDL.UI;
 
 namespace PlexDL.Common
 {
@@ -16,6 +17,9 @@ namespace PlexDL.Common
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler.CriticalExceptionHandler;
             Application.SetCompatibleTextRenderingDefault(false);
+            //allow heaps of concurrent connections - this might make a difference for performance?
+            //disable if you have any problems by commenting this line
+            ServicePointManager.DefaultConnectionLimit = 128;
             Application.Run(new Home());
         }
     }

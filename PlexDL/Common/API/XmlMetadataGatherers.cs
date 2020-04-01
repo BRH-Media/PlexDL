@@ -164,37 +164,82 @@ namespace PlexDL.Common.API
 
         public static XmlDocument GetSeriesXml(int index)
         {
-            LoggingHelpers.AddToLog(@"Getting series list");
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.AddToLog(@"Getting series list");
 
-            var result = RowGet.GetDataRowContent(index, true);
+                var result = RowGet.GetDataRowContent(index, true);
 
-            return GetMetadata(result);
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message,@"GetSeriesListError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
         }
 
         public static XmlDocument GetEpisodeXml(int index)
         {
-            LoggingHelpers.AddToLog(@"Getting episode metadata");
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.AddToLog(@"Getting episodes list");
 
-            var result = RowGet.GetDataRowSeries(index);
-            return GetMetadata(result);
+                var result = RowGet.GetDataRowSeries(index);
+
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message,@"GetEpisodesListError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
         }
 
         public static XmlDocument GetContentMetadata(int index)
         {
-            LoggingHelpers.AddToLog(@"Getting movie metadata");
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.AddToLog(@"Getting movie metadata");
 
-            var result = RowGet.GetDataRowContent(index, false);
+                var result = RowGet.GetDataRowContent(index, false);
 
-            return GetMetadata(result);
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message,@"GetMovieMetadataError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
         }
 
         public static XmlDocument GetEpisodeMetadata(int index)
         {
-            LoggingHelpers.AddToLog(@"Getting episode metadata");
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.AddToLog(@"Getting episode metadata");
 
-            var result = RowGet.GetDataRowEpisodes(index);
+                var result = RowGet.GetDataRowEpisodes(index);
 
-            return GetMetadata(result);
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message,@"GetEpisodeMetadataError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
         }
     }
 }

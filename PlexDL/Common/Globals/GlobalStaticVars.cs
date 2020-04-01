@@ -19,6 +19,7 @@ namespace PlexDL.Common.Globals
         public static Server Svr { get; set; }
         public static PlexObject CurrentStream { get; set; }
         public static List<Server> PlexServers { get; set; }
+        public static string CurrentApiUri { get; set; } = "";
 
         public static string GetToken()
         {

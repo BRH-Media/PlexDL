@@ -11,11 +11,7 @@ namespace PlexDL.Common.Globals
 
         public static DataRow GetDataRowContent(int index, bool directTable)
         {
-            if (!directTable) return GetDataRowTbl(GlobalTables.ReturnCorrectTable(), index);
-
-            if (Flags.IsFiltered)
-                return GetDataRowTbl(GlobalTables.FilteredTable, index);
-            return GetDataRowTbl(GlobalTables.TitlesTable, index);
+            return !directTable ? GetDataRowTbl(GlobalTables.ReturnCorrectTable(), index) : GetDataRowTbl(Flags.IsFiltered ? GlobalTables.FilteredTable : GlobalTables.TitlesTable, index);
         }
 
         public static DataRow GetDataRowSeries(int index)

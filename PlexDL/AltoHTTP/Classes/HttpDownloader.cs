@@ -42,15 +42,15 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public event EventHandler HeadersReceived;
 
-        private HttpWebRequest req;
-        private HttpWebResponse resp;
-        private Stream str;
-        private FileStream file;
-        private Stopwatch stpWatch;
-        private readonly AsyncOperation oprtor;
-        private int bytesReceived, speedBytes;
-        private double progress;
-        private DownloadState state;
+        private HttpWebRequest _req;
+        private HttpWebResponse _resp;
+        private Stream _str;
+        private FileStream _file;
+        private Stopwatch _stpWatch;
+        private readonly AsyncOperation _oprtor;
+        private int _bytesReceived, _speedBytes;
+        private double _progress;
+        private DownloadState _state;
 
         #endregion Variables
 
@@ -64,7 +64,7 @@ namespace PlexDL.AltoHTTP.Classes
         /// <summary>
         ///     Gets the total bytes count received
         /// </summary>
-        public long BytesReceived => bytesReceived;
+        public long BytesReceived => _bytesReceived;
 
         /// <summary>
         ///     Gets the current download speed in bytes
@@ -76,14 +76,14 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public double Progress
         {
-            get => progress;
+            get => _progress;
             private set
             {
-                progress = value;
-                oprtor.Post(delegate
+                _progress = value;
+                _oprtor.Post(delegate
                 {
                     if (DownloadProgressChanged != null)
-                        DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(progress, SpeedInBytes));
+                        DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(_progress, SpeedInBytes));
                 }, null);
             }
         }
@@ -108,24 +108,24 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public DownloadState State
         {
-            get => state;
+            get => _state;
             private set
             {
-                state = value;
-                if (state == DownloadState.Completed && DownloadCompleted != null)
-                    oprtor.Post(delegate
+                _state = value;
+                if (_state == DownloadState.Completed && DownloadCompleted != null)
+                    _oprtor.Post(delegate
                     {
                         if (DownloadCompleted != null)
                             DownloadCompleted(this, EventArgs.Empty);
                     }, null);
-                else if (state == DownloadState.Cancelled && DownloadCancelled != null)
-                    oprtor.Post(delegate
+                else if (_state == DownloadState.Cancelled && DownloadCancelled != null)
+                    _oprtor.Post(delegate
                     {
                         if (DownloadCancelled != null)
                             DownloadCancelled(this, EventArgs.Empty);
                     }, null);
-                else if (state == DownloadState.ErrorOccured && DownloadError != null)
-                    oprtor.Post(delegate
+                else if (_state == DownloadState.ErrorOccured && DownloadError != null)
+                    _oprtor.Post(delegate
                     {
                         if (DownloadError != null)
                             DownloadError(this, EventArgs.Empty);
@@ -147,7 +147,7 @@ namespace PlexDL.AltoHTTP.Classes
             Reset();
             FileURL = url;
             DestPath = destPath;
-            oprtor = AsyncOperationManager.CreateOperation(null);
+            _oprtor = AsyncOperationManager.CreateOperation(null);
         }
 
         /// <summary>
@@ -164,18 +164,25 @@ namespace PlexDL.AltoHTTP.Classes
 
             try
             {
-                req = WebRequest.Create(FileURL) as HttpWebRequest;
-                req.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0";
-                req.AddRange(offset);
-                req.AllowAutoRedirect = true;
-                resp = req.GetResponse() as HttpWebResponse;
-                str = resp.GetResponseStream();
+                _req = WebRequest.Create(FileURL) as HttpWebRequest;
+                if (_req != null)
+                {
+                    _req.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0";
+                    _req.AddRange(offset);
+                    _req.KeepAlive = true;
+                    _req.Proxy = new WebProxy();
+                    _req.AllowAutoRedirect = true;
+                    _resp = _req.GetResponse() as HttpWebResponse;
+                }
+
+                _str = _resp?.GetResponseStream();
                 if (!overWriteFile)
                 {
-                    ContentSize = resp.ContentLength;
+                    if (_resp != null)
+                        ContentSize = _resp.ContentLength;
                     AcceptRange = GetAcceptRangeHeaderValue();
                     if (HeadersReceived != null)
-                        oprtor.Post(delegate
+                        _oprtor.Post(delegate
                         {
                             HeadersReceived(this, EventArgs.Empty);
                         }, null);
@@ -183,8 +190,8 @@ namespace PlexDL.AltoHTTP.Classes
             }
             catch
             {
-                state = DownloadState.ErrorOccured;
-                State = state;
+                _state = DownloadState.ErrorOccured;
+                State = _state;
                 return;
             }
 
@@ -192,45 +199,44 @@ namespace PlexDL.AltoHTTP.Classes
 
             if (overWriteFile)
             {
-                file = File.Open(DestPath, FileMode.Append, FileAccess.Write);
+                _file = File.Open(DestPath, FileMode.Append, FileAccess.Write);
             }
             else
             {
-                if (File.Exists(DestPath))
-                    file = new FileStream(DestPath, FileMode.Truncate, FileAccess.Write);
-                else
-                    file = new FileStream(DestPath, FileMode.Create, FileAccess.Write);
+                _file = File.Exists(DestPath) ? new FileStream(DestPath, FileMode.Truncate, FileAccess.Write) : new FileStream(DestPath, FileMode.Create, FileAccess.Write);
             }
 
-            var bytesRead = 0;
-            speedBytes = 0;
+            int bytesRead;
+            _speedBytes = 0;
             var buffer = new byte[4096];
-            stpWatch.Reset();
-            stpWatch.Start();
+            _stpWatch.Reset();
+            _stpWatch.Start();
 
             #region Get the data to the buffer, write it to the file
 
-            while ((bytesRead = str.Read(buffer, 0, buffer.Length)) > 0)
+            while (_str != null && (bytesRead = _str.Read(buffer, 0, buffer.Length)) > 0)
             {
-                if ((state == DownloadState.Cancelled) | (state == DownloadState.Paused)) break;
-                state = DownloadState.Downloading;
-                file.Write(buffer, 0, bytesRead);
-                file.Flush();
-                bytesReceived += bytesRead;
-                speedBytes += bytesRead;
-                Progress = progress = (double)bytesReceived * 100 / ContentSize;
-                SpeedInBytes = (int)(speedBytes / 1.0 / stpWatch.Elapsed.TotalSeconds);
+                if ((_state == DownloadState.Cancelled) | (_state == DownloadState.Paused)) break;
+                _state = DownloadState.Downloading;
+                _file.Write(buffer, 0, bytesRead);
+                _file.Flush();
+                _bytesReceived += bytesRead;
+                _speedBytes += bytesRead;
+                Progress = _progress = (double)_bytesReceived * 100 / ContentSize;
+                SpeedInBytes = (int)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);
             }
+
+            _resp?.Close();
 
             #endregion Get the data to the buffer, write it to the file
 
-            stpWatch.Reset();
+            _stpWatch.Reset();
             CloseResources();
             Thread.Sleep(100);
-            if (state == DownloadState.Downloading)
+            if (_state == DownloadState.Downloading)
             {
-                state = DownloadState.Completed;
-                State = state;
+                _state = DownloadState.Completed;
+                State = _state;
             }
         }
 
@@ -243,11 +249,11 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public async void StartAsync()
         {
-            if ((state != DownloadState.Started) & (state != DownloadState.Completed) & (state != DownloadState.Cancelled) &
-                (state != DownloadState.ErrorOccured))
+            if ((_state != DownloadState.Started) & (_state != DownloadState.Completed) & (_state != DownloadState.Cancelled) &
+                (_state != DownloadState.ErrorOccured))
                 return;
 
-            state = DownloadState.Started;
+            _state = DownloadState.Started;
             await Task.Run(() =>
             {
                 Download(0, false);
@@ -262,7 +268,7 @@ namespace PlexDL.AltoHTTP.Classes
             if (!AcceptRange)
                 throw new Exception("This download process cannot be paused because it doesn't support ranges");
             if (State == DownloadState.Downloading)
-                state = DownloadState.Paused;
+                _state = DownloadState.Paused;
         }
 
         /// <summary>
@@ -271,10 +277,10 @@ namespace PlexDL.AltoHTTP.Classes
         public void ResumeAsync()
         {
             if (State != DownloadState.Paused) return;
-            state = DownloadState.Started;
+            _state = DownloadState.Started;
             Task.Run(() =>
             {
-                Download(bytesReceived, true);
+                Download(_bytesReceived, true);
             });
         }
 
@@ -283,16 +289,16 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public void Cancel()
         {
-            if ((state == DownloadState.Completed) | (state == DownloadState.Cancelled) | (state == DownloadState.ErrorOccured)) return;
-            if (state == DownloadState.Paused)
+            if ((_state == DownloadState.Completed) | (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccured)) return;
+            if (_state == DownloadState.Paused)
             {
                 Pause();
-                state = DownloadState.Cancelled;
+                _state = DownloadState.Cancelled;
                 Thread.Sleep(100);
                 CloseResources();
             }
 
-            state = DownloadState.Cancelled;
+            _state = DownloadState.Cancelled;
         }
 
         #endregion Start, Pause, Stop, Resume
@@ -301,21 +307,18 @@ namespace PlexDL.AltoHTTP.Classes
 
         private void Reset()
         {
-            progress = 0;
-            bytesReceived = 0;
+            _progress = 0;
+            _bytesReceived = 0;
             SpeedInBytes = 0;
-            stpWatch = new Stopwatch();
+            _stpWatch = new Stopwatch();
         }
 
         private void CloseResources()
         {
-            if (resp != null)
-                resp.Close();
-            if (file != null)
-                file.Close();
-            if (str != null)
-                str.Close();
-            if (DestPath != null && (state == DownloadState.Cancelled) | (state == DownloadState.ErrorOccured))
+            _resp?.Close();
+            _file?.Close();
+            _str?.Close();
+            if (DestPath != null && (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccured))
                 try
                 {
                     File.Delete(DestPath);
@@ -328,9 +331,9 @@ namespace PlexDL.AltoHTTP.Classes
 
         private bool GetAcceptRangeHeaderValue()
         {
-            for (var i = 0; i < resp.Headers.Count; i++)
-                if (resp.Headers.AllKeys[i].Contains("Range"))
-                    return resp.Headers[i].Contains("byte");
+            for (var i = 0; i < _resp.Headers.Count; i++)
+                if (_resp.Headers.AllKeys[i].Contains("Range"))
+                    return _resp.Headers[i].Contains("byte");
 
             return false;
         }

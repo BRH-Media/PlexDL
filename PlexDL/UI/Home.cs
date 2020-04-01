@@ -6,6 +6,7 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
+using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.SearchFramework;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
@@ -20,10 +21,10 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using PlexDL.Common.Renderers.DGVRenderers;
 using Directory = System.IO.Directory;
 
 //using System.Threading.Tasks;
@@ -371,26 +372,40 @@ namespace PlexDL.UI
         {
             try
             {
+                //we only need this timer to run once - so stop it once the
+                //tick interval is reached.
                 tmrWorkerTimeout.Stop();
+
+                //check if we're still waiting for the worker to start doing
+                //something
                 if (string.Equals(lblProgress.Text.ToLower(), "waiting"))
                 {
+                    //it's still waiting; kill the worker thread.
                     if (wkrGetMetadata.IsBusy)
                         wkrGetMetadata.Abort();
+                    //tell the user that the worker timed out
                     MessageBox.Show(@"Failed to get metadata; the worker timed out.", @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    LoggingHelpers.AddToLog("Metadata worker timed out");
-                    SetProgressLabel("Worker Timeout");
+                    
+                    //cancel the download silently and with a custom log
+                    //and label input
+                    CancelDownload(true,"Worker Timeout");
                 }
+            }
+            catch (ThreadAbortException)
+            {
+                //nothing; triggering AbortableBackgroundWorker.Abort() might
+                //trigger this exception, so just ignore it - it's not a serious
+                //issue.
             }
             catch (Exception ex)
             {
                 //log and then ignore
                 LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
+                CancelDownload(true,"Worker Timeout");
             }
         }
 
         #region GlobalStringVariables
-
-        public string Uri = "";
 
         #endregion GlobalStringVariables
 
@@ -637,7 +652,7 @@ namespace PlexDL.UI
                     LoggingHelpers.AddToLog("Binding to grid");
                     RenderLibraryView(sectionsTable);
                     Flags.IsLibraryFilled = true;
-                    Uri = baseUri + libraryDir + "/" + sectionDir + "/";
+                    GlobalStaticVars.CurrentApiUri = baseUri + libraryDir + "/" + sectionDir + "/";
                     //we can render the content view if a row is already selected
                 }
                 catch (WebException ex)
@@ -683,7 +698,6 @@ namespace PlexDL.UI
 
         private void UpdateContentViewWorker(XmlDocument doc, bool isTVShow)
         {
-            DgvLibraryEnabled(false);
 
             LoggingHelpers.AddToLog("Updating library contents");
 
@@ -707,8 +721,6 @@ namespace PlexDL.UI
                     RenderContentView(GlobalTables.TitlesTable);
                 }
 
-                DgvLibraryEnabled(true);
-
                 //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
             }
             else
@@ -719,7 +731,6 @@ namespace PlexDL.UI
 
         private void UpdateEpisodeViewWorker(XmlDocument doc)
         {
-            DgvSeasonsEnabled(false);
             LoggingHelpers.AddToLog("Updating episode contents");
 
             LoggingHelpers.AddToLog("Creating datasets");
@@ -733,14 +744,11 @@ namespace PlexDL.UI
             LoggingHelpers.AddToLog("Binding to grid");
             RenderEpisodesView(GlobalTables.EpisodesTable);
 
-            DgvSeasonsEnabled(true);
-
             //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
         private void UpdateSeriesViewWorker(XmlDocument doc)
         {
-            DgvContentEnabled(false);
             LoggingHelpers.AddToLog("Updating series contents");
 
             LoggingHelpers.AddToLog("Creating datasets");
@@ -754,7 +762,6 @@ namespace PlexDL.UI
             LoggingHelpers.AddToLog("Binding to grid");
             RenderSeriesView(GlobalTables.SeriesTable);
 
-            DgvContentEnabled(true);
 
             //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1146,7 +1153,7 @@ namespace PlexDL.UI
 
         #region DownloadMethods
 
-        private void CancelDownload()
+        private void CancelDownload(bool silent = false, string msg = "Download Cancelled")
         {
             if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
             if (Flags.IsEngineRunning)
@@ -1157,12 +1164,12 @@ namespace PlexDL.UI
 
             if (Flags.IsDownloadRunning)
             {
-                SetProgressLabel("Download Cancelled");
+                SetProgressLabel(msg);
+                LoggingHelpers.AddToLog(msg);
                 SetDownloadStart();
                 SetResume();
-                pbMain.Value = pbMain.Maximum;
+                pbMain.Value = pbMain.Minimum;
                 btnPause.Enabled = false;
-                LoggingHelpers.AddToLog("Download Cancelled");
                 Flags.IsDownloadRunning = false;
                 Flags.IsDownloadPaused = false;
                 Flags.IsEngineRunning = false;
@@ -1170,7 +1177,8 @@ namespace PlexDL.UI
                 DownloadsSoFar = 0;
                 DownloadTotal = 0;
                 DownloadIndex = 0;
-                MessageBox.Show("Download cancelled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!silent)
+                    MessageBox.Show(msg, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1388,30 +1396,6 @@ namespace PlexDL.UI
 
         #region UIMethods
 
-        private void DgvContentEnabled(bool enabled)
-        {
-            if (dgvContent.InvokeRequired)
-                dgvContent.BeginInvoke((MethodInvoker)delegate { dgvContent.Enabled = enabled; });
-            else
-                dgvContent.Enabled = enabled;
-        }
-
-        private void DgvLibraryEnabled(bool enabled)
-        {
-            if (dgvLibrary.InvokeRequired)
-                dgvLibrary.BeginInvoke((MethodInvoker)delegate { dgvLibrary.Enabled = enabled; });
-            else
-                dgvLibrary.Enabled = enabled;
-        }
-
-        private void DgvSeasonsEnabled(bool enabled)
-        {
-            if (dgvSeasons.InvokeRequired)
-                dgvSeasons.BeginInvoke((MethodInvoker)delegate { dgvSeasons.Enabled = enabled; });
-            else
-                dgvSeasons.Enabled = enabled;
-        }
-
         /// <summary>
         ///     Thread-safe way of changing the progress label
         /// </summary>
@@ -1526,41 +1510,41 @@ namespace PlexDL.UI
             {
                 key, isTVShow
             };
-            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey_Worker, "Getting Metadata", args);
+            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey_Worker, @"Getting Metadata", args);
         }
 
         private void UpdateFromLibraryKey_Worker(object sender, WaitWindowEventArgs e)
         {
-            var isTVShow = (bool)e.Arguments[1];
+            var isTvShow = (bool)e.Arguments[1];
             var key = (string)e.Arguments[0];
             try
             {
-                LoggingHelpers.AddToLog("Requesting ibrary contents");
-                var contentUri = Uri + key + "/all/?X-Plex-Token=";
+                LoggingHelpers.AddToLog(@"Requesting ibrary contents");
+                var contentUri = GlobalStaticVars.CurrentApiUri + key + @"/all/?X-Plex-Token=";
                 var contentXml = XmlGet.GetXmlTransaction(contentUri);
 
-                UpdateContentView(contentXml, isTVShow);
+                UpdateContentView(contentXml, isTvShow);
             }
             catch (WebException ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "UpdateLibraryError");
+                LoggingHelpers.RecordException(ex.Message, @"UpdateLibraryError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                     if (ex.Response is HttpWebResponse response)
                         switch ((int)response.StatusCode)
                         {
                             case 401:
                                 MessageBox.Show(
-                                    "The web server denied access to the resource. Check your token and try again. (401)");
+                                    @"The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
                                 MessageBox.Show(
-                                    "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                    @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
                                 MessageBox.Show(
-                                    "The web server couldn't serve the request because the request was bad. (400)");
+                                    @"The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
             }
@@ -1713,12 +1697,12 @@ namespace PlexDL.UI
             {
                 //deprecated (planned reintroduction)
                 var uri = GlobalStaticVars.GetBaseUri(true);
-                var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", uri);
-                MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, @"Connecting", uri);
+                MessageBox.Show(@"Connection successful!", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (WebException ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "TestConnectionError");
+                LoggingHelpers.RecordException(ex.Message, @"TestConnectionError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     if (ex.Response is HttpWebResponse response)
@@ -1726,21 +1710,21 @@ namespace PlexDL.UI
                         {
                             case 401:
                                 MessageBox.Show(
-                                    "The web server denied access to the resource. Check your token and try again. (401)");
+                                    @"The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
                                 MessageBox.Show(
-                                    "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                    @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
                                 MessageBox.Show(
-                                    "The web server couldn't serve the request because the request was bad. (400)");
+                                    @"The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
                     else
-                        MessageBox.Show("Unknown status code; the server failed to serve the request. (?)");
+                        MessageBox.Show(@"Unknown status code; the server failed to serve the request. (?)");
                 }
                 else
                 {
