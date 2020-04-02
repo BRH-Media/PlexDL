@@ -12,21 +12,22 @@ namespace PlexDL.Common.API
 {
     public static class XmlMetadataGatherers
     {
-        public static XmlDocument GetMetadata(DataRow result, string msgNoKey = @"Error occurred whilst getting the unique content key",
-            string logNoKeyMsg = @"Error occurred whilst getting the unique content key", string logNoKeyType = @"NoUnqKeyError", string column = @"key")
+        public static XmlDocument GetMetadata(DataRow result, string msgNoKey = "Error occurred whilst getting the unique content key",
+            string logNoKeyMsg = "Error occurred whilst getting the unique content key", string logNoKeyType = "NoUnqKeyError", string column = "key")
         {
             XmlDocument reply = null;
 
-            var key = @"";
+            var key = "";
 
-            if (!string.IsNullOrEmpty((string)result[column]))
-                key = (string)result[column];
+            if (result[column] != null)
+                if (!Equals(result[column], string.Empty))
+                    key = result[column].ToString();
 
             if (string.IsNullOrEmpty(key))
             {
                 MessageBox.Show(msgNoKey, @"Data Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.AddToLog(@"Unique key error");
+                LoggingHelpers.AddToLog("Unique key error");
                 LoggingHelpers.RecordException(logNoKeyMsg, logNoKeyType);
             }
             else
@@ -34,9 +35,9 @@ namespace PlexDL.Common.API
 
                 var baseUri = GlobalStaticVars.GetBaseUri(false);
                 key = key.TrimStart('/');
-                var uri = baseUri + key + @"/?X-Plex-Token=";
+                var uri = baseUri + key + "/?X-Plex-Token=";
 
-                LoggingHelpers.AddToLog(@"Contacting the API");
+                LoggingHelpers.AddToLog("Contacting the API");
                 reply = XmlGet.GetXmlTransaction(uri);
             }
 
@@ -49,7 +50,7 @@ namespace PlexDL.Common.API
 
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var dtActors = sections.Tables[@"Role"];
+            var dtActors = sections.Tables["Role"];
 
             if (dtActors == null)
                 return actors;
@@ -57,17 +58,17 @@ namespace PlexDL.Common.API
             {
 
                 var thumb = "";
-                var role = @"Unknown";
-                var name = @"Unknown";
-                if (dtActors.Columns.Contains(@"thumb"))
-                    if (!string.IsNullOrEmpty((string)r[@"thumb"]))
-                        thumb = (string)r[@"thumb"];
-                if (dtActors.Columns.Contains(@"role"))
-                    if (!string.IsNullOrEmpty((string)r[@"role"]))
-                        role = (string)r[@"role"];
-                if (dtActors.Columns.Contains(@"tag"))
-                    if (!string.IsNullOrEmpty((string)r[@"tag"]))
-                        name = (string)r[@"tag"];
+                var role = "Unknown";
+                var name = "Unknown";
+                if (dtActors.Columns.Contains("thumb"))
+                    if (r["thumb"] != null)
+                        thumb = r["thumb"].ToString();
+                if (dtActors.Columns.Contains("role"))
+                    if (r["role"] != null)
+                        role = r["role"].ToString();
+                if (dtActors.Columns.Contains("tag"))
+                    if (r["tag"] != null)
+                        name = r["tag"].ToString();
                 var a = new PlexActor
                 {
                     ThumbnailUri = thumb,
@@ -84,16 +85,16 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables[@"Media"];
+            var video = sections.Tables["Media"];
             var row = video.Rows[0];
             var width = 0;
-            if (video.Columns.Contains(@"width"))
-                if (!string.IsNullOrEmpty((string)row[@"width"]))
-                    width = Convert.ToInt32(row[@"width"]);
+            if (video.Columns.Contains("width"))
+                if (row["width"] != null)
+                    width = Convert.ToInt32(row["width"]);
             var height = 0;
-            if (video.Columns.Contains(@"height"))
-                if (!string.IsNullOrEmpty((string)row[@"height"]))
-                    height = Convert.ToInt32(row[@"height"]);
+            if (video.Columns.Contains("height"))
+                if (row["height"] != null)
+                    height = Convert.ToInt32(row["height"]);
             var result = new Resolution
             {
                 Width = width,
@@ -106,13 +107,14 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables[@"Genre"];
-            var genre = @"Unknown";
+            var video = sections.Tables["Genre"];
+            var genre = "Unknown";
             if (video == null)
                 return genre;
             var row = video.Rows[0];
-            if (!string.IsNullOrEmpty((string)row[@"tag"]))
-                genre = (string)row[@"tag"];
+            if (row["tag"] != null)
+                if (!Equals(row["tag"], string.Empty))
+                    genre = row["tag"].ToString();
 
             return genre;
         }
@@ -121,13 +123,14 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables[@"Video"];
-            var synopsis = @"Plot synopsis not provided";
+            var video = sections.Tables["Video"];
+            var synopsis = "Plot synopsis not provided";
             if (video == null)
                 return synopsis;
             var row = video.Rows[0];
-            if (!string.IsNullOrEmpty((string)row[@"summary"]))
-                synopsis = (string)row[@"summary"];
+            if (row["summary"] != null)
+                if (!Equals(row["summary"], string.Empty))
+                    synopsis = row["summary"].ToString();
 
             return synopsis;
         }
@@ -136,13 +139,14 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables[@"Video"];
-            var season = @"Unknown Season";
+            var video = sections.Tables["Video"];
+            var season = "Unknown Season";
             if (video == null)
                 return season;
             var row = video.Rows[0];
-            if (!string.IsNullOrEmpty((string)row[@"parentTitle"]))
-                season = (string)row[@"parentTitle"];
+            if (row["parentTitle"] != null)
+                if (!Equals(row["parentTitle"], string.Empty))
+                    season = row["parentTitle"].ToString();
 
             return season;
         }
@@ -151,13 +155,14 @@ namespace PlexDL.Common.API
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables[@"Video"];
-            var title = @"Unknown Title";
+            var video = sections.Tables["Video"];
+            var title = "Unknown Title";
             if (video == null)
                 return title;
             var row = video.Rows[0];
-            if (!string.IsNullOrEmpty((string)row[@"grandparentTitle"]))
-                title = (string)row[@"grandparentTitle"];
+            if (row["grandparentTitle"] != null)
+                if (!Equals(row["grandparentTitle"], string.Empty))
+                    title = row["grandparentTitle"].ToString();
 
             return title;
         }
@@ -167,15 +172,15 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog(@"Getting series list");
+                LoggingHelpers.AddToLog("Getting series list");
 
-                var result = RowGet.GetDataRowContent(index, true);
+                var result = RowGet.GetDataRowContent(index);
 
                 doc = GetMetadata(result);
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message,@"GetSeriesListError");
+                LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
                 doc = new XmlDocument();
             }
 
@@ -187,7 +192,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog(@"Getting episodes list");
+                LoggingHelpers.AddToLog("Getting episodes list");
 
                 var result = RowGet.GetDataRowSeries(index);
 
@@ -195,7 +200,7 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message,@"GetEpisodesListError");
+                LoggingHelpers.RecordException(ex.Message, "GetEpisodesListError");
                 doc = new XmlDocument();
             }
 
@@ -207,15 +212,15 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog(@"Getting movie metadata");
+                LoggingHelpers.AddToLog("Getting movie metadata");
 
-                var result = RowGet.GetDataRowContent(index, false);
+                var result = RowGet.GetDataRowContent(index);
 
                 doc = GetMetadata(result);
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message,@"GetMovieMetadataError");
+                LoggingHelpers.RecordException(ex.Message, "GetMovieMetadataError");
                 doc = new XmlDocument();
             }
 
@@ -227,7 +232,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog(@"Getting episode metadata");
+                LoggingHelpers.AddToLog("Getting episode metadata");
 
                 var result = RowGet.GetDataRowEpisodes(index);
 
@@ -235,7 +240,7 @@ namespace PlexDL.Common.API
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message,@"GetEpisodeMetadataError");
+                LoggingHelpers.RecordException(ex.Message, "GetEpisodeMetadataError");
                 doc = new XmlDocument();
             }
 

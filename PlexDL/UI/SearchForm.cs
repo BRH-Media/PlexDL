@@ -1,13 +1,15 @@
-﻿using System;
+﻿using PlexDL.Common.SearchFramework;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {
     public partial class SearchForm : Form
     {
         public SearchOptions SearchContext = new SearchOptions();
+        public List<string> ColumnLimit = new List<string>();
 
         public SearchForm()
         {
@@ -26,7 +28,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MessageBox.Show("Please enter required values or exit search", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Please enter required values or exit search", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -39,13 +41,16 @@ namespace PlexDL.UI
         {
             cbxSearchColumn.Items.Clear();
             foreach (DataColumn column in SearchContext.SearchCollection.Columns)
-                cbxSearchColumn.Items.Add(column.ColumnName);
+                if (ColumnLimit.Contains(column.ColumnName))
+                    cbxSearchColumn.Items.Add(column.ColumnName);
 
             if (cbxSearchColumn.Items.Count > 0)
             {
-                var first = cbxSearchColumn.Items[0].ToString();
-                cbxSearchColumn.SelectedItem = first;
-                cbxSearchColumn.Text = first;
+                //"title" should always get first preference.
+                //this checks to see if it's in the ComboBox,
+                //then selects it if it is.
+                if (cbxSearchColumn.Items.Contains("title"))
+                    cbxSearchColumn.SelectedItem = "title";
             }
         }
 
@@ -54,11 +59,12 @@ namespace PlexDL.UI
             PopulateColumns();
         }
 
-        public static SearchOptions ShowSearch(SearchOptions settings)
+        public static SearchOptions ShowSearch(SearchOptions settings, List<string> wantedColumns)
         {
             var frm = new SearchForm
             {
-                SearchContext = settings
+                SearchContext = settings,
+                ColumnLimit = wantedColumns
             };
             var result = new SearchOptions();
             if (frm.ShowDialog() == DialogResult.OK)

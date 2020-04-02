@@ -25,6 +25,7 @@ namespace PlexDL.Common.SearchFramework
 
         public static DataTable GetFilteredTable(SearchData data, bool silent = true)
         {
+            //MessageBox.Show(data.SearchTable.Rows[0].ItemArray.Length.ToString());
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
             DataTable tblFiltered = null;

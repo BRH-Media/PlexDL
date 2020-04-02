@@ -17,12 +17,10 @@ namespace PlexDL.Common.Globals
         {
             if (Flags.IsTVShow && !directTable) return EpisodesTable;
 
-            if (Flags.IsFiltered)
-                return FilteredTable;
-            return TitlesTable;
+            return Flags.IsFiltered ? FilteredTable : TitlesTable;
         }
 
-        public static int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null, string key = "title")
+        public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null, string key = "title")
         {
             var sel = dgv.SelectedRows[0];
             if (table == null)

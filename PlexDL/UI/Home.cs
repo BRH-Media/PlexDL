@@ -385,10 +385,10 @@ namespace PlexDL.UI
                         wkrGetMetadata.Abort();
                     //tell the user that the worker timed out
                     MessageBox.Show(@"Failed to get metadata; the worker timed out.", @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    
+
                     //cancel the download silently and with a custom log
                     //and label input
-                    CancelDownload(true,"Worker Timeout");
+                    CancelDownload(true, "Worker Timeout");
                 }
             }
             catch (ThreadAbortException)
@@ -401,13 +401,11 @@ namespace PlexDL.UI
             {
                 //log and then ignore
                 LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
-                CancelDownload(true,"Worker Timeout");
+                CancelDownload(true, "Worker Timeout");
             }
         }
 
-        #region GlobalStringVariables
 
-        #endregion GlobalStringVariables
 
         #region GlobalIntVariables
 
@@ -426,7 +424,7 @@ namespace PlexDL.UI
             var obj = new PlexMovie();
             if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDGV(dgvContent);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvContent);
                 obj = ObjectBuilders.GetMovieObjectFromIndex(index);
             }
 
@@ -438,7 +436,7 @@ namespace PlexDL.UI
             var obj = new PlexTVShow();
             if (dgvTVShows.SelectedRows.Count == 1 && dgvEpisodes.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDGV(dgvEpisodes, GlobalTables.EpisodesTable);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvEpisodes, GlobalTables.EpisodesTable);
                 obj = ObjectBuilders.GetTvObjectFromIndex(index);
             }
 
@@ -761,7 +759,6 @@ namespace PlexDL.UI
 
             LoggingHelpers.AddToLog("Binding to grid");
             RenderSeriesView(GlobalTables.SeriesTable);
-
 
             //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1362,7 +1359,7 @@ namespace PlexDL.UI
                         dgv = dgvContent;
                         info = new RenderStruct
                         {
-                            Data = GlobalTables.ContentViewTable,
+                            Data = GlobalTables.TitlesTable,
                             WantedCaption = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayCaptions,
                             WantedColumns = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayColumns
                         };
@@ -1388,7 +1385,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1572,7 +1569,7 @@ namespace PlexDL.UI
                 //don't re-render the grids when clearing the search; this would end badly for performance reasons.
                 ClearSearch(false);
                 LoggingHelpers.AddToLog("Cleared possible searches");
-                var index = GlobalTables.GetTableIndexFromDGV(dgvLibrary, GlobalTables.SectionsTable);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvLibrary, GlobalTables.SectionsTable);
                 var r = RowGet.GetDataRowLibrary(index);
 
                 var key = "";
@@ -1594,7 +1591,7 @@ namespace PlexDL.UI
         {
             if (dgvSeasons.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDGV(dgvSeasons, GlobalTables.SeriesTable);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvSeasons, GlobalTables.SeriesTable);
                 var episodes = XmlMetadataGatherers.GetEpisodeXml(index);
                 UpdateEpisodeView(episodes);
             }
@@ -1677,7 +1674,7 @@ namespace PlexDL.UI
         {
             if (dgvTVShows.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDGV(dgvTVShows, GlobalTables.ReturnCorrectTable(true));
+                var index = GlobalTables.GetTableIndexFromDgv(dgvTVShows, GlobalTables.ReturnCorrectTable(true));
 
                 if (Flags.IsTVShow)
                 {

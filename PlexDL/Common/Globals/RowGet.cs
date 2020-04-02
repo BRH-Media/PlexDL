@@ -6,12 +6,14 @@ namespace PlexDL.Common.Globals
     {
         public static DataRow GetDataRowTbl(DataTable table, int index)
         {
+            //MessageBox.Show(Flags.IsTVShow.ToString());
+            //MessageBox.Show(table.Rows[index].ItemArray.Length.ToString());
             return table.Rows[index];
         }
 
-        public static DataRow GetDataRowContent(int index, bool directTable)
+        public static DataRow GetDataRowContent(int index)
         {
-            return !directTable ? GetDataRowTbl(GlobalTables.ReturnCorrectTable(), index) : GetDataRowTbl(Flags.IsFiltered ? GlobalTables.FilteredTable : GlobalTables.TitlesTable, index);
+            return GetDataRowTbl(GlobalTables.ReturnCorrectTable(), index);
         }
 
         public static DataRow GetDataRowSeries(int index)

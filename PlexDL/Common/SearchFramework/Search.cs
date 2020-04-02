@@ -1,12 +1,12 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers;
+using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.UI;
 using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Renderers.DGVRenderers;
 
 namespace PlexDL.Common.SearchFramework
 {
@@ -57,7 +57,7 @@ namespace PlexDL.Common.SearchFramework
                     {
                         SearchCollection = tableToSearch
                     };
-                    var result = SearchForm.ShowSearch(start);
+                    var result = SearchForm.ShowSearch(start, dgvRenderInfo.WantedColumns);
                     if (!string.IsNullOrEmpty(result.SearchTerm) && !string.IsNullOrEmpty(result.SearchColumn))
                     {
                         var data = new SearchData
@@ -70,24 +70,22 @@ namespace PlexDL.Common.SearchFramework
 
                         var filteredTable = Workers.GetFilteredTable(data, false);
 
-                        if (filteredTable != null)
+                        if (filteredTable == null)
+                            return false;
+                        if (dgvRenderInfo == null)
                         {
-                            if (dgvRenderInfo == null)
-                            {
-                                RenderResult(dgvTarget, filteredTable);
-                            }
-                            else if (dgvRenderInfo.Data != null)
-                            {
-                                dgvRenderInfo.Data = filteredTable;
-                                RenderResult(dgvTarget, dgvRenderInfo);
-                            }
-
-                            if (copyToGlobalTables)
-                                GlobalTables.FilteredTable = filteredTable;
-                            return true;
+                            RenderResult(dgvTarget, filteredTable);
+                        }
+                        else if (dgvRenderInfo.Data != null)
+                        {
+                            dgvRenderInfo.Data = filteredTable;
+                            RenderResult(dgvTarget, dgvRenderInfo);
                         }
 
-                        return false;
+                        if (copyToGlobalTables)
+                            GlobalTables.FilteredTable = filteredTable;
+                        return true;
+
                     }
 
                     return false;
