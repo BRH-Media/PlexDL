@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("PlexDL")]
 [assembly: AssemblyDescription("Plex Downloader/Streamer written in C#")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCompany("BRH Media (Baeleigh Harris)")]
 [assembly: AssemblyProduct("PlexDL - C# Plex API Interface")]
 [assembly: AssemblyCopyright("Copyright (c) Baeleigh Harris 2020")]
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.93.0")]
-[assembly: AssemblyFileVersion("1.3.93.0")]
+[assembly: AssemblyVersion("1.3.94.0")]
+[assembly: AssemblyFileVersion("1.3.94.0")]
 [assembly: NeutralResourcesLanguage("en-AU")]
