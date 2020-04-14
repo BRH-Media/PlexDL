@@ -2,7 +2,7 @@
 {
     public static class ResolutionStandards
     {
-        public static string[][] Standards { get; set; } = new string[][] {
+        public static string[][] Standards { get; } = new string[][] {
                 new string[2] { "480", "SD NTSC" },
                 new string[2] { "576", "SD PAL"  },
                 new string[2] { "720","HD"       },
