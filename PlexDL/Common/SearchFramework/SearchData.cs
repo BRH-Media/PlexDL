@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using PlexDL.Common.SearchFramework.Enums;
+using System.Data;
 
 namespace PlexDL.Common.SearchFramework
 {
@@ -16,7 +17,7 @@ namespace PlexDL.Common.SearchFramework
             SearchTable = table;
         }
 
-        public SearchData(string column, string term, DataTable table, int rule)
+        public SearchData(string column, string term, DataTable table, SearchRule rule)
         {
             SearchColumn = column;
             SearchTerm = term;
@@ -26,7 +27,7 @@ namespace PlexDL.Common.SearchFramework
 
         public string SearchColumn { get; set; } = "";
         public string SearchTerm { get; set; } = "";
-        public int SearchRule { get; set; } = SearchRuleIDs.CONTAINS_KEY;
+        public SearchRule SearchRule { get; set; } = SearchRule.CONTAINS_KEY;
         public DataTable SearchTable { get; set; }
     }
 }

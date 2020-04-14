@@ -23,6 +23,20 @@ namespace PlexDL.UI
 
         public Server SelectedServer { get; set; }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (dgvServers.SelectedRows.Count == 1)
+            {
+                if (keyData == Keys.Enter)
+                {
+                    DoConnect();
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void itmAuthenticate_Click(object sender, EventArgs e)
         {
             try
@@ -38,12 +52,15 @@ namespace PlexDL.UI
                         frm.ConnectionInfo = existingInfo;
                         if (frm.ShowDialog() == DialogResult.OK)
                         {
-                            GlobalStaticVars.User.authenticationToken = frm.ConnectionInfo.PlexAccountToken;
-                            GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = frm.ConnectionInfo.PlexAccountToken;
-                            itmLoad.Enabled = true;
-                            dgvServers.DataSource = null;
-                            MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (frm.Success)
+                            {
+                                GlobalStaticVars.User.authenticationToken = frm.ConnectionInfo.PlexAccountToken;
+                                GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = frm.ConnectionInfo.PlexAccountToken;
+                                itmLoad.Enabled = true;
+                                dgvServers.DataSource = null;
+                                MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                         }
                     }
                 else
@@ -171,7 +188,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmConnect_Click(object sender, EventArgs e)
+        private void DoConnect()
         {
             try
             {
@@ -198,6 +215,11 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, @"ConnectionError");
                 MessageBox.Show("Server connection attempt failed\n\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void itmConnect_Click(object sender, EventArgs e)
+        {
+            DoConnect();
         }
 
         private void RunDirectConnect()
@@ -232,6 +254,12 @@ namespace PlexDL.UI
                 itmConnect.Enabled = true;
             else
                 itmConnect.Enabled = false;
+        }
+
+        private void dgvServers_DoubleClick(object sender, EventArgs e)
+        {
+            if (dgvServers.SelectedRows.Count == 1)
+                DoConnect();
         }
 
         private void ServerManager_Load(object sender, EventArgs e)

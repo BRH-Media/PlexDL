@@ -15,9 +15,25 @@ namespace PlexDL.Common.Globals
 
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
-            if (Flags.IsTVShow && !directTable) return EpisodesTable;
+            if (Flags.IsTVShow)
+            {
+                if (directTable)
+                    return EpisodesTable;
+                else
+                    return DecideFiltered();
+            }
+            else
+            {
+                return DecideFiltered();
+            }
+        }
 
-            return Flags.IsFiltered ? FilteredTable : TitlesTable;
+        public static DataTable DecideFiltered()
+        {
+            if (Flags.IsFiltered)
+                return FilteredTable;
+            else
+                return TitlesTable;
         }
 
         public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null, string key = "title")

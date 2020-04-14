@@ -62,6 +62,20 @@ namespace PlexDL.UI
             }
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if ((dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1) && GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
+            {
+                if (keyData == Keys.Enter)
+                {
+                    DoubleClickLaunch();
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void ItmDownloadThisEpisode_Click(object sender, EventArgs e)
         {
             cxtEpisodes.Close();
@@ -207,7 +221,7 @@ namespace PlexDL.UI
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
@@ -255,7 +269,7 @@ namespace PlexDL.UI
 
         private void btnHTTPPlay_Click(object sender, EventArgs e)
         {
-            if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
                 PlexObject result;
                 if (!Flags.IsTVShow)
@@ -405,8 +419,6 @@ namespace PlexDL.UI
             }
         }
 
-
-
         #region GlobalIntVariables
 
         public int DownloadIndex;
@@ -422,9 +434,9 @@ namespace PlexDL.UI
         private PlexMovie GetMovieObjectFromSelection()
         {
             var obj = new PlexMovie();
-            if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDgv(dgvContent);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvMovies);
                 obj = ObjectBuilders.GetMovieObjectFromIndex(index);
             }
 
@@ -598,7 +610,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+                if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
                 {
                     PlexObject content = null;
                     if (Flags.IsTVShow)
@@ -696,7 +708,6 @@ namespace PlexDL.UI
 
         private void UpdateContentViewWorker(XmlDocument doc, bool isTVShow)
         {
-
             LoggingHelpers.AddToLog("Updating library contents");
 
             GetTitlesTable(doc, isTVShow);
@@ -902,7 +913,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                GlobalTables.ContentViewTable = GenericRenderer.RenderView(info, dgvContent);
+                GlobalTables.ContentViewTable = GenericRenderer.RenderView(info, dgvMovies);
 
                 SelectMoviesTab();
             }
@@ -971,10 +982,10 @@ namespace PlexDL.UI
             if (InvokeRequired)
                 BeginInvoke((MethodInvoker)delegate
                 {
-                    dgvContent.DataSource = null;
+                    dgvMovies.DataSource = null;
                 });
             else
-                dgvContent.DataSource = null;
+                dgvMovies.DataSource = null;
         }
 
         private void ClearTVViews()
@@ -1009,10 +1020,7 @@ namespace PlexDL.UI
 
         private void RenderTVView(DataTable content)
         {
-            if (content == null)
-            {
-            }
-            else
+            if (content != null)
             {
                 ClearTVViews();
                 ClearContentView();
@@ -1340,7 +1348,7 @@ namespace PlexDL.UI
             try
             {
                 LoggingHelpers.AddToLog("Title search requested");
-                if (dgvContent.Rows.Count > 0 || dgvTVShows.Rows.Count > 0)
+                if (dgvMovies.Rows.Count > 0 || dgvTVShows.Rows.Count > 0)
                 {
                     RenderStruct info;
                     DataGridView dgv;
@@ -1349,14 +1357,14 @@ namespace PlexDL.UI
                         dgv = dgvTVShows;
                         info = new RenderStruct
                         {
-                            Data = GlobalTables.TvViewTable,
+                            Data = GlobalTables.TitlesTable,
                             WantedCaption = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayCaptions,
                             WantedColumns = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayColumns
                         };
                     }
                     else
                     {
-                        dgv = dgvContent;
+                        dgv = dgvMovies;
                         info = new RenderStruct
                         {
                             Data = GlobalTables.TitlesTable,
@@ -1364,6 +1372,8 @@ namespace PlexDL.UI
                             WantedColumns = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayColumns
                         };
                     }
+
+                    //MessageBox.Show(info.Data.Rows.Count.ToString());
 
                     if (Search.RunTitleSearch(dgv, info, true))
                     {
@@ -1597,20 +1607,79 @@ namespace PlexDL.UI
             }
         }
 
-        private void DgvContent_OnRowChange(object sender, EventArgs e)
+        private void dgvMovies_OnRowChange(object sender, EventArgs e)
         {
             //nothing, more or less.
         }
 
-        //when the user double-clicks a cell in dgvContent (Movies), show a messagebox with the cell content
-        private void DgvContent_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void DoubleClickLaunch()
+        {
+            PlexObject stream = null;
+
+            if (!Flags.IsTVShow)
+            {
+                if (dgvMovies.SelectedRows.Count == 1)
+                {
+                    var obj = GetMovieObjectFromSelection();
+                    if (obj != null)
+                    {
+                        stream = obj;
+                    }
+                    else
+                        LoggingHelpers.AddToLog("Doubleclick stream failed; null object.");
+                }
+            }
+            else
+            {
+                if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
+                {
+                    var obj = GetTvObjectFromSelection();
+                    if (obj != null)
+                    {
+                        stream = obj;
+                    }
+                    else
+                        LoggingHelpers.AddToLog("Doubleclick stream failed; null object.");
+                }
+            }
+
+            if (stream != null)
+            {
+                if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
+                {
+                    if (VlcLauncher.VlcInstalled())
+                    {
+                        StartStreaming(stream, PlaybackMode.VLCPlayer);
+                    }
+                    else
+                    {
+                        StartStreaming(stream, PlaybackMode.PVSPlayer);
+                    }
+                }
+                else
+                {
+                    StartStreaming(stream);
+                }
+            }
+        }
+
+        //when the user double-clicks a cell in dgvMovies (Movies), show a messagebox with the cell content
+        private void dgvMovies_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (dgvContent.Rows.Count > 0)
+                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
                 {
-                    var value = dgvContent.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (dgvMovies.SelectedRows.Count == 1)
+                        DoubleClickLaunch();
+                }
+                else
+                {
+                    if (dgvMovies.Rows.Count > 0)
+                    {
+                        var value = dgvMovies.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch
@@ -1641,10 +1710,18 @@ namespace PlexDL.UI
         {
             try
             {
-                if (dgvEpisodes.Rows.Count > 0)
+                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
                 {
-                    var value = dgvEpisodes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (dgvEpisodes.SelectedRows.Count == 1)
+                        DoubleClickLaunch();
+                }
+                else
+                {
+                    if (dgvEpisodes.Rows.Count > 0)
+                    {
+                        var value = dgvEpisodes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch
@@ -1777,31 +1854,40 @@ namespace PlexDL.UI
 
         private void StartStreaming(PlexObject stream)
         {
+            int def = GlobalStaticVars.Settings.Player.PlaybackEngine;
+            StartStreaming(stream, def);
+        }
+
+        private void StartStreaming(PlexObject stream, int PlaybackEngine)
+        {
             //so that cxtStreamOptions can access the current stream's information, a global object has to be used.
             GlobalStaticVars.CurrentStream = stream;
-            if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
+            if (PlaybackEngine != -1)
             {
-                PvsLauncher.LaunchPvs(stream, GlobalTables.ReturnCorrectTable());
-            }
-            else if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
-            {
-                VlcLauncher.LaunchVlc(stream);
-            }
-            else if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.Browser)
-            {
-                BrowserLauncher.LaunchBrowser(stream);
-            }
-            else if (GlobalStaticVars.Settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
-            {
-                //display the options menu where the
-                var loc = new Point(Location.X + btnHTTPPlay.Location.X, Location.Y + btnHTTPPlay.Location.Y);
-                cxtStreamOptions.Show(loc);
-            }
-            else
-            {
-                MessageBox.Show("Unrecognised Playback Mode (\"" + GlobalStaticVars.Settings.Player.PlaybackEngine + "\")",
-                    "Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                LoggingHelpers.AddToLog("Invalid Playback Mode: " + GlobalStaticVars.Settings.Player.PlaybackEngine);
+                if (PlaybackEngine == PlaybackMode.PVSPlayer)
+                {
+                    PvsLauncher.LaunchPvs(stream, GlobalTables.ReturnCorrectTable());
+                }
+                else if (PlaybackEngine == PlaybackMode.VLCPlayer)
+                {
+                    VlcLauncher.LaunchVlc(stream);
+                }
+                else if (PlaybackEngine == PlaybackMode.Browser)
+                {
+                    BrowserLauncher.LaunchBrowser(stream);
+                }
+                else if (PlaybackEngine == PlaybackMode.MenuSelector)
+                {
+                    //display the options menu where the
+                    var loc = new Point(Location.X + btnHTTPPlay.Location.X, Location.Y + btnHTTPPlay.Location.Y);
+                    cxtStreamOptions.Show(loc);
+                }
+                else
+                {
+                    MessageBox.Show("Unrecognised Playback Mode (\"" + PlaybackEngine + "\")",
+                        "Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    LoggingHelpers.AddToLog("Invalid Playback Mode: " + PlaybackEngine);
+                }
             }
         }
 
@@ -1820,12 +1906,12 @@ namespace PlexDL.UI
 
         private void CxtContentOptions_Opening(object sender, CancelEventArgs e)
         {
-            if (dgvContent.SelectedRows.Count == 0) e.Cancel = true;
+            if (dgvMovies.SelectedRows.Count == 0) e.Cancel = true;
         }
 
         private void Metadata(PlexObject result = null)
         {
-            if (dgvContent.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
@@ -1851,7 +1937,7 @@ namespace PlexDL.UI
                         "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else if (dgvContent.Rows.Count == 0 && dgvTVShows.Rows.Count == 0)
+            else if (dgvMovies.Rows.Count == 0 && dgvTVShows.Rows.Count == 0)
             {
                 using (var frm = new Metadata())
                 {

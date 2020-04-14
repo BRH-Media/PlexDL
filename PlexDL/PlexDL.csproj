@@ -136,8 +136,10 @@
     <Compile Include="Common\Logging\LogFileParser.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
+    <Compile Include="Common\SearchFramework\Enums\SearchRule.cs" />
     <Compile Include="Common\SearchFramework\Search.cs" />
     <Compile Include="Common\SearchFramework\SearchData.cs" />
+    <Compile Include="Common\SearchFramework\SearchResult.cs" />
     <Compile Include="Common\SearchFramework\Workers.cs" />
     <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Common\Renderers\RenderStruct.cs" />
     <Compile Include="Common\SearchFramework\SearchOptions.cs" />
     <Compile Include="Common\Structures\Plex\PlexMusic.cs" />
+    <Compile Include="Common\Structures\ResolutionStandards.cs" />
     <Compile Include="Common\SVarController.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />
@@ -187,7 +190,7 @@
     <Compile Include="Common\Components\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\SearchFramework\SearchRuleIDs.cs" />
+    <Compile Include="Common\SearchFramework\SearchQuery.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
     <Compile Include="Common\UnhandledExceptionHandler.cs" />

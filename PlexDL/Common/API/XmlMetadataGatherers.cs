@@ -170,20 +170,21 @@ namespace PlexDL.Common.API
         public static XmlDocument GetSeriesXml(int index)
         {
             XmlDocument doc;
-            try
-            {
+            //try
+            //{
                 LoggingHelpers.AddToLog("Getting series list");
 
                 var result = RowGet.GetDataRowContent(index);
 
                 doc = GetMetadata(result);
+                /*
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
                 doc = new XmlDocument();
             }
-
+            */
             return doc;
         }
 

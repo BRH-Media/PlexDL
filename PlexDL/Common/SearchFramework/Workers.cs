@@ -1,8 +1,9 @@
-﻿using System;
+﻿using PlexDL.Common.SearchFramework.Enums;
+using PlexDL.WaitWindow;
+using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using PlexDL.WaitWindow;
 
 namespace PlexDL.Common.SearchFramework
 {
@@ -12,9 +13,10 @@ namespace PlexDL.Common.SearchFramework
         {
             var table = (DataTable)e.Arguments[3];
             var column = (string)e.Arguments[2];
-            var searchRule = (int)e.Arguments[1];
+            var searchRule = (SearchRule)e.Arguments[1];
             var searchKey = (string)e.Arguments[0];
-            var rowCollection = table.Select(SearchRuleIDs.SqlSearchFromRule(column, searchKey, searchRule));
+            //MessageBox.Show(SearchQuery.SqlSearchFromRule(column, searchKey, searchRule));
+            var rowCollection = table.Select(SearchQuery.SqlSearchFromRule(column, searchKey, searchRule));
             e.Result = rowCollection;
         }
 
@@ -25,12 +27,16 @@ namespace PlexDL.Common.SearchFramework
 
         public static DataTable GetFilteredTable(SearchData data, bool silent = true)
         {
+            //MessageBox.Show(data.SearchTable.Rows.Count.ToString());
             //MessageBox.Show(data.SearchTable.Rows[0].ItemArray.Length.ToString());
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
+
             DataTable tblFiltered = null;
+
             var rowCollection =
-            (DataRow[])WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", data.SearchTerm, data.SearchRule, data.SearchColumn, data.SearchTable);
+                (DataRow[])WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", data.SearchTerm, data.SearchRule, data.SearchColumn, data.SearchTable);
+
             if (rowCollection.Any())
             {
                 tblFiltered = GetSearchTable(rowCollection);

@@ -76,6 +76,7 @@ namespace PlexDL.UI
             this.dgvServers.Size = new System.Drawing.Size(800, 426);
             this.dgvServers.TabIndex = 16;
             this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
+            this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
             // 
             // menuMain
             // 

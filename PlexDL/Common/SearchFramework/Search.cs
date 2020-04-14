@@ -47,7 +47,7 @@ namespace PlexDL.Common.SearchFramework
                 WaitWindow.WaitWindow.Show(RenderWithNoStruct, message, dgvTarget, data);
         }
 
-        public static bool RunTitleSearch(DataGridView dgvTarget, DataTable tableToSearch, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
+        public static bool RunTitleSearch(DataGridView dgvTarget, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
         {
             try
             {
@@ -55,7 +55,8 @@ namespace PlexDL.Common.SearchFramework
                 {
                     var start = new SearchOptions
                     {
-                        SearchCollection = tableToSearch
+                        SearchCollection = dgvRenderInfo.Data,
+                        ColumnCollection = dgvRenderInfo.WantedColumns
                     };
                     var result = SearchForm.ShowSearch(start, dgvRenderInfo.WantedColumns);
                     if (!string.IsNullOrEmpty(result.SearchTerm) && !string.IsNullOrEmpty(result.SearchColumn))
@@ -65,10 +66,13 @@ namespace PlexDL.Common.SearchFramework
                             SearchColumn = result.SearchColumn,
                             SearchTerm = result.SearchTerm,
                             SearchRule = result.SearchRule,
-                            SearchTable = tableToSearch
+                            SearchTable = dgvRenderInfo.Data
                         };
 
+                        //MessageBox.Show(data.SearchRule.ToString());
+
                         var filteredTable = Workers.GetFilteredTable(data, false);
+                        //MessageBox.Show(filteredTable.Rows.Count.ToString());
 
                         if (filteredTable == null)
                             return false;
@@ -85,7 +89,6 @@ namespace PlexDL.Common.SearchFramework
                         if (copyToGlobalTables)
                             GlobalTables.FilteredTable = filteredTable;
                         return true;
-
                     }
 
                     return false;
@@ -103,15 +106,7 @@ namespace PlexDL.Common.SearchFramework
 
         public static bool RunTitleSearch(DataGridView dgvTarget, DataTable tableToSearch, bool copyToGlobalTables = false)
         {
-            return RunTitleSearch(dgvTarget, tableToSearch, null, copyToGlobalTables);
-        }
-
-        public static bool RunTitleSearch(DataGridView dgvTarget, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
-        {
-            if (dgvTarget != null && dgvRenderInfo != null)
-                if (dgvRenderInfo.Data != null)
-                    return RunTitleSearch(dgvTarget, dgvRenderInfo.Data, dgvRenderInfo, copyToGlobalTables);
-            return false;
+            return RunTitleSearch(dgvTarget, new RenderStruct { Data = tableToSearch }, copyToGlobalTables);
         }
     }
 }

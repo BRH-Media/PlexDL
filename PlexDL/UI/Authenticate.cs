@@ -14,6 +14,7 @@ namespace PlexDL.UI
         }
 
         public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
+        public bool Success { get; set; } = false;
 
         private void FrmConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -32,6 +33,7 @@ namespace PlexDL.UI
 
                 connectionStarted = true;
                 DialogResult = DialogResult.OK;
+                Success = true;
                 Close();
             }
         }

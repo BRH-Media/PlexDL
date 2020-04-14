@@ -10,6 +10,11 @@ namespace PlexDL.Common.Structures.AppOptions
         [Description("The version of PlexDL that you're currently running")]
         public string StoredAppVersion { get; set; } = Application.ProductVersion;
 
+        [DisplayName("Autostream")]
+        [Description("When the user double-clicks on a selected episode, or a selected movie, it will launch the default Playback Engine. If the engine is set to MenuSelect, then VLC will be launched. When this is disabled," +
+            "grids will resume showing the cell content instead of launching a player.")]
+        public bool DoubleClickLaunch { get; set; } = true;
+
         [ReadOnly(true)]
         [DisplayName("Download Folder")]
         [Description("The location where PlexDL will store your downloaded content. Change this value via the File menu.")]

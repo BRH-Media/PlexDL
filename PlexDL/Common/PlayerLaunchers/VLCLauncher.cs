@@ -20,7 +20,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     var c = new SVarController();
                     var vlc = GlobalStaticVars.Settings.Player.VLCMediaPlayerPath;
                     var arg = GlobalStaticVars.Settings.Player.VLCMediaPlayerArgs;
-                    if (File.Exists(vlc))
+                    if (VlcInstalled())
                     {
                         c.Input = arg;
                         c.Variables = c.BuildFromDlInfo(stream.StreamInformation);
@@ -60,6 +60,10 @@ namespace PlexDL.Common.PlayerLaunchers
                     MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
             }
+        }
+        public static bool VlcInstalled()
+        {
+            return File.Exists(GlobalStaticVars.Settings.Player.VLCMediaPlayerPath);
         }
     }
 }
