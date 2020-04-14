@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using PlexDL.Common;
 
 namespace PlexDL.UI
 {
@@ -16,6 +17,8 @@ namespace PlexDL.UI
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
+            if (Flags.IsBeta)
+                this.Text = "PlexDL - Beta Test Release";
         }
 
         #region Assembly Attribute Accessors
