@@ -1,4 +1,11 @@
-﻿using System;
+﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using PlexDL.PlexAPI;
+using PlexDL.Properties;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -8,13 +15,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.Caching;
-using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
-using PlexDL.PlexAPI;
-using PlexDL.Properties;
 
 namespace PlexDL.Common
 {
@@ -117,6 +117,7 @@ namespace PlexDL.Common
             string mm, ss, CalculatedTime;
             int h, m, s, T;
 
+            //convert back to seconds from miliseconds
             Time = Math.Round(Time) / 1000;
             T = Convert.ToInt32(Time);
 
@@ -139,7 +140,7 @@ namespace PlexDL.Common
             return CalculatedTime;
         }
 
-        public static string FormatBytes(long bytes)
+        public static string FormatBytes(long bytes, bool includeSpace = false)
         {
             string[] Suffix =
             {
@@ -150,7 +151,10 @@ namespace PlexDL.Common
             for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
                 dblSByte = bytes / 1024.0;
 
-            return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            if (includeSpace)
+                return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            else
+                return string.Format("{0:0.##}{1}", dblSByte, Suffix[i]);
         }
 
         public static bool AdultKeywordCheck(PlexObject stream)
@@ -186,7 +190,7 @@ namespace PlexDL.Common
         public static bool StreamAdultContentCheck(PlexObject stream)
         {
             if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
-            //just to keep things family-friendly, show a warning for possibly adult-type content :)
+                //just to keep things family-friendly, show a warning for possibly adult-type content :)
                 if (AdultKeywordCheck(stream))
                 {
                     var result =

@@ -39,6 +39,7 @@ namespace PlexDL.AltoHTTP.Classes
         ///     Occurs when the queue has been started
         /// </summary>
         public event EventHandler QueueElementStartedDownloading;
+        
 
         #endregion Variables
 
@@ -72,6 +73,7 @@ namespace PlexDL.AltoHTTP.Classes
             progress = e.Progress;
             CurrentProgress = progress;
             CurrentDownloadSpeed = e.Speed;
+            BytesReceived = e.BytesReceived;
         }
 
         private void Downloader_DownloadCompleted(object sender, EventArgs e)
@@ -150,7 +152,7 @@ namespace PlexDL.AltoHTTP.Classes
             get => progress;
             private set
             {
-                value = progress;
+                progress = value;
                 if (QueueProgressChanged != null && CurrentIndex >= 0 && !queuePaused)
                     QueueProgressChanged(this, EventArgs.Empty);
                 if (QueueElementStartedDownloading != null && progress > 0 && !startEventRaised)
@@ -159,6 +161,18 @@ namespace PlexDL.AltoHTTP.Classes
                     startEventRaised = true;
                 }
             }
+        }
+
+        public double BytesReceived
+        {
+            get;
+            set;
+        }
+
+        public double CurrentContentLength
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -289,6 +303,9 @@ namespace PlexDL.AltoHTTP.Classes
             currentElement = elt;
             queuePaused = false;
             startEventRaised = false;
+            //do nothing until we know the total size
+            while (downloader.ContentSize == 0) { }
+            CurrentContentLength = downloader.ContentSize;
         }
 
         private QueueElement FirstNotCompletedElement

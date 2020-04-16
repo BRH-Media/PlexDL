@@ -529,42 +529,50 @@ namespace PlexDL.UI
                 var reader = new StreamReader(fileName);
                 subReq = (ApplicationOptions)serializer.Deserialize(reader);
                 reader.Close();
-                var vStoredVersion = new Version(subReq.Generic.StoredAppVersion);
-                var vThisVersion = new Version(Application.ProductVersion);
-                var vCompare = vThisVersion.CompareTo(vStoredVersion);
-                if (vCompare < 0)
+                try
                 {
-                    if (!silent)
+                    var vStoredVersion = new Version(subReq.Generic.StoredAppVersion);
+                    var vThisVersion = new Version(Application.ProductVersion);
+                    var vCompare = vThisVersion.CompareTo(vStoredVersion);
+                    if (vCompare < 0)
                     {
-                        var result = MessageBox.Show(
-                            "You're trying to load a profile made in a newer version of PlexDL. This could have several implications:\n" +
-                            "- Possible data loss of your current profile if PlexDL overwrites it\n" +
-                            "- Features may not work as intended\n" +
-                            "- Increased risk of errors\n\n" +
-                            "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Exclamation);
-                        if (result == DialogResult.Cancel)
-                            return;
-                    }
+                        if (!silent)
+                        {
+                            var result = MessageBox.Show(
+                                "You're trying to load a profile made in a newer version of PlexDL. This could have several implications:\n" +
+                                "- Possible data loss of your current profile if PlexDL overwrites it\n" +
+                                "- Features may not work as intended\n" +
+                                "- Increased risk of errors\n\n" +
+                                "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Exclamation);
+                            if (result == DialogResult.Cancel)
+                                return;
+                        }
 
-                    LoggingHelpers.AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion + " > " + vThisVersion);
+                        LoggingHelpers.AddToLog("Tried to load a profile made in a newer version: " + vStoredVersion + " > " + vThisVersion);
+                    }
+                    else if (vCompare > 0)
+                    {
+                        if (!silent)
+                        {
+                            var result = MessageBox.Show(
+                                "You're trying to load a profile made in an earlier version of PlexDL. This could have several implications:\n" +
+                                "- Possible data loss of your current profile if PlexDL overwrites it\n" +
+                                "- Features may not work as intended\n" +
+                                "- Increased risk of errors\n\n" +
+                                "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Exclamation);
+                            if (result == DialogResult.Cancel)
+                                return;
+                        }
+
+                        LoggingHelpers.AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion + " < " + vThisVersion);
+                    }
                 }
-                else if (vCompare > 0)
+                catch (Exception ex)
                 {
-                    if (!silent)
-                    {
-                        var result = MessageBox.Show(
-                            "You're trying to load a profile made in an earlier version of PlexDL. This could have several implications:\n" +
-                            "- Possible data loss of your current profile if PlexDL overwrites it\n" +
-                            "- Features may not work as intended\n" +
-                            "- Increased risk of errors\n\n" +
-                            "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
-                            MessageBoxIcon.Exclamation);
-                        if (result == DialogResult.Cancel)
-                            return;
-                    }
-
-                    LoggingHelpers.AddToLog("Tried to load a profile made in an earlier version: " + vStoredVersion + " < " + vThisVersion);
+                    LoggingHelpers.AddToLog("Version information load error: " + ex.Message);
+                    LoggingHelpers.RecordException(ex.Message, "VersionLoadError");
                 }
 
                 GlobalStaticVars.Settings = subReq;
@@ -1160,28 +1168,48 @@ namespace PlexDL.UI
 
         private void CancelDownload(bool silent = false, string msg = "Download Cancelled")
         {
+            //try and kill the worker if it's still trying to do something
             if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
+
+            //check if the Engine's still running; if it is, we can then cancel and clear the download queue.
             if (Flags.IsEngineRunning)
             {
                 GlobalStaticVars.Engine.Cancel();
                 GlobalStaticVars.Engine.Clear();
             }
 
+            //only run the rest if a download is actually running; we've killed the engine, now we need to set the appropriate
+            //flags and values.
             if (Flags.IsDownloadRunning)
             {
+
+                //gui settings functions
                 SetProgressLabel(msg);
-                LoggingHelpers.AddToLog(msg);
+                SetDlOrderLabel(@"0/0");
+                SetSpeedLabel(@"0B/s");
+                SetEtaLabel(@"~");
                 SetDownloadStart();
                 SetResume();
+
+                //misc. gui settings
                 pbMain.Value = pbMain.Minimum;
                 btnPause.Enabled = false;
+
+                //log download cancelled message
+                LoggingHelpers.AddToLog(msg);
+                
+
+                //set project global flags
                 Flags.IsDownloadRunning = false;
                 Flags.IsDownloadPaused = false;
                 Flags.IsEngineRunning = false;
                 Flags.IsDownloadQueueCancelled = true;
+
+                //set form global indices
                 DownloadsSoFar = 0;
                 DownloadTotal = 0;
                 DownloadIndex = 0;
+
                 if (!silent)
                     MessageBox.Show(msg, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1212,15 +1240,27 @@ namespace PlexDL.UI
             }
         }
 
-        private void SetDownloadCompleted()
+        private void SetDownloadCompleted(string msg = "Download Completed")
         {
+            //gui settings functions
+            SetProgressLabel(msg);
+            SetDlOrderLabel(@"0/0");
+            SetSpeedLabel(@"0B/s");
+            SetEtaLabel(@"~");
+            SetDownloadStart();
+            SetResume();
+
+            //misc. gui settings
             pbMain.Value = pbMain.Maximum;
             btnPause.Enabled = false;
-            SetResume();
-            SetDownloadStart();
-            SetProgressLabel("Download Completed");
-            LoggingHelpers.AddToLog("Download completed");
+
+            //log download completed
+            LoggingHelpers.AddToLog(msg);
+
+            //clear the download queue (just in case)
             GlobalStaticVars.Engine.Clear();
+
+            //set the global project flags
             Flags.IsDownloadRunning = false;
             Flags.IsDownloadPaused = false;
             Flags.IsEngineRunning = false;
@@ -1308,15 +1348,51 @@ namespace PlexDL.UI
 
         private void Engine_DownloadProgressChanged(object sender, EventArgs e)
         {
-            var CurrentProgress = Math.Round(GlobalStaticVars.Engine.CurrentProgress);
-            var speed = Methods.FormatBytes(GlobalStaticVars.Engine.CurrentDownloadSpeed) + "/s";
-            var order = "(" + (GlobalStaticVars.Engine.CurrentIndex + 1) + "/" + GlobalStaticVars.Engine.QueueLength + ")";
+            try
+            {
+                //engine values - very important information.
+                var engineProgress = GlobalStaticVars.Engine.CurrentProgress;
+                var bytesGet = GlobalStaticVars.Engine.BytesReceived;
+                var engineSpeed = GlobalStaticVars.Engine.CurrentDownloadSpeed;
+                var contentSize = GlobalStaticVars.Engine.CurrentContentLength;
 
-            SetProgressLabel(CurrentProgress + "% " + order + " @ " + speed);
+                //proper formatting of engine data for display
+                var progress = Math.Round(engineProgress);
+                var speed = Methods.FormatBytes(engineSpeed) + "/s";
+                var total = Methods.FormatBytes((long)contentSize);
+                var order = (GlobalStaticVars.Engine.CurrentIndex + 1) + "/" + GlobalStaticVars.Engine.QueueLength;
+                var eta = @"~";
 
-            pbMain.Value = (int)CurrentProgress;
+                //it'd be really bad if we tried to divide by 0 and 0
+                if (bytesGet > 0 && contentSize > 0)
+                {
+                    //subtract the byte count we already have from the total we need
+                    var diff = contentSize - bytesGet;
 
-            //MessageBox.Show("Started!");
+                    //~needs to be in milisecond format; so * seconds by 1000~
+                    var val = (diff / engineSpeed) * 1000;
+
+                    //this converts the raw "ETA" data into human-readable information, then sets it up for display.
+                    eta = Methods.CalculateTime(val);
+                }
+
+                //gui settings functions
+                SetProgressLabel(progress + "% of " + total);
+                SetDlOrderLabel(order);
+                SetSpeedLabel(speed);
+                SetEtaLabel(eta);
+
+                //misc. gui settings
+                pbMain.Value = (int)progress;
+
+                //MessageBox.Show("Started!");
+            }
+            catch (Exception ex)
+            {
+                SetProgressLabel("Download Status Error(s) Occurred - Check Log");
+                LoggingHelpers.RecordException(ex.Message, "DLProgressError");
+                return;
+            }
         }
 
         #endregion DownloadEngineMethods
@@ -1416,6 +1492,30 @@ namespace PlexDL.UI
                 lblProgress.Text = status;
         }
 
+        private void SetSpeedLabel(string speed)
+        {
+            if (InvokeRequired)
+                BeginInvoke((MethodInvoker)delegate { lblSpeedValue.Text = speed; });
+            else
+                lblSpeedValue.Text = speed;
+        }
+
+        private void SetDlOrderLabel(string dlOrder)
+        {
+            if (InvokeRequired)
+                BeginInvoke((MethodInvoker)delegate { lblDownloadingValue.Text = dlOrder; });
+            else
+                lblDownloadingValue.Text = dlOrder;
+        }
+
+        private void SetEtaLabel(string eta)
+        {
+            if (InvokeRequired)
+                BeginInvoke((MethodInvoker)delegate { lblEtaValue.Text = eta; });
+            else
+                lblEtaValue.Text = eta;
+        }
+
         private void SetDownloadCancel()
         {
             btnDownload.Text = @"Cancel";
@@ -1481,6 +1581,8 @@ namespace PlexDL.UI
                         LoggingHelpers.AddToLog("PlexDL Exited");
                         e.Cancel = false;
                     }
+                    else if (msg == DialogResult.No)
+                        e.Cancel = true;
                 }
             }
             else

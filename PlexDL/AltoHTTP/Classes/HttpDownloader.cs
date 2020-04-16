@@ -83,7 +83,7 @@ namespace PlexDL.AltoHTTP.Classes
                 _oprtor.Post(delegate
                 {
                     if (DownloadProgressChanged != null)
-                        DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(_progress, SpeedInBytes));
+                        DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(_progress, SpeedInBytes, _bytesReceived));
                 }, null);
             }
         }
@@ -222,7 +222,8 @@ namespace PlexDL.AltoHTTP.Classes
                 _file.Flush();
                 _bytesReceived += bytesRead;
                 _speedBytes += bytesRead;
-                Progress = _progress = (double)_bytesReceived * 100 / ContentSize;
+                //CALCULATIONS FOR DOWNLOAD PROGRESS
+                Progress = _progress = ((double)_bytesReceived / ContentSize) * 100;
                 SpeedInBytes = (int)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);
             }
 
