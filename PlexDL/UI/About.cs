@@ -18,7 +18,7 @@ namespace PlexDL.UI
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
             if (Flags.IsBeta)
-                this.Text = "PlexDL - Beta Test Release";
+                this.Text = "About PlexDL - Beta Test Release";
         }
 
         #region Assembly Attribute Accessors
