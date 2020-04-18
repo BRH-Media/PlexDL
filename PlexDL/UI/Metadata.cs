@@ -326,5 +326,10 @@ namespace PlexDL.UI
         {
             VlcLauncher.LaunchVlc(StreamingContent);
         }
+
+        private void txtPlotSynopsis_SelectionChanged(object sender, EventArgs e)
+        {
+            txtPlotSynopsis.SelectionLength = 0;
+        }
     }
 }

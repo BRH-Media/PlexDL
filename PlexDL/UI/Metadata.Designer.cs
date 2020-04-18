@@ -49,7 +49,8 @@ namespace PlexDL.UI
             this.lblContainer = new System.Windows.Forms.Label();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
             this.gbPlot = new System.Windows.Forms.GroupBox();
-            this.txtPlotSynopsis = new System.Windows.Forms.TextBox();
+            this.pnlPlotSynopsis = new System.Windows.Forms.Panel();
+            this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
             this.gbStarring = new System.Windows.Forms.GroupBox();
             this.gbMetadata = new System.Windows.Forms.GroupBox();
             this.tlpMetadata = new System.Windows.Forms.TableLayoutPanel();
@@ -65,6 +66,7 @@ namespace PlexDL.UI
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
+            this.pnlPlotSynopsis.SuspendLayout();
             this.gbStarring.SuspendLayout();
             this.gbMetadata.SuspendLayout();
             this.tlpMetadata.SuspendLayout();
@@ -239,7 +241,7 @@ namespace PlexDL.UI
             // gbPlot
             // 
             this.tlpMain.SetColumnSpan(this.gbPlot, 6);
-            this.gbPlot.Controls.Add(this.txtPlotSynopsis);
+            this.gbPlot.Controls.Add(this.pnlPlotSynopsis);
             this.gbPlot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbPlot.Location = new System.Drawing.Point(273, 3);
             this.gbPlot.Name = "gbPlot";
@@ -249,17 +251,29 @@ namespace PlexDL.UI
             this.gbPlot.TabStop = false;
             this.gbPlot.Text = "Plot";
             // 
+            // pnlPlotSynopsis
+            // 
+            this.pnlPlotSynopsis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlPlotSynopsis.Controls.Add(this.txtPlotSynopsis);
+            this.pnlPlotSynopsis.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPlotSynopsis.Location = new System.Drawing.Point(3, 16);
+            this.pnlPlotSynopsis.Name = "pnlPlotSynopsis";
+            this.pnlPlotSynopsis.Padding = new System.Windows.Forms.Padding(3);
+            this.pnlPlotSynopsis.Size = new System.Drawing.Size(535, 152);
+            this.pnlPlotSynopsis.TabIndex = 22;
+            // 
             // txtPlotSynopsis
             // 
+            this.txtPlotSynopsis.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPlotSynopsis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPlotSynopsis.Location = new System.Drawing.Point(3, 16);
-            this.txtPlotSynopsis.Multiline = true;
+            this.txtPlotSynopsis.Location = new System.Drawing.Point(3, 3);
             this.txtPlotSynopsis.Name = "txtPlotSynopsis";
             this.txtPlotSynopsis.ReadOnly = true;
-            this.txtPlotSynopsis.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPlotSynopsis.Size = new System.Drawing.Size(535, 152);
+            this.txtPlotSynopsis.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.txtPlotSynopsis.Size = new System.Drawing.Size(527, 144);
             this.txtPlotSynopsis.TabIndex = 21;
             this.txtPlotSynopsis.Text = "Unknown";
+            this.txtPlotSynopsis.SelectionChanged += new System.EventHandler(this.txtPlotSynopsis_SelectionChanged);
             // 
             // gbStarring
             // 
@@ -397,7 +411,7 @@ namespace PlexDL.UI
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(180, 22);
+            this.itmPvs.Size = new System.Drawing.Size(157, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.itmPvs_Click);
             // 
@@ -405,7 +419,7 @@ namespace PlexDL.UI
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(180, 22);
+            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.itmBrowser_Click);
             // 
@@ -413,7 +427,7 @@ namespace PlexDL.UI
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(180, 22);
+            this.itmVlc.Size = new System.Drawing.Size(157, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.itmVlc_Click);
             // 
@@ -445,7 +459,7 @@ namespace PlexDL.UI
             this.Load += new System.EventHandler(this.Metadata_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.gbPlot.ResumeLayout(false);
-            this.gbPlot.PerformLayout();
+            this.pnlPlotSynopsis.ResumeLayout(false);
             this.gbStarring.ResumeLayout(false);
             this.gbMetadata.ResumeLayout(false);
             this.tlpMetadata.ResumeLayout(false);
@@ -475,7 +489,7 @@ namespace PlexDL.UI
         private Label lblContainer;
         private ToolTip tipMain;
         private GroupBox gbPlot;
-        private TextBox txtPlotSynopsis;
+        private RichTextBox txtPlotSynopsis;
         private GroupBox gbStarring;
         private GroupBox gbMetadata;
         private TableLayoutPanel tlpMetadata;
@@ -489,5 +503,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmBrowser;
         private ToolStripMenuItem itmVlc;
         private ToolStripMenuItem itmExit;
+        private Panel pnlPlotSynopsis;
     }
 }

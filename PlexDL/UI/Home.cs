@@ -491,17 +491,7 @@ namespace PlexDL.UI
         {
             try
             {
-                var xsSubmit = new XmlSerializer(typeof(ApplicationOptions));
-                using (var sww = new StringWriter())
-                {
-                    xsSubmit.Serialize(sww, GlobalStaticVars.Settings);
-
-                    //delete the existing file; the user was asked if they wanted to replace it.
-                    if (File.Exists(fileName))
-                        File.Delete(fileName);
-
-                    File.WriteAllText(fileName, sww.ToString());
-                }
+                ProfileImportExport.ProfileToFile(fileName, GlobalStaticVars.Settings, silent);
 
                 if (!silent)
                     MessageBox.Show(@"Successfully saved profile!", @"Message", MessageBoxButtons.OK,
@@ -522,13 +512,8 @@ namespace PlexDL.UI
         {
             try
             {
-                ApplicationOptions subReq = null;
+                ApplicationOptions subReq = ProfileImportExport.ProfileFromFile(fileName, silent);
 
-                var serializer = new XmlSerializer(typeof(ApplicationOptions));
-
-                var reader = new StreamReader(fileName);
-                subReq = (ApplicationOptions)serializer.Deserialize(reader);
-                reader.Close();
                 try
                 {
                     var vStoredVersion = new Version(subReq.Generic.StoredAppVersion);
@@ -1185,8 +1170,8 @@ namespace PlexDL.UI
 
                 //gui settings functions
                 SetProgressLabel(msg);
-                SetDlOrderLabel(@"0/0");
-                SetSpeedLabel(@"0B/s");
+                SetDlOrderLabel(@"~");
+                SetSpeedLabel(@"~");
                 SetEtaLabel(@"~");
                 SetDownloadStart();
                 SetResume();
@@ -1244,8 +1229,8 @@ namespace PlexDL.UI
         {
             //gui settings functions
             SetProgressLabel(msg);
-            SetDlOrderLabel(@"0/0");
-            SetSpeedLabel(@"0B/s");
+            SetDlOrderLabel(@"~");
+            SetSpeedLabel(@"~");
             SetEtaLabel(@"~");
             SetDownloadStart();
             SetResume();
@@ -1389,7 +1374,13 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                //gui settings functions
+                SetDlOrderLabel(@"~");
+                SetSpeedLabel(@"~");
+                SetEtaLabel(@"~");
                 SetProgressLabel("Download Status Error(s) Occurred - Check Log");
+
+                //log the error
                 LoggingHelpers.RecordException(ex.Message, "DLProgressError");
                 return;
             }

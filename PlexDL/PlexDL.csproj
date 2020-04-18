@@ -99,6 +99,7 @@
     <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
     <Compile Include="Common\API\ObjectBuilders.cs" />
+    <Compile Include="Common\API\ProfileImportExport.cs" />
     <Compile Include="Common\API\XmlMetadataGatherers.cs" />
     <Compile Include="Common\Components\CircularProgressBar.cs">
       <SubType>Component</SubType>
@@ -303,6 +304,12 @@
       <DependentUpon>Metadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Program.cs" />
+    <Compile Include="UI\Translator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Translator.Designer.cs">
+      <DependentUpon>Translator.cs</DependentUpon>
+    </Compile>
     <Compile Include="WaitWindow\WaitWindow.cs" />
     <Compile Include="WaitWindow\WaitWindowEventArgs.cs" />
     <Compile Include="WaitWindow\WaitWindowGUI.cs">
@@ -349,6 +356,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Translator.resx">
+      <DependentUpon>Translator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WaitWindow\WaitWindowGUI.resx" />
     <None Include="packages.config" />
