@@ -33,7 +33,10 @@ namespace PlexDL.Internal
 
         private static void VisualStyles(List<string> args)
         {
-            if (!args.Contains("-v0"))
+            if (args.Contains("-v1"))
+                Application.EnableVisualStyles();
+            else
+                if (!args.Contains("-v0"))
                 if (!args.Contains("-t"))
                     Application.EnableVisualStyles();
         }
