@@ -42,7 +42,7 @@ namespace PlexDL.UI
 
         private void Translator_Load(object sender, EventArgs e)
         {
-            ShowSelector();
+            //ShowSelector();
         }
 
         private void ResetStats()

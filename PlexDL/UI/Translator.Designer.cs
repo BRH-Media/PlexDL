@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Translator));
             this.gbLogdel = new System.Windows.Forms.GroupBox();
             this.btnLoadDict = new System.Windows.Forms.Button();
             this.btnBrowseLogdel = new System.Windows.Forms.Button();
@@ -217,13 +218,13 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbLogdel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Translator";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Translator";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Translator_Load);
             this.gbLogdel.ResumeLayout(false);
             this.gbLogdel.PerformLayout();
