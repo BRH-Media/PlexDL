@@ -18,6 +18,7 @@ namespace PlexDL.Internal
             List<string> arr = args.ToList();
             VisualStyles(arr);
             CheckBeta(arr);
+            CheckDebug(arr);
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler.CriticalExceptionHandler;
@@ -48,6 +49,14 @@ namespace PlexDL.Internal
             else
                 if (args.Contains("-nb"))
                 Common.Flags.IsBeta = false;
+        }
+
+        private static void CheckDebug(List<string> args)
+        {
+            if (args.Contains("-debug"))
+                Common.Flags.IsDebug = true;
+            else
+                Common.Flags.IsDebug = false;
         }
     }
 }

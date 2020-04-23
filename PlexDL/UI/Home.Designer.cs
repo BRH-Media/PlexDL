@@ -1004,7 +1004,9 @@ namespace PlexDL.UI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PlexDL by BRH Media";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
-            this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.Load += new System.EventHandler(this.Home_Load);
+            this.Move += new System.EventHandler(this.Home_Move);
+            this.GotFocus += new System.EventHandler(this.Home_Focus);
             this.cxtEpisodes.ResumeLayout(false);
             this.cxtEpisodeOptions.ResumeLayout(false);
             this.cxtLibrarySections.ResumeLayout(false);

@@ -24,7 +24,6 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 using Directory = System.IO.Directory;
 
 //using System.Threading.Tasks;
@@ -508,6 +507,8 @@ namespace PlexDL.UI
             }
         }
 
+        
+
         public void DoLoadProfile(string fileName, bool silent = false)
         {
             try
@@ -560,12 +561,15 @@ namespace PlexDL.UI
                     LoggingHelpers.RecordException(ex.Message, "VersionLoadError");
                 }
 
-                GlobalStaticVars.Settings = subReq;
+                if (subReq != null)
+                {
+                    GlobalStaticVars.Settings = subReq;
 
-                if (!silent)
-                    MessageBox.Show("Successfully loaded profile!", "Message", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                LoggingHelpers.AddToLog("Loaded profile " + fileName);
+                    if (!silent)
+                        MessageBox.Show("Successfully loaded profile!", "Message", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    LoggingHelpers.AddToLog("Loaded profile " + fileName);
+                }
             }
             catch (Exception ex)
             {
@@ -573,6 +577,7 @@ namespace PlexDL.UI
                 if (!silent)
                     MessageBox.Show(ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -1167,7 +1172,6 @@ namespace PlexDL.UI
             //flags and values.
             if (Flags.IsDownloadRunning)
             {
-
                 //gui settings functions
                 SetProgressLabel(msg);
                 SetDlOrderLabel(@"~");
@@ -1182,7 +1186,6 @@ namespace PlexDL.UI
 
                 //log download cancelled message
                 LoggingHelpers.AddToLog(msg);
-                
 
                 //set project global flags
                 Flags.IsDownloadRunning = false;
@@ -1589,11 +1592,55 @@ namespace PlexDL.UI
             if (!Directory.Exists(GlobalStaticVars.Settings.Generic.DownloadDirectory))
                 Directory.CreateDirectory(GlobalStaticVars.Settings.Generic.DownloadDirectory);
         }
+        
 
-        private void FrmMain_Load(object sender, EventArgs e)
+        private void SetDebugLocation()
+        {
+            if (GlobalStaticVars.DebugForm != null)
+            {
+                Point thisp = Location;
+                int x = thisp.X + Width;
+                int y = thisp.Y;
+                GlobalStaticVars.DebugForm.Location = new Point(x, y);
+            }
+        }
+        private void DebugFormToTop()
+        {
+            if (GlobalStaticVars.DebugForm != null)
+            {
+                GlobalStaticVars.DebugForm.TopMost = true;
+                GlobalStaticVars.DebugForm.TopMost = false;
+            }
+        }
+
+        private void Home_Move(object sender, EventArgs e)
+        {
+            if (Flags.IsDebug)
+            {
+                SetDebugLocation();
+                DebugFormToTop();
+            }
+        }
+
+        private void Home_Focus(object sender, EventArgs e)
+        {
+            if (Flags.IsDebug)
+            {
+                DebugFormToTop();
+            }
+        } 
+
+        private void Home_Load(object sender, EventArgs e)
         {
             try
             {
+                if (Flags.IsDebug)
+                {
+                    GlobalStaticVars.DebugForm = new Debug();
+                    SetDebugLocation();
+                    GlobalStaticVars.DebugForm.Show();
+                }
+
                 ResetDownloadDirectory();
                 LoggingHelpers.AddToLog("PlexDL Started");
             }

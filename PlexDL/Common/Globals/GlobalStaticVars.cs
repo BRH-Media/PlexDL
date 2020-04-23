@@ -5,11 +5,13 @@ using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.Globals
 {
     public static class GlobalStaticVars
     {
+        public static Form DebugForm { get; set; } = null;
         public static DownloadQueue Engine { get; set; }
         public static List<DownloadInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();

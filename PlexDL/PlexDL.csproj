@@ -250,6 +250,12 @@
     <Compile Include="UI\CachingMetricsUI.Designer.cs">
       <DependentUpon>CachingMetricsUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Debug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Debug.Designer.cs">
+      <DependentUpon>Debug.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DirectConnect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -324,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CachingMetricsUI.resx">
       <DependentUpon>CachingMetricsUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Debug.resx">
+      <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
