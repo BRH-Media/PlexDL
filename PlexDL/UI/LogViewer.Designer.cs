@@ -41,6 +41,9 @@ namespace PlexDL.UI
             this.itmSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmGoToLine = new System.Windows.Forms.ToolStripMenuItem();
             this.itmBackup = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCSV = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdCSV = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
@@ -77,7 +80,6 @@ namespace PlexDL.UI
             // lstLogFiles
             // 
             this.lstLogFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstLogFiles.ItemHeight = 16;
             this.lstLogFiles.Location = new System.Drawing.Point(3, 3);
             this.lstLogFiles.Name = "lstLogFiles";
             this.tlpMain.SetRowSpan(this.lstLogFiles, 2);
@@ -109,6 +111,7 @@ namespace PlexDL.UI
             this.itmRefresh,
             this.itmSearch,
             this.itmGoToLine,
+            this.itmExport,
             this.itmBackup});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -148,6 +151,26 @@ namespace PlexDL.UI
             this.itmBackup.Text = "Backup";
             this.itmBackup.Click += new System.EventHandler(this.itmBackup_Click);
             // 
+            // itmExport
+            // 
+            this.itmExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCSV});
+            this.itmExport.Name = "itmExport";
+            this.itmExport.Size = new System.Drawing.Size(53, 20);
+            this.itmExport.Text = "Export";
+            // 
+            // itmCSV
+            // 
+            this.itmCSV.Name = "itmCSV";
+            this.itmCSV.Size = new System.Drawing.Size(180, 22);
+            this.itmCSV.Text = "To CSV";
+            this.itmCSV.Click += new System.EventHandler(this.itmCSV_Click);
+            // 
+            // sfdCSV
+            // 
+            this.sfdCSV.Filter = "CSV File|*.csv";
+            this.sfdCSV.Title = "Export";
+            // 
             // LogViewer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -183,5 +206,8 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmSearch;
         private ToolStripMenuItem itmGoToLine;
         private ToolStripMenuItem itmBackup;
+        private ToolStripMenuItem itmExport;
+        private ToolStripMenuItem itmCSV;
+        private SaveFileDialog sfdCSV;
     }
 }

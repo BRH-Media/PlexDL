@@ -1,11 +1,11 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.SearchFramework;
+using System;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.SearchFramework;
 
 namespace PlexDL.UI
 {
@@ -214,6 +214,36 @@ namespace PlexDL.UI
             {
                 MessageBox.Show("An error occurred whilst backing up log files. Details:\n\n" + ex, "IO Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private void itmCSV_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstLogFiles.SelectedIndex > -1)
+                {
+                    string sel = dir + @"\" + lstLogFiles.SelectedItem;
+                    if (File.Exists(sel))
+                    {
+                        if (sfdCSV.ShowDialog() == DialogResult.OK)
+                        {
+                            string f = sfdCSV.FileName;
+                            DataTable t = LogFileParser.TableFromFile(sel, false, false);
+                            t.ToCSV(f);
+                            MessageBox.Show("Successfully exported log file to CSV", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                        MessageBox.Show("Selected file does not exist", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    MessageBox.Show("Nothing is selected", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred whilst exporting your log file. Details:\n\n" + ex, "IO Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }

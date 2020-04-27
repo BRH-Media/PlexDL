@@ -1561,7 +1561,21 @@ namespace PlexDL.UI
 
         #region FormEvents
 
-        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void VerifyProductionBuild()
+        {
+            if (Flags.IsBeta)
+            {
+                lblBeta.Text = "Beta Testing Build";
+                lblBeta.ForeColor = Color.DarkRed;
+            }
+            else
+            {
+                lblBeta.Text = "Production Build";
+                lblBeta.ForeColor = Color.DarkGreen;
+            }
+        }
+
+        private void Home_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Flags.IsDownloadRunning)
             {
@@ -1641,6 +1655,8 @@ namespace PlexDL.UI
                     GlobalStaticVars.DebugForm.Show();
                 }
 
+
+                VerifyProductionBuild();
                 ResetDownloadDirectory();
                 LoggingHelpers.AddToLog("PlexDL Started");
             }

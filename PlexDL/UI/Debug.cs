@@ -19,18 +19,28 @@ namespace PlexDL.UI
         private void Debug_Load(object sender, EventArgs e)
         {
             RefreshCount = 0;
+            UpdatePollRate();
             DoRefresh();
             tmrUpdateRef.Start();
         }
 
-        private void tmrUpdateRef_Tick(object sender, EventArgs e)
+        private void UpdatePollRate()
+        {
+            lblPollRateValue.Text = tmrUpdateRef.Interval.ToString() + "ms";
+        }
+
+        private void TmrUpdateRef_Tick(object sender, EventArgs e)
         {
             DoRefresh();
         }
 
+        private void UpdateRefreshCount()
+        {
+            lblRefreshCountValue.Text = RefreshCount.ToString();
+        }
+
         private void DoRefresh()
         {
-            RefreshCount++;
             Type t = typeof(Flags);
             PropertyInfo[] fields = t.GetProperties();
             List<string[]> values = new List<string[]>();
@@ -43,6 +53,8 @@ namespace PlexDL.UI
             }
 
             RenderFlags(values.ToArray());
+            UpdateRefreshInt();
+            UpdateRefreshCount();
         }
 
         private void RenderFlags(string[][] flags)
@@ -66,6 +78,14 @@ namespace PlexDL.UI
             DoRefresh();
         }
 
+        private void UpdateRefreshInt()
+        {
+            if (RefreshCount < int.MaxValue)
+                RefreshCount++;
+            else
+                RefreshCount = 0;
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Flags.IsDebug = false;
@@ -78,14 +98,20 @@ namespace PlexDL.UI
             {
                 TimerRunning = false;
                 tmrUpdateRef.Stop();
-                btnTimer.Text = "Timer Off";
+                btnTimer.Text = "Auto-refresh Off";
             }
             else
             {
                 TimerRunning = true;
                 tmrUpdateRef.Start();
-                btnTimer.Text = "Timer On";
+                btnTimer.Text = "Auto-refresh On";
+                
             }
+        }
+
+        private void tlpDebug_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

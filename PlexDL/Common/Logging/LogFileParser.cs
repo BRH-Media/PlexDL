@@ -8,7 +8,7 @@ namespace PlexDL.Common.Logging
 {
     public static class LogFileParser
     {
-        public static DataTable TableFromFile(string fileName, bool silent = true)
+        public static DataTable TableFromFile(string fileName, bool silent = true, bool lineNumbers = true)
         {
             DataTable table = null;
             try
@@ -16,11 +16,16 @@ namespace PlexDL.Common.Logging
                 if (File.Exists(fileName))
                 {
                     table = new DataTable();
-                    var lineNumber = new DataColumn
+                    if (lineNumbers)
                     {
-                        ColumnName = "Line", Caption = "Line", DataType = typeof(string)
-                    };
-                    table.Columns.Add(lineNumber);
+                        var lineNumber = new DataColumn
+                        {
+                            ColumnName = "Line",
+                            Caption = "Line",
+                            DataType = typeof(string)
+                        };
+                        table.Columns.Add(lineNumber);
+                    }
                     var intRowCount = 1;
                     var headersFound = false;
                     foreach (var line in File.ReadAllLines(fileName))
@@ -59,10 +64,9 @@ namespace PlexDL.Common.Logging
                         else if (line.Contains("!"))
                         {
                             var strSplit = line.Split('!');
-                            var arrItems = new List<string>
-                            {
-                                (intRowCount - 1).ToString()
-                            };
+                            var arrItems = new List<string>();
+                            if (lineNumbers)
+                                arrItems.Add((intRowCount - 1).ToString());
                             arrItems.AddRange(strSplit);
                             var items = arrItems.ToArray();
                             if (items.Length == table.Columns.Count)
@@ -70,10 +74,10 @@ namespace PlexDL.Common.Logging
                         }
                         else
                         {
-                            var arrItems = new List<string>
-                            {
-                                (intRowCount - 1).ToString(), line
-                            };
+                            var arrItems = new List<string>();
+                            if (lineNumbers)
+                                arrItems.Add((intRowCount - 1).ToString());
+                            arrItems.Add(line);
                             var items = arrItems.ToArray();
                             if (items.Length == table.Columns.Count)
                                 table.Rows.Add(items);
