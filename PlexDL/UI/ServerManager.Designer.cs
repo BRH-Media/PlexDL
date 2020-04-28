@@ -34,55 +34,27 @@ namespace PlexDL.UI
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerManager));
-            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmAuthenticate = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmViaToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmViaPlexTv = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoad = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRelays = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDirectConnection = new System.Windows.Forms.ToolStripMenuItem();
             this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
+            this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dgvServers
-            // 
-            this.dgvServers.AllowUserToAddRows = false;
-            this.dgvServers.AllowUserToDeleteRows = false;
-            this.dgvServers.AllowUserToOrderColumns = true;
-            this.dgvServers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvServers.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvServers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvServers.Location = new System.Drawing.Point(0, 24);
-            this.dgvServers.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvServers.MultiSelect = false;
-            this.dgvServers.Name = "dgvServers";
-            this.dgvServers.RowHeadersVisible = false;
-            this.dgvServers.RowsEmptyText = "No Servers Found";
-            this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvServers.Size = new System.Drawing.Size(800, 426);
-            this.dgvServers.TabIndex = 16;
-            this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
-            this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
             // 
             // menuMain
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmAuthenticate,
             this.itmLoad,
+            this.itmClearServers,
             this.itmConnect});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -92,11 +64,30 @@ namespace PlexDL.UI
             // 
             // itmAuthenticate
             // 
+            this.itmAuthenticate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmViaToken,
+            this.itmViaPlexTv});
             this.itmAuthenticate.Name = "itmAuthenticate";
             this.itmAuthenticate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.itmAuthenticate.Size = new System.Drawing.Size(87, 20);
             this.itmAuthenticate.Text = "Authenticate";
             this.itmAuthenticate.Click += new System.EventHandler(this.itmAuthenticate_Click);
+            // 
+            // itmViaToken
+            // 
+            this.itmViaToken.Name = "itmViaToken";
+            this.itmViaToken.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.itmViaToken.Size = new System.Drawing.Size(180, 22);
+            this.itmViaToken.Text = "Via Token";
+            this.itmViaToken.Click += new System.EventHandler(this.itmViaToken_Click);
+            // 
+            // itmViaPlexTv
+            // 
+            this.itmViaPlexTv.Name = "itmViaPlexTv";
+            this.itmViaPlexTv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.itmViaPlexTv.Size = new System.Drawing.Size(180, 22);
+            this.itmViaPlexTv.Text = "Via Plex.tv";
+            this.itmViaPlexTv.Click += new System.EventHandler(this.itmViaPlexTv_Click);
             // 
             // itmLoad
             // 
@@ -142,6 +133,47 @@ namespace PlexDL.UI
             this.itmConnect.Text = "Connect to this server";
             this.itmConnect.Click += new System.EventHandler(this.itmConnect_Click);
             // 
+            // itmClearServers
+            // 
+            this.itmClearServers.Enabled = false;
+            this.itmClearServers.Name = "itmClearServers";
+            this.itmClearServers.Size = new System.Drawing.Size(86, 20);
+            this.itmClearServers.Text = "Clear Servers";
+            this.itmClearServers.Click += new System.EventHandler(this.itmClearServers_Click);
+            // 
+            // dgvServers
+            // 
+            this.dgvServers.AllowUserToAddRows = false;
+            this.dgvServers.AllowUserToDeleteRows = false;
+            this.dgvServers.AllowUserToOrderColumns = true;
+            this.dgvServers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvServers.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvServers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvServers.Location = new System.Drawing.Point(0, 24);
+            this.dgvServers.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvServers.MultiSelect = false;
+            this.dgvServers.Name = "dgvServers";
+            this.dgvServers.RowHeadersVisible = false;
+            this.dgvServers.RowsEmptyText = "No Servers Found";
+            this.dgvServers.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvServers.Size = new System.Drawing.Size(800, 426);
+            this.dgvServers.TabIndex = 16;
+            this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
+            this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
+            // 
             // ServerManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,9 +191,9 @@ namespace PlexDL.UI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server Manager";
             this.Load += new System.EventHandler(this.ServerManager_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,5 +209,8 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmRelays;
         private ToolStripMenuItem itmDirectConnection;
         private ToolStripMenuItem itmConnect;
+        private ToolStripMenuItem itmViaToken;
+        private ToolStripMenuItem itmViaPlexTv;
+        private ToolStripMenuItem itmClearServers;
     }
 }

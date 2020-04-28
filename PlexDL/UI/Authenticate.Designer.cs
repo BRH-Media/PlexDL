@@ -32,8 +32,8 @@ namespace PlexDL.UI
         private void InitializeComponent()
         {
             this.btnConnect = new System.Windows.Forms.Button();
-            this.txtAccountToken = new System.Windows.Forms.TextBox();
             this.gbToken = new System.Windows.Forms.GroupBox();
+            this.txtAccountToken = new libbrhscgui.Components.WaterMarkTextBox();
             this.gbToken.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,15 +47,6 @@ namespace PlexDL.UI
             this.btnConnect.Text = "Login";
             this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
-            // txtAccountToken
-            // 
-            this.txtAccountToken.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.RecentlyUsedList;
-            this.txtAccountToken.Location = new System.Drawing.Point(6, 19);
-            this.txtAccountToken.MaxLength = 20;
-            this.txtAccountToken.Name = "txtAccountToken";
-            this.txtAccountToken.Size = new System.Drawing.Size(204, 20);
-            this.txtAccountToken.TabIndex = 0;
-            // 
             // gbToken
             // 
             this.gbToken.Controls.Add(this.txtAccountToken);
@@ -65,6 +56,16 @@ namespace PlexDL.UI
             this.gbToken.TabIndex = 32;
             this.gbToken.TabStop = false;
             this.gbToken.Text = "Account Token";
+            // 
+            // txtAccountToken
+            // 
+            this.txtAccountToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.txtAccountToken.Location = new System.Drawing.Point(6, 19);
+            this.txtAccountToken.Name = "txtAccountToken";
+            this.txtAccountToken.Size = new System.Drawing.Size(204, 20);
+            this.txtAccountToken.TabIndex = 0;
+            this.txtAccountToken.WaterMarkColor = System.Drawing.Color.Gray;
+            this.txtAccountToken.WaterMarkText = "Plex.tv Token";
             // 
             // Authenticate
             // 
@@ -91,7 +92,7 @@ namespace PlexDL.UI
 
         #endregion
         private Button btnConnect;
-        private TextBox txtAccountToken;
         private GroupBox gbToken;
+        private libbrhscgui.Components.WaterMarkTextBox txtAccountToken;
     }
 }

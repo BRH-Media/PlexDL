@@ -281,6 +281,12 @@
     <Compile Include="UI\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\PlexLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PlexLogin.Designer.cs">
+      <DependentUpon>PlexLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -347,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PlexLogin.resx">
+      <DependentUpon>PlexLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

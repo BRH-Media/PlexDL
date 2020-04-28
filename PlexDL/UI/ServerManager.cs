@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
@@ -11,6 +8,9 @@ using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
@@ -35,45 +35,6 @@ namespace PlexDL.UI
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void itmAuthenticate_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //check if there's a connection before trying to update the authentication token
-                if (wininet.CheckForInternetConnection())
-                    using (var frm = new Authenticate())
-                    {
-                        var existingInfo = new ConnectionInfo
-                        {
-                            PlexAccountToken = GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken
-                        };
-                        frm.ConnectionInfo = existingInfo;
-                        if (frm.ShowDialog() == DialogResult.OK)
-                        {
-                            if (frm.Success)
-                            {
-                                GlobalStaticVars.User.authenticationToken = frm.ConnectionInfo.PlexAccountToken;
-                                GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = frm.ConnectionInfo.PlexAccountToken;
-                                itmLoad.Enabled = true;
-                                dgvServers.DataSource = null;
-                                MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                        }
-                    }
-                else
-                // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "ConnectionError");
-                MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
         }
 
         private void RenderServersView(List<Server> servers)
@@ -277,6 +238,8 @@ namespace PlexDL.UI
                             var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
                             dgvServers.Rows[svrIndex].Selected = true;
                             itmConnect.Enabled = true;
+                            itmClearServers.Enabled = true;
+                            itmLoad.Enabled = true;
                         }
                 }
                 else
@@ -297,6 +260,130 @@ namespace PlexDL.UI
         private void itmDirectConnection_Click(object sender, EventArgs e)
         {
             RunDirectConnect();
+        }
+
+        private void itmViaPlexTv_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //check if there's a connection before trying to update the authentication token
+                if (wininet.CheckForInternetConnection())
+                    using (var frm = new PlexLogin())
+                    {
+                        if (frm.ShowDialog() == DialogResult.OK)
+                        {
+                            if (frm.Success)
+                            {
+                                if (!ApplyToken(frm.AccountToken))
+                                    MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                            }
+                        }
+                    }
+                else
+                    // trying to connect on no connection will not end well; alert the user.
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ConnectionError");
+                MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void itmViaToken_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //check if there's a connection before trying to update the authentication token
+                if (wininet.CheckForInternetConnection())
+                    using (var frm = new Authenticate())
+                    {
+                        var existingInfo = new ConnectionInfo
+                        {
+                            PlexAccountToken = GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken
+                        };
+                        frm.ConnectionInfo = existingInfo;
+                        if (frm.ShowDialog() == DialogResult.OK)
+                        {
+                            if (frm.Success)
+                            {
+                                if (ApplyToken(frm.ConnectionInfo.PlexAccountToken))
+                                {
+                                    MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                    MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+                else
+                    // trying to connect on no connection will not end well; alert the user.
+                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ConnectionError");
+                MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ApplyToken(string token, bool silent = true)
+        {
+            try
+            {
+                //check if there's a connection before trying to update the authentication token
+                if (wininet.CheckForInternetConnection())
+                {
+                    GlobalStaticVars.User.authenticationToken = token;
+                    GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = token;
+                    itmLoad.Enabled = true;
+                    itmClearServers.Enabled = true;
+                    dgvServers.DataSource = null;
+                    if (!silent)
+                        MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    return true;
+                }
+                else
+                {
+                    // trying to connect on no connection will not end well; alert the user.
+                    if (!silent)
+                        MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ConnectionError");
+                if (!silent)
+                    MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private void itmClearServers_Click(object sender, EventArgs e)
+        {
+            dgvServers.DataSource = null;
+            //force a repaint
+            dgvServers.Invalidate();
+            GlobalStaticVars.PlexServers = null;
+            itmConnect.Enabled = false;
+            itmLoad.Enabled = false;
+            itmClearServers.Enabled = false;
+        }
+
+        private void itmAuthenticate_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

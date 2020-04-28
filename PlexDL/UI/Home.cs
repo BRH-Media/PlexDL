@@ -507,8 +507,6 @@ namespace PlexDL.UI
             }
         }
 
-        
-
         public void DoLoadProfile(string fileName, bool silent = false)
         {
             try
@@ -1606,7 +1604,6 @@ namespace PlexDL.UI
             if (!Directory.Exists(GlobalStaticVars.Settings.Generic.DownloadDirectory))
                 Directory.CreateDirectory(GlobalStaticVars.Settings.Generic.DownloadDirectory);
         }
-        
 
         private void SetDebugLocation()
         {
@@ -1618,6 +1615,7 @@ namespace PlexDL.UI
                 GlobalStaticVars.DebugForm.Location = new Point(x, y);
             }
         }
+
         private void DebugFormToTop()
         {
             if (GlobalStaticVars.DebugForm != null)
@@ -1642,7 +1640,7 @@ namespace PlexDL.UI
             {
                 DebugFormToTop();
             }
-        } 
+        }
 
         private void Home_Load(object sender, EventArgs e)
         {
@@ -1654,7 +1652,6 @@ namespace PlexDL.UI
                     SetDebugLocation();
                     GlobalStaticVars.DebugForm.Show();
                 }
-
 
                 VerifyProductionBuild();
                 ResetDownloadDirectory();
@@ -1903,15 +1900,37 @@ namespace PlexDL.UI
             }
         }
 
+        //debugging stuff
+        private void XmlMessageBox(XmlDocument doc)
+        {
+            if (doc != null)
+            {
+                using (var sww = new StringWriter())
+                using (var writer = XmlWriter.Create(sww))
+                {
+                    doc.WriteTo(writer);
+                    writer.Flush();
+                    MessageBox.Show(sww.GetStringBuilder().ToString());
+                }
+            }
+            else
+                MessageBox.Show("XML Document was null");
+        }
+
         private void DgvTVShows_OnRowChange(object sender, EventArgs e)
         {
             if (dgvTVShows.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDgv(dgvTVShows, GlobalTables.ReturnCorrectTable(true));
+                var index = GlobalTables.GetTableIndexFromDgv(dgvTVShows, GlobalTables.ReturnCorrectTable());
+
+                //debugging
+                //MessageBox.Show(index.ToString());
 
                 if (Flags.IsTVShow)
                 {
                     var series = XmlMetadataGatherers.GetSeriesXml(index);
+                    //debugging
+                    //XmlMessageBox(series);
                     UpdateSeriesView(series);
                 }
             }
