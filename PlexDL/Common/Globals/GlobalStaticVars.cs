@@ -22,6 +22,8 @@ namespace PlexDL.Common.Globals
         public static PlexObject CurrentStream { get; set; }
         public static List<Server> PlexServers { get; set; }
         public static string CurrentApiUri { get; set; } = "";
+        public static int SessionIdLength { get; } = 10;
+        public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(SessionIdLength);
 
         public static string GetToken()
         {

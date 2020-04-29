@@ -11,6 +11,7 @@ namespace PlexDL.UI
     {
         public int RefreshCount { get; set; } = 0;
         public bool TimerRunning { get; set; } = true;
+
         public Debug()
         {
             InitializeComponent();
@@ -21,15 +22,15 @@ namespace PlexDL.UI
             RefreshCount = 0;
             UpdatePollRate();
             DoRefresh();
-            tmrUpdateRef.Start();
+            tmrAutoRefresh.Start();
         }
 
         private void UpdatePollRate()
         {
-            lblPollRateValue.Text = tmrUpdateRef.Interval.ToString() + "ms";
+            lblPollRateValue.Text = tmrAutoRefresh.Interval.ToString() + "ms";
         }
 
-        private void TmrUpdateRef_Tick(object sender, EventArgs e)
+        private void TmrAutoRefresh_Tick(object sender, EventArgs e)
         {
             DoRefresh();
         }
@@ -97,21 +98,19 @@ namespace PlexDL.UI
             if (TimerRunning)
             {
                 TimerRunning = false;
-                tmrUpdateRef.Stop();
+                tmrAutoRefresh.Stop();
                 btnTimer.Text = "Auto-refresh Off";
             }
             else
             {
                 TimerRunning = true;
-                tmrUpdateRef.Start();
+                tmrAutoRefresh.Start();
                 btnTimer.Text = "Auto-refresh On";
-                
             }
         }
 
         private void tlpDebug_Paint(object sender, PaintEventArgs e)
         {
-
         }
     }
 }

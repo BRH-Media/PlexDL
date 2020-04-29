@@ -27,7 +27,7 @@ namespace PlexDL.Common.API
             {
                 MessageBox.Show(msgNoKey, @"Data Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.AddToLog("Unique key error");
+                LoggingHelpers.RecordGenericEntry("Unique key error");
                 LoggingHelpers.RecordException(logNoKeyMsg, logNoKeyType);
             }
             else
@@ -37,7 +37,7 @@ namespace PlexDL.Common.API
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 
-                LoggingHelpers.AddToLog("Contacting the API");
+                LoggingHelpers.RecordGenericEntry("Contacting the API");
                 reply = XmlGet.GetXmlTransaction(uri);
             }
 
@@ -172,7 +172,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             //try
             //{
-                LoggingHelpers.AddToLog("Getting series list");
+                LoggingHelpers.RecordGenericEntry("Getting series list");
 
                 var result = RowGet.GetDataRowContent(index);
 
@@ -193,7 +193,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog("Getting episodes list");
+                LoggingHelpers.RecordGenericEntry("Getting episodes list");
 
                 var result = RowGet.GetDataRowSeries(index);
 
@@ -213,7 +213,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog("Getting movie metadata");
+                LoggingHelpers.RecordGenericEntry("Getting movie metadata");
 
                 var result = RowGet.GetDataRowContent(index);
 
@@ -233,7 +233,7 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             try
             {
-                LoggingHelpers.AddToLog("Getting episode metadata");
+                LoggingHelpers.RecordGenericEntry("Getting episode metadata");
 
                 var result = RowGet.GetDataRowEpisodes(index);
 

@@ -13,21 +13,21 @@ namespace PlexDL.Common.API
             try
             {
                 var obj = new PlexTVShow();
-                LoggingHelpers.AddToLog(@"Content Parse Started");
-                LoggingHelpers.AddToLog(@"Grabbing Titles");
+                LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
+                LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
 
                 var metadata = XmlMetadataGatherers.GetEpisodeMetadata(index);
 
-                LoggingHelpers.AddToLog(@"Checking XML validity");
+                LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.AddToLog(@"XML Valid");
+                    LoggingHelpers.RecordGenericEntry(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.AddToLog(@"Assembling Object");
+                        LoggingHelpers.RecordGenericEntry(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataGatherers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -47,12 +47,12 @@ namespace PlexDL.Common.API
                         LoggingHelpers.RecordException(
                             "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             "ContextDownloadInfoNull");
-                        LoggingHelpers.AddToLog("DownloadInfo is invalid (no stream contextual information)");
+                        LoggingHelpers.RecordGenericEntry("DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
                 {
-                    LoggingHelpers.AddToLog("XML Invalid");
+                    LoggingHelpers.RecordGenericEntry("XML Invalid");
                 }
 
                 return obj;
@@ -70,20 +70,20 @@ namespace PlexDL.Common.API
             try
             {
                 var obj = new PlexMovie();
-                LoggingHelpers.AddToLog(@"Content Parse Started");
-                LoggingHelpers.AddToLog(@"Grabbing Titles");
+                LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
+                LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
                 var metadata = XmlMetadataGatherers.GetContentMetadata(index);
 
-                LoggingHelpers.AddToLog(@"Checking XML validity");
+                LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.AddToLog(@"XML Valid");
+                    LoggingHelpers.RecordGenericEntry(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.AddToLog(@"Assembling Object");
+                        LoggingHelpers.RecordGenericEntry(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataGatherers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -100,12 +100,12 @@ namespace PlexDL.Common.API
                         LoggingHelpers.RecordException(
                             @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             @"ContextDownloadInfoNull");
-                        LoggingHelpers.AddToLog("DownloadInfo is invalid (no stream contexual information)");
+                        LoggingHelpers.RecordGenericEntry("DownloadInfo is invalid (no stream contexual information)");
                     }
                 }
                 else
                 {
-                    LoggingHelpers.AddToLog("XML Invalid");
+                    LoggingHelpers.RecordGenericEntry("XML Invalid");
                 }
 
                 return obj;

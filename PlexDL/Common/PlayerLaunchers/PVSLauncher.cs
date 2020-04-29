@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
@@ -20,9 +20,10 @@ namespace PlexDL.Common.PlayerLaunchers
                         {
                             var frm = new UI.Player
                             {
-                                StreamingContent = stream, TitlesTable = titles
+                                StreamingContent = stream,
+                                TitlesTable = titles
                             };
-                            LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
+                            LoggingHelpers.RecordGenericEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
                             frm.ShowDialog();
                         }
                         else
@@ -31,7 +32,7 @@ namespace PlexDL.Common.PlayerLaunchers
                                 "You cannot stream \n" + stream.StreamInformation.ContentTitle +
                                 "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.",
                                 "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            LoggingHelpers.AddToLog("Tried to stream content via PVS, but a download is running.");
+                            LoggingHelpers.RecordGenericEntry("Tried to stream content via PVS, but a download is running.");
                         }
                     }
                 }
@@ -42,7 +43,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                 }
             else
-                LoggingHelpers.AddToLog("Tried to stream content via PVS, but one or more values were null.");
+                LoggingHelpers.RecordGenericEntry("Tried to stream content via PVS, but one or more values were null.");
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Xml;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
+using System;
+using System.Data;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {
@@ -17,7 +17,7 @@ namespace PlexDL.Common.API
                 {
                     var obj = new DownloadInfo();
 
-                    LoggingHelpers.AddToLog("Grabbing DownloadInfo object");
+                    LoggingHelpers.RecordGenericEntry("Grabbing DownloadInfo object");
                     var sections = new DataSet();
                     sections.ReadXml(new XmlNodeReader(xml));
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Logging
 {
@@ -10,18 +10,18 @@ namespace PlexDL.Common.Logging
     {
         private static int logIncrementer;
 
-        public static void AddToLog(string logEntry)
+        public static void RecordGenericEntry(string logEntry)
         {
             try
             {
                 logIncrementer++;
                 string[] headers =
                 {
-                    "ID", "DateTime", "Entry"
+                    "SessionID","EntryID", "DateTime", "Entry"
                 };
                 string[] logEntryToAdd =
                 {
-                    logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
+                    GlobalStaticVars.CurrentSessionId, logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
                 };
                 if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
                     LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
@@ -47,11 +47,11 @@ namespace PlexDL.Common.Logging
                     var function = stackTrace.GetFrame(1).GetMethod().Name;
                     string[] headers =
                     {
-                        "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType"
+                        "SessionID", "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType"
                     };
                     string[] LogEntry =
                     {
-                        DateTime.Now.ToString(), message, function, type
+                        GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), message, function, type
                     };
                     LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
                 }
@@ -70,11 +70,11 @@ namespace PlexDL.Common.Logging
                 {
                     string[] headers =
                     {
-                        "DateTime", "Uri", "StatusCode"
+                        "SessionID","DateTime", "Uri", "StatusCode"
                     };
                     string[] LogEntry =
                     {
-                        DateTime.Now.ToString(), uri, statusCode
+                        GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), uri, statusCode
                     };
                     LogDelWriter("TransactionLog.logdel", headers, LogEntry);
                 }

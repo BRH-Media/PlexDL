@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
@@ -15,7 +15,7 @@ namespace PlexDL.Common.PlayerLaunchers
                 if (Methods.StreamAdultContentCheck(stream))
                 {
                     Process.Start(stream.StreamInformation.Link);
-                    LoggingHelpers.AddToLog("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
+                    LoggingHelpers.RecordGenericEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
                 }
             }
             catch (Exception ex)

@@ -140,6 +140,18 @@ namespace PlexDL.Common
             return CalculatedTime;
         }
 
+        public static string GenerateRandomNumber(int length)
+        {
+            Random random = new Random();
+            string r = "";
+
+            for (int i = 1; i < length + 1; i++)
+            {
+                r += random.Next(0, 9).ToString();
+            }
+            return r;
+        }
+
         public static string FormatBytes(long bytes, bool includeSpace = false)
         {
             string[] Suffix =
