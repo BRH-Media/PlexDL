@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Windows.Forms;
-using System.Xml;
-using PlexDL.Common.Caching;
+﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.WaitWindow;
+using System;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using PlexDL.Common;
 
 namespace PlexDL.UI
 {
@@ -106,7 +106,6 @@ namespace PlexDL.UI
 
         private void About_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

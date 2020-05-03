@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PlexDL.Common.Logging;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Components
 {

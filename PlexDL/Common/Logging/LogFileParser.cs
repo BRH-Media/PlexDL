@@ -38,7 +38,9 @@ namespace PlexDL.Common.Logging
                             {
                                 var c = new DataColumn
                                 {
-                                    ColumnName = "field" + headerCount, Caption = "field" + headerCount, DataType = typeof(string)
+                                    ColumnName = "field" + headerCount,
+                                    Caption = "field" + headerCount,
+                                    DataType = typeof(string)
                                 };
                                 table.Columns.Add(c);
                                 ++headerCount;
@@ -56,7 +58,9 @@ namespace PlexDL.Common.Logging
                             {
                                 var c = new DataColumn
                                 {
-                                    ColumnName = item, Caption = item, DataType = typeof(string)
+                                    ColumnName = item,
+                                    Caption = item,
+                                    DataType = typeof(string)
                                 };
                                 table.Columns.Add(c);
                             }

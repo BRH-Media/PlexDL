@@ -34,6 +34,29 @@ namespace PlexDL.Common.Logging
             }
         }
 
+        public static void RecordCacheEvent(string eventEntry, string reqUrl = "Unknown")
+        {
+            try
+            {
+                string[] headers =
+                {
+                    "SessionID", "RequestedURL", "DateTime", "Entry"
+                };
+                string[] logEntryToAdd =
+                {
+                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), eventEntry
+                };
+                if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
+                    LogDelWriter("Caching.logdel", headers, logEntryToAdd);
+            }
+            catch (Exception ex)
+            {
+                //for debugging only!
+                //MessageBox.Show(ex);
+                //ignore the error
+            }
+        }
+
         public static void RecordException(string message, string type)
         {
             try

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.Plex;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 
 namespace PlexDL.Common.PlayerLaunchers
 {
@@ -35,7 +35,10 @@ namespace PlexDL.Common.PlayerLaunchers
                         MessageBox.Show(@"PlexDL could not find VLC Media Player. Please locate VLC and then try again.");
                         var ofd = new OpenFileDialog
                         {
-                            Filter = @"vlc.exe", Title = @"Locate VLC Media Player", Multiselect = false, FileName = @"vlc.exe"
+                            Filter = @"vlc.exe",
+                            Title = @"Locate VLC Media Player",
+                            Multiselect = false,
+                            FileName = @"vlc.exe"
                         };
                         if (ofd.ShowDialog() == DialogResult.OK)
                         {
@@ -61,6 +64,7 @@ namespace PlexDL.Common.PlayerLaunchers
                 LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
             }
         }
+
         public static bool VlcInstalled()
         {
             return File.Exists(GlobalStaticVars.Settings.Player.VLCMediaPlayerPath);

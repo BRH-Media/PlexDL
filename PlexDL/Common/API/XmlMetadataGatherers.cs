@@ -32,7 +32,6 @@ namespace PlexDL.Common.API
             }
             else
             {
-
                 var baseUri = GlobalStaticVars.GetBaseUri(false);
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
@@ -56,7 +55,6 @@ namespace PlexDL.Common.API
                 return actors;
             foreach (DataRow r in dtActors.Rows)
             {
-
                 var thumb = "";
                 var role = "Unknown";
                 var name = "Unknown";
@@ -172,19 +170,19 @@ namespace PlexDL.Common.API
             XmlDocument doc;
             //try
             //{
-                LoggingHelpers.RecordGenericEntry("Getting series list");
+            LoggingHelpers.RecordGenericEntry("Getting series list");
 
-                var result = RowGet.GetDataRowContent(index);
+            var result = RowGet.GetDataRowContent(index);
 
-                doc = GetMetadata(result);
-                /*
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
-                doc = new XmlDocument();
-            }
-            */
+            doc = GetMetadata(result);
+            /*
+        }
+        catch (Exception ex)
+        {
+            LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
+            doc = new XmlDocument();
+        }
+        */
             return doc;
         }
 

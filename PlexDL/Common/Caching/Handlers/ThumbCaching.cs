@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using PlexDL.Common.Globals;
+using System.Drawing;
 using System.IO;
-using PlexDL.Common.Globals;
 
 namespace PlexDL.Common.Caching.Handlers
 {

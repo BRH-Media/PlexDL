@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions.Caching;
 using PlexDL.Common.Structures.AppOptions.Display;
 using PlexDL.Common.Structures.AppOptions.Player;
+using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions
 {
@@ -36,6 +36,6 @@ namespace PlexDL.Common.Structures.AppOptions
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Caching Settings")]
         [Description("Settings related to how PlexDL deals with cached data")]
-        public CachingSettings CacheSettings { get; set; } = new CachingSettings();
+        public CacheSettings CacheSettings { get; set; } = new CacheSettings();
     }
 }

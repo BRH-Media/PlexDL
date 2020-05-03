@@ -276,7 +276,6 @@ namespace PlexDL.UI
                             {
                                 if (!ApplyToken(frm.AccountToken))
                                     MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                             }
                         }
                     }
@@ -383,7 +382,6 @@ namespace PlexDL.UI
 
         private void itmAuthenticate_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

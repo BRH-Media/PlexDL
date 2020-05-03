@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PlexDL.AltoHTTP.Enums;
+using PlexDL.AltoHTTP.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
-using PlexDL.AltoHTTP.Enums;
-using PlexDL.AltoHTTP.Interfaces;
 
 namespace PlexDL.AltoHTTP.Classes
 {
@@ -39,7 +39,6 @@ namespace PlexDL.AltoHTTP.Classes
         ///     Occurs when the queue has been started
         /// </summary>
         public event EventHandler QueueElementStartedDownloading;
-        
 
         #endregion Variables
 
@@ -84,7 +83,10 @@ namespace PlexDL.AltoHTTP.Classes
                 {
                     elements[i] = new QueueElement
                     {
-                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
+                        Id = elements[i].Id,
+                        Url = elements[i].Url,
+                        Destination = elements[i].Destination,
+                        Completed = true
                     };
                     break;
                 }
@@ -100,7 +102,10 @@ namespace PlexDL.AltoHTTP.Classes
                 {
                     elements[i] = new QueueElement
                     {
-                        Id = elements[i].Id, Url = elements[i].Url, Destination = elements[i].Destination, Completed = true
+                        Id = elements[i].Id,
+                        Url = elements[i].Url,
+                        Destination = elements[i].Destination,
+                        Completed = true
                     };
                     break;
                 }
@@ -203,7 +208,9 @@ namespace PlexDL.AltoHTTP.Classes
         {
             elements.Add(new QueueElement
             {
-                Id = Guid.NewGuid().ToString(), Url = url, Destination = destPath
+                Id = Guid.NewGuid().ToString(),
+                Url = url,
+                Destination = destPath
             });
         }
 

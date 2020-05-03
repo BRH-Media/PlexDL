@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
+using System.Xml;
 
 namespace PlexDL.Common.API
 {
@@ -13,7 +13,7 @@ namespace PlexDL.Common.API
             {
                 while (reader.Read())
                     if (reader.IsStartElement())
-                    //return only when you have START tag
+                        //return only when you have START tag
                         switch (reader.Name)
                         {
                             case "Directory":

@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using System.IO;
 using System.Xml;
 
@@ -31,8 +32,14 @@ namespace PlexDL.Common.Caching.Handlers
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
-                var fqPath = XmlCachePath(sourceUrl);
-                doc.Save(fqPath);
+                if (!XmlInCache(sourceUrl))
+                {
+                    var fqPath = XmlCachePath(sourceUrl);
+                    doc.Save(fqPath);
+                    LoggingHelpers.RecordCacheEvent("[Caching] Successfully cached URL", sourceUrl);
+                }
+                else
+                    LoggingHelpers.RecordCacheEvent("[Caching] URL is already cached", sourceUrl);
             }
         }
 
@@ -40,10 +47,34 @@ namespace PlexDL.Common.Caching.Handlers
         {
             if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
-                var fqPath = XmlCachePath(sourceUrl);
-                var doc = new XmlDocument();
-                doc.Load(fqPath);
-                return doc;
+                if (XmlInCache(sourceUrl))
+                {
+                    var fqPath = XmlCachePath(sourceUrl);
+                    if (GlobalStaticVars.Settings.CacheSettings.Expiry.Enabled)
+                    {
+                        if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath, GlobalStaticVars.Settings.CacheSettings.Expiry.Interval))
+                        {
+                            LoggingHelpers.RecordCacheEvent("[Caching] Cached URL is not expired; loading from cached copy.", sourceUrl);
+                            var doc = new XmlDocument();
+                            doc.Load(fqPath);
+                            return doc;
+                        }
+                        else
+                        {
+                            LoggingHelpers.RecordCacheEvent("[Caching] Cached URL is out-of-date; attempting to get a new copy.", sourceUrl);
+                            return API.XmlGet.GetXmlTransaction(sourceUrl, "", true);
+                        }
+                    }
+                    else
+                    {
+                        LoggingHelpers.RecordCacheEvent("[Caching] Loading from cached copy", sourceUrl);
+                        var doc = new XmlDocument();
+                        doc.Load(fqPath);
+                        return doc;
+                    }
+                }
+                else
+                    LoggingHelpers.RecordCacheEvent("[Caching] URL isn't cached; couldn't load from specified file.", sourceUrl);
             }
 
             return new XmlDocument();

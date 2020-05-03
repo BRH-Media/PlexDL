@@ -1,10 +1,10 @@
-﻿using System;
+﻿using PlexDL.Animation.WinFormAnimation;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using PlexDL.Animation.WinFormAnimation;
 
 namespace PlexDL.Common.Components
 {
@@ -538,7 +538,8 @@ namespace PlexDL.Common.Components
                     var stringFormat =
                     new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
                     {
-                        Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Near
                     };
                     var textSize = g.MeasureString(Text, Font);
                     var textPoint = new PointF(

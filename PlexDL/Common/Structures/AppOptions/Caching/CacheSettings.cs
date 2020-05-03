@@ -2,12 +2,17 @@
 
 namespace PlexDL.Common.Structures.AppOptions.Caching
 {
-    public class CachingSettings
+    public class CacheSettings
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Flags")]
-        [Description("Contains flags for caching features that can be enabled/disabled")]
+        [Description("Contains flags for caching components that can be enabled/disabled")]
         public CacheMode Mode { get; set; } = new CacheMode();
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("Expiry")]
+        [Description("PlexDL can automatically download newer versions of cached files, if their creation date exceeds a fixed interval.")]
+        public CacheExpiry Expiry { get; set; } = new CacheExpiry();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [ReadOnly(true)]

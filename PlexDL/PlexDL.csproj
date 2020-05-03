@@ -102,6 +102,7 @@
     <Compile Include="Common\API\ObjectBuilders.cs" />
     <Compile Include="Common\API\ProfileImportExport.cs" />
     <Compile Include="Common\API\XmlMetadataGatherers.cs" />
+    <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
     <Compile Include="Common\Components\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -147,7 +148,8 @@
     <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
-    <Compile Include="Common\Structures\AppOptions\Caching\CachingSettings.cs" />
+    <Compile Include="Common\Structures\AppOptions\Caching\CacheExpiry.cs" />
+    <Compile Include="Common\Structures\AppOptions\Caching\CacheSettings.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\ColumnAdapter.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\Music\AlbumDisplay.cs" />
     <Compile Include="Common\Structures\AppOptions\Display\Grids\Music\ArtistDisplay.cs" />

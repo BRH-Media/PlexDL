@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Caching
 {
