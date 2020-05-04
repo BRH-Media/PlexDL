@@ -3,6 +3,7 @@ using PlexDL.Common.API;
 using PlexDL.Common.Globals;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
+using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
@@ -34,6 +35,18 @@ namespace PlexDL.UI
                     });
                 else
                     lblGenreValue.Text = StreamingContent.ContentGenre;
+            }
+
+            //fill the FPS infobox
+            if (!string.IsNullOrEmpty(StreamingContent.StreamResolution.Framerate))
+            {
+                if (lblFramerateValue.InvokeRequired)
+                    lblFramerateValue.BeginInvoke((MethodInvoker)delegate
+                    {
+                        lblFramerateValue.Text = Framerate();
+                    });
+                else
+                    lblFramerateValue.Text = Framerate();
             }
 
             //fill the runtime duration infobox
@@ -201,6 +214,15 @@ namespace PlexDL.UI
             StationaryMode = false;
         }
 
+        //just to make it easier :)
+        private string Framerate()
+        {
+            if (!string.Equals(StreamingContent.StreamResolution.Framerate, "Unknown"))
+                return ResolutionStandards.FullFpsSuffix(StreamingContent.StreamResolution.Framerate);
+            else
+                return "Unknown";
+        }
+
         private Panel NoActorsFound()
         {
             var p = new Panel
@@ -263,6 +285,7 @@ namespace PlexDL.UI
             if (!StationaryMode)
             {
                 WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+                //MessageBox.Show(StreamingContent.StreamResolution.Framerate);
             }
             else
             {

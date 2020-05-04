@@ -38,15 +38,11 @@ namespace PlexDL.UI
             this.lblSizeValue = new System.Windows.Forms.Label();
             this.lblRuntime = new System.Windows.Forms.Label();
             this.lblRuntimeValue = new System.Windows.Forms.Label();
-            this.lblGenre = new System.Windows.Forms.Label();
-            this.lblGenreValue = new System.Windows.Forms.Label();
             this.lblResolutionValue = new System.Windows.Forms.Label();
             this.lblResolution = new System.Windows.Forms.Label();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.picPoster = new System.Windows.Forms.PictureBox();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
-            this.lblContainerValue = new System.Windows.Forms.Label();
-            this.lblContainer = new System.Windows.Forms.Label();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
             this.gbPlot = new System.Windows.Forms.GroupBox();
             this.pnlPlotSynopsis = new System.Windows.Forms.Panel();
@@ -64,6 +60,12 @@ namespace PlexDL.UI
             this.itmBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblFramerateValue = new System.Windows.Forms.Label();
+            this.lblFramerate = new System.Windows.Forms.Label();
+            this.lblContainer = new System.Windows.Forms.Label();
+            this.lblContainerValue = new System.Windows.Forms.Label();
+            this.lblGenre = new System.Windows.Forms.Label();
+            this.lblGenreValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
@@ -93,7 +95,7 @@ namespace PlexDL.UI
             this.lblSize.Location = new System.Drawing.Point(2, 0);
             this.lblSize.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(87, 34);
+            this.lblSize.Size = new System.Drawing.Size(87, 28);
             this.lblSize.TabIndex = 4;
             this.lblSize.Text = "Size:";
             this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -105,7 +107,7 @@ namespace PlexDL.UI
             this.lblSizeValue.Location = new System.Drawing.Point(93, 0);
             this.lblSizeValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSizeValue.Name = "lblSizeValue";
-            this.lblSizeValue.Size = new System.Drawing.Size(163, 34);
+            this.lblSizeValue.Size = new System.Drawing.Size(163, 28);
             this.lblSizeValue.TabIndex = 5;
             this.lblSizeValue.Text = "Unknown";
             this.lblSizeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -115,10 +117,10 @@ namespace PlexDL.UI
             // 
             this.lblRuntime.AutoSize = true;
             this.lblRuntime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRuntime.Location = new System.Drawing.Point(2, 34);
+            this.lblRuntime.Location = new System.Drawing.Point(2, 28);
             this.lblRuntime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRuntime.Name = "lblRuntime";
-            this.lblRuntime.Size = new System.Drawing.Size(87, 34);
+            this.lblRuntime.Size = new System.Drawing.Size(87, 28);
             this.lblRuntime.TabIndex = 6;
             this.lblRuntime.Text = "Runtime:";
             this.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -127,48 +129,23 @@ namespace PlexDL.UI
             // 
             this.lblRuntimeValue.AutoSize = true;
             this.lblRuntimeValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRuntimeValue.Location = new System.Drawing.Point(93, 34);
+            this.lblRuntimeValue.Location = new System.Drawing.Point(93, 28);
             this.lblRuntimeValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRuntimeValue.Name = "lblRuntimeValue";
-            this.lblRuntimeValue.Size = new System.Drawing.Size(163, 34);
+            this.lblRuntimeValue.Size = new System.Drawing.Size(163, 28);
             this.lblRuntimeValue.TabIndex = 7;
             this.lblRuntimeValue.Text = "Unknown";
             this.lblRuntimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.tipMain.SetToolTip(this.lblRuntimeValue, "Runtime");
             // 
-            // lblGenre
-            // 
-            this.lblGenre.AutoSize = true;
-            this.lblGenre.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGenre.Location = new System.Drawing.Point(2, 136);
-            this.lblGenre.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblGenre.Name = "lblGenre";
-            this.lblGenre.Size = new System.Drawing.Size(87, 36);
-            this.lblGenre.TabIndex = 8;
-            this.lblGenre.Text = "Genre:";
-            this.lblGenre.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblGenreValue
-            // 
-            this.lblGenreValue.AutoSize = true;
-            this.lblGenreValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGenreValue.Location = new System.Drawing.Point(93, 136);
-            this.lblGenreValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblGenreValue.Name = "lblGenreValue";
-            this.lblGenreValue.Size = new System.Drawing.Size(163, 36);
-            this.lblGenreValue.TabIndex = 9;
-            this.lblGenreValue.Text = "Unknown";
-            this.lblGenreValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblGenreValue, "Genre");
-            // 
             // lblResolutionValue
             // 
             this.lblResolutionValue.AutoSize = true;
             this.lblResolutionValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResolutionValue.Location = new System.Drawing.Point(93, 68);
+            this.lblResolutionValue.Location = new System.Drawing.Point(93, 56);
             this.lblResolutionValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblResolutionValue.Name = "lblResolutionValue";
-            this.lblResolutionValue.Size = new System.Drawing.Size(163, 34);
+            this.lblResolutionValue.Size = new System.Drawing.Size(163, 28);
             this.lblResolutionValue.TabIndex = 11;
             this.lblResolutionValue.Text = "Unknown";
             this.lblResolutionValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -178,10 +155,10 @@ namespace PlexDL.UI
             // 
             this.lblResolution.AutoSize = true;
             this.lblResolution.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResolution.Location = new System.Drawing.Point(2, 68);
+            this.lblResolution.Location = new System.Drawing.Point(2, 56);
             this.lblResolution.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblResolution.Name = "lblResolution";
-            this.lblResolution.Size = new System.Drawing.Size(87, 34);
+            this.lblResolution.Size = new System.Drawing.Size(87, 28);
             this.lblResolution.TabIndex = 10;
             this.lblResolution.Text = "Resolution:";
             this.lblResolution.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -212,31 +189,6 @@ namespace PlexDL.UI
             // 
             this.ofdImport.Filter = "PlexMovie XML|*.pmxml";
             this.ofdImport.Title = "Import PlexMovie Metadata";
-            // 
-            // lblContainerValue
-            // 
-            this.lblContainerValue.AutoSize = true;
-            this.lblContainerValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblContainerValue.Location = new System.Drawing.Point(93, 102);
-            this.lblContainerValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblContainerValue.Name = "lblContainerValue";
-            this.lblContainerValue.Size = new System.Drawing.Size(163, 34);
-            this.lblContainerValue.TabIndex = 16;
-            this.lblContainerValue.Text = "Unknown";
-            this.lblContainerValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblContainerValue, "Container");
-            // 
-            // lblContainer
-            // 
-            this.lblContainer.AutoSize = true;
-            this.lblContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblContainer.Location = new System.Drawing.Point(2, 102);
-            this.lblContainer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblContainer.Name = "lblContainer";
-            this.lblContainer.Size = new System.Drawing.Size(87, 34);
-            this.lblContainer.TabIndex = 15;
-            this.lblContainer.Text = "Container:";
-            this.lblContainer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gbPlot
             // 
@@ -306,25 +258,28 @@ namespace PlexDL.UI
             this.tlpMetadata.ColumnCount = 2;
             this.tlpMetadata.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.56701F));
             this.tlpMetadata.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.43299F));
-            this.tlpMetadata.Controls.Add(this.lblGenreValue, 1, 4);
-            this.tlpMetadata.Controls.Add(this.lblContainerValue, 1, 3);
+            this.tlpMetadata.Controls.Add(this.lblGenre, 0, 5);
+            this.tlpMetadata.Controls.Add(this.lblGenreValue, 0, 5);
+            this.tlpMetadata.Controls.Add(this.lblContainerValue, 1, 4);
+            this.tlpMetadata.Controls.Add(this.lblContainer, 0, 4);
+            this.tlpMetadata.Controls.Add(this.lblFramerateValue, 1, 3);
+            this.tlpMetadata.Controls.Add(this.lblFramerate, 0, 3);
             this.tlpMetadata.Controls.Add(this.lblRuntimeValue, 1, 1);
             this.tlpMetadata.Controls.Add(this.lblSizeValue, 1, 0);
             this.tlpMetadata.Controls.Add(this.lblResolutionValue, 1, 2);
             this.tlpMetadata.Controls.Add(this.lblSize, 0, 0);
             this.tlpMetadata.Controls.Add(this.lblRuntime, 0, 1);
             this.tlpMetadata.Controls.Add(this.lblResolution, 0, 2);
-            this.tlpMetadata.Controls.Add(this.lblGenre, 0, 4);
-            this.tlpMetadata.Controls.Add(this.lblContainer, 0, 3);
             this.tlpMetadata.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMetadata.Location = new System.Drawing.Point(3, 16);
             this.tlpMetadata.Name = "tlpMetadata";
-            this.tlpMetadata.RowCount = 5;
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMetadata.RowCount = 6;
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tlpMetadata.Size = new System.Drawing.Size(258, 172);
             this.tlpMetadata.TabIndex = 23;
             // 
@@ -439,6 +394,80 @@ namespace PlexDL.UI
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.itmExit_Click);
             // 
+            // lblFramerateValue
+            // 
+            this.lblFramerateValue.AutoSize = true;
+            this.lblFramerateValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblFramerateValue.Location = new System.Drawing.Point(93, 84);
+            this.lblFramerateValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFramerateValue.Name = "lblFramerateValue";
+            this.lblFramerateValue.Size = new System.Drawing.Size(163, 28);
+            this.lblFramerateValue.TabIndex = 20;
+            this.lblFramerateValue.Text = "Unknown";
+            this.lblFramerateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblFramerate
+            // 
+            this.lblFramerate.AutoSize = true;
+            this.lblFramerate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblFramerate.Location = new System.Drawing.Point(2, 84);
+            this.lblFramerate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFramerate.Name = "lblFramerate";
+            this.lblFramerate.Size = new System.Drawing.Size(87, 28);
+            this.lblFramerate.TabIndex = 19;
+            this.lblFramerate.Text = "Framerate:";
+            this.lblFramerate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblContainer
+            // 
+            this.lblContainer.AutoSize = true;
+            this.lblContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblContainer.Location = new System.Drawing.Point(2, 112);
+            this.lblContainer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblContainer.Name = "lblContainer";
+            this.lblContainer.Size = new System.Drawing.Size(87, 28);
+            this.lblContainer.TabIndex = 21;
+            this.lblContainer.Text = "Container:";
+            this.lblContainer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblContainerValue
+            // 
+            this.lblContainerValue.AutoSize = true;
+            this.lblContainerValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblContainerValue.Location = new System.Drawing.Point(93, 112);
+            this.lblContainerValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblContainerValue.Name = "lblContainerValue";
+            this.lblContainerValue.Size = new System.Drawing.Size(163, 28);
+            this.lblContainerValue.TabIndex = 22;
+            this.lblContainerValue.Text = "Unknown";
+            this.lblContainerValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tipMain.SetToolTip(this.lblContainerValue, "Container");
+            // 
+            // lblGenre
+            // 
+            this.lblGenre.AutoSize = true;
+            this.lblGenre.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGenre.Location = new System.Drawing.Point(2, 140);
+            this.lblGenre.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblGenre.Name = "lblGenre";
+            this.lblGenre.Size = new System.Drawing.Size(87, 32);
+            this.lblGenre.TabIndex = 23;
+            this.lblGenre.Text = "Genre:";
+            this.lblGenre.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblGenreValue
+            // 
+            this.lblGenreValue.AutoSize = true;
+            this.lblGenreValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGenreValue.Location = new System.Drawing.Point(93, 140);
+            this.lblGenreValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblGenreValue.Name = "lblGenreValue";
+            this.lblGenreValue.Size = new System.Drawing.Size(163, 32);
+            this.lblGenreValue.TabIndex = 24;
+            this.lblGenreValue.Text = "Unknown";
+            this.lblGenreValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tipMain.SetToolTip(this.lblGenreValue, "Genre");
+            // 
             // Metadata
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -478,15 +507,11 @@ namespace PlexDL.UI
         private Label lblSizeValue;
         private Label lblRuntime;
         private Label lblRuntimeValue;
-        private Label lblGenre;
-        private Label lblGenreValue;
         private Label lblResolutionValue;
         private Label lblResolution;
         private PictureBox picPoster;
         private SaveFileDialog sfdExport;
         private OpenFileDialog ofdImport;
-        private Label lblContainerValue;
-        private Label lblContainer;
         private ToolTip tipMain;
         private GroupBox gbPlot;
         private RichTextBox txtPlotSynopsis;
@@ -504,5 +529,11 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmVlc;
         private ToolStripMenuItem itmExit;
         private Panel pnlPlotSynopsis;
+        private Label lblFramerateValue;
+        private Label lblFramerate;
+        private Label lblContainer;
+        private Label lblContainerValue;
+        private Label lblGenre;
+        private Label lblGenreValue;
     }
 }

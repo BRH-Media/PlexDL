@@ -73,6 +73,11 @@ namespace PlexDL.UI
 
         private void itmServers_Click(object sender, EventArgs e)
         {
+            LoadServers();
+        }
+
+        private void LoadServers(bool silent = false)
+        {
             try
             {
                 //check if there's a connection before trying to contact Plex.tv
@@ -84,9 +89,9 @@ namespace PlexDL.UI
                         var servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            var msg =
-                            MessageBox.Show(@"No servers found for current account token. Please update your token or try a direct connection.",
-                                @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            if (!silent)
+                                MessageBox.Show(@"No servers found for current account token. Please update your token or try a direct connection.",
+                                    @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         else
                         {
@@ -99,18 +104,25 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load servers.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    if (!silent)
+                        MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load servers.", @"Network Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Server retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!silent)
+                    MessageBox.Show("Server retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "ServerGetError");
             }
         }
 
         private void itmRelays_Click(object sender, EventArgs e)
+        {
+            LoadRelays();
+        }
+
+        private void LoadRelays(bool silent = false)
         {
             try
             {
@@ -123,9 +135,9 @@ namespace PlexDL.UI
                         var servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            var msg =
-                            MessageBox.Show(@"No relays found for current account token. Please update your token or try a direct connection.",
-                                @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            if (!silent)
+                                MessageBox.Show(@"No relays found for current account token. Please update your token or try a direct connection.",
+                                    @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         else
                         {
@@ -138,13 +150,15 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load relays.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    if (!silent)
+                        MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load relays.", @"Network Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Relay retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!silent)
+                    MessageBox.Show("Relay retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "RelayGetError");
             }
         }
@@ -276,6 +290,8 @@ namespace PlexDL.UI
                             {
                                 if (!ApplyToken(frm.AccountToken))
                                     MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                else
+                                    LoadServers(true);
                             }
                         }
                     }
@@ -313,6 +329,7 @@ namespace PlexDL.UI
                                 {
                                     MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    LoadServers(true);
                                 }
                                 else
                                     MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -4,10 +4,16 @@
     {
         public int Width { get; set; } = 0;
         public int Height { get; set; } = 0;
+        public string Framerate { get; set; } = "Unknown";
+        public string VideoStandard { get; set; } = "";
 
         public string ResolutionString(bool incStandard = true)
         {
-            string std = StandardFromFrameHeight();
+            string std;
+            if (string.IsNullOrEmpty(VideoStandard))
+                std = StandardFromFrameHeight();
+            else
+                std = VideoStandard;
             if (incStandard && !string.Equals(std, string.Empty))
                 return Width + "x" + Height + " (" + std + ")";
             else
@@ -21,15 +27,7 @@
 
         public string StandardFromFrameHeight()
         {
-            if (Height > 0)
-            {
-                foreach (string[] s in ResolutionStandards.Standards)
-                    if (string.Equals(Height.ToString(), s[0]))
-                        return s[1];
-                return "";
-            }
-            else
-                return "";
+            return ResolutionStandards.StdFromHeight(Height.ToString());
         }
     }
 }

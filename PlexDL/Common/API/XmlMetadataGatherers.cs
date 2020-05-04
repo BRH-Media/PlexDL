@@ -85,18 +85,28 @@ namespace PlexDL.Common.API
             sections.ReadXml(new XmlNodeReader(metadata));
             var video = sections.Tables["Media"];
             var row = video.Rows[0];
+
             var width = 0;
             if (video.Columns.Contains("width"))
                 if (row["width"] != null)
                     width = Convert.ToInt32(row["width"]);
+
             var height = 0;
             if (video.Columns.Contains("height"))
                 if (row["height"] != null)
                     height = Convert.ToInt32(row["height"]);
+
+            var fps = "";
+            if (video.Columns.Contains("videoFrameRate"))
+                if (row["videoFrameRate"] != null)
+                    fps = ResolutionStandards.FpsFromPlexStd(row["videoFrameRate"].ToString().ToLower(), false);
+
             var result = new Resolution
             {
                 Width = width,
-                Height = height
+                Height = height,
+                Framerate = fps,
+                VideoStandard = ResolutionStandards.StdFromHeight(height.ToString())
             };
             return result;
         }
