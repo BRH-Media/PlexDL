@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
+using System;
 using System.IO;
 using System.Xml;
 
@@ -28,18 +29,72 @@ namespace PlexDL.Common.Caching.Handlers
             return false;
         }
 
-        public static void XmlToCache(XmlDocument doc, string sourceUrl)
+        public static bool XmlToCache(XmlDocument doc, string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+            try
             {
-                if (!XmlInCache(sourceUrl))
+                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
                 {
-                    var fqPath = XmlCachePath(sourceUrl);
-                    doc.Save(fqPath);
-                    LoggingHelpers.RecordCacheEvent("[Caching] Successfully cached URL", sourceUrl);
+                    if (!XmlInCache(sourceUrl))
+                    {
+                        var fqPath = XmlCachePath(sourceUrl);
+                        doc.Save(fqPath);
+                        LoggingHelpers.RecordCacheEvent("[Caching] Successfully cached URL", sourceUrl);
+                    }
+                    else
+                        LoggingHelpers.RecordCacheEvent("[Caching] URL is already cached", sourceUrl);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "XmlCacheWrtError");
+                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't create cached file (an error occurred)", sourceUrl);
+                return false;
+            }
+        }
+
+        public static bool XmlReplaceCache(XmlDocument doc, string sourceUrl)
+        {
+            try
+            {
+                if (XmlRemoveCache(sourceUrl))
+                {
+                    if (XmlToCache(doc, sourceUrl))
+                        return true;
+                    else
+                        return false;
                 }
                 else
-                    LoggingHelpers.RecordCacheEvent("[Caching] URL is already cached", sourceUrl);
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "XmlCacheRplError");
+                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't replace existing cached file (an error occurred)", sourceUrl);
+                //replacing didn't succeed
+                return false;
+            }
+        }
+
+        public static bool XmlRemoveCache(string sourceUrl)
+        {
+            try
+            {
+                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+                    if (XmlInCache(sourceUrl))
+                    {
+                        File.Delete(XmlCachePath(sourceUrl));
+                        LoggingHelpers.RecordCacheEvent("[Caching] Removed URL from cache", sourceUrl);
+                    }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "XmlCacheDelError");
+                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't remove existing cached file (an error occurred)", sourceUrl);
+                //deletion didn't succeed
+                return false;
             }
         }
 
@@ -62,7 +117,9 @@ namespace PlexDL.Common.Caching.Handlers
                         else
                         {
                             LoggingHelpers.RecordCacheEvent("[Caching] Cached URL is out-of-date; attempting to get a new copy.", sourceUrl);
-                            return API.XmlGet.GetXmlTransaction(sourceUrl, "", true);
+                            var doc = API.XmlGet.GetXmlTransaction(sourceUrl, "", true);
+                            XmlReplaceCache(doc, sourceUrl);
+                            return doc;
                         }
                     }
                     else
