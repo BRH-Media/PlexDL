@@ -761,12 +761,12 @@ namespace PlexDL.UI
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
-            GlobalTables.SeriesTable = sections.Tables["Directory"];
+            GlobalTables.SeasonsTable = sections.Tables["Directory"];
 
             LoggingHelpers.RecordGenericEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGenericEntry("Binding to grid");
-            RenderSeriesView(GlobalTables.SeriesTable);
+            RenderSeriesView(GlobalTables.SeasonsTable);
 
             //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1622,7 +1622,6 @@ namespace PlexDL.UI
             if (GlobalStaticVars.DebugForm != null)
             {
                 GlobalStaticVars.DebugForm.TopMost = true;
-                GlobalStaticVars.DebugForm.TopMost = false;
             }
         }
 
@@ -1636,16 +1635,12 @@ namespace PlexDL.UI
             if (Flags.IsDebug)
             {
                 SetDebugLocation();
-                DebugFormToTop();
             }
         }
 
         private void Home_Focus(object sender, EventArgs e)
         {
-            if (Flags.IsDebug)
-            {
-                DebugFormToTop();
-            }
+
         }
 
         private void Home_Load(object sender, EventArgs e)
@@ -1656,6 +1651,8 @@ namespace PlexDL.UI
                 {
                     GlobalStaticVars.DebugForm = new Debug();
                     SetDebugLocation();
+                    DebugFormToTop();
+                    TopMost = true;
                     GlobalStaticVars.DebugForm.Show();
                 }
 
@@ -1761,7 +1758,7 @@ namespace PlexDL.UI
         {
             if (dgvSeasons.SelectedRows.Count == 1)
             {
-                var index = GlobalTables.GetTableIndexFromDgv(dgvSeasons, GlobalTables.SeriesTable);
+                var index = GlobalTables.GetTableIndexFromDgv(dgvSeasons, GlobalTables.SeasonsTable);
                 var episodes = XmlMetadataGatherers.GetEpisodeXml(index);
                 UpdateEpisodeView(episodes);
             }

@@ -18,7 +18,7 @@ namespace PlexDL.Common.Globals
 
         public static DataRow GetDataRowSeries(int index)
         {
-            return GetDataRowTbl(GlobalTables.SeriesTable, index);
+            return GetDataRowTbl(GlobalTables.SeasonsTable, index);
         }
 
         public static DataRow GetDataRowEpisodes(int index)

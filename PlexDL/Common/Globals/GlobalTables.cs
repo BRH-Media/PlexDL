@@ -7,7 +7,7 @@ namespace PlexDL.Common.Globals
     {
         public static DataTable TitlesTable { get; set; }
         public static DataTable FilteredTable { get; set; }
-        public static DataTable SeriesTable { get; set; }
+        public static DataTable SeasonsTable { get; set; }
         public static DataTable EpisodesTable { get; set; }
         public static DataTable SectionsTable { get; set; }
         public static DataTable ContentViewTable { get; set; }
