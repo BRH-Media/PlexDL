@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.API;
-using PlexDL.Common.Logging;
+﻿using LogDel;
+using PlexDL.Common.API;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace PlexDL.UI
             {
                 if (File.Exists(fileName))
                 {
-                    DataTable logLoad = LogFileParser.TableFromFile(fileName, false);
+                    DataTable logLoad = LogReader.TableFromFile(fileName, false);
                     if (logLoad != null)
                     {
                         if (logLoad.Columns.Contains("Token"))
@@ -175,7 +175,6 @@ namespace PlexDL.UI
                 }
                 else
                     MessageBox.Show(@"Incorrect value(s)");
-                
             }
             catch (Exception ex)
             {

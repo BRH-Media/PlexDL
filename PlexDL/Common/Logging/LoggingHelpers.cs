@@ -1,8 +1,7 @@
 ﻿using PlexDL.Common.Globals;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
+using LogDel;
 
 namespace PlexDL.Common.Logging
 {
@@ -24,7 +23,7 @@ namespace PlexDL.Common.Logging
                     GlobalStaticVars.CurrentSessionId, logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
                 };
                 if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
-                    LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+                    LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
             }
             catch (Exception ex)
             {
@@ -47,7 +46,7 @@ namespace PlexDL.Common.Logging
                     GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), eventEntry
                 };
                 if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
-                    LogDelWriter("Caching.logdel", headers, logEntryToAdd);
+                    LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
             }
             catch (Exception ex)
             {
@@ -76,7 +75,7 @@ namespace PlexDL.Common.Logging
                     {
                         GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), message, function, type
                     };
-                    LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
+                    LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
                 }
             }
             catch
@@ -99,77 +98,11 @@ namespace PlexDL.Common.Logging
                     {
                         GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), uri, statusCode
                     };
-                    LogDelWriter("TransactionLog.logdel", headers, LogEntry);
+                    LogWriter.LogDelWriter("TransactionLog.logdel", headers, LogEntry);
                 }
             }
             catch
             {
-                //ignore the error
-            }
-        }
-
-        private static string CleanseLogDel(string line)
-        {
-            var clean = line;
-            char[] bannedChars =
-            {
-                '#', '!'
-            };
-            foreach (var c in line)
-                if (bannedChars.Contains(c))
-                {
-                    var index = clean.IndexOf(c);
-                    clean.Remove(index, 1);
-                }
-
-            return clean;
-        }
-
-        public static void LogDelWriter(string fileName, string[] headers, string[] logEntry)
-        {
-            try
-            {
-                if (!Directory.Exists("Logs"))
-                    Directory.CreateDirectory("Logs");
-
-                var logdelLine = "";
-                var fqFile = @"Logs\" + fileName;
-
-                foreach (var l in logEntry)
-                    logdelLine += l + "!";
-
-                logdelLine = CleanseLogDel(logdelLine.TrimEnd('!'));
-
-                var headersString = "###";
-                foreach (var h in headers)
-                    headersString += h + "!";
-
-                headersString = CleanseLogDel(headersString.TrimEnd('!'));
-
-                if (File.Exists(fqFile))
-                {
-                    var existing = File.ReadAllText(fqFile);
-                    if (string.IsNullOrEmpty(existing))
-                    {
-                        var contentToWrite = headersString + "\n" + logdelLine;
-                        File.WriteAllText(fqFile, contentToWrite);
-                    }
-                    else
-                    {
-                        var contentToWrite = existing + "\n" + logdelLine;
-                        File.WriteAllText(fqFile, contentToWrite);
-                    }
-                }
-                else
-                {
-                    var contentToWrite = headersString + "\n" + logdelLine;
-                    File.WriteAllText(fqFile, contentToWrite);
-                }
-            }
-            catch (Exception ex)
-            {
-                //for debugging only!
-                //MessageBox.Show(ex);
                 //ignore the error
             }
         }

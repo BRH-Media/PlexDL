@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Globals;
+﻿using LogDel;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.SearchFramework;
 using System;
@@ -74,7 +75,7 @@ namespace PlexDL.UI
 
         private DataTable TableFromSelected()
         {
-            return LogFileParser.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex], false);
+            return LogReader.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex], false);
         }
 
         private void DoLoadFromSelected()
@@ -229,7 +230,7 @@ namespace PlexDL.UI
                         if (sfdCSV.ShowDialog() == DialogResult.OK)
                         {
                             string f = sfdCSV.FileName;
-                            DataTable t = LogFileParser.TableFromFile(sel, false, false);
+                            DataTable t = LogReader.TableFromFile(sel, false, false);
                             t.ToCSV(f);
                             MessageBox.Show("Successfully exported log file to CSV", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }

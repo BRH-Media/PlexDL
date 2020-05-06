@@ -1,4 +1,5 @@
-﻿using PlexDL.AltoHTTP.Classes;
+﻿using LogDel;
+using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
@@ -371,7 +372,7 @@ namespace PlexDL.UI
             if (tabMain.SelectedTab == tabLog)
             {
                 if (File.Exists(@"Logs\PlexDL.logdel"))
-                    dgvLog.DataSource = LogFileParser.TableFromFile(@"Logs\PlexDL.logdel", false);
+                    dgvLog.DataSource = LogReader.TableFromFile(@"Logs\PlexDL.logdel", false);
                 else
                     dgvLog.DataSource = null;
             }

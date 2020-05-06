@@ -136,8 +136,6 @@
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
-    <Compile Include="Common\Logging\CSVUtility.cs" />
-    <Compile Include="Common\Logging\LogFileParser.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
     <Compile Include="Common\SearchFramework\Enums\SearchRule.cs" />
@@ -535,6 +533,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogDel\LogDel.csproj">
+      <Project>{f983c455-7c57-469e-9152-9095f114d697}</Project>
+      <Name>LogDel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
