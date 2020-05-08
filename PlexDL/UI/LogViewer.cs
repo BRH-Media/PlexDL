@@ -228,12 +228,42 @@ namespace PlexDL.UI
                     string sel = dir + @"\" + lstLogFiles.SelectedItem;
                     if (File.Exists(sel))
                     {
-                        if (sfdCSV.ShowDialog() == DialogResult.OK)
+                        if (sfdExportCsv.ShowDialog() == DialogResult.OK)
                         {
-                            string f = sfdCSV.FileName;
+                            string f = sfdExportCsv.FileName;
                             DataTable t = LogReader.TableFromFile(sel, false, false);
                             t.ToCSV(f);
                             MessageBox.Show("Successfully exported log file to CSV", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                        MessageBox.Show("Selected file does not exist", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    MessageBox.Show("Nothing is selected", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred whilst exporting your log file. Details:\n\n" + ex, "IO Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private void itmJson_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstLogFiles.SelectedIndex > -1)
+                {
+                    string sel = dir + @"\" + lstLogFiles.SelectedItem;
+                    if (File.Exists(sel))
+                    {
+                        if (sfdExportJson.ShowDialog() == DialogResult.OK)
+                        {
+                            string f = sfdExportJson.FileName;
+                            DataTable t = LogReader.TableFromFile(sel, false, false);
+                            t.ToJson(f);
+                            MessageBox.Show("Successfully exported log file to JSON", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                     else

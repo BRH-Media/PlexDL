@@ -40,10 +40,12 @@ namespace PlexDL.UI
             this.itmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmGoToLine = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmCSV = new System.Windows.Forms.ToolStripMenuItem();
-            this.sfdCSV = new System.Windows.Forms.SaveFileDialog();
+            this.itmCsv = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmBackup = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExportCsv = new System.Windows.Forms.SaveFileDialog();
+            this.itmJson = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExportJson = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
@@ -143,6 +145,22 @@ namespace PlexDL.UI
             this.itmGoToLine.Text = "Go To Line";
             this.itmGoToLine.Click += new System.EventHandler(this.itmGoToLine_Click);
             // 
+            // itmExport
+            // 
+            this.itmExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCsv,
+            this.itmJson});
+            this.itmExport.Name = "itmExport";
+            this.itmExport.Size = new System.Drawing.Size(53, 20);
+            this.itmExport.Text = "Export";
+            // 
+            // itmCsv
+            // 
+            this.itmCsv.Name = "itmCsv";
+            this.itmCsv.Size = new System.Drawing.Size(180, 22);
+            this.itmCsv.Text = "To CSV";
+            this.itmCsv.Click += new System.EventHandler(this.itmCSV_Click);
+            // 
             // itmBackup
             // 
             this.itmBackup.Name = "itmBackup";
@@ -151,25 +169,24 @@ namespace PlexDL.UI
             this.itmBackup.Text = "Backup";
             this.itmBackup.Click += new System.EventHandler(this.itmBackup_Click);
             // 
-            // itmExport
+            // sfdExportCsv
             // 
-            this.itmExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmCSV});
-            this.itmExport.Name = "itmExport";
-            this.itmExport.Size = new System.Drawing.Size(53, 20);
-            this.itmExport.Text = "Export";
+            this.sfdExportCsv.DefaultExt = "csv";
+            this.sfdExportCsv.Filter = "CSV File|*.csv";
+            this.sfdExportCsv.Title = "Export";
             // 
-            // itmCSV
+            // itmJson
             // 
-            this.itmCSV.Name = "itmCSV";
-            this.itmCSV.Size = new System.Drawing.Size(180, 22);
-            this.itmCSV.Text = "To CSV";
-            this.itmCSV.Click += new System.EventHandler(this.itmCSV_Click);
+            this.itmJson.Name = "itmJson";
+            this.itmJson.Size = new System.Drawing.Size(180, 22);
+            this.itmJson.Text = "To JSON";
+            this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
             // 
-            // sfdCSV
+            // sfdExportJson
             // 
-            this.sfdCSV.Filter = "CSV File|*.csv";
-            this.sfdCSV.Title = "Export";
+            this.sfdExportJson.DefaultExt = "json";
+            this.sfdExportJson.Filter = "JSON File|*.json";
+            this.sfdExportJson.Title = "Export";
             // 
             // LogViewer
             // 
@@ -207,7 +224,9 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmGoToLine;
         private ToolStripMenuItem itmBackup;
         private ToolStripMenuItem itmExport;
-        private ToolStripMenuItem itmCSV;
-        private SaveFileDialog sfdCSV;
+        private ToolStripMenuItem itmCsv;
+        private SaveFileDialog sfdExportCsv;
+        private ToolStripMenuItem itmJson;
+        private SaveFileDialog sfdExportJson;
     }
 }
