@@ -123,6 +123,7 @@ namespace PlexDL.UI
                     if (table.Rows.Count > 0)
                     {
                         sfdExport.Filter = "CSV File|*.csv";
+                        sfdExport.DefaultExt = "csv";
                         if (sfdExport.ShowDialog() == DialogResult.OK)
                         {
                             string file = sfdExport.FileName;
@@ -151,6 +152,7 @@ namespace PlexDL.UI
                     if (table.Rows.Count > 0)
                     {
                         sfdExport.Filter = "LOGDEL File|*.logdel";
+                        sfdExport.DefaultExt = "logdel";
                         if (sfdExport.ShowDialog() == DialogResult.OK)
                         {
                             string file = sfdExport.FileName;
@@ -179,6 +181,7 @@ namespace PlexDL.UI
                     if (table.Rows.Count > 0)
                     {
                         sfdExport.Filter = "JSON File|*.json";
+                        sfdExport.DefaultExt = "json";
                         if (sfdExport.ShowDialog() == DialogResult.OK)
                         {
                             string file = sfdExport.FileName;
@@ -207,6 +210,7 @@ namespace PlexDL.UI
                     if (table.Rows.Count > 0)
                     {
                         sfdExport.Filter = "XML File|*.xml";
+                        sfdExport.DefaultExt = "xml";
                         if (sfdExport.ShowDialog() == DialogResult.OK)
                         {
                             string file = sfdExport.FileName;
