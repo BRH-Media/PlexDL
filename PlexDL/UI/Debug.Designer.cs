@@ -33,7 +33,13 @@
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
             this.tlpDebug = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.gbCsvExport = new System.Windows.Forms.GroupBox();
+            this.gbExportFormat = new System.Windows.Forms.GroupBox();
+            this.cbxExportFormat = new System.Windows.Forms.ComboBox();
+            this.gbExportMode = new System.Windows.Forms.GroupBox();
+            this.pnlExportMode = new System.Windows.Forms.Panel();
+            this.radModeTable = new System.Windows.Forms.RadioButton();
+            this.radModeView = new System.Windows.Forms.RadioButton();
+            this.gbDataExport = new System.Windows.Forms.GroupBox();
             this.btnExportFiltered = new System.Windows.Forms.Button();
             this.btnExportSections = new System.Windows.Forms.Button();
             this.btnExportEpisodes = new System.Windows.Forms.Button();
@@ -52,24 +58,18 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
-            this.radModeView = new System.Windows.Forms.RadioButton();
-            this.radModeTable = new System.Windows.Forms.RadioButton();
-            this.pnlExportMode = new System.Windows.Forms.Panel();
-            this.gbExportMode = new System.Windows.Forms.GroupBox();
-            this.gbExportFormat = new System.Windows.Forms.GroupBox();
-            this.cbxExportFormat = new System.Windows.Forms.ComboBox();
             this.tlpDebug.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.gbCsvExport.SuspendLayout();
+            this.gbExportFormat.SuspendLayout();
+            this.gbExportMode.SuspendLayout();
+            this.pnlExportMode.SuspendLayout();
+            this.gbDataExport.SuspendLayout();
             this.gbGlobalFlags.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).BeginInit();
             this.tlpControls.SuspendLayout();
             this.tlpPollRate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPollRateValue)).BeginInit();
             this.tlpRefreshCount.SuspendLayout();
-            this.pnlExportMode.SuspendLayout();
-            this.gbExportMode.SuspendLayout();
-            this.gbExportFormat.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrAutoRefresh
@@ -108,7 +108,7 @@
             // 
             this.groupBox1.Controls.Add(this.gbExportFormat);
             this.groupBox1.Controls.Add(this.gbExportMode);
-            this.groupBox1.Controls.Add(this.gbCsvExport);
+            this.groupBox1.Controls.Add(this.gbDataExport);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(228, 3);
             this.groupBox1.Name = "groupBox1";
@@ -118,19 +118,84 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Global Values";
             // 
-            // gbCsvExport
+            // gbExportFormat
             // 
-            this.gbCsvExport.Controls.Add(this.btnExportFiltered);
-            this.gbCsvExport.Controls.Add(this.btnExportSections);
-            this.gbCsvExport.Controls.Add(this.btnExportEpisodes);
-            this.gbCsvExport.Controls.Add(this.btnExportTitles);
-            this.gbCsvExport.Controls.Add(this.btnExportSeasons);
-            this.gbCsvExport.Location = new System.Drawing.Point(6, 19);
-            this.gbCsvExport.Name = "gbCsvExport";
-            this.gbCsvExport.Size = new System.Drawing.Size(207, 164);
-            this.gbCsvExport.TabIndex = 4;
-            this.gbCsvExport.TabStop = false;
-            this.gbCsvExport.Text = "CSV Export";
+            this.gbExportFormat.Controls.Add(this.cbxExportFormat);
+            this.gbExportFormat.Location = new System.Drawing.Point(6, 189);
+            this.gbExportFormat.Name = "gbExportFormat";
+            this.gbExportFormat.Size = new System.Drawing.Size(204, 49);
+            this.gbExportFormat.TabIndex = 9;
+            this.gbExportFormat.TabStop = false;
+            this.gbExportFormat.Text = "Export Format";
+            // 
+            // cbxExportFormat
+            // 
+            this.cbxExportFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxExportFormat.FormattingEnabled = true;
+            this.cbxExportFormat.Items.AddRange(new object[] {
+            "CSV",
+            "JSON",
+            "XML",
+            "LOGDEL"});
+            this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
+            this.cbxExportFormat.Name = "cbxExportFormat";
+            this.cbxExportFormat.Size = new System.Drawing.Size(192, 21);
+            this.cbxExportFormat.TabIndex = 0;
+            // 
+            // gbExportMode
+            // 
+            this.gbExportMode.Controls.Add(this.pnlExportMode);
+            this.gbExportMode.Location = new System.Drawing.Point(6, 251);
+            this.gbExportMode.Name = "gbExportMode";
+            this.gbExportMode.Size = new System.Drawing.Size(204, 49);
+            this.gbExportMode.TabIndex = 8;
+            this.gbExportMode.TabStop = false;
+            this.gbExportMode.Text = "Export Mode";
+            // 
+            // pnlExportMode
+            // 
+            this.pnlExportMode.Controls.Add(this.radModeTable);
+            this.pnlExportMode.Controls.Add(this.radModeView);
+            this.pnlExportMode.Location = new System.Drawing.Point(6, 19);
+            this.pnlExportMode.Name = "pnlExportMode";
+            this.pnlExportMode.Size = new System.Drawing.Size(114, 24);
+            this.pnlExportMode.TabIndex = 7;
+            // 
+            // radModeTable
+            // 
+            this.radModeTable.AutoSize = true;
+            this.radModeTable.Checked = true;
+            this.radModeTable.Location = new System.Drawing.Point(3, 3);
+            this.radModeTable.Name = "radModeTable";
+            this.radModeTable.Size = new System.Drawing.Size(52, 17);
+            this.radModeTable.TabIndex = 6;
+            this.radModeTable.TabStop = true;
+            this.radModeTable.Text = "Table";
+            this.radModeTable.UseVisualStyleBackColor = true;
+            // 
+            // radModeView
+            // 
+            this.radModeView.AutoSize = true;
+            this.radModeView.Location = new System.Drawing.Point(61, 3);
+            this.radModeView.Name = "radModeView";
+            this.radModeView.Size = new System.Drawing.Size(48, 17);
+            this.radModeView.TabIndex = 5;
+            this.radModeView.Text = "View";
+            this.radModeView.UseVisualStyleBackColor = true;
+            // 
+            // gbDataExport
+            // 
+            this.gbDataExport.Controls.Add(this.btnExportFiltered);
+            this.gbDataExport.Controls.Add(this.btnExportSections);
+            this.gbDataExport.Controls.Add(this.btnExportEpisodes);
+            this.gbDataExport.Controls.Add(this.btnExportTitles);
+            this.gbDataExport.Controls.Add(this.btnExportSeasons);
+            this.gbDataExport.Location = new System.Drawing.Point(6, 19);
+            this.gbDataExport.Name = "gbDataExport";
+            this.gbDataExport.Size = new System.Drawing.Size(207, 164);
+            this.gbDataExport.TabIndex = 4;
+            this.gbDataExport.TabStop = false;
+            this.gbDataExport.Text = "Data Export";
             // 
             // btnExportFiltered
             // 
@@ -375,71 +440,6 @@
             this.sfdExport.DefaultExt = "csv";
             this.sfdExport.Title = "Export";
             // 
-            // radModeView
-            // 
-            this.radModeView.AutoSize = true;
-            this.radModeView.Location = new System.Drawing.Point(61, 3);
-            this.radModeView.Name = "radModeView";
-            this.radModeView.Size = new System.Drawing.Size(48, 17);
-            this.radModeView.TabIndex = 5;
-            this.radModeView.Text = "View";
-            this.radModeView.UseVisualStyleBackColor = true;
-            // 
-            // radModeTable
-            // 
-            this.radModeTable.AutoSize = true;
-            this.radModeTable.Checked = true;
-            this.radModeTable.Location = new System.Drawing.Point(3, 3);
-            this.radModeTable.Name = "radModeTable";
-            this.radModeTable.Size = new System.Drawing.Size(52, 17);
-            this.radModeTable.TabIndex = 6;
-            this.radModeTable.TabStop = true;
-            this.radModeTable.Text = "Table";
-            this.radModeTable.UseVisualStyleBackColor = true;
-            // 
-            // pnlExportMode
-            // 
-            this.pnlExportMode.Controls.Add(this.radModeTable);
-            this.pnlExportMode.Controls.Add(this.radModeView);
-            this.pnlExportMode.Location = new System.Drawing.Point(6, 19);
-            this.pnlExportMode.Name = "pnlExportMode";
-            this.pnlExportMode.Size = new System.Drawing.Size(114, 24);
-            this.pnlExportMode.TabIndex = 7;
-            // 
-            // gbExportMode
-            // 
-            this.gbExportMode.Controls.Add(this.pnlExportMode);
-            this.gbExportMode.Location = new System.Drawing.Point(6, 251);
-            this.gbExportMode.Name = "gbExportMode";
-            this.gbExportMode.Size = new System.Drawing.Size(204, 49);
-            this.gbExportMode.TabIndex = 8;
-            this.gbExportMode.TabStop = false;
-            this.gbExportMode.Text = "Export Mode";
-            // 
-            // gbExportFormat
-            // 
-            this.gbExportFormat.Controls.Add(this.cbxExportFormat);
-            this.gbExportFormat.Location = new System.Drawing.Point(6, 189);
-            this.gbExportFormat.Name = "gbExportFormat";
-            this.gbExportFormat.Size = new System.Drawing.Size(204, 49);
-            this.gbExportFormat.TabIndex = 9;
-            this.gbExportFormat.TabStop = false;
-            this.gbExportFormat.Text = "Export Format";
-            // 
-            // cbxExportFormat
-            // 
-            this.cbxExportFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxExportFormat.FormattingEnabled = true;
-            this.cbxExportFormat.Items.AddRange(new object[] {
-            "CSV",
-            "JSON",
-            "XML",
-            "LOGDEL"});
-            this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
-            this.cbxExportFormat.Name = "cbxExportFormat";
-            this.cbxExportFormat.Size = new System.Drawing.Size(192, 21);
-            this.cbxExportFormat.TabIndex = 0;
-            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -456,17 +456,17 @@
             this.Load += new System.EventHandler(this.Debug_Load);
             this.tlpDebug.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.gbCsvExport.ResumeLayout(false);
+            this.gbExportFormat.ResumeLayout(false);
+            this.gbExportMode.ResumeLayout(false);
+            this.pnlExportMode.ResumeLayout(false);
+            this.pnlExportMode.PerformLayout();
+            this.gbDataExport.ResumeLayout(false);
             this.gbGlobalFlags.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).EndInit();
             this.tlpControls.ResumeLayout(false);
             this.tlpPollRate.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numPollRateValue)).EndInit();
             this.tlpRefreshCount.ResumeLayout(false);
-            this.pnlExportMode.ResumeLayout(false);
-            this.pnlExportMode.PerformLayout();
-            this.gbExportMode.ResumeLayout(false);
-            this.gbExportFormat.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,7 +491,7 @@
         private System.Windows.Forms.Button btnExportSections;
         private System.Windows.Forms.Button btnExportSeasons;
         private System.Windows.Forms.Button btnExportEpisodes;
-        private System.Windows.Forms.GroupBox gbCsvExport;
+        private System.Windows.Forms.GroupBox gbDataExport;
         private System.Windows.Forms.NumericUpDown numPollRateValue;
         private System.Windows.Forms.SaveFileDialog sfdExport;
         private System.Windows.Forms.Button btnExportFiltered;
