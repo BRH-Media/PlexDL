@@ -23,28 +23,31 @@ namespace PlexDL.Common.SearchFramework
                 });
             else
                 gridToRender.DataSource = dataToRender;
+            e.Result = dataToRender;
         }
 
         private static void RenderWithStruct(object sender, WaitWindowEventArgs e)
         {
             var gridToRender = (DataGridView)e.Arguments[0];
             var renderInfo = (RenderStruct)e.Arguments[1];
-            GenericRenderer.RenderView(renderInfo, gridToRender);
+            e.Result = GenericRenderer.RenderView(renderInfo, gridToRender);
         }
 
-        private static void RenderResult(DataGridView dgvTarget, RenderStruct info)
+        private static DataTable RenderResult(DataGridView dgvTarget, RenderStruct info)
         {
             var message = "Preparing results";
             if (dgvTarget != null && info != null)
                 if (info.Data != null)
-                    WaitWindow.WaitWindow.Show(RenderWithStruct, message, dgvTarget, info);
+                    return (DataTable)WaitWindow.WaitWindow.Show(RenderWithStruct, message, dgvTarget, info);
+            return null;
         }
 
-        private static void RenderResult(DataGridView dgvTarget, DataTable data)
+        private static DataTable RenderResult(DataGridView dgvTarget, DataTable data)
         {
             var message = "Preparing results";
             if (dgvTarget != null && data != null)
-                WaitWindow.WaitWindow.Show(RenderWithNoStruct, message, dgvTarget, data);
+                return (DataTable)WaitWindow.WaitWindow.Show(RenderWithNoStruct, message, dgvTarget, data);
+            return null;
         }
 
         public static bool RunTitleSearch(DataGridView dgvTarget, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
@@ -71,23 +74,27 @@ namespace PlexDL.Common.SearchFramework
 
                         //MessageBox.Show(data.SearchRule.ToString());
 
-                        var filteredTable = Workers.GetFilteredTable(data, false);
+                        DataTable filteredTable = Workers.GetFilteredTable(data, false);
+                        DataTable filteredView = null;
                         //MessageBox.Show(filteredTable.Rows.Count.ToString());
 
                         if (filteredTable == null)
                             return false;
                         if (dgvRenderInfo == null)
                         {
-                            RenderResult(dgvTarget, filteredTable);
+                            filteredView = RenderResult(dgvTarget, filteredTable);
                         }
                         else if (dgvRenderInfo.Data != null)
                         {
                             dgvRenderInfo.Data = filteredTable;
-                            RenderResult(dgvTarget, dgvRenderInfo);
+                            filteredView = RenderResult(dgvTarget, dgvRenderInfo);
                         }
 
                         if (copyToGlobalTables)
+                        {
                             GlobalTables.FilteredTable = filteredTable;
+                            GlobalViews.FilteredViewTable = filteredView;
+                        }
                         return true;
                     }
 

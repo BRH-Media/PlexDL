@@ -1,9 +1,10 @@
-﻿using PlexDL.Common;
+﻿using LogDel.Utilities;
+using PlexDL.Common;
 using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -17,6 +18,7 @@ namespace PlexDL.UI
         public Debug()
         {
             InitializeComponent();
+            cbxExportFormat.SelectedIndex = 0;
         }
 
         private void ShowError(string error, string type = "Validation Error")
@@ -31,18 +33,45 @@ namespace PlexDL.UI
 
         private void ExportSections()
         {
-            ExportTableCsv(GlobalTables.SectionsTable);
+            if (radModeTable.Checked)
+                ProcessExport(GlobalTables.SectionsTable);
+            else
+                ProcessExport(GlobalViews.SectionsViewTable);
+        }
+
+        private void ExportMovies()
+        {
+            if (radModeTable.Checked)
+                ProcessExport(GlobalTables.TitlesTable);
+            else
+                ProcessExport(GlobalViews.MoviesViewTable);
+        }
+
+        private void ExportTVTitles()
+        {
+            if (radModeTable.Checked)
+                ProcessExport(GlobalTables.TitlesTable);
+            else
+                ProcessExport(GlobalViews.TvViewTable);
         }
 
         private void ExportTitles()
         {
-            ExportTableCsv(GlobalTables.TitlesTable);
+            if (Flags.IsTVShow)
+                ExportTVTitles();
+            else
+                ExportMovies();
         }
 
         private void ExportFiltered()
         {
             if (Flags.IsFiltered)
-                ExportTableCsv(GlobalTables.FilteredTable);
+            {
+                if (radModeTable.Checked)
+                    ProcessExport(GlobalTables.FilteredTable);
+                else
+                    ProcessExport(GlobalViews.FilteredViewTable);
+            }
             else
                 ShowError("Titles are not currently filtered");
         }
@@ -50,7 +79,12 @@ namespace PlexDL.UI
         private void ExportSeasons()
         {
             if (Flags.IsTVShow)
-                ExportTableCsv(GlobalTables.SeasonsTable);
+            {
+                if (radModeTable.Checked)
+                    ProcessExport(GlobalTables.SeasonsTable);
+                else
+                    ProcessExport(GlobalViews.SeasonsViewTable);
+            }
             else
                 ShowError("PlexDL is not in TV Mode");
         }
@@ -58,9 +92,26 @@ namespace PlexDL.UI
         private void ExportEpisodes()
         {
             if (Flags.IsTVShow)
-                ExportTableCsv(GlobalTables.EpisodesTable);
+            {
+                if (radModeTable.Checked)
+                    ProcessExport(GlobalTables.EpisodesTable);
+                else
+                    ProcessExport(GlobalViews.EpisodesViewTable);
+            }
             else
                 ShowError("PlexDL is not in TV Mode");
+        }
+
+        private void ProcessExport(DataTable data)
+        {
+            if (Equals(cbxExportFormat.SelectedItem, "CSV"))
+                ExportTableCsv(data);
+            else if (Equals(cbxExportFormat.SelectedItem, "XML"))
+                ExportTableXml(data);
+            else if (Equals(cbxExportFormat.SelectedItem, "LOGDEL"))
+                ExportTableLogdel(data);
+            else if (Equals(cbxExportFormat.SelectedItem, "JSON"))
+                ExportTableJson(data);
         }
 
         private void ExportTableCsv(DataTable table)
@@ -71,10 +122,95 @@ namespace PlexDL.UI
                 {
                     if (table.Rows.Count > 0)
                     {
-                        if (sfdExportCsv.ShowDialog() == DialogResult.OK)
+                        sfdExport.Filter = "CSV File|*.csv";
+                        if (sfdExport.ShowDialog() == DialogResult.OK)
                         {
-                            string file = sfdExportCsv.FileName;
+                            string file = sfdExport.FileName;
                             table.ToCSV(file);
+                            ShowInfo("Success!");
+                        }
+                    }
+                    else
+                        ShowError("Couldn't export; table has no rows.");
+                }
+                else
+                    ShowError("Couldn't export; table is null.");
+            }
+            catch (Exception ex)
+            {
+                ShowError("Error occurred whilst exporting table:\n\n" + ex);
+            }
+        }
+
+        private void ExportTableLogdel(DataTable table)
+        {
+            try
+            {
+                if (table != null)
+                {
+                    if (table.Rows.Count > 0)
+                    {
+                        sfdExport.Filter = "LOGDEL File|*.logdel";
+                        if (sfdExport.ShowDialog() == DialogResult.OK)
+                        {
+                            string file = sfdExport.FileName;
+                            table.ToLogdel(file);
+                            ShowInfo("Success!");
+                        }
+                    }
+                    else
+                        ShowError("Couldn't export; table has no rows.");
+                }
+                else
+                    ShowError("Couldn't export; table is null.");
+            }
+            catch (Exception ex)
+            {
+                ShowError("Error occurred whilst exporting table:\n\n" + ex);
+            }
+        }
+
+        private void ExportTableJson(DataTable table)
+        {
+            try
+            {
+                if (table != null)
+                {
+                    if (table.Rows.Count > 0)
+                    {
+                        sfdExport.Filter = "JSON File|*.json";
+                        if (sfdExport.ShowDialog() == DialogResult.OK)
+                        {
+                            string file = sfdExport.FileName;
+                            table.ToJson(file);
+                            ShowInfo("Success!");
+                        }
+                    }
+                    else
+                        ShowError("Couldn't export; table has no rows.");
+                }
+                else
+                    ShowError("Couldn't export; table is null.");
+            }
+            catch (Exception ex)
+            {
+                ShowError("Error occurred whilst exporting table:\n\n" + ex);
+            }
+        }
+
+        private void ExportTableXml(DataTable table)
+        {
+            try
+            {
+                if (table != null)
+                {
+                    if (table.Rows.Count > 0)
+                    {
+                        sfdExport.Filter = "XML File|*.xml";
+                        if (sfdExport.ShowDialog() == DialogResult.OK)
+                        {
+                            string file = sfdExport.FileName;
+                            table.ToXml(file);
                             ShowInfo("Success!");
                         }
                     }

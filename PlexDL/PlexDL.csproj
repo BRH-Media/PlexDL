@@ -135,6 +135,7 @@
     <Compile Include="Common\DefaultStringVariables.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />
+    <Compile Include="Common\Globals\GlobalViews.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />

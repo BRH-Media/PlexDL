@@ -1,0 +1,14 @@
+﻿using System.Data;
+
+namespace PlexDL.Common.Globals
+{
+    public static class GlobalViews
+    {
+        public static DataTable MoviesViewTable { get; set; }
+        public static DataTable TvViewTable { get; set; }
+        public static DataTable SectionsViewTable { get; set; }
+        public static DataTable SeasonsViewTable { get; set; }
+        public static DataTable EpisodesViewTable { get; set; }
+        public static DataTable FilteredViewTable { get; set; }
+    }
+}

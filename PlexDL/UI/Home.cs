@@ -766,7 +766,7 @@ namespace PlexDL.UI
             LoggingHelpers.RecordGenericEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGenericEntry("Binding to grid");
-            RenderSeriesView(GlobalTables.SeasonsTable);
+            RenderSeasonsView(GlobalTables.SeasonsTable);
 
             //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -910,7 +910,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                GlobalTables.ContentViewTable = GenericRenderer.RenderView(info, dgvMovies);
+                GlobalViews.MoviesViewTable = GenericRenderer.RenderView(info, dgvMovies);
 
                 SelectMoviesTab();
             }
@@ -1032,13 +1032,13 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                GlobalTables.TvViewTable = GenericRenderer.RenderView(info, dgvTVShows);
+                GlobalViews.TvViewTable = GenericRenderer.RenderView(info, dgvTVShows);
 
                 SelectTVTab();
             }
         }
 
-        private void RenderSeriesView(DataTable content)
+        private void RenderSeasonsView(DataTable content)
         {
             if (content == null)
             {
@@ -1055,7 +1055,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                GenericRenderer.RenderView(info, dgvSeasons);
+                GlobalViews.SeasonsViewTable = GenericRenderer.RenderView(info, dgvSeasons);
             }
         }
 
@@ -1076,7 +1076,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                GenericRenderer.RenderView(info, dgvEpisodes);
+                GlobalViews.EpisodesViewTable = GenericRenderer.RenderView(info, dgvEpisodes);
             }
         }
 
@@ -1452,6 +1452,7 @@ namespace PlexDL.UI
                     else
                     {
                         Flags.IsFiltered = false;
+                        GlobalViews.FilteredViewTable = null;
                         GlobalTables.FilteredTable = null;
                         SetStartSearch();
                     }
@@ -1617,14 +1618,6 @@ namespace PlexDL.UI
             }
         }
 
-        private void DebugFormToTop()
-        {
-            if (GlobalStaticVars.DebugForm != null)
-            {
-                GlobalStaticVars.DebugForm.TopMost = true;
-            }
-        }
-
         private void SetSessionID()
         {
             lblSidValue.Text = GlobalStaticVars.CurrentSessionId;
@@ -1640,7 +1633,6 @@ namespace PlexDL.UI
 
         private void Home_Focus(object sender, EventArgs e)
         {
-
         }
 
         private void Home_Load(object sender, EventArgs e)
@@ -1651,8 +1643,6 @@ namespace PlexDL.UI
                 {
                     GlobalStaticVars.DebugForm = new Debug();
                     SetDebugLocation();
-                    DebugFormToTop();
-                    TopMost = true;
                     GlobalStaticVars.DebugForm.Show();
                 }
 

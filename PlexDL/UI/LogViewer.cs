@@ -1,4 +1,5 @@
 ﻿using LogDel;
+using LogDel.Utilities;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.SearchFramework;

@@ -10,8 +10,6 @@ namespace PlexDL.Common.Globals
         public static DataTable SeasonsTable { get; set; }
         public static DataTable EpisodesTable { get; set; }
         public static DataTable SectionsTable { get; set; }
-        public static DataTable ContentViewTable { get; set; }
-        public static DataTable TvViewTable { get; set; }
 
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
