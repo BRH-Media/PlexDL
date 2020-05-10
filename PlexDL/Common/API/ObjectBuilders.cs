@@ -8,7 +8,7 @@ namespace PlexDL.Common.API
 {
     public static class ObjectBuilders
     {
-        public static PlexTVShow GetTvObjectFromIndex(int index)
+        public static PlexTVShow GetTvObjectFromIndex(int index, bool formatLinkDownload)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace PlexDL.Common.API
                 {
                     LoggingHelpers.RecordGenericEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
@@ -65,7 +65,7 @@ namespace PlexDL.Common.API
             }
         }
 
-        public static PlexMovie GetMovieObjectFromIndex(int index)
+        public static PlexMovie GetMovieObjectFromIndex(int index, bool formatLinkDownload)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace PlexDL.Common.API
                 {
                     LoggingHelpers.RecordGenericEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 
                     if (dlInfo != null)
                     {

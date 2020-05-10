@@ -275,14 +275,14 @@ namespace PlexDL.UI
                 if (!Flags.IsTVShow)
                 {
                     result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                        "Getting Metadata");
+                        "Getting Metadata", new object[] { false });
                 }
                 else
                 {
                     if (dgvEpisodes.SelectedRows.Count == 1)
                     {
                         result = (PlexTVShow)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
-                            "Getting Metadata");
+                            "Getting Metadata", new object[] { false });
                     }
                     else
                     {
@@ -431,25 +431,25 @@ namespace PlexDL.UI
 
         #region PlexMovieBuilders
 
-        private PlexMovie GetMovieObjectFromSelection()
+        private PlexMovie GetMovieObjectFromSelection(bool formatLinkDownload)
         {
             var obj = new PlexMovie();
             if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
             {
                 var index = GlobalTables.GetTableIndexFromDgv(dgvMovies);
-                obj = ObjectBuilders.GetMovieObjectFromIndex(index);
+                obj = ObjectBuilders.GetMovieObjectFromIndex(index, formatLinkDownload);
             }
 
             return obj;
         }
 
-        private PlexTVShow GetTvObjectFromSelection()
+        private PlexTVShow GetTvObjectFromSelection(bool formatLinkDownload)
         {
             var obj = new PlexTVShow();
             if (dgvTVShows.SelectedRows.Count == 1 && dgvEpisodes.SelectedRows.Count == 1)
             {
                 var index = GlobalTables.GetTableIndexFromDgv(dgvEpisodes, GlobalTables.EpisodesTable);
-                obj = ObjectBuilders.GetTvObjectFromIndex(index);
+                obj = ObjectBuilders.GetTvObjectFromIndex(index, formatLinkDownload);
             }
 
             return obj;
@@ -603,7 +603,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void DoStreamExport()
+        private void DoStreamExport(bool formatLinkDownload = true)
         {
             try
             {
@@ -611,9 +611,9 @@ namespace PlexDL.UI
                 {
                     PlexObject content = null;
                     if (Flags.IsTVShow)
-                        content = GetTvObjectFromSelection();
+                        content = GetTvObjectFromSelection(formatLinkDownload);
                     else
-                        content = GetMovieObjectFromSelection();
+                        content = GetMovieObjectFromSelection(formatLinkDownload);
 
                     if (sfdExport.ShowDialog() == DialogResult.OK)
                         ImportExport.MetadataToFile(sfdExport.FileName, content);
@@ -810,7 +810,7 @@ namespace PlexDL.UI
                         {
                             lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + GlobalTables.EpisodesTable.Rows.Count;
                         });
-                        var show = ObjectBuilders.GetTvObjectFromIndex(index);
+                        var show = ObjectBuilders.GetTvObjectFromIndex(index, true);
                         var dlInfo = show.StreamInformation;
                         var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
                             DownloadLayout.PlexStandardLayout);
@@ -823,7 +823,7 @@ namespace PlexDL.UI
                 {
                     LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Episode metadata");
                     BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
-                    var show = GetTvObjectFromSelection();
+                    var show = GetTvObjectFromSelection(true);
                     var dlInfo = show.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
                         DownloadLayout.PlexStandardLayout);
@@ -835,7 +835,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
                 BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
-                var movie = GetMovieObjectFromSelection();
+                var movie = GetMovieObjectFromSelection(true);
                 var dlInfo = movie.StreamInformation;
                 dlInfo.DownloadPath = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\Movies";
                 GlobalStaticVars.Queue.Add(dlInfo);
@@ -1139,12 +1139,14 @@ namespace PlexDL.UI
 
         private void GetMovieObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            e.Result = GetMovieObjectFromSelection();
+            bool formatLinkDownload = (bool)e.Arguments[0];
+            e.Result = GetMovieObjectFromSelection(formatLinkDownload);
         }
 
         private void GetTVObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            e.Result = GetTvObjectFromSelection();
+            bool formatLinkDownload = (bool)e.Arguments[0];
+            e.Result = GetTvObjectFromSelection(formatLinkDownload);
         }
 
         #endregion PlexAPIWorkers
@@ -1759,7 +1761,7 @@ namespace PlexDL.UI
             //nothing, more or less.
         }
 
-        private void DoubleClickLaunch()
+        private void DoubleClickLaunch(bool formatLinkDownload = false)
         {
             PlexObject stream = null;
 
@@ -1767,7 +1769,7 @@ namespace PlexDL.UI
             {
                 if (dgvMovies.SelectedRows.Count == 1)
                 {
-                    var obj = GetMovieObjectFromSelection();
+                    var obj = GetMovieObjectFromSelection(formatLinkDownload);
                     if (obj != null)
                     {
                         stream = obj;
@@ -1780,7 +1782,7 @@ namespace PlexDL.UI
             {
                 if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
                 {
-                    var obj = GetTvObjectFromSelection();
+                    var obj = GetTvObjectFromSelection(formatLinkDownload);
                     if (obj != null)
                     {
                         stream = obj;

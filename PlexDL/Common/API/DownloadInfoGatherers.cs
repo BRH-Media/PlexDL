@@ -9,7 +9,7 @@ namespace PlexDL.Common.API
 {
     public static class DownloadInfoGatherers
     {
-        public static DownloadInfo GetContentDownloadInfo(XmlDocument xml)
+        public static DownloadInfo GetContentDownloadInfo(XmlDocument xml, bool formatLinkDownload)
         {
             try
             {
@@ -49,7 +49,15 @@ namespace PlexDL.Common.API
                     var contentDuration = Convert.ToInt32(partRow["duration"]);
                     var fileName = Methods.RemoveIllegalCharacters(title + "." + container);
 
-                    var link = GlobalStaticVars.GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GlobalStaticVars.GetToken();
+                    var link = "";
+
+                    //The PMS (Plex Media Server) will return the file as an octet-stream (download) if we set
+                    //the GET parameter 'download' to '1' and a normal MP4 stream if we set it to '0'.
+                    if (!formatLinkDownload)
+                        link = GlobalStaticVars.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + GlobalStaticVars.GetToken();
+                    else
+                        link = GlobalStaticVars.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + GlobalStaticVars.GetToken();
+
                     obj.Link = link;
                     obj.Container = container;
                     obj.ByteLength = byteLength;

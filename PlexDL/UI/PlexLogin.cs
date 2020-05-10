@@ -2,6 +2,7 @@
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
@@ -11,6 +12,8 @@ namespace PlexDL.UI
         public bool Success { get; set; } = false;
         public string AccountToken { get; set; } = "";
 
+        private string rememberMeFile { get; set; } = "plex.account";
+
         public PlexLogin()
         {
             InitializeComponent();
@@ -18,6 +21,25 @@ namespace PlexDL.UI
 
         private void PlexLogin_Load(object sender, EventArgs e)
         {
+            LoadRememberMe();
+        }
+
+        private void LoadRememberMe()
+        {
+            if (File.Exists(rememberMeFile))
+            {
+                var lines = File.ReadAllLines(rememberMeFile);
+                //only meant to be two lines:
+                //1: Username/email
+                //2: Password
+                //anymore than that, and it's invalid.
+                if (Equals(lines.Length,2))
+                {
+                    //set the UI with values from the file
+                    txtUsername.Text = lines[0];
+                    txtPassword.Text = lines[1];
+                }
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -61,6 +83,25 @@ namespace PlexDL.UI
             }
         }
 
+        private void RememberMe(bool status)
+        {
+            try
+            {
+                if (status)
+                {
+                    var username = txtUsername.Text;
+                    var password = txtPassword.Text;
+                    var content = username + "\n" + password;
+                    File.WriteAllText(rememberMeFile, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and ignore the error
+                LoggingHelpers.RecordException(ex.Message, "RememberMeError");
+            }
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             try
@@ -73,6 +114,7 @@ namespace PlexDL.UI
                         // valid account tokens are always 20 characters in length
                         if (token.Length == 20)
                         {
+                            RememberMe(chkRememberMe.Checked);
                             MessageBox.Show("Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AccountToken = token;
                             Success = true;
