@@ -278,5 +278,10 @@ namespace PlexDL.UI
                 return;
             }
         }
+
+        private void menuMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

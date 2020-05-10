@@ -42,9 +42,9 @@ namespace PlexDL.UI
             this.itmGoToLine = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCsv = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmJson = new System.Windows.Forms.ToolStripMenuItem();
             this.itmBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExportCsv = new System.Windows.Forms.SaveFileDialog();
-            this.itmJson = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExportJson = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.tlpMain.SuspendLayout();
@@ -120,6 +120,7 @@ namespace PlexDL.UI
             this.menuMain.Size = new System.Drawing.Size(674, 24);
             this.menuMain.TabIndex = 17;
             this.menuMain.Text = "menuStrip1";
+            this.menuMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuMain_ItemClicked);
             // 
             // itmRefresh
             // 
@@ -161,6 +162,13 @@ namespace PlexDL.UI
             this.itmCsv.Text = "To CSV";
             this.itmCsv.Click += new System.EventHandler(this.itmCSV_Click);
             // 
+            // itmJson
+            // 
+            this.itmJson.Name = "itmJson";
+            this.itmJson.Size = new System.Drawing.Size(180, 22);
+            this.itmJson.Text = "To JSON";
+            this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
+            // 
             // itmBackup
             // 
             this.itmBackup.Name = "itmBackup";
@@ -174,13 +182,6 @@ namespace PlexDL.UI
             this.sfdExportCsv.DefaultExt = "csv";
             this.sfdExportCsv.Filter = "CSV File|*.csv";
             this.sfdExportCsv.Title = "Export";
-            // 
-            // itmJson
-            // 
-            this.itmJson.Name = "itmJson";
-            this.itmJson.Size = new System.Drawing.Size(180, 22);
-            this.itmJson.Text = "To JSON";
-            this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
             // 
             // sfdExportJson
             // 

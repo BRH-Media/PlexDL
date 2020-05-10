@@ -42,7 +42,6 @@ namespace PlexDL.UI
             // 
             // btnConnect
             // 
-            this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnConnect.Location = new System.Drawing.Point(12, 94);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnConnect.Name = "btnConnect";

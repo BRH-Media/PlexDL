@@ -5,6 +5,7 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using PlexDL.Properties;
+using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -138,6 +139,46 @@ namespace PlexDL.Common
             CalculatedTime = string.Format("{0}:{1}:{2}", h, mm, ss);
 
             return CalculatedTime;
+        }
+
+        public static bool WebSiteCheckMT(string uri)
+        {
+            var args = new object[] { uri };
+            var available = (bool)WaitWindow.WaitWindow.Show(Methods.CheckWebWorker, "Checking Connection", args);
+            return available;
+        }
+
+        private static void CheckWebWorker(object sender, WaitWindowEventArgs e)
+        {
+            var uri = (string)e.Arguments[0];
+            //check with no wait-window. It's called WebSiteCheckST because of single-threaded...
+            e.Result = WebSiteCheckST(uri);
+        }
+
+        public static bool WebSiteCheckST(string Url)
+        {
+            var Message = string.Empty;
+            var request = (HttpWebRequest)WebRequest.Create(Url);
+
+            // Set the credentials to the current user account
+            request.Credentials = CredentialCache.DefaultCredentials;
+            request.Method = "GET";
+            //the request will timeout after 4.5 seconds
+            request.Timeout = 4500;
+
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    // Do nothing; we're only testing to see if we can get the response
+                }
+            }
+            catch (WebException ex)
+            {
+                Message += (Message.Length > 0 ? "\n" : "") + ex.Message;
+            }
+
+            return Message.Length == 0;
         }
 
         public static string GenerateRandomNumber(int length)

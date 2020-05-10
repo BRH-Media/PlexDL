@@ -21,7 +21,7 @@ namespace PlexDL.UI
             InitializeComponent();
         }
 
-        public Server SelectedServer { get; set; }
+        public Server SelectedServer { get; set; } = null;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -173,9 +173,19 @@ namespace PlexDL.UI
                     {
                         var index = dgvServers.CurrentCell.RowIndex;
                         var s = GlobalStaticVars.PlexServers[index];
-                        SelectedServer = s;
-                        DialogResult = DialogResult.OK;
-                        Close();
+                        //make sure that we can connect to this server.
+                        //This way, we can avoid unwanted errors for the
+                        //user.
+                        if (TestConnection(s.address, s.port.ToString()))
+                        {
+                            SelectedServer = s;
+                            DialogResult = DialogResult.OK;
+                            Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Couldn't connect to \"" + s.address + ":" + s.port + "\"", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
                 else
@@ -192,6 +202,34 @@ namespace PlexDL.UI
             }
         }
 
+        //another method to handle testing a connection
+        //this one's here for logging purposes and such, and is used
+        //solely by the Server Manager
+        private bool TestConnection(string ip, string port)
+        {
+            try
+            {
+                var uri = "http://" + ip + ":" + port +
+                              "/?X-Plex-Token=" + GlobalStaticVars.User.authenticationToken;
+                if (Methods.WebSiteCheckMT(uri))
+                {
+                    return true;
+                }
+                else
+                {
+                    LoggingHelpers.RecordGenericEntry("Couldn't connect to \"" + ip + ":" + port + "\"");
+                    LoggingHelpers.RecordException("Couldn't connect to \"" + ip + ":" + port + "\"", "ConnectionTestError");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordGenericEntry("Couldn't connect to \"" + ip + ":" + port + "\"");
+                LoggingHelpers.RecordException(ex.Message, "ConnectionTestError");
+                return false;
+            }
+        }
+
         private void itmConnect_Click(object sender, EventArgs e)
         {
             DoConnect();
@@ -205,20 +243,23 @@ namespace PlexDL.UI
                 frmDir.ConnectionInfo.PlexAccountToken = GlobalStaticVars.User.authenticationToken;
                 if (frmDir.ShowDialog() == DialogResult.OK)
                 {
-                    GlobalStaticVars.Settings.ConnectionInfo = frmDir.ConnectionInfo;
-                    GlobalStaticVars.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
-                    var s = new Server
+                    if (frmDir.Success)
                     {
-                        accessToken = GlobalStaticVars.User.authenticationToken,
-                        address = GlobalStaticVars.Settings.ConnectionInfo.PlexAddress,
-                        port = GlobalStaticVars.Settings.ConnectionInfo.PlexPort,
-                        name = "DirectConnect"
-                    };
-                    servers.Add(s);
-                    GlobalStaticVars.PlexServers = servers;
-                    SelectedServer = s;
-                    DialogResult = DialogResult.OK;
-                    Close();
+                        GlobalStaticVars.Settings.ConnectionInfo = frmDir.ConnectionInfo;
+                        GlobalStaticVars.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+                        var s = new Server
+                        {
+                            accessToken = GlobalStaticVars.User.authenticationToken,
+                            address = GlobalStaticVars.Settings.ConnectionInfo.PlexAddress,
+                            port = GlobalStaticVars.Settings.ConnectionInfo.PlexPort,
+                            name = "DirectConnect"
+                        };
+                        servers.Add(s);
+                        GlobalStaticVars.PlexServers = servers;
+                        SelectedServer = s;
+                        DialogResult = DialogResult.OK;
+                        Close();
+                    }
                 }
             }
         }
