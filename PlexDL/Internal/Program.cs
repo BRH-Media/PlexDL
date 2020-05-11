@@ -55,6 +55,8 @@ namespace PlexDL.Internal
                         Application.Run(new TestForm());
                     else if (arr.Contains("-t"))
                         Application.Run(new Translator());
+                    else
+                        Application.Run(new Home());
                 }
             }
             else
