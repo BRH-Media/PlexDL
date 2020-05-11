@@ -1,6 +1,6 @@
-﻿using System;
-using PlexDL.AltoHTTP.Classes;
+﻿using PlexDL.AltoHTTP.Classes;
 using PlexDL.AltoHTTP.Enums;
+using System;
 
 namespace PlexDL.AltoHTTP.Interfaces
 {
@@ -14,6 +14,7 @@ namespace PlexDL.AltoHTTP.Interfaces
         string DestPath { get; }
         bool AcceptRange { get; }
         DownloadState State { get; }
+
         event EventHandler DownloadCancelled;
 
         event EventHandler DownloadCompleted;

@@ -71,7 +71,6 @@ namespace PlexDL.UI
             this.itmAuthenticate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.itmAuthenticate.Size = new System.Drawing.Size(87, 20);
             this.itmAuthenticate.Text = "Authenticate";
-            this.itmAuthenticate.Click += new System.EventHandler(this.itmAuthenticate_Click);
             // 
             // itmViaToken
             // 

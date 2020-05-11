@@ -179,6 +179,7 @@ namespace PlexDL.UI
                         if (TestConnection(s.address, s.port.ToString()))
                         {
                             SelectedServer = s;
+                            GlobalStaticVars.Svr = s;
                             DialogResult = DialogResult.OK;
                             Close();
                         }
@@ -278,6 +279,16 @@ namespace PlexDL.UI
                 DoConnect();
         }
 
+        private void SelectServer()
+        {
+            //if we already selected a server, then we can remember this selection based on globals and clever indexing.
+            if (GlobalStaticVars.Svr != null)
+            {
+                var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
+                dgvServers.Rows[svrIndex].Selected = true;
+            }
+        }
+
         private void ServerManager_Load(object sender, EventArgs e)
         {
             try
@@ -287,11 +298,11 @@ namespace PlexDL.UI
                 {
                     // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
                     if (GlobalStaticVars.PlexServers != null)
-                        if (GlobalStaticVars.PlexServers.Count > 0 && GlobalStaticVars.Svr != null)
+                        if (GlobalStaticVars.PlexServers.Count > 0)
                         {
                             RenderServersView(GlobalStaticVars.PlexServers);
-                            var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
-                            dgvServers.Rows[svrIndex].Selected = true;
+                            SelectServer();
+
                             itmConnect.Enabled = true;
                             itmClearServers.Enabled = true;
                             itmLoad.Enabled = true;
@@ -329,10 +340,10 @@ namespace PlexDL.UI
                         {
                             if (frm.Success)
                             {
-                                if (!ApplyToken(frm.AccountToken))
-                                    MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                else
+                                if (ApplyToken(frm.AccountToken))
                                     LoadServers(true);
+                                else
+                                    MessageBox.Show("An unknown error occurred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -436,10 +447,6 @@ namespace PlexDL.UI
             itmConnect.Enabled = false;
             itmLoad.Enabled = false;
             itmClearServers.Enabled = false;
-        }
-
-        private void itmAuthenticate_Click(object sender, EventArgs e)
-        {
         }
     }
 }

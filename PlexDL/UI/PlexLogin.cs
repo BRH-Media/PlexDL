@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
 using System;
@@ -26,19 +27,31 @@ namespace PlexDL.UI
 
         private void LoadRememberMe()
         {
-            if (File.Exists(rememberMeFile))
+            try
             {
-                var lines = File.ReadAllLines(rememberMeFile);
-                //only meant to be two lines:
-                //1: Username/email
-                //2: Password
-                //anymore than that, and it's invalid.
-                if (Equals(lines.Length,2))
+                if (File.Exists(rememberMeFile))
                 {
-                    //set the UI with values from the file
-                    txtUsername.Text = lines[0];
-                    txtPassword.Text = lines[1];
+                    var login = CachedPlexLogin.FromFile(rememberMeFile);
+                    //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
+                    if (login.VerifyThis())
+                    {
+                        //set the UI with values from the file
+                        txtUsername.Text = login.Username;
+                        txtPassword.Text = login.Password;
+                    }
+                    else
+                    {
+                        //delete the file if it's incorrect
+                        File.Delete(rememberMeFile);
+                        //log the event
+                        LoggingHelpers.RecordGenericEntry("Couldn't load 'Remember Me' PlexLogin data: hashes didn't match.");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                //log and ignore the error
+                LoggingHelpers.RecordException(ex.Message, "RememberMeError");
             }
         }
 
@@ -91,8 +104,8 @@ namespace PlexDL.UI
                 {
                     var username = txtUsername.Text;
                     var password = txtPassword.Text;
-                    var content = username + "\n" + password;
-                    File.WriteAllText(rememberMeFile, content);
+                    var login = new CachedPlexLogin(username, password);
+                    login.ToFile(rememberMeFile);
                 }
             }
             catch (Exception ex)

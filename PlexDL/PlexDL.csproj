@@ -137,6 +137,7 @@
     <Compile Include="Common\Globals\GlobalTables.cs" />
     <Compile Include="Common\Globals\GlobalViews.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
+    <Compile Include="Common\MD5Helper.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
     <Compile Include="Common\SearchFramework\Enums\SearchRule.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Common\Structures\AppOptions\Player\PlaybackMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Player\PlayerKeyBindings.cs" />
     <Compile Include="Common\Structures\AppOptions\Player\PlayerSettings.cs" />
+    <Compile Include="Common\Structures\CachedPlexLogin.cs" />
     <Compile Include="Common\Structures\ConnectionInfo.cs" />
     <Compile Include="Common\Structures\AppOptions\ApplicationOptions.cs" />
     <Compile Include="Common\PlayerLaunchers\BrowserLauncher.cs" />

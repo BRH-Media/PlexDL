@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using PlexDL.Common.Caching;
+﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Logging;
+using System;
+using System.Windows.Forms;
 
 namespace PlexDL.UI
 {

@@ -1,5 +1,4 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Structures;
 using System.Collections.Generic;
 
@@ -24,10 +23,10 @@ namespace PlexDL.Common
         {
             DefaultStringVariables.ContentTitle.VariableValue = stream.ContentTitle;
             DefaultStringVariables.FileName.VariableValue = stream.Link;
-            DefaultStringVariables.TokenHash.VariableValue = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            DefaultStringVariables.TokenHash.VariableValue = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
             DefaultStringVariables.ServerPort.VariableValue = GlobalStaticVars.Settings.ConnectionInfo.PlexPort;
             DefaultStringVariables.ServerIp.VariableValue = GlobalStaticVars.Settings.ConnectionInfo.PlexAddress;
-            DefaultStringVariables.ServerHash.VariableValue = Helpers.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            DefaultStringVariables.ServerHash.VariableValue = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
             return new List<StringVariable>
             {
                 DefaultStringVariables.ContentTitle,
