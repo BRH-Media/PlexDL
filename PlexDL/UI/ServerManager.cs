@@ -281,11 +281,19 @@ namespace PlexDL.UI
 
         private void SelectServer()
         {
-            //if we already selected a server, then we can remember this selection based on globals and clever indexing.
-            if (GlobalStaticVars.Svr != null)
+            try
             {
-                var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
-                dgvServers.Rows[svrIndex].Selected = true;
+                //if we already selected a server, then we can remember this selection based on globals and clever indexing.
+                if (GlobalStaticVars.Svr != null)
+                {
+                    var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
+                    dgvServers.Rows[svrIndex].Selected = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                //log then ignore the error
+                LoggingHelpers.RecordException(ex.Message, "SvrIndexingError");
             }
         }
 

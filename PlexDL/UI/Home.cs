@@ -1139,13 +1139,17 @@ namespace PlexDL.UI
 
         private void GetMovieObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            bool formatLinkDownload = (bool)e.Arguments[0];
+            bool formatLinkDownload = false;
+            if (e.Arguments.Count > 0)
+                formatLinkDownload = (bool)e.Arguments[0];
             e.Result = GetMovieObjectFromSelection(formatLinkDownload);
         }
 
         private void GetTVObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            bool formatLinkDownload = (bool)e.Arguments[0];
+            bool formatLinkDownload = false;
+            if (e.Arguments.Count > 0)
+                formatLinkDownload = (bool)e.Arguments[0];
             e.Result = GetTvObjectFromSelection(formatLinkDownload);
         }
 
@@ -2090,10 +2094,10 @@ namespace PlexDL.UI
                     {
                         if (!Flags.IsTVShow)
                             result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                                "Getting Metadata");
+                                "Getting Metadata", new object[] { false } );
                         else
                             result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
-                                "Getting Metadata");
+                                "Getting Metadata", new object[] { false } );
                     }
 
                     using (var frm = new Metadata())
