@@ -71,4 +71,4 @@ Alternatively, can access the latest build [here](https://github.com/Brhsoftco/P
 * Control+E - Allows Exporting PlexMovie XML Data (for the Currently Selected Title)
 * Control+S - Populates Grid With Registered Servers
 * Control+R - Populates Grid With Registered Plex.tv Relays
-* Comtrol+D - Launches Direct Connection Dialog
+* Control+D - Launches Direct Connection Dialog
