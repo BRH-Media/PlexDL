@@ -10,10 +10,20 @@
 * Utilises CircularProgressBar by falhati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 
 ### What does PlexDL do?
-PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content via the button in the "Data" section.
+PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content by going to `Content->Metadata`.
 
 ### Performance?
 PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
+
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
+```
+~\cache
+ +--\%TOKEN_HASH%
+    +--\%SERVER_HASH%
+       +--\thumb
+       +--\xml
+    +--\%SERVER_HASH%.slst
+```
 
 ### How to get started
 #### __1. Building from Source__
