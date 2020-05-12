@@ -72,3 +72,14 @@ Alternatively, can access the latest build [here](https://github.com/Brhsoftco/P
 * Control+S - Populates Grid With Registered Servers
 * Control+R - Populates Grid With Registered Plex.tv Relays
 * Control+D - Launches Direct Connection Dialog
+##### __Metadata__
+* Control+S - Export a PMXML File of the Currently Loaded Content
+* Control+O - Load a PMXML File into the Metadata Window
+* Control+V - Start Streaming the Currently Loaded Content in VLC Media Player
+* Control+B - Start Streaming the Currently Loaded Content in your Default Browser
+##### __PVS.MediaPlayer__
+* Spacebar - Play/Pause Current Content
+* Up Arrow - Load Previous Content in Grid
+* Down Arrow - Load Next Content in Grid
+* Right Arrow - Skip Forward
+* Left Arrow - Skip Backward
