@@ -57,7 +57,7 @@ Alternatively, can access the latest build [here](https://github.com/Brhsoftco/P
 * PlexDL does not provide populated keyword lists by default; please do not ask for any.
 
 #### __Shortcut Keys__
-### __Main App__
+##### __Main App__
 * Control+O - Load a Profile
 * Control+S - Save a Profile
 * Control+C - Launches the Server Manager
@@ -65,7 +65,7 @@ Alternatively, can access the latest build [here](https://github.com/Brhsoftco/P
 * Control+M - Allows Viewing Metadata
 * Control+F - Launches the Search Dialog
 * Control+E - Allows Exporting a PMXML file of the currently selected content
-### __Server Manager__
+##### __Server Manager__
 * Control+C - Launches Token Authentication Dialog
 * Control+L - Launches Plex.tv Login Dialog
 * Control+E - Allows Exporting PlexMovie XML Data (for the Currently Selected Title)
