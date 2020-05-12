@@ -1,4 +1,6 @@
 ﻿using PlexDL.Common.API;
+using PlexDL.Common.Enums;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.UI;
 using System;
@@ -20,7 +22,7 @@ namespace PlexDL.Internal
         {
             List<string> arr = args.ToList();
             VisualStyles(arr);
-            CheckBeta(arr);
+            CheckDevStatus(arr);
             CheckDebug(arr);
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -85,13 +87,14 @@ namespace PlexDL.Internal
                     Application.EnableVisualStyles();
         }
 
-        private static void CheckBeta(List<string> args)
+        private static void CheckDevStatus(List<string> args)
         {
-            if (args.Contains("-b"))
-                Common.Flags.IsBeta = true;
-            else
-                if (args.Contains("-nb"))
-                Common.Flags.IsBeta = false;
+            if (args.Contains("-beta"))
+                GlobalStaticVars.DevelopmentStatus = DevStatus.IN_BETA;
+            else if (args.Contains("-prod"))
+                GlobalStaticVars.DevelopmentStatus = DevStatus.PRODUCTION_READY;
+            else if (args.Contains("-dev"))
+                GlobalStaticVars.DevelopmentStatus = DevStatus.IN_DEVLOPMENT;
         }
 
         private static void CheckDebug(List<string> args)

@@ -1,4 +1,4 @@
-﻿namespace PlexDL.Common.SearchFramework.Enums
+﻿namespace PlexDL.Common.Enums
 {
     public enum SearchRule
     {

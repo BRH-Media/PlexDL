@@ -1,5 +1,5 @@
-﻿using PlexDL.Common.SearchFramework;
-using PlexDL.Common.SearchFramework.Enums;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.SearchFramework;
 using System;
 using System.Collections.Generic;
 using System.Data;

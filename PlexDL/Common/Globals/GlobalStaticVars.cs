@@ -1,5 +1,6 @@
 ﻿using libbrhscgui.Components;
 using PlexDL.AltoHTTP.Classes;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
@@ -21,6 +22,7 @@ namespace PlexDL.Common.Globals
         public static Server Svr { get; set; }
         public static PlexObject CurrentStream { get; set; }
         public static List<Server> PlexServers { get; set; }
+        public static DevStatus DevelopmentStatus { get; set; } = DevStatus.IN_DEVLOPMENT;
         public static string CurrentApiUri { get; set; } = "";
         public static int SessionIdLength { get; } = 10;
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(SessionIdLength);

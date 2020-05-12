@@ -133,6 +133,7 @@
     <Compile Include="Common\Caching\CachingFileExt.cs" />
     <Compile Include="Common\Caching\CachingMetrics.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
+    <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />
     <Compile Include="Common\Globals\GlobalViews.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="Common\MD5Helper.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
-    <Compile Include="Common\SearchFramework\Enums\SearchRule.cs" />
+    <Compile Include="Common\Enums\SearchRule.cs" />
     <Compile Include="Common\SearchFramework\Search.cs" />
     <Compile Include="Common\SearchFramework\SearchData.cs" />
     <Compile Include="Common\SearchFramework\SearchResult.cs" />

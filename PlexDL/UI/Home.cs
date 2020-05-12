@@ -3,6 +3,7 @@ using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
@@ -1567,17 +1568,28 @@ namespace PlexDL.UI
 
         #region FormEvents
 
-        private void VerifyProductionBuild()
+        private void LoadDevStatus()
         {
-            if (Flags.IsBeta)
+            var status = GlobalStaticVars.DevelopmentStatus;
+            var choc = Color.Chocolate;
+            var red = Color.DarkRed;
+            var green = Color.DarkGreen;
+            switch (status)
             {
-                lblBeta.Text = "Beta Testing Build";
-                lblBeta.ForeColor = Color.DarkRed;
-            }
-            else
-            {
-                lblBeta.Text = "Production Build";
-                lblBeta.ForeColor = Color.DarkGreen;
+                case DevStatus.IN_DEVLOPMENT:
+                    lblBeta.ForeColor = choc;
+                    lblBeta.Text = "Developer Build";
+                    break;
+
+                case DevStatus.IN_BETA:
+                    lblBeta.ForeColor = red;
+                    lblBeta.Text = "Beta Testing Build";
+                    break;
+
+                case DevStatus.PRODUCTION_READY:
+                    lblBeta.ForeColor = green;
+                    lblBeta.Text = "Production Build";
+                    break;
             }
         }
 
@@ -1653,7 +1665,7 @@ namespace PlexDL.UI
                 }
 
                 SetSessionID();
-                VerifyProductionBuild();
+                LoadDevStatus();
                 ResetDownloadDirectory();
                 LoggingHelpers.RecordGenericEntry("PlexDL Started");
             }
@@ -2094,10 +2106,10 @@ namespace PlexDL.UI
                     {
                         if (!Flags.IsTVShow)
                             result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                                "Getting Metadata", new object[] { false } );
+                                "Getting Metadata", new object[] { false });
                         else
                             result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
-                                "Getting Metadata", new object[] { false } );
+                                "Getting Metadata", new object[] { false });
                     }
 
                     using (var frm = new Metadata())

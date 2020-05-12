@@ -1,4 +1,5 @@
-﻿using PlexDL.Common;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Globals;
 using System;
 using System.IO;
 using System.Reflection;
@@ -11,14 +12,21 @@ namespace PlexDL.UI
         public About()
         {
             InitializeComponent();
-            Text = String.Format("About {0}", AssemblyTitle);
+
+            string title = string.Format("About {0}", AssemblyTitle);
+
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
-            if (Flags.IsBeta)
-                this.Text = "About PlexDL - Beta Testing Build";
+
+            if (Equals(GlobalStaticVars.DevelopmentStatus, DevStatus.IN_BETA))
+                Text = title + " - Beta Testing Build";
+            else if (Equals(GlobalStaticVars.DevelopmentStatus, DevStatus.IN_DEVLOPMENT))
+                Text = title + " - Developer Build";
+            else
+                Text = title;
         }
 
         #region Assembly Attribute Accessors

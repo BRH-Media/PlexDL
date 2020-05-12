@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.SearchFramework.Enums;
+﻿using PlexDL.Common.Enums;
 using System.Data;
 
 namespace PlexDL.Common.SearchFramework
