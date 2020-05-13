@@ -17,12 +17,14 @@ PlexDL is in **no way** stable enough to be called high-performance. It is, howe
 
 It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
 ```
-\cache                   -- Root Folder
-└───\%TOKEN_HASH%        -- MD5 of account token
-    ├──\%SERVER_HASH%    -- MD5 of server IP
-    │  ├───\thumb        -- Cached images with *.thumb filename
-    │  └───\xml          -- Cached XML API data with *.xml filename
-    └──%TOKEN_HASH%.slst -- Cached server details list (cached IP, port, etc.)
+\cache                                -- Root Folder
+└───\%TOKEN_HASH%                     -- MD5 of account token
+    ├──\%SERVER_HASH%                 -- MD5 of server IP
+    │  ├───\thumb                     -- Cached images with *.thumb filename
+    │  │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd.
+    │  └───\xml                       -- Cached XML API data with *.xml filename
+    │      └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd.
+    └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
        
 ```
 
