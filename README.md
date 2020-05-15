@@ -10,10 +10,23 @@
 * Utilises CircularProgressBar by falhati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 
 ### What does PlexDL do?
-PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content via the button in the "Data" section.
+PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content by going to `Content->Metadata`.
 
 ### Performance?
 PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
+
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
+```
+\cache                                -- Root Folder
+└───\%TOKEN_HASH%                     -- MD5 of account token
+    ├──\%SERVER_HASH%                 -- MD5 of server IP
+    │  ├───\thumb                     -- Cached images with *.thumb filename
+    │  │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd.
+    │  └───\xml                       -- Cached XML API data with *.xml filename
+    │      └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd.
+    └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
+       
+```
 
 ### How to get started
 #### __1. Building from Source__
@@ -24,17 +37,17 @@ PlexDL includes the appropriate NuGet references to libbrhscgui (prebuilt for yo
 Steps for building
 1. `git clone http://github.com/Brhsoftco/PlexDL-MetroSet_UI.git`
 2. Open `PlexDL.sln` in Visual Studio 2017+
-3. Emable restoring NuGet packages via `Tools->Options->NuGet Package Manager->Package Restore->Allow NuGet to download missing packages`
+3. Enable restoring NuGet packages via `Tools->Options->NuGet Package Manager->Package Restore->Allow NuGet to download missing packages`
 4. Right click the `PlexDL` Solution in the Solution Explorer
 5. Select `Restore NuGet Packages`
 6. `Build->Build Solution`
 7. Run resulting `PlexDL.exe` in the `~\bin` folder
 
 #### __2. Downloading from Releases__
-Alternatively, can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest). Just download `Release.zip` to get all dependencies and the pre-built executable.
+Alternatively, can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest). Just download `Release.zip` to get all needed qdependencies and the pre-built executable.
 ### __Using PlexDL__
 #### __Basic Usage__
-1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). Alternatively, you can just use your Plex.tv account (v1.4.1 and above) to automatically retrieve your account token.
+1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). Alternatively, you can just use your Plex.tv account (v1.4.1+) to automatically retrieve your account token.
 2. Select `Servers->Server Manager` from the main panel. This will load the Server Manager.
 3. Select `Authenticate` and choose your preferred method.
 4. Upon authenticating successfully, you can then use `Load->Servers` to populate the grid with your registered servers and `Load->Relays` to populate the grid with your registered Plex.tv indirect relays (`*.*.plex.direct` remote-access hostnames).
@@ -49,37 +62,37 @@ Alternatively, can access the latest build [here](https://github.com/Brhsoftco/P
 13. Likewise, to load the profile, simply select `File->Load` (you can also use `Ctrl+O`), then browse to your generated XML *.prof* file.
 
 #### __Content Filtering__
-* PlexDL natively filters possibly adult-orientated content.
-* It is possible to disable this filter by exporting a profile, then changing "AdultContentProtection" from "true" to "false" inside the resulting _.prof_ file, then reloading that profile back into PlexDL.
-* For users' convenience, PlexDL will filter content that matches a genre-based criteria by pixelating posters in the metadata section, and warning users before streaming the content.
+* PlexDL natively filters potentially adult-orientated content.
+* It is possible to disable this filter by exporting a profile, then changing "AdultContentProtection" from "true" to "false" inside the resulting _.prof_ file, then reloading that profile back into PlexDL. You can also use `File->Settings`.
+* For users' convenience, PlexDL will filter content that matches a genre-based criteria by pixelating posters in the metadata section, and warning users before streaming the content. The plot summary is also replaced with `Plot summary censored`.
 * PlexDL can also filter adult content based on a keyword list. E.g. a text file that contains terms related to adult content.
-* PlexDL includes a blank file named "keywordBlacklist.txt" in the "Resources" section of the source code, however, you must populate this list yourself and build the source from there.
+* PlexDL includes a blank file named `keywordBlacklist.txt` in the `PlexDL\Resources` section of the source code, however, you must populate this list yourself and build the source from there. The format of this file is simply one blacklisted term per line.
 * PlexDL does not provide populated keyword lists by default; please do not ask for any.
 
 #### __Shortcut Keys__
 ##### __Main App__
-* Control+O - Load a Profile
-* Control+S - Save a Profile
-* Control+C - Launches the Server Manager
-* Control+D - Disconnects and Clears All Main Grids
-* Control+M - Allows Viewing Metadata
-* Control+F - Launches the Search Dialog
-* Control+E - Allows Exporting a PMXML file of the currently selected content
+* `Control+O` - Load a Profile
+* `Control+S` - Save a Profile
+* `Control+C` - Launches the Server Manager
+* `Control+D` - Disconnects and Clears All Main Grids
+* `Control+M` - Allows Viewing Metadata
+* `Control+F` - Launches the Search Dialog
+* `Control+E` - Allows Exporting a PMXML file of the currently selected content
 ##### __Server Manager__
-* Control+C - Launches Token Authentication Dialog
-* Control+L - Launches Plex.tv Login Dialog
-* Control+E - Allows Exporting PlexMovie XML Data (for the Currently Selected Title)
-* Control+S - Populates Grid With Registered Servers
-* Control+R - Populates Grid With Registered Plex.tv Relays
-* Control+D - Launches Direct Connection Dialog
+* `Control+C` - Launches Token Authentication Dialog
+* `Control+L` - Launches Plex.tv Login Dialog
+* `Control+E` - Allows Exporting PlexMovie XML Data (for the Currently Selected Title)
+* `Control+S` - Populates Grid With Registered Servers
+* `Control+R` - Populates Grid With Registered Plex.tv Relays
+* `Control+D` - Launches Direct Connection Dialog
 ##### __Metadata__
-* Control+S - Export a PMXML File of the Currently Loaded Content
-* Control+O - Load a PMXML File into the Metadata Window
-* Control+V - Start Streaming the Currently Loaded Content in VLC Media Player
-* Control+B - Start Streaming the Currently Loaded Content in your Default Browser
+* `Control+S` - Export a PMXML File of the Currently Loaded Content
+* `Control+O` - Load a PMXML File into the Metadata Window
+* `Control+V` - Start Streaming the Currently Loaded Content in VLC Media Player
+* `Control+B` - Start Streaming the Currently Loaded Content in your Default Browser
 ##### __PVS.MediaPlayer__
-* Spacebar - Play/Pause Current Content
-* Up Arrow - Load Previous Content in Grid
-* Down Arrow - Load Next Content in Grid
-* Right Arrow - Skip Forward
-* Left Arrow - Skip Backward
+* `Spacebar`    - Play/Pause Current Content
+* `Up Arrow`    - Load Previous Content in Grid
+* `Down Arrow`  - Load Next Content in Grid
+* `Right Arrow` - Skip Forward
+* `Left Arrow`  - Skip Backward
