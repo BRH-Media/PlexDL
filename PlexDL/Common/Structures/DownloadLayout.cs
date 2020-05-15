@@ -34,5 +34,30 @@ namespace PlexDL.Common.Structures
 
             return dirLayout;
         }
+
+        public static MusicDirectoryLayout CreateDownloadLayoutMusic(PlexMusic track, ApplicationOptions settings, int layout)
+        {
+            var dirLayout = new MusicDirectoryLayout();
+            if (layout == PlexStandardLayout)
+            {
+                var basePath = settings.Generic.DownloadDirectory + @"\Music\";
+                var album = track.Album;
+                var artist = Methods.RemoveIllegalCharacters(track.Artist);
+                var albumPath = basePath + artist + @"\" + album;
+                var artistPath = basePath + artist;
+
+                if (!Directory.Exists(basePath))
+                    Directory.CreateDirectory(basePath);
+                if (!Directory.Exists(artistPath))
+                    Directory.CreateDirectory(artistPath);
+                if (!Directory.Exists(albumPath))
+                    Directory.CreateDirectory(albumPath);
+                dirLayout.ArtistPath = artistPath;
+                dirLayout.AlbumPath = albumPath;
+                dirLayout.BasePath = basePath;
+            }
+
+            return dirLayout;
+        }
     }
 }

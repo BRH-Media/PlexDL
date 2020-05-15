@@ -186,6 +186,7 @@
     <Compile Include="Common\SearchFramework\SearchOptions.cs" />
     <Compile Include="Common\Structures\Plex\PlexMusic.cs" />
     <Compile Include="Common\Structures\ResolutionStandards.cs" />
+    <Compile Include="Common\Structures\MusicDirectoryLayout.cs" />
     <Compile Include="Common\SVarController.cs" />
     <Compile Include="Common\Structures\DownloadInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />

@@ -86,7 +86,7 @@ namespace PlexDL.UI
         private void ItmDownloadAllEpisodes_Click(object sender, EventArgs e)
         {
             cxtEpisodes.Close();
-            DoDownloadAllEpisodes();
+            DoDownloadAll();
         }
 
         private void ItmManuallyLoadSection_Click(object sender, EventArgs e)
@@ -110,7 +110,7 @@ namespace PlexDL.UI
         private void ItmDGVDownloadThisSeason_Click(object sender, EventArgs e)
         {
             cxtEpisodeOptions.Close();
-            DoDownloadAllEpisodes();
+            DoDownloadAll();
         }
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -222,18 +222,24 @@ namespace PlexDL.UI
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) || (dgvTracks.SelectedRows.Count == 1))
             {
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
                     GlobalStaticVars.Queue = new List<DownloadInfo>();
-                    if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+                    switch (GlobalStaticVars.CurrentContentType)
                     {
-                        if (dgvEpisodes.SelectedRows.Count == 1) cxtEpisodes.Show(MousePosition);
-                    }
-                    else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-                    {
-                        DoDownloadSelected();
+                        case ContentType.TV_SHOWS:
+                            if (dgvEpisodes.SelectedRows.Count == 1) cxtEpisodes.Show(MousePosition);
+                            break;
+
+                        case ContentType.MOVIES:
+                            DoDownloadSelected();
+                            break;
+
+                        case ContentType.MUSIC:
+                            if (dgvTracks.SelectedRows.Count == 1) cxtTracks.Show(MousePosition);
+                            break;
                     }
                 }
                 else
@@ -270,30 +276,66 @@ namespace PlexDL.UI
 
         private void btnHTTPPlay_Click(object sender, EventArgs e)
         {
-            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            try
             {
-                PlexObject result = null;
-                if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
+                if (Flags.IsConnected && Flags.IsLibraryFilled)
                 {
-                    result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                        "Getting Metadata", new object[] { false });
-                }
-                else if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
-                {
-                    if (dgvEpisodes.SelectedRows.Count == 1)
+                    PlexObject result = null;
+                    switch (GlobalStaticVars.CurrentContentType)
                     {
-                        result = (PlexTVShow)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
-                            "Getting Metadata", new object[] { false });
+                        case ContentType.MOVIES:
+                            if (dgvMovies.SelectedRows.Count == 1)
+                                result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
+                                "Getting Metadata", new object[] { false });
+                            else
+                            {
+                                MessageBox.Show(@"No movie is selected", @"Validation Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                                return;
+                            }
+                            break;
+
+                        case ContentType.TV_SHOWS:
+                            if (dgvEpisodes.SelectedRows.Count == 1)
+                                result = (PlexTVShow)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
+                                    "Getting Metadata", new object[] { false });
+                            else
+                            {
+                                MessageBox.Show(@"No episode is selected", @"Validation Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                                return;
+                            }
+                            break;
+
+                        case ContentType.MUSIC:
+                            if (dgvTracks.SelectedRows.Count == 1)
+                            {
+                                result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
+                                    "Getting Metadata", new object[] { false });
+                            }
+                            else
+                            {
+                                MessageBox.Show(@"No track is selected", @"Validation Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                                return;
+                            }
+                            break;
                     }
+
+                    if (result != null)
+                        StartStreaming(result);
                     else
                     {
-                        MessageBox.Show(@"No episode is selected", @"Validation Error", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        LoggingHelpers.RecordGenericEntry("Couldn't start streaming; object was null.");
                         return;
                     }
                 }
-
-                StartStreaming(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "StartStreamError");
+                LoggingHelpers.RecordGenericEntry("Couldn't start streaming; an error occured.");
+                MessageBox.Show("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -435,7 +477,7 @@ namespace PlexDL.UI
         private PlexMovie GetMovieObjectFromSelection(bool formatLinkDownload)
         {
             var obj = new PlexMovie();
-            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if (dgvMovies.SelectedRows.Count == 1)
             {
                 var index = GlobalTables.GetTableIndexFromDgv(dgvMovies);
                 obj = ObjectBuilders.GetMovieObjectFromIndex(index, formatLinkDownload);
@@ -451,6 +493,18 @@ namespace PlexDL.UI
             {
                 var index = GlobalTables.GetTableIndexFromDgv(dgvEpisodes, GlobalTables.EpisodesTable);
                 obj = ObjectBuilders.GetTvObjectFromIndex(index, formatLinkDownload);
+            }
+
+            return obj;
+        }
+
+        private PlexMusic GetMusicObjectFromSelection(bool formatLinkDownload)
+        {
+            var obj = new PlexMusic();
+            if (dgvArtists.SelectedRows.Count == 1 && dgvTracks.SelectedRows.Count == 1)
+            {
+                var index = GlobalTables.GetTableIndexFromDgv(dgvTracks, GlobalTables.TracksTable);
+                obj = ObjectBuilders.GetMusicObjectFromIndex(index, formatLinkDownload);
             }
 
             return obj;
@@ -611,10 +665,20 @@ namespace PlexDL.UI
                 if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
                 {
                     PlexObject content = null;
-                    if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
-                        content = GetTvObjectFromSelection(formatLinkDownload);
-                    else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-                        content = GetMovieObjectFromSelection(formatLinkDownload);
+                    switch (GlobalStaticVars.CurrentContentType)
+                    {
+                        case ContentType.MOVIES:
+                            content = GetMovieObjectFromSelection(formatLinkDownload);
+                            break;
+
+                        case ContentType.TV_SHOWS:
+                            content = GetTvObjectFromSelection(formatLinkDownload);
+                            break;
+
+                        case ContentType.MUSIC:
+                            content = GetMusicObjectFromSelection(formatLinkDownload);
+                            break;
+                    }
 
                     if (sfdExport.ShowDialog() == DialogResult.OK)
                         ImportExport.MetadataToFile(sfdExport.FileName, content);
@@ -727,20 +791,22 @@ namespace PlexDL.UI
 
                 GlobalStaticVars.CurrentContentType = type;
 
-                if (Equals(type, ContentType.TV_SHOWS))
+                switch (type)
                 {
-                    LoggingHelpers.RecordGenericEntry("Rendering TV Shows");
-                    RenderTVView(GlobalTables.TitlesTable);
-                }
-                else if (Equals(type, ContentType.MOVIES))
-                {
-                    LoggingHelpers.RecordGenericEntry("Rendering Movies");
-                    RenderMoviesView(GlobalTables.TitlesTable);
-                }
-                else if (Equals(type, ContentType.MUSIC))
-                {
-                    LoggingHelpers.RecordGenericEntry("Rendering Artists");
-                    RenderArtistsView(GlobalTables.TitlesTable);
+                    case ContentType.MOVIES:
+                        LoggingHelpers.RecordGenericEntry("Rendering Movies");
+                        RenderMoviesView(GlobalTables.TitlesTable);
+                        break;
+
+                    case ContentType.TV_SHOWS:
+                        LoggingHelpers.RecordGenericEntry("Rendering TV Shows");
+                        RenderTVView(GlobalTables.TitlesTable);
+                        break;
+
+                    case ContentType.MUSIC:
+                        LoggingHelpers.RecordGenericEntry("Rendering Artists");
+                        RenderArtistsView(GlobalTables.TitlesTable);
+                        break;
                 }
 
                 //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
@@ -827,6 +893,85 @@ namespace PlexDL.UI
 
         #region BackgroundWorkers
 
+        private void WkrGrabTV()
+        {
+            if (Flags.IsDownloadAll)
+            {
+                LoggingHelpers.RecordGenericEntry(@"Worker is to grab metadata for All Episodes");
+                var index = 0;
+                var rowCount = GlobalTables.EpisodesTable.Rows.Count;
+                for (int i = 0; i < rowCount; i++)
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                    {
+                        lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + rowCount;
+                    });
+                    var show = ObjectBuilders.GetTvObjectFromIndex(index, true);
+                    var dlInfo_ = show.StreamInformation;
+                    var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
+                        DownloadLayout.PlexStandardLayout);
+                    dlInfo_.DownloadPath = dir.SeasonPath;
+                    GlobalStaticVars.Queue.Add(dlInfo_);
+                    index += 1;
+                }
+            }
+            else
+            {
+                LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Episode metadata");
+                BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+                var show = GetTvObjectFromSelection(true);
+                var dlInfo_ = show.StreamInformation;
+                var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
+                    DownloadLayout.PlexStandardLayout);
+                dlInfo_.DownloadPath = dir.SeasonPath;
+                GlobalStaticVars.Queue.Add(dlInfo_);
+            }
+        }
+
+        private void WkrGrabMusic()
+        {
+            if (Flags.IsDownloadAll)
+            {
+                LoggingHelpers.RecordGenericEntry(@"Worker is to grab metadata for All Tracks");
+                var index = 0;
+                var rowCount = GlobalTables.TracksTable.Rows.Count;
+                for (int i = 0; i < rowCount; i++)
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                    {
+                        lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + rowCount;
+                    });
+                    var track = ObjectBuilders.GetMusicObjectFromIndex(index, true);
+                    var dlInfo_ = track.StreamInformation;
+                    var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
+                        DownloadLayout.PlexStandardLayout);
+                    dlInfo_.DownloadPath = dir.AlbumPath;
+                    GlobalStaticVars.Queue.Add(dlInfo_);
+                    index += 1;
+                }
+            }
+            else
+            {
+                LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Track metadata");
+                BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+                var track = GetMusicObjectFromSelection(true);
+                var dlInfo_ = track.StreamInformation;
+                var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
+                    DownloadLayout.PlexStandardLayout);
+                dlInfo_.DownloadPath = dir.AlbumPath;
+                GlobalStaticVars.Queue.Add(dlInfo_);
+            }
+        }
+
+        private void WkrGrabMovie()
+        {
+            BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+            var movie = GetMovieObjectFromSelection(true);
+            var dlInfo = movie.StreamInformation;
+            dlInfo.DownloadPath = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\Movies";
+            GlobalStaticVars.Queue.Add(dlInfo);
+        }
+
         private void WkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
             LoggingHelpers.RecordGenericEntry(@"Metadata worker started");
@@ -848,49 +993,23 @@ namespace PlexDL.UI
             }
 
             LoggingHelpers.RecordGenericEntry(@"Grabbing metadata");
-            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+
+            switch (GlobalStaticVars.CurrentContentType)
             {
-                LoggingHelpers.RecordGenericEntry(@"Worker is to grab TV Show metadata");
-                if (Flags.IsDownloadAllEpisodes)
-                {
-                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab metadata for All Episodes");
-                    var index = 0;
-                    foreach (DataRow r in GlobalTables.EpisodesTable.Rows)
-                    {
-                        var percent = Math.Round(((decimal)index + 1) / GlobalTables.EpisodesTable.Rows.Count) * 100;
-                        BeginInvoke((MethodInvoker)delegate
-                        {
-                            lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + GlobalTables.EpisodesTable.Rows.Count;
-                        });
-                        var show = ObjectBuilders.GetTvObjectFromIndex(index, true);
-                        var dlInfo = show.StreamInformation;
-                        var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
-                            DownloadLayout.PlexStandardLayout);
-                        dlInfo.DownloadPath = dir.SeasonPath;
-                        GlobalStaticVars.Queue.Add(dlInfo);
-                        index += 1;
-                    }
-                }
-                else
-                {
-                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Episode metadata");
-                    BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
-                    var show = GetTvObjectFromSelection(true);
-                    var dlInfo = show.StreamInformation;
-                    var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
-                        DownloadLayout.PlexStandardLayout);
-                    dlInfo.DownloadPath = dir.SeasonPath;
-                    GlobalStaticVars.Queue.Add(dlInfo);
-                }
-            }
-            else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-            {
-                LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
-                BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata"; });
-                var movie = GetMovieObjectFromSelection(true);
-                var dlInfo = movie.StreamInformation;
-                dlInfo.DownloadPath = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\Movies";
-                GlobalStaticVars.Queue.Add(dlInfo);
+                case ContentType.TV_SHOWS:
+                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab TV Show metadata");
+                    WkrGrabTV();
+                    break;
+
+                case ContentType.MOVIES:
+                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
+                    WkrGrabMovie();
+                    break;
+
+                case ContentType.MUSIC:
+                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab Music metadata");
+                    WkrGrabMusic();
+                    break;
             }
 
             LoggingHelpers.RecordGenericEntry("Worker is to invoke downloader thread");
@@ -1253,10 +1372,12 @@ namespace PlexDL.UI
         {
             WaitWindow.WaitWindow.Show(WorkerUpdateEpisodesView, "Updating Episodes", content);
         }
+
         private void UpdateTracksView(XmlDocument content)
         {
             WaitWindow.WaitWindow.Show(WorkerUpdateTracksView, "Updating Tracks", content);
         }
+
         private void UpdateAlbumsView(XmlDocument content)
         {
             WaitWindow.WaitWindow.Show(WorkerUpdateAlbumsView, "Updating Albums", content);
@@ -1285,6 +1406,14 @@ namespace PlexDL.UI
             if (e.Arguments.Count > 0)
                 formatLinkDownload = (bool)e.Arguments[0];
             e.Result = GetTvObjectFromSelection(formatLinkDownload);
+        }
+
+        private void GetMusicObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
+        {
+            bool formatLinkDownload = false;
+            if (e.Arguments.Count > 0)
+                formatLinkDownload = (bool)e.Arguments[0];
+            e.Result = GetMusicObjectFromSelection(formatLinkDownload);
         }
 
         #endregion PlexAPIWorkers
@@ -1540,10 +1669,20 @@ namespace PlexDL.UI
             {
                 if (renderTables)
                 {
-                    if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
-                        RenderTVView(GlobalTables.TitlesTable);
-                    else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-                        RenderMoviesView(GlobalTables.TitlesTable);
+                    switch (GlobalStaticVars.CurrentContentType)
+                    {
+                        case ContentType.TV_SHOWS:
+                            RenderTVView(GlobalTables.TitlesTable);
+                            break;
+
+                        case ContentType.MOVIES:
+                            RenderMoviesView(GlobalTables.TitlesTable);
+                            break;
+
+                        case ContentType.MUSIC:
+                            RenderArtistsView(GlobalTables.TitlesTable);
+                            break;
+                    }
                 }
 
                 GlobalTables.FilteredTable = null;
@@ -1557,29 +1696,42 @@ namespace PlexDL.UI
             try
             {
                 LoggingHelpers.RecordGenericEntry("Title search requested");
-                if (dgvMovies.Rows.Count > 0 || dgvTVShows.Rows.Count > 0)
+                if ((dgvMovies.Rows.Count > 0) || (dgvTVShows.Rows.Count > 0) || (dgvArtists.Rows.Count > 0))
                 {
                     RenderStruct info = null;
                     DataGridView dgv = null;
-                    if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+
+                    switch (GlobalStaticVars.CurrentContentType)
                     {
-                        dgv = dgvTVShows;
-                        info = new RenderStruct
-                        {
-                            Data = GlobalTables.TitlesTable,
-                            WantedCaption = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayCaptions,
-                            WantedColumns = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayColumns
-                        };
-                    }
-                    else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-                    {
-                        dgv = dgvMovies;
-                        info = new RenderStruct
-                        {
-                            Data = GlobalTables.TitlesTable,
-                            WantedCaption = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayCaptions,
-                            WantedColumns = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayColumns
-                        };
+                        case ContentType.TV_SHOWS:
+                            dgv = dgvTVShows;
+                            info = new RenderStruct
+                            {
+                                Data = GlobalTables.TitlesTable,
+                                WantedCaption = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayCaptions,
+                                WantedColumns = GlobalStaticVars.Settings.DataDisplay.TvView.DisplayColumns
+                            };
+                            break;
+
+                        case ContentType.MOVIES:
+                            dgv = dgvMovies;
+                            info = new RenderStruct
+                            {
+                                Data = GlobalTables.TitlesTable,
+                                WantedCaption = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayCaptions,
+                                WantedColumns = GlobalStaticVars.Settings.DataDisplay.MoviesView.DisplayColumns
+                            };
+                            break;
+
+                        case ContentType.MUSIC:
+                            dgv = dgvArtists;
+                            info = new RenderStruct
+                            {
+                                Data = GlobalTables.TitlesTable,
+                                WantedCaption = GlobalStaticVars.Settings.DataDisplay.ArtistsView.DisplayCaptions,
+                                WantedColumns = GlobalStaticVars.Settings.DataDisplay.ArtistsView.DisplayColumns
+                            };
+                            break;
                     }
 
                     //MessageBox.Show(info.Data.Rows.Count.ToString());
@@ -1887,9 +2039,18 @@ namespace PlexDL.UI
                         type = r["type"].ToString();
                 }
 
-                if (type == "show") UpdateFromLibraryKey(key, ContentType.TV_SHOWS);
-                else if (type == "movie") UpdateFromLibraryKey(key, ContentType.MOVIES);
-                else if (type == "artist") UpdateFromLibraryKey(key, ContentType.MUSIC);
+                switch (type)
+                {
+                    case "show":
+                        UpdateFromLibraryKey(key, ContentType.TV_SHOWS);
+                        break;
+                    case "movie":
+                        UpdateFromLibraryKey(key, ContentType.MOVIES);
+                        break;
+                    case "artist":
+                        UpdateFromLibraryKey(key, ContentType.MUSIC);
+                        break;
+                }
             }
         }
 
@@ -1922,31 +2083,44 @@ namespace PlexDL.UI
         {
             PlexObject stream = null;
 
-            if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
+            switch (GlobalStaticVars.CurrentContentType)
             {
-                if (dgvMovies.SelectedRows.Count == 1)
-                {
-                    var obj = GetMovieObjectFromSelection(formatLinkDownload);
-                    if (obj != null)
+                case ContentType.MOVIES:
+                    if (dgvMovies.SelectedRows.Count == 1)
                     {
-                        stream = obj;
+                        var obj = GetMovieObjectFromSelection(formatLinkDownload);
+                        if (obj != null)
+                        {
+                            stream = obj;
+                        }
+                        else
+                            LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
                     }
-                    else
-                        LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
-                }
-            }
-            else if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
-            {
-                if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
-                {
-                    var obj = GetTvObjectFromSelection(formatLinkDownload);
-                    if (obj != null)
+                    break;
+                case ContentType.TV_SHOWS:
+                    if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
                     {
-                        stream = obj;
+                        var obj = GetTvObjectFromSelection(formatLinkDownload);
+                        if (obj != null)
+                        {
+                            stream = obj;
+                        }
+                        else
+                            LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
                     }
-                    else
-                        LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
-                }
+                    break;
+                case ContentType.MUSIC:
+                    if (dgvTracks.SelectedRows.Count == 1 && dgvArtists.SelectedRows.Count == 1)
+                    {
+                        var obj = GetMusicObjectFromSelection(formatLinkDownload);
+                        if (obj != null)
+                        {
+                            stream = obj;
+                        }
+                        else
+                            LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
+                    }
+                    break;
             }
 
             if (stream != null)
@@ -2155,14 +2329,14 @@ namespace PlexDL.UI
             }
         }
 
-        private void DoDownloadAllEpisodes()
+        private void DoDownloadAll()
         {
             LoggingHelpers.RecordGenericEntry("Awaiting download safety checks");
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
                 LoggingHelpers.RecordGenericEntry("Download process is starting");
                 SetProgressLabel("Waiting");
-                Flags.IsDownloadAllEpisodes = true;
+                Flags.IsDownloadAll = true;
                 DownloadTotal = GlobalTables.EpisodesTable.Rows.Count;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
@@ -2172,9 +2346,7 @@ namespace PlexDL.UI
                 SetDownloadCancel();
             }
             else
-            {
                 LoggingHelpers.RecordGenericEntry("Download process failed; download is already running.");
-            }
         }
 
         private void DoDownloadSelected()
@@ -2184,7 +2356,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordGenericEntry("Download process is starting");
                 SetProgressLabel("Waiting");
-                Flags.IsDownloadAllEpisodes = false;
+                Flags.IsDownloadAll = false;
                 DownloadTotal = 1;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
@@ -2194,9 +2366,7 @@ namespace PlexDL.UI
                 SetDownloadCancel();
             }
             else
-            {
                 LoggingHelpers.RecordGenericEntry("Download process failed; download is already running.");
-            }
         }
 
         private void StartStreaming(PlexObject stream)
@@ -2264,12 +2434,21 @@ namespace PlexDL.UI
                 {
                     if (result == null)
                     {
-                        if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
-                            result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
+                        switch (GlobalStaticVars.CurrentContentType)
+                        {
+                            case ContentType.MOVIES:
+                                result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
-                        else if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
-                            result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
+                                break;
+                            case ContentType.TV_SHOWS:
+                                result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
+                                break;
+                            case ContentType.MUSIC:
+                                result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
+                                "Getting Metadata", new object[] { false });
+                                break;
+                        } 
                     }
 
                     using (var frm = new Metadata())
@@ -2303,5 +2482,34 @@ namespace PlexDL.UI
         }
 
         #endregion ButtonClicks
+
+        private void itmDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadSelected();
+        }
+
+        private void itmDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadAll();
+        }
+
+        private void cxtTrackOptions_Opening(object sender, CancelEventArgs e)
+        {
+            if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
+        }
+
+        private void itmDGVDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadSelected();
+        }
+
+        private void itmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadAll();
+        }
     }
 }

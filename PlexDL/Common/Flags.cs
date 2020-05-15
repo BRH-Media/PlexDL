@@ -13,6 +13,6 @@
         public static bool IsDownloadPaused { get; set; } = false;
         public static bool IsEngineRunning { get; set; } = false;
         public static bool IsMsgAlreadyShown { get; set; } = false;
-        public static bool IsDownloadAllEpisodes { get; set; } = false;
+        public static bool IsDownloadAll { get; set; } = false;
     }
 }

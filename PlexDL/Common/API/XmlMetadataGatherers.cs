@@ -159,7 +159,7 @@ namespace PlexDL.Common.API
             return synopsis;
         }
 
-        public static string GetTvShowSeason(XmlDocument metadata)
+        public static string GetParentTitle(XmlDocument metadata)
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
@@ -175,7 +175,7 @@ namespace PlexDL.Common.API
             return season;
         }
 
-        public static string GetTvShowTitle(XmlDocument metadata)
+        public static string GetGrandparentTitle(XmlDocument metadata)
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
