@@ -6,6 +6,7 @@ namespace PlexDL.Common.Structures.Plex
 {
     [XmlInclude(typeof(PlexMovie))]
     [XmlInclude(typeof(PlexTVShow))]
+    [XmlInclude(typeof(PlexMusic))]
     [Serializable]
     public class PlexObject
     {

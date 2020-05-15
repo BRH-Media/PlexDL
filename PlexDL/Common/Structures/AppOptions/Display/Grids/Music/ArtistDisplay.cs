@@ -8,12 +8,12 @@ namespace PlexDL.Common.Structures.AppOptions.Display.Grids.Music
         {
             DisplayColumns = new List<string>
             {
-                "title", "studio", "year", "contentRating"
+                "title"
             };
 
             DisplayCaptions = new List<string>
             {
-                "Title", "Studio", "Year", "Rating"
+                "Artist"
             };
         }
     }

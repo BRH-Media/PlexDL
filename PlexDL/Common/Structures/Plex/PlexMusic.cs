@@ -1,6 +1,9 @@
-﻿namespace PlexDL.Common.Structures.Plex
+﻿using System;
+
+namespace PlexDL.Common.Structures.Plex
 {
-    internal class PlexMusic : PlexObject
+    [Serializable]
+    public class PlexMusic : PlexObject
     {
         public string Artist { get; set; } = @"Unknown";
         public string Album { get; set; } = @"Unknown";

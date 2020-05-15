@@ -111,6 +111,22 @@ namespace PlexDL.Common.API
             return result;
         }
 
+        public static string GetMusicArtist(XmlDocument metadata)
+        {
+            var sections = new DataSet();
+            sections.ReadXml(new XmlNodeReader(metadata));
+            var video = sections.Tables["Genre"];
+            var genre = "Unknown";
+            if (video == null)
+                return genre;
+            var row = video.Rows[0];
+            if (row["tag"] != null)
+                if (!Equals(row["tag"], string.Empty))
+                    genre = row["tag"].ToString();
+
+            return genre;
+        }
+
         public static string GetContentGenre(XmlDocument metadata)
         {
             var sections = new DataSet();
@@ -178,21 +194,40 @@ namespace PlexDL.Common.API
         public static XmlDocument GetSeriesXml(int index)
         {
             XmlDocument doc;
-            //try
-            //{
-            LoggingHelpers.RecordGenericEntry("Getting series list");
+            try
+            {
+                LoggingHelpers.RecordGenericEntry("Getting series list");
 
-            var result = RowGet.GetDataRowContent(index);
+                var result = RowGet.GetDataRowContent(index);
 
-            doc = GetMetadata(result);
-            /*
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
         }
-        catch (Exception ex)
+
+        public static XmlDocument GetAlbumsXml(int index)
         {
-            LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
-            doc = new XmlDocument();
-        }
-        */
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.RecordGenericEntry("Getting album list");
+
+                var result = RowGet.GetDataRowContent(index);
+
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "GetAlbumListError");
+                doc = new XmlDocument();
+            }
+
             return doc;
         }
 
@@ -210,6 +245,26 @@ namespace PlexDL.Common.API
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetEpisodesListError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
+        }
+
+        public static XmlDocument GetTracksXml(int index)
+        {
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.RecordGenericEntry("Getting track list");
+
+                var result = RowGet.GetDataRowAlbums(index);
+
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "GetTrackListError");
                 doc = new XmlDocument();
             }
 

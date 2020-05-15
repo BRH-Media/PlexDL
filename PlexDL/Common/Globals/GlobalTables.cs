@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using PlexDL.Common.Enums;
+using System.Data;
 using System.Windows.Forms;
 
 namespace PlexDL.Common.Globals
@@ -10,18 +11,33 @@ namespace PlexDL.Common.Globals
         public static DataTable SeasonsTable { get; set; }
         public static DataTable EpisodesTable { get; set; }
         public static DataTable SectionsTable { get; set; }
+        public static DataTable AlbumsTable { get; set; }
+        public static DataTable TracksTable { get; set; }
 
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
-            if (Flags.IsTVShow)
+            switch (GlobalStaticVars.CurrentContentType)
             {
-                if (directTable)
-                    return EpisodesTable;
-                else
+                case ContentType.MOVIES:
                     return DecideFiltered();
+
+                case ContentType.MUSIC:
+                    return DecideFiltered();
+
+                case ContentType.TV_SHOWS:
+                    if (directTable)
+                    {
+                        if (Equals(GlobalStaticVars.CurrentContentType, ContentType.TV_SHOWS))
+                            return EpisodesTable;
+                        else if (Equals(GlobalStaticVars.CurrentContentType, ContentType.MUSIC))
+                            return TracksTable;
+                    }
+                    else
+                        return DecideFiltered();
+                    break;
             }
-            else
-                return DecideFiltered();
+
+            return null; //fallback
         }
 
         public static DataTable DecideFiltered()

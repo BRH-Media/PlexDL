@@ -21,6 +21,7 @@ namespace PlexDL.Common.Globals
         public static User User { get; set; } = new User();
         public static Server Svr { get; set; }
         public static PlexObject CurrentStream { get; set; }
+        public static ContentType CurrentContentType { get; set; }
         public static List<Server> PlexServers { get; set; }
         public static DevStatus DevelopmentStatus { get; set; } = DevStatus.IN_DEVLOPMENT;
         public static string CurrentApiUri { get; set; } = "";

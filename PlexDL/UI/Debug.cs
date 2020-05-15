@@ -1,10 +1,10 @@
 ﻿using LogDel.Utilities;
 using PlexDL.Common;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -57,9 +57,9 @@ namespace PlexDL.UI
 
         private void ExportTitles()
         {
-            if (Flags.IsTVShow)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
                 ExportTVTitles();
-            else
+            else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
                 ExportMovies();
         }
 
@@ -78,7 +78,7 @@ namespace PlexDL.UI
 
         private void ExportSeasons()
         {
-            if (Flags.IsTVShow)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
             {
                 if (radModeTable.Checked)
                     ProcessExport(GlobalTables.SeasonsTable);
@@ -91,7 +91,7 @@ namespace PlexDL.UI
 
         private void ExportEpisodes()
         {
-            if (Flags.IsTVShow)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
             {
                 if (radModeTable.Checked)
                     ProcessExport(GlobalTables.EpisodesTable);

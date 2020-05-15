@@ -133,6 +133,7 @@
     <Compile Include="Common\Caching\CachingFileExt.cs" />
     <Compile Include="Common\Caching\CachingMetrics.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
+    <Compile Include="Common\Enums\ContentType.cs" />
     <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />

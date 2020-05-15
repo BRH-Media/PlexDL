@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Structures.AppOptions.Display.Grids.Library;
 using PlexDL.Common.Structures.AppOptions.Display.Grids.Movies;
+using PlexDL.Common.Structures.AppOptions.Display.Grids.Music;
 using PlexDL.Common.Structures.AppOptions.Display.Grids.TV;
 using System.ComponentModel;
 
@@ -26,6 +27,21 @@ namespace PlexDL.Common.Structures.AppOptions.Display
         [DisplayName("TV Episodes")]
         [Description("Rendering information. It is advised not to change these values.")]
         public EpisodesDisplay EpisodesView { get; set; } = new EpisodesDisplay();
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("Music Artists")]
+        [Description("Rendering information. It is advised not to change these values.")]
+        public ArtistDisplay ArtistsView { get; set; } = new ArtistDisplay();
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("Music Albums")]
+        [Description("Rendering information. It is advised not to change these values.")]
+        public AlbumDisplay AlbumsView { get; set; } = new AlbumDisplay();
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("Music Tracks")]
+        [Description("Rendering information. It is advised not to change these values.")]
+        public TrackDisplay TracksView { get; set; } = new TrackDisplay();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Library Sections")]

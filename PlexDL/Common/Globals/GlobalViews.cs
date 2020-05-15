@@ -5,6 +5,9 @@ namespace PlexDL.Common.Globals
     public static class GlobalViews
     {
         public static DataTable MoviesViewTable { get; set; }
+        public static DataTable ArtistViewTable { get; set; }
+        public static DataTable AlbumViewTable { get; set; }
+        public static DataTable TracksViewTable { get; set; }
         public static DataTable TvViewTable { get; set; }
         public static DataTable SectionsViewTable { get; set; }
         public static DataTable SeasonsViewTable { get; set; }
