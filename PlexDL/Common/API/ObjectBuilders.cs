@@ -125,12 +125,14 @@ namespace PlexDL.Common.API
                 var obj = new PlexMusic();
                 LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
                 LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
-                var metadata = XmlMetadataGatherers.GetContentMetadata(index);
+                var metadata = XmlMetadataGatherers.GetTrackMetadata(index);
 
                 LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
                     LoggingHelpers.RecordGenericEntry(@"XML Valid");
+
+                    //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 

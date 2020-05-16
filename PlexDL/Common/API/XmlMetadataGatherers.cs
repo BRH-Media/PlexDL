@@ -164,15 +164,15 @@ namespace PlexDL.Common.API
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
             var video = sections.Tables["Video"];
-            var season = "Unknown Season";
+            var parent = @"Unknown";
             if (video == null)
-                return season;
+                return parent;
             var row = video.Rows[0];
             if (row["parentTitle"] != null)
                 if (!Equals(row["parentTitle"], string.Empty))
-                    season = row["parentTitle"].ToString();
+                    parent = row["parentTitle"].ToString();
 
-            return season;
+            return parent;
         }
 
         public static string GetGrandparentTitle(XmlDocument metadata)
@@ -180,7 +180,7 @@ namespace PlexDL.Common.API
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
             var video = sections.Tables["Video"];
-            var title = "Unknown Title";
+            var title = @"Unknown";
             if (video == null)
                 return title;
             var row = video.Rows[0];
@@ -305,6 +305,26 @@ namespace PlexDL.Common.API
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetEpisodeMetadataError");
+                doc = new XmlDocument();
+            }
+
+            return doc;
+        }
+
+        public static XmlDocument GetTrackMetadata(int index)
+        {
+            XmlDocument doc;
+            try
+            {
+                LoggingHelpers.RecordGenericEntry("Getting track metadata");
+
+                var result = RowGet.GetDataRowTracks(index);
+
+                doc = GetMetadata(result);
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "GetTrackMetadataError");
                 doc = new XmlDocument();
             }
 

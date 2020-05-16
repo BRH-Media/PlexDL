@@ -646,6 +646,7 @@ namespace PlexDL.UI
                 if (GlobalStaticVars.Engine != null) CancelDownload();
                 ClearContentView();
                 ClearTVViews();
+                ClearMusicViews();
                 ClearLibraryViews();
                 SetProgressLabel(@"Disconnected from Plex");
                 SetConnect();
@@ -662,7 +663,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+                if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) || (dgvTracks.SelectedRows.Count == 1))
                 {
                     PlexObject content = null;
                     switch (GlobalStaticVars.CurrentContentType)
@@ -790,6 +791,8 @@ namespace PlexDL.UI
                 lblViewingValue.Text = GlobalTables.TitlesTable.Rows.Count + "/" + GlobalTables.TitlesTable.Rows.Count;
 
                 GlobalStaticVars.CurrentContentType = type;
+
+                //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
 
                 switch (type)
                 {
@@ -2044,9 +2047,11 @@ namespace PlexDL.UI
                     case "show":
                         UpdateFromLibraryKey(key, ContentType.TV_SHOWS);
                         break;
+
                     case "movie":
                         UpdateFromLibraryKey(key, ContentType.MOVIES);
                         break;
+
                     case "artist":
                         UpdateFromLibraryKey(key, ContentType.MUSIC);
                         break;
@@ -2097,6 +2102,7 @@ namespace PlexDL.UI
                             LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
                     }
                     break;
+
                 case ContentType.TV_SHOWS:
                     if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
                     {
@@ -2109,6 +2115,7 @@ namespace PlexDL.UI
                             LoggingHelpers.RecordGenericEntry("Doubleclick stream failed; null object.");
                     }
                     break;
+
                 case ContentType.MUSIC:
                     if (dgvTracks.SelectedRows.Count == 1 && dgvArtists.SelectedRows.Count == 1)
                     {
@@ -2352,6 +2359,7 @@ namespace PlexDL.UI
         private void DoDownloadSelected()
         {
             LoggingHelpers.RecordGenericEntry("Awaiting download safety checks");
+            //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
                 LoggingHelpers.RecordGenericEntry("Download process is starting");
@@ -2428,7 +2436,7 @@ namespace PlexDL.UI
 
         private void Metadata(PlexObject result = null)
         {
-            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+            if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) || (dgvTracks.SelectedRows.Count == 1))
             {
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
@@ -2440,15 +2448,17 @@ namespace PlexDL.UI
                                 result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;
+
                             case ContentType.TV_SHOWS:
                                 result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;
+
                             case ContentType.MUSIC:
                                 result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;
-                        } 
+                        }
                     }
 
                     using (var frm = new Metadata())
