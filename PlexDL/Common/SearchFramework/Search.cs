@@ -50,6 +50,54 @@ namespace PlexDL.Common.SearchFramework
             return null;
         }
 
+        public static bool RunTitleSearch(DataGridView dgvTarget, RenderStruct dgvRenderInfo, SearchData searchContext, bool copyToGlobalTables = false)
+        {
+            try
+            {
+                //MessageBox.Show(data.SearchRule.ToString());
+
+                DataTable filteredTable = Workers.GetFilteredTable(searchContext, false);
+                DataTable filteredView = null;
+                //MessageBox.Show(filteredTable.Rows.Count.ToString());
+
+                if (filteredTable == null)
+                    return false;
+                if (dgvRenderInfo == null)
+                {
+                    filteredView = RenderResult(dgvTarget, filteredTable);
+                }
+                else if (dgvRenderInfo.Data != null)
+                {
+                    dgvRenderInfo.Data = filteredTable;
+                    filteredView = RenderResult(dgvTarget, dgvRenderInfo);
+                }
+
+                if (copyToGlobalTables)
+                {
+                    GlobalTables.FilteredTable = filteredTable;
+                    GlobalViews.FilteredViewTable = filteredView;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "SearchError");
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool RunTitleSearch(DataGridView dgvTarget, SearchData searchContext, bool copyToGlobalTables = false)
+        {
+            RenderStruct renderContext = new RenderStruct()
+            {
+                Data = searchContext.SearchTable
+            };
+
+            return RunTitleSearch(dgvTarget, renderContext, searchContext, copyToGlobalTables);
+        }
+
         public static bool RunTitleSearch(DataGridView dgvTarget, RenderStruct dgvRenderInfo, bool copyToGlobalTables = false)
         {
             try
@@ -72,30 +120,7 @@ namespace PlexDL.Common.SearchFramework
                             SearchTable = dgvRenderInfo.Data
                         };
 
-                        //MessageBox.Show(data.SearchRule.ToString());
-
-                        DataTable filteredTable = Workers.GetFilteredTable(data, false);
-                        DataTable filteredView = null;
-                        //MessageBox.Show(filteredTable.Rows.Count.ToString());
-
-                        if (filteredTable == null)
-                            return false;
-                        if (dgvRenderInfo == null)
-                        {
-                            filteredView = RenderResult(dgvTarget, filteredTable);
-                        }
-                        else if (dgvRenderInfo.Data != null)
-                        {
-                            dgvRenderInfo.Data = filteredTable;
-                            filteredView = RenderResult(dgvTarget, dgvRenderInfo);
-                        }
-
-                        if (copyToGlobalTables)
-                        {
-                            GlobalTables.FilteredTable = filteredTable;
-                            GlobalViews.FilteredViewTable = filteredView;
-                        }
-                        return true;
+                        return RunTitleSearch(dgvTarget, dgvRenderInfo, data, copyToGlobalTables);
                     }
 
                     return false;

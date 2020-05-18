@@ -1,5 +1,6 @@
 ﻿using LogDel;
 using LogDel.Utilities;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.SearchFramework;
@@ -15,6 +16,7 @@ namespace PlexDL.UI
     {
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
         private bool IsFiltered;
+
         private DataTable logFiltered;
         private DataTable logRecords;
 
@@ -101,31 +103,6 @@ namespace PlexDL.UI
             }
         }
 
-        private void RunTitleSearch()
-        {
-            try
-            {
-                if (dgvMain.Rows.Count > 0)
-                {
-                    if (Search.RunTitleSearch(dgvMain, logRecords))
-                    {
-                        IsFiltered = true;
-                        itmSearch.Text = @"Cancel Search";
-                    }
-                    else
-                    {
-                        IsFiltered = false;
-                        itmSearch.Text = @"Start Search";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "SearchError");
-                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void DgvMain_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvMain.Rows.Count > 0)
@@ -140,14 +117,38 @@ namespace PlexDL.UI
             RefreshLogItems();
         }
 
-        private void itmSearch_Click(object sender, EventArgs e)
+        private void CancelSearch()
+        {
+            //Globals set
+            IsFiltered = false;
+            logFiltered = null;
+
+            //GUI set
+            GUISetStopSearch();
+
+            //Reset grid back to full log
+            dgvMain.DataSource = logRecords;
+        }
+
+        private void GUISetStartSearch()
+        {
+            itmSearchTerm.Enabled = false;
+            itmThisSession.Enabled = false;
+            itmCancelSearch.Enabled = true;
+        }
+
+        private void GUISetStopSearch()
+        {
+            itmSearchTerm.Enabled = true;
+            itmThisSession.Enabled = true;
+            itmCancelSearch.Enabled = false;
+        }
+
+        private void itmSearchTerm_Click(object sender, EventArgs e)
         {
             if (IsFiltered)
             {
-                IsFiltered = false;
-                logFiltered = null;
-                itmSearch.Text = @"Start Search";
-                dgvMain.DataSource = logRecords;
+                CancelSearch();
             }
             else
             {
@@ -159,33 +160,38 @@ namespace PlexDL.UI
         {
             try
             {
-                var ipt = GlobalStaticVars.LibUI.showInputForm(@"Enter Row Number", @"Go To Row");
-                if (string.Equals(ipt.txt, "!cancel=user"))
+                if (dgvMain.Rows.Count > 0)
                 {
-                }
-                else if (string.IsNullOrEmpty(ipt.txt))
-                {
-                    MessageBox.Show(@"Nothing was entered", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else if (!int.TryParse(ipt.txt, out _))
-                {
-                    MessageBox.Show(@"Specified Value is not numeric", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    foreach (DataGridViewRow row in dgvMain.Rows)
-                        if (dgvMain.Rows.IndexOf(row) == Convert.ToInt32(ipt.txt) - 1)
-                        {
-                            dgvMain.CurrentCell = row.Cells[0];
-                            return;
-                        }
+                    var ipt = GlobalStaticVars.LibUI.showInputForm(@"Enter Row Number", @"Go To Row");
 
-                    MessageBox.Show(@"Could not find row '" + ipt.txt + @"'", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (string.Equals(ipt.txt, "!cancel=user"))
+                    {
+                        return;
+                    }
+                    else if (string.IsNullOrEmpty(ipt.txt))
+                    {
+                        MessageBox.Show(@"Nothing was entered", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if (!int.TryParse(ipt.txt, out _))
+                    {
+                        MessageBox.Show(@"Specified value is not numeric", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        foreach (DataGridViewRow row in dgvMain.Rows)
+                            if (dgvMain.Rows.IndexOf(row) == (Convert.ToInt32(ipt.txt) - 1))
+                            {
+                                dgvMain.CurrentCell = row.Cells[0];
+                                return;
+                            }
+
+                        MessageBox.Show(@"Could not find row '" + ipt.txt + @"'", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "SearchError");
+                LoggingHelpers.RecordException(ex.Message, "LogFindLineError");
                 MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -281,7 +287,98 @@ namespace PlexDL.UI
 
         private void menuMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+        }
 
+        private void SessionIdSearch(string sessionId, bool directMatch = true)
+        {
+            try
+            {
+                if (dgvMain.Rows.Count > 0)
+                {
+                    if (SessionIdPresent())
+                    {
+                        SearchRule rule;
+
+                        if (directMatch)
+                            rule = SearchRule.EQUALS_KEY;
+                        else
+                            rule = SearchRule.CONTAINS_KEY;
+
+                        SearchData searchContext = new SearchData()
+                        {
+                            SearchColumn = "SessionID",
+                            SearchRule = rule,
+                            SearchTable = logRecords,
+                            SearchTerm = sessionId
+                        };
+
+                        if (Search.RunTitleSearch(dgvMain, searchContext))
+                        {
+                            IsFiltered = true;
+                            GUISetStartSearch();
+                        }
+                        else
+                        {
+                            CancelSearch();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Couldn't find a valid 'SessionID' column. Have you got the correct log loaded?", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        CancelSearch();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "LogSearchError");
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CancelSearch();
+            }
+        }
+
+        private void RunTitleSearch()
+        {
+            try
+            {
+                if (dgvMain.Rows.Count > 0)
+                {
+                    if (Search.RunTitleSearch(dgvMain, logRecords))
+                    {
+                        IsFiltered = true;
+                        GUISetStartSearch();
+                    }
+                    else
+                    {
+                        CancelSearch();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "LogSearchError");
+                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CancelSearch();
+            }
+        }
+
+        private void itmThisSession_Click(object sender, EventArgs e)
+        {
+            SessionIdSearch(GlobalStaticVars.CurrentSessionId);
+        }
+
+        private bool SessionIdPresent()
+        {
+            if (logRecords != null)
+                return logRecords.Columns.Contains("SessionID");
+            else
+                return false;
+        }
+
+        private void itmCancelSearch_Click(object sender, EventArgs e)
+        {
+            if (IsFiltered)
+                CancelSearch();
         }
     }
 }

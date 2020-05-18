@@ -38,7 +38,10 @@ namespace PlexDL.UI
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmStartSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmThisSession = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSearchTerm = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCancelSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmGoToLine = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCsv = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,7 +114,7 @@ namespace PlexDL.UI
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmRefresh,
-            this.itmSearch,
+            this.itmStartSearch,
             this.itmGoToLine,
             this.itmExport,
             this.itmBackup});
@@ -130,13 +133,38 @@ namespace PlexDL.UI
             this.itmRefresh.Text = "Refresh";
             this.itmRefresh.Click += new System.EventHandler(this.itmRefresh_Click);
             // 
-            // itmSearch
+            // itmStartSearch
             // 
-            this.itmSearch.Name = "itmSearch";
-            this.itmSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmSearch.Size = new System.Drawing.Size(81, 20);
-            this.itmSearch.Text = "Start Search";
-            this.itmSearch.Click += new System.EventHandler(this.itmSearch_Click);
+            this.itmStartSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmThisSession,
+            this.itmSearchTerm,
+            this.itmCancelSearch});
+            this.itmStartSearch.Name = "itmStartSearch";
+            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.itmStartSearch.Size = new System.Drawing.Size(54, 20);
+            this.itmStartSearch.Text = "Search";
+            // 
+            // itmThisSession
+            // 
+            this.itmThisSession.Name = "itmThisSession";
+            this.itmThisSession.Size = new System.Drawing.Size(191, 22);
+            this.itmThisSession.Text = "Entries for this Session";
+            this.itmThisSession.Click += new System.EventHandler(this.itmThisSession_Click);
+            // 
+            // itmSearchTerm
+            // 
+            this.itmSearchTerm.Name = "itmSearchTerm";
+            this.itmSearchTerm.Size = new System.Drawing.Size(191, 22);
+            this.itmSearchTerm.Text = "Search Term";
+            this.itmSearchTerm.Click += new System.EventHandler(this.itmSearchTerm_Click);
+            // 
+            // itmCancelSearch
+            // 
+            this.itmCancelSearch.Enabled = false;
+            this.itmCancelSearch.Name = "itmCancelSearch";
+            this.itmCancelSearch.Size = new System.Drawing.Size(191, 22);
+            this.itmCancelSearch.Text = "Cancel Search";
+            this.itmCancelSearch.Click += new System.EventHandler(this.itmCancelSearch_Click);
             // 
             // itmGoToLine
             // 
@@ -158,14 +186,14 @@ namespace PlexDL.UI
             // itmCsv
             // 
             this.itmCsv.Name = "itmCsv";
-            this.itmCsv.Size = new System.Drawing.Size(180, 22);
+            this.itmCsv.Size = new System.Drawing.Size(117, 22);
             this.itmCsv.Text = "To CSV";
             this.itmCsv.Click += new System.EventHandler(this.itmCSV_Click);
             // 
             // itmJson
             // 
             this.itmJson.Name = "itmJson";
-            this.itmJson.Size = new System.Drawing.Size(180, 22);
+            this.itmJson.Size = new System.Drawing.Size(117, 22);
             this.itmJson.Text = "To JSON";
             this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
             // 
@@ -221,7 +249,7 @@ namespace PlexDL.UI
         private TableLayoutPanel tlpMain;
         private MenuStrip menuMain;
         private ToolStripMenuItem itmRefresh;
-        private ToolStripMenuItem itmSearch;
+        private ToolStripMenuItem itmStartSearch;
         private ToolStripMenuItem itmGoToLine;
         private ToolStripMenuItem itmBackup;
         private ToolStripMenuItem itmExport;
@@ -229,5 +257,8 @@ namespace PlexDL.UI
         private SaveFileDialog sfdExportCsv;
         private ToolStripMenuItem itmJson;
         private SaveFileDialog sfdExportJson;
+        private ToolStripMenuItem itmThisSession;
+        private ToolStripMenuItem itmSearchTerm;
+        private ToolStripMenuItem itmCancelSearch;
     }
 }
