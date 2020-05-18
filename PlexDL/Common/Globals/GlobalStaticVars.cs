@@ -13,7 +13,7 @@ namespace PlexDL.Common.Globals
     public static class GlobalStaticVars
     {
         public static Form DebugForm { get; set; } = null;
-        public static DownloadQueue Engine { get; set; }
+        public static DownloadQueue Engine { get; set; } = new DownloadQueue();
         public static List<DownloadInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();
         public static MyPlex Plex { get; set; } = new MyPlex();

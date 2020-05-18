@@ -289,8 +289,7 @@ namespace PlexDL.UI
                                 "Getting Metadata", new object[] { false });
                             else
                             {
-                                MessageBox.Show(@"No movie is selected", @"Validation Error", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                                ShowError(@"No movie is selected", @"Validation Error");
                                 return;
                             }
                             break;
@@ -301,8 +300,7 @@ namespace PlexDL.UI
                                     "Getting Metadata", new object[] { false });
                             else
                             {
-                                MessageBox.Show(@"No episode is selected", @"Validation Error", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                                ShowError(@"No episode is selected", @"Validation Error");
                                 return;
                             }
                             break;
@@ -315,9 +313,7 @@ namespace PlexDL.UI
                             }
                             else
                             {
-                                MessageBox.Show(@"No track is selected", @"Validation Error", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                                return;
+                                ShowError(@"No track is selected", @"Validation Error");
                             }
                             break;
                     }
@@ -335,7 +331,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "StartStreamError");
                 LoggingHelpers.RecordGenericEntry("Couldn't start streaming; an error occured.");
-                MessageBox.Show("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error");
             }
         }
 
@@ -399,7 +395,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MessageBox.Show(@"There's no cached data to clear", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError(@"There's no cached data to clear", @"Validation Error");
                 }
             }
             catch (Exception ex)
@@ -441,7 +437,7 @@ namespace PlexDL.UI
                     if (wkrGetMetadata.IsBusy)
                         wkrGetMetadata.Abort();
                     //tell the user that the worker timed out
-                    MessageBox.Show(@"Failed to get metadata; the worker timed out.", @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError(@"Failed to get metadata; the worker timed out.", @"Data Error");
 
                     //cancel the download silently and with a custom log
                     //and label input
@@ -558,8 +554,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "@SaveProfileError");
                 if (!silent)
-                    MessageBox.Show(ex.ToString(), @"Error in saving XML Profile", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    ShowError(ex.ToString(), @"Error in saving XML Profile");
             }
         }
 
@@ -629,8 +624,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "LoadProfileError");
                 if (!silent)
-                    MessageBox.Show(ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    ShowError(ex.ToString(), "Error in loading XML Profile");
                 return;
             }
         }
@@ -736,17 +730,17 @@ namespace PlexDL.UI
                             switch ((int)response.StatusCode)
                             {
                                 case 401:
-                                    MessageBox.Show(
+                                    ShowError(
                                         @"The web server denied access to the resource. Check your token and try again. (401)");
                                     break;
 
                                 case 404:
-                                    MessageBox.Show(
+                                    ShowError(
                                         @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                     break;
 
                                 case 400:
-                                    MessageBox.Show(
+                                    ShowError(
                                         @"The web server couldn't serve the request because the request was bad. (400)");
                                     break;
                             }
@@ -754,7 +748,7 @@ namespace PlexDL.UI
                 catch (Exception ex)
                 {
                     LoggingHelpers.RecordException(ex.Message, "LibPopError");
-                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError(ex.ToString());
                 }
         }
 
@@ -901,27 +895,27 @@ namespace PlexDL.UI
             if (Flags.IsDownloadAll)
             {
                 LoggingHelpers.RecordGenericEntry(@"Worker is to grab metadata for All Episodes");
-                var index = 0;
+
                 var rowCount = GlobalTables.EpisodesTable.Rows.Count;
+
                 for (int i = 0; i < rowCount; i++)
                 {
-                    BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + rowCount;
-                    });
-                    var show = ObjectBuilders.GetTvObjectFromIndex(index, true);
+                    SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
+
+                    var show = ObjectBuilders.GetTvObjectFromIndex(i, true);
                     var dlInfo_ = show.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
                         DownloadLayout.PlexStandardLayout);
                     dlInfo_.DownloadPath = dir.SeasonPath;
                     GlobalStaticVars.Queue.Add(dlInfo_);
-                    index += 1;
                 }
             }
             else
             {
                 LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Episode metadata");
-                BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+
+                SetProgressLabel(@"Getting Metadata 1/1");
+
                 var show = GetTvObjectFromSelection(true);
                 var dlInfo_ = show.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
@@ -936,27 +930,27 @@ namespace PlexDL.UI
             if (Flags.IsDownloadAll)
             {
                 LoggingHelpers.RecordGenericEntry(@"Worker is to grab metadata for All Tracks");
-                var index = 0;
+
                 var rowCount = GlobalTables.TracksTable.Rows.Count;
+
                 for (int i = 0; i < rowCount; i++)
                 {
-                    BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblProgress.Text = @"Getting Metadata " + (index + 1) + @"/" + rowCount;
-                    });
-                    var track = ObjectBuilders.GetMusicObjectFromIndex(index, true);
+                    SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
+
+                    var track = ObjectBuilders.GetMusicObjectFromIndex(i, true);
                     var dlInfo_ = track.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
                         DownloadLayout.PlexStandardLayout);
                     dlInfo_.DownloadPath = dir.AlbumPath;
                     GlobalStaticVars.Queue.Add(dlInfo_);
-                    index += 1;
                 }
             }
             else
             {
                 LoggingHelpers.RecordGenericEntry(@"Worker is to grab Single Track metadata");
-                BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+
+                SetProgressLabel(@"Getting Metadata 1/1");
+
                 var track = GetMusicObjectFromSelection(true);
                 var dlInfo_ = track.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
@@ -968,7 +962,8 @@ namespace PlexDL.UI
 
         private void WkrGrabMovie()
         {
-            BeginInvoke((MethodInvoker)delegate { lblProgress.Text = @"Getting Metadata 1/1"; });
+            //SetProgressLabel(@"Getting Metadata 1/1");
+
             var movie = GetMovieObjectFromSelection(true);
             var dlInfo = movie.StreamInformation;
             dlInfo.DownloadPath = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\Movies";
@@ -977,50 +972,51 @@ namespace PlexDL.UI
 
         private void WkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
-            LoggingHelpers.RecordGenericEntry(@"Metadata worker started");
-            LoggingHelpers.RecordGenericEntry(@"Doing directory checks");
-            if (string.IsNullOrEmpty(GlobalStaticVars.Settings.Generic.DownloadDirectory) ||
-                string.IsNullOrWhiteSpace(GlobalStaticVars.Settings.Generic.DownloadDirectory)) ResetDownloadDirectory();
-            var tv = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\TV";
-            var movies = GlobalStaticVars.Settings.Generic.DownloadDirectory + @"\Movies";
-            if (!Directory.Exists(tv))
+            try
             {
-                Directory.CreateDirectory(tv);
-                LoggingHelpers.RecordGenericEntry("Created " + tv);
+                //set needed globals
+                GlobalStaticVars.Engine = new DownloadQueue();
+                GlobalStaticVars.Queue = new List<DownloadInfo>();
+
+                LoggingHelpers.RecordGenericEntry(@"Metadata worker started");
+                LoggingHelpers.RecordGenericEntry(@"Doing directory checks");
+                if (string.IsNullOrEmpty(GlobalStaticVars.Settings.Generic.DownloadDirectory) ||
+                    string.IsNullOrWhiteSpace(GlobalStaticVars.Settings.Generic.DownloadDirectory)) ResetDownloadDirectory();
+
+                LoggingHelpers.RecordGenericEntry(@"Grabbing metadata");
+
+                switch (GlobalStaticVars.CurrentContentType)
+                {
+                    case ContentType.TV_SHOWS:
+                        LoggingHelpers.RecordGenericEntry(@"Worker is to grab TV Show metadata");
+                        WkrGrabTV();
+                        break;
+
+                    case ContentType.MOVIES:
+                        LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
+                        WkrGrabMovie();
+                        break;
+
+                    case ContentType.MUSIC:
+                        LoggingHelpers.RecordGenericEntry(@"Worker is to grab Music metadata");
+                        WkrGrabMusic();
+                        break;
+                }
+
+                LoggingHelpers.RecordGenericEntry("Worker is to invoke downloader thread");
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    StartDownload(GlobalStaticVars.Queue, GlobalStaticVars.Settings.Generic.DownloadDirectory);
+                    LoggingHelpers.RecordGenericEntry("Worker has started the download process");
+                });
             }
-
-            if (!Directory.Exists(movies))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(movies);
-                LoggingHelpers.RecordGenericEntry(movies);
+                SetProgressLabel(@"Errored - Check Log");
+                ShowError("Error occurred whilst getting needed metadata:\n\n" + ex);
+                LoggingHelpers.RecordException(ex.Message, "MetadataWkrError");
+                return;
             }
-
-            LoggingHelpers.RecordGenericEntry(@"Grabbing metadata");
-
-            switch (GlobalStaticVars.CurrentContentType)
-            {
-                case ContentType.TV_SHOWS:
-                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab TV Show metadata");
-                    WkrGrabTV();
-                    break;
-
-                case ContentType.MOVIES:
-                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
-                    WkrGrabMovie();
-                    break;
-
-                case ContentType.MUSIC:
-                    LoggingHelpers.RecordGenericEntry(@"Worker is to grab Music metadata");
-                    WkrGrabMusic();
-                    break;
-            }
-
-            LoggingHelpers.RecordGenericEntry("Worker is to invoke downloader thread");
-            BeginInvoke((MethodInvoker)delegate
-            {
-                StartDownload(GlobalStaticVars.Queue, GlobalStaticVars.Settings.Generic.DownloadDirectory);
-                LoggingHelpers.RecordGenericEntry("Worker has started the download process");
-            });
         }
 
         #endregion BackgroundWorkers
@@ -1470,7 +1466,7 @@ namespace PlexDL.UI
                 DownloadIndex = 0;
 
                 if (!silent)
-                    MessageBox.Show(msg, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError(msg);
             }
         }
 
@@ -1760,7 +1756,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
-                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError(ex.ToString());
             }
         }
 
@@ -1850,6 +1846,19 @@ namespace PlexDL.UI
         private void SetDisconnect()
         {
             itmDisconnect.Enabled = true;
+        }
+
+        private void ShowError(string msg, string caption = "Error")
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error); //threadsafe
+                });
+            }
+            else
+                MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         #endregion UIMethods
@@ -1957,7 +1966,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "StartupError");
-                MessageBox.Show("Startup Error:\n\n" + ex, "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Startup Error:\n\n" + ex, "Startup Error");
             }
         }
 
@@ -2008,7 +2017,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "UpdateLibraryError");
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError(ex.ToString(), "Error");
             }
         }
 
@@ -2311,27 +2320,26 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                MessageBox.Show(
+                                ShowError(
                                     @"The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                MessageBox.Show(
+                                ShowError(
                                     @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                MessageBox.Show(
+                                ShowError(
                                     @"The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
                     else
-                        MessageBox.Show(@"Unknown status code; the server failed to serve the request. (?)");
+                        ShowError(@"Unknown status code; the server failed to serve the request. (?)");
                 }
                 else
                 {
-                    MessageBox.Show("An unknown error occurred:\n\n" + ex, "Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    ShowError("An unknown error occurred:\n\n" + ex, "Error");
                 }
             }
         }
@@ -2344,7 +2352,7 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordGenericEntry("Download process is starting");
                 SetProgressLabel("Waiting");
                 Flags.IsDownloadAll = true;
-                DownloadTotal = GlobalTables.EpisodesTable.Rows.Count;
+                DownloadTotal = GlobalTables.ReturnCorrectTable(true).Rows.Count;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();

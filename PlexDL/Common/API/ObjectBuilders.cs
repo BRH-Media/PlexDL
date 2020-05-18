@@ -55,6 +55,7 @@ namespace PlexDL.Common.API
                     LoggingHelpers.RecordGenericEntry("XML Invalid");
                 }
 
+                LoggingHelpers.RecordGenericEntry("Returned assembled TV object");
                 return obj;
             }
             catch (Exception ex)
@@ -108,6 +109,7 @@ namespace PlexDL.Common.API
                     LoggingHelpers.RecordGenericEntry("XML Invalid");
                 }
 
+                LoggingHelpers.RecordGenericEntry("Returned assembled Movie object");
                 return obj;
             }
             catch (Exception ex)
@@ -165,6 +167,7 @@ namespace PlexDL.Common.API
                     LoggingHelpers.RecordGenericEntry("XML Invalid");
                 }
 
+                LoggingHelpers.RecordGenericEntry("Returned assembled Music object");
                 return obj;
             }
             catch (Exception ex)

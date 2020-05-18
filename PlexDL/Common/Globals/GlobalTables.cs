@@ -22,19 +22,16 @@ namespace PlexDL.Common.Globals
                     return DecideFiltered();
 
                 case ContentType.MUSIC:
-                    return DecideFiltered();
+                    if (directTable)
+                        return TracksTable;
+                    else
+                        return DecideFiltered();
 
                 case ContentType.TV_SHOWS:
                     if (directTable)
-                    {
-                        if (Equals(GlobalStaticVars.CurrentContentType, ContentType.TV_SHOWS))
-                            return EpisodesTable;
-                        else if (Equals(GlobalStaticVars.CurrentContentType, ContentType.MUSIC))
-                            return TracksTable;
-                    }
+                        return EpisodesTable;
                     else
                         return DecideFiltered();
-                    break;
             }
 
             return null; //fallback
