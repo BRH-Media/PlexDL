@@ -903,11 +903,11 @@ namespace PlexDL.UI
                     SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
 
                     var show = ObjectBuilders.GetTvObjectFromIndex(i, true);
-                    var dlInfo_ = show.StreamInformation;
+                    var dlInfo = show.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
                         DownloadLayout.PlexStandardLayout);
-                    dlInfo_.DownloadPath = dir.SeasonPath;
-                    GlobalStaticVars.Queue.Add(dlInfo_);
+                    dlInfo.DownloadPath = dir.SeasonPath;
+                    GlobalStaticVars.Queue.Add(dlInfo);
                 }
             }
             else
@@ -917,11 +917,11 @@ namespace PlexDL.UI
                 SetProgressLabel(@"Getting Metadata 1/1");
 
                 var show = GetTvObjectFromSelection(true);
-                var dlInfo_ = show.StreamInformation;
+                var dlInfo = show.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutTVShow(show, GlobalStaticVars.Settings,
                     DownloadLayout.PlexStandardLayout);
-                dlInfo_.DownloadPath = dir.SeasonPath;
-                GlobalStaticVars.Queue.Add(dlInfo_);
+                dlInfo.DownloadPath = dir.SeasonPath;
+                GlobalStaticVars.Queue.Add(dlInfo);
             }
         }
 
@@ -938,11 +938,11 @@ namespace PlexDL.UI
                     SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
 
                     var track = ObjectBuilders.GetMusicObjectFromIndex(i, true);
-                    var dlInfo_ = track.StreamInformation;
+                    var dlInfo = track.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
                         DownloadLayout.PlexStandardLayout);
-                    dlInfo_.DownloadPath = dir.AlbumPath;
-                    GlobalStaticVars.Queue.Add(dlInfo_);
+                    dlInfo.DownloadPath = dir.AlbumPath;
+                    GlobalStaticVars.Queue.Add(dlInfo);
                 }
             }
             else
@@ -952,17 +952,17 @@ namespace PlexDL.UI
                 SetProgressLabel(@"Getting Metadata 1/1");
 
                 var track = GetMusicObjectFromSelection(true);
-                var dlInfo_ = track.StreamInformation;
+                var dlInfo = track.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutMusic(track, GlobalStaticVars.Settings,
                     DownloadLayout.PlexStandardLayout);
-                dlInfo_.DownloadPath = dir.AlbumPath;
-                GlobalStaticVars.Queue.Add(dlInfo_);
+                dlInfo.DownloadPath = dir.AlbumPath;
+                GlobalStaticVars.Queue.Add(dlInfo);
             }
         }
 
         private void WkrGrabMovie()
         {
-            //SetProgressLabel(@"Getting Metadata 1/1");
+            SetProgressLabel(@"Getting Metadata 1/1");
 
             var movie = GetMovieObjectFromSelection(true);
             var dlInfo = movie.StreamInformation;
@@ -980,6 +980,7 @@ namespace PlexDL.UI
 
                 LoggingHelpers.RecordGenericEntry(@"Metadata worker started");
                 LoggingHelpers.RecordGenericEntry(@"Doing directory checks");
+
                 if (string.IsNullOrEmpty(GlobalStaticVars.Settings.Generic.DownloadDirectory) ||
                     string.IsNullOrWhiteSpace(GlobalStaticVars.Settings.Generic.DownloadDirectory)) ResetDownloadDirectory();
 
@@ -1004,6 +1005,7 @@ namespace PlexDL.UI
                 }
 
                 LoggingHelpers.RecordGenericEntry("Worker is to invoke downloader thread");
+
                 BeginInvoke((MethodInvoker)delegate
                 {
                     StartDownload(GlobalStaticVars.Queue, GlobalStaticVars.Settings.Generic.DownloadDirectory);
