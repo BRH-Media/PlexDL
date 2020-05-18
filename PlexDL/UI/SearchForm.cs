@@ -11,6 +11,16 @@ namespace PlexDL.UI
     {
         public SearchOptions SearchContext = new SearchOptions();
 
+        //the first match in WantedColumns that appears here, is automatically
+        //selected in the Search Column field.
+        public List<string> ColumnPriority = new List<string>()
+        {
+            "title",
+            "Entry",
+            "DateTime",
+            "SessionID"
+        };
+
         public SearchForm()
         {
             InitializeComponent();
@@ -69,15 +79,25 @@ namespace PlexDL.UI
             {
                 PopulateAllColumns();
             }
+
+            ColumnPriorityMatch();
+        }
+
+        private void ColumnPriorityMatch()
+        {
             if (cbxSearchColumn.Items.Count > 0)
             {
-                //"title" should always get first preference.
-                //this checks to see if it's in the ComboBox,
-                //then selects it if it is. If it isn't, we should always
-                //select index 0 so that the box selection isn't immediately empty.
-                if (cbxSearchColumn.Items.Contains("title"))
-                    cbxSearchColumn.SelectedItem = "title";
-                else
+                bool matched = false;
+
+                foreach (string c in ColumnPriority)
+                    if (cbxSearchColumn.Items.Contains(c))
+                    {
+                        cbxSearchColumn.SelectedItem = c;
+                        matched = true;
+                        break;
+                    }
+
+                if (!matched)
                     cbxSearchColumn.SelectedIndex = 0;
             }
         }
