@@ -35,7 +35,7 @@ PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Stu
 PlexDL includes the appropriate NuGet references to libbrhscgui (prebuilt for you) and RestSharp, and upon cloning this repo, you'll just need to restore the packages. In addition, LogDel (a separate project linked with PlexDL in this repo), will need to have Newtonsoft.Json restored from NuGet in order to build. Note that LogDel is required for PlexDL operation, and cannot be excluded without modifying the source.
 
 Steps for building
-1. `git clone http://github.com/Brhsoftco/PlexDL-MetroSet_UI.git`
+1. `git clone http://github.com/Brhsoftco/PlexDL.git`
 2. Open `PlexDL.sln` in Visual Studio 2017+
 3. Enable restoring NuGet packages via `Tools->Options->NuGet Package Manager->Package Restore->Allow NuGet to download missing packages`
 4. Right click the `PlexDL` Solution in the Solution Explorer
@@ -44,7 +44,7 @@ Steps for building
 7. Run resulting `PlexDL.exe` in the `~\bin` folder
 
 #### __2. Downloading from Releases__
-Alternatively, can access the latest build [here](https://github.com/Brhsoftco/PlexDL-MetroSet_UI/releases/latest). Just download `Release.zip` to get all needed qdependencies and the pre-built executable.
+Alternatively, can access the latest build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all needed qdependencies and the pre-built executable.
 ### __Using PlexDL__
 #### __Basic Usage__
 1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). Alternatively, you can just use your Plex.tv account (v1.4.1+) to automatically retrieve your account token.
