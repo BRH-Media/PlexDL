@@ -147,14 +147,16 @@ namespace PlexDL.UI
             // itmThisSession
             // 
             this.itmThisSession.Name = "itmThisSession";
-            this.itmThisSession.Size = new System.Drawing.Size(191, 22);
+            this.itmThisSession.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.itmThisSession.Size = new System.Drawing.Size(231, 22);
             this.itmThisSession.Text = "Entries for this Session";
             this.itmThisSession.Click += new System.EventHandler(this.itmThisSession_Click);
             // 
             // itmSearchTerm
             // 
             this.itmSearchTerm.Name = "itmSearchTerm";
-            this.itmSearchTerm.Size = new System.Drawing.Size(191, 22);
+            this.itmSearchTerm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.itmSearchTerm.Size = new System.Drawing.Size(231, 22);
             this.itmSearchTerm.Text = "Search Term";
             this.itmSearchTerm.Click += new System.EventHandler(this.itmSearchTerm_Click);
             // 
@@ -162,7 +164,7 @@ namespace PlexDL.UI
             // 
             this.itmCancelSearch.Enabled = false;
             this.itmCancelSearch.Name = "itmCancelSearch";
-            this.itmCancelSearch.Size = new System.Drawing.Size(191, 22);
+            this.itmCancelSearch.Size = new System.Drawing.Size(231, 22);
             this.itmCancelSearch.Text = "Cancel Search";
             this.itmCancelSearch.Click += new System.EventHandler(this.itmCancelSearch_Click);
             // 
@@ -186,14 +188,16 @@ namespace PlexDL.UI
             // itmCsv
             // 
             this.itmCsv.Name = "itmCsv";
-            this.itmCsv.Size = new System.Drawing.Size(117, 22);
+            this.itmCsv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.itmCsv.Size = new System.Drawing.Size(180, 22);
             this.itmCsv.Text = "To CSV";
             this.itmCsv.Click += new System.EventHandler(this.itmCSV_Click);
             // 
             // itmJson
             // 
             this.itmJson.Name = "itmJson";
-            this.itmJson.Size = new System.Drawing.Size(117, 22);
+            this.itmJson.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
+            this.itmJson.Size = new System.Drawing.Size(180, 22);
             this.itmJson.Text = "To JSON";
             this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
             // 

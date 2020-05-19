@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace PlexDL.Common.Structures.AppOptions
@@ -39,10 +40,16 @@ namespace PlexDL.Common.Structures.AppOptions
             "PlexDL limits string lengths so they display correctly. You can increase or decrease this value if things are not displaying as expected.")]
         public int DefaultStringLength { get; set; } = 64;
 
-        [ReadOnly(true)]
-        [DisplayName("Animation Speed")]
-        [Description("This is a deprecated value")]
-        public int AnimationSpeed { get; set; } = 10;
+        [DisplayName("Search Column Priority")]
+        [Description("When searching, PlexDL will prioritise what column to autoselect in the Search Form. Matches are performed from index 0 onwards, so " +
+            "the first value in this field to be matched will be selected, and other matches will be aborted.")]
+        public List<string> SearchColumnPriority { get; set; } = new List<string>()
+        {
+            "title",
+            "Entry",
+            "SessionID",
+            "DateTime"
+        };
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

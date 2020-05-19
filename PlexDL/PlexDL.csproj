@@ -387,6 +387,7 @@
       <DependentUpon>Translator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WaitWindow\WaitWindowGUI.resx" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\packages.config" />
     <None Include="Properties\Settings.settings">

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PlexDL.Animation.WinFormAnimation;
+using PlexDL.Common.Components;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.Animation.WinFormAnimation;
-using PlexDL.Common.Components;
 using Timer = System.Windows.Forms.Timer;
 
 namespace PlexDL.WaitWindow

@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Globals;
 using PlexDL.Common.SearchFramework;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,6 @@ namespace PlexDL.UI
     public partial class SearchForm : Form
     {
         public SearchOptions SearchContext = new SearchOptions();
-
-        //the first match in WantedColumns that appears here, is automatically
-        //selected in the Search Column field.
-        public List<string> ColumnPriority = new List<string>()
-        {
-            "title",
-            "Entry",
-            "DateTime",
-            "SessionID"
-        };
 
         public SearchForm()
         {
@@ -89,7 +80,7 @@ namespace PlexDL.UI
             {
                 bool matched = false;
 
-                foreach (string c in ColumnPriority)
+                foreach (string c in GlobalStaticVars.Settings.Generic.SearchColumnPriority)
                     if (cbxSearchColumn.Items.Contains(c))
                     {
                         cbxSearchColumn.SelectedItem = c;
