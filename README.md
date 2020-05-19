@@ -44,7 +44,7 @@ Steps for building
 7. Run resulting `PlexDL.exe` in the `~\bin` folder
 
 #### __2. Downloading from Releases__
-Alternatively, can access the latest build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all needed qdependencies and the pre-built executable.
+Alternatively, can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all needed dependencies and the pre-built executable.
 ### __Using PlexDL__
 #### __Basic Usage__
 1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). Alternatively, you can just use your Plex.tv account (v1.4.1+) to automatically retrieve your account token.
