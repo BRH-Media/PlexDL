@@ -7,7 +7,7 @@
 * Utilises AltoHttp by aalitor for Web Downloads - [GitHub Repo](https://github.com/aalitor/AltoHttp)
 * Utilises PVS.MediaPlayer by Peter Vegter - [CodeProject Article](https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library)
 * Utilises WinFormAnimation by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
-* Utilises CircularProgressBar by falhati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
+* Utilises CircularProgressBar by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 
 ### What does PlexDL do?
 PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content by going to `Content->Metadata`.
