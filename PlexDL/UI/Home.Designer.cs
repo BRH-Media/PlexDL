@@ -83,6 +83,11 @@ namespace PlexDL.UI
             this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
             this.tabMusic = new System.Windows.Forms.TabPage();
             this.tlpMusic = new System.Windows.Forms.TableLayoutPanel();
+            this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmTrackDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
@@ -129,11 +134,6 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmTrackDownload = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDGVDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDGVDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
             this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
             this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
@@ -157,6 +157,7 @@ namespace PlexDL.UI
             this.tlpTV.SuspendLayout();
             this.tabMusic.SuspendLayout();
             this.tlpMusic.SuspendLayout();
+            this.cxtTrackOptions.SuspendLayout();
             this.tabLog.SuspendLayout();
             this.tlpLog.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -164,7 +165,6 @@ namespace PlexDL.UI
             this.menuMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.cxtTracks.SuspendLayout();
-            this.cxtTrackOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
@@ -509,6 +509,46 @@ namespace PlexDL.UI
             this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpMusic.Size = new System.Drawing.Size(648, 338);
             this.tlpMusic.TabIndex = 1;
+            // 
+            // cxtTrackOptions
+            // 
+            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmTrackMetadata,
+            this.itmTrackDownload});
+            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
+            this.cxtTrackOptions.Size = new System.Drawing.Size(181, 70);
+            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtTrackOptions_Opening);
+            // 
+            // itmTrackMetadata
+            // 
+            this.itmTrackMetadata.Name = "itmTrackMetadata";
+            this.itmTrackMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmTrackMetadata.Text = "Metadata";
+            this.itmTrackMetadata.Click += new System.EventHandler(this.itmTrackMetadata_Click);
+            // 
+            // itmTrackDownload
+            // 
+            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVDownloadThisTrack,
+            this.itmDGVDownloadThisAlbum});
+            this.itmTrackDownload.Name = "itmTrackDownload";
+            this.itmTrackDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmTrackDownload.Text = "Download";
+            // 
+            // itmDGVDownloadThisTrack
+            // 
+            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
+            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(134, 22);
+            this.itmDGVDownloadThisTrack.Text = "This Track";
+            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.itmDGVDownloadThisTrack_Click);
+            // 
+            // itmDGVDownloadThisAlbum
+            // 
+            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
+            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(134, 22);
+            this.itmDGVDownloadThisAlbum.Text = "This Album";
+            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.itmDGVDownloadThisAlbum_Click);
             // 
             // tabLog
             // 
@@ -901,45 +941,6 @@ namespace PlexDL.UI
             this.itmDownloadThisAlbum.Text = "Download This Album";
             this.itmDownloadThisAlbum.Click += new System.EventHandler(this.itmDownloadThisAlbum_Click);
             // 
-            // cxtTrackOptions
-            // 
-            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmTrackMetadata,
-            this.itmTrackDownload});
-            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
-            this.cxtTrackOptions.Size = new System.Drawing.Size(129, 48);
-            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtTrackOptions_Opening);
-            // 
-            // itmTrackMetadata
-            // 
-            this.itmTrackMetadata.Name = "itmTrackMetadata";
-            this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackMetadata.Text = "Metadata";
-            // 
-            // itmTrackDownload
-            // 
-            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmDGVDownloadThisTrack,
-            this.itmDGVDownloadThisAlbum});
-            this.itmTrackDownload.Name = "itmTrackDownload";
-            this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackDownload.Text = "Download";
-            // 
-            // itmDGVDownloadThisTrack
-            // 
-            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
-            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisTrack.Text = "This Track";
-            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.itmDGVDownloadThisTrack_Click);
-            // 
-            // itmDGVDownloadThisAlbum
-            // 
-            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
-            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisAlbum.Text = "This Album";
-            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.itmDGVDownloadThisAlbum_Click);
-            // 
             // dgvMovies
             // 
             this.dgvMovies.AllowUserToAddRows = false;
@@ -1270,6 +1271,7 @@ namespace PlexDL.UI
             this.tlpTV.ResumeLayout(false);
             this.tabMusic.ResumeLayout(false);
             this.tlpMusic.ResumeLayout(false);
+            this.cxtTrackOptions.ResumeLayout(false);
             this.tabLog.ResumeLayout(false);
             this.tlpLog.ResumeLayout(false);
             this.tlpMain.ResumeLayout(false);
@@ -1279,7 +1281,6 @@ namespace PlexDL.UI
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.cxtTracks.ResumeLayout(false);
-            this.cxtTrackOptions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();

@@ -2531,5 +2531,11 @@ namespace PlexDL.UI
             cxtTrackOptions.Close();
             DoDownloadAll();
         }
+
+        private void itmTrackMetadata_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            Metadata();
+        }
     }
 }

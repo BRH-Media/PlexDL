@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
@@ -111,22 +112,6 @@ namespace PlexDL.Common.API
             return result;
         }
 
-        public static string GetMusicArtist(XmlDocument metadata)
-        {
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Genre"];
-            var genre = "Unknown";
-            if (video == null)
-                return genre;
-            var row = video.Rows[0];
-            if (row["tag"] != null)
-                if (!Equals(row["tag"], string.Empty))
-                    genre = row["tag"].ToString();
-
-            return genre;
-        }
-
         public static string GetContentGenre(XmlDocument metadata)
         {
             var sections = new DataSet();
@@ -145,50 +130,62 @@ namespace PlexDL.Common.API
 
         public static string GetContentSynopsis(XmlDocument metadata)
         {
+            var attr = "summary";
+            var def = @"Plot synopsis not provided";
+            var contentType = GlobalStaticVars.CurrentContentType;
+            return GetContentAttribute(metadata, contentType, attr, def);
+        }
+
+        public static string GetContentAttribute(XmlDocument metadata, ContentType type, string attributeName, string defaultValue = @"Unknown")
+        {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var synopsis = "Plot synopsis not provided";
-            if (video == null)
-                return synopsis;
-            var row = video.Rows[0];
-            if (row["summary"] != null)
-                if (!Equals(row["summary"], string.Empty))
-                    synopsis = row["summary"].ToString();
+            DataTable data = null;
 
-            return synopsis;
+            switch (type)
+            {
+                case ContentType.MOVIES:
+                    data = sections.Tables["Video"];
+                    break;
+
+                case ContentType.TV_SHOWS:
+                    data = sections.Tables["Video"];
+                    break;
+
+                case ContentType.MUSIC:
+                    data = sections.Tables["Track"];
+                    break;
+            }
+
+            var attributeValue = defaultValue;
+
+            //return the default value above if the data (table) is null
+            if (data == null)
+                return attributeValue;
+
+            //the first row is the only information we will need
+            var row = data.Rows[0];
+
+            //first, check if the specified attribute exists in the row data
+            if (row[attributeName] != null)
+                if (!Equals(row[attributeName], string.Empty))
+                    attributeValue = row[attributeName].ToString();
+
+            return attributeValue;
         }
 
         public static string GetParentTitle(XmlDocument metadata)
         {
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var parent = @"Unknown";
-            if (video == null)
-                return parent;
-            var row = video.Rows[0];
-            if (row["parentTitle"] != null)
-                if (!Equals(row["parentTitle"], string.Empty))
-                    parent = row["parentTitle"].ToString();
-
-            return parent;
+            var attr = "parentTitle";
+            var contentType = GlobalStaticVars.CurrentContentType;
+            return GetContentAttribute(metadata, contentType, attr);
         }
 
         public static string GetGrandparentTitle(XmlDocument metadata)
         {
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(metadata));
-            var video = sections.Tables["Video"];
-            var title = @"Unknown";
-            if (video == null)
-                return title;
-            var row = video.Rows[0];
-            if (row["grandparentTitle"] != null)
-                if (!Equals(row["grandparentTitle"], string.Empty))
-                    title = row["grandparentTitle"].ToString();
-
-            return title;
+            var attr = "grandparentTitle";
+            var contentType = GlobalStaticVars.CurrentContentType;
+            return GetContentAttribute(metadata, contentType, attr);
         }
 
         public static XmlDocument GetSeriesXml(int index)
