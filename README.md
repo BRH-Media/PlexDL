@@ -7,7 +7,7 @@
 * Utilises AltoHttp by aalitor for Web Downloads - [GitHub Repo](https://github.com/aalitor/AltoHttp)
 * Utilises PVS.MediaPlayer by Peter Vegter - [CodeProject Article](https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library)
 * Utilises WinFormAnimation by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
-* Utilises CircularProgressBar by falhati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
+* Utilises CircularProgressBar by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 
 ### What does PlexDL do?
 PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content by going to `Content->Metadata`.
@@ -15,7 +15,7 @@ PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gath
 ### Performance?
 PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
-It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
 ```
 \cache                                -- Root Folder
 └───\%TOKEN_HASH%                     -- MD5 of account token
@@ -27,6 +27,12 @@ It should be noted, however, that PlexDL does support various forms of caching. 
     └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
        
 ```
+Using the Settings dialog in `File->Settings`, you can enable/disable the three forms of PlexDL caching:
+- Server List Caching
+- XML API Caching
+- Image Caching
+
+By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as cached data will become outdated.
 
 ### How to get started
 #### __1. Building from Source__
