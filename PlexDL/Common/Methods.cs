@@ -21,6 +21,23 @@ namespace PlexDL.Common
 {
     public static class Methods
     {
+        public static int StringToInt(string value, int defaultValue = 0)
+        {
+            int val = defaultValue;
+
+            try
+            {
+                if (int.TryParse(value, out int r))
+                    val = r;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "StringToIntError");
+            }
+
+            return val;
+        }
+
         public static bool RemoteFileExists(string url)
         {
             try

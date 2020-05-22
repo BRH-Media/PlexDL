@@ -25,6 +25,34 @@ namespace PlexDL.UI
             LoadRememberMe();
         }
 
+        private bool ValidRememberMe(bool deleteOnInvalid = true)
+        {
+            bool valid = false;
+            if (RememberMeFileExists())
+            {
+                var login = CachedPlexLogin.FromFile(rememberMeFile);
+                //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
+                if (login.VerifyThis())
+                {
+                    valid = true;
+                }
+                else
+                {
+                    //delete the file if it's incorrect and the flag is set
+                    if (deleteOnInvalid)
+                        File.Delete(rememberMeFile);
+                    //log the event
+                    LoggingHelpers.RecordGenericEntry("Couldn't verify 'Remember Me' PlexLogin data: hashes didn't match.");
+                }
+            }
+            return valid;
+        }
+
+        private bool RememberMeFileExists()
+        {
+            return File.Exists(rememberMeFile);
+        }
+
         private void LoadRememberMe()
         {
             try
@@ -38,6 +66,9 @@ namespace PlexDL.UI
                         //set the UI with values from the file
                         txtUsername.Text = login.Username;
                         txtPassword.Text = login.Password;
+
+                        //check the "Remember Me" box
+                        chkRememberMe.Checked = true;
                     }
                     else
                     {

@@ -2,6 +2,7 @@
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
+using PlexDL.Common.API.Metadata;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;

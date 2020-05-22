@@ -101,7 +101,9 @@
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
     <Compile Include="Common\API\ObjectBuilders.cs" />
     <Compile Include="Common\API\ProfileImportExport.cs" />
-    <Compile Include="Common\API\XmlMetadataGatherers.cs" />
+    <Compile Include="Common\API\Metadata\XmlMetadataGatherers.cs" />
+    <Compile Include="Common\API\Metadata\XmlMetadataHelpers.cs" />
+    <Compile Include="Common\API\Metadata\XmlMetadataParsers.cs" />
     <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
     <Compile Include="Common\Components\CircularProgressBar.cs">
       <SubType>Component</SubType>
