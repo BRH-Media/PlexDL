@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.2
-    February 2020, The Netherlands
+    PlexDL.Player - Version 0.99
+    May 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,12 +12,12 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
+    Article on CodeProject with information on the use of the PlexDL.Player library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PVS.MediaPlayer library source code is divided into 8 files:
+    The PlexDL.Player library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -45,15 +45,15 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    February 2020, The Netherlands
+    May 2020, The Netherlands
 
     ****************************************************************/
 
@@ -65,6 +65,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 #endregion
+
+#region Disable Some Warnings
+
+// the library can be compiled with all versions of c#:
+#pragma warning disable IDE0018 // Inline variable declaration
+
+#endregion
+
 
 namespace PlexDL.Player
 {
@@ -149,7 +157,7 @@ namespace PlexDL.Player
         #region Subtitles - Main
 
         /// <summary>
-        /// Provides access to the subtitles settings of the player (for example Player.Subtitles.Enabled).
+        /// Provides access to the subtitles settings of the player (for example, Player.Subtitles.Enabled).
         /// </summary>
         public Subtitles Subtitles
         {
@@ -199,10 +207,10 @@ namespace PlexDL.Player
             string searchFile;
             string initialDirectory;
 
-            if (!string.IsNullOrEmpty(st_FileName)) searchFile = st_FileName;
+            if (!string.IsNullOrWhiteSpace(st_FileName)) searchFile = st_FileName;
             else searchFile = this.Media.GetName(MediaName.FileNameWithoutExtension) + SUBTITLES_FILE_EXTENSION;
 
-            if (!string.IsNullOrEmpty(st_Directory)) initialDirectory = st_Directory;
+            if (!string.IsNullOrWhiteSpace(st_Directory)) initialDirectory = st_Directory;
             else initialDirectory = this.Media.GetName(MediaName.DirectoryName);
 
             return Subtitles_FindFile(searchFile, initialDirectory);
@@ -275,12 +283,6 @@ namespace PlexDL.Player
                         if (st_SubtitleOn || index != st_CurrentIndex)
                         {
                             st_CurrentIndex = index;
-
-                            //if (st_CurrentIndex < 1) st_CurrentStart = 0;
-                            //else st_CurrentStart = st_SubtitleItems[st_CurrentIndex].EndTime;
-
-                            //if (st_CurrentIndex > st_SubtitleItems.Length - 2) st_CurrentEnd = this.Length;
-                            //else st_CurrentEnd = st_SubtitleItems[st_CurrentIndex].StartTime;
 
                             if (st_CurrentIndex < 1) st_CurrentStart = 0;
                             else st_CurrentStart = st_SubtitleItems[st_CurrentIndex].EndTime;
@@ -364,7 +366,7 @@ namespace PlexDL.Player
 
         private string Subtitles_FindFile(string fileName, string initialDirectory)
         {
-            if (string.IsNullOrEmpty(fileName)
+            if (string.IsNullOrWhiteSpace(fileName)
                 || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
                 || !Directory.Exists(initialDirectory))
                 return string.Empty;
@@ -406,7 +408,7 @@ namespace PlexDL.Player
         {
             bool result = false;
 
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrWhiteSpace(fileName))
             {
                 StreamReader reader = new StreamReader(fileName, st_Encoding, true);
 
@@ -425,11 +427,10 @@ namespace PlexDL.Player
                     int index           = 0;
                     st_SubtitleItems    = new SubtitleItem[count];
 
-
                     while ((line = (reader.ReadLine())) != null && !error)
                     {
                         line = line.Trim();
-                        if (string.IsNullOrEmpty(line)) continue;
+                        if (string.IsNullOrWhiteSpace(line)) continue;
 
                         int testId;
                         switch (readStep)
@@ -479,16 +480,17 @@ namespace PlexDL.Player
                             st_SubtitleItems[index++] = new SubtitleItem(0, 0, string.Empty);
                         }
                         st_SubTitleCount = count;
+
+                        if (st_SubtitleItems[st_SubTitleCount - 1] == null)
+                        {
+                            if (st_SubTitleCount > 1) st_SubtitleItems[st_SubTitleCount - 1] = st_SubtitleItems[st_SubTitleCount - 2];
+                            else st_SubtitleItems[st_SubTitleCount - 1] = new SubtitleItem(0, 0, string.Empty);
+                        }
+
                         result = true;
                     }
                 }
                 reader.Close();
-
-                if (st_SubtitleItems[st_SubTitleCount - 1] == null)
-                {
-                    if (st_SubTitleCount > 1) st_SubtitleItems[st_SubTitleCount - 1] = st_SubtitleItems[st_SubTitleCount - 2];
-                    else st_SubtitleItems[st_SubTitleCount - 1] = new SubtitleItem(0, 0, string.Empty);
-                }
             }
             return result;
         }
@@ -506,7 +508,7 @@ namespace PlexDL.Player
             while ((line = (reader.ReadLine())) != null && !error)
             {
                 line = line.Trim();
-                if (string.IsNullOrEmpty(line)) continue;
+                if (string.IsNullOrWhiteSpace(line)) continue;
 
                 int testId;
                 switch (readStep)

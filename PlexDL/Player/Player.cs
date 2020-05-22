@@ -1,23 +1,23 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.2
-    February 2020, The Netherlands
+    PlexDL.Player - Version 0.99
+    May 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher and .NET Framework version 2.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
+    Article on CodeProject with information on the use of the PlexDL.Player library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PVS.MediaPlayer library source code is divided into 8 files:
+    The PlexDL.Player library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -44,15 +44,15 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    February 2020, The Netherlands
+    May 2020, The Netherlands
 
     ****************************************************************/
 
@@ -69,6 +69,18 @@ using System.Windows.Forms;
 
 #endregion
 
+#region Disable Some Warnings
+
+// programmer's preference:
+#pragma warning disable IDE0044 // Add readonly modifier
+// the library can be compiled with all versions of c#:
+#pragma warning disable IDE1005 // Delegate invocation can be simplified.
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable IDE0017 // Simplify object initialization
+
+#endregion
+
+
 [assembly: CLSCompliant(true)]
 
 namespace PlexDL.Player
@@ -79,7 +91,7 @@ namespace PlexDL.Player
     #region Player - Enumerations
 
     /// <summary>
-    /// Specifies the size and location of the video on the display of the player.
+    /// Specifies the size and location of the video image on the display of the player.
     /// </summary>
     public enum DisplayMode
     {
@@ -140,22 +152,36 @@ namespace PlexDL.Player
     }
 
     /// <summary>
-    /// Specifies the fullscreen mode of the player.
+    /// Specifies the full screen mode of the player.
     /// </summary>
     public enum FullScreenMode
     {
+        // the order of these items should not be changed.
+
         /// <summary>
-        /// The display of the player is shown fullscreen.
+        /// The display of the player is shown full screen on the screen containing the display.
         /// </summary>
         Display,
         /// <summary>
-        /// The (parent) control that contains the display of the player is shown fullscreen.
+        /// The (parent) control that contains the display of the player is shown full screen on the screen containing the parent control.
         /// </summary>
         Parent,
         /// <summary>
-        /// The form that contains the display of the player is shown fullscreen.
+        /// The form that contains the display of the player is shown full screen on the screen containing the (largest part of) the form.
         /// </summary>
-        Form
+        Form,
+        /// <summary>
+        /// The display of the player is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Display_AllScreens,
+        /// <summary>
+        /// The (parent) control that contains the display of the player is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Parent_AllScreens,
+        /// <summary>
+        /// The form containing the display of the player is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Form_AllScreens
     }
 
     /// <summary>
@@ -241,23 +267,23 @@ namespace PlexDL.Player
     public enum ScreenCopyMode
     {
         /// <summary>
-        /// The (visible part of the) video on the display of the player (custom copy: external items that are displayed on top of the video are not copied).
+        /// The (visible part of the) video on the display window of the player.
         /// </summary>
         Video,
         /// <summary>
-        /// The display of the player (custom copy: external items that are displayed on top of the display are not copied).
+        /// The display window of the player.
         /// </summary>
         Display,
         /// <summary>
-        /// The (parent) control that contains the display of the player.
+        /// The (parent) control that contains the display window of the player.
         /// </summary>
         Parent,
         /// <summary>
-        /// The display area of the form that contains the display of the player.
+        /// The form that contains the display window of the player.
         /// </summary>
         Form,
         /// <summary>
-        /// The (entire) screen that contains the display of the player.
+        /// The (entire) screen that contains the display window of the player.
         /// </summary>
         Screen
     }
@@ -376,6 +402,10 @@ namespace PlexDL.Player
         /// </summary>
         Beams,
         /// <summary>
+        /// Represents a circular shape.
+        /// </summary>
+        Circle,
+        /// <summary>
         /// Represents a cross shape.
         /// </summary>
         Cross,
@@ -411,6 +441,10 @@ namespace PlexDL.Player
         /// Represents a rounded rectangular shape.
         /// </summary>
         Rounded,
+        /// <summary>
+        /// Represents a square shape.
+        /// </summary>
+        Square,
         /// <summary>
         /// Represents an 8-pointed star.
         /// </summary>
@@ -562,14 +596,48 @@ namespace PlexDL.Player
         Paused = 0x8
     }
 
-    //internal enum PlayMode
-    //{
-    //    File,       // file mode incl. http etc.
-    //    Resource,   // app resource mode (changed to file mode at start)
-    //    Webcam,     // video input device (no media length)
-    //    Mic,        // audio input device (no media length)
-    //    Stream      // live stream eg. rtsp (no media length)
-    //}
+    /// <summary>
+    /// Specifies the media source type.
+    /// </summary>
+    public enum MediaSourceType
+    {
+        /// <summary>
+        /// Represents no media.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Represents a local media file.
+        /// </summary>
+        File,
+        /// <summary>
+        /// Represents an online media file.
+        /// </summary>
+        FileStream,
+        /// <summary>
+        /// Represents a local image file.
+        /// </summary>
+        Image,
+        /// <summary>
+        /// Represents a memory byte stream.
+        /// </summary>
+        ByteArray,
+        /// <summary>
+        /// Represents a webcam device.
+        /// </summary>
+        Webcam,
+        /// <summary>
+        /// Represents a webcam device with audio input.
+        /// </summary>
+        WebcamWithAudio,
+        /// <summary>
+        /// Represents an audio input device.
+        /// </summary>
+        AudioInput,
+        /// <summary>
+        /// Represents an online live stream.
+        /// </summary>
+        LiveStream
+    }
 
     #endregion
 
@@ -597,7 +665,7 @@ namespace PlexDL.Player
         #endregion
 
         /// <summary>
-        /// Gets the length (duration) in ticks (for example, use TimeSpan.FromTicks) of the playing media from the natural beginning of the media to the current playback position.
+        /// Gets the playback position of the playing media, measured from the (natural) beginning of the media. Values in ticks (for example, use TimeSpan.FromTicks).
         /// </summary>
         public long FromBegin
         {
@@ -605,7 +673,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the length (duration) in ticks (for example, use TimeSpan.FromTicks) of the playing media from the current playback position to the natural end of the media.
+        /// Gets the playback position of the playing media, measured from the (natural) end of the media. Values in ticks (for example, use TimeSpan.FromTicks).
         /// </summary>
         public long ToEnd
         {
@@ -613,7 +681,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the length (duration) in ticks (for example, use TimeSpan.FromTicks) of the playing media from Player.Media.StartTime to the current playback position.
+        /// Gets the playback position of the playing media, measured from its (adjustable) start time. Values in ticks (for example, use TimeSpan.FromTicks).
         /// </summary>
         public long FromStart
         {
@@ -621,7 +689,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the length (duration) in ticks (for example, use TimeSpan.FromTicks) of the playing media from the current playback position to Player.Media.StopTime.
+        /// Gets the playback position of the playing media, measured from its (adjustable) stop time. Values in ticks (for example, use TimeSpan.FromTicks).
         /// </summary>
         public long ToStop
         {
@@ -640,12 +708,10 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class EndedEventArgs : HideObjectEventArgs
     {
-        internal StopReason _reason;
-        internal bool       _webcam;
-        internal bool       _mic;
-        internal bool       _stream;
-        internal int        _error;
-        internal string     _media;
+        internal StopReason         _reason;
+        internal int                _error;
+        internal string             _mediaName;
+        internal MediaSourceType    _sourceType;
 
         /// <summary>
         /// Gets a value indicating the reason why the media has stopped playing.
@@ -656,7 +722,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the error code (LastErrorCode) indicating why the media has stopped (for a description of the error use Player.GetErrorString(e.ErrorCode)).
+        /// Gets the error code indicating why the media has stopped playing (for a (localized) description of the error use Player.GetErrorString(e.ErrorCode)).
         /// </summary>
         public int ErrorCode
         {
@@ -664,27 +730,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether a webcam has stopped playing.
+        /// Gets a value indicating the source type of the media that has stopped playing.
         /// </summary>
-        public bool Webcam
+        public MediaSourceType MediaSourceType
         {
-            get { return _webcam; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether an audio input device has stopped playing.
-        /// </summary>
-        public bool AudioInput
-        {
-            get { return _mic; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether a live stream (other than from a local device (eg webcam)) has stopped playing.
-        /// </summary>
-        public bool LiveStream
-        {
-            get { return _stream; }
+            get { return _sourceType; }
         }
 
         /// <summary>
@@ -692,7 +742,7 @@ namespace PlexDL.Player
         /// </summary>
         public string MediaName
         {
-            get { return _media; }
+            get { return _mediaName; }
         }
     }
 
@@ -712,7 +762,7 @@ namespace PlexDL.Player
         internal float[]    _channelsValues;
 
         /// <summary>
-        /// Gets the number of audio output channels and the number of peak values returned by the ChannelsValues property (usually 2 for stereo devices).
+        /// Gets the number of audio output channels (and number of peak values) returned by the ChannelsValues property (usually 2 for stereo devices).
         /// </summary>
         public int ChannelCount
         {
@@ -720,7 +770,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the highest peak value of the audio output channels (ChannelsValues). Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused, stopped or ended.
+        /// Gets the highest peak value of the audio output channels (ChannelsValues). Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused or stopped.
         /// </summary>
         public float MasterPeakValue
         {
@@ -728,7 +778,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the peak values of the audio output channels: ChannelsValues[0] contains the value of the left audio output channel and ChannelsValues[1] of the right channel. More channels can be present with, for example, surround sound systems. Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused, stopped or ended.
+        /// Gets the peak values of the audio output channels: ChannelsValues[0] contains the value of the left audio output channel and ChannelsValues[1] of the right channel. More channels can be present with, for example, surround sound systems. Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused or stopped.
         /// </summary>
         public float[] ChannelsValues
         {
@@ -751,7 +801,7 @@ namespace PlexDL.Player
         internal string _subtitle;
 
         /// <summary>
-        /// Gets the index of the current subtitle of the player.
+        /// Gets the index of the current subtitle in the list of active subtitles of the player.
         /// </summary>
         public int Index
         {
@@ -783,7 +833,7 @@ namespace PlexDL.Player
         internal SystemAudioDevicesNotification _notification;
 
         /// <summary>
-        /// Gets the identification of the audio device that is the subject of this notification (event).
+        /// Gets the identification of the audio device that is the subject of this notification.
         /// </summary>
         public string DeviceId
         {
@@ -791,7 +841,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the device that is the subject of this notification (event) is an audio intput device.
+        /// Gets a value indicating whether the audio device that is the subject of this notification is an audio intput device (or audio output device).
         /// </summary>
         public bool IsInputDevice
         {
@@ -799,7 +849,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the reason for this notification (event).
+        /// Gets the reason for this notification.
         /// </summary>
         public SystemAudioDevicesNotification Notification
         {
@@ -987,9 +1037,9 @@ namespace PlexDL.Player
         // Media Foundation Version
         internal const int              MF_VERSION                  = 0x10070;
 
-        // PVS.MediaPlayer Version
-        internal const float            VERSION                     = 0.982F;
-        internal const string           VERSION_STRING              = "PVS.MediaPlayer 0.98.2";
+        // PlexDL.Player Version
+        internal const float            VERSION                     = 0.99F;
+        internal const string           VERSION_STRING              = "PlexDL.Player 0.99";
 
         // Default Values
         private const string            AUDIO_TRACK_NAME            = "Audio Track ";
@@ -1013,8 +1063,14 @@ namespace PlexDL.Player
 
         internal const int              VIDEO_WIDTH_MINIMUM         = 8;
         internal const int              VIDEO_HEIGHT_MINIMUM        = 8;
-        internal const int              DEFAULT_VIDEO_WIDTH_MAXIMUM = 6400;
-        internal const int              DEFAULT_VIDEO_HEIGHT_MAXIMUM = 6400;
+        internal const int              VIDEO_WIDTH_MAXIMUM         = 25000;
+        internal const int              VIDEO_HEIGHT_MAXIMUM        = 25000;
+        internal const int              DEFAULT_VIDEO_WIDTH_MAXIMUM = 6400; // user video zoom limits
+        internal const int              DEFAULT_VIDEO_HEIGHT_MAXIMUM= 6400;
+
+        internal const bool             DEFAULT_IMAGES_ENABLED      = true;
+        internal const int              DEFAULT_IMAGES_DURATION     = 50000000; // 5 seconds
+        internal const int              DEFAULT_IMAGES_FRAMERATE    = 16;
 
         internal const float            DEFAULT_SPEED               = 1.0f;
         internal const bool             DEFAULT_SPEED_BOOST         = false;
@@ -1022,22 +1078,31 @@ namespace PlexDL.Player
         internal const float            DEFAULT_SPEED_MAXIMUM       = 8.0f;
 
         private const DisplayMode       DEFAULT_DISPLAY_MODE        = DisplayMode.ZoomCenter;
+        private const DisplayShape      DEFAULT_DISPLAY_SHAPE       = DisplayShape.Normal;
+        private const bool              DEFAULT_DISPLAY_SHAPE_VIDEO = true;
         private const FullScreenMode    DEFAULT_FULLSCREEN_MODE     = FullScreenMode.Display;
         private const OverlayMode       DEFAULT_OVERLAY_MODE        = OverlayMode.Video;
         private const OverlayBlend      DEFAULT_OVERLAY_BLEND       = OverlayBlend.None;
 
         private const ScreenCopyMode    DEFAULT_SCREENCOPY_MODE     = ScreenCopyMode.Video;
 
-        private const int               MAX_FULLSCREEN_PLAYERS      = 16;
-        internal const int              MAX_AUDIO_CHANNELS          = 16;
+        private const int               MAX_FULLSCREEN_PLAYERS      = 16; // change if more are needed
+        internal const int              MAX_AUDIO_CHANNELS          = 16; // change if more are needed
 
         private const int               DEFAULT_TIMER_INTERVAL      = 100;
         private const int               MINIMUM_TIMER_INTERVAL      = 10;
         private const int               MAXIMUM_TIMER_INTERVAL      = 2000;
+
+        private const bool              DEFAULT_MINIMIZED_ENABLED   = true;
         private const int               DEFAULT_MINIMIZED_INTERVAL  = 200;
+
+        private const bool              DEFAULT_DOEVENTS_ENABLED    = false;
+        private const int               DEFAULT_DOEVENTS_TIMEOUT    = 40;
+        private const int               DEFAULT_DOEVENTS_LOOP       = 4000;
 
         // Fixed Values
         internal const string           SUBTITLES_FILE_EXTENSION    = ".srt";
+        internal const string           IMAGES_FILE_EXTENSION       = ".mp4";
 
         internal const int              TIMEOUT_1_SECOND            = 1000;
         internal const int              TIMEOUT_5_SECONDS           = 5000;
@@ -1087,10 +1152,10 @@ namespace PlexDL.Player
         private MFCallback              mf_Callback;
         internal bool                   mf_AwaitCallback;
         internal System.Threading.AutoResetEvent WaitForEvent;
-        internal bool                   mf_DoEvents;                // if true, use Application.DoEvents with main media start
+        internal bool                   mf_DoEvents                 = DEFAULT_DOEVENTS_ENABLED; // if true, use Application.DoEvents with main media start
         internal bool                   mf_AwaitDoEvents;
-        private int                     mf_DoEventsTimeOut          = 40;
-        private int                     mf_DoEventsLoop             = 4000;
+        private int                     mf_DoEventsTimeOut          = DEFAULT_DOEVENTS_TIMEOUT;
+        private int                     mf_DoEventsLoop             = DEFAULT_DOEVENTS_LOOP;
 
         // Used with all players fullscreen management
         private static Form[]           _fullScreenForms            = new Form[MAX_FULLSCREEN_PLAYERS];
@@ -1104,17 +1169,18 @@ namespace PlexDL.Player
 
         // Display
         internal Control                _display;
+        internal bool                   _displayHold;
         internal bool                   _hasDisplay;
         private bool                    _hasDisplayEvents;
         internal DisplayMode            _displayMode                = DEFAULT_DISPLAY_MODE;
         internal VideoDisplay           _videoDisplay;
-        private bool                    _hasVideoDisplay;           // also = playing + hasVideo + videoEnabled
+        internal bool                   _hasVideoDisplay;           // also = playing + hasVideo + videoEnabled
         internal bool                   _dragEnabled;
 
         internal bool                   _hasDisplayShape;
-        internal DisplayShape           _displayShape               = DisplayShape.Normal;
+        internal DisplayShape           _displayShape               = DEFAULT_DISPLAY_SHAPE;
         internal ShapeCallback          _displayShapeCallback;
-        internal bool                   _hasVideoShape              = true;
+        internal bool                   _hasVideoShape              = DEFAULT_DISPLAY_SHAPE_VIDEO;
 
         // CursorHide
         internal bool                   _hasCursorHide;
@@ -1133,7 +1199,6 @@ namespace PlexDL.Player
         private bool                    _hasOverlayClippingEvents;
         internal OverlayBlend           _overlayBlend               = DEFAULT_OVERLAY_BLEND;
         internal SafeNativeMethods.BLENDFUNCTION _blendFunction;
-
 
         // Full Screen
         internal bool                   _fullScreen;
@@ -1157,7 +1222,7 @@ namespace PlexDL.Player
         private string                  _tempFileName;
 
         internal long                   _startTime;
-        internal long                   _deviceStart;               // webcam / microphone start time
+        internal long                   _deviceStart;               // webcam / microphone / live stream start time
         internal long                   _stopTime;
 
         private bool                    _seekBusy;
@@ -1262,7 +1327,15 @@ namespace PlexDL.Player
         internal IMFMediaSource         _webcamAudioSource;
 
         // Streams
-        internal bool                   _streamMode;
+        internal bool                   _liveStreamMode;            // set if media has no length
+
+        // Images
+        internal bool                   _imageMode;
+        internal bool                   _imagesEnabled              = DEFAULT_IMAGES_ENABLED;
+        private int                     _imageBytesPerPixel;
+        private Guid                    _imageMediaType;
+        internal long                   _imageDuration              = DEFAULT_IMAGES_DURATION;
+        internal int                    _imageFrameRate             = DEFAULT_IMAGES_FRAMERATE;
 
         // ScreenCopy
         internal ScreenCopyMode         _screenCopyMode             = DEFAULT_SCREENCOPY_MODE;
@@ -1279,7 +1352,7 @@ namespace PlexDL.Player
         private bool                    _inputLevelMuted;
 
         // Minimized - overlay delay
-        internal bool                   _minimizeEnabled            = true;
+        internal bool                   _minimizeEnabled            = DEFAULT_MINIMIZED_ENABLED;
         private bool                    _minimizeHasEvent;
         private bool                    _minimized;
         private Timer                   _minimizeTimer;
@@ -1305,6 +1378,7 @@ namespace PlexDL.Player
         private CursorHide              _cursorHideClass;
         private Events                  _eventsClass;
         private Media                   _mediaClass;
+        private Images                  _imagesClass;
         private Playlist                _playlistClass;
         private TaskbarProgress         _taskbarProgress;
         private Overlay                 _overlayClass;
@@ -1329,7 +1403,7 @@ namespace PlexDL.Player
         #region Public - Player Constructor
 
         /// <summary>
-        /// Initializes a new instance of the PVS.MediaPlayer.Player class (creates a new media player).
+        /// Initializes a new instance of the PlexDL.Player.Player class (creates a new media player).
         /// </summary>
         public Player()
         {
@@ -1384,13 +1458,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Initializes a new instance of the PVS.MediaPlayer.Player class (creates a new media player).
+        /// Initializes a new instance of the PlexDL.Player.Player class (creates a new media player).
         /// </summary>
         /// <param name="display">The form or control that is used to display video and overlays.</param>
         public Player(Control display) : this(display, null) { }
 
         /// <summary>
-        /// Initializes a new instance of the PVS.MediaPlayer.Player class (creates a new media player).
+        /// Initializes a new instance of the PlexDL.Player.Player class (creates a new media player).
         /// </summary>
         /// <param name="display">The form or control that is used to display video and overlays.</param>
         /// <param name="overlay">The form that is used as display overlay.</param>
@@ -1514,10 +1588,10 @@ namespace PlexDL.Player
 
         #endregion
 
-        #region Public - PVS.MediaPlayer Version
+        #region Public - PlexDL.Player Version
 
         /// <summary>
-        /// Gets the version number of this PVS.MediaPlayer library.
+        /// Gets the version number of this PlexDL.Player library.
         /// </summary>
         public static float Version
         {
@@ -1525,7 +1599,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the version string of this PVS.MediaPlayer library.
+        /// Gets the version string of this PlexDL.Player library.
         /// </summary>
         public static string VersionString
         {
@@ -1541,7 +1615,7 @@ namespace PlexDL.Player
             if (!MF_Checked)
             {
                 MF_Checked = true;
-                HResult result;
+                HResult result = HResult.CO_E_WRONGOSFORAPP;
 
                 if (Environment.OSVersion.Version.Major > 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor > 0))
                 {
@@ -1557,13 +1631,12 @@ namespace PlexDL.Player
                     }
                     catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
                 }
-                else result = HResult.CO_E_WRONGOSFORAPP;
                 MF_Checked_Result = (int)result;
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether Media Foundation is implemented on the system. The PVS.MediaPlayer library uses Media Foundation to play media.
+        /// Gets a value indicating whether the required Microsoft Windows 7 or later and Microsoft Media Foundation are available on the system being used.
         /// </summary>
         public static bool MFPresent
         {
@@ -1575,7 +1648,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a result (error) code indicating whether Media Foundation is implemented on the system (0 = no error (implemented)).
+        /// Gets a result (error) code indicating whether the required Microsoft Windows 7 or later and Microsoft Media Foundation are available on the system (0 = no error (available)).
         /// </summary>
         public static int MFPresent_ResultCode
         {
@@ -1587,14 +1660,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a description indicating whether Media Foundation is implemented on the system.
+        /// Gets a (localized) description indicating whether the required Microsoft Windows 7 or later and Microsoft Media Foundation are available on the system.
         /// </summary>
         public static string MFPresent_ResultString
         {
             get
             {
                 if (!MF_Checked) DoSystemCheck();
-                //if (MF_Checked_Result == NO_ERROR) return "System OK";
                 return GetErrorText(MF_Checked_Result);
             }
         }
@@ -1752,179 +1824,147 @@ namespace PlexDL.Player
 
         #endregion
 
-        #region Public - Play Resource
+        #region Public - Play Byte Array
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
-        public int Play(byte[] resource, string fileName)
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
+        public int Play(byte[] byteArray, string fileName)
         {
             _siDisplay      = _display;
             _siStartTime    = 0;
             _siStopTime     = 0;
             _siRepeat       = _repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="repeat">A value indicating whether to repeat playback when the media has finished playing.</param>
-        public int Play(byte[] resource, string fileName, bool repeat)
+        public int Play(byte[] byteArray, string fileName, bool repeat)
         {
             _siDisplay      = _display;
             _siStartTime    = 0;
             _siStopTime     = 0;
             _siRepeat       = repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="display">The form or control to be used to display the video of the media.</param>
-        public int Play(byte[] resource, string fileName,   Control display)
+        public int Play(byte[] byteArray, string fileName,   Control display)
         {
             _siDisplay      = display;
             _siStartTime    = 0;
             _siStopTime     = 0;
             _siRepeat       = _repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="display">The form or control to be used to display the video of the media.</param>
         /// <param name="repeat">A value indicating whether to repeat playback when the media has finished playing.</param>
-        public int Play(byte[] resource, string fileName, Control display, bool repeat)
+        public int Play(byte[] byteArray, string fileName, Control display, bool repeat)
         {
             _siDisplay      = display;
             _siStartTime    = 0;
             _siStopTime     = 0;
             _siRepeat       = repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
         /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
-        public int Play(byte[] resource, string fileName, TimeSpan startTime, TimeSpan stopTime)
+        public int Play(byte[] byteArray, string fileName, TimeSpan startTime, TimeSpan stopTime)
         {
             _siDisplay      = _display;
             _siStartTime    = startTime.Ticks;
             _siStopTime     = stopTime.Ticks;
             _siRepeat       = _repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
         /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
         /// <param name="repeat">A value indicating whether to repeat playback when the media has finished playing.</param>
-        public int Play(byte[] resource, string fileName, TimeSpan startTime, TimeSpan stopTime, bool repeat)
+        public int Play(byte[] byteArray, string fileName, TimeSpan startTime, TimeSpan stopTime, bool repeat)
         {
             _siDisplay      = _display;
             _siStartTime    = startTime.Ticks;
             _siStopTime     = stopTime.Ticks;
             _siRepeat       = repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="display">The form or control to be used to display the video of the media.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
         /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
-        public int Play(byte[] resource, string fileName, Control display, TimeSpan startTime, TimeSpan stopTime)
+        public int Play(byte[] byteArray, string fileName, Control display, TimeSpan startTime, TimeSpan stopTime)
         {
             _siDisplay      = display;
             _siStartTime    = startTime.Ticks;
             _siStopTime     = stopTime.Ticks;
             _siRepeat       = _repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified embedded media resource.
+        /// Starts playing the specified byte array with media content.
         /// </summary>
-        /// <param name="resource">The embedded media resource (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file of the specified resource. The file is deleted afterwards.</param>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The file name for the temporary file of the byte array. The file is deleted afterwards.</param>
         /// <param name="display">The form or control to be used to display the video of the media.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
         /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
         /// <param name="repeat">A value indicating whether to repeat playback when the media has finished playing.</param>
-        public int Play(byte[] resource, string fileName, Control display, TimeSpan startTime, TimeSpan stopTime, bool repeat)
+        public int Play(byte[] byteArray, string fileName, Control display, TimeSpan startTime, TimeSpan stopTime, bool repeat)
         {
             _siDisplay      = display;
             _siStartTime    = startTime.Ticks;
             _siStopTime     = stopTime.Ticks;
             _siRepeat       = repeat;
 
-            return (int)AV_PlayResource(resource, fileName);
+            return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         #endregion
 
         #region Public - Play Webcam
-
-        private bool CheckPlayWebcam(WebcamDevice webcam, Control display)
-        {
-            bool result = true;
-
-            if (webcam == null || string.IsNullOrEmpty(webcam._id))
-            {
-                _lastError = HResult.E_INVALIDARG;
-                result = false;
-            }
-            else if (display == null)
-            {
-                _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
-                result = false;
-            }
-            return result;
-        }
-
-        private int PlayCheckedWebcam(WebcamDevice webcam, AudioInputDevice audioInput, Control display, WebcamFormat format)
-        {
-            _siFileName     = webcam._name;
-            _siWebcamMode   = true;
-            _siWebcamDevice = webcam;
-            _siMicDevice    = audioInput;
-            _siDisplay      = display;
-            _siWebcamFormat = format;
-            _siStartTime    = 0;
-            _siStopTime     = 0;
-            _siRepeat       = false;
-
-            return (int)AV_Play();
-        }
 
         /// <summary>
         /// Starts playing the specified webcam.
@@ -2100,6 +2140,31 @@ namespace PlexDL.Player
             return (int)AV_Play();
         }
 
+        private bool CheckPlayWebcam(WebcamDevice webcam, Control display)
+        {
+            _lastError = NO_ERROR;
+
+            if (webcam == null || string.IsNullOrWhiteSpace(webcam._id)) _lastError = HResult.E_INVALIDARG;
+            else if (display == null) _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
+
+            return _lastError == NO_ERROR;
+        }
+
+        private int PlayCheckedWebcam(WebcamDevice webcam, AudioInputDevice audioInput, Control display, WebcamFormat format)
+        {
+            _siFileName     = webcam._name;
+            _siWebcamMode   = true;
+            _siWebcamDevice = webcam;
+            _siMicDevice    = audioInput;
+            _siDisplay      = display;
+            _siWebcamFormat = format;
+            _siStartTime    = 0;
+            _siStopTime     = 0;
+            _siRepeat       = false;
+
+            return (int)AV_Play();
+        }
+
         #endregion
 
         #region Public - Play Audio Input Device
@@ -2110,7 +2175,7 @@ namespace PlexDL.Player
         /// <param name="audioInput">The audio input device to be played.</param>
         public int Play(AudioInputDevice audioInput)
         {
-            if (audioInput == null || string.IsNullOrEmpty(audioInput._id))
+            if (audioInput == null || string.IsNullOrWhiteSpace(audioInput._id))
             {
                 _lastError = HResult.E_INVALIDARG;
                 return (int)_lastError;
@@ -2146,7 +2211,7 @@ namespace PlexDL.Player
         #region Public - PlayUnblock / PlayTimeOut
 
         /// <summary>
-        /// Gets or sets a value indicating whether the system's "Application.DoEvents" method is used when starting media to keep the main ui thread responsive.
+        /// Gets or sets a value indicating whether the "Application.DoEvents" method is used when waiting for media to start playing to keep the main ui thread responsive (default: true).
         /// </summary>
         public bool PlayUnblock
         {
@@ -2298,11 +2363,11 @@ namespace PlexDL.Player
             //AV_SetVideoEnabled(DEFAULT_VIDEO_ENABLED);
 
             // Video Colors
-            _brightness = 0;
-            _contrast = 0;
-            _hue = 0;
-            _saturation = 0;
-            _setVideoColor = false;
+            _brightness     = 0;
+            _contrast       = 0;
+            _hue            = 0;
+            _saturation     = 0;
+            _setVideoColor  = false;
 
             Paused = false;
             Repeat = false;
@@ -2317,7 +2382,7 @@ namespace PlexDL.Player
         #region Public - Playing / Paused
 
         /// <summary>
-        /// Gets a value indicating whether media is playing (includes paused media).
+        /// Gets a value indicating whether media is playing (including paused media).
         /// </summary>
         public bool Playing
         {
@@ -2350,7 +2415,7 @@ namespace PlexDL.Player
         #region Public - Position / Step
 
         /// <summary>
-        /// Provides access to the playback position settings of the player (for example, Player.Position.FromStart).
+        /// Provides access to the playback position settings of the player (for example, Player.Position.FromBegin).
         /// </summary>
         public Position Position
         {
@@ -2361,9 +2426,6 @@ namespace PlexDL.Player
             }
         }
 
-        // TODO - check set again - tried many options including mf scrub completed events
-        // The problems are mainly related to 'scrubbing' - some videos scroll very fast, others hardly at all.
-        // And then there is the pause mode, shuttle, step... This seems to be the best overall solution for the time being.
         internal long PositionX
         {
             get
@@ -2381,7 +2443,9 @@ namespace PlexDL.Player
                         // (???) this strange construction seems necessary when webcams are playing (else prestime returns often 0)
                         while (presTime == 0 && count > 0)
                         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
                             mf_Clock.GetCorrelatedTime(0, out presTime, out sysTime);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
                             if (--count > 0 && presTime == 0) System.Threading.Thread.Sleep(10);
                         }
                     }
@@ -2405,6 +2469,8 @@ namespace PlexDL.Player
                     {
                         mf_MediaSession.Pause();
                         System.Threading.Thread.Sleep(5);
+                        //mf_AwaitCallback = true;
+                        //WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
                     }
 
                     mf_StartTime.type = ConstPropVariant.VariantType.Int64;
@@ -2418,8 +2484,12 @@ namespace PlexDL.Player
 
                         mf_StartTime.longValue = value;
                         mf_MediaSession.Start(Guid.Empty, mf_StartTime);
-                        mf_AwaitCallback = true;
-                        WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
+
+                        // this or ...
+                        //mf_AwaitCallback = true;
+                        //WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
+
+                        // ... this
                         System.Threading.Thread.Sleep(50);
 
                         if (!_seekPending)
@@ -2636,7 +2706,7 @@ namespace PlexDL.Player
         #region Public - Low Latency
 
         /// <summary>
-        /// Gets or sets a value indicating the player's low latency mode.
+        /// Gets or sets a value indicating the player's low latency mode (default: false).
         /// </summary>
         public bool LowLatency
         {
@@ -2677,7 +2747,7 @@ namespace PlexDL.Player
         #region Public - FullScreen
 
         /// <summary>
-        /// Gets or sets a value indicating whether the fullscreen mode of the player is activated (default: false).
+        /// Gets or sets a value indicating whether the full screen mode of the player is activated (default: false).
         /// </summary>
         public bool FullScreen
         {
@@ -2690,7 +2760,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the fullscreen display mode of the player (default: FullScreenMode.Display).
+        /// Gets or sets the full screen display mode of the player (default: FullScreenMode.Display).
         /// </summary>
         public FullScreenMode FullScreenMode
         {
@@ -2831,29 +2901,34 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a description of the last error of the player that has occurred.
+        /// Gets a (localized) description of the last error of the player that has occurred.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public string LastErrorString
         {
-            get { return new Win32Exception((int)_lastError).Message; }
+            get { return GetErrorText((int)_lastError); }
         }
 
         /// <summary>
-        /// Returns a description of the specified error code.
+        /// Returns a (localized) description of the specified error code.
         /// </summary>
         /// <param name="errorCode">The error code whose description needs to be obtained.</param>
         public string GetErrorString(int errorCode)
         {
-            return new Win32Exception(errorCode).Message;
+            return GetErrorText(errorCode);
         }
 
         /// <summary>
-        /// Returns a description of the specified error code.
+        /// Returns a (localized) description of the specified error code.
         /// </summary>
         /// <param name="errorCode">The error code whose description needs to be obtained.</param>
         public static string GetErrorText(int errorCode)
         {
+            const int UNKNOWN_FILE_NOT_FOUND = unchecked((int)0xc00d001a);
+            const int UNKNOWN_SERVER_NOT_FOUND = unchecked((int)0xc00d0035);
+
+            if (errorCode == UNKNOWN_FILE_NOT_FOUND) errorCode = (int)HResult.ERROR_FILE_NOT_FOUND;
+            else if (errorCode == UNKNOWN_SERVER_NOT_FOUND) errorCode = (int)HResult.ERROR_SERVER_NOT_FOUND;
             return new Win32Exception(errorCode).Message;
         }
 
@@ -2862,14 +2937,16 @@ namespace PlexDL.Player
         #region Public - Player Name
 
         /// <summary>
-        /// Gets or sets the name of the player.
+        /// Gets or sets the name of the player (default: Player.VersionString).
         /// </summary>
         public string Name
         {
             get
             {
                 _lastError = NO_ERROR;
-                return string.IsNullOrEmpty(_playerName) ? string.Empty : _playerName;
+                //return _playerName == null ? VERSION_STRING : _playerName;
+                if (string.IsNullOrWhiteSpace(_playerName)) return VERSION_STRING;
+                return _playerName;
             }
             set
             {
@@ -2904,12 +2981,51 @@ namespace PlexDL.Player
             }
         }
 
+        internal MediaSourceType AV_GetSourceType()
+        {
+            MediaSourceType sourceType = MediaSourceType.None;
+
+            if (_imageMode) sourceType = MediaSourceType.Image;
+            else if (_fileMode)
+            {
+                if (_hasTempFile) sourceType = MediaSourceType.ByteArray;
+                else
+                {
+                    sourceType = MediaSourceType.File;
+                    try { if (!new Uri(_fileName).IsFile) { sourceType = MediaSourceType.FileStream; } }
+                    catch { /* ignore */ }
+                }
+            }
+            else if (_webcamMode) sourceType = MediaSourceType.Webcam;
+            else if (_webcamAggregated) sourceType = MediaSourceType.WebcamWithAudio;
+            else if (_micMode) sourceType = MediaSourceType.AudioInput;
+            else if (_liveStreamMode) sourceType = MediaSourceType.LiveStream;
+
+            return sourceType;
+        }
+
+        #endregion
+
+        #region Public - Images
+
+        /// <summary>
+        /// Provides access to the images settings of the player (for example, Player.Images.Enabled).
+        /// </summary>
+        public Images Images
+        {
+            get
+            {
+                if (_imagesClass == null) _imagesClass = new Images(this);
+                return _imagesClass;
+            }
+        }
+
         #endregion
 
         #region Public - Playlist
 
         /// <summary>
-        /// Provides access to the playlist methods of the player (for example, Player.Playlist.Load).
+        /// Provides access to the playlist methods of the player (for example, Player.Playlist.Open).
         /// </summary>
         public Playlist Playlist
         {
@@ -3001,7 +3117,7 @@ namespace PlexDL.Player
         #region Public - Sleep Mode
 
         /// <summary>
-        /// Gets or sets a value indicating whether the System Energy Saving setting (sleep mode) is disabled.
+        /// Gets or sets a value indicating whether the System Energy Saving setting (sleep mode) is disabled (default: false).
         /// </summary>
         public bool SleepDisabled
         {
@@ -3076,15 +3192,15 @@ namespace PlexDL.Player
 
         // ******************************** Player - Play
 
-        #region Private - ResourceToFile
+        #region Private - Byte Array To File
 
-        internal string AV_ResourceToFile(byte[] resource, string fileName)
+        internal string AV_ByteArrayToFile(byte[] byteArray, string fileName)
         {
             string path = string.Empty;
 
             if (fileName != null) fileName = fileName.Trim();
 
-            if (resource == null || resource.Length <= 4) _lastError = HResult.E_INVALIDARG;
+            if (byteArray == null || byteArray.Length <= 4) _lastError = HResult.E_INVALIDARG;
             else if (fileName == null || fileName.Length < 4) _lastError = HResult.ERROR_INVALID_NAME;
             else
             {
@@ -3092,7 +3208,7 @@ namespace PlexDL.Player
                 {
                     if (Path.IsPathRooted(fileName)) path = fileName;
                     else path = Path.Combine(Path.GetTempPath(), fileName);
-                    File.WriteAllBytes(path, resource);
+                    File.WriteAllBytes(path, byteArray);
                     _lastError = NO_ERROR;
                 }
                 catch (Exception e)
@@ -3106,7 +3222,236 @@ namespace PlexDL.Player
 
         #endregion
 
-        #region Private - Play / PlayResource / PlayMedia / SetTopology / UpdateTopology
+        #region Private - Image To Video
+
+        private HResult AV_ImageToVideo(string fileName)
+        {
+            // already checked at calling method PlayMedia:
+            //if (string.IsNullOrWhiteSpace(fileName)) _lastError = HResult.E_INVALIDARG;
+            //else if (!File.Exists(fileName)) _lastError = HResult.ERROR_FILE_NOT_FOUND;
+            //else
+            {
+                Bitmap frame = null;
+                try
+                {
+                    frame = new Bitmap(fileName);
+
+                    // is this a weird problem with Media Foundation?
+                    int width = frame.Width % 2 == 0 ? frame.Width : frame.Width - 1;
+                    int height = frame.Height % 2 == 0 ? frame.Height : frame.Height - 1;
+                    if (width == height)
+                    {
+                        if (width != frame.Width) width += 2;
+                        else if (height != frame.Height) height += 2;
+                        else height -= 2;
+                    }
+                    if (width != frame.Width || height != frame.Height)
+                    {
+                        Bitmap oldFrame = frame;
+                        frame = new Bitmap(frame, width, height);
+                        oldFrame.Dispose();
+                    }
+
+                    //if (frame.Width * frame.Height < 16) _lastError = HResult.MF_E_OUT_OF_RANGE;
+                    //else
+                    {
+                        try
+                        {
+                            _imageBytesPerPixel = Image.GetPixelFormatSize(frame.PixelFormat) / 8;
+                            if (_imageBytesPerPixel == 0) _imageBytesPerPixel = 1;
+                        }
+                        catch { _imageBytesPerPixel = 4; }
+
+                        if (_imageBytesPerPixel == 3) _imageMediaType = MFMediaType.RGB24;
+                        else if (_imageBytesPerPixel == 4) _imageMediaType = MFMediaType.RGB32;
+                        else _imageMediaType = MFMediaType.RGB8;
+
+                        _tempFileName = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName) + IMAGES_FILE_EXTENSION);
+                        _hasTempFile = true;
+
+                        IMFSinkWriter sinkWriter = AV_CreateImageWriter(_tempFileName, frame.Width, frame.Height);
+                        if (sinkWriter != null)
+                        {
+                            AV_WriteImageFrame(sinkWriter, frame);
+
+                            sinkWriter.Finalize_();
+                            Marshal.ReleaseComObject(sinkWriter);
+                            sinkWriter = null;
+                        }
+
+                        if (_lastError != NO_ERROR) AV_RemoveTempFile();
+                    }
+                }
+                catch { _lastError = HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE; } // return 'not an image'
+
+                if (frame != null) frame.Dispose();
+            }
+            return _lastError;
+        }
+
+        internal IMFSinkWriter AV_CreateImageWriter(string fileName, int width, int height)
+        {
+            const int VIDEO_BIT_RATE = 800000;
+
+            IMFSinkWriter sinkWriter;
+            IMFMediaType mediaTypeOut;
+            IMFMediaType mediaTypeIn;
+            int streamIndex = 0;
+
+            HResult result = MFExtern.MFCreateSinkWriterFromURL(fileName, null, null, out sinkWriter);
+            if (result == NO_ERROR)
+            {
+                result = MFExtern.MFCreateMediaType(out mediaTypeOut);
+                if (result == NO_ERROR)
+                {
+                    result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+                    if (result == NO_ERROR)
+                    {
+                        // if changing the encoder also change the file extension (IMAGES_FILE_EXTENSION)
+                        result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
+                        if (result == NO_ERROR)
+                        {
+                            result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
+                            if (result == NO_ERROR)
+                            {
+                                result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+                                if (result == NO_ERROR)
+                                {
+                                    result = MFExtern.MFSetAttributeSize(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+                                    if (result == NO_ERROR)
+                                    {
+                                        result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_RATE, _imageFrameRate, 1);
+                                        if (result == NO_ERROR)
+                                        {
+                                            result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+                                            if (result == NO_ERROR)
+                                            {
+                                                result = sinkWriter.AddStream(mediaTypeOut, out streamIndex);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (mediaTypeOut != null) Marshal.ReleaseComObject(mediaTypeOut);
+            }
+
+            if (result == NO_ERROR)
+            {
+                result = MFExtern.MFCreateMediaType(out mediaTypeIn);
+                if (result == NO_ERROR)
+                {
+                    result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+                    if (result == NO_ERROR)
+                    {
+                        result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, _imageMediaType);
+                        if (result == NO_ERROR)
+                        {
+                            result = mediaTypeIn.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+                            if (result == NO_ERROR)
+                            {
+                                result = MFExtern.MFSetAttributeSize(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+                                if (result == NO_ERROR)
+                                {
+                                    result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_RATE, 1, 1);
+                                    if (result == NO_ERROR)
+                                    {
+                                        result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+                                        if (result == NO_ERROR)
+                                        {
+                                            result = sinkWriter.SetInputMediaType(streamIndex, mediaTypeIn, null);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (mediaTypeIn != null) Marshal.ReleaseComObject(mediaTypeIn);
+            }
+
+            if (result == NO_ERROR)
+            {
+                result = sinkWriter.BeginWriting();
+                if (result != NO_ERROR)
+                {
+                    Marshal.ReleaseComObject(sinkWriter);
+                    sinkWriter = null;
+                }
+            }
+
+            _lastError = result;
+            return sinkWriter;
+        }
+
+        internal void AV_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
+        {
+            HResult result = NO_ERROR;
+
+            image.RotateFlip(RotateFlipType.Rotate180FlipX);
+
+            System.Drawing.Imaging.BitmapData bmpData = null;
+            try { bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat); }
+            catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
+
+            if (result == NO_ERROR)
+            {
+                IMFMediaBuffer buffer;
+                int cbWidth = _imageBytesPerPixel * image.Width;
+                int cbBuffer = cbWidth * image.Height;
+                result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out buffer);
+
+                if (result == NO_ERROR)
+                {
+                    IntPtr data;
+                    int maxLength, currentLength;
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                    result = buffer.Lock(out data, out maxLength, out currentLength);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
+                    if (result == NO_ERROR)
+                    {
+                        result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
+                        buffer.Unlock();
+
+                        if (result == NO_ERROR)
+                        {
+                            buffer.SetCurrentLength(cbBuffer);
+
+                            IMFSample sample;
+                            result = MFExtern.MFCreateSample(out sample);
+
+                            if (result == NO_ERROR)
+                            {
+                                result = sample.AddBuffer(buffer);
+                                if (result == NO_ERROR)
+                                {
+                                    result = sample.SetSampleTime(0);
+                                    if (result == NO_ERROR)
+                                    {
+                                        result = sample.SetSampleDuration(_imageDuration);
+                                        if (result == NO_ERROR)
+                                        {
+                                            result = sinkWriter.WriteSample(0, sample);
+                                        }
+                                    }
+                                }
+                                Marshal.ReleaseComObject(sample);
+                            }
+                        }
+                    }
+                    Marshal.ReleaseComObject(buffer);
+                }
+                image.UnlockBits(bmpData);
+            }
+            _lastError = result;
+        }
+
+        #endregion
+
+        #region Private - Play / PlayByteArray / PlayMedia / SetTopology / UpdateTopology
 
         internal HResult AV_Play()
         {
@@ -3148,6 +3493,7 @@ namespace PlexDL.Player
 
             _fileName           = _siFileName;
             _fileMode           = _siFileMode;
+            _siFileMode         = false;
 
             _micMode            = _siMicMode;
             _siMicMode          = false;
@@ -3245,7 +3591,7 @@ namespace PlexDL.Player
             return result;
         }
 
-        private HResult AV_PlayResource(byte[] resource, string fileName)
+        private HResult AV_PlayByteArray(byte[] byteArray, string fileName)
         {
             if (_busyStarting)
             {
@@ -3254,7 +3600,7 @@ namespace PlexDL.Player
                 return _lastError;
             }
 
-            _siFileName = AV_ResourceToFile(resource, fileName);
+            _siFileName = AV_ByteArrayToFile(byteArray, fileName);
 
             if (_lastError == NO_ERROR)
             {
@@ -3364,12 +3710,33 @@ namespace PlexDL.Player
                 result = MFExtern.MFCreateSourceResolver(out sourceResolver);
                 if (result == NO_ERROR)
                 {
+
+#pragma warning disable IDE0059 // Unnecessary assignment of a value (here: CreateObjectFromURL objectType (can't be removed))
+
                     MFObjectType objectType;
                     object source;
+
                     result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.KeepByteStreamAliveOnFail, null, out objectType, out source);
-                    if (result != NO_ERROR) result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.ContentDoesNotHaveToMatchExtensionOrMimeType, null, out objectType, out source);
+                    if (result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE)
+                    {
+                        result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.ContentDoesNotHaveToMatchExtensionOrMimeType, null, out objectType, out source);
+                        if (_imagesEnabled && result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE)
+                        {
+                            result = AV_ImageToVideo(_fileName);
+                            if (result == NO_ERROR)
+                            {
+                                _imageMode = true; //_fileMode - don't set to false
+                                result = sourceResolver.CreateObjectFromURL(_tempFileName, MFResolution.MediaSource, null, out objectType, out source);
+                                if (result != NO_ERROR && _hasTempFile) AV_RemoveTempFile();
+                            }
+                        }
+                    }
+
                     mf_MediaSource = (IMFMediaSource)source;
                     Marshal.ReleaseComObject(sourceResolver);
+
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
                 }
             }
 
@@ -3381,7 +3748,7 @@ namespace PlexDL.Player
                     result = mf_MediaSource.CreatePresentationDescriptor(out sourcePD);
                     if (result == NO_ERROR)
                     {
-                        if (mf_Replay && (_fileMode || _streamMode))
+                        if (mf_Replay && _fileMode) // || _liveStreamMode)) // = not webcam or mic
                         {
                             bool getNewLength = false;
 
@@ -3401,12 +3768,12 @@ namespace PlexDL.Player
 
                             if (getNewLength)
                             {
-                                result = sourcePD.GetUINT64(MFAttributesClsid.MF_PD_DURATION, out _mediaLength);
+                                sourcePD.GetUINT64(MFAttributesClsid.MF_PD_DURATION, out _mediaLength);
                                 //if (result == NO_ERROR && _mediaLength == 0) result = HResult.MF_E_NO_DURATION;
-                                if (result == NO_ERROR && _mediaLength <= 0)
+                                if (_mediaLength <= 0)
                                 {
                                     _fileMode = false;
-                                    _streamMode = true;
+                                    _liveStreamMode = true;
                                 }
                             }
                         }
@@ -3414,12 +3781,16 @@ namespace PlexDL.Player
                         {
                             if (_fileMode)
                             {
-                                result = sourcePD.GetUINT64(MFAttributesClsid.MF_PD_DURATION, out _mediaLength);
-                                //if (result == NO_ERROR && _mediaLength <= 0) result = HResult.MF_E_NO_DURATION;
-                                if (result == NO_ERROR && _mediaLength <= 0)
+                                sourcePD.GetUINT64(MFAttributesClsid.MF_PD_DURATION, out _mediaLength);
+                                if (_mediaLength <= _stopTime)
+                                {
+                                    _stopTime = 0;
+                                    if (_mediaStartStopTimeChanged != null) _mediaStartStopTimeChanged(this, EventArgs.Empty);
+                                }
+                                if (_mediaLength <= 0)
                                 {
                                     _fileMode = false;
-                                    _streamMode = true;
+                                    _liveStreamMode = true;
                                 }
                             }
 
@@ -3651,11 +4022,18 @@ namespace PlexDL.Player
                 }
 
                 _playing = true;
-                if (_mediaStarted != null) _mediaStarted(this, EventArgs.Empty);
+                if (_mediaStarted != null)
+                {
+                    _lastError = result;
+                    _mediaStarted(this, EventArgs.Empty);
+                }
+
+                if (_displayHold) AV_ClearHold();
             }
             else
             {
-                AV_CloseSession(false, true, StopReason.Error);
+                _lastError = result;
+                AV_CloseSession(false, false, StopReason.Error); // with no MediaEnded event
             }
 
             _lastError = result;
@@ -3802,6 +4180,7 @@ namespace PlexDL.Player
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_HARDWARE_MODE, 1);
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE, 2);
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_PROJECTSTART, 0);
+
                 if (_stopTime == 0) topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_PROJECTSTOP, long.MaxValue);
                 else topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_PROJECTSTOP, _stopTime);
 
@@ -3844,8 +4223,7 @@ namespace PlexDL.Player
                                 }
                             }
                             else _hasVideo = false;
-
-                            if (!mf_Replay) result = NO_ERROR; // do not delete
+                            //if (!mf_Replay) result = NO_ERROR; // do not delete
                         }
 
                         if (result == NO_ERROR)
@@ -3870,7 +4248,8 @@ namespace PlexDL.Player
                                         mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
                                     }
                                 }
-                                if (!mf_Replay) result = NO_ERROR; // do not delete
+                                else _hasAudio = false;
+                                //if (!mf_Replay) result = NO_ERROR; // do not delete
                             }
 
                             if (result == NO_ERROR)
@@ -3972,7 +4351,7 @@ namespace PlexDL.Player
             mf_AwaitCallback = true;
             WaitForEvent.WaitOne(TIMEOUT_15_SECONDS);
 
-            // oops another one? if webcamMode
+            // if webcamMode
             Application.DoEvents();
 
             mf_MediaSource.Shutdown();
@@ -4001,24 +4380,6 @@ namespace PlexDL.Player
 
             mf_Clock = null;
             mf_HasSession = false;
-
-            //if (_webcamMode)
-            //{
-            //    _siWebcamMode = true;
-            //    _siWebcamDevice = _webcamDevice;
-            //    _siWebcamFormat = _webcamFormat;
-
-            //    _hasVideoBounds = false;
-            //}
-            //else if (_micMode)
-            //{
-            //    _siMicMode = true;
-            //    _siMicDevice = _micDevice;
-            //}
-            //else
-            //{
-            //    _siFileMode = true;
-            //}
 
             _hasVideoBounds = false;
             AV_PlayMedia();
@@ -4063,20 +4424,18 @@ namespace PlexDL.Player
 
         #endregion
 
-        #region Private - Close Session
+        #region Private - Close Session / Remove TempFile / Clear Hold
 
         internal void AV_CloseSession(bool purge, bool stopped, StopReason reason)
         {
             if (mf_HasSession)
             {
-                _endedEventArgs._error  = (int)_lastError;
-                _endedEventArgs._webcam = _webcamMode;
-                _endedEventArgs._mic    = _micMode;
-                _endedEventArgs._stream = _streamMode;
-                _endedEventArgs._media  = _fileName;
-
                 _timer.Stop();
                 _playing = false;
+
+                _endedEventArgs._mediaName  = _fileName;
+                _endedEventArgs._sourceType = AV_GetSourceType();
+                _endedEventArgs._error      = (int)_lastError;
 
                 if (_psTracking) PositionSlider_StopTracking();
 
@@ -4151,7 +4510,7 @@ namespace PlexDL.Player
                     }
                 }
 
-                if (_hasVideoDisplay)
+                if (_hasVideoDisplay && (!_displayHold || reason == StopReason.UserStop || reason == StopReason.Error))
                 {
                     _display.Controls.Remove(_videoDisplay);
                     _hasVideoDisplay = false;
@@ -4159,7 +4518,7 @@ namespace PlexDL.Player
 
                 // ********************************
 
-                if (_hasDisplay && (stopped && reason != StopReason.AutoStop))
+                if (_hasDisplay && (!_displayHold || reason == StopReason.UserStop || reason == StopReason.Error) && (stopped && reason != StopReason.AutoStop))
                 {
                     _display.Invalidate();
                 }
@@ -4169,11 +4528,13 @@ namespace PlexDL.Player
 
                 mf_HasSession       = false;
 
+                bool startStopEvent = false;
+                if ((_startTime != 0 || _stopTime != 0) && _fileMode && !mf_Replay && _mediaStartStopTimeChanged != null) startStopEvent = true;
                 _startTime          = 0;
                 _stopTime           = 0;
                 _repeatCount        = 0;
                 _mediaLength        = 0;
-                if (_fileMode && !mf_Replay && _mediaStartStopTimeChanged != null) _mediaStartStopTimeChanged(this, EventArgs.Empty);
+                if (startStopEvent) _mediaStartStopTimeChanged(this, EventArgs.Empty);
 
                 _hasAudio           = false;
                 _audioTracks        = null;
@@ -4214,15 +4575,7 @@ namespace PlexDL.Player
                 }
                 //if (_hasShuttleSlider) _shuttleSlider.Enabled = false;
 
-                if (_hasTempFile)
-                {
-                    try
-                    {
-                        File.Delete(_tempFileName);
-                        _hasTempFile = false;
-                    }
-                    catch { /* ignore */ }
-                }
+                if (_hasTempFile) AV_RemoveTempFile();
 
                 if (_fileMode && !mf_Replay && _mediaPositionChanged != null) OnMediaPositionChanged();
 
@@ -4232,7 +4585,8 @@ namespace PlexDL.Player
                 _webcamFormat   = null;
                 _micMode        = false;
                 _micDevice      = null;
-                _streamMode     = false;
+                _liveStreamMode = false;
+                _imageMode      = false;
 
                 if (stopped)
                 {
@@ -4251,6 +4605,46 @@ namespace PlexDL.Player
             _lastError = NO_ERROR;
         }
 
+        private void AV_RemoveTempFile()
+        {
+            if (_hasTempFile)
+            {
+                try { File.Delete(_tempFileName); }
+                catch { /* ignore */ }
+
+                _hasTempFile = false;
+                _tempFileName = string.Empty;
+            }
+        }
+
+        internal void AV_ClearHold()
+        {
+            // already checked for _displayHold
+            //if (_displayHold && !_playing && _hasVideoDisplay)
+
+            if (!_playing && _hasVideoDisplay)
+            {
+                _display.Controls.Remove(_videoDisplay);
+                _hasVideoDisplay = false;
+                _display.Invalidate();
+
+                if (dc_HasDisplayClones)
+                {
+                    for (int i = 0; i < dc_DisplayClones.Length; i++)
+                    {
+                        try
+                        {
+                            if (dc_DisplayClones[i] != null && dc_DisplayClones[i].Control != null && dc_DisplayClones[i].Control.Visible)
+                            {
+                                dc_DisplayClones[i].Control.Invalidate();
+                            }
+                        }
+                        catch { /* ignore */ }
+                    }
+                }
+            }
+        }
+
         #endregion
 
 
@@ -4265,7 +4659,7 @@ namespace PlexDL.Player
                 device.GetId(out deviceInfo._id);
 
                 IPropertyStore store;
-                device.OpenPropertyStore((uint)STGM._READ, out store);
+                device.OpenPropertyStore((uint)STGM.STGM_READ, out store);
 
                 if (store != null)
                 {
@@ -4361,7 +4755,7 @@ namespace PlexDL.Player
 
         internal HResult MF_SetBrightness(double brightness)
         {
-            HResult result = HResult.E_FAIL;
+            HResult result = HResult.MF_E_NOT_AVAILABLE;
 
             if (!_hasVideoProcessor && !_failVideoProcessor) AV_CreateVideoProcessor();
             if (_hasVideoProcessor)
@@ -4422,7 +4816,7 @@ namespace PlexDL.Player
 
         internal HResult MF_SetContrast(double contrast)
         {
-            HResult result = HResult.E_FAIL;
+            HResult result = HResult.MF_E_NOT_AVAILABLE;
 
             if (!_hasVideoProcessor && !_failVideoProcessor) AV_CreateVideoProcessor();
             if (_hasVideoProcessor)
@@ -4483,7 +4877,7 @@ namespace PlexDL.Player
 
         internal HResult MF_SetHue(double hue)
         {
-            HResult result = HResult.E_FAIL;
+            HResult result = HResult.MF_E_NOT_AVAILABLE;
 
             if (!_hasVideoProcessor && !_failVideoProcessor) AV_CreateVideoProcessor();
             if (_hasVideoProcessor)
@@ -4544,7 +4938,7 @@ namespace PlexDL.Player
 
         internal HResult MF_SetSaturation(double saturation)
         {
-            HResult result = HResult.E_FAIL;
+            HResult result = HResult.MF_E_NOT_AVAILABLE;
 
             if (!_hasVideoProcessor && !_failVideoProcessor) AV_CreateVideoProcessor();
             if (_hasVideoProcessor)
@@ -5005,7 +5399,7 @@ namespace PlexDL.Player
         internal Image AV_DisplayCopy(bool videoMode, bool withOverlay)
         {
             Bitmap image = null;
-            _lastError   = HResult.E_FAIL;
+            _lastError   = HResult.MF_E_NOT_AVAILABLE;
 
             if (_hasVideo || _hasOverlayShown)
             {
@@ -5168,6 +5562,10 @@ namespace PlexDL.Player
                     callback = AV_PresetBeamsShape;
                     break;
 
+                case DisplayShape.Circle:
+                    callback = AV_PresetCircleShape;
+                    break;
+
                 case DisplayShape.Cross:
                     callback = AV_PresetCrossShape;
                     break;
@@ -5202,6 +5600,10 @@ namespace PlexDL.Player
 
                 case DisplayShape.Rounded:
                     callback = AV_PresetRoundedShape;
+                    break;
+
+                case DisplayShape.Square:
+                    callback = AV_PresetSquareShape;
                     break;
 
                 case DisplayShape.Star:
@@ -5401,6 +5803,27 @@ namespace PlexDL.Player
             return region;
         }
 
+        internal Region AV_PresetCircleShape(Rectangle shapeBounds)
+        {
+            GraphicsPath path = new GraphicsPath();
+            if (shapeBounds.Width < shapeBounds.Height)
+            {
+                shapeBounds.Y += (shapeBounds.Height - shapeBounds.Width) / 2;
+                shapeBounds.Height = shapeBounds.Width;
+            }
+            else
+            {
+                shapeBounds.X += (shapeBounds.Width - shapeBounds.Height) / 2;
+                shapeBounds.Width = shapeBounds.Height;
+            }
+            path.AddEllipse(shapeBounds);
+
+            Region region = new Region(path);
+            path.Dispose();
+
+            return region;
+        }
+
         internal Region AV_PresetCrossShape(Rectangle shapeBounds)
         {
             float dX = shapeBounds.Width / 3f;
@@ -5590,6 +6013,27 @@ namespace PlexDL.Player
 
             Region region = Region.FromHrgn(handle);
             SafeNativeMethods.DeleteObject(handle);
+
+            return region;
+        }
+
+        internal Region AV_PresetSquareShape(Rectangle shapeBounds)
+        {
+            GraphicsPath path = new GraphicsPath();
+            if (shapeBounds.Width < shapeBounds.Height)
+            {
+                shapeBounds.Y += (shapeBounds.Height - shapeBounds.Width) / 2;
+                shapeBounds.Height = shapeBounds.Width;
+            }
+            else
+            {
+                shapeBounds.X += (shapeBounds.Width - shapeBounds.Height) / 2;
+                shapeBounds.Width = shapeBounds.Height;
+            }
+            path.AddRectangle(shapeBounds);
+
+            Region region = new Region(path);
+            path.Dispose();
 
             return region;
         }
@@ -5823,13 +6267,13 @@ namespace PlexDL.Player
 
             if (_display == null)
             {
-                _lastError = HResult.S_FALSE;
+                _lastError = HResult.MF_E_NOT_AVAILABLE;
                 return;
             }
 
             if (theOverlay.GetType() == _display.FindForm().GetType())
             {
-                _lastError = HResult.S_FALSE;
+                _lastError = HResult.E_INVALIDARG;
                 return;
             }
             if (theOverlay == _overlay)
@@ -6158,7 +6602,7 @@ namespace PlexDL.Player
 
             if (_display == null)
             {
-                _lastError = HResult.S_FALSE;
+                _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
             }
             else
             {
@@ -6166,7 +6610,7 @@ namespace PlexDL.Player
                 {
                     if (!_fullScreen)
                     {
-                        _lastError = !AV_AddFullScreen(_display.FindForm()) ? HResult.S_FALSE : AV_SetFullScreenMode(_fullScreenMode, true);
+                        _lastError = !AV_AddFullScreen(_display.FindForm()) ? HResult.MF_E_NOT_AVAILABLE : AV_SetFullScreenMode(_fullScreenMode, true);
                     }
                 }
                 else
@@ -6219,7 +6663,39 @@ namespace PlexDL.Player
 
             if (_fullScreen)
             {
-                if (FullScreenMode != FullScreenMode.Form) AV_SetFullScreenMode(FullScreenMode.Form, false);
+                //if (FullScreenMode != FullScreenMode.Form) AV_SetFullScreenMode(FullScreenMode.Form, false);
+
+                if (FullScreenMode != FullScreenMode.Form && FullScreenMode != FullScreenMode.Form_AllScreens)
+                {
+                    //if (FullScreenMode < FullScreenMode.Display_AllScreens) AV_SetFullScreenMode(FullScreenMode.Form, false);
+                    //else AV_SetFullScreenMode(FullScreenMode.Form_AllScreens, false);
+
+                    if (FullScreenMode < FullScreenMode.Display_AllScreens)
+                    {
+                        if (_fullScreenMode == FullScreenMode.Parent)
+                        {
+                            FS_ResetDisplayParent();
+                        }
+                        else
+                        {
+                            FS_ResetDisplay();
+                            if (_display.Parent.GetType().BaseType != typeof(Form)) FS_ResetDisplayParent();
+                        }
+                    }
+                    else
+                    {
+                        if (_fullScreenMode == FullScreenMode.Parent_AllScreens)
+                        {
+                            FS_ResetDisplayParent();
+                        }
+                        else
+                        {
+                            FS_ResetDisplay();
+                            if (_display.Parent.GetType().BaseType != typeof(Form)) FS_ResetDisplayParent();
+
+                        }
+                    }
+                }
 
                 Form theForm            = (Form)_display.TopLevelControl;
                 theForm.FormBorderStyle = _fsFormBorder;
@@ -6238,26 +6714,30 @@ namespace PlexDL.Player
             Form theForm = null;
             bool fChanged = false;
 
+            // switch between fullscreen one screen and all screens
+            if (_fullScreen && ((mode < FullScreenMode.Display_AllScreens && _fullScreenMode >= FullScreenMode.Display_AllScreens)
+                || (mode >= FullScreenMode.Display_AllScreens && _fullScreenMode < FullScreenMode.Display_AllScreens)))
+            {
+                AV_ResetFullScreen();
+                Application.DoEvents();
+            }
+
             if (!_fullScreen)
             {
-                if (_display.GetType().BaseType == typeof(Form))
-                    theForm = (Form)_display;
-                else
-                    theForm = (Form)_display.TopLevelControl;
+                if (_display.GetType().BaseType == typeof(Form)) theForm = (Form)_display;
+                else theForm = (Form)_display.TopLevelControl;
 
                 _fsFormBounds = theForm.WindowState == FormWindowState.Maximized ? theForm.RestoreBounds : theForm.Bounds;
                 _fsFormBorder = theForm.FormBorderStyle;
 
-                Rectangle r = Screen.GetBounds(_display);
-
+                Rectangle r = mode < FullScreenMode.Display_AllScreens ? Screen.GetBounds(_display) : SystemInformation.VirtualScreen;
                 theForm.FormBorderStyle = FormBorderStyle.None;
-
                 SafeNativeMethods.SetWindowPos(theForm.Handle, IntPtr.Zero, r.Left, r.Top, r.Width, r.Height, SafeNativeMethods.SWP_SHOWWINDOW);
 
-                _fullScreenMode = FullScreenMode.Form;
+                _fullScreenMode = mode < FullScreenMode.Display_AllScreens ? FullScreenMode.Form : FullScreenMode.Form_AllScreens;
                 _fullScreen = true;
 
-                if (theForm == _display || mode == FullScreenMode.Form)
+                if (theForm == _display || mode == FullScreenMode.Form || mode == FullScreenMode.Form_AllScreens)
                 {
                     if (_mediaFullScreenChanged != null) _mediaFullScreenChanged(this, EventArgs.Empty);
                     return NO_ERROR;
@@ -6270,64 +6750,98 @@ namespace PlexDL.Player
                 switch (mode)
                 {
                     case FullScreenMode.Display:
-                        if (_fullScreenMode == FullScreenMode.Form) //  else its mode parent
+                        if (_fullScreenMode == FullScreenMode.Form)
                         {
-                            if (_display.Parent.GetType().BaseType != typeof(Form)) // upsize parent if any
+                            if (_display.Parent.GetType().BaseType != typeof(Form))
                             {
-                                if (_display.Parent.Parent.GetType().BaseType == typeof(Form))
-                                {
-                                    FS_SetDisplayParent(); // upsize parent
-                                }
-                                else
-                                {
-                                    theForm.ResumeLayout();
-                                    return HResult.S_FALSE;
-                                }
+                                if (_display.Parent.Parent.GetType().BaseType == typeof(Form)) FS_SetDisplayParent();
+                                else return HResult.MF_E_NOT_AVAILABLE;
                             }
                         }
-                        FS_SetDisplay(); // upsize display
+                        FS_SetDisplay();
                         _fullScreenMode = FullScreenMode.Display;
+                        break;
+
+                    case FullScreenMode.Display_AllScreens:
+                        if (_fullScreenMode == FullScreenMode.Form_AllScreens)
+                        {
+                            if (_display.Parent.GetType().BaseType != typeof(Form))
+                            {
+                                if (_display.Parent.Parent.GetType().BaseType == typeof(Form)) FS_SetDisplayParent();
+                                else return HResult.MF_E_NOT_AVAILABLE;
+                            }
+                        }
+                        FS_SetDisplay();
+                        _fullScreenMode = FullScreenMode.Display_AllScreens;
                         break;
 
                     case FullScreenMode.Parent:
                         if (_fullScreenMode == FullScreenMode.Display)
                         {
-                            FS_ResetDisplay(); // downsize display
+                            FS_ResetDisplay();
                             _fullScreenMode = _display.Parent.GetType().BaseType == typeof(Form) ? FullScreenMode.Form : FullScreenMode.Parent;
                         }
-                        else // its mode form
+                        else
                         {
-                            if (_display.Parent.GetType().BaseType != typeof(Form)) // upsize parent if any
+                            if (_display.Parent.GetType().BaseType != typeof(Form))
                             {
-                                if (_display.Parent.Parent.GetType().BaseType == typeof(Form))
+                                if (_fullScreenMode < FullScreenMode.Display_AllScreens)
                                 {
-                                    FS_SetDisplayParent(); // upsize parent
-                                }
-                                else
-                                {
-                                    theForm.ResumeLayout();
-                                    return HResult.S_FALSE;
+                                    if (_display.Parent.Parent.GetType().BaseType == typeof(Form)) FS_SetDisplayParent();
+                                    else return HResult.MF_E_NOT_AVAILABLE;
                                 }
                                 _fullScreenMode = FullScreenMode.Parent;
                             }
-                            else
+                            else _fullScreenMode = FullScreenMode.Form;
+                        }
+                        break;
+
+                    case FullScreenMode.Parent_AllScreens:
+                        if (_fullScreenMode == FullScreenMode.Display_AllScreens)
+                        {
+                            FS_ResetDisplay();
+                            _fullScreenMode = _display.Parent.GetType().BaseType == typeof(Form) ? FullScreenMode.Form_AllScreens : FullScreenMode.Parent_AllScreens;
+                        }
+                        else
+                        {
+                            if (_display.Parent.GetType().BaseType != typeof(Form))
                             {
-                                _fullScreenMode = FullScreenMode.Form;
+                                if (_fullScreenMode >= FullScreenMode.Display_AllScreens)
+                                {
+                                    if (_display.Parent.Parent.GetType().BaseType == typeof(Form)) FS_SetDisplayParent();
+                                    else return HResult.MF_E_NOT_AVAILABLE;
+                                }
+                                _fullScreenMode = FullScreenMode.Parent_AllScreens;
                             }
+                            else _fullScreenMode = FullScreenMode.Form_AllScreens;
                         }
                         break;
 
                     case FullScreenMode.Form:
-                        if (_fullScreenMode == FullScreenMode.Parent) // downsize parent
+                        if (_fullScreenMode == FullScreenMode.Parent)
                         {
                             FS_ResetDisplayParent();
                         }
-                        else // downsize display
+                        else
                         {
                             FS_ResetDisplay();
                             if (_display.Parent.GetType().BaseType != typeof(Form)) FS_ResetDisplayParent();
                         }
                         _fullScreenMode = FullScreenMode.Form;
+                        break;
+
+                    case FullScreenMode.Form_AllScreens:
+                        if (_fullScreenMode == FullScreenMode.Parent_AllScreens)
+                        {
+                            FS_ResetDisplayParent();
+                        }
+                        else
+                        {
+                            FS_ResetDisplay();
+                            if (_display.Parent.GetType().BaseType != typeof(Form)) FS_ResetDisplayParent();
+
+                        }
+                        _fullScreenMode = FullScreenMode.Form_AllScreens;
                         break;
                 }
 
@@ -6335,12 +6849,7 @@ namespace PlexDL.Player
             }
 
             if (fChanged && _mediaFullScreenChanged != null) _mediaFullScreenChanged(this, EventArgs.Empty);
-
-            if (theForm != null)
-            {
-                theForm.ResumeLayout();
-                Application.DoEvents();
-            }
+            if (theForm != null) Application.DoEvents();
 
             return NO_ERROR;
         }
@@ -6356,9 +6865,12 @@ namespace PlexDL.Player
             }
             catch { /* ignored */ }
 
-            Rectangle r     = _display.Parent.Bounds;
-            r.X = r.Y       = 0;
-            _display.Bounds = r;
+            if (_fullScreenMode != FullScreenMode.Display && _fullScreenMode != FullScreenMode.Display_AllScreens)
+            {
+                Rectangle r = _display.Parent.Bounds;
+                r.X = 0;  r.Y = 0;
+                _display.Bounds = r;
+            }
             _display.BringToFront();
         }
 
@@ -6401,6 +6913,38 @@ namespace PlexDL.Player
             _display.Parent.Parent.Controls.SetChildIndex(_display.Parent, _fsParentIndex);
         }
 
+        internal bool FS_GetVideoWallMode()
+        {
+            if (_hasDisplay)
+            {
+                _lastError = Player.NO_ERROR;
+                return _fullScreen && _fullScreenMode == FullScreenMode.Display_AllScreens;
+            }
+            _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
+            return false;
+        }
+
+        internal void FS_SetVideoWallMode(bool activate)
+        {
+            if (_hasDisplay)
+            {
+                if (activate)
+                {
+                    if (!(_fullScreen && _fullScreenMode == FullScreenMode.Display_AllScreens))
+                    {
+                        FullScreenMode = FullScreenMode.Display_AllScreens;
+                        AV_SetFullScreen(true);
+                    }
+                }
+                else if (_fullScreen && _fullScreenMode >= FullScreenMode.Display_AllScreens)
+                {
+                    AV_SetFullScreen(false);
+                }
+                _lastError = Player.NO_ERROR;
+            }
+            else _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
+        }
+
         #endregion
 
         #region Private - Speed
@@ -6419,58 +6963,17 @@ namespace PlexDL.Player
                 {
                     if (mf_RateControl != null)
                     {
-                        // mf bug reverts to system default audio device
-                        //if (_audioDevice == null)
-                        //{
-//                            mf_MediaSession.Pause();
-//                            mf_AwaitCallback = true;
-//                            WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-
-//                            long presTime, sysTime;
-//#pragma warning disable IDE0059 // Unnecessary assignment of a value
-//                            mf_Clock.GetCorrelatedTime(0, out presTime, out sysTime);
-//#pragma warning restore IDE0059 // Unnecessary assignment of a value
-//                            if (!_paused) presTime += 500000;
-
-//                            _lastError = mf_RateControl.SetRate(_speedBoost, speed);
-//                            if (_lastError == NO_ERROR)
-                            //{
-                                //mf_AwaitCallback = true;
-                                //WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-
-                                //mf_StartTime.type = ConstPropVariant.VariantType.Int64;
-                                //mf_StartTime.longValue = presTime;
-
-                                //mf_MediaSession.Start(Guid.Empty, mf_StartTime);
-                                //mf_AwaitCallback = true;
-                                //WaitForEvent.WaitOne(TIMEOUT_10_SECONDS);
-
-                        //        if (_paused)
-                        //        {
-                        //            mf_MediaSession.Pause();
-                        //            mf_AwaitCallback = true;
-                        //            WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-                        //        }
-
-                        //        mf_RateControl.GetRate(_speedBoost, out speed);
-                        //    }
-
-                        //}
-                        //else
-                        {
-                            // go the long way
-                            _speed = speed;
-                            if (_speedSlider != null && setSlider) SpeedSlider_ValueToSlider(speed);
-                            AV_UpdateTopology();
-                            mf_Speed = speed;
-                            if (_mediaSpeedChanged != null) _mediaSpeedChanged(this, EventArgs.Empty);
-                            speedChanged = false;
-                        }
+                        _speed = speed;
+                        if (_speedSlider != null && setSlider) SpeedSlider_ValueToSlider(speed);
+                        AV_UpdateTopology();
+                        mf_Speed = speed;
+                        if (_mediaSpeedChanged != null) _mediaSpeedChanged(this, EventArgs.Empty);
+                        speedChanged = false;
                     }
                     else
                     {
                         speedChanged = false;
-                        _lastError = HResult.E_FAIL;
+                        _lastError = HResult.MF_E_NOT_AVAILABLE;
                     }
                 }
                 if (speedChanged)
@@ -6894,7 +7397,7 @@ namespace PlexDL.Player
 
         internal void PositionSlider_MouseDown(object sender, MouseEventArgs e)
         {
-            if (_playing && _fileMode)
+            if (_playing && _fileMode && _mediaLength > 0)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -7021,7 +7524,7 @@ namespace PlexDL.Player
 
             if (!_paused) StartMainTimerCheck();
 
-            _psTracking = false;
+            //_psTracking = false;
         }
 
         internal void PositionSlider_TimerTick(object sender, EventArgs e)
@@ -7081,7 +7584,7 @@ namespace PlexDL.Player
 
         internal void PositionSlider_Scroll(object sender, EventArgs e)
         {
-            if (_playing)
+            if (_playing && _fileMode && _mediaLength > 0)
             {
                 if (!_psTracking)
                 {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PlexDL.Common.Structures;
+using System;
 using System.Windows.Forms;
-using PlexDL.Common.Structures;
 
 namespace PlexDL.UI
 {

@@ -25,29 +25,6 @@ namespace PlexDL.UI
             LoadRememberMe();
         }
 
-        private bool ValidRememberMe(bool deleteOnInvalid = true)
-        {
-            bool valid = false;
-            if (RememberMeFileExists())
-            {
-                var login = CachedPlexLogin.FromFile(rememberMeFile);
-                //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
-                if (login.VerifyThis())
-                {
-                    valid = true;
-                }
-                else
-                {
-                    //delete the file if it's incorrect and the flag is set
-                    if (deleteOnInvalid)
-                        File.Delete(rememberMeFile);
-                    //log the event
-                    LoggingHelpers.RecordGenericEntry("Couldn't verify 'Remember Me' PlexLogin data: hashes didn't match.");
-                }
-            }
-            return valid;
-        }
-
         private bool RememberMeFileExists()
         {
             return File.Exists(rememberMeFile);
@@ -57,7 +34,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (File.Exists(rememberMeFile))
+                if (RememberMeFileExists())
                 {
                     var login = CachedPlexLogin.FromFile(rememberMeFile);
                     //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
@@ -69,13 +46,6 @@ namespace PlexDL.UI
 
                         //check the "Remember Me" box
                         chkRememberMe.Checked = true;
-                    }
-                    else
-                    {
-                        //delete the file if it's incorrect
-                        File.Delete(rememberMeFile);
-                        //log the event
-                        LoggingHelpers.RecordGenericEntry("Couldn't load 'Remember Me' PlexLogin data: hashes didn't match.");
                     }
                 }
             }
@@ -138,6 +108,11 @@ namespace PlexDL.UI
                     var login = new CachedPlexLogin(username, password);
                     login.ToFile(rememberMeFile);
                 }
+                else
+                {
+                    if (RememberMeFileExists())
+                        File.Delete(rememberMeFile);
+                }
             }
             catch (Exception ex)
             {
@@ -153,12 +128,14 @@ namespace PlexDL.UI
                 if (!string.IsNullOrWhiteSpace(txtUsername.Text) && !string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
                     string token = (string)WaitWindow.WaitWindow.Show(LoginWorker, "Logging you in");
+
                     if (!string.IsNullOrWhiteSpace(token))
                     {
                         // valid account tokens are always 20 characters in length
                         if (token.Length == 20)
                         {
                             RememberMe(chkRememberMe.Checked);
+
                             MessageBox.Show("Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             AccountToken = token;
                             Success = true;

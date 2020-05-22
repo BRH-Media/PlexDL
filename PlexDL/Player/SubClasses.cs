@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.2
-    February 2020, The Netherlands
+    PlexDL.Player - Version 0.99
+    May 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,12 +12,12 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
+    Article on CodeProject with information on the use of the PlexDL.Player library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PVS.MediaPlayer library source code is divided into 8 files:
+    The PlexDL.Player library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -51,6 +51,7 @@
     Audio Input Device Class
     Slider Value Class
     Metadata Class
+    Media Chapter Class
     Clone Properties Class
     MF Callback Class
     Hide System Object Members Classes
@@ -64,16 +65,16 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library!
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
     Thank you very much, Sean and Deeksha!
 
     Peter Vegter
-    February 2020, The Netherlands
+    May 2020, The Netherlands
 
     ****************************************************************/
 
@@ -85,10 +86,23 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
 
 #endregion
+
+#region Disable Some Warnings
+
+// programmer's preference:
+#pragma warning disable IDE0044 // Add readonly modifier
+// the library can be compiled with all versions of c#:
+#pragma warning disable IDE1005 // Delegate invocation can be simplified.
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable IDE0017 // Simplify object initialization
+
+#endregion
+
 
 namespace PlexDL.Player
 {
@@ -104,7 +118,7 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class DeviceInfo : HideObjectMembers
     {
-        #region Fields (Device Class)
+        #region Fields (Device Info Class)
 
         internal string _id;
         internal string _name;
@@ -149,7 +163,7 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class VideoTrack : HideObjectMembers
     {
-        #region VideoTrack Fields
+        #region Fields (Video Track Class)
 
         internal Guid   _mediaType;
         internal string _name;
@@ -259,7 +273,7 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class WebcamProperty : HideObjectMembers
     {
-        #region Fields (WebcamProperty Class)
+        #region Fields (Webcam Property Class)
 
         internal string _name;
         internal bool   _supported;
@@ -359,11 +373,15 @@ namespace PlexDL.Player
     [Serializable]
     public sealed class WebcamFormat : HideObjectMembers
     {
+        #region Fields (Webcam Video Format Class)
+
         internal int    _streamIndex;
         internal int    _typeIndex;
         internal int    _width;
         internal int    _height;
         internal float  _frameRate;
+
+        #endregion
 
         internal WebcamFormat(int streamIndex, int typeIndex, int width, int height, float frameRate)
         {
@@ -489,7 +507,7 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class AudioTrack : HideObjectMembers
     {
-        #region AudioTrack Fields
+        #region Fields (Audio Track Class)
 
         internal Guid   _mediaType;
         internal string _name;
@@ -604,13 +622,13 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public static class SliderValue
     {
-        #region Fields (SliderValue Class))
+        #region Fields (Slider Value Class))
 
         // standard .Net TrackBar track margins (pixels between border and begin/end of track)
-        private const int SLIDER_LEFT_MARGIN = 13;
-        private const int SLIDER_RIGHT_MARGIN = 14;
-        private const int SLIDER_TOP_MARGIN = 13;
-        private const int SLIDER_BOTTOM_MARGIN = 14;
+        private const int SLIDER_LEFT_MARGIN    = 13;
+        private const int SLIDER_RIGHT_MARGIN   = 14;
+        private const int SLIDER_TOP_MARGIN     = 13;
+        private const int SLIDER_BOTTOM_MARGIN  = 14;
 
         #endregion
 
@@ -745,7 +763,7 @@ namespace PlexDL.Player
         public Image Image { get { return _image; } }
 
         /// <summary>
-        /// Remove the media tag information and clean up any resources being used.
+        /// Remove the metadata information and clean up any resources being used.
         /// </summary>
         public void Dispose()
         {
@@ -770,15 +788,54 @@ namespace PlexDL.Player
     #endregion
 
 
-    // ******************************** Clone Properties Class
+    // ******************************** Media Chapter Class
 
-    #region Clone Properties Class
+    #region Media Chapter Class
+
+    /// <summary>
+    /// A class that is used to store media chapter information.
+    /// </summary>
+    [CLSCompliant(true)]
+    public sealed class MediaChapter : HideObjectMembers
+    {
+        #region Fields (Media Chapter Class)
+
+        internal string     _title;
+        internal TimeSpan   _startTime;
+
+        #endregion
+
+        internal MediaChapter() { }
+
+        /// <summary>
+        /// Gets the title of the media chapter.
+        /// </summary>
+        public string Title
+        {
+            get { return _title; }
+        }
+
+        /// <summary>
+        /// Gets the start time of the media chapter.
+        /// </summary>
+        public TimeSpan StartTime
+        {
+            get { return _startTime; }
+        }
+    }
+
+    #endregion
+
+
+    // ******************************** Display Clone Properties Class
+
+    #region Display Clone Properties Class
 
     /// <summary>
     /// A class that is used to store display clone properties.
     /// </summary>
     [CLSCompliant(true)]
-    public sealed class CloneProperties : HideObjectMembers //, IDisposable
+    public sealed class CloneProperties : HideObjectMembers
     {
         #region Fields (Clone Properties Class)
 
@@ -793,7 +850,7 @@ namespace PlexDL.Player
         #endregion
 
         /// <summary>
-        /// Gets or sets the video quality setting of the display clone (default: CloneQuality.Auto).
+        /// Gets or sets the video quality of the display clone (default: CloneQuality.Auto).
         /// </summary>
         public CloneQuality Quality
         {
@@ -802,7 +859,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the video layout setting of the display clone (default: CloneLayout.Zoom).
+        /// Gets or sets the video layout (display mode) of the display clone (default: CloneLayout.Zoom).
         /// </summary>
         public CloneLayout Layout
         {
@@ -811,7 +868,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the video flip setting of the display clone (default: Cloneflip.FlipNone).
+        /// Gets or sets the video flip mode of the display clone (default: CloneFlip.FlipNone).
         /// </summary>
         public CloneFlip Flip
         {
@@ -820,7 +877,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shape of the display clone (default: DisplayShape.Normal). If the display clone is a form, set its BorderStyle to None. See also: VideoShape.
+        /// Gets or sets the shape of the display clone window (default: DisplayShape.Normal). See also: CloneProperties.ShapeVideo.
         /// </summary>
         public DisplayShape Shape
         {
@@ -829,7 +886,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Shape property is related to the video image (or to the window) of the display clone (default: true).
+        /// Gets or sets a value indicating whether the CloneProperties.Shape property applies to the video image (or to the display window) of the display clone (default: true (video)).
         /// </summary>
         public bool ShapeVideo
         {
@@ -838,7 +895,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the parent window (form) of the display clone can be moved by dragging the display clone (default: false).
+        /// Gets or sets a value indicating whether the parent window (form) of the display clone can be moved by dragging the display clone window (default: false). See also: CloneProperties.DragCursor.
         /// </summary>
         public bool DragEnabled
         {
@@ -847,7 +904,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the cursor that is used when the display clone is dragged (default: Cursors.SizeAll).
+        /// Gets or sets the cursor that is used when the display clone window is dragged (default: Cursors.SizeAll). See also: CloneProperties.DragEnabled.
         /// </summary>
         public Cursor DragCursor
         {
@@ -902,37 +959,40 @@ namespace PlexDL.Player
                 mediaEvent.GetType(out mediaEventType);
                 mediaEvent.GetStatus(out errorCode);
 
-                if (errorCode < 0 && _basePlayer._playing)
+                if (_basePlayer._playing)
                 {
-                    _basePlayer._lastError  = errorCode;
-                    errorCode               = Player.NO_ERROR;
-                    getNext                 = false;
-                }
-
-                if (errorCode >= 0)
-                {
-                    if (!getNext || mediaEventType == MediaEventType.MEEndOfPresentation)
+                    if ((_basePlayer._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
+                        || (_basePlayer._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
+                    //if (errorCode < 0)
                     {
-                        if (getNext)
-                        {
-                            _basePlayer._lastError = Player.NO_ERROR;
-                            if (!_basePlayer._repeat) getNext = false;
-                        }
-
-                        Control control = _basePlayer._display;
-                        if (control == null)
-                        {
-                            FormCollection forms = Application.OpenForms;
-                            if (forms != null && forms.Count > 0) control = forms[0];
-                        }
-                        if (control != null) control.BeginInvoke(CallEndOfMedia);
-                        else _basePlayer.AV_EndOfMedia();
+                        _basePlayer._lastError = errorCode;
+                        errorCode = Player.NO_ERROR;
+                        getNext = false;
                     }
+
+                    if (errorCode >= 0)
+                    {
+                        if (!getNext || mediaEventType == MediaEventType.MEEndOfPresentation)
+                        {
+                            if (getNext)
+                            {
+                                _basePlayer._lastError = Player.NO_ERROR;
+                                if (!_basePlayer._repeat) getNext = false;
+                            }
+
+                            Control control = _basePlayer._display;
+                            if (control == null)
+                            {
+                                FormCollection forms = Application.OpenForms;
+                                if (forms != null && forms.Count > 0) control = forms[0];
+                            }
+                            if (control != null) control.BeginInvoke(CallEndOfMedia);
+                            else _basePlayer.AV_EndOfMedia();
+                        }
+                    }
+                    else _basePlayer._lastError = errorCode;
                 }
-                else
-                {
-                    _basePlayer._lastError = errorCode;
-                }
+                else _basePlayer._lastError = errorCode;
             }
             finally
             {
@@ -1037,7 +1097,7 @@ namespace PlexDL.Player
     #region Audio Class
 
     /// <summary>
-    /// A class that is used to group together the Audio methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Audio methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1106,7 +1166,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of audio channels in the active audio track of the playing media. See also: Player.Audio.DeviceChannelCount.
+        /// Gets the number of channels in the active audio track of the playing media. See also: Player.Audio.DeviceChannelCount.
         /// </summary>
         public int ChannelCount
         {
@@ -1119,7 +1179,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of output channels of the player's audio output device. See also: Player.Audio.ChannelCount.
+        /// Gets the number of channels of the player's audio output device. See also: Player.Audio.ChannelCount.
         /// </summary>
         public int DeviceChannelCount
         {
@@ -1133,7 +1193,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the value of each individual audio channel (up to 16 channels), values from 0.0 (mute) to 1.0 (max). See also: Player.Audio.ChannelCount and .DeviceChannelCount.
+        /// Gets or sets the volume of each individual audio output channel (up to 16 channels) of the player, values from 0.0 (mute) to 1.0 (max). See also: Player.Audio.ChannelCount and Player.Audio.DeviceChannelCount.
         /// </summary>
         public float[] ChannelVolumes
         {
@@ -1203,7 +1263,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio volume of the player, values from 0.0 (mute) to 1.0 (max) (default: 1.0).
+        /// Gets or sets the audio output volume of the player, values from 0.0 (mute) to 1.0 (max) (default: 1.0).
         /// </summary>
         public float Volume
         {
@@ -1216,7 +1276,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio balance of the player, values from -1.0 (left) to 1.0 (right) (default: 0.0).
+        /// Gets or sets the audio output balance of the player, values from -1.0 (left) to 1.0 (right) (default: 0.0).
         /// </summary>
         public float Balance
         {
@@ -1229,7 +1289,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio volume of the player's audio output device, value 0.0 (mute) to 1.0 (max).
+        /// Gets or sets the volume of the player's audio output device, values from 0.0 (mute) to 1.0 (max).
         /// </summary>
         public float MasterVolume
         {
@@ -1239,7 +1299,7 @@ namespace PlexDL.Player
                 if (volume == -1)
                 {
                     volume = 0;
-                    _base._lastError = HResult.E_FAIL; // device not ready
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE; // device not ready
                 }
                 else _base._lastError = Player.NO_ERROR;
                 return volume;
@@ -1253,13 +1313,13 @@ namespace PlexDL.Player
                 else
                 {
                     float volume = Player.AudioDevice_MasterVolume(_base._audioDevice, value, true);
-                    _base._lastError = volume == -1 ? HResult.E_FAIL : Player.NO_ERROR;
+                    _base._lastError = volume == -1 ? HResult.MF_E_NOT_AVAILABLE : Player.NO_ERROR;
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets the audio output device used by the player (default: null). The default audio output device of the system is indicated by null. See also: Player.Audio.GetDevices and .GetDefaultDevice.
+        /// Gets or sets the audio output device used by the player (default: null). The default audio output device of the system is indicated by null. See also: Player.Audio.GetDevices and Player.Audio.GetDefaultDevice.
         /// </summary>
         public AudioDevice Device
         {
@@ -1325,31 +1385,33 @@ namespace PlexDL.Player
             }
         }
 
-        ///// <summary>
-        ///// Gets the number of enabled audio output devices from the system.
-        ///// </summary>
-        //public int DeviceCount
-        //{
-        //    get
-        //    {
-        //        _base._lastError = Player.NO_ERROR;
-        //        uint count = 0;
+        /// <summary>
+        /// Gets the number of the system's enabled audio output devices. See also: Player.Audio.GetDevices.
+        /// </summary>
+        public int DeviceCount
+        {
+            get
+            {
+                IMMDeviceCollection deviceCollection;
+                uint count = 0;
 
-        //        IMMDeviceCollection deviceCollection;
-        //        IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-        //        deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out deviceCollection);
-        //        Marshal.ReleaseComObject(deviceEnumerator);
-        //        if (deviceCollection != null)
-        //        {
-        //            deviceCollection.GetCount(out count);
-        //            Marshal.ReleaseComObject(deviceCollection);
-        //        }
-        //        return (int)count;
-        //    }
-        //}
+                IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
+                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out deviceCollection);
+                Marshal.ReleaseComObject(deviceEnumerator);
+
+                if (deviceCollection != null)
+                {
+                    deviceCollection.GetCount(out count);
+                    Marshal.ReleaseComObject(deviceCollection);
+                }
+
+                _base._lastError = Player.NO_ERROR;
+                return (int)count;
+            }
+        }
 
         /// <summary>
-        /// Returns a list of the system's enabled audio output devices. Returns null if no enabled audio output devices are present.
+        /// Returns a list of the system's enabled audio output devices. Returns null if no enabled audio output devices are present. See also: Player.Audio.DeviceCount and Player.Audio.GetDefaultDevice.
         /// </summary>
         public AudioDevice[] GetDevices()
         {
@@ -1388,7 +1450,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the system's default audio output device. Returns null if no default audio output device is present.
+        /// Returns the system's default audio output device. Returns null if no default audio output device is present. See also: Player.Audio.GetDevices.
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
@@ -1414,58 +1476,6 @@ namespace PlexDL.Player
 
             return audioDevice;
         }
-
-        ///// <summary>
-        ///// Returns the index of the system's default audio output device in a list of audio output devices. Returns -1 if the device is not in the list.
-        ///// </summary>
-        ///// <param name="devices">The list of audio output devices in which the system's default audio output device is to be found.</param>
-        //public int GetDefaultDeviceIndex(AudioDevice[] devices)
-        //{
-        //    int index = -1;
-
-        //    if (devices != null && devices.Length > 0)
-        //    {
-        //        AudioDevice device = GetDefaultDevice();
-        //        if (device != null)
-        //        {
-        //            for (int i = 0; i < devices.Length; i++)
-        //            {
-        //                if (devices[i].Id == device.Id)
-        //                {
-        //                    index = i;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return index;
-        //}
-
-        //private void GetAudioDeviceInfo(IMMDevice device, AudioDevice audioDevice)
-        //{
-        //    //if (device != null && audioDevice != null)
-        //    {
-        //        device.GetId(out audioDevice._id);
-
-        //        IPropertyStore store;
-        //        device.OpenPropertyStore((uint)STGM.STGM_READ, out store);
-
-        //        if (store != null)
-        //        {
-        //            PropVariant property = new PropVariant();
-
-        //            store.GetValue(Player.PKEY_Device_Description, property);
-        //            audioDevice._name = (string)property;
-
-        //            store.GetValue(Player.PKEY_DeviceInterface_FriendlyName, property);
-        //            audioDevice._adapter = (string)property;
-
-        //            property.Dispose();
-        //            Marshal.ReleaseComObject(store);
-        //        }
-        //    }
-        //}
-
     }
 
     #endregion
@@ -1473,7 +1483,7 @@ namespace PlexDL.Player
     #region Audio Input Class
 
     /// <summary>
-    /// A class that is used to group together the Audio Input methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Audio Input methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1491,7 +1501,32 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the system's enabled audio input devices. Returns null if no enabled audio input devices are present.
+        /// Gets the number of the system's enabled audio input devices. See also: Player.AudioInput.GetDevices.
+        /// </summary>
+        public int DeviceCount
+        {
+            get
+            {
+                IMMDeviceCollection deviceCollection;
+                uint count = 0;
+
+                IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
+                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eCapture, (uint)DeviceState.Active, out deviceCollection);
+                Marshal.ReleaseComObject(deviceEnumerator);
+
+                if (deviceCollection != null)
+                {
+                    deviceCollection.GetCount(out count);
+                    Marshal.ReleaseComObject(deviceCollection);
+                }
+
+                _base._lastError = Player.NO_ERROR;
+                return (int)count;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of the system's enabled audio input devices. Returns null if no enabled audio input devices are present. See also: Player.AudioInput.DeviceCount and Player.AudioInput.GetDefaultDevice.
         /// </summary>
         public AudioInputDevice[] GetDevices()
         {
@@ -1530,7 +1565,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the system's default audio input device. Returns null if no default audio input device is present.
+        /// Returns the system's default audio input device. Returns null if no default audio input device is present. See also: Player.AudioInput.GetDevices.
         /// </summary>
         public AudioInputDevice GetDefaultDevice()
         {
@@ -1558,7 +1593,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether an audio input device is playing (on its own or with a webcam device - includes paused audio input). Use the Player.Play method play an audio device.
+        /// Gets a value indicating whether an audio input device is playing (on its own or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
         /// </summary>
         public bool Playing
         {
@@ -1571,7 +1606,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio input device that is playing (on its own or with a webcam device). Use the Player.Play method to play an audio input device.
+        /// Gets or sets (changes) the audio input device that is playing (on its own or with a webcam device). Use the Player.Play method to play an audio input device. See also: Player.AudioInput.GetDevices.
         /// </summary>
         public AudioInputDevice Device
         {
@@ -1618,7 +1653,7 @@ namespace PlexDL.Player
     #region Video Class
 
     /// <summary>
-    /// A class that is used to group together the Video methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Video methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1626,14 +1661,11 @@ namespace PlexDL.Player
     {
         #region Fields (Video Class)
 
-        private const int   VIDEO_WIDTH_MAXIMUM     = 25000;
-        private const int   VIDEO_HEIGHT_MAXIMUM    = 25000;
-
         private Player      _base;
         private bool        _zoomBusy;
         private bool        _boundsBusy;
-        private int         _maxZoomWidth           = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
-        private int         _maxZoomHeight          = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
+        private int         _maxZoomWidth   = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
+        private int         _maxZoomHeight  = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
 
         #endregion
 
@@ -1655,7 +1687,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the maximum width in pixels that can be set when changing the size of the video image on the display of the player (default: 6400).
+        /// Gets or sets the maximum allowed width (in pixels) of the video image on the display of the player (default: 6400).
         /// </summary>
         public int MaxZoomWidth
         {
@@ -1666,20 +1698,20 @@ namespace PlexDL.Player
             }
             set
             {
-                if (value < Player.DEFAULT_VIDEO_WIDTH_MAXIMUM || value > VIDEO_WIDTH_MAXIMUM)
+                if (value < Player.DEFAULT_VIDEO_WIDTH_MAXIMUM || value > Player.VIDEO_WIDTH_MAXIMUM)
                 {
                     _base._lastError = HResult.MF_E_OUT_OF_RANGE;
                 }
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomWidth = value;
+                    _maxZoomWidth    = value;
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets the maximum height in pixels that can be set when changing the size of the video image on the display of the player (default: 6400).
+        /// Gets or sets the maximum allowed height (in pixels) of the video image on the display of the player (default: 6400).
         /// </summary>
         public int MaxZoomHeight
         {
@@ -1690,16 +1722,25 @@ namespace PlexDL.Player
             }
             set
             {
-                if (value < Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM || value > VIDEO_HEIGHT_MAXIMUM)
+                if (value < Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM || value > Player.VIDEO_HEIGHT_MAXIMUM)
                 {
                     _base._lastError = HResult.MF_E_OUT_OF_RANGE;
                 }
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomHeight = value;
+                    _maxZoomHeight   = value;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player's full screen display mode on all screens (video wall) is activated (default: false). See also: Player.FullScreenMode.
+        /// </summary>
+        public bool Wall
+        {
+            get { return _base.FS_GetVideoWallMode(); }
+            set { _base.FS_SetVideoWallMode(value); }
         }
 
         /// <summary>
@@ -1716,7 +1757,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the size and location of the video image on the display of the player. When set, the display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Gets or sets the size and location (in pixels) of the video image on the display of the player. When set, the display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         public Rectangle Bounds
         {
@@ -1916,7 +1957,7 @@ namespace PlexDL.Player
             {
                 Bounds = new Rectangle(_base._videoBounds.X + horizontal, _base._videoBounds.Y + vertical, _base._videoBounds.Width, _base._videoBounds.Height);
             }
-            else _base._lastError = HResult.S_FALSE;
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
@@ -1931,7 +1972,7 @@ namespace PlexDL.Player
             {
                 Bounds = new Rectangle(_base._videoBounds.X - (horizontal / 2), _base._videoBounds.Y - (vertical / 2), _base._videoBounds.Width + horizontal, _base._videoBounds.Height + vertical);
             }
-            else _base._lastError = HResult.S_FALSE;
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
@@ -2000,7 +2041,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a copy of the currently displayed video image of the player (without display overlay). See also: Player.ScreenCopy.
+        /// Returns a copy of the currently displayed video image of the player (without display overlay). See also: Player.ScreenCopy.ToImage.
         /// </summary>
         public Image ToImage()
         {
@@ -2008,7 +2049,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies the currently displayed video image of the player (without display overlay) to the system's clipboard. See also: Player.ScreenCopy.
+        /// Copies the currently displayed video image of the player (without display overlay) to the system's clipboard. See also: Player.ScreenCopy.ToClipboard.
         /// </summary>
         public int ToClipboard()
         {
@@ -2026,7 +2067,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves a copy of the currently displayed video image of the player (without display overlay) to the specified file. See also: Player.ScreenCopy.
+        /// Saves a copy of the currently displayed video image of the player (without display overlay) to the specified file. See also: Player.ScreenCopy.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
@@ -2059,7 +2100,7 @@ namespace PlexDL.Player
     #region Webcam Class
 
     /// <summary>
-    /// A class that is used to group together the Webcam methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Webcam methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -2080,7 +2121,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether a webcam is playing (includes paused webcam). Use the Player.Play method to play a webcam device.
+        /// Gets a value indicating whether a webcam is playing (including paused webcam). Use the Player.Play method to play a webcam device.
         /// </summary>
         public bool Playing
         {
@@ -2092,7 +2133,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playing webcam device. Use the Player.Play method to play a webcam device with more options.
+        /// Gets or sets the playing webcam device. Use the Player.Play method to play a webcam device with more options. See also: Player.Webcam.GetDevices.
         /// </summary>
         public WebcamDevice Device
         {
@@ -2137,7 +2178,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the video output format of the playing webcam.
+        /// Gets or sets the video output format of the playing webcam. See also: Player.Webcam.GetFormats.
         /// </summary>
         public WebcamFormat Format
         {
@@ -2175,7 +2216,42 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the system's enabled webcam devices. Returns null if no enabled webcam devices are present. Use the Player.Play method to play a webcam device.
+        /// Gets the number of the system's enabled webcam devices. See also: Player.Webcam.GetDevices.
+        /// </summary>
+        public int DeviceCount
+        {
+            get
+            {
+                IMFAttributes attributes;
+                IMFActivate[] webcams;
+                int webcamCount;
+                HResult result;
+
+                MFExtern.MFCreateAttributes(out attributes, 1);
+                attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
+                if (Environment.Version.Major < 4) // fix for NET 2.0 and 3.5 - only 1 device (? SizeParamIndex error)
+                {
+                    result = MFExtern.MFEnumDeviceSourcesEx(attributes, out webcams, out webcamCount);
+                    if (webcams != null) webcamCount = webcams.Length;
+                }
+                else result = MFExtern.MFEnumDeviceSources(attributes, out webcams, out webcamCount);
+                Marshal.ReleaseComObject(attributes);
+
+                if (result == Player.NO_ERROR && webcams != null)
+                {
+                    for (int i = 0; i < webcamCount; i++)
+                    {
+                        Marshal.ReleaseComObject(webcams[i]);
+                    }
+                }
+                
+                _base._lastError = Player.NO_ERROR;
+                return webcamCount;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of the system's enabled webcam devices. Returns null if no enabled webcam devices are present. See also: Player.Webcam.DeviceCount.
         /// </summary>
         public WebcamDevice[] GetDevices()
         {
@@ -2226,8 +2302,11 @@ namespace PlexDL.Player
         {
             if (_base._webcamMode)
             {
-                _base._lastError = Player.NO_ERROR;
+                //_base._lastError = Player.NO_ERROR;
                 _base.AV_UpdateTopology();
+                if (_base._hasOverlay) _base.AV_ShowOverlay();
+                //if (_base._hasOverlay && etc...) SafeNativeMethods.ShowWindow(_base._overlay.Handle, 8);
+                _base._lastError = Player.NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
             return (int)_base._lastError;
@@ -2238,9 +2317,9 @@ namespace PlexDL.Player
         #region Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
         /// <summary>
-        /// Sets the specified property of the playing webcam to the specified value or to automatic control, for example Player.Webcam.SetProperty(Player.Webcam.Brightness, 100, false). The value is also updated in the specified property data.
+        /// Sets the specified property of the playing webcam to the specified value or to automatic control, for example myPlayer.Webcam.SetProperty(myPlayer.Webcam.Brightness, 100, false).
         /// </summary>
-        /// <param name="property">Specifies the webcam property, obtained with for example Player.Webcam.Brightness.</param>
+        /// <param name="property">Specifies the webcam property, obtained with for example myPlayer.Webcam.Brightness.</param>
         /// <param name="value">The value to be set.</param>
         /// <param name="auto">If set to true, the value parameter is ignored and the automatic control of the property is enabled (if available).</param>
         public void SetProperty(WebcamProperty property, int value, bool auto)
@@ -2292,10 +2371,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Updates the Value and AutoEnabled values in the specified property data of the playing webcam.
+        /// Updates the values in the specified (previously obtained) property data of the playing webcam.
         /// </summary>
-        /// <param name="property">Specifies the webcam property data to update, obtained with for example Player.Webcam.Brightness.</param>
-        public void GetPropertyUpdate(WebcamProperty property)
+        /// <param name="property">Specifies the webcam property data to update, previously obtained with for example myPlayer.Webcam.Brightness.</param>
+        public void UpdatePropertyData(WebcamProperty property)
         {
             if (_base._webcamMode)
             {
@@ -2317,16 +2396,16 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the specified property of the playing webcam to the default value or (if available) to automatic control, for example Player.Webcam.ResetProperty(Player.Webcam.Brightness).
+        /// Sets the specified property of the playing webcam to the default value or (if available) to automatic control, for example myPlayer.Webcam.ResetProperty(myPlayer.Webcam.Brightness).
         /// </summary>
-        /// <param name="property">Specifies the webcam property, obtained with for example Player.Webcam.Brightness.</param>
+        /// <param name="property">Specifies the webcam property, obtained with for example myPlayer.Webcam.Brightness.</param>
         public void ResetProperty(WebcamProperty property)
         {
             SetProperty(property, property._default, property._autoSupport);
         }
 
         /// <summary>
-        /// Gets or sets all the properties, including the video output format, of the playing webcam. For use with save and restore functions. See also: Player.Webcam.SetSettings.
+        /// Gets or sets all the properties, including the video output format, of the playing webcam. For use with save and restore functions. See also: Player.Webcam.ApplySettings.
         /// </summary>
         public WebcamSettings Settings
         {
@@ -2423,18 +2502,18 @@ namespace PlexDL.Player
             }
             set
             {
-                SetSettings(value, true, true, true);
+                ApplySettings(value, true, true, true);
             }
         }
 
         /// <summary>
-        /// Sets the specified webcam settings of the playing webcam. See also: Player.Webcam.Settings.
+        /// Applies previously obtained webcam settings selectively to the playing webcam. See also: Player.Webcam.Settings.
         /// </summary>
-        /// <param name="settings">The settings to be set on the playing webcam. The settings must have been obtained earlier from the playing webcam, settings from other webcams cannot be used.</param>
-        /// <param name="format">A value indicating whether to set the webcam video output format (size and fps).</param>
-        /// /// <param name="procAmp">A value indicating whether to set the webcam video quality properties (such as brightness and contrast).</param>
-        /// <param name="control">A value indicating whether to set the webcam camera control properties (such as focus and zoom).</param>
-        public int SetSettings(WebcamSettings settings, bool format, bool procAmp, bool control)
+        /// <param name="settings">The settings to be applied to the playing webcam. The settings must have been obtained earlier from the webcam, settings from other webcams cannot be used.</param>
+        /// <param name="format">A value indicating whether to apply the webcam video output format (size and fps).</param>
+        /// /// <param name="procAmp">A value indicating whether to apply the webcam video quality properties (such as brightness and contrast).</param>
+        /// <param name="control">A value indicating whether to apply the webcam camera control properties (such as focus and zoom).</param>
+        public int ApplySettings(WebcamSettings settings, bool format, bool procAmp, bool control)
         {
             if (_base._webcamMode)
             {
@@ -2555,7 +2634,7 @@ namespace PlexDL.Player
             HResult result = HResult.ERROR_NOT_READY;
             if (_base._webcamMode)
             {
-                if (value._isProcAmp || value._controlProp != property)
+                if (value == null || value._isProcAmp || value._controlProp != property)
                 {
                     result = HResult.E_INVALIDARG;
                 }
@@ -2613,7 +2692,7 @@ namespace PlexDL.Player
             HResult result = HResult.ERROR_NOT_READY;
             if (_base._webcamMode)
             {
-                if (!value._isProcAmp || value._procAmpProp != property)
+                if (value == null || !value._isProcAmp || value._procAmpProp != property)
                 {
                     result = HResult.E_INVALIDARG;
                 }
@@ -2642,7 +2721,7 @@ namespace PlexDL.Player
         #region Public - Get/Set Video Control Properties
 
         /// <summary>
-        /// Gets or sets the exposure property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in log base 2 seconds, for values less than zero the exposure time is 1/2^n seconds (eg. -3 = 1/8), and for values zero or above the exposure time is 2^n seconds (eg. 0 = 1 and 2 = 4).
+        /// Gets or sets the exposure property (if supported) of the playing webcam. Values are in log base 2 seconds, for values less than zero the exposure time is 1/2^n seconds (eg. -3 = 1/8), and for values zero or above the exposure time is 2^n seconds (eg. 0 = 1 and 2 = 4). See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Exposure
         {
@@ -2651,7 +2730,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the flash property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the flash property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Flash
         {
@@ -2660,7 +2739,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the focus property (if supported) of the playing webcam (usage: get, examine, change, set). Values represent the distance to the optimally focused target, in millimeters.
+        /// Gets or sets the focus property (if supported) of the playing webcam. Values represent the distance to the optimally focused target, in millimeters. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Focus
         {
@@ -2669,7 +2748,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the iris property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in units of f-stop * 10 (a larger f-stop value will result in darker images).
+        /// Gets or sets the iris property (if supported) of the playing webcam. Values are in units of f-stop * 10 (a larger f-stop value will result in darker images). See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Iris
         {
@@ -2678,7 +2757,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the pan property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in degrees.
+        /// Gets or sets the pan property (if supported) of the playing webcam. Values are in degrees. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Pan
         {
@@ -2687,7 +2766,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the roll property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in degrees.
+        /// Gets or sets the roll property (if supported) of the playing webcam. Values are in degrees.  See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Roll
         {
@@ -2696,7 +2775,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the tilt property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in degrees.
+        /// Gets or sets the tilt property (if supported) of the playing webcam. Values are in degrees. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Tilt
         {
@@ -2705,7 +2784,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the zoom property (if supported) of the playing webcam (usage: get, examine, change, set). Values are in millimeters.
+        /// Gets or sets the zoom property (if supported) of the playing webcam. Values are in millimeters.  See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Zoom
         {
@@ -2718,7 +2797,7 @@ namespace PlexDL.Player
         #region Public - Get/SetVideo ProcAmp Properties
 
         /// <summary>
-        /// Gets or sets the backlight compensation property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the backlight compensation property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty BacklightCompensation
         {
@@ -2727,7 +2806,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the brightness property (if supported) of the playing webcam (usage: get, examine, change, set). See also: Player.Video.Brightness.
+        /// Gets or sets the brightness property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty and Player.Video.Brightness.
         /// </summary>
         public WebcamProperty Brightness
         {
@@ -2736,7 +2815,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the color enable property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the color enable property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty ColorEnable
         {
@@ -2745,7 +2824,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the contrast property (if supported) of the playing webcam (usage: get, examine, change, set). See also: Player.Video.Contrast.
+        /// Gets or sets the contrast property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty and Player.Video.Contrast.
         /// </summary>
         public WebcamProperty Contrast
         {
@@ -2754,7 +2833,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the gain property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the gain property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Gain
         {
@@ -2763,7 +2842,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the gamma property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the gamma property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Gamma
         {
@@ -2772,7 +2851,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the hue property (if supported) of the playing webcam (usage: get, examine, change, set). See also: Player.Video.Hue.
+        /// Gets or sets the hue property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty and Player.Video.Hue.
         /// </summary>
         public WebcamProperty Hue
         {
@@ -2781,7 +2860,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the power line frequency property (if supported) of the playing webcam (usage: get, examine, change, set - 0 = disabled, 1 = 50Hz, 2 = 60Hz, 3 = auto).
+        /// Gets or sets the power line frequency property (if supported) of the playing webcam. Values: 0 = disabled, 1 = 50Hz, 2 = 60Hz, 3 = auto). See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty PowerLineFrequency
         {
@@ -2790,7 +2869,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the saturation property (if supported) of the playing webcam (usage: get, examine, change, set). See also: Player.Video.Saturation.
+        /// Gets or sets the saturation property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty and Player.Video.Saturation.
         /// </summary>
         public WebcamProperty Saturation
         {
@@ -2799,7 +2878,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the sharpness property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the sharpness property (if supported) of the playing webcam. See also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty Sharpness
         {
@@ -2808,7 +2887,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the white balance temperature property (if supported) of the playing webcam (usage: get, examine, change, set).
+        /// Gets or sets the white balance temperature property (if supported) of the playing webcam. Ssee also: Player.Webcam.SetProperty.
         /// </summary>
         public WebcamProperty WhiteBalance
         {
@@ -2995,7 +3074,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Returns the available video output formats of the specified webcam. The formats can be used with the Player.Play methods for webcams.
         /// </summary>
-        /// <param name="webcam">The webcam from which the video output formats must be obtained.</param>
+        /// <param name="webcam">The webcam whose video output formats are to be obtained.</param>
         public WebcamFormat[] GetFormats(WebcamDevice webcam)
         {
             return GetWebcamFormats(webcam._id, false, false, 0, 0, 0);
@@ -3021,7 +3100,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Returns the available video output formats (or null) of the specified webcam that match the specified values. The formats can be used with the Player.Play methods for webcams.
         /// </summary>
-        /// <param name="webcam">The webcam from which the video output formats must be obtained.</param>
+        /// <param name="webcam">The webcam whose video output formats are to be obtained.</param>
         /// <param name="exact">A value indicating whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
         /// <param name="width">The (minimum) width of the video frames. Use -1 to ignore this parameter.</param>
         /// <param name="height">The (minimum) height of the video frames. Use -1 to ignore this parameter.</param>
@@ -3039,7 +3118,7 @@ namespace PlexDL.Player
     #region Display Class
 
     /// <summary>
-    /// A class that is used to group together the Display methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Display methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -3126,7 +3205,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the fullscreen option of the player is activated (default: false).
+        /// Gets or sets a value indicating whether the full screen mode of the player is activated (default: false). See also: Player.Display.FullScreenMode and Player.Display.Wall.
         /// </summary>
         public bool FullScreen
         {
@@ -3139,7 +3218,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the fullscreen display mode of the player (default: FullScreenMode.Display).
+        /// Gets or sets the full screen display mode of the player (default: FullScreenMode.Display). See also: Player.Display.FullScreen and Player.Display.Wall.
         /// </summary>
         public FullScreenMode FullScreenMode
         {
@@ -3152,7 +3231,16 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the size and location of the parent window (form) of the display window of the player in its normal window state.
+        /// Gets or sets a value indicating whether the player's full screen display mode on all screens (video wall) is activated (default: false). See also: Player.Display.FullScreen and Player.Display.FullScreenMode.
+        /// </summary>
+        public bool Wall
+        {
+            get { return _base.FS_GetVideoWallMode(); }
+            set { _base.FS_SetVideoWallMode(value); }
+        }
+
+        /// <summary>
+        /// Gets the size and location of the parent window (form) of the display of the player in its normal window state.
         /// </summary>
         public Rectangle RestoreBounds
         {
@@ -3174,7 +3262,7 @@ namespace PlexDL.Player
                     }
                     else
                     {
-                        _base._lastError = HResult.S_FALSE;
+                        _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                     }
                 }
                 return r;
@@ -3182,7 +3270,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shape of the display of the player. If set and the display window is a form, set its border style to None for best results. See also: Player.Display.GetShape and .SetShape.
+        /// Gets or sets the shape of the display of the player. See also: Player.Display.GetShape and Player.Display.SetShape.
         /// </summary>
         public DisplayShape Shape
         {
@@ -3198,10 +3286,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the shape of the display of the player (default: DisplayShape.Normal).
+        /// Gets the shape of the display of the player (default: DisplayShape.Normal). See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value indicating the shape of the display of the player.</param>
-        /// <param name="videoShape">A value indicating whether the shape is related to the video image (or to the display window).</param>
+        /// <param name="videoShape">A value indicating whether the shape applies to the video image (or to the display window).</param>
         /// <param name="overlayShape">A value indicating whether the shape is also applied to display overlays.</param>
         public int GetShape(out DisplayShape shape, out bool videoShape, out bool overlayShape)
         {
@@ -3215,7 +3303,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the shape of the display of the player. If the display window is a form, set its border style to None for best results.
+        /// Sets the shape of the display of the player. See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value indicating the shape of the display of the player.</param>
         public int SetShape(DisplayShape shape)
@@ -3224,10 +3312,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the shape of the display of the player. If the display window is a form, set its BorderStyle to None.
+        /// Sets the shape of the display of the player. See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value indicating the shape of the display of the player.</param>
-        /// <param name="videoShape">A value indicating whether the shape is related to the video image (or to the display window).</param>
+        /// <param name="videoShape">A value indicating whether the shape applies to the video image (or to the display window).</param>
         /// <param name="overlayShape">A value indicating whether the shape should also be applied to display overlays.</param>
         public int SetShape(DisplayShape shape, bool videoShape, bool overlayShape)
         {
@@ -3261,7 +3349,7 @@ namespace PlexDL.Player
                 else
                 {
                     if (_base._displayShape != DisplayShape.Normal) _base.AV_RemoveDisplayShape(true);
-                    _base._lastError = HResult.S_FALSE; // No Display
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE; // No Display
                 }
             }
             return (int)_base._lastError;
@@ -3285,7 +3373,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the parent window (form) of the display can be moved by dragging the display window of the player (default: false).
+        /// Gets or sets a value indicating whether the parent window (form) of the display can be moved by dragging the display window of the player (default: false). See also: Player.Display.DragCursor.
         /// </summary>
         public bool DragEnabled
         {
@@ -3303,7 +3391,7 @@ namespace PlexDL.Player
                     {
                         if (!_base._hasDisplay || _base._display.FindForm() == null)
                         {
-                            _base._lastError = HResult.S_FALSE;
+                            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                         }
                         else
                         {
@@ -3395,6 +3483,63 @@ namespace PlexDL.Player
             }
         }
 
+        /// <summary>
+        /// Updates the video image on the display of the player. For special use only, generally not required.
+        /// </summary>
+        public int Update()
+        {
+            _base._lastError = Player.NO_ERROR;
+            if (_base._webcamMode)
+            {
+                _base.AV_UpdateTopology();
+                if (_base._hasOverlay) _base.AV_ShowOverlay();
+            }
+            else if (_base.mf_VideoDisplayControl != null)
+            {
+                _base.mf_VideoDisplayControl.RepaintVideo();
+            }
+            else
+            {
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            }
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the contents of the player's display will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. See also: Player.Display.HoldClear.
+        /// </summary>
+        public bool Hold
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._displayHold;
+            }
+            set
+            {
+                if (value != _base._displayHold)
+                {
+                    _base._displayHold = value;
+                    if (!value) _base.AV_ClearHold();
+                }
+                _base._lastError = Player.NO_ERROR;
+            }
+        }
+
+        /// <summary>
+        /// Clears the player's display when the Player.Display.Hold option is enabled and no media is playing. Same as 'Player.Display.Hold = false' but does not disable the Player.Display.Hold option. See also: Player.Display.Hold.
+        /// </summary>
+        public int HoldClear()
+        {
+            if (_base._displayHold)
+            {
+                _base.AV_ClearHold();
+                _base._lastError = Player.NO_ERROR;
+            }
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            return (int)_base._lastError;
+        }
+
     }
 
     #endregion
@@ -3402,7 +3547,7 @@ namespace PlexDL.Player
     #region CursorHide Class
 
     /// <summary>
-    /// A class that is used to group together the CursorHide methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the CursorHide methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -3420,7 +3565,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds a form to the list of forms that automatically hide the cursor (mouse pointer) during inactivity when media is playing.
+        /// Adds the specified form to the list of forms that automatically hide the cursor (mouse pointer) during inactivity when media is playing.
         /// </summary>
         /// <param name="form">The form to add to the list.</param>
         public int Add(Form form)
@@ -3431,7 +3576,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes a form from the list of forms that automatically hide the cursor.
+        /// Removes the specified form from the list of forms that automatically hide the cursor.
         /// </summary>
         /// <param name="form">The form to remove from the list.</param>
         public int Remove(Form form)
@@ -3453,7 +3598,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatic cursor hiding is enabled. This option can be used to temporarily disable the hiding of the cursor. This setting is used by all players in this assembly.
+        /// Gets or sets a value indicating whether automatic hiding of the cursor is enabled. This option can be used to temporarily disable the hiding of the cursor. This setting is used by all players in this assembly.
         /// </summary>
         public bool Enabled
         {
@@ -3538,7 +3683,7 @@ namespace PlexDL.Player
     #region Overlay Class
 
     /// <summary>
-    /// A class that is used to group together the Display Overlay methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Display Overlay methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -3569,7 +3714,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes the display overlay of the player, if present. Same as Player.Overlay.Window = null.
+        /// Removes the display overlay from the player. Same as Player.Overlay.Window = null.
         /// </summary>
         public void Remove()
         {
@@ -3697,7 +3842,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has a display overlay (set, but not necessarily active).
+        /// Gets a value indicating whether the player has a display overlay (set, but not necessarily active or visible).
         /// </summary>
         public bool Present
         {
@@ -3764,7 +3909,7 @@ namespace PlexDL.Player
     #region DisplayClones Class
 
     /// <summary>
-    /// A class that is used to group together the Display Clones methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Display Clones methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -3789,7 +3934,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds a display clone to the player.
+        /// Adds the specified control as a display clone to the player.
         /// </summary>
         /// <param name="clone">The form or control to add as a display clone.</param>
         public int Add(Control clone)
@@ -3798,13 +3943,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds a display clone to the player.
+        /// Adds the specified control as a display clone to the player.
         /// </summary>
         /// <param name="clone">The control to add as a display clone.</param>
         /// <param name="properties">The properties to be applied to the display clone.</param>
         public int Add(Control clone, CloneProperties properties)
         {
-            _base._lastError = HResult.S_FALSE;
+            _base._lastError = HResult.E_INVALIDARG;
 
             if (clone != null)
             {
@@ -3814,7 +3959,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds one or more display clones to the player.
+        /// Adds the specified controls as display clones to the player.
         /// </summary>
         /// <param name="clones">The controls to add as display clones.</param>
         public int AddRange(Control[] clones)
@@ -3823,7 +3968,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds one or more display clones to the player.
+        /// Adds the specified controls as display clones to the player.
         /// </summary>
         /// <param name="clones">The controls to add as display clones.</param>
         /// <param name="properties">The properties to be applied to the display clones.</param>
@@ -3834,7 +3979,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes a display clone from the player.
+        /// Removes the specified display clone from the player.
         /// </summary>
         /// <param name="clone">The display clone to remove from the player.</param>
         public int Remove(Control clone)
@@ -3849,7 +3994,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes one or more display clones from the player.
+        /// Removes the specified display clones from the player.
         /// </summary>
         /// <param name="clones">The display clones to remove from the player.</param>
         public int RemoveRange(Control[] clones)
@@ -3893,7 +4038,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a value indicating whether the specified form or control is a display clone of the player.
+        /// Returns a value indicating whether the specified control is a display clone of the player.
         /// </summary>
         /// <param name="control">The control to search for.</param>
         public bool Contains(Control control)
@@ -4035,15 +4180,14 @@ namespace PlexDL.Player
                 }
                 _base._lastError = Player.NO_ERROR;
             }
-            else _base._lastError = HResult.S_FALSE;
             return properties;
         }
 
         /// <summary>
         /// Sets the specified properties to the specified display clone of the player.
         /// </summary>
-        /// <param name="clone">The display clone whose properties have to be set.</param>
-        /// <param name="properties">The properties that must be set.</param>
+        /// <param name="clone">The display clone whose properties are to be set.</param>
+        /// <param name="properties">The properties to be set.</param>
         public int SetProperties(Control clone, CloneProperties properties)
         {
             int index = GetCloneIndex(clone);
@@ -4052,14 +4196,13 @@ namespace PlexDL.Player
                 SetCloneProperties(_base.dc_DisplayClones[index], properties);
                 _base._lastError = Player.NO_ERROR;
             }
-            else _base._lastError = HResult.S_FALSE;
             return (int)_base._lastError;
         }
 
         /// <summary>
         /// Sets the specified properties to all display clones of the player.
         /// </summary>
-        /// <param name="properties">The properties that must be set.</param>
+        /// <param name="properties">The properties to be set.</param>
         public int SetProperties(CloneProperties properties)
         {
             _base._lastError = Player.NO_ERROR;
@@ -4203,7 +4346,7 @@ namespace PlexDL.Player
                     }
                 }
             }
-            _base._lastError = index == -1 ? HResult.S_FALSE : Player.NO_ERROR;
+            _base._lastError = index == -1 ? HResult.E_INVALIDARG : Player.NO_ERROR;
             return index;
         }
     }
@@ -4213,7 +4356,7 @@ namespace PlexDL.Player
     #region PointTo Class
 
     /// <summary>
-    /// A class that is used to group together the Point To conversion methods of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Point To conversion methods of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -4241,7 +4384,7 @@ namespace PlexDL.Player
                 _base._lastError = Player.NO_ERROR;
                 return _base._display.PointToClient(p);
             }
-            _base._lastError = HResult.S_FALSE;
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return new Point(-1, -1);
         }
 
@@ -4256,7 +4399,7 @@ namespace PlexDL.Player
                 _base._lastError = Player.NO_ERROR;
                 return _base._overlay.PointToClient(p);
             }
-            _base._lastError = HResult.S_FALSE;
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return new Point(-1, -1);
         }
 
@@ -4267,7 +4410,7 @@ namespace PlexDL.Player
         public Point Video(Point p)
         {
             Point newP = new Point(-1, -1);
-            _base._lastError = HResult.S_FALSE;
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
 
             if (_base._hasVideo)
             {
@@ -4309,7 +4452,7 @@ namespace PlexDL.Player
     #region ScreenCopy Class
 
     /// <summary>
-    /// A class that is used to group together the ScreenCopy methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the ScreenCopy methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -4328,7 +4471,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use the display clones copy method for copying the player's video or display. Can be disabled in case of problems with the copying method for display clones (default: enabled).
+        /// Gets or sets a value indicating whether to use the display clones copy method (that is fast and does not copy overlapping windows) with ScreenCopyMode.Video and ScreenCopyMode.Display (default: true). When enabled, display overlays are copied according to the Player.DisplayClones.ShowOverlay setting.
         /// </summary>
         public bool CloneMode
         {
@@ -4354,7 +4497,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the Player.ScreenCopy.Mode part of the screen.
+        /// Returns an image from the Player.ScreenCopy.Mode part of the screen. See also: Player.Video.ToImage.
         /// </summary>
         public Image ToImage()
         {
@@ -4406,23 +4549,26 @@ namespace PlexDL.Player
             }
             else
             {
-                _base._lastError = HResult.S_FALSE;
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             }
             return memoryImage;
         }
 
         /// <summary>
-        /// Sets the Player.ScreenCopy.Mode to the specified value and returns an image from the specified part of the screen.
+        /// Returns an image from the specified part of the screen. See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="mode">The value to set the Player.ScreenCopy.Mode to.</param>
+        /// <param name="mode">A value indicating the part of the screen to copy. The Player.Screencopy.Mode setting is not changed.</param>
         public Image ToImage(ScreenCopyMode mode)
         {
+            ScreenCopyMode oldMode = _base._screenCopyMode;
             _base._screenCopyMode = mode;
-            return ToImage();
+            Image image = ToImage();
+            _base._screenCopyMode = oldMode;
+            return image;
         }
 
         /// <summary>
-        /// Copies an image from the Player.ScreenCopy.Mode part of the screen to the system's clipboard.
+        /// Copies an image from the Player.ScreenCopy.Mode part of the screen to the system's clipboard. See also: Player.Video.ToClipboard.
         /// </summary>
         public int ToClipboard()
         {
@@ -4440,17 +4586,20 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the Player.ScreenCopy.Mode to the specified value and copies an image from the specified part of the screen to the system's clipboard.
+        /// Copies an image from the specified ScreenCopyMode part of the screen to the system's clipboard. See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="mode">The value to set the Player.ScreenCopy.Mode to.</param>
+        /// <param name="mode">A value indicating the part of the screen to copy. The Player.Screencopy.Mode setting is not changed.</param>
         public int ToClipboard(ScreenCopyMode mode)
         {
+            ScreenCopyMode oldMode = _base._screenCopyMode;
             _base._screenCopyMode = mode;
-            return ToClipboard();
+            ToClipboard();
+            _base._screenCopyMode = oldMode;
+            return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Saves an image from the Player.ScreenCopy.Mode part of the screen to the specified file.
+        /// Saves an image from the Player.ScreenCopy.Mode part of the screen to the specified file. See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
@@ -4462,10 +4611,7 @@ namespace PlexDL.Player
                 if (_base._lastError == Player.NO_ERROR)
                 {
                     try { theImage.Save(fileName, imageFormat); }
-                    catch (Exception e)
-                    {
-                        _base._lastError = (HResult)Marshal.GetHRForException(e);
-                    }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
                     theImage.Dispose();
                 }
             }
@@ -4477,15 +4623,18 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the Player.ScreenCopy.Mode to the specified value and saves an image from the specified part of the screen to the specified file.
+        /// Saves an image from the specified ScreenCopyMode part of the screen to the specified file. See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="mode">The value to set the Player.ScreenCopy.Mode to.</param>
+        /// <param name="mode">A value indicating the part of the screen to copy. The Player.Screencopy.Mode setting is not changed.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, ScreenCopyMode mode)
         {
+            ScreenCopyMode oldMode = _base._screenCopyMode;
             _base._screenCopyMode = mode;
-            return ToFile(fileName, imageFormat);
+            ToFile(fileName, imageFormat);
+            _base._screenCopyMode = oldMode;
+            return (int)_base._lastError;
         }
     }
 
@@ -4494,7 +4643,7 @@ namespace PlexDL.Player
     #region Sliders Classes
 
     /// <summary>
-    /// A class that is used to group together the Sliders methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Sliders methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -4898,7 +5047,7 @@ namespace PlexDL.Player
     }
 
     /// <summary>
-    /// A class that is used to group together the Position Slider methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Position Slider methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -5089,7 +5238,7 @@ namespace PlexDL.Player
     #region TaskbarProgress Class
 
     /// <summary>
-    /// A class that is used to group together the Taskbar Progress methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Taskbar Progress methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -5098,13 +5247,8 @@ namespace PlexDL.Player
         #region Fields (TaskbarProgress Class)
 
         private Player _base;
-        private List<TaskbarItem> _taskbarItems;
+        private List<Form> _taskbarItems;
         internal TaskbarProgressMode _progressMode;
-        private class TaskbarItem
-        {
-            internal Form Form;
-            internal IntPtr Handle;
-        }
 
         #endregion
 
@@ -5114,17 +5258,13 @@ namespace PlexDL.Player
 
             if (!Player._taskbarProgressEnabled)
             {
-                _taskbarItems = new List<TaskbarItem>(4);
                 Player.TaskbarInstance = (TaskbarIndicator.ITaskbarList3)new TaskbarIndicator.TaskbarInstance();
                 Player._taskbarProgressEnabled = true;
-                _progressMode = TaskbarProgressMode.Progress;
+            }
+            _taskbarItems = new List<Form>(4);
+            _progressMode = TaskbarProgressMode.Progress;
 
-                _base._lastError = Player.NO_ERROR;
-            }
-            else
-            {
-                _taskbarItems = new List<TaskbarItem>(4);
-            }
+            _base._lastError = Player.NO_ERROR;
         }
 
         #region Public - Taskbar Progress methods and properties
@@ -5132,20 +5272,20 @@ namespace PlexDL.Player
         /// <summary>
         /// Adds a taskbar progress indicator to the player.
         /// </summary>
-        /// <param name="form">The form whose taskbar item is added as a progress indicator. Multiple forms and duplicates are allowed.</param>
+        /// <param name="form">The form whose taskbar item should be added as a progress indicator.</param>
         public int Add(Form form)
         {
             if (Player._taskbarProgressEnabled)
             {
                 lock (_taskbarItems)
                 {
-                    if (form != null) // && form.ShowInTaskbar)
+                    if (form != null)
                     {
                         // check if already exists
                         bool exists = false;
                         for (int i = 0; i < _taskbarItems.Count; i++)
                         {
-                            if (_taskbarItems[i].Form == form)
+                            if (_taskbarItems[i] == form)
                             {
                                 exists = true;
                                 break;
@@ -5154,41 +5294,35 @@ namespace PlexDL.Player
 
                         if (!exists)
                         {
-                            TaskbarItem item = new TaskbarItem();
-                            item.Form = form;
-                            item.Handle = form.Handle;
-
-                            _taskbarItems.Add(item);
-
+                            _taskbarItems.Add(form);
                             if (_base._playing)
                             {
                                 if (_base._paused)
                                 {
-                                    Player.TaskbarInstance.SetProgressState(item.Handle, TaskbarStates.Paused);
+                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarStates.Paused);
                                     SetValue(_base.PositionX);
                                 }
                                 else if (!_base._fileMode)
                                 {
-                                    Player.TaskbarInstance.SetProgressState(item.Handle, TaskbarStates.Indeterminate);
+                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarStates.Indeterminate);
                                 }
                             }
-
                             _base._hasTaskbarProgress = true;
                             _base.StartMainTimerCheck();
                         }
                         _base._lastError = Player.NO_ERROR;
                     }
-                    else _base._lastError = HResult.S_FALSE;
+                    else _base._lastError = HResult.E_INVALIDARG;
                 }
             }
-            else _base._lastError = HResult.S_FALSE;
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
         /// Removes a taskbar progress indicator from the player.
         /// </summary>
-        /// <param name="form">The form whose taskbar progress indicator is removed.</param>
+        /// <param name="form">The form whose taskbar progress indicator should be removed.</param>
         public int Remove(Form form)
         {
             if (Player._taskbarProgressEnabled)
@@ -5199,9 +5333,9 @@ namespace PlexDL.Player
                     {
                         for (int index = _taskbarItems.Count - 1; index >= 0; index--)
                         {
-                            if (_taskbarItems[index].Form == form || _taskbarItems[index].Form == null)
+                            if (_taskbarItems[index] == form || _taskbarItems[index] == null)
                             {
-                                if (_taskbarItems[index].Form != null)
+                                if (_taskbarItems[index] != null)
                                 {
                                     Player.TaskbarInstance.SetProgressState(_taskbarItems[index].Handle, TaskbarStates.NoProgress);
                                 }
@@ -5213,18 +5347,18 @@ namespace PlexDL.Player
                         {
                             _base._hasTaskbarProgress = false;
                             _base.StopMainTimerCheck();
-                            _taskbarItems = new List<TaskbarItem>(4);
+                            _taskbarItems = new List<Form>(4);
                         }
                     }
                 }
                 _base._lastError = Player.NO_ERROR;
             }
-            else _base._lastError = HResult.S_FALSE;
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Removes all taskbar progress indicators from the player.
+        /// Removes all taskbar progress indicators from the player. Same as Player.TaskbarProgress.Clear.
         /// </summary>
         public int RemoveAll()
         {
@@ -5235,16 +5369,16 @@ namespace PlexDL.Player
                     _base._hasTaskbarProgress = false;
                     _base.StopMainTimerCheck();
                     SetState(TaskbarStates.NoProgress);
-                    _taskbarItems = new List<TaskbarItem>(4);
+                    _taskbarItems = new List<Form>(4);
                 }
                 _base._lastError = Player.NO_ERROR;
             }
-            else _base._lastError = HResult.S_FALSE;
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Removes all taskbar progress indicators from the player.
+        /// Removes all taskbar progress indicators from the player. Same as Player.TaskbarProgress.RemoveAll.
         /// </summary>
         public int Clear()
         {
@@ -5277,11 +5411,11 @@ namespace PlexDL.Player
                     result = new Form[count];
                     for (int i = 0; i < count; i++)
                     {
-                        result[i] = _taskbarItems[i].Form;
+                        result[i] = _taskbarItems[i];
                     }
                     _base._lastError = Player.NO_ERROR;
                 }
-                else _base._lastError = HResult.S_FALSE;
+                else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                 return result;
             }
         }
@@ -5345,10 +5479,10 @@ namespace PlexDL.Player
 
             for (int i = 0; i < _taskbarItems.Count; i++)
             {
-                if (_taskbarItems[i].Form != null)
+                if (_taskbarItems[i] != null)
                 {
                     try { Player.TaskbarInstance.SetProgressValue(_taskbarItems[i].Handle, (ulong)pos, (ulong)total); }
-                    catch { _taskbarItems[i].Form = null; }
+                    catch { _taskbarItems[i] = null; }
                 }
             }
         }
@@ -5357,10 +5491,10 @@ namespace PlexDL.Player
         {
             for (int i = 0; i < _taskbarItems.Count; i++)
             {
-                if (_taskbarItems[i].Form != null)
+                if (_taskbarItems[i] != null)
                 {
                     try { Player.TaskbarInstance.SetProgressState(_taskbarItems[i].Handle, taskbarState); }
-                    catch { _taskbarItems[i].Form = null; }
+                    catch { _taskbarItems[i] = null; }
                 }
             }
         }
@@ -5373,7 +5507,7 @@ namespace PlexDL.Player
     #region SystemPanels Class
 
     /// <summary>
-    /// A class that is used to group together the System Panels methods of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the System Panels methods of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -5468,7 +5602,7 @@ namespace PlexDL.Player
     #region Subtitles Class
 
     /// <summary>
-    /// A class that is used to group together the Subtitles methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Subtitles methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -5631,7 +5765,7 @@ namespace PlexDL.Player
                 if (value != _base.st_Encoding)
                 {
                     _base.st_Encoding = value;
-                    if (_base.st_HasSubtitles) _base.Subtitles_Start(true);
+                    if (_base.st_SubtitlesEnabled && _base._playing) _base.Subtitles_Start(true);
                 }
             }
         }
@@ -5644,12 +5778,13 @@ namespace PlexDL.Player
             get
             {
                 _base._lastError = Player.NO_ERROR;
+                if (_base.st_Directory == null) _base.st_Directory = string.Empty;
                 return _base.st_Directory;
             }
             set
             {
-                _base._lastError = HResult.S_FALSE;
-                if (!string.IsNullOrEmpty(value) && System.IO.Directory.Exists(value))
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                if (!string.IsNullOrWhiteSpace(value) && System.IO.Directory.Exists(value))
                 {
                     try
                     {
@@ -5692,7 +5827,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the file name of the subtitles file to search for (without directory and extension) (default: string.Empty (the file name of the playing media)). Reset when media starts playing.
+        /// Gets or sets the file name of the subtitles file to search for (without directory and extension) (default: string.Empty (the file name of the playing media)). Reset to string.Empty when media starts playing.
         /// </summary>
         public string FileName
         {
@@ -5703,14 +5838,13 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError = HResult.S_FALSE;
-                if (!string.IsNullOrEmpty(value))
+                _base._lastError = Player.NO_ERROR;
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     try
                     {
                         _base.st_FileName = Path.GetFileNameWithoutExtension(value) + Player.SUBTITLES_FILE_EXTENSION;
                         if (_base.st_SubtitlesEnabled && _base._playing) _base.Subtitles_Start(true);
-                        _base._lastError = Player.NO_ERROR;
                     }
                     catch (Exception e)
                     {
@@ -5798,7 +5932,7 @@ namespace PlexDL.Player
     #region Position Class
 
     /// <summary>
-    /// A class that is used to group together the Position methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Position methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -5816,7 +5950,33 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the beginning of the media.
+        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media. Same as Player.Position.FromBegin.
+        /// </summary>
+        public TimeSpan Current
+        {
+            get
+            {
+                if (_base._playing)
+                {
+                    _base._lastError = Player.NO_ERROR;
+                    if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
+                    else return TimeSpan.FromTicks(_base.PositionX);
+                }
+                else
+                {
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                    return TimeSpan.Zero;
+                }
+            }
+            set
+            {
+                if (!_base._fileMode || !_base._playing) _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                else _base.SetPosition(value.Ticks);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media. Same as Player.Position.Current.
         /// </summary>
         public TimeSpan FromBegin
         {
@@ -5842,7 +6002,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the end of the media.
+        /// Gets or sets the playback position of the playing media, measured from the (natural) end of the media.
         /// </summary>
         public TimeSpan ToEnd
         {
@@ -5867,7 +6027,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from its start time. See also: Player.Media.StartTime.
+        /// Gets or sets the playback position of the playing media, measured from its (adjustable) start time. See also: Player.Media.StartTime.
         /// </summary>
         public TimeSpan FromStart
         {
@@ -5893,7 +6053,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from its stop time. See also: Player.Media.StopTime.
+        /// Gets or sets the playback position of the playing media, measured from its (adjustable) stop time. See also: Player.Media.StopTime.
         /// </summary>
         public TimeSpan ToStop
         {
@@ -5997,7 +6157,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Rewinds the playback position of the playing media to its start time. See also: Player.Media.StartTime.
+        /// Rewinds the playback position of the playing media to its (adjustable) start time. See also: Player.Media.StartTime.
         /// </summary>
         public int Rewind()
         {
@@ -6018,7 +6178,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Changes the playback position of the playing media in any direction by the given amount of (video) frames. The result can differ from the specified value.
+        /// Changes the playback position of the playing media in any direction by the given amount of video frames. The result can differ from the specified value.
         /// </summary>
         /// <param name="frames">The amount of frames to step (use a negative value to step backwards).</param>
         public int Step(int frames)
@@ -6038,30 +6198,47 @@ namespace PlexDL.Player
     #region Media Class
 
     /// <summary>
-    /// A class that is used to group together the Media methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Media methods and properties of the PlexDL.Player.Player class.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class Media : HideObjectMembers
     {
         #region Fields (Media Class)
 
-        private Player _base;
+        private Player          _base;
 
         // Media album art information
-        private Image _tagImage;
-        private DirectoryInfo _directoryInfo;
-        private string[] _searchKeyWords = { "*front*", "*cover*" }; // , "*albumart*large*" };
-        private string[] _searchExtensions = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
+        private Image           _tagImage;
+        private DirectoryInfo   _directoryInfo;
+        private string[]        _searchKeyWords     = { "*front*", "*cover*" }; // , "*albumart*large*" };
+        private string[]        _searchExtensions   = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
 
-        // Wma Guid
-        //private static Guid ASF_Header_Guid = new Guid("75B22630-668E-11CF-A6D9-00AA0062CE6C");
-        //private static Guid ASF_Content_Description_Guid = new Guid("75B22633-668E-11CF-A6D9-00AA0062CE6C");
-        //private static Guid ASF_Extended_Content_Description_Guid = new Guid("D2D0A440-E307-11D2-97F0-00A0C95EA850");
-        //private static Guid ASF_Header_Extension_Object_Guid = new Guid("5FBF03B5-A92E-11CF-8EE3-00C00C205365");
-        //private static Guid ASF_Metadata_Library_Object = new Guid("44231C94-9498-49D1-A141-1D134E457054");
+        // Media chapter information
+        private const string    ROOT_ATOM_TYPES     = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
+
+        private byte[]          MOOV_ATOM           = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
+        private byte[]          TRAK_ATOM           = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
+        private byte[]          TREF_ATOM           = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
+        private byte[]          CHAP_ATOM           = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
+        private byte[]          TKHD_ATOM           = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
+        private byte[]          MDIA_ATOM           = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
+        private byte[]          MINF_ATOM           = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
+        private byte[]          STBL_ATOM           = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
+        private byte[]          STTS_ATOM           = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
+        private byte[]          STCO_ATOM           = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
+        private byte[]          UDTA_ATOM           = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
+        private byte[]          CHPL_ATOM           = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
+
+        private FileStream      _reader;
+        private long            _fileLength;
+        private long            _atomEnd;
+        private long            _moovStart;
+        private long            _moovEnd;
 
         #endregion
+
 
         internal Media(Player player)
         {
@@ -6069,7 +6246,22 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the natural length (duration) of the playing media. See also: Player.Media.GetDuration.
+        ///  Gets a value indicating the source type of the playing media, such as a file or webcam.
+        /// </summary>
+        public MediaSourceType SourceType
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                MediaSourceType source = MediaSourceType.None;
+
+                if (_base._playing) source = _base.AV_GetSourceType();
+                return source;
+            }
+        }
+
+        /// <summary>
+        /// Gets the natural length (duration) of the playing media. See also: Player.Media.Duration and Player.Media.GetDuration.
         /// </summary>
         public TimeSpan Length
         {
@@ -6082,7 +6274,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the duration of the playing media from its start time to its stop time. See also: Player.Media.GetDuration.
+        /// Gets the duration of the playing media from the (adjustable) start time to the stop time. See also: Player.Media.Length and Player.Media.GetDuration.
         /// </summary>
         public TimeSpan Duration
         {
@@ -6095,7 +6287,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the duration of the specified part of the playing media.
+        /// Returns the duration of the specified part of the playing media. See also: Player.Media.Length and Player.Media.Duration.
         /// </summary>
         /// <param name="part">Specifies the part of the playing media whose duration is to be obtained.</param>
         public TimeSpan GetDuration(MediaPart part)
@@ -6134,15 +6326,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns (part of) the file (or webcam) name of the playing media.
+        /// Returns the specified part of the file name or device name of the playing media.
         /// </summary>
-        /// <param name="part">Specifies the part of the file name to return.</param>
+        /// <param name="part">Specifies the part of the name to return.</param>
         public string GetName(MediaName part)
         {
             string mediaName = string.Empty;
             _base._lastError = Player.NO_ERROR;
 
-            if (!_base._fileMode)
+            if (!_base._fileMode && !_base._liveStreamMode)
             {
                 if (part == MediaName.FileName || part == MediaName.FileNameWithoutExtension) mediaName = _base._fileName;
             }
@@ -6204,15 +6396,15 @@ namespace PlexDL.Player
                 tracks = new AudioTrack[count];
                 for (int i = 0; i < count; i++)
                 {
-                    AudioTrack track    = new AudioTrack();
-                    track._mediaType    = _base._audioTracks[i].MediaType;
-                    track._name         = _base._audioTracks[i].Name;
-                    track._language     = _base._audioTracks[i].Language;
+                    AudioTrack track = new AudioTrack();
+                    track._mediaType = _base._audioTracks[i].MediaType;
+                    track._name = _base._audioTracks[i].Name;
+                    track._language = _base._audioTracks[i].Language;
                     track._channelCount = _base._audioTracks[i].ChannelCount;
-                    track._samplerate   = _base._audioTracks[i].Samplerate;
-                    track._bitdepth     = _base._audioTracks[i].Bitdepth;
-                    track._bitrate      = _base._audioTracks[i].Bitrate;
-                    tracks[i]           = track;
+                    track._samplerate = _base._audioTracks[i].Samplerate;
+                    track._bitdepth = _base._audioTracks[i].Bitdepth;
+                    track._bitrate = _base._audioTracks[i].Bitrate;
+                    tracks[i] = track;
                 }
             }
             return tracks;
@@ -6244,14 +6436,14 @@ namespace PlexDL.Player
                 tracks = new VideoTrack[count];
                 for (int i = 0; i < count; i++)
                 {
-                    VideoTrack track    = new VideoTrack();
-                    track._mediaType    = _base._videoTracks[i].MediaType;
-                    track._name         = _base._videoTracks[i].Name;
-                    track._language     = _base._videoTracks[i].Language;
-                    track._frameRate    = _base._videoTracks[i].FrameRate;
-                    track._width        = _base._videoTracks[i].SourceWidth;
-                    track._height       = _base._videoTracks[i].SourceHeight;
-                    tracks[i]           = track;
+                    VideoTrack track = new VideoTrack();
+                    track._mediaType = _base._videoTracks[i].MediaType;
+                    track._name = _base._videoTracks[i].Name;
+                    track._language = _base._videoTracks[i].Language;
+                    track._frameRate = _base._videoTracks[i].FrameRate;
+                    track._width = _base._videoTracks[i].SourceWidth;
+                    track._height = _base._videoTracks[i].SourceHeight;
+                    tracks[i] = track;
                 }
             }
             return tracks;
@@ -6282,7 +6474,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback (repeat) start time of the playing media. The start time can also be set with the Player.Play instruction.
+        /// Gets or sets the (repeat) start time of the playing media. The start time can also be set with the Player.Play method. See also: Player.Media.StopTime.
         /// </summary>
         public TimeSpan StartTime
         {
@@ -6293,10 +6485,13 @@ namespace PlexDL.Player
             }
             set
             {
+                if (!_base._playing || !_base._fileMode)
+                {
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                    return;
+                }
+
                 _base._lastError = Player.NO_ERROR;
-
-                if (!_base._playing || !_base._fileMode) return;
-
                 long newStart = value.Ticks;
 
                 if (_base._startTime == newStart) return;
@@ -6313,8 +6508,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback (repeat) stop time of the playing media. The stop time can also be set with the Player.Play instruction.
-        /// TimeSpan.Zero or 00:00:00 = natural end of media.
+        /// Gets or sets the (repeat) stop time of the playing media. The stop time can also be set with the Player.Play method.
+        /// TimeSpan.Zero or 00:00:00 indicates the natural end of the media. See also: Player.Media.StartTime.
         /// </summary>
         public TimeSpan StopTime
         {
@@ -6325,10 +6520,13 @@ namespace PlexDL.Player
             }
             set
             {
+                if (!_base._playing || !_base._fileMode)
+                {
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                    return;
+                }
+
                 _base._lastError = Player.NO_ERROR;
-
-                if (!_base._playing || !_base._fileMode) return;
-
                 long newStop = value.Ticks;
 
                 if (_base._stopTime == newStop) return;
@@ -6345,13 +6543,38 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the metadata properties of the playing media (using ImageSource.MediaOrFolder).
+        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
         /// </summary>
         public Metadata GetMetadata()
         {
-            if (_base._fileMode && _base._playing)
+            return GetMetadata(ImageSource.MediaOrFolder);
+        }
+
+        /// <summary>
+        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
+        /// </summary>
+        /// <param name="imageSource">A value indicating whether and where an image related to the media should be obtained.</param>
+        public Metadata GetMetadata(ImageSource imageSource)
+        {
+            if (_base._playing)
             {
-                return GetMetadata(_base._fileName, ImageSource.MediaOrFolder);
+                if (_base._fileMode)
+                {
+                    return GetMetadata(_base._fileName, imageSource);
+                }
+                else
+                {
+                    _base._lastError = Player.NO_ERROR;
+
+                    Metadata data = new Metadata();
+                    data._album = GetName(MediaName.FullPath);
+                    data._title = GetName(MediaName.FileNameWithoutExtension);
+                    if (_base._liveStreamMode && !string.IsNullOrWhiteSpace(data._title) && data._title.Length > 1)
+                    {
+                        data._title = char.ToUpper(data._title[0]) + data._title.Substring(1);
+                    }
+                    return data;
+                }
             }
             else
             {
@@ -6361,52 +6584,39 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the metadata properties of the playing media.
+        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
         /// </summary>
-        /// <param name="imageSource">A value indicating whether and where an image related to the media should be obtained.</param>
-        public Metadata GetMetadata(ImageSource imageSource)
-        {
-            if (_base._fileMode && _base._playing)
-            {
-                return GetMetadata(_base._fileName, imageSource);
-            }
-            else
-            {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE; ;
-                return new Metadata();
-            }
-        }
-
-        /// <summary>
-        /// Returns the metadata properties of the specified media file.
-        /// </summary>
-        /// <param name="fileName">The path and name of the file whose metadata properties are to be obtained.</param>
+        /// <param name="fileName">The path and name of the file whose metadata is to be obtained.</param>
         /// <param name="imageSource">A value indicating whether and where an image related to the media should be obtained.</param>
         /// <returns></returns>
         public Metadata GetMetadata(string fileName, ImageSource imageSource)
         {
-            Metadata tagInfo;
-            _base._lastError = Player.NO_ERROR;
-
-            if (fileName == null || fileName == string.Empty)
+            if (string.IsNullOrWhiteSpace(fileName))
             {
                 _base._lastError = HResult.E_INVALIDARG;
                 return new Metadata();
             }
 
-            if (!new Uri(fileName).IsFile)
+            Metadata tagInfo;
+            _base._lastError = Player.NO_ERROR;
+
+            try
             {
-                tagInfo = new Metadata();
+                if (!new Uri(fileName).IsFile)
                 {
-                    try
+                    tagInfo = new Metadata();
                     {
-                        tagInfo._title = Path.GetFileNameWithoutExtension(fileName);
-                        tagInfo._album = fileName;
+                        try
+                        {
+                            tagInfo._title = Path.GetFileNameWithoutExtension(fileName);
+                            tagInfo._album = fileName;
+                        }
+                        catch { /* ignore */ }
                     }
-                    catch { /* ignore */ }
+                    return tagInfo;
                 }
-                return tagInfo;
             }
+            catch { /* ignore */ }
 
             tagInfo = GetMediaTags(fileName, imageSource);
 
@@ -6434,11 +6644,11 @@ namespace PlexDL.Player
 
         private Metadata GetMediaTags(string fileName, ImageSource imageSource)
         {
-            Metadata            tagInfo         = new Metadata();
-            IMFSourceResolver   sourceResolver;
-            IMFMediaSource      mediaSource     = null;
-            IPropertyStore      propStore       = null;
-            PropVariant         propVariant     = new PropVariant();
+            Metadata tagInfo = new Metadata();
+            IMFSourceResolver sourceResolver;
+            IMFMediaSource mediaSource = null;
+            IPropertyStore propStore = null;
+            PropVariant propVariant = new PropVariant();
 
             HResult result = MFExtern.MFCreateSourceResolver(out sourceResolver);
             if (result == Player.NO_ERROR)
@@ -6462,7 +6672,7 @@ namespace PlexDL.Player
                             // Artist
                             result = propStore.GetValue(PropertyKeys.PKEY_Music_Artist, propVariant);
                             tagInfo._artist = propVariant.GetString();
-                            if (string.IsNullOrEmpty(tagInfo._artist))
+                            if (string.IsNullOrWhiteSpace(tagInfo._artist))
                             {
                                 propStore.GetValue(PropertyKeys.PKEY_Music_AlbumArtist, propVariant);
                                 tagInfo._artist = propVariant.GetString();
@@ -6537,29 +6747,6 @@ namespace PlexDL.Player
             return tagInfo;
         }
 
-        // Get mp3 information string help function
-        //private string GetMp3String(FileStream fs, byte[] buffer, int frameSize)
-        //{
-        //    string result;
-
-        //    if (frameSize > buffer.Length) buffer = new byte[frameSize];
-        //    fs.Read(buffer, 0, frameSize);
-        //    switch (buffer[1])
-        //    {
-        //        case 0xFF:
-        //            result = Encoding.Unicode.GetString(buffer, 1, frameSize - 1).TrimEnd('\0');
-        //            break;
-        //        case 0xFE:
-        //            result = Encoding.BigEndianUnicode.GetString(buffer, 1, frameSize - 1).TrimEnd('\0');
-        //            break;
-        //        default:
-        //            result = Encoding.Default.GetString(buffer, 1, frameSize - 1).TrimEnd('\0');
-        //            break;
-        //    }
-
-        //    return result.Trim();
-        //}
-
         // Get media information image help function
         private void GetMediaImage(string fileName)
         {
@@ -6619,15 +6806,524 @@ namespace PlexDL.Player
             return found;
         }
 
-        ///// <summary>
-        ///// Returns the path to a new file, created from the specified embedded resource and with the specified file name, in the system's temporary folder for use with the Player.Play methods.
-        ///// </summary>
-        ///// <param name="resource">The embedded resource (for example, Properties.Resources.MyMedia) to save to a new file in the system's temporary folder.</param>
-        ///// <param name="fileName">The file name (for example, "MyMedia.mp4") to be used for the new file in the system's temporary folder.</param>
-        //public string ResourceToFile(byte[] resource, string fileName)
-        //{
-        //    return _base.AV_ResourceToFile(resource, fileName);
-        //}
+        /*
+            Thanks to Zeugma440, https://github.com/Zeugma440/atldotnet/wiki/Focus-on-Chapter-metadata
+            A great help to defeat the uggly Apple chapter beast.
+        */
+
+        /// <summary>
+        /// Returns chapter information of the playing media (if available).
+        /// </summary>
+        /// <param name="appleChapters">When this method returns, contains the chapter information of the media stored in the Apple format or null.</param>
+        /// <param name="neroChapters">When this method returns, contains the chapter information of the media stored the Nero format or null.</param>
+        public int GetChapters(out MediaChapter[] appleChapters, out MediaChapter[] neroChapters)
+        {
+            if (_base._playing) return GetChapters(_base._fileName, out appleChapters, out neroChapters);
+
+            appleChapters = null;
+            neroChapters = null;
+
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Returns chapter information of the specified media file (if available).
+        /// </summary>
+        /// <param name="fileName">The path and name of the file whose chapter information is to be obtained.</param>
+        /// <param name="appleChapters">When this method returns, contains the chapter information of the media stored in the Apple format or null.</param>
+        /// <param name="neroChapters">When this method returns, contains the chapter information of the media stored in the Nero format or null.</param>
+        public int GetChapters(string fileName, out MediaChapter[] appleChapters, out MediaChapter[] neroChapters)
+        {
+            appleChapters   = null;
+            neroChapters    = null;
+
+            if (string.IsNullOrWhiteSpace(fileName)) _base._lastError = HResult.E_INVALIDARG;
+            else if (!File.Exists(fileName)) _base._lastError = HResult.ERROR_FILE_NOT_FOUND;
+            else
+            {
+                try
+                {
+                    byte[] buffer = new byte[16];
+
+                    // check length and if first atom type is valid
+                    _reader = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                    _reader.Read(buffer, 0, 8);
+                    if (_reader.Length > 1024 && (ROOT_ATOM_TYPES.IndexOf(Encoding.ASCII.GetString(new byte[] { buffer[4], buffer[5], buffer[6], buffer[7] }), StringComparison.Ordinal) >= 0))
+                    {
+                        _base._lastError = Player.NO_ERROR;
+                    }
+                    else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+
+                }
+                catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+            }
+
+            if (_base._lastError == Player.NO_ERROR)
+            {
+                _fileLength      = _reader.Length;
+                _reader.Position = 0;
+
+                appleChapters    = GetAppleChapters();
+                if (_moovStart != 0) neroChapters = GetNeroChapters();
+            }
+
+            if (_reader != null)
+            {
+                _reader.Dispose();
+                _reader = null;
+            }
+
+            return (int)_base._lastError;
+        }
+
+        private MediaChapter[] GetAppleChapters()
+        {
+            MediaChapter[] appleChapters = null;
+            byte[] buffer = new byte[256];
+
+            try
+            {
+                long index = FindAtom(MOOV_ATOM, 0, _fileLength);
+                if (index > 0)
+                {
+                    bool found = false;
+
+                    _moovStart = index;
+                    _moovEnd = _atomEnd;
+                    long moovIndex = index;
+                    long moovEnd = _atomEnd;
+
+                    long oldIndex;
+                    long oldEnd;
+
+                    int trackCounter = 0;
+                    int trackNumber = 0;
+
+                    while (!found && index < moovEnd)
+                    {
+                        oldEnd = _atomEnd;
+
+                        // walk the "moov" atom
+                        index = FindAtom(TRAK_ATOM, index, _atomEnd);
+                        if (index > 0)
+                        {
+                            oldIndex = _atomEnd;
+                            trackCounter++;
+
+                            // walk the "trak" atom
+                            index = FindAtom(TREF_ATOM, index, _atomEnd);
+                            if (index > 0)
+                            {
+                                index = FindAtom(CHAP_ATOM, index, _atomEnd);
+                                if (index > 0)
+                                {
+                                    _reader.Read(buffer, 0, 4);
+                                    trackNumber = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                    found = true;
+
+                                    index = oldIndex;
+                                    _reader.Position = index;
+                                    _atomEnd = oldEnd;
+
+                                    break; // break while
+                                }
+                            }
+                            index = oldIndex;
+                            _reader.Position = index;
+                            _atomEnd = oldEnd;
+                        }
+                        else // no more trak atoms - break not really necessary (?)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (found)
+                    {
+                        // get the chapters track
+                        int count = trackNumber - trackCounter;
+                        if (count < 0)
+                        {
+                            count = trackNumber;
+                            index = moovIndex;
+                            _reader.Position = index;
+                            _atomEnd = _moovEnd;
+                        }
+                        for (int i = 0; i < count && index > 0; i++)
+                        {
+                            index = FindAtom(TRAK_ATOM, index, _atomEnd);
+                            if (i < count - 1)
+                            {
+                                index = _atomEnd;
+                                _reader.Position = index;
+                                _atomEnd = _moovEnd;
+                            }
+                        }
+
+                        if (index > 0)
+                        {
+                            // walk the "trak" atom
+                            oldIndex = index;
+                            oldEnd = _atomEnd;
+                            index = FindAtom(TKHD_ATOM, index, _atomEnd);
+                            if (index > 0)
+                            {
+                                index = oldIndex;
+                                _reader.Position = index;
+                                _atomEnd = oldEnd;
+                                index = FindAtom(MDIA_ATOM, index, _atomEnd);
+                                if (index > 0)
+                                {
+                                    oldIndex = index;
+
+                                    // get time scale
+                                    index += 20;
+                                    _reader.Position = index;
+                                    _reader.Read(buffer, 0, 4);
+                                    int timeScale = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                    if (timeScale == 0) timeScale = 1;
+
+                                    index = oldIndex;
+                                    _reader.Position = index;
+                                    index = FindAtom(MINF_ATOM, index, _atomEnd);
+                                    if (index > 0)
+                                    {
+                                        index = FindAtom(STBL_ATOM, index, _atomEnd);
+                                        if (index > 0)
+                                        {
+                                            oldIndex = index;
+                                            oldEnd = _atomEnd;
+                                            index = FindAtom(STTS_ATOM, index, _atomEnd);
+                                            if (index > 0)
+                                            {
+                                                // get chapter start times (durations)
+                                                index += 4;
+                                                _reader.Position = index;
+                                                _reader.Read(buffer, 0, 4);
+                                                int chapterCount = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+
+                                                if (chapterCount > 0)
+                                                {
+                                                    int startTimeCounter = chapterCount;
+                                                    int startTimeIndex = 1; // first one is zero
+                                                    int startTime = 0;
+
+                                                    int[] startTimes = new int[startTimeCounter];
+                                                    while (startTimeCounter > 1)
+                                                    {
+                                                        _reader.Read(buffer, 0, 8);
+                                                        int sampleCount = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                                        startTime += (buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) / timeScale;
+                                                        for (int i = 0; i < sampleCount; i++)
+                                                        {
+                                                            startTimes[startTimeIndex++] = startTime;
+                                                        }
+                                                        startTimeCounter -= sampleCount;
+                                                    }
+
+                                                    index = oldIndex;
+                                                    _reader.Position = index;
+                                                    _atomEnd = oldEnd;
+                                                    index = FindAtom(STCO_ATOM, index, _atomEnd);
+                                                    if (index > 0)
+                                                    {
+                                                        // get chapter titles
+                                                        index += 4;
+                                                        _reader.Position = index;
+                                                        _reader.Read(buffer, 0, 4);
+                                                        int entries = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                                        if (entries == chapterCount)
+                                                        {
+                                                            appleChapters = new MediaChapter[chapterCount];
+                                                            for (int i = 0; i < chapterCount; i++)
+                                                            {
+                                                                _reader.Read(buffer, 0, 4);
+                                                                int offset1 = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+
+                                                                index = _reader.Position;
+                                                                _reader.Position = offset1;
+
+                                                                _reader.Read(buffer, 0, 2);
+                                                                int len = buffer[0] << 8 | buffer[1];
+
+                                                                _reader.Read(buffer, 0, len);
+                                                                appleChapters[i] = new MediaChapter();
+                                                                appleChapters[i]._title = Encoding.ASCII.GetString(buffer, 0, len);
+                                                                appleChapters[i]._startTime = TimeSpan.FromSeconds(startTimes[i]);
+
+                                                                _reader.Position = index;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                appleChapters = null;
+            }
+            return appleChapters;
+        }
+
+        private MediaChapter[] GetNeroChapters()
+        {
+            MediaChapter[] neroChapters = null;
+            byte[] buffer = new byte[256];
+
+            long index = _moovStart; // retrieved at GetAppleChapters
+            _reader.Position = index;
+            long moovEnd = _moovEnd;
+            _atomEnd = moovEnd;
+
+            try
+            {
+                while (index < moovEnd)
+                {
+                    long oldIndex;
+                    long oldEnd = _atomEnd;
+
+                    index = FindAtom(UDTA_ATOM, index, _atomEnd);
+                    if (index > 0)
+                    {
+                        oldIndex = _atomEnd;
+                        index = FindAtom(CHPL_ATOM, index, _atomEnd);
+                        if (index > 0)
+                        {
+                            index += 5;
+                            _reader.Position = index;
+                            _reader.Read(buffer, 0, 4);
+                            int count = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                            neroChapters = new MediaChapter[count];
+                            int length;
+
+                            for (int i = 0; i < count; i++)
+                            {
+                                _reader.Read(buffer, 0, 9);
+
+                                neroChapters[i] = new MediaChapter();
+                                neroChapters[i]._startTime = TimeSpan.FromTicks(((long)(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]) << 32)
+                                    | ((buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) & 0xffffffff));
+                                length = buffer[8];
+                                _reader.Read(buffer, 0, length);
+                                neroChapters[i]._title = Encoding.ASCII.GetString(buffer, 0, length);
+                            }
+                            break; // chapters found and done
+                        }
+                        else // chapters not found, check for more udta atoms
+                        {
+                            index = oldIndex;
+                            _reader.Position = index;
+                            _atomEnd = oldEnd;
+                        }
+                    }
+                    else // no more udta atoms - chapters not present and done
+                    {
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+                neroChapters = null;
+            }
+            return neroChapters;
+        }
+
+        private long FindAtom(byte[] type, long startIndex, long endIndex)
+        {
+            long index = startIndex;
+            long end = endIndex - 8;
+            byte[] buffer = new byte[16];
+
+            while (index < end)
+            {
+                _reader.Read(buffer, 0, 8);
+                long atomSize = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                if (atomSize < 2)
+                {
+                    if (atomSize == 0) atomSize = _fileLength - index;
+                    else // size == 1
+                    {
+                        _reader.Read(buffer, 8, 8);
+                        atomSize = ((long)((buffer[8] << 24) | (buffer[9] << 16) | (buffer[10] << 8) | buffer[11]) << 32)
+                                    | ((buffer[12] << 24 | buffer[13] << 16 | buffer[14] << 8 | buffer[15]) & 0xffffffff);
+                    }
+                }
+
+                if (buffer[4] == type[0] && buffer[5] == type[1] && buffer[6] == type[2] && buffer[7] == type[3])
+                {
+                    _atomEnd = index + atomSize;
+                    return _reader.Position; // found
+                }
+
+                index += atomSize;
+                _reader.Position = index;
+            }
+            return 0; // not found
+        }
+    }
+
+
+    #endregion
+
+    #region Images Class
+
+    /// <summary>
+    /// A class that is used to group together the Images properties of the PlexDL.Player.Player class.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class Images : HideObjectMembers
+    {
+        #region Fields (Images Class)
+
+        private const int MINIMUM_FRAMERATE = 4;
+        private const int MAXIMUM_FRAMERATE = 30;
+        private const int MINIMUM_DURATION  = 3;
+        private const int MAXIMUM_DURATION  = 60;
+
+        private Player _base;
+
+        #endregion
+
+        internal Images(Player player)
+        {
+            _base = player;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player also plays images (default: true).
+        /// </summary>
+        public bool Enabled
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._imagesEnabled;
+            }
+            set
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._imagesEnabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the frame rate at which images are played. Values from 4 to 30 frames per second (default: 16).
+        /// </summary>
+        public int FrameRate
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._imageFrameRate;
+            }
+            set
+            {
+                if (value < MINIMUM_FRAMERATE || value > MAXIMUM_FRAMERATE)
+                {
+                    _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+                }
+                else
+                {
+                    _base._lastError = Player.NO_ERROR;
+                    _base._imageFrameRate = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of image playback. Values from 3 to 60 seconds (default: 5).
+        /// </summary>
+        public int Duration
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return (int)(_base._imageDuration / Player.ONE_SECOND_TICKS);
+            }
+            set
+            {
+                if (value < MINIMUM_DURATION || value > MAXIMUM_DURATION)
+                {
+                    _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+                }
+                else
+                {
+                    _base._lastError = Player.NO_ERROR;
+                    _base._imageDuration = value * Player.ONE_SECOND_TICKS;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether an image is playing (including paused image). Use the Player.Play method to play an image.
+        /// </summary>
+        public bool Playing
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._imageMode;
+            }
+        }
+
+        /// <summary>
+        /// Updates or restores the playing image on the display of the player. For special use only, generally not required.
+        /// </summary>
+        public int Update()
+        {
+            if (_base._imageMode && _base.mf_VideoDisplayControl != null)
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base.mf_VideoDisplayControl.RepaintVideo();
+            }
+            else { _base._lastError = HResult.MF_E_NOT_AVAILABLE; }
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the image on the player's display will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. Same as: Player.Display.Hold. See also: Player.Image.HoldClear.
+        /// </summary>
+        public bool Hold
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._displayHold;
+            }
+            set
+            {
+                if (value != _base._displayHold)
+                {
+                    _base._displayHold = value;
+                    if (!value) _base.AV_ClearHold();
+                }
+                _base._lastError = Player.NO_ERROR;
+            }
+        }
+
+        /// <summary>
+        /// Clears the player's display when the Player.Image.Hold option is enabled and no media is playing. Same as 'Player.Image.Hold = false' but does not disable the Player.Image.Hold option. Same as: Player.Display.HoldClear. See also: Player.Image.Hold.
+        /// </summary>
+        public int HoldClear()
+        {
+            if (_base._displayHold)
+            {
+                _base.AV_ClearHold();
+                _base._lastError = Player.NO_ERROR;
+            }
+            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            return (int)_base._lastError;
+        }
     }
 
     #endregion
@@ -6635,7 +7331,7 @@ namespace PlexDL.Player
     #region Playlist Class
 
     /// <summary>
-    /// A class that is used to group together the Playlist methods of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Playlist methods of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -6653,14 +7349,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Opens a playlist as a list of file names. Returns null if no or an empty playlist is found.
+        /// Returns the contents of the specified playlist file as a list of file names. Returns null if no or empty playlist is found.
         /// </summary>
-        /// <param name="playlist">The path and file name of the playlist. Supported file types are .m3u and .m3u8.</param>
+        /// <param name="playlist">The path and file name of the playlist file. Supported file types are .m3u and .m3u8.</param>
         public string[] Open(string playlist)
         {
             List<string> fileNames = null;
 
-            if (string.IsNullOrEmpty(playlist))
+            if (string.IsNullOrWhiteSpace(playlist))
             {
                 _base._lastError = HResult.ERROR_INVALID_NAME;
             }
@@ -6726,14 +7422,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves a list of file names in the specified playlist. If the playlist already exists, it is overwritten.
+        /// Saves the specified list of file names as a playlist file. If the playlist file already exists, it is overwritten.
         /// </summary>
         /// <param name="playlist">The path and file name of the playlist. Supported file types are .m3u and .m3u8.</param>
-        /// <param name="fileNames">The list of media file names to save in the specified playlist.</param>
+        /// <param name="fileNames">The list of media file names to save to the specified playlist file.</param>
         /// <param name="relativePaths">A value indicating whether to use relative (to the playlist) paths with the saved file names.</param>
         public int Save(string playlist, string[] fileNames, bool relativePaths)
         {
-            if (string.IsNullOrEmpty(playlist) || fileNames == null || fileNames.Length == 0)
+            if (string.IsNullOrWhiteSpace(playlist) || fileNames == null || fileNames.Length == 0)
             {
                 _base._lastError = HResult.E_INVALIDARG;
             }
@@ -6787,10 +7483,18 @@ namespace PlexDL.Player
         // Thanks Dave!
         private string GetRelativePath(string fromPath, string toPath)
         {
-            Uri fromUri = new Uri(fromPath);
-            Uri toUri = new Uri(toPath);
+            if (string.IsNullOrWhiteSpace(toPath)) return string.Empty;
 
-            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+            Uri fromUri, toUri;
+
+            try
+            {
+                fromUri = new Uri(fromPath);
+                toUri = new Uri(toPath);
+
+                if (fromUri.Scheme != toUri.Scheme) return toPath;
+            }
+            catch { return toPath; }
 
             Uri relativeUri = fromUri.MakeRelativeUri(toUri);
             string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
@@ -6801,6 +7505,72 @@ namespace PlexDL.Player
             }
             return relativePath;
         }
+
+        ///// <summary>
+        ///// Returns a shuffled playlist from the specified playlist (shallow copy using the Fisher/Yates/Durstenfeld shuffle algorithm).
+        ///// </summary>
+        ///// <param name="playlist">The playlist (media file names) to shuffle.</param>
+        //public string[] Shuffle(string[] playlist)
+        //{
+        //    _base._lastError = Player.NO_ERROR;
+
+        //    if (playlist == null || playlist.Length < 2) return playlist;
+
+        //    Random rnd              = new Random();
+        //    int n                   = playlist.Length;
+        //    string[] shuffleList    = new string[n];
+        //    Array.Copy(playlist, shuffleList, n);
+
+        //    while (n > 0)
+        //    {
+        //        int k           = rnd.Next(n--);
+        //        string temp     = shuffleList[k];
+        //        shuffleList[k]  = shuffleList[n];
+        //        shuffleList[n]  = temp;
+        //    }
+        //    return shuffleList;
+        //}
+
+        ///// <summary>
+        ///// Returns a list of shuffled indexes from the specified playlist (using the Fisher/Yates/Durstenfeld shuffle algorithm).
+        ///// </summary>
+        ///// <param name="playlist">The playlist (media file names) whose indexes are to be shuffled.</param>
+        //public int[] ShuffleIndex(string[] playlist)
+        //{
+        //    _base._lastError = Player.NO_ERROR;
+
+        //    if (playlist == null || playlist.Length < 2) return new int[1];
+        //    return GetShuffleIndexes(playlist.Length);
+        //}
+
+        ///// <summary>
+        ///// Returns a list of shuffled indexes from the specified playlist (using the Fisher/Yates/Durstenfeld shuffle algorithm).
+        ///// </summary>
+        ///// <param name="playlist">The playlist (media file names) whose indexes are to be shuffled.</param>
+        //public int[] ShuffleIndex(List<string> playlist)
+        //{
+        //    _base._lastError = Player.NO_ERROR;
+
+        //    if (playlist == null || playlist.Count < 2) return new int[1];
+        //    return GetShuffleIndexes(playlist.Count);
+        //}
+
+        //private int[] GetShuffleIndexes(int count)
+        //{
+        //    Random rnd = new Random();
+        //    int n = count;
+        //    int[] indexes = new int[n];
+        //    for (int i = 0; i < n; i++) indexes[i] = i;
+
+        //    while (n > 0)
+        //    {
+        //        int k = rnd.Next(n--);
+        //        int temp = indexes[k];
+        //        indexes[k] = indexes[n];
+        //        indexes[n] = temp;
+        //    }
+        //    return indexes;
+        //}
     }
 
     #endregion
@@ -6808,7 +7578,7 @@ namespace PlexDL.Player
     #region Has Class
 
     /// <summary>
-    /// A class that is used to group together the Has (active components) properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Has (active components) properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -6922,7 +7692,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing media (includes paused media).
+        /// Gets a value indicating whether the player is playing media (including paused media). See also: Player.Media.SourceType.
         /// </summary>
         public bool Media
         {
@@ -6934,7 +7704,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing a webcam (includes paused webcam).
+        /// Gets a value indicating whether the player is playing an image (including paused webcam). See also: Player.Media.SourceType.
+        /// </summary>
+        public bool Image
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._imageMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the player is playing a webcam (including paused webcam). See also: Player.Media.SourceType.
         /// </summary>
         public bool Webcam
         {
@@ -6946,7 +7728,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing an audio input device (with or without a webcam - includes paused audio input).
+        /// Gets a value indicating whether the player is playing a live stream (including paused live stream). See also: Player.Media.SourceType.
+        /// </summary>
+        public bool LiveStream
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._liveStreamMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the player is playing an audio input device (with or without a webcam - including paused audio input). See also: Player.Media.SourceType.
         /// </summary>
         public bool AudioInput
         {
@@ -6975,7 +7769,7 @@ namespace PlexDL.Player
     #region Speed Class
 
     /// <summary>
-    /// A class that is used to group together the playback Speed methods and properties of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the playback Speed methods and properties of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -6993,7 +7787,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the speed at which media is played by the player (normal speed = 1.0). This setting is adjusted by the player if media cannot be played at the set speed.
+        /// Gets or sets a value indicating the speed at which media is played by the player (default: 1.0 (normal speed)). The setting is adjusted by the player if media cannot be played at the set speed.
         /// </summary>
         public float Rate
         {
@@ -7081,7 +7875,7 @@ namespace PlexDL.Player
     #region Events Class
 
     /// <summary>
-    /// A class that is used to group together the Events of the PVS.MediaPlayer.Player class.
+    /// A class that is used to group together the Events of the PlexDL.Player.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -7099,7 +7893,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when media has finished playing.
+        /// Occurs when media playback has ended.
         /// </summary>
         public event EventHandler<EndedEventArgs> MediaEnded
         {
@@ -7112,7 +7906,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when media has finished playing, just before the Player.Events.MediaEnded event occurs.
+        /// Occurs when media playback has ended, just before the Player.Events.MediaEnded event occurs.
         /// </summary>
         public event EventHandler<EndedEventArgs> MediaEndedNotice
         {
@@ -7125,7 +7919,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the repeat setting of the player has changed.
+        /// Occurs when the media repeat setting of the player has changed.
         /// </summary>
         public event EventHandler MediaRepeatChanged
         {
@@ -7138,7 +7932,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when media has finished playing and is repeated.
+        /// Occurs when media playback has ended and is repeated.
         /// </summary>
         public event EventHandler MediaRepeated
         {
@@ -7190,7 +7984,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the start- and/or endtime of the playing media has changed.
+        /// Occurs when the start or stop time of the playing media has changed.
         /// </summary>
         public event EventHandler MediaStartStopTimeChanged
         {
@@ -7242,7 +8036,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the fullscreen setting of the player has changed.
+        /// Occurs when the full screen mode of the player has changed.
         /// </summary>
         public event EventHandler MediaFullScreenChanged
         {
@@ -7255,7 +8049,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the fullscreen mode of the player has changed.
+        /// Occurs when the full screen display mode of the player has changed.
         /// </summary>
         public event EventHandler MediaFullScreenModeChanged
         {
@@ -7539,7 +8333,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio output device of the player is set to a different device. The player handles all changes to the audio output devices. You can use this event to update the application interface.
+        /// Occurs when the audio output device of the player is set to a different device. The player handles all changes to the audio output devices. You can use this event to update the application's interface.
         /// </summary>
         public event EventHandler MediaAudioDeviceChanged
         {
@@ -7560,7 +8354,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio output devices of the system have changed. The player handles all changes to the system audio output devices. You can use this event to update the application interface.
+        /// Occurs when the audio output devices of the system have changed. The player handles all changes to the system audio output devices. You can use this event to update the application's interface.
         /// </summary>
         public event EventHandler<SystemAudioDevicesEventArgs> MediaSystemAudioDevicesChanged
         {

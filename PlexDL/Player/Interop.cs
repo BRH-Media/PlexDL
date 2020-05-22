@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.2
-    February 2020, The Netherlands
+    PlexDL.Player - Version 0.99
+    May 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,12 +12,12 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
+    Article on CodeProject with information on the use of the PlexDL.Player library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PVS.MediaPlayer library source code is divided into 8 files:
+    The PlexDL.Player library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -47,15 +47,15 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    February 2020, The Netherlands
+    May 2020, The Netherlands
 
     ****************************************************************/
 
@@ -69,6 +69,18 @@ using System.Text;
 using System.Windows.Forms;
 
 #endregion
+
+#region Disable Some Warnings
+
+// programmer's preference:
+#pragma warning disable IDE0044 // Add readonly modifier
+// the library can be compiled with all versions of c#:
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable IDE0017 // Simplify object initialization
+#pragma warning disable IDE0041 // Use 'is null' check
+
+#endregion
+
 
 namespace PlexDL.Player
 {
@@ -390,7 +402,7 @@ namespace PlexDL.Player
         ///// <summary>Catastrophic failure</summary>
         //E_UNEXPECTED = unchecked((int)0x8000FFFF),
 
-        /// <summary>Not implemented</summary>
+        ///// <summary>Not implemented</summary>
         E_NOTIMPL = unchecked((int)0x80004001),
 
         ///// <summary>Ran out of memory</summary>
@@ -411,16 +423,16 @@ namespace PlexDL.Player
         ///// <summary>Operation aborted</summary>
         //E_ABORT = unchecked((int)0x80004004),
 
-        /// <summary>Unspecified error</summary>
+        ///// <summary>Unspecified error</summary>
         E_FAIL = unchecked((int)0x80004005),
 
         ///// <summary>General access denied error</summary>
         E_ACCESSDENIED = unchecked((int)0x80070005),
 
-        /// <summary>Wrong OS or OS version for application</summary>
+        ///// <summary>Wrong OS or OS version for application</summary>
         CO_E_WRONGOSFORAPP = unchecked((int)0x800401FA),
 
-        /// <summary>Operation timed out</summary>
+        ///// <summary>Operation timed out</summary>
         COR_E_TIMEOUT = unchecked((int)0x80131505),
 
         #endregion
@@ -443,14 +455,16 @@ namespace PlexDL.Player
         ///// <unmanaged>HRESULT_FROM_WIN32(ERROR_NOT_FOUND)</unmanaged>
         //WIN32_ERROR_NOT_FOUND = unchecked((int)0x80070490),
 
-        ERROR_FILE_NOT_FOUND = 0x02,
-        ERROR_INVALID_NAME = unchecked((int)0x8007007B),
-        ERROR_PATH_NOT_FOUND = unchecked((int)0x80070003),
-        ERROR_SYSTEM_DEVICE_NOT_FOUND = unchecked(0x00003BC3),
-        ERROR_DEVICE_NOT_CONNECTED = 0x0000048F,
-        ERROR_NOT_READY = 0x15,
-        ERROR_BUSY = unchecked((int)0x800700AA),
-        ERROR_INVALID_WINDOW_HANDLE = 0x00000578,
+        ERROR_FILE_NOT_FOUND            = 0x02,
+        ERROR_INVALID_NAME              = unchecked((int)0x8007007B),
+        ERROR_PATH_NOT_FOUND            = unchecked((int)0x80070003),
+        ERROR_SYSTEM_DEVICE_NOT_FOUND   = 0x00003BC3,
+        ERROR_DEVICE_NOT_CONNECTED      = 0x0000048F,
+        ERROR_NOT_READY                 = 0x15,
+        ERROR_BUSY                      = unchecked((int)0x800700AA),
+        ERROR_INVALID_WINDOW_HANDLE     = 0x00000578,
+        //ERROR_SERVER_NOT_FOUND        = unchecked((int)0xC00D4287),
+        ERROR_SERVER_NOT_FOUND          = 0x00000837,
 
         #endregion
 
@@ -562,7 +576,7 @@ namespace PlexDL.Player
         //MF_E_INVALIDINDEX = unchecked((int)0xC00D36BF),
         //MF_E_INVALID_TIMESTAMP = unchecked((int)0xC00D36C0),
         //MF_E_UNSUPPORTED_SCHEME = unchecked((int)0xC00D36C3),
-        //MF_E_UNSUPPORTED_BYTESTREAM_TYPE = unchecked((int)0xC00D36C4),
+        MF_E_UNSUPPORTED_BYTESTREAM_TYPE = unchecked((int)0xC00D36C4),
         //MF_E_UNSUPPORTED_TIME_FORMAT = unchecked((int)0xC00D36C5),
         //MF_E_NO_SAMPLE_TIMESTAMP = unchecked((int)0xC00D36C8),
         //MF_E_NO_SAMPLE_DURATION = unchecked((int)0xC00D36C9),
@@ -971,7 +985,7 @@ namespace PlexDL.Player
         //MESinkV1Anchor = MEAudioSessionExclusiveModeOverride,
 
         //MECaptureAudioSessionVolumeChanged = 322,
-        //MECaptureAudioSessionDeviceRemoved = 323,
+        MECaptureAudioSessionDeviceRemoved = 323,
         //MECaptureAudioSessionFormatChanged = 324,
         //MECaptureAudioSessionDisconnected = 325,
         //MECaptureAudioSessionExclusiveModeOverride = 326,
@@ -1003,7 +1017,7 @@ namespace PlexDL.Player
         //METransformMarker,
         //METransformInputStreamStateChanged,
         //MEByteStreamCharacteristicsChanged = 700,
-        //MEVideoCaptureDeviceRemoved = 800,
+        MEVideoCaptureDeviceRemoved = 800,
         //MEVideoCaptureDevicePreempted = 801,
         //MEStreamSinkFormatInvalidated = 802,
         //MEEncodingParameters = 803,
@@ -1339,6 +1353,20 @@ namespace PlexDL.Player
         Auto = 0x0001,
         Manual = 0x0002
     }
+
+    //[UnmanagedName("MFVideoInterlaceMode")]
+    //internal enum MFVideoInterlaceMode
+    //{
+    //    FieldInterleavedLowerFirst = 4,
+    //    FieldInterleavedUpperFirst = 3,
+    //    FieldSingleLower = 6,
+    //    FieldSingleUpper = 5,
+    //    ForceDWORD = 0x7fffffff,
+    //    Last = 8,
+    //    MixedInterlaceOrProgressive = 7,
+    //    Progressive = 2,
+    //    Unknown = 0
+    //}
 
     #endregion
 
@@ -1708,7 +1736,7 @@ namespace PlexDL.Player
         public static readonly Guid MF_MT_FRAME_RATE = new Guid(0xc459a2e8, 0x3d2c, 0x4e44, 0xb1, 0x32, 0xfe, 0xe5, 0x15, 0x6c, 0x7b, 0xb0);
 
         //// {c6376a1e-8d0a-4027-be45-6d9a0ad39bb6}   MF_MT_PIXEL_ASPECT_RATIO        {UINT64 (HI32(Numerator),LO32(Denominator))}
-        //public static readonly Guid MF_MT_PIXEL_ASPECT_RATIO = new Guid(0xc6376a1e, 0x8d0a, 0x4027, 0xbe, 0x45, 0x6d, 0x9a, 0x0a, 0xd3, 0x9b, 0xb6);
+        public static readonly Guid MF_MT_PIXEL_ASPECT_RATIO = new Guid(0xc6376a1e, 0x8d0a, 0x4027, 0xbe, 0x45, 0x6d, 0x9a, 0x0a, 0xd3, 0x9b, 0xb6);
 
         //// {8772f323-355a-4cc7-bb78-6d61a048ae82}   MF_MT_DRM_FLAGS                 {UINT32 (anyof MFVideoDRMFlags)}
         //public static readonly Guid MF_MT_DRM_FLAGS = new Guid(0x8772f323, 0x355a, 0x4cc7, 0xbb, 0x78, 0x6d, 0x61, 0xa0, 0x48, 0xae, 0x82);
@@ -1778,7 +1806,7 @@ namespace PlexDL.Player
         //public static readonly Guid MF_MT_VIDEO_CHROMA_SITING = new Guid(0x65df2370, 0xc773, 0x4c33, 0xaa, 0x64, 0x84, 0x3e, 0x06, 0x8e, 0xfb, 0x0c);
 
         //// {e2724bb8-e676-4806-b4b2-a8d6efb44ccd}   MF_MT_INTERLACE_MODE            {UINT32 (oneof MFVideoInterlaceMode)}
-        //public static readonly Guid MF_MT_INTERLACE_MODE = new Guid(0xe2724bb8, 0xe676, 0x4806, 0xb4, 0xb2, 0xa8, 0xd6, 0xef, 0xb4, 0x4c, 0xcd);
+        public static readonly Guid MF_MT_INTERLACE_MODE = new Guid(0xe2724bb8, 0xe676, 0x4806, 0xb4, 0xb2, 0xa8, 0xd6, 0xef, 0xb4, 0x4c, 0xcd);
 
         //// {5fb0fce9-be5c-4935-a811-ec838f8eed93}   MF_MT_TRANSFER_FUNCTION         {UINT32 (oneof MFVideoTransferFunction)}
         //public static readonly Guid MF_MT_TRANSFER_FUNCTION = new Guid(0x5fb0fce9, 0xbe5c, 0x4935, 0xa8, 0x11, 0xec, 0x83, 0x8f, 0x8e, 0xed, 0x93);
@@ -1811,7 +1839,7 @@ namespace PlexDL.Player
         //public static readonly Guid MF_MT_PAN_SCAN_ENABLED = new Guid(0x4b7f6bc3, 0x8b13, 0x40b2, 0xa9, 0x93, 0xab, 0xf6, 0x30, 0xb8, 0x20, 0x4e);
 
         //// {20332624-fb0d-4d9e-bd0d-cbf6786c102e}   MF_MT_AVG_BITRATE               {UINT32}
-        //public static readonly Guid MF_MT_AVG_BITRATE = new Guid(0x20332624, 0xfb0d, 0x4d9e, 0xbd, 0x0d, 0xcb, 0xf6, 0x78, 0x6c, 0x10, 0x2e);
+        public static readonly Guid MF_MT_AVG_BITRATE = new Guid(0x20332624, 0xfb0d, 0x4d9e, 0xbd, 0x0d, 0xcb, 0xf6, 0x78, 0x6c, 0x10, 0x2e);
 
         //// {799cabd6-3508-4db4-a3c7-569cd533deb1}   MF_MT_AVG_BIT_ERROR_RATE        {UINT32}
         //public static readonly Guid MF_MT_AVG_BIT_ERROR_RATE = new Guid(0x799cabd6, 0x3508, 0x4db4, 0xa3, 0xc7, 0x56, 0x9c, 0xd5, 0x33, 0xde, 0xb1);
@@ -2592,6 +2620,86 @@ namespace PlexDL.Player
             IMFCollection pSourceCollection,
             out IMFMediaSource ppAggSource
         );
+
+        public static HResult MFSetAttributeSize(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unWidth,
+            int unHeight
+            )
+        {
+            return MFSetAttribute2UINT32asUINT64(pAttributes, guidKey, unWidth, unHeight);
+        }
+
+        public static HResult MFSetAttribute2UINT32asUINT64(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unHigh32,
+            int unLow32
+            )
+        {
+            return pAttributes.SetUINT64(guidKey, Pack2UINT32AsUINT64(unHigh32, unLow32));
+        }
+
+        public static long Pack2UINT32AsUINT64(int unHigh, int unLow)
+        {
+            uint low = (uint)unLow;
+            uint high = (uint)unHigh;
+
+            ulong ul = (high);
+            ul <<= 32;
+            ul |= low;
+
+            return (long)ul;
+        }
+
+        public static HResult MFSetAttributeRatio(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unNumerator,
+            int unDenominator
+            )
+        {
+            return MFSetAttribute2UINT32asUINT64(pAttributes, guidKey, unNumerator, unDenominator);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult MFCreateSample(
+            out IMFSample ppIMFSample
+        );
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult MFCreateMemoryBuffer(
+            int cbMaxLength,
+            out IMFMediaBuffer ppBuffer
+        );
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult MFCopyImage(
+            IntPtr pDest,
+            int lDestStride,
+            IntPtr pSrc,
+            int lSrcStride,
+            int dwWidthInBytes,
+            int dwLines
+            );
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        //[DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        //public static extern HResult MFCreateMFByteStreamOnStream(
+        //    IStream pStream,
+        //    out IMFByteStream ppByteStream
+        //);
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        //[DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        //public static extern HResult MFCreateMFByteStreamOnStreamEx(
+        //    [MarshalAs(UnmanagedType.IUnknown)] object punkStream,
+        //    out IMFByteStream ppByteStream
+        //);
     }
 
     internal static class MFMediaType
@@ -2641,12 +2749,12 @@ namespace PlexDL.Player
         //// {00000000-767a-494d-b478-f29d25dc9037}       MFMPEG4Format_Base
         //public static readonly Guid MFMPEG4Format = new Guid(0x00000000, 0x767a, 0x494d, 0xb4, 0x78, 0xf2, 0x9d, 0x25, 0xdc, 0x90, 0x37);
 
-        //public static readonly Guid RGB32 = new Guid(22, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid RGB32 = new Guid(22, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid ARGB32 = new Guid(21, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-        //public static readonly Guid RGB24 = new Guid(20, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid RGB24 = new Guid(20, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid RGB555 = new Guid(24, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid RGB565 = new Guid(23, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-        //public static readonly Guid RGB8 = new Guid(41, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid RGB8 = new Guid(41, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid AI44 = new FourCC("AI44").ToMediaSubtype();
         //public static readonly Guid AYUV = new FourCC("AYUV").ToMediaSubtype();
         //public static readonly Guid YUY2 = new FourCC("YUY2").ToMediaSubtype();
@@ -2690,7 +2798,7 @@ namespace PlexDL.Player
         //public static readonly Guid DV50 = new FourCC("dv50").ToMediaSubtype();
         //public static readonly Guid DVH1 = new FourCC("dvh1").ToMediaSubtype();
         //public static readonly Guid DVC = new FourCC("dvc ").ToMediaSubtype();
-        //public static readonly Guid H264 = new FourCC("H264").ToMediaSubtype();
+        public static readonly Guid H264 = new FourCC("H264").ToMediaSubtype();
         //public static readonly Guid MJPG = new FourCC("MJPG").ToMediaSubtype();
         //public static readonly Guid O420 = new FourCC("420O").ToMediaSubtype();
         //public static readonly Guid HEVC = new FourCC("HEVC").ToMediaSubtype();
@@ -4728,7 +4836,6 @@ namespace PlexDL.Player
         #endregion
     }
 
-
     // PVMarshaler - Class to marshal PropVariants on parameters that
     // *output* PropVariants.
 
@@ -5164,7 +5271,6 @@ namespace PlexDL.Player
         }
     }
 
-
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Class)]
     internal sealed class UnmanagedNameAttribute : System.Attribute
     {
@@ -5180,6 +5286,25 @@ namespace PlexDL.Player
             return m_Name;
         }
     }
+
+    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
+    //internal class MFNetCredentialManagerGetParam
+    //{
+    //    public HResult hrOp;
+    //    [MarshalAs(UnmanagedType.Bool)]
+    //    public bool fAllowLoggedOnUser;
+    //    [MarshalAs(UnmanagedType.Bool)]
+    //    public bool fClearTextPackage;
+    //    [MarshalAs(UnmanagedType.LPWStr)]
+    //    public string pszUrl;
+    //    [MarshalAs(UnmanagedType.LPWStr)]
+    //    public string pszSite;
+    //    [MarshalAs(UnmanagedType.LPWStr)]
+    //    public string pszRealm;
+    //    [MarshalAs(UnmanagedType.LPWStr)]
+    //    public string pszPackage;
+    //    public int nRetries;
+    //}
 
     #endregion
 
@@ -6842,15 +6967,15 @@ namespace PlexDL.Player
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
-        //[PreserveSig]
-        //HResult CreateObjectFromByteStream(
-        //    [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
-        //    [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-        //    [In] MFResolution dwFlags,
-        //    [In, MarshalAs(UnmanagedType.Interface)] IPropertyStore pProps,
-        //    out MFObjectType pObjectType,
-        //    [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
-        //    );
+        [PreserveSig]
+        HResult CreateObjectFromByteStream(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
+            [In] MFResolution dwFlags,
+            [In, MarshalAs(UnmanagedType.Interface)] IPropertyStore pProps,
+            out MFObjectType pObjectType,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
+            );
 
         [PreserveSig]
         HResult BeginCreateObjectFromURL(
@@ -8530,6 +8655,7 @@ namespace PlexDL.Player
             );
     }
 
+
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("C6E13370-30AC-11d0-A18C-00A0C9118956")]
@@ -8590,145 +8716,69 @@ namespace PlexDL.Player
             );
     }
 
-
+    // Authentication - not yet
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    //Guid("56181D2D-E221-4ADB-B1C8-3CEE6A53F76F"),
+    //Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    //internal interface IMFMetadataProvider
+    //internal interface IMFNetCredentialManager
     //{
     //    [PreserveSig]
-    //    HResult GetMFMetadata(
-    //        [In, MarshalAs(UnmanagedType.Interface)]
-    //        IMFPresentationDescriptor pPresentationDescriptor,
-    //        [In] int dwStreamIdentifier,
-    //        [In] int dwFlags, // must be zero
-    //        [MarshalAs(UnmanagedType.Interface)] out IMFMetadata ppMFMetadata
-    //        );
-    //}
-
-    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    //Guid("F88CFB8C-EF16-4991-B450-CB8C69E51704"),
-    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    //internal interface IMFMetadata
-    //{
-    //    [PreserveSig]
-    //    HResult SetLanguage(
-    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pwszRFC1766
+    //    HResult BeginGetCredentials(
+    //        [In] MFNetCredentialManagerGetParam pParam,
+    //        [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+    //        [In, MarshalAs(UnmanagedType.IUnknown)] object pState
     //        );
 
     //    [PreserveSig]
-    //    HResult GetLanguage(
-    //        [MarshalAs(UnmanagedType.LPWStr)] out string ppwszRFC1766
+    //    HResult EndGetCredentials(
+    //        [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
+    //        [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
     //        );
 
     //    [PreserveSig]
-    //    HResult GetAllLanguages(
-    //        [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "IMFMetadata.GetAllLanguages", MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvLanguages
-    //        );
-
-    //    [PreserveSig]
-    //    HResult SetProperty(
-    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName,
-    //        [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant ppvValue
-    //        );
-
-    //    [PreserveSig]
-    //    HResult GetProperty(
-    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName,
-    //        [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "IMFMetadata.GetProperty", MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvValue
-    //        );
-
-    //    [PreserveSig]
-    //    HResult DeleteProperty(
-    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName
-    //        );
-
-    //    [PreserveSig]
-    //    HResult GetAllPropertyNames(
-    //        [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "IMFMetadata.GetAllPropertyNames", MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvNames
+    //    HResult SetGood(
+    //        [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fGood
     //        );
     //}
 
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    //Guid("3C9B2EB9-86D5-4514-A394-F56664F9F0D8")]
-    //internal interface IMFMediaSourceEx : IMFMediaSource
+    //Guid("5B87EF6A-7ED8-434F-BA0E-184FAC1628D1")]
+    //internal interface IMFNetCredential
     //{
-    //    #region IMFMediaEventGenerator methods
+    //    [PreserveSig]
+    //    HResult SetUser(
+    //        [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+    //        [In] int cbData,
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+    //        );
 
     //    [PreserveSig]
-    //    new HResult GetEvent(
-    //        [In] MFEventFlag dwFlags,
-    //        [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
-    //    );
+    //    HResult SetPassword(
+    //        [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+    //        [In] int cbData,
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+    //        );
 
     //    [PreserveSig]
-    //    new HResult BeginGetEvent(
-    //        [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-    //        [In, MarshalAs(UnmanagedType.IUnknown)] object o
-    //    );
+    //    HResult GetUser(
+    //        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+    //        [In, Out] MFInt pcbData,
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+    //        );
 
     //    [PreserveSig]
-    //    new HResult EndGetEvent(
-    //        IMFAsyncResult pResult,
-    //        out IMFMediaEvent ppEvent
-    //    );
+    //    HResult GetPassword(
+    //        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+    //        [In, Out] MFInt pcbData,
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+    //        );
 
     //    [PreserveSig]
-    //    new HResult QueueEvent(
-    //        [In] MediaEventType met,
-    //        [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-    //        [In] HResult hrStatus,
-    //        [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
-    //    );
-
-    //    #endregion
-
-    //    #region IMFMediaSource methods
-
-    //    [PreserveSig]
-    //    new HResult GetCharacteristics(
-    //        out MFMediaSourceCharacteristics pdwCharacteristics
-    //    );
-
-    //    [PreserveSig]
-    //    new HResult CreatePresentationDescriptor(
-    //        out IMFPresentationDescriptor ppPresentationDescriptor
-    //    );
-
-    //    [PreserveSig]
-    //    new HResult Start(
-    //        [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor,
-    //        [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
-    //        [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition
-    //    );
-
-    //    [PreserveSig]
-    //    new HResult Stop();
-
-    //    [PreserveSig]
-    //    new HResult Pause();
-
-    //    [PreserveSig]
-    //    new HResult Shutdown();
-
-    //    #endregion
-
-    //    [PreserveSig]
-    //    HResult GetSourceAttributes(
-    //        out IMFAttributes ppAttributes
-    //    );
-
-    //    [PreserveSig]
-    //    HResult GetStreamAttributes(
-    //        int dwStreamIdentifier,
-    //        out IMFAttributes ppAttributes
-    //    );
-
-    //    [PreserveSig]
-    //    HResult SetD3DManager(
-    //        [MarshalAs(UnmanagedType.IUnknown)] object pManager
-    //    );
+    //    HResult LoggedOnUser(
+    //        [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
+    //        );
     //}
 
     #endregion
@@ -8742,9 +8792,9 @@ namespace PlexDL.Player
 
     internal enum STGM : uint
     {
-        _READ = 0x0,
-        _WRITE = 0x1,
-        _READWRITE = 0x2
+        STGM_READ = 0x0,
+        STGM_WRITE = 0x1,
+        STGM_READWRITE = 0x2
     }
 
     [Flags]

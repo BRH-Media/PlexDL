@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using PlexDL.PlexAPI.DirectoryTypes;
 using RestSharp;
+using System;
+using System.Collections.Generic;
 
 namespace PlexDL.PlexAPI
 {

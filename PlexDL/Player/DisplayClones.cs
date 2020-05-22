@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.98.2
-    February 2020, The Netherlands
+    PlexDL.Player - Version 0.99
+    May 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,12 +12,12 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
+    Article on CodeProject with information on the use of the PlexDL.Player library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PVS.MediaPlayer library source code is divided into 8 files:
+    The PlexDL.Player library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -45,15 +45,15 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    February 2020, The Netherlands
+    May 2020, The Netherlands
 
     ****************************************************************/
 
@@ -61,10 +61,20 @@
 
 using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
+using System.Threading;
 
 #endregion
+
+#region Disable Some Warnings
+
+// programmer's preference:
+#pragma warning disable IDE0044 // Add readonly modifier
+// the library can be compiled with all versions of c#:
+#pragma warning disable IDE0017 // Simplify object initialization
+
+#endregion
+
 
 namespace PlexDL.Player
 {
@@ -125,11 +135,11 @@ namespace PlexDL.Player
         /// </summary>
         Normal,
         /// <summary>
-        /// Specifies high-quality video.
+        /// Specifies high quality video.
         /// </summary>
         High,
         /// <summary>
-        /// Specifies automatic quality video: high-quality video if the video image of the display clone is smaller than the original video image, otherwise normal video quality.
+        /// Specifies automatic quality video: high quality video if the video image of the display clone is smaller than the original video image, otherwise normal video quality.
         /// </summary>
         Auto
     }
@@ -207,7 +217,7 @@ namespace PlexDL.Player
         #region Display Clones - Main
 
         /// <summary>
-        /// Provides access to the display clones settings of the player (for example Player.DisplayClones.Add).
+        /// Provides access to the display clones settings of the player (for example, Player.DisplayClones.Add).
         /// </summary>
         public DisplayClones DisplayClones
         {
@@ -586,7 +596,7 @@ namespace PlexDL.Player
                         }
                         dc_DisplayClonesRunning = false;
 
-                        if (dc_DisplayClones != null)
+                        if (!_displayHold && dc_DisplayClones != null)
                         {
                             for (int i = 0; i < dc_DisplayClones.Length; i++)
                             {
@@ -946,7 +956,6 @@ namespace PlexDL.Player
 
                             //backBuffer.Dispose();
 
-
                             _blendFunction.SourceConstantAlpha = (byte)(_overlay.Opacity * 0xFF);
                             SafeNativeMethods.AlphaBlend(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, _blendFunction);
                         }
@@ -960,7 +969,6 @@ namespace PlexDL.Player
                     }
                     catch
                     {
-                        MessageBox.Show("Oops");
                         if (tempGraphics != null)
                         {
                             if (tempHdc != IntPtr.Zero) tempGraphics.ReleaseHdc(tempHdc);
@@ -1169,12 +1177,12 @@ namespace PlexDL.Player
                                     }
                                     else if (flipMode == CloneFlip.FlipY)
                                     {
-                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X, dc_RefreshRect.Height, newSize, -dc_RefreshRect.Height,
+                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X, dc_RefreshRect.Height - 1, newSize, -dc_RefreshRect.Height,
                                             sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
                                     }
                                     else //if (flip == FlipType.FlipXY)
                                     {
-                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, dc_RefreshRect.Height, -newSize, -dc_RefreshRect.Height,
+                                        SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, dc_RefreshRect.Height - 1, -newSize, -dc_RefreshRect.Height,
                                             sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
                                     }
                                 }
