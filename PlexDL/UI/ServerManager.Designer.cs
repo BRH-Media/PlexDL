@@ -42,9 +42,10 @@ namespace PlexDL.UI
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRelays = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDirectConnection = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
+            this.itmLocalLink = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
             this.SuspendLayout();
@@ -93,7 +94,8 @@ namespace PlexDL.UI
             this.itmLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmServers,
             this.itmRelays,
-            this.itmDirectConnection});
+            this.itmDirectConnection,
+            this.itmLocalLink});
             this.itmLoad.Enabled = false;
             this.itmLoad.Name = "itmLoad";
             this.itmLoad.Size = new System.Drawing.Size(45, 20);
@@ -123,6 +125,14 @@ namespace PlexDL.UI
             this.itmDirectConnection.Text = "Direct Connection";
             this.itmDirectConnection.Click += new System.EventHandler(this.itmDirectConnection_Click);
             // 
+            // itmClearServers
+            // 
+            this.itmClearServers.Enabled = false;
+            this.itmClearServers.Name = "itmClearServers";
+            this.itmClearServers.Size = new System.Drawing.Size(86, 20);
+            this.itmClearServers.Text = "Clear Servers";
+            this.itmClearServers.Click += new System.EventHandler(this.itmClearServers_Click);
+            // 
             // itmConnect
             // 
             this.itmConnect.Enabled = false;
@@ -131,14 +141,6 @@ namespace PlexDL.UI
             this.itmConnect.Size = new System.Drawing.Size(134, 20);
             this.itmConnect.Text = "Connect to this server";
             this.itmConnect.Click += new System.EventHandler(this.itmConnect_Click);
-            // 
-            // itmClearServers
-            // 
-            this.itmClearServers.Enabled = false;
-            this.itmClearServers.Name = "itmClearServers";
-            this.itmClearServers.Size = new System.Drawing.Size(86, 20);
-            this.itmClearServers.Text = "Clear Servers";
-            this.itmClearServers.Click += new System.EventHandler(this.itmClearServers_Click);
             // 
             // dgvServers
             // 
@@ -172,6 +174,14 @@ namespace PlexDL.UI
             this.dgvServers.TabIndex = 16;
             this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
             this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
+            // 
+            // itmLocalLink
+            // 
+            this.itmLocalLink.Name = "itmLocalLink";
+            this.itmLocalLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.itmLocalLink.Size = new System.Drawing.Size(212, 22);
+            this.itmLocalLink.Text = "Local Link";
+            this.itmLocalLink.Click += new System.EventHandler(this.itmLocalLink_Click);
             // 
             // ServerManager
             // 
@@ -211,5 +221,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmViaToken;
         private ToolStripMenuItem itmViaPlexTv;
         private ToolStripMenuItem itmClearServers;
+        private ToolStripMenuItem itmLocalLink;
     }
 }

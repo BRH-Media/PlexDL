@@ -10,6 +10,9 @@ namespace PlexDL.UI
         //public bool ConnectionStarted { get; set; } = false;
         public bool Success { get; set; } = false;
 
+        //specifies whether PlexDL should fill txtServerIP.Text with "127.0.0.1"
+        public bool LoadLocalLink { get; set; } = false;
+
         public DirectConnect()
         {
             InitializeComponent();
@@ -65,7 +68,12 @@ namespace PlexDL.UI
 
         private void DirectConnect_Load(object sender, EventArgs e)
         {
-            //ConnectionStarted = false;
+            if (LoadLocalLink)
+            {
+                txtServerIP.Text = @"127.0.0.1";
+                txtServerIP.ReadOnly = true;
+                Text = @"Local Machine Connection";
+            }
         }
     }
 }

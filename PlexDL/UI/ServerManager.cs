@@ -71,11 +71,6 @@ namespace PlexDL.UI
             e.Result = result;
         }
 
-        private void itmServers_Click(object sender, EventArgs e)
-        {
-            LoadServers();
-        }
-
         private void LoadServers(bool silent = false)
         {
             try
@@ -115,11 +110,6 @@ namespace PlexDL.UI
                     MessageBox.Show("Server retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoggingHelpers.RecordException(ex.Message, "ServerGetError");
             }
-        }
-
-        private void itmRelays_Click(object sender, EventArgs e)
-        {
-            LoadRelays();
         }
 
         private void LoadRelays(bool silent = false)
@@ -169,7 +159,7 @@ namespace PlexDL.UI
             {
                 if (wininet.CheckForInternetConnection())
                 {
-                    if (dgvServers.SelectedRows.Count == 1)
+                    if (dgvServers.SelectedRows.Count == 1 && TokenSet())
                     {
                         var index = dgvServers.CurrentCell.RowIndex;
                         var s = GlobalStaticVars.PlexServers[index];
@@ -236,12 +226,13 @@ namespace PlexDL.UI
             DoConnect();
         }
 
-        private void RunDirectConnect()
+        private void RunDirectConnect(bool LocalLink)
         {
             var servers = new List<Server>();
             using (var frmDir = new DirectConnect())
             {
                 frmDir.ConnectionInfo.PlexAccountToken = GlobalStaticVars.User.authenticationToken;
+                frmDir.LoadLocalLink = LocalLink;
                 if (frmDir.ShowDialog() == DialogResult.OK)
                 {
                     if (frmDir.Success)
@@ -333,7 +324,26 @@ namespace PlexDL.UI
 
         private void itmDirectConnection_Click(object sender, EventArgs e)
         {
-            RunDirectConnect();
+            if (TokenSet())
+                RunDirectConnect(false);
+        }
+
+        private void itmLocalLink_Click(object sender, EventArgs e)
+        {
+            if (TokenSet())
+                RunDirectConnect(true);
+        }
+
+        private void itmRelays_Click(object sender, EventArgs e)
+        {
+            if (TokenSet())
+                LoadRelays();
+        }
+
+        private void itmServers_Click(object sender, EventArgs e)
+        {
+            if (TokenSet())
+                LoadServers();
         }
 
         private void itmViaPlexTv_Click(object sender, EventArgs e)
@@ -407,6 +417,11 @@ namespace PlexDL.UI
                 MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private bool TokenSet()
+        {
+            return !string.IsNullOrEmpty(GlobalStaticVars.User.authenticationToken);
         }
 
         private bool ApplyToken(string token, bool silent = true)
