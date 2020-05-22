@@ -90,11 +90,11 @@ namespace PlexDL.Internal
         private static void CheckDevStatus(List<string> args)
         {
             if (args.Contains("-beta"))
-                GlobalStaticVars.DevelopmentStatus = DevStatus.IN_BETA;
+                BuildState.State = DevStatus.IN_BETA;
             else if (args.Contains("-prod"))
-                GlobalStaticVars.DevelopmentStatus = DevStatus.PRODUCTION_READY;
+                BuildState.State = DevStatus.PRODUCTION_READY;
             else if (args.Contains("-dev"))
-                GlobalStaticVars.DevelopmentStatus = DevStatus.IN_DEVLOPMENT;
+                BuildState.State = DevStatus.IN_DEVLOPMENT;
         }
 
         private static void CheckDebug(List<string> args)

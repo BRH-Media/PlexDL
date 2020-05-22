@@ -1870,11 +1870,10 @@ namespace PlexDL.UI
 
         private void LoadDevStatus()
         {
-            var status = GlobalStaticVars.DevelopmentStatus;
             var choc = Color.Chocolate;
             var red = Color.DarkRed;
             var green = Color.DarkGreen;
-            switch (status)
+            switch (BuildState.State)
             {
                 case DevStatus.IN_DEVLOPMENT:
                     lblBeta.ForeColor = choc;

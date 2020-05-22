@@ -138,6 +138,7 @@
     <Compile Include="Common\Enums\ContentType.cs" />
     <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
+    <Compile Include="Common\Globals\BuildState.cs" />
     <Compile Include="Common\Globals\GlobalTables.cs" />
     <Compile Include="Common\Globals\GlobalViews.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
