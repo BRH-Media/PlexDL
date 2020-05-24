@@ -1171,6 +1171,7 @@ namespace PlexDL.UI
             this.dgvTracks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTracks.Size = new System.Drawing.Size(320, 165);
             this.dgvTracks.TabIndex = 21;
+            this.dgvTracks.CellContentDoubleClick += new DataGridViewCellEventHandler(this.DgvTracks_CellContentDoubleClick);
             // 
             // dgvLog
             // 

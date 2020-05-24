@@ -13,28 +13,26 @@ namespace LogDel.Utilities
             {
                 if (table != null)
                 {
-                    StreamWriter sw = new StreamWriter(path, false);
+                    var sw = new StreamWriter(path, false);
                     //headers
                     sw.Write("###");
-                    for (int i = 0; i < table.Columns.Count; i++)
+                    for (var i = 0; i < table.Columns.Count; i++)
                     {
                         sw.Write(table.Columns[i]);
-                        if (i < table.Columns.Count - 1)
-                        {
-                            sw.Write("!");
-                        }
+                        if (i < table.Columns.Count - 1) sw.Write("!");
                     }
+
                     sw.Write(sw.NewLine);
                     foreach (DataRow dr in table.Rows)
                     {
-                        for (int i = 0; i < table.Columns.Count; i++)
+                        for (var i = 0; i < table.Columns.Count; i++)
                         {
                             if (!Convert.IsDBNull(dr[i]))
                             {
-                                string value = dr[i].ToString();
+                                var value = dr[i].ToString();
                                 if (value.Contains('!'))
                                 {
-                                    value = String.Format("\"{0}\"", value);
+                                    value = string.Format("\"{0}\"", value);
                                     sw.Write(value);
                                 }
                                 else
@@ -42,13 +40,13 @@ namespace LogDel.Utilities
                                     sw.Write(dr[i].ToString());
                                 }
                             }
-                            if (i < table.Columns.Count - 1)
-                            {
-                                sw.Write("!");
-                            }
+
+                            if (i < table.Columns.Count - 1) sw.Write("!");
                         }
+
                         sw.Write(sw.NewLine);
                     }
+
                     sw.Close();
                 }
             }

@@ -75,7 +75,7 @@ namespace LogDel
                                 var arrSplit = line.Split('!');
 
                                 //loop the amount of times equal to the cell-count (arrSplit.Length)
-                                for (int i = 0; i < arrSplit.Length; i++)
+                                for (var i = 0; i < arrSplit.Length; i++)
                                 {
                                     //define new column for the table, and set the field values to the current 'i'
                                     //index. This will create our numerical field notation.

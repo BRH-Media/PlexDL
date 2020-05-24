@@ -4,6 +4,6 @@ namespace PlexDL.Common.Globals
 {
     public static class BuildState
     {
-        public static DevStatus State { get; set; } = DevStatus.IN_DEVLOPMENT;
+        public static DevStatus State { get; set; } = DevStatus.PRODUCTION_READY;
     }
 }

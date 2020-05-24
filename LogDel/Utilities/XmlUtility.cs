@@ -10,8 +10,8 @@ namespace LogDel.Utilities
         {
             try
             {
-                DataSet ds = new DataSet("PlexDLData");
-                DataTable data = table.Copy();
+                var ds = new DataSet("PlexDLData");
+                var data = table.Copy();
 
                 ds.Tables.Add(data);
                 //hierarchical XML format

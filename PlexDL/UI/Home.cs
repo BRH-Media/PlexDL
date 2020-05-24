@@ -2228,6 +2228,31 @@ namespace PlexDL.UI
             }
         }
 
+        //when the user double-clicks a cell in dgvTracks (Music), show a messagebox with the cell content
+        private void DgvTracks_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
+                {
+                    if (dgvTracks.SelectedRows.Count == 1)
+                        DoubleClickLaunch();
+                }
+                else
+                {
+                    if (dgvTracks.Rows.Count > 0)
+                    {
+                        var value = dgvTracks.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
         //when the user double-clicks a cell in dgvTVShows (TV), show a messagebox with the cell content
         private void DgvTVShows_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
