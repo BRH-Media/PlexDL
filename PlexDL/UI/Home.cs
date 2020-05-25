@@ -4,6 +4,7 @@ using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.Metadata;
 using PlexDL.Common.Caching;
+using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
@@ -2161,112 +2162,36 @@ namespace PlexDL.UI
             }
         }
 
-        //when the user double-clicks a cell in dgvMovies (Movies), show a messagebox with the cell content
-        private void dgvMovies_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void DoubleClickProcessor(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
+                var senderType = sender.GetType();
+                var gridType = typeof(FlatDataGridView);
+                if (senderType == gridType)
                 {
-                    if (dgvMovies.SelectedRows.Count == 1)
-                        DoubleClickLaunch();
+                    var gridView = (FlatDataGridView)sender;
+                    if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch && gridView.IsContentTable)
+                    {
+                        if (gridView.SelectedRows.Count == 1)
+                            DoubleClickLaunch();
+                    }
+                    else
+                    {
+                        if (gridView.Rows.Count <= 0) return;
+                        var value = gridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                        MessageBox.Show(value, @"Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    if (dgvMovies.Rows.Count > 0)
-                    {
-                        var value = dgvMovies.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    LoggingHelpers.RecordGenericEntry("Double-click launch failed; incorrect object type. Expecting object of type FlatDataGridView.");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                //ignore
-            }
-        }
-
-        //when the user double-clicks a cell in dgvSeasons (TV), show a messagebox with the cell content
-        private void DgvSeasons_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (dgvSeasons.Rows.Count > 0)
-                {
-                    var value = dgvSeasons.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch
-            {
-                //ignore
-            }
-        }
-
-        //when the user double-clicks a cell in dgvEpisodes (TV), show a messagebox with the cell content
-        private void DgvEpisodes_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
-                {
-                    if (dgvEpisodes.SelectedRows.Count == 1)
-                        DoubleClickLaunch();
-                }
-                else
-                {
-                    if (dgvEpisodes.Rows.Count > 0)
-                    {
-                        var value = dgvEpisodes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-            catch
-            {
-                //ignore
-            }
-        }
-
-        //when the user double-clicks a cell in dgvTracks (Music), show a messagebox with the cell content
-        private void DgvTracks_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (GlobalStaticVars.Settings.Generic.DoubleClickLaunch)
-                {
-                    if (dgvTracks.SelectedRows.Count == 1)
-                        DoubleClickLaunch();
-                }
-                else
-                {
-                    if (dgvTracks.Rows.Count > 0)
-                    {
-                        var value = dgvTracks.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                        MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-            catch
-            {
-                //ignore
-            }
-        }
-
-        //when the user double-clicks a cell in dgvTVShows (TV), show a messagebox with the cell content
-        private void DgvTVShows_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (dgvTVShows.Rows.Count > 0)
-                {
-                    var value = dgvTVShows.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch
-            {
-                //ignore
+                LoggingHelpers.RecordException(ex.Message, "DoubleClickError");
+                LoggingHelpers.RecordGenericEntry("Double-click launch failed; an error occurred. Check exception log for more information.");
             }
         }
 

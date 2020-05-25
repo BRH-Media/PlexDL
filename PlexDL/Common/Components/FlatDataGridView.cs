@@ -36,6 +36,10 @@ namespace PlexDL.Common.Components
         [Description("The ForeColor of RowsEmptyText")]
         public Color RowsEmptyTextForeColor { get; set; } = Color.FromArgb(134, 134, 134);
 
+        [Category("PlexDL")]
+        [Description("Tracks, Episodes, Movies, etc.")]
+        public bool IsContentTable { get; set; } = false;
+
         public sealed override Font Font
         {
             get => base.Font;
