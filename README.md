@@ -91,6 +91,7 @@ Alternatively, can access the latest official build [here](https://github.com/Br
 * `Control+S` - Populates Grid With Registered Servers
 * `Control+R` - Populates Grid With Registered Plex.tv Relays
 * `Control+D` - Launches Direct Connection Dialog
+* `Control+K` - Launches Local Machine Connection Dialog
 ##### __Metadata__
 * `Control+S` - Export a PMXML File of the Currently Loaded Content
 * `Control+O` - Load a PMXML File into the Metadata Window
