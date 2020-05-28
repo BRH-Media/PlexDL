@@ -32,14 +32,9 @@ namespace PlexDL.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblSize = new System.Windows.Forms.Label();
-            this.lblSizeValue = new System.Windows.Forms.Label();
-            this.lblRuntime = new System.Windows.Forms.Label();
-            this.lblRuntimeValue = new System.Windows.Forms.Label();
-            this.lblResolutionValue = new System.Windows.Forms.Label();
-            this.lblResolution = new System.Windows.Forms.Label();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.picPoster = new System.Windows.Forms.PictureBox();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
@@ -48,8 +43,7 @@ namespace PlexDL.UI
             this.pnlPlotSynopsis = new System.Windows.Forms.Panel();
             this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
             this.gbStarring = new System.Windows.Forms.GroupBox();
-            this.gbMetadata = new System.Windows.Forms.GroupBox();
-            this.tlpMetadata = new System.Windows.Forms.TableLayoutPanel();
+            this.gbAttributes = new System.Windows.Forms.GroupBox();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,20 +54,15 @@ namespace PlexDL.UI
             this.itmBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblFramerateValue = new System.Windows.Forms.Label();
-            this.lblFramerate = new System.Windows.Forms.Label();
-            this.lblContainer = new System.Windows.Forms.Label();
-            this.lblContainerValue = new System.Windows.Forms.Label();
-            this.lblGenre = new System.Windows.Forms.Label();
-            this.lblGenreValue = new System.Windows.Forms.Label();
+            this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
             this.gbStarring.SuspendLayout();
-            this.gbMetadata.SuspendLayout();
-            this.tlpMetadata.SuspendLayout();
+            this.gbAttributes.SuspendLayout();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.SuspendLayout();
             // 
             // flpActors
@@ -87,81 +76,6 @@ namespace PlexDL.UI
             this.flpActors.Size = new System.Drawing.Size(535, 231);
             this.flpActors.TabIndex = 1;
             this.tipMain.SetToolTip(this.flpActors, "Actors/Actresses in this title");
-            // 
-            // lblSize
-            // 
-            this.lblSize.AutoSize = true;
-            this.lblSize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSize.Location = new System.Drawing.Point(2, 0);
-            this.lblSize.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(87, 28);
-            this.lblSize.TabIndex = 4;
-            this.lblSize.Text = "Size:";
-            this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblSizeValue
-            // 
-            this.lblSizeValue.AutoSize = true;
-            this.lblSizeValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeValue.Location = new System.Drawing.Point(93, 0);
-            this.lblSizeValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblSizeValue.Name = "lblSizeValue";
-            this.lblSizeValue.Size = new System.Drawing.Size(163, 28);
-            this.lblSizeValue.TabIndex = 5;
-            this.lblSizeValue.Text = "Unknown";
-            this.lblSizeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblSizeValue, "Size");
-            // 
-            // lblRuntime
-            // 
-            this.lblRuntime.AutoSize = true;
-            this.lblRuntime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRuntime.Location = new System.Drawing.Point(2, 28);
-            this.lblRuntime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblRuntime.Name = "lblRuntime";
-            this.lblRuntime.Size = new System.Drawing.Size(87, 28);
-            this.lblRuntime.TabIndex = 6;
-            this.lblRuntime.Text = "Runtime:";
-            this.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblRuntimeValue
-            // 
-            this.lblRuntimeValue.AutoSize = true;
-            this.lblRuntimeValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRuntimeValue.Location = new System.Drawing.Point(93, 28);
-            this.lblRuntimeValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblRuntimeValue.Name = "lblRuntimeValue";
-            this.lblRuntimeValue.Size = new System.Drawing.Size(163, 28);
-            this.lblRuntimeValue.TabIndex = 7;
-            this.lblRuntimeValue.Text = "Unknown";
-            this.lblRuntimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblRuntimeValue, "Runtime");
-            // 
-            // lblResolutionValue
-            // 
-            this.lblResolutionValue.AutoSize = true;
-            this.lblResolutionValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResolutionValue.Location = new System.Drawing.Point(93, 56);
-            this.lblResolutionValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblResolutionValue.Name = "lblResolutionValue";
-            this.lblResolutionValue.Size = new System.Drawing.Size(163, 28);
-            this.lblResolutionValue.TabIndex = 11;
-            this.lblResolutionValue.Text = "Unknown";
-            this.lblResolutionValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblResolutionValue, "Resolution");
-            // 
-            // lblResolution
-            // 
-            this.lblResolution.AutoSize = true;
-            this.lblResolution.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResolution.Location = new System.Drawing.Point(2, 56);
-            this.lblResolution.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblResolution.Name = "lblResolution";
-            this.lblResolution.Size = new System.Drawing.Size(87, 28);
-            this.lblResolution.TabIndex = 10;
-            this.lblResolution.Text = "Resolution:";
-            this.lblResolution.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // sfdExport
             // 
@@ -240,48 +154,18 @@ namespace PlexDL.UI
             this.gbStarring.TabStop = false;
             this.gbStarring.Text = "Starring";
             // 
-            // gbMetadata
+            // gbAttributes
             // 
-            this.tlpMain.SetColumnSpan(this.gbMetadata, 3);
-            this.gbMetadata.Controls.Add(this.tlpMetadata);
-            this.gbMetadata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbMetadata.Location = new System.Drawing.Point(3, 239);
-            this.gbMetadata.Name = "gbMetadata";
-            this.tlpMain.SetRowSpan(this.gbMetadata, 3);
-            this.gbMetadata.Size = new System.Drawing.Size(264, 191);
-            this.gbMetadata.TabIndex = 22;
-            this.gbMetadata.TabStop = false;
-            this.gbMetadata.Text = "Metadata";
-            // 
-            // tlpMetadata
-            // 
-            this.tlpMetadata.ColumnCount = 2;
-            this.tlpMetadata.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.56701F));
-            this.tlpMetadata.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.43299F));
-            this.tlpMetadata.Controls.Add(this.lblGenre, 0, 5);
-            this.tlpMetadata.Controls.Add(this.lblGenreValue, 0, 5);
-            this.tlpMetadata.Controls.Add(this.lblContainerValue, 1, 4);
-            this.tlpMetadata.Controls.Add(this.lblContainer, 0, 4);
-            this.tlpMetadata.Controls.Add(this.lblFramerateValue, 1, 3);
-            this.tlpMetadata.Controls.Add(this.lblFramerate, 0, 3);
-            this.tlpMetadata.Controls.Add(this.lblRuntimeValue, 1, 1);
-            this.tlpMetadata.Controls.Add(this.lblSizeValue, 1, 0);
-            this.tlpMetadata.Controls.Add(this.lblResolutionValue, 1, 2);
-            this.tlpMetadata.Controls.Add(this.lblSize, 0, 0);
-            this.tlpMetadata.Controls.Add(this.lblRuntime, 0, 1);
-            this.tlpMetadata.Controls.Add(this.lblResolution, 0, 2);
-            this.tlpMetadata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMetadata.Location = new System.Drawing.Point(3, 16);
-            this.tlpMetadata.Name = "tlpMetadata";
-            this.tlpMetadata.RowCount = 6;
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpMetadata.Size = new System.Drawing.Size(258, 172);
-            this.tlpMetadata.TabIndex = 23;
+            this.tlpMain.SetColumnSpan(this.gbAttributes, 3);
+            this.gbAttributes.Controls.Add(this.dgvAttributes);
+            this.gbAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbAttributes.Location = new System.Drawing.Point(3, 239);
+            this.gbAttributes.Name = "gbAttributes";
+            this.tlpMain.SetRowSpan(this.gbAttributes, 3);
+            this.gbAttributes.Size = new System.Drawing.Size(264, 191);
+            this.gbAttributes.TabIndex = 22;
+            this.gbAttributes.TabStop = false;
+            this.gbAttributes.Text = "Content Attributes";
             // 
             // tlpMain
             // 
@@ -296,7 +180,7 @@ namespace PlexDL.UI
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
             this.tlpMain.Controls.Add(this.picPoster, 0, 0);
-            this.tlpMain.Controls.Add(this.gbMetadata, 0, 4);
+            this.tlpMain.Controls.Add(this.gbAttributes, 0, 4);
             this.tlpMain.Controls.Add(this.gbPlot, 3, 0);
             this.tlpMain.Controls.Add(this.gbStarring, 3, 3);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -394,79 +278,37 @@ namespace PlexDL.UI
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.itmExit_Click);
             // 
-            // lblFramerateValue
+            // dgvAttributes
             // 
-            this.lblFramerateValue.AutoSize = true;
-            this.lblFramerateValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblFramerateValue.Location = new System.Drawing.Point(93, 84);
-            this.lblFramerateValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblFramerateValue.Name = "lblFramerateValue";
-            this.lblFramerateValue.Size = new System.Drawing.Size(163, 28);
-            this.lblFramerateValue.TabIndex = 20;
-            this.lblFramerateValue.Text = "Unknown";
-            this.lblFramerateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblFramerate
-            // 
-            this.lblFramerate.AutoSize = true;
-            this.lblFramerate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblFramerate.Location = new System.Drawing.Point(2, 84);
-            this.lblFramerate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblFramerate.Name = "lblFramerate";
-            this.lblFramerate.Size = new System.Drawing.Size(87, 28);
-            this.lblFramerate.TabIndex = 19;
-            this.lblFramerate.Text = "Framerate:";
-            this.lblFramerate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblContainer
-            // 
-            this.lblContainer.AutoSize = true;
-            this.lblContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblContainer.Location = new System.Drawing.Point(2, 112);
-            this.lblContainer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblContainer.Name = "lblContainer";
-            this.lblContainer.Size = new System.Drawing.Size(87, 28);
-            this.lblContainer.TabIndex = 21;
-            this.lblContainer.Text = "Container:";
-            this.lblContainer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblContainerValue
-            // 
-            this.lblContainerValue.AutoSize = true;
-            this.lblContainerValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblContainerValue.Location = new System.Drawing.Point(93, 112);
-            this.lblContainerValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblContainerValue.Name = "lblContainerValue";
-            this.lblContainerValue.Size = new System.Drawing.Size(163, 28);
-            this.lblContainerValue.TabIndex = 22;
-            this.lblContainerValue.Text = "Unknown";
-            this.lblContainerValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblContainerValue, "Container");
-            // 
-            // lblGenre
-            // 
-            this.lblGenre.AutoSize = true;
-            this.lblGenre.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGenre.Location = new System.Drawing.Point(2, 140);
-            this.lblGenre.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblGenre.Name = "lblGenre";
-            this.lblGenre.Size = new System.Drawing.Size(87, 32);
-            this.lblGenre.TabIndex = 23;
-            this.lblGenre.Text = "Genre:";
-            this.lblGenre.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblGenreValue
-            // 
-            this.lblGenreValue.AutoSize = true;
-            this.lblGenreValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGenreValue.Location = new System.Drawing.Point(93, 140);
-            this.lblGenreValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblGenreValue.Name = "lblGenreValue";
-            this.lblGenreValue.Size = new System.Drawing.Size(163, 32);
-            this.lblGenreValue.TabIndex = 24;
-            this.lblGenreValue.Text = "Unknown";
-            this.lblGenreValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tipMain.SetToolTip(this.lblGenreValue, "Genre");
+            this.dgvAttributes.AllowUserToAddRows = false;
+            this.dgvAttributes.AllowUserToDeleteRows = false;
+            this.dgvAttributes.AllowUserToOrderColumns = true;
+            this.dgvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvAttributes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvAttributes.IsContentTable = false;
+            this.dgvAttributes.Location = new System.Drawing.Point(3, 16);
+            this.dgvAttributes.MultiSelect = false;
+            this.dgvAttributes.Name = "dgvAttributes";
+            this.dgvAttributes.RowHeadersVisible = false;
+            this.dgvAttributes.RowsEmptyText = "No Attributes";
+            this.dgvAttributes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAttributes.Size = new System.Drawing.Size(258, 172);
+            this.dgvAttributes.TabIndex = 0;
             // 
             // Metadata
             // 
@@ -490,12 +332,11 @@ namespace PlexDL.UI
             this.gbPlot.ResumeLayout(false);
             this.pnlPlotSynopsis.ResumeLayout(false);
             this.gbStarring.ResumeLayout(false);
-            this.gbMetadata.ResumeLayout(false);
-            this.tlpMetadata.ResumeLayout(false);
-            this.tlpMetadata.PerformLayout();
+            this.gbAttributes.ResumeLayout(false);
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -503,12 +344,6 @@ namespace PlexDL.UI
 
         #endregion
         private FlowLayoutPanel flpActors;
-        private Label lblSize;
-        private Label lblSizeValue;
-        private Label lblRuntime;
-        private Label lblRuntimeValue;
-        private Label lblResolutionValue;
-        private Label lblResolution;
         private PictureBox picPoster;
         private SaveFileDialog sfdExport;
         private OpenFileDialog ofdImport;
@@ -516,8 +351,7 @@ namespace PlexDL.UI
         private GroupBox gbPlot;
         private RichTextBox txtPlotSynopsis;
         private GroupBox gbStarring;
-        private GroupBox gbMetadata;
-        private TableLayoutPanel tlpMetadata;
+        private GroupBox gbAttributes;
         private TableLayoutPanel tlpMain;
         private MenuStrip menuMain;
         private ToolStripMenuItem itmFile;
@@ -529,11 +363,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmVlc;
         private ToolStripMenuItem itmExit;
         private Panel pnlPlotSynopsis;
-        private Label lblFramerateValue;
-        private Label lblFramerate;
-        private Label lblContainer;
-        private Label lblContainerValue;
-        private Label lblGenre;
-        private Label lblGenreValue;
+        private Common.Components.FlatDataGridView dgvAttributes;
     }
 }

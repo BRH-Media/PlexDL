@@ -25,64 +25,17 @@ namespace PlexDL.UI
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
         {
-            //fill the genre infobox
-            if (!string.IsNullOrEmpty(StreamingContent.ContentGenre))
-            {
-                if (lblGenreValue.InvokeRequired)
-                    lblGenreValue.BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblGenreValue.Text = StreamingContent.ContentGenre;
-                    });
-                else
-                    lblGenreValue.Text = StreamingContent.ContentGenre;
-            }
+            var attributes = ObjectBuilders.AttributesFromObject(StreamingContent);
 
-            //fill the FPS infobox
-            if (!string.IsNullOrEmpty(StreamingContent.StreamResolution.Framerate))
+            if (attributes.Rows.Count > 0)
             {
-                if (lblFramerateValue.InvokeRequired)
-                    lblFramerateValue.BeginInvoke((MethodInvoker)delegate
+                if (dgvAttributes.InvokeRequired)
+                    dgvAttributes.BeginInvoke((MethodInvoker) delegate
                     {
-                        lblFramerateValue.Text = Framerate();
+                        dgvAttributes.DataSource = attributes;
                     });
                 else
-                    lblFramerateValue.Text = Framerate();
-            }
-
-            //fill the runtime duration infobox
-            if (StreamingContent.StreamInformation.ContentDuration > 0)
-            {
-                if (lblRuntimeValue.InvokeRequired)
-                    lblRuntimeValue.BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblRuntimeValue.Text = Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
-                    });
-                else
-                    lblRuntimeValue.Text = Methods.CalculateTime(StreamingContent.StreamInformation.ContentDuration);
-            }
-
-            //fill the size infobox
-            if (StreamingContent.StreamInformation.ByteLength > 0)
-            {
-                if (lblSizeValue.InvokeRequired)
-                    lblSizeValue.BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblSizeValue.Text = Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
-                    });
-                else
-                    lblSizeValue.Text = Methods.FormatBytes(StreamingContent.StreamInformation.ByteLength);
-            }
-
-            //fill the resolution infobox
-            if (StreamingContent.StreamResolution.Height > 0)
-            {
-                if (lblResolutionValue.InvokeRequired)
-                    lblResolutionValue.BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
-                    });
-                else
-                    lblResolutionValue.Text = StreamingContent.StreamResolution.ResolutionString();
+                    dgvAttributes.DataSource = attributes;
             }
 
             //fill the poster picturebox
@@ -95,18 +48,6 @@ namespace PlexDL.UI
                     });
                 else
                     picPoster.BackgroundImage = GetPoster(StreamingContent);
-            }
-
-            //fill the container infobox
-            if (!string.IsNullOrEmpty(StreamingContent.StreamInformation.Container))
-            {
-                if (lblContainerValue.InvokeRequired)
-                    lblContainerValue.BeginInvoke((MethodInvoker)delegate
-                    {
-                        lblContainerValue.Text = StreamingContent.StreamInformation.Container;
-                    });
-                else
-                    lblContainerValue.Text = StreamingContent.StreamInformation.Container;
             }
 
             //fill the plot synopsis infobox
@@ -214,14 +155,7 @@ namespace PlexDL.UI
             StationaryMode = false;
         }
 
-        //just to make it easier :)
-        private string Framerate()
-        {
-            if (!string.Equals(StreamingContent.StreamResolution.Framerate, "Unknown"))
-                return ResolutionStandards.FullFpsSuffix(StreamingContent.StreamResolution.Framerate);
-            else
-                return "Unknown";
-        }
+        
 
         private Panel NoActorsFound()
         {
