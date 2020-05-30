@@ -8,11 +8,13 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ThumbCachePath(string sourceUrl)
         {
-            var fileName = MD5Helper.CalculateMd5Hash(sourceUrl);
-            var cachePath = CachingFileDir.ThumbDirectory;
+            var accountHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ThumbExt;
+            var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.ThumbDirectory}";
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
-            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ThumbExt;
+            var fqPath = $"{cachePath}\\{fileName}";
             return fqPath;
         }
 

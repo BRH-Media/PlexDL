@@ -18,7 +18,7 @@ namespace PlexDL.Common.Globals
         public static List<DownloadInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();
         public static MyPlex Plex { get; set; } = new MyPlex();
-        public static UserInteraction LibUI { get; set; } = new UserInteraction();
+        public static UserInteraction LibUi { get; set; } = new UserInteraction();
         public static User User { get; set; } = new User();
         public static Server Svr { get; set; }
         public static PlexObject CurrentStream { get; set; }

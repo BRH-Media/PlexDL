@@ -162,7 +162,7 @@ namespace PlexDL.UI
             {
                 if (dgvMain.Rows.Count > 0)
                 {
-                    var ipt = GlobalStaticVars.LibUI.showInputForm(@"Enter Row Number", @"Go To Row");
+                    var ipt = GlobalStaticVars.LibUi.showInputForm(@"Enter Row Number", @"Go To Row");
 
                     if (string.Equals(ipt.txt, "!cancel=user"))
                     {

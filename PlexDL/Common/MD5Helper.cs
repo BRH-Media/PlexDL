@@ -7,6 +7,7 @@ namespace PlexDL.Common
     {
         public static string CalculateMd5Hash(string input)
         {
+            string value = "";
             // step 1, calculate MD5 hash from input
             var md5 = MD5.Create();
             var inputBytes = Encoding.ASCII.GetBytes(input);
@@ -17,7 +18,12 @@ namespace PlexDL.Common
             for (var i = 0; i < hash.Length; i++)
                 sb.Append(hash[i].ToString("X2"));
 
-            return sb.ToString();
+            string rtrn = sb.ToString();
+
+            if (!string.IsNullOrEmpty(rtrn))
+                value = rtrn;
+
+            return value;
         }
     }
 }

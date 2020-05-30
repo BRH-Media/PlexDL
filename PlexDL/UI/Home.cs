@@ -1935,7 +1935,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void SetSessionID()
+        private void SetSessionId()
         {
             lblSidValue.Text = GlobalStaticVars.CurrentSessionId;
         }
@@ -1960,7 +1960,9 @@ namespace PlexDL.UI
                     GlobalStaticVars.DebugForm.Show();
                 }
 
-                SetSessionID();
+                
+
+                SetSessionId();
                 LoadDevStatus();
                 ResetDownloadDirectory();
                 LoggingHelpers.RecordGenericEntry("PlexDL Started");

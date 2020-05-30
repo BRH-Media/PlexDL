@@ -5,8 +5,6 @@ namespace PlexDL.Common.Structures
 {
     public class ConnectionInfo
     {
-        [NonSerialized] public bool DirectOnly = false;
-
         [NonSerialized] public bool RelaysOnly = false;
 
         [DisplayName("Port")]
