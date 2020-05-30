@@ -80,8 +80,8 @@ namespace PlexDL.Common.Caching
             string[] files =
             {
             };
-            if (Directory.Exists(@"cache"))
-                files = Directory.GetFiles(@"cache", "*", SearchOption.AllDirectories);
+            if (Directory.Exists(CachingFileDir.RootCacheDirectory))
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*", SearchOption.AllDirectories);
             return files;
         }
 
@@ -90,8 +90,8 @@ namespace PlexDL.Common.Caching
             string[] files =
             {
             };
-            if (Directory.Exists(@"cache"))
-                files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ServerListExt, SearchOption.AllDirectories);
+            if (Directory.Exists(CachingFileDir.RootCacheDirectory))
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ServerListExt, SearchOption.AllDirectories);
             return files;
         }
 
@@ -100,8 +100,8 @@ namespace PlexDL.Common.Caching
             string[] files =
             {
             };
-            if (Directory.Exists(@"cache"))
-                files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ThumbExt, SearchOption.AllDirectories);
+            if (Directory.Exists(CachingFileDir.RootCacheDirectory))
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ThumbExt, SearchOption.AllDirectories);
             return files;
         }
 
@@ -110,8 +110,8 @@ namespace PlexDL.Common.Caching
             string[] files =
             {
             };
-            if (Directory.Exists(@"cache"))
-                files = Directory.GetFiles(@"cache", "*" + CachingFileExt.ApiXmlExt, SearchOption.AllDirectories);
+            if (Directory.Exists(CachingFileDir.RootCacheDirectory))
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ApiXmlExt, SearchOption.AllDirectories);
             return files;
         }
     }
