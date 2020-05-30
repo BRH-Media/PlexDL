@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -86,11 +86,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
@@ -101,12 +100,10 @@ using System.Windows.Forms;
 #pragma warning disable IDE0018 // Inline variable declaration
 #pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
-
     // ******************************** Device Info Class
 
     #region Device Info Class
@@ -124,7 +121,7 @@ namespace PlexDL.Player
         internal string _name;
         internal string _adapter;
 
-        #endregion
+        #endregion Fields (Device Info Class)
 
         /// <summary>
         /// Gets the identifier of the device.
@@ -150,8 +147,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Device Info Class
 
     // ******************************** Video Track Class
 
@@ -165,16 +161,18 @@ namespace PlexDL.Player
     {
         #region Fields (Video Track Class)
 
-        internal Guid   _mediaType;
+        internal Guid _mediaType;
         internal string _name;
         internal string _language;
-        internal float  _frameRate;
-        internal int    _width;
-        internal int    _height;
+        internal float _frameRate;
+        internal int _width;
+        internal int _height;
 
-        #endregion
+        #endregion Fields (Video Track Class)
 
-        internal VideoTrack() { }
+        internal VideoTrack()
+        {
+        }
 
         /// <summary>
         /// Gets the media type (MF GUID) of the track (see Media Foundation documentation).
@@ -207,8 +205,7 @@ namespace PlexDL.Player
         public int Height { get { return _height; } }
     }
 
-    #endregion
-
+    #endregion Video Track Class
 
     // ******************************** Video Stream Struct
 
@@ -216,18 +213,17 @@ namespace PlexDL.Player
 
     internal struct VideoStream
     {
-        internal Guid   MediaType;
-        internal int    StreamIndex;
-        internal bool   Selected;
+        internal Guid MediaType;
+        internal int StreamIndex;
+        internal bool Selected;
         internal string Name;
         internal string Language;
-        internal float  FrameRate;
-        internal int    SourceWidth;
-        internal int    SourceHeight;
+        internal float FrameRate;
+        internal int SourceWidth;
+        internal int SourceHeight;
     }
 
-    #endregion
-
+    #endregion Video Stream Struct
 
     // ******************************** Video Display Class
 
@@ -235,8 +231,15 @@ namespace PlexDL.Player
 
     internal sealed class VideoDisplay : Control
     {
-        public VideoDisplay() { SetStyle(ControlStyles.Opaque | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true); }
-        protected override void OnPaint(PaintEventArgs e) { }
+        public VideoDisplay()
+        {
+            SetStyle(ControlStyles.Opaque | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+        }
+
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x0084) m.Result = (IntPtr)(-1);
@@ -244,8 +247,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Video Display Class
 
     // ******************************** Webcam Device Class
 
@@ -257,11 +259,12 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class WebcamDevice : DeviceInfo
     {
-        internal WebcamDevice() { }
+        internal WebcamDevice()
+        {
+        }
     }
 
-    #endregion
-
+    #endregion Webcam Device Class
 
     // ******************************** Webcam Property Info Class
 
@@ -276,22 +279,24 @@ namespace PlexDL.Player
         #region Fields (Webcam Property Class)
 
         internal string _name;
-        internal bool   _supported;
-        internal int    _min;
-        internal int    _max;
-        internal int    _step;
-        internal int    _default;
-        internal int    _value;
-        internal bool   _autoSupport;
-        internal bool   _auto;
+        internal bool _supported;
+        internal int _min;
+        internal int _max;
+        internal int _step;
+        internal int _default;
+        internal int _value;
+        internal bool _autoSupport;
+        internal bool _auto;
 
-        internal bool                   _isProcAmp;
-        internal CameraControlProperty  _controlProp;
-        internal VideoProcAmpProperty   _procAmpProp;
+        internal bool _isProcAmp;
+        internal CameraControlProperty _controlProp;
+        internal VideoProcAmpProperty _procAmpProp;
 
-        #endregion
+        #endregion Fields (Webcam Property Class)
 
-        internal WebcamProperty() { }
+        internal WebcamProperty()
+        {
+        }
 
         /// <summary>
         /// The name of the property.
@@ -356,11 +361,9 @@ namespace PlexDL.Player
             get { return _auto; }
             set { _auto = value; }
         }
-
     }
 
-    #endregion
-
+    #endregion Webcam Property Class
 
     // ******************************** Webcam Video Format Class
 
@@ -375,21 +378,21 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Video Format Class)
 
-        internal int    _streamIndex;
-        internal int    _typeIndex;
-        internal int    _width;
-        internal int    _height;
-        internal float  _frameRate;
+        internal int _streamIndex;
+        internal int _typeIndex;
+        internal int _width;
+        internal int _height;
+        internal float _frameRate;
 
-        #endregion
+        #endregion Fields (Webcam Video Format Class)
 
         internal WebcamFormat(int streamIndex, int typeIndex, int width, int height, float frameRate)
         {
-            _streamIndex    = streamIndex;
-            _typeIndex      = typeIndex;
-            _width          = width;
-            _height         = height;
-            _frameRate      = frameRate;
+            _streamIndex = streamIndex;
+            _typeIndex = typeIndex;
+            _width = width;
+            _height = height;
+            _frameRate = frameRate;
         }
 
         /// <summary>
@@ -416,11 +419,9 @@ namespace PlexDL.Player
         /// Gets the video frame rate of the format, in frames per second.
         /// </summary>
         public float FrameRate { get { return _frameRate; } }
-
     }
 
-    #endregion
-
+    #endregion Webcam Video Format Class
 
     // ******************************** Webcam Settings Class
 
@@ -433,69 +434,68 @@ namespace PlexDL.Player
     [Serializable]
     public sealed class WebcamSettings
     {
-        internal string         _webcamName;
-        internal WebcamFormat   _format;
+        internal string _webcamName;
+        internal WebcamFormat _format;
 
-        internal int    _brightness;
-        internal bool   _autoBrightness;
+        internal int _brightness;
+        internal bool _autoBrightness;
 
-        internal int    _contrast;
-        internal bool   _autoContrast;
+        internal int _contrast;
+        internal bool _autoContrast;
 
-        internal int    _hue;
-        internal bool   _autoHue;
+        internal int _hue;
+        internal bool _autoHue;
 
-        internal int    _saturation;
-        internal bool   _autoSaturation;
+        internal int _saturation;
+        internal bool _autoSaturation;
 
-        internal int    _sharpness;
-        internal bool   _autoSharpness;
+        internal int _sharpness;
+        internal bool _autoSharpness;
 
-        internal int    _gamma;
-        internal bool   _autoGamma;
+        internal int _gamma;
+        internal bool _autoGamma;
 
-        internal int    _whiteBalance;
-        internal bool   _autoWhiteBalance;
+        internal int _whiteBalance;
+        internal bool _autoWhiteBalance;
 
-        internal int    _gain;
-        internal bool   _autoGain;
+        internal int _gain;
+        internal bool _autoGain;
 
-        internal int    _zoom;
-        internal bool   _autoZoom;
+        internal int _zoom;
+        internal bool _autoZoom;
 
-        internal int    _focus;
-        internal bool   _autoFocus;
+        internal int _focus;
+        internal bool _autoFocus;
 
-        internal int    _exposure;
-        internal bool   _autoExposure;
+        internal int _exposure;
+        internal bool _autoExposure;
 
-        internal int    _iris;
-        internal bool   _autoIris;
+        internal int _iris;
+        internal bool _autoIris;
 
-        internal int    _pan;
-        internal bool   _autoPan;
+        internal int _pan;
+        internal bool _autoPan;
 
-        internal int    _tilt;
-        internal bool   _autoTilt;
+        internal int _tilt;
+        internal bool _autoTilt;
 
-        internal int    _roll;
-        internal bool   _autoRoll;
+        internal int _roll;
+        internal bool _autoRoll;
 
-        internal int    _flash;
-        internal bool   _autoFlash;
+        internal int _flash;
+        internal bool _autoFlash;
 
-        internal int    _backlight;
-        internal bool   _autoBacklight;
+        internal int _backlight;
+        internal bool _autoBacklight;
 
-        internal int    _colorEnable;
-        internal bool   _autoColorEnable;
+        internal int _colorEnable;
+        internal bool _autoColorEnable;
 
-        internal int    _powerLine;
-        internal bool   _autoPowerLine;
+        internal int _powerLine;
+        internal bool _autoPowerLine;
     }
 
-    #endregion
-
+    #endregion Webcam Settings Class
 
     // ******************************** Audio Track Class
 
@@ -509,17 +509,19 @@ namespace PlexDL.Player
     {
         #region Fields (Audio Track Class)
 
-        internal Guid   _mediaType;
+        internal Guid _mediaType;
         internal string _name;
         internal string _language;
-        internal int    _channelCount;
-        internal int    _samplerate;
-        internal int    _bitdepth;
-        internal int    _bitrate;
+        internal int _channelCount;
+        internal int _samplerate;
+        internal int _bitdepth;
+        internal int _bitrate;
 
-        #endregion
+        #endregion Fields (Audio Track Class)
 
-        internal AudioTrack() { }
+        internal AudioTrack()
+        {
+        }
 
         /// <summary>
         /// Gets the media type (GUID) of the track (see Media Foundation documentation).
@@ -557,8 +559,7 @@ namespace PlexDL.Player
         public int Bitrate { get { return _bitrate; } }
     }
 
-    #endregion
-
+    #endregion Audio Track Class
 
     // ******************************** Audio Stream Struct
 
@@ -566,19 +567,18 @@ namespace PlexDL.Player
 
     internal struct AudioStream
     {
-        internal Guid   MediaType;
-        internal int    StreamIndex;
-        internal bool   Selected;
+        internal Guid MediaType;
+        internal int StreamIndex;
+        internal bool Selected;
         internal string Name;
         internal string Language;
-        internal int    ChannelCount;
-        internal int    Samplerate;
-        internal int    Bitdepth;
-        internal int    Bitrate;
+        internal int ChannelCount;
+        internal int Samplerate;
+        internal int Bitdepth;
+        internal int Bitrate;
     }
 
-    #endregion
-
+    #endregion Audio Stream Struct
 
     // ******************************** Audio Device Class
 
@@ -590,11 +590,12 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class AudioDevice : DeviceInfo
     {
-        internal AudioDevice() { }
+        internal AudioDevice()
+        {
+        }
     }
 
-    #endregion
-
+    #endregion Audio Device Class
 
     // ******************************** Audio Input Device Class
 
@@ -606,11 +607,12 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class AudioInputDevice : DeviceInfo
     {
-        internal AudioInputDevice() { }
+        internal AudioInputDevice()
+        {
+        }
     }
 
-    #endregion
-
+    #endregion Audio Input Device Class
 
     // ******************************** Slider Value Class
 
@@ -625,12 +627,13 @@ namespace PlexDL.Player
         #region Fields (Slider Value Class))
 
         // standard .Net TrackBar track margins (pixels between border and begin/end of track)
-        private const int SLIDER_LEFT_MARGIN    = 13;
-        private const int SLIDER_RIGHT_MARGIN   = 14;
-        private const int SLIDER_TOP_MARGIN     = 13;
-        private const int SLIDER_BOTTOM_MARGIN  = 14;
+        private const int SLIDER_LEFT_MARGIN = 13;
 
-        #endregion
+        private const int SLIDER_RIGHT_MARGIN = 14;
+        private const int SLIDER_TOP_MARGIN = 13;
+        private const int SLIDER_BOTTOM_MARGIN = 14;
+
+        #endregion Fields (Slider Value Class))
 
         /// <summary>
         /// Returns the slider value at the specified location on the specified slider (trackbar).
@@ -692,8 +695,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Slider Value Class
 
     // ******************************** Metadata Class
 
@@ -707,20 +709,22 @@ namespace PlexDL.Player
     {
         #region Fields (Metadata Class)
 
-        internal string     _artist;
-        internal string     _title;
-        internal string     _album;
-        internal int        _trackNumber;
-        internal string     _year;
-        internal TimeSpan   _duration;
-        internal string     _genre;
-        internal Image      _image;
+        internal string _artist;
+        internal string _title;
+        internal string _album;
+        internal int _trackNumber;
+        internal string _year;
+        internal TimeSpan _duration;
+        internal string _genre;
+        internal Image _image;
 
-        private bool        _disposed;
+        private bool _disposed;
 
-        #endregion
+        #endregion Fields (Metadata Class)
 
-        internal Metadata() { }
+        internal Metadata()
+        {
+        }
 
         /// <summary>
         /// Gets the main artist(s)/performer(s)/band/orchestra of the media.
@@ -769,12 +773,12 @@ namespace PlexDL.Player
         {
             if (!_disposed)
             {
-                _disposed   = true;
-                _artist     = null;
-                _title      = null;
-                _album      = null;
-                _year       = null;
-                _genre      = null;
+                _disposed = true;
+                _artist = null;
+                _title = null;
+                _album = null;
+                _year = null;
+                _genre = null;
                 if (_image != null)
                 {
                     try { _image.Dispose(); }
@@ -785,8 +789,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Metadata Class
 
     // ******************************** Media Chapter Class
 
@@ -800,12 +803,14 @@ namespace PlexDL.Player
     {
         #region Fields (Media Chapter Class)
 
-        internal string     _title;
-        internal TimeSpan   _startTime;
+        internal string _title;
+        internal TimeSpan _startTime;
 
-        #endregion
+        #endregion Fields (Media Chapter Class)
 
-        internal MediaChapter() { }
+        internal MediaChapter()
+        {
+        }
 
         /// <summary>
         /// Gets the title of the media chapter.
@@ -824,8 +829,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Media Chapter Class
 
     // ******************************** Display Clone Properties Class
 
@@ -847,7 +851,7 @@ namespace PlexDL.Player
         internal bool _dragEnabled = false;
         internal Cursor _dragCursor = Cursors.SizeAll;
 
-        #endregion
+        #endregion Fields (Clone Properties Class)
 
         /// <summary>
         /// Gets or sets the video quality of the display clone (default: CloneQuality.Auto).
@@ -913,8 +917,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Display Clone Properties Class
 
     // ******************************** Player MF Callback Class
 
@@ -923,20 +926,22 @@ namespace PlexDL.Player
     // Media Foundation Callback Class
     internal sealed class MFCallback : IMFAsyncCallback
     {
-        private Player              _basePlayer;
-        private delegate void       EndOfMediaDelegate();
-        private EndOfMediaDelegate  CallEndOfMedia;
+        private Player _basePlayer;
+
+        private delegate void EndOfMediaDelegate();
+
+        private EndOfMediaDelegate CallEndOfMedia;
 
         public MFCallback(Player player)
         {
-            _basePlayer     = player;
-            CallEndOfMedia  = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
+            _basePlayer = player;
+            CallEndOfMedia = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
         }
 
         public void Dispose()
         {
-            _basePlayer     = null;
-            CallEndOfMedia  = null;
+            _basePlayer = null;
+            CallEndOfMedia = null;
         }
 
         public HResult GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
@@ -948,10 +953,10 @@ namespace PlexDL.Player
 
         public HResult Invoke(IMFAsyncResult result)
         {
-            IMFMediaEvent   mediaEvent      = null;
-            MediaEventType  mediaEventType  = MediaEventType.MEUnknown;
-            HResult         errorCode;
-            bool            getNext         = true;
+            IMFMediaEvent mediaEvent = null;
+            MediaEventType mediaEventType = MediaEventType.MEUnknown;
+            HResult errorCode;
+            bool getNext = true;
 
             try
             {
@@ -1010,12 +1015,11 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Player MF Callback Class
 
     // ******************************** Hide System Object Members Classes
 
-    #region  Hide System Object Members Classes
+    #region Hide System Object Members Classes
 
     /// <summary>
     /// Internal class that is used to hide System.Object members in derived classes.
@@ -1050,7 +1054,7 @@ namespace PlexDL.Player
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object obj) { return base.Equals(obj); }
 
-        #endregion
+        #endregion Hide Inherited System.Object members
     }
 
     /// <summary>
@@ -1086,11 +1090,10 @@ namespace PlexDL.Player
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object obj) { return base.Equals(obj); }
 
-        #endregion
+        #endregion Hide Inherited System.Object members
     }
 
-    #endregion
-
+    #endregion Hide System Object Members Classes
 
     // ******************************** Player Grouping Classes
 
@@ -1107,7 +1110,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Audio Class)
 
         internal Audio(Player player)
         {
@@ -1330,15 +1333,15 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError    = Player.NO_ERROR;
-                bool setDevice      = false;
+                _base._lastError = Player.NO_ERROR;
+                bool setDevice = false;
 
                 if (value == null)
                 {
                     if (_base._audioDevice != null)
                     {
-                        _base._audioDevice  = null;
-                        setDevice           = true;
+                        _base._audioDevice = null;
+                        setDevice = true;
                     }
                 }
                 else if (_base._audioDevice == null || value._id != _base._audioDevice._id)
@@ -1348,8 +1351,8 @@ namespace PlexDL.Player
                     {
                         if (value._id == devices[i]._id)
                         {
-                            _base._audioDevice  = devices[i];
-                            setDevice           = true;
+                            _base._audioDevice = devices[i];
+                            setDevice = true;
                             break;
                         }
                     }
@@ -1416,8 +1419,8 @@ namespace PlexDL.Player
         public AudioDevice[] GetDevices()
         {
             IMMDeviceCollection deviceCollection;
-            IMMDevice           device;
-            AudioDevice[]       audioDevices = null;
+            IMMDevice device;
+            AudioDevice[] audioDevices = null;
 
             _base._lastError = HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE;
 
@@ -1454,7 +1457,7 @@ namespace PlexDL.Player
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
-            IMMDevice   device;
+            IMMDevice device;
             AudioDevice audioDevice = null;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
@@ -1478,7 +1481,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Audio Class
 
     #region Audio Input Class
 
@@ -1493,7 +1496,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Audio Input Class)
 
         internal AudioInput(Player player)
         {
@@ -1648,7 +1651,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Audio Input Class
 
     #region Video Class
 
@@ -1661,13 +1664,13 @@ namespace PlexDL.Player
     {
         #region Fields (Video Class)
 
-        private Player      _base;
-        private bool        _zoomBusy;
-        private bool        _boundsBusy;
-        private int         _maxZoomWidth   = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
-        private int         _maxZoomHeight  = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
+        private Player _base;
+        private bool _zoomBusy;
+        private bool _boundsBusy;
+        private int _maxZoomWidth = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
+        private int _maxZoomHeight = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
 
-        #endregion
+        #endregion Fields (Video Class)
 
         internal Video(Player player)
         {
@@ -1705,7 +1708,7 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomWidth    = value;
+                    _maxZoomWidth = value;
                 }
             }
         }
@@ -1729,7 +1732,7 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomHeight   = value;
+                    _maxZoomHeight = value;
                 }
             }
         }
@@ -1844,14 +1847,14 @@ namespace PlexDL.Player
             {
                 if (!_zoomBusy)
                 {
-                    _zoomBusy        = true;
+                    _zoomBusy = true;
                     _base._lastError = Player.NO_ERROR;
 
                     if (factor != 1)
                     {
-                        double width    = 0;
-                        double height   = 0;
-                        Rectangle r     = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
+                        double width = 0;
+                        double height = 0;
+                        Rectangle r = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
 
                         if (r.Width < r.Height)
                         {
@@ -1859,19 +1862,19 @@ namespace PlexDL.Player
                             if (width > _maxZoomWidth)
                             {
                                 factor = (double)_maxZoomWidth / r.Width;
-                                width  = r.Width * factor;
+                                width = r.Width * factor;
                             }
                             else if ((width / r.Width) * r.Height > _maxZoomHeight)
                             {
                                 factor = (double)_maxZoomHeight / r.Height;
-                                width  = r.Width * factor;
+                                width = r.Width * factor;
                             }
                             r.X = (int)Math.Round(-factor * (xCenter - r.X)) + xCenter;
 
                             if (width >= 10)
                             {
-                                r.Y     = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
-                                height  = (width / r.Width) * r.Height;
+                                r.Y = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
+                                height = (width / r.Width) * r.Height;
                             }
                         }
                         else
@@ -1891,14 +1894,14 @@ namespace PlexDL.Player
 
                             if (height >= 10)
                             {
-                                r.X   = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
+                                r.X = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
                                 width = (height / r.Height) * r.Width;
                             }
                         }
 
-                        r.Width  = (int)Math.Round(width);
+                        r.Width = (int)Math.Round(width);
                         r.Height = (int)Math.Round(height);
-                        Bounds   = r;
+                        Bounds = r;
                     }
                     _zoomBusy = false;
                 }
@@ -2092,10 +2095,9 @@ namespace PlexDL.Player
             }
             return (int)_base._lastError;
         }
-
     }
 
-    #endregion
+    #endregion Video Class
 
     #region Webcam Class
 
@@ -2108,10 +2110,9 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Class)
 
-        Player _base;
+        private Player _base;
 
-        #endregion
-
+        #endregion Fields (Webcam Class)
 
         #region Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
@@ -2244,7 +2245,7 @@ namespace PlexDL.Player
                         Marshal.ReleaseComObject(webcams[i]);
                     }
                 }
-                
+
                 _base._lastError = Player.NO_ERROR;
                 return webcamCount;
             }
@@ -2312,7 +2313,7 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion
+        #endregion Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
         #region Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
@@ -2462,7 +2463,6 @@ namespace PlexDL.Player
                     settings._whiteBalance = props._value;
                     settings._autoWhiteBalance = props._auto;
 
-
                     props = GetControlProperties(CameraControlProperty.Exposure);
                     settings._exposure = props._value;
                     settings._autoExposure = props._auto;
@@ -2596,8 +2596,7 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion
-
+        #endregion Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
         #region Private - Get/Set Video Control Properties / ProcAmp Properties
 
@@ -2606,8 +2605,8 @@ namespace PlexDL.Player
             HResult result = HResult.ERROR_NOT_READY;
 
             WebcamProperty settings = new WebcamProperty();
-            settings._name          = property.ToString();
-            settings._controlProp   = property;
+            settings._name = property.ToString();
+            settings._controlProp = property;
 
             if (_base._webcamMode)
             {
@@ -2663,9 +2662,9 @@ namespace PlexDL.Player
             HResult result = HResult.ERROR_NOT_READY;
 
             WebcamProperty settings = new WebcamProperty();
-            settings._name          = property.ToString();
-            settings._procAmpProp   = property;
-            settings._isProcAmp     = true;
+            settings._name = property.ToString();
+            settings._procAmpProp = property;
+            settings._isProcAmp = true;
 
             if (_base._webcamMode)
             {
@@ -2716,7 +2715,7 @@ namespace PlexDL.Player
             _base._lastError = result;
         }
 
-        #endregion
+        #endregion Private - Get/Set Video Control Properties / ProcAmp Properties
 
         #region Public - Get/Set Video Control Properties
 
@@ -2792,7 +2791,7 @@ namespace PlexDL.Player
             set { SetControlProperties(CameraControlProperty.Zoom, value); }
         }
 
-        #endregion
+        #endregion Public - Get/Set Video Control Properties
 
         #region Public - Get/SetVideo ProcAmp Properties
 
@@ -2895,8 +2894,7 @@ namespace PlexDL.Player
             set { SetProcAmpProperties(VideoProcAmpProperty.WhiteBalance, value); }
         }
 
-        #endregion
-
+        #endregion Public - Get/SetVideo ProcAmp Properties
 
         #region Private - Get Video Output Format
 
@@ -3054,7 +3052,7 @@ namespace PlexDL.Player
             return format;
         }
 
-        #endregion
+        #endregion Private - Get Video Output Format
 
         #region Public - Get Video Output Formats
 
@@ -3110,10 +3108,10 @@ namespace PlexDL.Player
             return GetWebcamFormats(webcam._id, true, exact, width, height, frameRate);
         }
 
-        #endregion
+        #endregion Public - Get Video Output Formats
     }
 
-    #endregion
+    #endregion Webcam Class
 
     #region Display Class
 
@@ -3135,7 +3133,7 @@ namespace PlexDL.Player
         private Form _dragForm;
         private Point _oldLocation;
 
-        #endregion
+        #endregion Fields (Display Class)
 
         internal Display(Player player)
         {
@@ -3409,7 +3407,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Drags (when enabled) the parent window (form) of the player's display. Use as the mousedown eventhandler of any control other than the player's display, for example, a display overlay. 
+        /// Drags (when enabled) the parent window (form) of the player's display. Use as the mousedown eventhandler of any control other than the player's display, for example, a display overlay.
         /// </summary>
         public void Drag_MouseDown(object sender, MouseEventArgs e)
         {
@@ -3539,10 +3537,9 @@ namespace PlexDL.Player
             else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
-
     }
 
-    #endregion
+    #endregion Display Class
 
     #region CursorHide Class
 
@@ -3557,7 +3554,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (CursorHide Class)
 
         internal CursorHide(Player player)
         {
@@ -3678,7 +3675,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion CursorHide Class
 
     #region Overlay Class
 
@@ -3693,7 +3690,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Overlay Class)
 
         internal Overlay(Player player)
         {
@@ -3904,7 +3901,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Overlay Class
 
     #region DisplayClones Class
 
@@ -3925,7 +3922,7 @@ namespace PlexDL.Player
         private Player _base;
         private CloneProperties _defaultProps;
 
-        #endregion
+        #endregion Fields (DisplayClones Class)
 
         internal DisplayClones(Player player)
         {
@@ -4351,7 +4348,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion DisplayClones Class
 
     #region PointTo Class
 
@@ -4366,7 +4363,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (PointTo Class)
 
         internal PointTo(Player player)
         {
@@ -4447,7 +4444,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion PointTo Class
 
     #region ScreenCopy Class
 
@@ -4460,10 +4457,10 @@ namespace PlexDL.Player
     {
         #region Fields (ScreenCopy Class)
 
-        private Player  _base;
-        private bool    _cloneCopy = true;
+        private Player _base;
+        private bool _cloneCopy = true;
 
-        #endregion
+        #endregion Fields (ScreenCopy Class)
 
         internal ScreenCopy(Player player)
         {
@@ -4476,7 +4473,7 @@ namespace PlexDL.Player
         public bool CloneMode
         {
             get { return _cloneCopy; }
-            set{ _cloneCopy = value; }
+            set { _cloneCopy = value; }
         }
 
         /// <summary>
@@ -4517,12 +4514,15 @@ namespace PlexDL.Player
                     case ScreenCopyMode.Display:
                         r = _base._display.RectangleToScreen(_base._display.DisplayRectangle);
                         break;
+
                     case ScreenCopyMode.Form:
                         r = _base._display.FindForm().RectangleToScreen(_base._display.FindForm().DisplayRectangle);
                         break;
+
                     case ScreenCopyMode.Parent:
                         r = _base._display.Parent.RectangleToScreen(_base._display.Parent.DisplayRectangle);
                         break;
+
                     case ScreenCopyMode.Screen:
                         r = Screen.GetBounds(_base._display);
                         break;
@@ -4638,7 +4638,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion ScreenCopy Class
 
     #region Sliders Classes
 
@@ -4653,9 +4653,10 @@ namespace PlexDL.Player
 
         //private const int       MAX_SCROLL_VALUE = 60000;
         private Player _base;
+
         private PositionSlider _positionSliderClass;
 
-        #endregion
+        #endregion Fields (Sliders Class)
 
         internal Sliders(Player player)
         {
@@ -4898,7 +4899,7 @@ namespace PlexDL.Player
                     if (_base._brightnessSlider != null)
                     {
                         _base._brightnessSlider.MouseWheel -= _base.BrightnessSlider_MouseWheel;
-                        _base._brightnessSlider.Scroll     -= _base.BrightnessSlider_Scroll;
+                        _base._brightnessSlider.Scroll -= _base.BrightnessSlider_Scroll;
                         _base._brightnessSlider = null;
                     }
 
@@ -4906,15 +4907,15 @@ namespace PlexDL.Player
                     {
                         _base._brightnessSlider = value;
 
-                        _base._brightnessSlider.Minimum         = -100;
-                        _base._brightnessSlider.Maximum         = 100;
-                        _base._brightnessSlider.TickFrequency   = 10;
-                        _base._brightnessSlider.SmallChange     = 1;
-                        _base._brightnessSlider.LargeChange     = 10;
+                        _base._brightnessSlider.Minimum = -100;
+                        _base._brightnessSlider.Maximum = 100;
+                        _base._brightnessSlider.TickFrequency = 10;
+                        _base._brightnessSlider.SmallChange = 1;
+                        _base._brightnessSlider.LargeChange = 10;
 
                         _base._brightnessSlider.Value = (int)(_base._brightness * 100);
 
-                        _base._brightnessSlider.Scroll     += _base.BrightnessSlider_Scroll;
+                        _base._brightnessSlider.Scroll += _base.BrightnessSlider_Scroll;
                         _base._brightnessSlider.MouseWheel += _base.BrightnessSlider_MouseWheel;
                     }
                 }
@@ -4939,7 +4940,7 @@ namespace PlexDL.Player
                     if (_base._contrastSlider != null)
                     {
                         _base._contrastSlider.MouseWheel -= _base.ContrastSlider_MouseWheel;
-                        _base._contrastSlider.Scroll     -= _base.ContrastSlider_Scroll;
+                        _base._contrastSlider.Scroll -= _base.ContrastSlider_Scroll;
                         _base._contrastSlider = null;
                     }
 
@@ -4947,15 +4948,15 @@ namespace PlexDL.Player
                     {
                         _base._contrastSlider = value;
 
-                        _base._contrastSlider.Minimum       = -100;
-                        _base._contrastSlider.Maximum       = 100;
+                        _base._contrastSlider.Minimum = -100;
+                        _base._contrastSlider.Maximum = 100;
                         _base._contrastSlider.TickFrequency = 10;
-                        _base._contrastSlider.SmallChange   = 1;
-                        _base._contrastSlider.LargeChange   = 10;
+                        _base._contrastSlider.SmallChange = 1;
+                        _base._contrastSlider.LargeChange = 10;
 
                         _base._contrastSlider.Value = (int)(_base._contrast * 100);
 
-                        _base._contrastSlider.Scroll     += _base.ContrastSlider_Scroll;
+                        _base._contrastSlider.Scroll += _base.ContrastSlider_Scroll;
                         _base._contrastSlider.MouseWheel += _base.ContrastSlider_MouseWheel;
                     }
                 }
@@ -4980,7 +4981,7 @@ namespace PlexDL.Player
                     if (_base._hueSlider != null)
                     {
                         _base._hueSlider.MouseWheel -= _base.HueSlider_MouseWheel;
-                        _base._hueSlider.Scroll     -= _base.HueSlider_Scroll;
+                        _base._hueSlider.Scroll -= _base.HueSlider_Scroll;
                         _base._hueSlider = null;
                     }
 
@@ -4988,15 +4989,15 @@ namespace PlexDL.Player
                     {
                         _base._hueSlider = value;
 
-                        _base._hueSlider.Minimum        = -100;
-                        _base._hueSlider.Maximum        = 100;
-                        _base._hueSlider.TickFrequency  = 10;
-                        _base._hueSlider.SmallChange    = 1;
-                        _base._hueSlider.LargeChange    = 10;
+                        _base._hueSlider.Minimum = -100;
+                        _base._hueSlider.Maximum = 100;
+                        _base._hueSlider.TickFrequency = 10;
+                        _base._hueSlider.SmallChange = 1;
+                        _base._hueSlider.LargeChange = 10;
 
                         _base._hueSlider.Value = (int)(_base._hue * 100);
 
-                        _base._hueSlider.Scroll     += _base.HueSlider_Scroll;
+                        _base._hueSlider.Scroll += _base.HueSlider_Scroll;
                         _base._hueSlider.MouseWheel += _base.HueSlider_MouseWheel;
                     }
                 }
@@ -5021,7 +5022,7 @@ namespace PlexDL.Player
                     if (_base._saturationSlider != null)
                     {
                         _base._saturationSlider.MouseWheel -= _base.SaturationSlider_MouseWheel;
-                        _base._saturationSlider.Scroll     -= _base.SaturationSlider_Scroll;
+                        _base._saturationSlider.Scroll -= _base.SaturationSlider_Scroll;
                         _base._saturationSlider = null;
                     }
 
@@ -5029,15 +5030,15 @@ namespace PlexDL.Player
                     {
                         _base._saturationSlider = value;
 
-                        _base._saturationSlider.Minimum         = -100;
-                        _base._saturationSlider.Maximum         = 100;
-                        _base._saturationSlider.TickFrequency   = 10;
-                        _base._saturationSlider.SmallChange     = 1;
-                        _base._saturationSlider.LargeChange     = 10;
+                        _base._saturationSlider.Minimum = -100;
+                        _base._saturationSlider.Maximum = 100;
+                        _base._saturationSlider.TickFrequency = 10;
+                        _base._saturationSlider.SmallChange = 1;
+                        _base._saturationSlider.LargeChange = 10;
 
                         _base._saturationSlider.Value = (int)(_base._saturation * 100);
 
-                        _base._saturationSlider.Scroll     += _base.SaturationSlider_Scroll;
+                        _base._saturationSlider.Scroll += _base.SaturationSlider_Scroll;
                         _base._saturationSlider.MouseWheel += _base.SaturationSlider_MouseWheel;
                     }
                 }
@@ -5058,7 +5059,7 @@ namespace PlexDL.Player
         private const int MAX_SCROLL_VALUE = 60000;
         private Player _base;
 
-        #endregion
+        #endregion Fields (PositionSlider Class)
 
         internal PositionSlider(Player player)
         {
@@ -5233,7 +5234,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Sliders Classes
 
     #region TaskbarProgress Class
 
@@ -5250,7 +5251,7 @@ namespace PlexDL.Player
         private List<Form> _taskbarItems;
         internal TaskbarProgressMode _progressMode;
 
-        #endregion
+        #endregion Fields (TaskbarProgress Class)
 
         internal TaskbarProgress(Player player)
         {
@@ -5438,7 +5439,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+        #endregion Public - Taskbar Progress methods and properties
 
         #region Private - SetValue / SetState
 
@@ -5499,10 +5500,10 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+        #endregion Private - SetValue / SetState
     }
 
-    #endregion
+    #endregion TaskbarProgress Class
 
     #region SystemPanels Class
 
@@ -5517,7 +5518,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (SystemPanels Class)
 
         internal SystemPanels(Player player)
         {
@@ -5597,7 +5598,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion SystemPanels Class
 
     #region Subtitles Class
 
@@ -5613,7 +5614,7 @@ namespace PlexDL.Player
         private const int MAX_DIRECTORY_DEPTH = 3;
         private Player _base;
 
-        #endregion
+        #endregion Fields (Subtitles Class)
 
         internal Subtitles(Player player)
         {
@@ -5927,7 +5928,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Subtitles Class
 
     #region Position Class
 
@@ -5942,7 +5943,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Position Class)
 
         internal Position(Player player)
         {
@@ -6190,10 +6191,9 @@ namespace PlexDL.Player
             }
             else return _base.Step(frames);
         }
-
     }
 
-    #endregion
+    #endregion Position Class
 
     #region Media Class
 
@@ -6207,38 +6207,38 @@ namespace PlexDL.Player
     {
         #region Fields (Media Class)
 
-        private Player          _base;
+        private Player _base;
 
         // Media album art information
-        private Image           _tagImage;
-        private DirectoryInfo   _directoryInfo;
-        private string[]        _searchKeyWords     = { "*front*", "*cover*" }; // , "*albumart*large*" };
-        private string[]        _searchExtensions   = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
+        private Image _tagImage;
+
+        private DirectoryInfo _directoryInfo;
+        private string[] _searchKeyWords = { "*front*", "*cover*" }; // , "*albumart*large*" };
+        private string[] _searchExtensions = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
 
         // Media chapter information
-        private const string    ROOT_ATOM_TYPES     = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
+        private const string ROOT_ATOM_TYPES = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
 
-        private byte[]          MOOV_ATOM           = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
-        private byte[]          TRAK_ATOM           = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
-        private byte[]          TREF_ATOM           = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
-        private byte[]          CHAP_ATOM           = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
-        private byte[]          TKHD_ATOM           = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
-        private byte[]          MDIA_ATOM           = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
-        private byte[]          MINF_ATOM           = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
-        private byte[]          STBL_ATOM           = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
-        private byte[]          STTS_ATOM           = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
-        private byte[]          STCO_ATOM           = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
-        private byte[]          UDTA_ATOM           = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
-        private byte[]          CHPL_ATOM           = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
+        private byte[] MOOV_ATOM = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
+        private byte[] TRAK_ATOM = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
+        private byte[] TREF_ATOM = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
+        private byte[] CHAP_ATOM = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
+        private byte[] TKHD_ATOM = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
+        private byte[] MDIA_ATOM = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
+        private byte[] MINF_ATOM = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
+        private byte[] STBL_ATOM = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
+        private byte[] STTS_ATOM = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
+        private byte[] STCO_ATOM = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
+        private byte[] UDTA_ATOM = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
+        private byte[] CHPL_ATOM = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
 
-        private FileStream      _reader;
-        private long            _fileLength;
-        private long            _atomEnd;
-        private long            _moovStart;
-        private long            _moovEnd;
+        private FileStream _reader;
+        private long _fileLength;
+        private long _atomEnd;
+        private long _moovStart;
+        private long _moovEnd;
 
-        #endregion
-
+        #endregion Fields (Media Class)
 
         internal Media(Player player)
         {
@@ -6347,15 +6347,19 @@ namespace PlexDL.Player
                         case MediaName.FileName:
                             mediaName = Path.GetFileName(_base._fileName);
                             break;
+
                         case MediaName.DirectoryName:
                             mediaName = Path.GetDirectoryName(_base._fileName);
                             break;
+
                         case MediaName.PathRoot:
                             mediaName = Path.GetPathRoot(_base._fileName);
                             break;
+
                         case MediaName.Extension:
                             mediaName = Path.GetExtension(_base._fileName);
                             break;
+
                         case MediaName.FileNameWithoutExtension:
                             mediaName = Path.GetFileNameWithoutExtension(_base._fileName);
                             break;
@@ -6835,8 +6839,8 @@ namespace PlexDL.Player
         /// <param name="neroChapters">When this method returns, contains the chapter information of the media stored in the Nero format or null.</param>
         public int GetChapters(string fileName, out MediaChapter[] appleChapters, out MediaChapter[] neroChapters)
         {
-            appleChapters   = null;
-            neroChapters    = null;
+            appleChapters = null;
+            neroChapters = null;
 
             if (string.IsNullOrWhiteSpace(fileName)) _base._lastError = HResult.E_INVALIDARG;
             else if (!File.Exists(fileName)) _base._lastError = HResult.ERROR_FILE_NOT_FOUND;
@@ -6854,17 +6858,16 @@ namespace PlexDL.Player
                         _base._lastError = Player.NO_ERROR;
                     }
                     else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-
                 }
                 catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
             }
 
             if (_base._lastError == Player.NO_ERROR)
             {
-                _fileLength      = _reader.Length;
+                _fileLength = _reader.Length;
                 _reader.Position = 0;
 
-                appleChapters    = GetAppleChapters();
+                appleChapters = GetAppleChapters();
                 if (_moovStart != 0) neroChapters = GetNeroChapters();
             }
 
@@ -7171,8 +7174,7 @@ namespace PlexDL.Player
         }
     }
 
-
-    #endregion
+    #endregion Media Class
 
     #region Images Class
 
@@ -7187,12 +7189,12 @@ namespace PlexDL.Player
 
         private const int MINIMUM_FRAMERATE = 4;
         private const int MAXIMUM_FRAMERATE = 30;
-        private const int MINIMUM_DURATION  = 3;
-        private const int MAXIMUM_DURATION  = 60;
+        private const int MINIMUM_DURATION = 3;
+        private const int MAXIMUM_DURATION = 60;
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Images Class)
 
         internal Images(Player player)
         {
@@ -7326,7 +7328,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Images Class
 
     #region Playlist Class
 
@@ -7341,7 +7343,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Playlist Class)
 
         internal Playlist(Player player)
         {
@@ -7573,7 +7575,7 @@ namespace PlexDL.Player
         //}
     }
 
-    #endregion
+    #endregion Playlist Class
 
     #region Has Class
 
@@ -7588,7 +7590,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Has Class)
 
         internal Has(Player player)
         {
@@ -7764,7 +7766,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Has Class
 
     #region Speed Class
 
@@ -7779,7 +7781,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Speed Class)
 
         internal Speed(Player player)
         {
@@ -7870,7 +7872,7 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion Speed Class
 
     #region Events Class
 
@@ -7885,7 +7887,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Events Class)
 
         internal Events(Player player)
         {
@@ -8419,6 +8421,5 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
+    #endregion Events Class
 }

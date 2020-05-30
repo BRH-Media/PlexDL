@@ -17,7 +17,7 @@ namespace PlexDL.Common.Structures
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\TV\";
                 var season = show.Season;
-                var title = Methods.RemoveIllegalCharacters(show.TVShowName);
+                var title = Methods.RemoveIllegalCharacters(show.TvShowName);
                 var seasonPath = basePath + title + @"\" + season;
                 var titlePath = basePath + title;
 

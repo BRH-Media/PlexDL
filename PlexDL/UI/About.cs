@@ -26,9 +26,11 @@ namespace PlexDL.UI
                 case DevStatus.IN_DEVLOPMENT:
                     Text = title + " - Developer Build";
                     break;
+
                 case DevStatus.IN_BETA:
                     Text = title + " - Beta Testing Build";
                     break;
+
                 case DevStatus.PRODUCTION_READY:
                     Text = title;
                     break;

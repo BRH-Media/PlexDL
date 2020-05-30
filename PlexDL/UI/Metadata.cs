@@ -1,9 +1,9 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
+using PlexDL.Common.API.Objects.AttributeTables;
 using PlexDL.Common.Globals;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
-using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
@@ -25,15 +25,15 @@ namespace PlexDL.UI
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
         {
-            var attributes = ObjectBuilders.AttributesFromObject(StreamingContent);
+            var attributes = AttributeGatherers.AttributesFromObject(StreamingContent);
 
             if (attributes.Rows.Count > 0)
             {
                 if (dgvAttributes.InvokeRequired)
-                    dgvAttributes.BeginInvoke((MethodInvoker) delegate
-                    {
-                        dgvAttributes.DataSource = attributes;
-                    });
+                    dgvAttributes.BeginInvoke((MethodInvoker)delegate
+                   {
+                       dgvAttributes.DataSource = attributes;
+                   });
                 else
                     dgvAttributes.DataSource = attributes;
             }
@@ -154,8 +154,6 @@ namespace PlexDL.UI
             //there's content now; so the window isn't stationary anymore.
             StationaryMode = false;
         }
-
-        
 
         private Panel NoActorsFound()
         {

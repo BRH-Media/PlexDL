@@ -99,7 +99,12 @@
     <Compile Include="AltoHTTP\Interfaces\IDownloader.cs" />
     <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
-    <Compile Include="Common\API\ObjectBuilders.cs" />
+    <Compile Include="Common\API\Objects\ObjectBuilders.cs" />
+    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Utility.cs" />
+    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Movie.cs" />
+    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Music.cs" />
+    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Tv.cs" />
+    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.cs" />
     <Compile Include="Common\API\ProfileImportExport.cs" />
     <Compile Include="Common\API\Metadata\XmlMetadataGatherers.cs" />
     <Compile Include="Common\API\Metadata\XmlMetadataHelpers.cs" />
@@ -517,17 +522,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="WMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\Components\Custom\" />

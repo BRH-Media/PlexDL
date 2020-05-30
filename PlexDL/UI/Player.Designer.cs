@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using WMPLib;
 
 namespace PlexDL.UI
 {
@@ -221,7 +220,6 @@ namespace PlexDL.UI
         private Label lblTimeSoFar;
         private Timer tmrRefreshUI;
         private TrackBar trkDuration;
-        private WindowsMediaPlayer axWindowsMediaPlayer1;
         private Panel pnlControls;
         private Button btnPlayPause;
         private Button btnStop;

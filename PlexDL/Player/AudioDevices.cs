@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -70,7 +70,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
@@ -80,12 +80,10 @@ using System.Windows.Forms;
 #pragma warning disable IDE1005 // Delegate invocation can be simplified.
 #pragma warning disable IDE0018 // Inline variable declaration
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
-
     public partial class Player
     {
         /*
@@ -99,46 +97,47 @@ namespace PlexDL.Player
 
         #region Audio Devices - Fields
 
-        internal static Guid            IID_IAudioMeterInformation  = new Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064");
-        internal static Guid            IID_IAudioEndpointVolume    = new Guid("5CDF2C82-841E-4546-9722-0CF74078229A");
+        internal static Guid IID_IAudioMeterInformation = new Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064");
+        internal static Guid IID_IAudioEndpointVolume = new Guid("5CDF2C82-841E-4546-9722-0CF74078229A");
 
         // audio output peak meter
-        internal bool                   pm_HasPeakMeter;
-        private IAudioMeterInformation  pm_PeakMeterInfo;
-        private float[]                 pm_PeakMeterValues;
-        internal float[]                pm_PeakMeterValuesStop;
-        internal int                    pm_PeakMeterChannelCount;
-        private float                   pm_PeakMeterMasterValue;
-        private static object           pm_PeakMeterLock            = new object();
+        internal bool pm_HasPeakMeter;
+
+        private IAudioMeterInformation pm_PeakMeterInfo;
+        private float[] pm_PeakMeterValues;
+        internal float[] pm_PeakMeterValuesStop;
+        internal int pm_PeakMeterChannelCount;
+        private float pm_PeakMeterMasterValue;
+        private static object pm_PeakMeterLock = new object();
 
         // audio input peak meter
-        internal bool                   pm_HasInputMeter;
-        internal bool                   pm_InputMeterPending;
-        private IAudioMeterInformation  pm_InputMeterInfo;
-        private float[]                 pm_InputMeterValues;
-        internal float[]                pm_InputMeterValuesStop;
-        internal int                    pm_InputMeterChannelCount;
-        private float                   pm_InputMeterMasterValue;
+        internal bool pm_HasInputMeter;
 
-        private static SystemAudioDevicesEventArgs  pm_AudioDevicesEventArgs;
-        private static AudioDevicesClient           pm_AudioDevicesCallback;
+        internal bool pm_InputMeterPending;
+        private IAudioMeterInformation pm_InputMeterInfo;
+        private float[] pm_InputMeterValues;
+        internal float[] pm_InputMeterValuesStop;
+        internal int pm_InputMeterChannelCount;
+        private float pm_InputMeterMasterValue;
+
+        private static SystemAudioDevicesEventArgs pm_AudioDevicesEventArgs;
+        private static AudioDevicesClient pm_AudioDevicesCallback;
 
         private delegate void OnSystemDevicesChangedDelegate(SystemAudioDevicesEventArgs e);
 
-        #endregion
-
+        #endregion Audio Devices - Fields
 
         // ******************************** Audio Devices - Audio Output Peak Meter - Open / Close / GetValues
 
-        #region  Audio Devices - Audio Output Peak Meter - Open / Close / GetValues
+        #region Audio Devices - Audio Output Peak Meter - Open / Close / GetValues
 
         internal bool PeakMeter_Open(AudioDevice device, bool change)
         {
             if (!pm_HasPeakMeter || change)
             {
-                IMMDeviceEnumerator deviceEnumerator    = null;
-                IMMDevice           levelDevice         = null;
-                object              levelDeviceInfo;
+                IMMDeviceEnumerator deviceEnumerator = null;
+                IMMDevice levelDevice = null;
+                object levelDeviceInfo;
 
                 if (pm_HasPeakMeter) PeakMeter_Close();
 
@@ -158,8 +157,8 @@ namespace PlexDL.Player
 
                         if (pm_PeakMeterValues == null)
                         {
-                            pm_PeakMeterValues      = new float[MAX_AUDIO_CHANNELS];
-                            pm_PeakMeterValuesStop  = new float[MAX_AUDIO_CHANNELS];
+                            pm_PeakMeterValues = new float[MAX_AUDIO_CHANNELS];
+                            pm_PeakMeterValuesStop = new float[MAX_AUDIO_CHANNELS];
                             for (int i = 0; i < MAX_AUDIO_CHANNELS; i++)
                             {
                                 pm_PeakMeterValuesStop[i] = STOP_VALUE;
@@ -170,11 +169,12 @@ namespace PlexDL.Player
                         StartSystemDevicesChangedHandlerCheck();
                     }
                 }
-                catch { /* ignore */
-    }
+                catch
+                { /* ignore */
+                }
 
-                if (levelDevice != null)        Marshal.ReleaseComObject(levelDevice);
-                if (deviceEnumerator != null)   Marshal.ReleaseComObject(deviceEnumerator);
+                if (levelDevice != null) Marshal.ReleaseComObject(levelDevice);
+                if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
             }
             return pm_HasPeakMeter;
         }
@@ -185,15 +185,15 @@ namespace PlexDL.Player
             {
                 if (_playing && _mediaPeakLevelChanged != null)
                 {
-                    _outputLevelArgs._channelCount    = pm_PeakMeterChannelCount;
+                    _outputLevelArgs._channelCount = pm_PeakMeterChannelCount;
                     _outputLevelArgs._masterPeakValue = STOP_VALUE;
-                    _outputLevelArgs._channelsValues  = pm_PeakMeterValuesStop;
+                    _outputLevelArgs._channelsValues = pm_PeakMeterValuesStop;
                     _mediaPeakLevelChanged(this, _outputLevelArgs);
                 }
 
                 pm_PeakMeterChannelCount = 0;
-                pm_PeakMeterMasterValue  = 0;
-                pm_HasPeakMeter          = false;
+                pm_PeakMeterMasterValue = 0;
+                pm_HasPeakMeter = false;
 
                 try
                 {
@@ -223,12 +223,11 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Audio Devices - Audio Output Peak Meter - Open / Close / GetValues
 
         // ******************************** Audio Devices - Audio Input Peak Meter - Open / Close / GetValues
 
-        #region  Audio Devices - Audio Input Peak Meter - Open / Close / GetValues
+        #region Audio Devices - Audio Input Peak Meter - Open / Close / GetValues
 
         internal bool InputMeter_Open(AudioInputDevice device, bool change)
         {
@@ -237,8 +236,8 @@ namespace PlexDL.Player
             if (!pm_HasInputMeter || change)
             {
                 IMMDeviceEnumerator deviceEnumerator = null;
-                IMMDevice           levelDevice = null;
-                object              levelDeviceInfo;
+                IMMDevice levelDevice = null;
+                object levelDeviceInfo;
 
                 if (pm_HasInputMeter) InputMeter_Close();
 
@@ -323,8 +322,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Audio Devices - Audio Input Peak Meter - Open / Close / GetValues
 
         // ******************************** Audio Devices - Handle Changed System Audio Output Devices
 
@@ -422,8 +420,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Audio Devices - Handle Changed Audio Output Devices
 
         // ******************************** Audio Devices - System Audio Notification Client EventHandler
 
@@ -466,8 +463,7 @@ namespace PlexDL.Player
             _mediaSystemAudioDevicesChanged(this, e);
         }
 
-        #endregion
-
+        #endregion Audio Devices - System Audio Notification Client EventHandler
 
         // ******************************** Audio Devices - System Audio Notification Client
 
@@ -545,9 +541,9 @@ namespace PlexDL.Player
             {
                 if (deviceRole == ERole.eMultimedia && _masterSystemAudioDevicesChanged != null)
                 {
-                    pm_AudioDevicesEventArgs._inputDevice   = dataFlow == EDataFlow.eCapture;
-                    pm_AudioDevicesEventArgs._deviceId      = defaultDeviceId;
-                    pm_AudioDevicesEventArgs._notification  = SystemAudioDevicesNotification.DefaultChanged;
+                    pm_AudioDevicesEventArgs._inputDevice = dataFlow == EDataFlow.eCapture;
+                    pm_AudioDevicesEventArgs._deviceId = defaultDeviceId;
+                    pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.DefaultChanged;
                     _masterSystemAudioDevicesChanged(null, pm_AudioDevicesEventArgs);
                 }
             }
@@ -556,9 +552,9 @@ namespace PlexDL.Player
             {
                 if (_masterSystemAudioDevicesChanged != null)
                 {
-                    pm_AudioDevicesEventArgs._inputDevice   = IsAudioInputDevice(deviceId);
-                    pm_AudioDevicesEventArgs._deviceId      = deviceId;
-                    pm_AudioDevicesEventArgs._notification  = SystemAudioDevicesNotification.Added;
+                    pm_AudioDevicesEventArgs._inputDevice = IsAudioInputDevice(deviceId);
+                    pm_AudioDevicesEventArgs._deviceId = deviceId;
+                    pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.Added;
                     _masterSystemAudioDevicesChanged(null, pm_AudioDevicesEventArgs);
                 }
             }
@@ -567,9 +563,9 @@ namespace PlexDL.Player
             {
                 if (_masterSystemAudioDevicesChanged != null)
                 {
-                    pm_AudioDevicesEventArgs._inputDevice   = IsAudioInputDevice(deviceId);
-                    pm_AudioDevicesEventArgs._deviceId      = deviceId;
-                    pm_AudioDevicesEventArgs._notification  = SystemAudioDevicesNotification.Removed;
+                    pm_AudioDevicesEventArgs._inputDevice = IsAudioInputDevice(deviceId);
+                    pm_AudioDevicesEventArgs._deviceId = deviceId;
+                    pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.Removed;
                     _masterSystemAudioDevicesChanged(null, pm_AudioDevicesEventArgs);
                 }
             }
@@ -578,8 +574,8 @@ namespace PlexDL.Player
             {
                 if (_masterSystemAudioDevicesChanged != null)
                 {
-                    pm_AudioDevicesEventArgs._inputDevice   = IsAudioInputDevice(deviceId);
-                    pm_AudioDevicesEventArgs._deviceId      = deviceId;
+                    pm_AudioDevicesEventArgs._inputDevice = IsAudioInputDevice(deviceId);
+                    pm_AudioDevicesEventArgs._deviceId = deviceId;
                     if (newState == DeviceState.Active) pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.Activated;
                     else pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.Disabled;
                     _masterSystemAudioDevicesChanged(null, pm_AudioDevicesEventArgs);
@@ -592,16 +588,15 @@ namespace PlexDL.Player
                 // now only checks for a changed description (name) of a device
                 if (_masterSystemAudioDevicesChanged != null && propertyKey.fmtid.Equals(PropertyKeys.PKEY_Device_Description.fmtid))
                 {
-                    pm_AudioDevicesEventArgs._inputDevice   = IsAudioInputDevice(deviceId);
-                    pm_AudioDevicesEventArgs._deviceId      = deviceId;
-                    pm_AudioDevicesEventArgs._notification  = SystemAudioDevicesNotification.DescriptionChanged;
+                    pm_AudioDevicesEventArgs._inputDevice = IsAudioInputDevice(deviceId);
+                    pm_AudioDevicesEventArgs._deviceId = deviceId;
+                    pm_AudioDevicesEventArgs._notification = SystemAudioDevicesNotification.DescriptionChanged;
                     _masterSystemAudioDevicesChanged(null, pm_AudioDevicesEventArgs);
                 }
             }
         }
 
-        #endregion
-
+        #endregion Audio Devices - System Audio Notification Client
 
         // ******************************** Audio Devices - Master Volume / ChannelCount
 
@@ -611,10 +606,10 @@ namespace PlexDL.Player
         {
             lock (pm_PeakMeterLock)
             {
-                IMMDeviceEnumerator deviceEnumerator    = null;
-                IMMDevice levelDevice                   = null;
-                object levelDeviceInfo                  = null;
-                float getVolume                         = 0;
+                IMMDeviceEnumerator deviceEnumerator = null;
+                IMMDevice levelDevice = null;
+                object levelDeviceInfo = null;
+                float getVolume = 0;
 
                 try
                 {
@@ -626,8 +621,8 @@ namespace PlexDL.Player
                     if (set)
                     {
                         // TODO set out of range?
-                        if (volume <= 0)        volume = 0;
-                        else if (volume > 1)    volume = 1;
+                        if (volume <= 0) volume = 0;
+                        else if (volume > 1) volume = 1;
                         ((IAudioEndpointVolume)levelDeviceInfo).SetMasterVolumeLevelScalar(volume, Guid.Empty);
                         getVolume = volume;
                     }
@@ -638,9 +633,9 @@ namespace PlexDL.Player
                 }
                 catch { getVolume = -1; }
 
-                if (levelDeviceInfo != null)    Marshal.ReleaseComObject(levelDeviceInfo);
-                if (levelDevice != null)        Marshal.ReleaseComObject(levelDevice);
-                if (deviceEnumerator != null)   Marshal.ReleaseComObject(deviceEnumerator);
+                if (levelDeviceInfo != null) Marshal.ReleaseComObject(levelDeviceInfo);
+                if (levelDevice != null) Marshal.ReleaseComObject(levelDevice);
+                if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
 
                 return getVolume;
             }
@@ -651,9 +646,9 @@ namespace PlexDL.Player
             lock (pm_PeakMeterLock)
             {
                 IMMDeviceEnumerator deviceEnumerator = null;
-                IMMDevice           levelDevice      = null;
-                object              levelDeviceInfo  = null;
-                uint                channels         = 0;
+                IMMDevice levelDevice = null;
+                object levelDeviceInfo = null;
+                uint channels = 0;
 
                 try
                 {
@@ -674,7 +669,6 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-    
+        #endregion Audio Devices - Master Volume / ChannelCount
     }
 }
