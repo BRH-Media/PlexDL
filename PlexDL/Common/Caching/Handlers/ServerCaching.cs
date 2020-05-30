@@ -13,11 +13,11 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ServerCachePath(string accountToken)
         {
-            var fileName = MD5Helper.CalculateMd5Hash(accountToken);
-            var cachePath = @"cache\" + fileName;
+            var fileName = MD5Helper.CalculateMd5Hash(accountToken) + CachingFileExt.ServerListExt;
+            var cachePath = CachingFileDir.ServerListDirectory;
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
-            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ServerListExt;
+            var fqPath = cachePath + @"\" + fileName;
             return fqPath;
         }
 

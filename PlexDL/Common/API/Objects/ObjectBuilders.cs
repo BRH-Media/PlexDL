@@ -9,11 +9,11 @@ namespace PlexDL.Common.API.Objects
 {
     public static class ObjectBuilders
     {
-        public static PlexTVShow GetTvObjectFromIndex(int index, bool formatLinkDownload)
+        public static PlexTvShow GetTvObjectFromIndex(int index, bool formatLinkDownload)
         {
             try
             {
-                var obj = new PlexTVShow();
+                var obj = new PlexTvShow();
                 LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
                 LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
 

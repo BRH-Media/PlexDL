@@ -300,9 +300,9 @@ namespace PlexDL.UI
                         SearchRule rule;
 
                         if (directMatch)
-                            rule = SearchRule.EQUALS_KEY;
+                            rule = SearchRule.EqualsKey;
                         else
-                            rule = SearchRule.CONTAINS_KEY;
+                            rule = SearchRule.ContainsKey;
 
                         SearchData searchContext = new SearchData()
                         {

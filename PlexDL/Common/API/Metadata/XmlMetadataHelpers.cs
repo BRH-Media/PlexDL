@@ -45,13 +45,13 @@ namespace PlexDL.Common.API.Metadata
         {
             switch (type)
             {
-                case ContentType.MOVIES:
+                case ContentType.Movies:
                     return GetContentAttribute(metadata, "Video", attributeName, defaultValue);
 
-                case ContentType.TV_SHOWS:
+                case ContentType.TvShows:
                     return GetContentAttribute(metadata, "Video", attributeName, defaultValue);
 
-                case ContentType.MUSIC:
+                case ContentType.Music:
                     return GetContentAttribute(metadata, "Track", attributeName, defaultValue);
             }
 

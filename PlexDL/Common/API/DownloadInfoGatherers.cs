@@ -31,15 +31,15 @@ namespace PlexDL.Common.API
 
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             dlRow = sections.Tables["Video"].Rows[0];
                             break;
 
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             dlRow = sections.Tables["Video"].Rows[0];
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             dlRow = sections.Tables["Track"].Rows[0];
                             break;
                     }

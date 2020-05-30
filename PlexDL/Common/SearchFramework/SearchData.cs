@@ -27,7 +27,7 @@ namespace PlexDL.Common.SearchFramework
 
         public string SearchColumn { get; set; } = "";
         public string SearchTerm { get; set; } = "";
-        public SearchRule SearchRule { get; set; } = SearchRule.CONTAINS_KEY;
+        public SearchRule SearchRule { get; set; } = SearchRule.ContainsKey;
         public DataTable SearchTable { get; set; }
     }
 }

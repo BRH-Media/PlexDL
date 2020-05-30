@@ -9,19 +9,19 @@ namespace PlexDL.Common.SearchFramework
             var sql = "";
             switch (rule)
             {
-                case SearchRule.CONTAINS_KEY:
+                case SearchRule.ContainsKey:
                     sql = column + " LIKE '%" + key + "%'";
                     break;
 
-                case SearchRule.EQUALS_KEY:
+                case SearchRule.EqualsKey:
                     sql = column + " = '" + key + "'";
                     break;
 
-                case SearchRule.BEGINS_WITH:
+                case SearchRule.BeginsWith:
                     sql = column + " LIKE '" + key + "%'";
                     break;
 
-                case SearchRule.ENDS_WITH:
+                case SearchRule.EndsWith:
                     sql = column + " LIKE '%" + key + "'";
                     break;
             }

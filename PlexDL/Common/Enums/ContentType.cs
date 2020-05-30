@@ -2,8 +2,8 @@
 {
     public enum ContentType
     {
-        TV_SHOWS,
-        MOVIES,
-        MUSIC
+        TvShows,
+        Movies,
+        Music
     }
 }

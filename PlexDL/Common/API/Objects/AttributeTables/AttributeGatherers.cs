@@ -17,14 +17,14 @@ namespace PlexDL.Common.API.Objects.AttributeTables
                 var contentType = content.GetType();
                 var moviesType = typeof(PlexMovie);
                 var musicType = typeof(PlexMusic);
-                var tvShowType = typeof(PlexTVShow);
+                var tvShowType = typeof(PlexTvShow);
 
                 if (contentType == moviesType)
                     table = MovieAttributesFromObject((PlexMovie)content, silent);
                 else if (contentType == musicType)
                     table = MusicAttributesFromObject((PlexMusic)content, silent);
                 else if (contentType == tvShowType)
-                    table = TvAttributesFromObject((PlexTVShow)content, silent);
+                    table = TvAttributesFromObject((PlexTvShow)content, silent);
             }
             catch (Exception ex)
             {

@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace PlexDL.Common.Structures.Plex
 {
     [XmlInclude(typeof(PlexMovie))]
-    [XmlInclude(typeof(PlexTVShow))]
+    [XmlInclude(typeof(PlexTvShow))]
     [XmlInclude(typeof(PlexMusic))]
     [Serializable]
     public class PlexObject

@@ -10,7 +10,7 @@ namespace PlexDL.Common.Structures
         public static readonly int PlexDLLayout = 1;
         public static readonly int NoLayout = 2;
 
-        public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(PlexTVShow show, ApplicationOptions settings, int layout)
+        public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(PlexTvShow show, ApplicationOptions settings, int layout)
         {
             var dirLayout = new TVShowDirectoryLayout();
             if (layout == PlexStandardLayout)

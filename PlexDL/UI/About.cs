@@ -23,15 +23,15 @@ namespace PlexDL.UI
 
             switch (BuildState.State)
             {
-                case DevStatus.IN_DEVLOPMENT:
+                case DevStatus.InDevelopment:
                     Text = title + " - Developer Build";
                     break;
 
-                case DevStatus.IN_BETA:
+                case DevStatus.InBeta:
                     Text = title + " - Beta Testing Build";
                     break;
 
-                case DevStatus.PRODUCTION_READY:
+                case DevStatus.ProductionReady:
                     Text = title;
                     break;
             }

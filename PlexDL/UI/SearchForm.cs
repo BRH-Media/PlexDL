@@ -113,19 +113,19 @@ namespace PlexDL.UI
                 switch (frm.cbxSearchRule.SelectedIndex)
                 {
                     case 0:
-                        result.SearchRule = SearchRule.CONTAINS_KEY;
+                        result.SearchRule = SearchRule.ContainsKey;
                         break;
 
                     case 1:
-                        result.SearchRule = SearchRule.EQUALS_KEY;
+                        result.SearchRule = SearchRule.EqualsKey;
                         break;
 
                     case 2:
-                        result.SearchRule = SearchRule.BEGINS_WITH;
+                        result.SearchRule = SearchRule.BeginsWith;
                         break;
 
                     case 3:
-                        result.SearchRule = SearchRule.ENDS_WITH;
+                        result.SearchRule = SearchRule.EndsWith;
                         break;
                 }
                 return result;

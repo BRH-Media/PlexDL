@@ -2,8 +2,8 @@
 {
     public enum DevStatus
     {
-        IN_DEVLOPMENT,
-        IN_BETA,
-        PRODUCTION_READY
+        InDevelopment,
+        InBeta,
+        ProductionReady
     }
 }

@@ -18,16 +18,16 @@ namespace PlexDL.Common.Globals
         {
             switch (GlobalStaticVars.CurrentContentType)
             {
-                case ContentType.MOVIES:
+                case ContentType.Movies:
                     return DecideFiltered();
 
-                case ContentType.MUSIC:
+                case ContentType.Music:
                     if (directTable)
                         return TracksTable;
                     else
                         return DecideFiltered();
 
-                case ContentType.TV_SHOWS:
+                case ContentType.TvShows:
                     if (directTable)
                         return EpisodesTable;
                     else

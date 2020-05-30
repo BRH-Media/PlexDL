@@ -232,15 +232,15 @@ namespace PlexDL.UI
                     GlobalStaticVars.Queue = new List<DownloadInfo>();
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             if (dgvEpisodes.SelectedRows.Count == 1) cxtEpisodes.Show(MousePosition);
                             break;
 
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             DoDownloadSelected();
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             if (dgvTracks.SelectedRows.Count == 1) cxtTracks.Show(MousePosition);
                             break;
                     }
@@ -286,7 +286,7 @@ namespace PlexDL.UI
                     PlexObject result = null;
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             if (dgvMovies.SelectedRows.Count == 1)
                                 result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
@@ -297,9 +297,9 @@ namespace PlexDL.UI
                             }
                             break;
 
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             if (dgvEpisodes.SelectedRows.Count == 1)
-                                result = (PlexTVShow)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
+                                result = (PlexTvShow)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
                                     "Getting Metadata", new object[] { false });
                             else
                             {
@@ -308,7 +308,7 @@ namespace PlexDL.UI
                             }
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             if (dgvTracks.SelectedRows.Count == 1)
                             {
                                 result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
@@ -387,14 +387,12 @@ namespace PlexDL.UI
         {
             try
             {
-                if (Directory.Exists(@"cache"))
+                if (Directory.Exists(CachingFileDir.RootCacheDirectory))
                 {
                     var result = MessageBox.Show(@"Are you sure you want to clear the cache?", @"Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        Directory.Delete(@"cache", true);
-                        MessageBox.Show(@"Successfully deleted cached data", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    if (result != DialogResult.Yes) return;
+                    Directory.Delete(CachingFileDir.RootCacheDirectory, true);
+                    MessageBox.Show(@"Successfully deleted cached data", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -485,9 +483,9 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private PlexTVShow GetTvObjectFromSelection(bool formatLinkDownload)
+        private PlexTvShow GetTvObjectFromSelection(bool formatLinkDownload)
         {
-            var obj = new PlexTVShow();
+            var obj = new PlexTvShow();
             if (dgvTVShows.SelectedRows.Count == 1 && dgvEpisodes.SelectedRows.Count == 1)
             {
                 var index = GlobalTables.GetTableIndexFromDgv(dgvEpisodes, GlobalTables.EpisodesTable);
@@ -665,15 +663,15 @@ namespace PlexDL.UI
                     PlexObject content = null;
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             content = GetMovieObjectFromSelection(formatLinkDownload);
                             break;
 
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             content = GetTvObjectFromSelection(formatLinkDownload);
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             content = GetMusicObjectFromSelection(formatLinkDownload);
                             break;
                     }
@@ -762,15 +760,15 @@ namespace PlexDL.UI
 
             switch (type)
             {
-                case ContentType.TV_SHOWS:
+                case ContentType.TvShows:
                     GlobalTables.TitlesTable = sections.Tables["Directory"];
                     break;
 
-                case ContentType.MUSIC:
+                case ContentType.Music:
                     GlobalTables.TitlesTable = sections.Tables["Directory"];
                     break;
 
-                case ContentType.MOVIES:
+                case ContentType.Movies:
                     GlobalTables.TitlesTable = sections.Tables["Video"];
                     break;
             }
@@ -793,17 +791,17 @@ namespace PlexDL.UI
 
                 switch (type)
                 {
-                    case ContentType.MOVIES:
+                    case ContentType.Movies:
                         LoggingHelpers.RecordGenericEntry("Rendering Movies");
                         RenderMoviesView(GlobalTables.TitlesTable);
                         break;
 
-                    case ContentType.TV_SHOWS:
+                    case ContentType.TvShows:
                         LoggingHelpers.RecordGenericEntry("Rendering TV Shows");
                         RenderTVView(GlobalTables.TitlesTable);
                         break;
 
-                    case ContentType.MUSIC:
+                    case ContentType.Music:
                         LoggingHelpers.RecordGenericEntry("Rendering Artists");
                         RenderArtistsView(GlobalTables.TitlesTable);
                         break;
@@ -991,17 +989,17 @@ namespace PlexDL.UI
 
                 switch (GlobalStaticVars.CurrentContentType)
                 {
-                    case ContentType.TV_SHOWS:
+                    case ContentType.TvShows:
                         LoggingHelpers.RecordGenericEntry(@"Worker is to grab TV Show metadata");
                         WkrGrabTV();
                         break;
 
-                    case ContentType.MOVIES:
+                    case ContentType.Movies:
                         LoggingHelpers.RecordGenericEntry(@"Worker is to grab Movie metadata");
                         WkrGrabMovie();
                         break;
 
-                    case ContentType.MUSIC:
+                    case ContentType.Music:
                         LoggingHelpers.RecordGenericEntry(@"Worker is to grab Music metadata");
                         WkrGrabMusic();
                         break;
@@ -1675,15 +1673,15 @@ namespace PlexDL.UI
                 {
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             RenderTVView(GlobalTables.TitlesTable);
                             break;
 
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             RenderMoviesView(GlobalTables.TitlesTable);
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             RenderArtistsView(GlobalTables.TitlesTable);
                             break;
                     }
@@ -1707,7 +1705,7 @@ namespace PlexDL.UI
 
                     switch (GlobalStaticVars.CurrentContentType)
                     {
-                        case ContentType.TV_SHOWS:
+                        case ContentType.TvShows:
                             dgv = dgvTVShows;
                             info = new RenderStruct
                             {
@@ -1717,7 +1715,7 @@ namespace PlexDL.UI
                             };
                             break;
 
-                        case ContentType.MOVIES:
+                        case ContentType.Movies:
                             dgv = dgvMovies;
                             info = new RenderStruct
                             {
@@ -1727,7 +1725,7 @@ namespace PlexDL.UI
                             };
                             break;
 
-                        case ContentType.MUSIC:
+                        case ContentType.Music:
                             dgv = dgvArtists;
                             info = new RenderStruct
                             {
@@ -1877,17 +1875,17 @@ namespace PlexDL.UI
             var green = Color.DarkGreen;
             switch (BuildState.State)
             {
-                case DevStatus.IN_DEVLOPMENT:
+                case DevStatus.InDevelopment:
                     lblBeta.ForeColor = choc;
                     lblBeta.Text = "Developer Build";
                     break;
 
-                case DevStatus.IN_BETA:
+                case DevStatus.InBeta:
                     lblBeta.ForeColor = red;
                     lblBeta.Text = "Beta Testing Build";
                     break;
 
-                case DevStatus.PRODUCTION_READY:
+                case DevStatus.ProductionReady:
                     lblBeta.ForeColor = green;
                     lblBeta.Text = "Production Build";
                     break;
@@ -2058,15 +2056,15 @@ namespace PlexDL.UI
                 switch (type)
                 {
                     case "show":
-                        UpdateFromLibraryKey(key, ContentType.TV_SHOWS);
+                        UpdateFromLibraryKey(key, ContentType.TvShows);
                         break;
 
                     case "movie":
-                        UpdateFromLibraryKey(key, ContentType.MOVIES);
+                        UpdateFromLibraryKey(key, ContentType.Movies);
                         break;
 
                     case "artist":
-                        UpdateFromLibraryKey(key, ContentType.MUSIC);
+                        UpdateFromLibraryKey(key, ContentType.Music);
                         break;
                 }
             }
@@ -2103,7 +2101,7 @@ namespace PlexDL.UI
 
             switch (GlobalStaticVars.CurrentContentType)
             {
-                case ContentType.MOVIES:
+                case ContentType.Movies:
                     if (dgvMovies.SelectedRows.Count == 1)
                     {
                         var obj = GetMovieObjectFromSelection(formatLinkDownload);
@@ -2116,7 +2114,7 @@ namespace PlexDL.UI
                     }
                     break;
 
-                case ContentType.TV_SHOWS:
+                case ContentType.TvShows:
                     if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
                     {
                         var obj = GetTvObjectFromSelection(formatLinkDownload);
@@ -2129,7 +2127,7 @@ namespace PlexDL.UI
                     }
                     break;
 
-                case ContentType.MUSIC:
+                case ContentType.Music:
                     if (dgvTracks.SelectedRows.Count == 1 && dgvArtists.SelectedRows.Count == 1)
                     {
                         var obj = GetMusicObjectFromSelection(formatLinkDownload);
@@ -2222,7 +2220,7 @@ namespace PlexDL.UI
                 //debugging
                 //MessageBox.Show(index.ToString());
 
-                if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+                if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
                 {
                     var series = XmlMetadataGatherers.GetSeriesXml(index);
                     //debugging
@@ -2241,7 +2239,7 @@ namespace PlexDL.UI
                 //debugging
                 //MessageBox.Show(index.ToString());
 
-                if (GlobalStaticVars.CurrentContentType == ContentType.MUSIC)
+                if (GlobalStaticVars.CurrentContentType == ContentType.Music)
                 {
                     var albums = XmlMetadataGatherers.GetAlbumsXml(index);
                     //debugging
@@ -2405,17 +2403,17 @@ namespace PlexDL.UI
                     {
                         switch (GlobalStaticVars.CurrentContentType)
                         {
-                            case ContentType.MOVIES:
+                            case ContentType.Movies:
                                 result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;
 
-                            case ContentType.TV_SHOWS:
+                            case ContentType.TvShows:
                                 result = (PlexObject)WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;
 
-                            case ContentType.MUSIC:
+                            case ContentType.Music:
                                 result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
                                 "Getting Metadata", new object[] { false });
                                 break;

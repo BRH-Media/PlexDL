@@ -18,7 +18,7 @@ namespace PlexDL.Common.SearchFramework
         /// <summary>
         /// The RuleID of the search method. Please check SearchRuleIDs for more information.
         /// </summary>
-        public Enums.SearchRule SearchRule { get; set; } = Enums.SearchRule.CONTAINS_KEY;
+        public Enums.SearchRule SearchRule { get; set; } = Enums.SearchRule.ContainsKey;
 
         /// <summary>
         /// Columns to include in the search. We don't want a jumbled mess of heaps of columns being shown to the user!

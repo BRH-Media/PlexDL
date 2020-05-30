@@ -8,7 +8,7 @@ namespace PlexDL.Common.API.Objects.AttributeTables
 {
     public static partial class AttributeGatherers
     {
-        public static DataTable TvAttributesFromObject(PlexTVShow content, bool silent = false)
+        public static DataTable TvAttributesFromObject(PlexTvShow content, bool silent = false)
         {
             var table = new DataTable("TvAttributes");
             var columnAttributeName = new DataColumn("Name", typeof(string));

@@ -5,6 +5,7 @@ using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -26,6 +27,9 @@ namespace PlexDL.Common.Globals
         public static string CurrentApiUri { get; set; } = "";
         public static int SessionIdLength { get; } = 10;
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(SessionIdLength);
+
+        public static string PlexDlAppData { get; } =
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\.plexdl";
 
         public static string GetToken()
         {

@@ -15,6 +15,6 @@
         /// <summary>
         /// The RuleID of the search method. Please check SearchRuleIDs for more information.
         /// </summary>
-        public Enums.SearchRule SearchRule { get; set; } = Enums.SearchRule.CONTAINS_KEY;
+        public Enums.SearchRule SearchRule { get; set; } = Enums.SearchRule.ContainsKey;
     }
 }

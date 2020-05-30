@@ -57,9 +57,9 @@ namespace PlexDL.UI
 
         private void ExportTitles()
         {
-            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
                 ExportTVTitles();
-            else if (GlobalStaticVars.CurrentContentType == ContentType.MOVIES)
+            else if (GlobalStaticVars.CurrentContentType == ContentType.Movies)
                 ExportMovies();
         }
 
@@ -78,7 +78,7 @@ namespace PlexDL.UI
 
         private void ExportSeasons()
         {
-            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
             {
                 if (radModeTable.Checked)
                     ProcessExport(GlobalTables.SeasonsTable);
@@ -91,7 +91,7 @@ namespace PlexDL.UI
 
         private void ExportEpisodes()
         {
-            if (GlobalStaticVars.CurrentContentType == ContentType.TV_SHOWS)
+            if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
             {
                 if (radModeTable.Checked)
                     ProcessExport(GlobalTables.EpisodesTable);

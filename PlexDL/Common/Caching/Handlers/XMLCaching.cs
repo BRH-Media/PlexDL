@@ -10,11 +10,11 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string XmlCachePath(string sourceUrl)
         {
-            var fileName = MD5Helper.CalculateMd5Hash(sourceUrl);
-            var accountHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
-            var cachePath = @"cache\" + accountHash + @"\" + serverHash + @"\xml";
-            var fqPath = cachePath + @"\" + fileName + CachingFileExt.ApiXmlExt;
+            var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ApiXmlExt;
+            var cachePath = CachingFileDir.XmlDirectory;
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+            var fqPath = cachePath + @"\" + fileName;
             return fqPath;
         }
 

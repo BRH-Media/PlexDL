@@ -75,6 +75,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -110,6 +111,7 @@
     <Compile Include="Common\API\Metadata\XmlMetadataHelpers.cs" />
     <Compile Include="Common\API\Metadata\XmlMetadataParsers.cs" />
     <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
+    <Compile Include="Common\Caching\CachingFileDir.cs" />
     <Compile Include="Common\Components\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,7 +141,9 @@
     <Compile Include="Common\API\XmlGet.cs" />
     <Compile Include="Common\Caching\CachingFileExt.cs" />
     <Compile Include="Common\Caching\CachingMetrics.cs" />
+    <Compile Include="Common\DataHelpers.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
+    <Compile Include="Common\Enums\StringProtectionMode.cs" />
     <Compile Include="Common\Enums\ContentType.cs" />
     <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
@@ -155,6 +159,8 @@
     <Compile Include="Common\SearchFramework\SearchData.cs" />
     <Compile Include="Common\SearchFramework\SearchResult.cs" />
     <Compile Include="Common\SearchFramework\Workers.cs" />
+    <Compile Include="Common\Security\Entropy.cs" />
+    <Compile Include="Common\Security\ProtectedString.cs" />
     <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
@@ -201,7 +207,7 @@
     <Compile Include="Common\Structures\AppOptions\GenericAppSettings.cs" />
     <Compile Include="Common\Structures\Plex\PlexMovie.cs" />
     <Compile Include="Common\Structures\Plex\PlexObject.cs" />
-    <Compile Include="Common\Structures\Plex\PlexTVShow.cs" />
+    <Compile Include="Common\Structures\Plex\PlexTvShow.cs" />
     <Compile Include="Common\Structures\Resolution.cs" />
     <Compile Include="Common\Structures\Plex\PlexActor.cs" />
     <Compile Include="Common\Components\FlatDataGridView.cs">

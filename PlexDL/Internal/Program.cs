@@ -21,9 +21,13 @@ namespace PlexDL.Internal
         private static void Main(string[] args)
         {
             List<string> arr = args.ToList();
+
             VisualStyles(arr);
             CheckDevStatus(arr);
             CheckDebug(arr);
+
+            //check if the %APPDATA%\.plexdl folder is present. If it isn't then create it.
+            CheckAppDataFolder();
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler.CriticalExceptionHandler;
@@ -49,7 +53,7 @@ namespace PlexDL.Internal
                         RunMetadataWindow(metadata);
                     }
                     else
-                        MessageBox.Show("PlexDL doesn't recognise this file-type: '" + ext + "'", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(@"PlexDL doesn't recognise this file-type: '" + ext + @"'", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -90,19 +94,22 @@ namespace PlexDL.Internal
         private static void CheckDevStatus(List<string> args)
         {
             if (args.Contains("-beta"))
-                BuildState.State = DevStatus.IN_BETA;
+                BuildState.State = DevStatus.InBeta;
             else if (args.Contains("-prod"))
-                BuildState.State = DevStatus.PRODUCTION_READY;
+                BuildState.State = DevStatus.ProductionReady;
             else if (args.Contains("-dev"))
-                BuildState.State = DevStatus.IN_DEVLOPMENT;
+                BuildState.State = DevStatus.InDevelopment;
         }
 
         private static void CheckDebug(List<string> args)
         {
-            if (args.Contains("-debug"))
-                Common.Flags.IsDebug = true;
-            else
-                Common.Flags.IsDebug = false;
+            Common.Flags.IsDebug = args.Contains("-debug");
+        }
+
+        private static void CheckAppDataFolder()
+        {
+            if (!Directory.Exists(GlobalStaticVars.PlexDlAppData))
+                Directory.CreateDirectory(GlobalStaticVars.PlexDlAppData);
         }
     }
 }

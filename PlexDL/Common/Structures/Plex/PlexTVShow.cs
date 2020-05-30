@@ -3,7 +3,7 @@
 namespace PlexDL.Common.Structures.Plex
 {
     [Serializable]
-    public class PlexTVShow : PlexObject
+    public class PlexTvShow : PlexObject
     {
         public string TvShowName { get; set; } = "";
         public string Season { get; set; } = "";
