@@ -368,7 +368,7 @@ namespace PlexDL.UI
 
         private void itmCacheMetrics_Click(object sender, EventArgs e)
         {
-            using (var frm = new CachingMetricsUI())
+            using (var frm = new CachingMetricsUi())
             {
                 frm.Metrics = CachingMetrics.FromLatest();
                 frm.ShowDialog();

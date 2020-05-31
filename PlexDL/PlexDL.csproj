@@ -265,11 +265,11 @@
     <Compile Include="UI\Authenticate.Designer.cs">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CachingMetricsUI.cs">
+    <Compile Include="UI\CachingMetricsUi.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CachingMetricsUI.Designer.cs">
-      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
+    <Compile Include="UI\CachingMetricsUi.Designer.cs">
+      <DependentUpon>CachingMetricsUi.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Debug.cs">
       <SubType>Form</SubType>
@@ -355,8 +355,8 @@
     <EmbeddedResource Include="UI\Authenticate.resx">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CachingMetricsUI.resx">
-      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
+    <EmbeddedResource Include="UI\CachingMetricsUi.resx">
+      <DependentUpon>CachingMetricsUi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Debug.resx">
       <DependentUpon>Debug.cs</DependentUpon>

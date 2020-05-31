@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    partial class CachingMetricsUI
+    partial class CachingMetricsUi
     {
         /// <summary>
         /// Required designer variable.
@@ -31,73 +31,56 @@ namespace PlexDL.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CachingMetricsUI));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CachingMetricsUi));
             this.gbServerLists = new System.Windows.Forms.GroupBox();
-            this.lblNumberServerLists = new System.Windows.Forms.Label();
-            this.lblNumberServerListsValue = new System.Windows.Forms.Label();
             this.tlpServerLists = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSizeServerLists = new System.Windows.Forms.Label();
             this.lblSizeServerListsValue = new System.Windows.Forms.Label();
+            this.lblSizeServerLists = new System.Windows.Forms.Label();
+            this.lblNumberServerListsValue = new System.Windows.Forms.Label();
+            this.lblNumberServerLists = new System.Windows.Forms.Label();
             this.gbThumbails = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpImages = new System.Windows.Forms.TableLayoutPanel();
             this.lblSizeThumbsCachedValue = new System.Windows.Forms.Label();
             this.lblSizeThumbsCached = new System.Windows.Forms.Label();
             this.lblNumberThumbsCachedValue = new System.Windows.Forms.Label();
             this.lblNumberThumbsCached = new System.Windows.Forms.Label();
             this.gbApiXml = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpXmlApi = new System.Windows.Forms.TableLayoutPanel();
             this.lblSizeXmlCachedValue = new System.Windows.Forms.Label();
             this.lblSizeXmlCached = new System.Windows.Forms.Label();
             this.lblNumberXmlCachedValue = new System.Windows.Forms.Label();
             this.lblNumberXmlCached = new System.Windows.Forms.Label();
             this.gbTotal = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTotal = new System.Windows.Forms.TableLayoutPanel();
             this.lblTotalSizeCachedValue = new System.Windows.Forms.Label();
             this.lblTotalSizeCached = new System.Windows.Forms.Label();
             this.lblTotalAmountCachedValue = new System.Windows.Forms.Label();
             this.lblTotalAmountCached = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
+            this.gbCachingDir = new System.Windows.Forms.GroupBox();
+            this.tlpCachingDir = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCachingDir = new System.Windows.Forms.Label();
             this.gbServerLists.SuspendLayout();
             this.tlpServerLists.SuspendLayout();
             this.gbThumbails.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tlpImages.SuspendLayout();
             this.gbApiXml.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tlpXmlApi.SuspendLayout();
             this.gbTotal.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.tlpTotal.SuspendLayout();
+            this.gbCachingDir.SuspendLayout();
+            this.tlpCachingDir.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbServerLists
             // 
             this.gbServerLists.Controls.Add(this.tlpServerLists);
-            this.gbServerLists.Location = new System.Drawing.Point(13, 13);
+            this.gbServerLists.Location = new System.Drawing.Point(13, 80);
             this.gbServerLists.Name = "gbServerLists";
             this.gbServerLists.Size = new System.Drawing.Size(364, 62);
             this.gbServerLists.TabIndex = 0;
             this.gbServerLists.TabStop = false;
             this.gbServerLists.Text = "Server Lists";
-            // 
-            // lblNumberServerLists
-            // 
-            this.lblNumberServerLists.AutoSize = true;
-            this.lblNumberServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNumberServerLists.Location = new System.Drawing.Point(3, 0);
-            this.lblNumberServerLists.Name = "lblNumberServerLists";
-            this.lblNumberServerLists.Size = new System.Drawing.Size(173, 21);
-            this.lblNumberServerLists.TabIndex = 1;
-            this.lblNumberServerLists.Text = "Amount Cached:";
-            this.lblNumberServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblNumberServerListsValue
-            // 
-            this.lblNumberServerListsValue.AutoSize = true;
-            this.lblNumberServerListsValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNumberServerListsValue.Location = new System.Drawing.Point(182, 0);
-            this.lblNumberServerListsValue.Name = "lblNumberServerListsValue";
-            this.lblNumberServerListsValue.Size = new System.Drawing.Size(173, 21);
-            this.lblNumberServerListsValue.TabIndex = 2;
-            this.lblNumberServerListsValue.Text = "[NUMBER]";
-            this.lblNumberServerListsValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tlpServerLists
             // 
@@ -117,17 +100,6 @@ namespace PlexDL.UI
             this.tlpServerLists.Size = new System.Drawing.Size(358, 43);
             this.tlpServerLists.TabIndex = 1;
             // 
-            // lblSizeServerLists
-            // 
-            this.lblSizeServerLists.AutoSize = true;
-            this.lblSizeServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeServerLists.Location = new System.Drawing.Point(3, 21);
-            this.lblSizeServerLists.Name = "lblSizeServerLists";
-            this.lblSizeServerLists.Size = new System.Drawing.Size(173, 22);
-            this.lblSizeServerLists.TabIndex = 3;
-            this.lblSizeServerLists.Text = "Size:";
-            this.lblSizeServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblSizeServerListsValue
             // 
             this.lblSizeServerListsValue.AutoSize = true;
@@ -139,33 +111,66 @@ namespace PlexDL.UI
             this.lblSizeServerListsValue.Text = "[SIZE]";
             this.lblSizeServerListsValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblSizeServerLists
+            // 
+            this.lblSizeServerLists.AutoSize = true;
+            this.lblSizeServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSizeServerLists.Location = new System.Drawing.Point(3, 21);
+            this.lblSizeServerLists.Name = "lblSizeServerLists";
+            this.lblSizeServerLists.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeServerLists.TabIndex = 3;
+            this.lblSizeServerLists.Text = "Size:";
+            this.lblSizeServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblNumberServerListsValue
+            // 
+            this.lblNumberServerListsValue.AutoSize = true;
+            this.lblNumberServerListsValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNumberServerListsValue.Location = new System.Drawing.Point(182, 0);
+            this.lblNumberServerListsValue.Name = "lblNumberServerListsValue";
+            this.lblNumberServerListsValue.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberServerListsValue.TabIndex = 2;
+            this.lblNumberServerListsValue.Text = "[NUMBER]";
+            this.lblNumberServerListsValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblNumberServerLists
+            // 
+            this.lblNumberServerLists.AutoSize = true;
+            this.lblNumberServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNumberServerLists.Location = new System.Drawing.Point(3, 0);
+            this.lblNumberServerLists.Name = "lblNumberServerLists";
+            this.lblNumberServerLists.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberServerLists.TabIndex = 1;
+            this.lblNumberServerLists.Text = "Amount Cached:";
+            this.lblNumberServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // gbThumbails
             // 
-            this.gbThumbails.Controls.Add(this.tableLayoutPanel1);
-            this.gbThumbails.Location = new System.Drawing.Point(13, 81);
+            this.gbThumbails.Controls.Add(this.tlpImages);
+            this.gbThumbails.Location = new System.Drawing.Point(13, 148);
             this.gbThumbails.Name = "gbThumbails";
             this.gbThumbails.Size = new System.Drawing.Size(364, 62);
             this.gbThumbails.TabIndex = 2;
             this.gbThumbails.TabStop = false;
             this.gbThumbails.Text = "Images";
             // 
-            // tableLayoutPanel1
+            // tlpImages
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.lblSizeThumbsCachedValue, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.lblSizeThumbsCached, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.lblNumberThumbsCachedValue, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblNumberThumbsCached, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(358, 43);
-            this.tableLayoutPanel1.TabIndex = 1;
+            this.tlpImages.ColumnCount = 2;
+            this.tlpImages.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpImages.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpImages.Controls.Add(this.lblSizeThumbsCachedValue, 1, 1);
+            this.tlpImages.Controls.Add(this.lblSizeThumbsCached, 0, 1);
+            this.tlpImages.Controls.Add(this.lblNumberThumbsCachedValue, 1, 0);
+            this.tlpImages.Controls.Add(this.lblNumberThumbsCached, 0, 0);
+            this.tlpImages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpImages.Location = new System.Drawing.Point(3, 16);
+            this.tlpImages.Name = "tlpImages";
+            this.tlpImages.RowCount = 2;
+            this.tlpImages.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpImages.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpImages.Size = new System.Drawing.Size(358, 43);
+            this.tlpImages.TabIndex = 1;
             // 
             // lblSizeThumbsCachedValue
             // 
@@ -213,31 +218,31 @@ namespace PlexDL.UI
             // 
             // gbApiXml
             // 
-            this.gbApiXml.Controls.Add(this.tableLayoutPanel2);
-            this.gbApiXml.Location = new System.Drawing.Point(13, 149);
+            this.gbApiXml.Controls.Add(this.tlpXmlApi);
+            this.gbApiXml.Location = new System.Drawing.Point(13, 216);
             this.gbApiXml.Name = "gbApiXml";
             this.gbApiXml.Size = new System.Drawing.Size(364, 62);
             this.gbApiXml.TabIndex = 3;
             this.gbApiXml.TabStop = false;
             this.gbApiXml.Text = "XML API Data";
             // 
-            // tableLayoutPanel2
+            // tlpXmlApi
             // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.lblSizeXmlCachedValue, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.lblSizeXmlCached, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.lblNumberXmlCachedValue, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblNumberXmlCached, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(358, 43);
-            this.tableLayoutPanel2.TabIndex = 1;
+            this.tlpXmlApi.ColumnCount = 2;
+            this.tlpXmlApi.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpXmlApi.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpXmlApi.Controls.Add(this.lblSizeXmlCachedValue, 1, 1);
+            this.tlpXmlApi.Controls.Add(this.lblSizeXmlCached, 0, 1);
+            this.tlpXmlApi.Controls.Add(this.lblNumberXmlCachedValue, 1, 0);
+            this.tlpXmlApi.Controls.Add(this.lblNumberXmlCached, 0, 0);
+            this.tlpXmlApi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpXmlApi.Location = new System.Drawing.Point(3, 16);
+            this.tlpXmlApi.Name = "tlpXmlApi";
+            this.tlpXmlApi.RowCount = 2;
+            this.tlpXmlApi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpXmlApi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpXmlApi.Size = new System.Drawing.Size(358, 43);
+            this.tlpXmlApi.TabIndex = 1;
             // 
             // lblSizeXmlCachedValue
             // 
@@ -285,31 +290,31 @@ namespace PlexDL.UI
             // 
             // gbTotal
             // 
-            this.gbTotal.Controls.Add(this.tableLayoutPanel3);
-            this.gbTotal.Location = new System.Drawing.Point(13, 217);
+            this.gbTotal.Controls.Add(this.tlpTotal);
+            this.gbTotal.Location = new System.Drawing.Point(13, 284);
             this.gbTotal.Name = "gbTotal";
             this.gbTotal.Size = new System.Drawing.Size(364, 62);
             this.gbTotal.TabIndex = 4;
             this.gbTotal.TabStop = false;
             this.gbTotal.Text = "Total";
             // 
-            // tableLayoutPanel3
+            // tlpTotal
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.lblTotalSizeCachedValue, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.lblTotalSizeCached, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.lblTotalAmountCachedValue, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.lblTotalAmountCached, 0, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(358, 43);
-            this.tableLayoutPanel3.TabIndex = 1;
+            this.tlpTotal.ColumnCount = 2;
+            this.tlpTotal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTotal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTotal.Controls.Add(this.lblTotalSizeCachedValue, 1, 1);
+            this.tlpTotal.Controls.Add(this.lblTotalSizeCached, 0, 1);
+            this.tlpTotal.Controls.Add(this.lblTotalAmountCachedValue, 1, 0);
+            this.tlpTotal.Controls.Add(this.lblTotalAmountCached, 0, 0);
+            this.tlpTotal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTotal.Location = new System.Drawing.Point(3, 16);
+            this.tlpTotal.Name = "tlpTotal";
+            this.tlpTotal.RowCount = 2;
+            this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTotal.Size = new System.Drawing.Size(358, 43);
+            this.tlpTotal.TabIndex = 1;
             // 
             // lblTotalSizeCachedValue
             // 
@@ -358,7 +363,7 @@ namespace PlexDL.UI
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(13, 285);
+            this.btnOK.Location = new System.Drawing.Point(13, 352);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(364, 23);
             this.btnOK.TabIndex = 5;
@@ -366,12 +371,49 @@ namespace PlexDL.UI
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // gbCachingDir
+            // 
+            this.gbCachingDir.Controls.Add(this.tlpCachingDir);
+            this.gbCachingDir.Location = new System.Drawing.Point(13, 12);
+            this.gbCachingDir.Name = "gbCachingDir";
+            this.gbCachingDir.Size = new System.Drawing.Size(364, 62);
+            this.gbCachingDir.TabIndex = 2;
+            this.gbCachingDir.TabStop = false;
+            this.gbCachingDir.Text = "Cached Data Location";
+            // 
+            // tlpCachingDir
+            // 
+            this.tlpCachingDir.ColumnCount = 1;
+            this.tlpCachingDir.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCachingDir.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCachingDir.Controls.Add(this.lblCachingDir, 0, 0);
+            this.tlpCachingDir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpCachingDir.Location = new System.Drawing.Point(3, 16);
+            this.tlpCachingDir.Name = "tlpCachingDir";
+            this.tlpCachingDir.RowCount = 1;
+            this.tlpCachingDir.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCachingDir.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCachingDir.Size = new System.Drawing.Size(358, 43);
+            this.tlpCachingDir.TabIndex = 1;
+            // 
+            // lblCachingDir
+            // 
+            this.lblCachingDir.AutoSize = true;
+            this.lblCachingDir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCachingDir.Location = new System.Drawing.Point(3, 0);
+            this.lblCachingDir.Name = "lblCachingDir";
+            this.lblCachingDir.Size = new System.Drawing.Size(352, 43);
+            this.lblCachingDir.TabIndex = 1;
+            this.lblCachingDir.Text = "[DIRECTORY]";
+            this.lblCachingDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // CachingMetricsUI
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 321);
+            this.ClientSize = new System.Drawing.Size(392, 390);
+            this.Controls.Add(this.gbCachingDir);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.gbTotal);
             this.Controls.Add(this.gbApiXml);
@@ -389,14 +431,17 @@ namespace PlexDL.UI
             this.tlpServerLists.ResumeLayout(false);
             this.tlpServerLists.PerformLayout();
             this.gbThumbails.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tlpImages.ResumeLayout(false);
+            this.tlpImages.PerformLayout();
             this.gbApiXml.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
+            this.tlpXmlApi.ResumeLayout(false);
+            this.tlpXmlApi.PerformLayout();
             this.gbTotal.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
+            this.tlpTotal.ResumeLayout(false);
+            this.tlpTotal.PerformLayout();
+            this.gbCachingDir.ResumeLayout(false);
+            this.tlpCachingDir.ResumeLayout(false);
+            this.tlpCachingDir.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -410,23 +455,26 @@ namespace PlexDL.UI
         private Label lblSizeServerListsValue;
         private Label lblSizeServerLists;
         private GroupBox gbThumbails;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tlpImages;
         private Label lblSizeThumbsCachedValue;
         private Label lblSizeThumbsCached;
         private Label lblNumberThumbsCachedValue;
         private Label lblNumberThumbsCached;
         private GroupBox gbApiXml;
-        private TableLayoutPanel tableLayoutPanel2;
+        private TableLayoutPanel tlpXmlApi;
         private Label lblSizeXmlCachedValue;
         private Label lblSizeXmlCached;
         private Label lblNumberXmlCachedValue;
         private Label lblNumberXmlCached;
         private GroupBox gbTotal;
-        private TableLayoutPanel tableLayoutPanel3;
+        private TableLayoutPanel tlpTotal;
         private Label lblTotalSizeCachedValue;
         private Label lblTotalSizeCached;
         private Label lblTotalAmountCachedValue;
         private Label lblTotalAmountCached;
         private Button btnOK;
+        private GroupBox gbCachingDir;
+        private TableLayoutPanel tlpCachingDir;
+        private Label lblCachingDir;
     }
 }

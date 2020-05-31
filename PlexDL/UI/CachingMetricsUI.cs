@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class CachingMetricsUI : Form
+    public partial class CachingMetricsUi : Form
     {
-        public CachingMetricsUI()
+        public CachingMetricsUi()
         {
             InitializeComponent();
         }
@@ -23,6 +23,9 @@ namespace PlexDL.UI
         {
             try
             {
+                //CACHING DATA LOCATION
+                lblCachingDir.Text = CachingFileDir.RootCacheDirectory;
+
                 //SERVER LISTS
                 lblNumberServerListsValue.Text = Metrics.SERVER_LISTS.ToString();
                 lblSizeServerListsValue.Text = Metrics.ServerListsSize();
@@ -43,7 +46,7 @@ namespace PlexDL.UI
             {
                 //log then inform user before exiting
                 LoggingHelpers.RecordException(ex.Message, "CacheMetricsLoadError");
-                MessageBox.Show("There was an error whilst loading caching metrics:\n\n" + ex, "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was an error whilst loading caching metrics:\n\n" + ex, @"Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
             }
         }
