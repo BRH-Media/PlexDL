@@ -40,7 +40,7 @@ namespace LogDel
                     var intRowCount = 0;
 
                     //headers in .logdel files are ALWAYS the first line in the file.
-                    //they begin with ### (three hashtags), and are separated by ! (exclamation mark)
+                    //they begin with ### (three hash tags), and are separated by ! (exclamation mark)
                     //we need a way of knowing if the loop has already parsed headers, so if it has,
                     //this will be set to true.
                     var headersFound = false;
@@ -118,7 +118,7 @@ namespace LogDel
                             //split row 1 (where we are currently at, and the header row) at the '!' delimiter.
                             var arrSplit = line.Split('!');
 
-                            //Remove hashtags from the first cell (header indicator)
+                            //Remove hash tags from the first cell (header indicator)
                             arrSplit[0] = arrSplit[0].Remove(0, 3);
 
                             //Add headers to table

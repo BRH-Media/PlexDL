@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace LogDel.Utilities
 {

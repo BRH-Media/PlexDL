@@ -54,6 +54,7 @@
     <Compile Include="Utilities\JsonUtility.cs" />
     <Compile Include="Utilities\LdUtility.cs" />
     <Compile Include="Utilities\XmlUtility.cs" />
+    <Compile Include="Vars.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

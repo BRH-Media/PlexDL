@@ -14,11 +14,13 @@ namespace PlexDL.UI
 {
     public partial class LogViewer : Form
     {
-        public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
-        private bool IsFiltered;
+        public string LogDir { get; set; } = Vars.LogDirectory;
+        private bool _isFiltered;
 
-        private DataTable logFiltered;
-        private DataTable logRecords;
+#pragma warning disable 414
+        private DataTable _logFiltered;
+#pragma warning restore 414
+        private DataTable _logRecords;
 
         public LogViewer()
         {
@@ -33,8 +35,8 @@ namespace PlexDL.UI
                 if (lstLogFiles.SelectedItem != null)
                     already = lstLogFiles.SelectedIndex;
                 lstLogFiles.Items.Clear();
-                if (Directory.Exists("Logs"))
-                    foreach (var file in Directory.GetFiles("Logs"))
+                if (Directory.Exists(LogDir))
+                    foreach (var file in Directory.GetFiles(LogDir))
                         if (string.Equals(Path.GetExtension(file).ToLower() ?? "", ".log") ||
                             string.Equals(Path.GetExtension(file).ToLower() ?? "", ".logdel"))
                             lstLogFiles.Items.Add(Path.GetFileName(file));
@@ -78,26 +80,25 @@ namespace PlexDL.UI
 
         private DataTable TableFromSelected()
         {
-            return LogReader.TableFromFile(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex], false);
+            return LogReader.TableFromFile($"{LogDir}\\{lstLogFiles.Items[lstLogFiles.SelectedIndex]}", false);
         }
 
         private void DoLoadFromSelected()
         {
             try
             {
-                if (lstLogFiles.SelectedIndex > -1)
-                {
-                    var table = TableFromSelected();
-                    if (table != null)
-                    {
-                        dgvMain.DataSource = table;
-                        logRecords = table;
-                    }
-                }
+                if (lstLogFiles.SelectedIndex <= -1) return;
+
+                var table = TableFromSelected();
+
+                if (table == null) return;
+
+                dgvMain.DataSource = table;
+                _logRecords = table;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred whilst loading the log file. Details:\n\n" + ex, "Data Error", MessageBoxButtons.OK,
+                MessageBox.Show("An error occurred whilst loading the log file. Details:\n\n" + ex, @"Data Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 dgvMain.DataSource = null;
             }
@@ -120,14 +121,14 @@ namespace PlexDL.UI
         private void CancelSearch()
         {
             //Globals set
-            IsFiltered = false;
-            logFiltered = null;
+            _isFiltered = false;
+            _logFiltered = null;
 
             //GUI set
             GUISetStopSearch();
 
             //Reset grid back to full log
-            dgvMain.DataSource = logRecords;
+            dgvMain.DataSource = _logRecords;
         }
 
         private void GUISetStartSearch()
@@ -146,7 +147,7 @@ namespace PlexDL.UI
 
         private void itmSearchTerm_Click(object sender, EventArgs e)
         {
-            if (IsFiltered)
+            if (_isFiltered)
             {
                 CancelSearch();
             }
@@ -200,13 +201,13 @@ namespace PlexDL.UI
         {
             try
             {
-                if (Directory.Exists(dir))
+                if (Directory.Exists(LogDir))
                 {
                     if (sfdBackup.ShowDialog() == DialogResult.OK)
                     {
                         if (File.Exists(sfdBackup.FileName))
                             File.Delete(sfdBackup.FileName);
-                        ZipFile.CreateFromDirectory(dir, sfdBackup.FileName, CompressionLevel.Optimal, false);
+                        ZipFile.CreateFromDirectory(LogDir, sfdBackup.FileName, CompressionLevel.Optimal, false);
                         MessageBox.Show(@"Successfully backed up logs to " + sfdBackup.FileName, @"Message", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                     }
@@ -231,7 +232,7 @@ namespace PlexDL.UI
             {
                 if (lstLogFiles.SelectedIndex > -1)
                 {
-                    string sel = dir + @"\" + lstLogFiles.SelectedItem;
+                    string sel = LogDir + @"\" + lstLogFiles.SelectedItem;
                     if (File.Exists(sel))
                     {
                         if (sfdExportCsv.ShowDialog() == DialogResult.OK)
@@ -261,7 +262,7 @@ namespace PlexDL.UI
             {
                 if (lstLogFiles.SelectedIndex > -1)
                 {
-                    string sel = dir + @"\" + lstLogFiles.SelectedItem;
+                    string sel = LogDir + @"\" + lstLogFiles.SelectedItem;
                     if (File.Exists(sel))
                     {
                         if (sfdExportJson.ShowDialog() == DialogResult.OK)
@@ -308,13 +309,13 @@ namespace PlexDL.UI
                         {
                             SearchColumn = "SessionID",
                             SearchRule = rule,
-                            SearchTable = logRecords,
+                            SearchTable = _logRecords,
                             SearchTerm = sessionId
                         };
 
                         if (Search.RunTitleSearch(dgvMain, searchContext))
                         {
-                            IsFiltered = true;
+                            _isFiltered = true;
                             GUISetStartSearch();
                         }
                         else
@@ -343,9 +344,9 @@ namespace PlexDL.UI
             {
                 if (dgvMain.Rows.Count > 0)
                 {
-                    if (Search.RunTitleSearch(dgvMain, logRecords))
+                    if (Search.RunTitleSearch(dgvMain, _logRecords))
                     {
-                        IsFiltered = true;
+                        _isFiltered = true;
                         GUISetStartSearch();
                     }
                     else
@@ -369,15 +370,15 @@ namespace PlexDL.UI
 
         private bool SessionIdPresent()
         {
-            if (logRecords != null)
-                return logRecords.Columns.Contains("SessionID");
+            if (_logRecords != null)
+                return _logRecords.Columns.Contains("SessionID");
             else
                 return false;
         }
 
         private void itmCancelSearch_Click(object sender, EventArgs e)
         {
-            if (IsFiltered)
+            if (_isFiltered)
                 CancelSearch();
         }
     }

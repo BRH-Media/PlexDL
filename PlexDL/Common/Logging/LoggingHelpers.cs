@@ -7,25 +7,25 @@ namespace PlexDL.Common.Logging
 {
     public static class LoggingHelpers
     {
-        private static int logIncrementer;
+        private static int _logIncrementer;
 
         public static void RecordGenericEntry(string logEntry)
         {
             try
             {
-                logIncrementer++;
+                _logIncrementer++;
                 string[] headers =
                 {
-                    "SessionID","EntryID", "DateTime", "Entry"
+                    "EntryID", "SessionID", "DateTime", "Event"
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
+                    GlobalStaticVars.CurrentSessionId, _logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
                 };
                 if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
                     LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
             }
-            catch (Exception ex)
+            catch
             {
                 //for debugging only!
                 //MessageBox.Show(ex);
@@ -37,6 +37,8 @@ namespace PlexDL.Common.Logging
         {
             try
             {
+                if (!GlobalStaticVars.Settings.Logging.EnableCacheLogDel) return;
+
                 string[] headers =
                 {
                     "SessionID", "RequestedURL", "DateTime", "Entry"
@@ -45,10 +47,10 @@ namespace PlexDL.Common.Logging
                 {
                     GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), eventEntry
                 };
-                if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
-                    LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
+
+                LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
             }
-            catch (Exception ex)
+            catch
             {
                 //for debugging only!
                 //MessageBox.Show(ex);
@@ -63,20 +65,19 @@ namespace PlexDL.Common.Logging
                 ////Options weren't too great performance-wise, so I ended up using a stack-walk.
                 ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
                 ////The in-app setting to prevent this method from firing.
-                if (GlobalStaticVars.Settings.Logging.EnableExceptionLogDel)
+                if (!GlobalStaticVars.Settings.Logging.EnableExceptionLogDel) return;
+
+                var stackTrace = new StackTrace();
+                var function = stackTrace.GetFrame(1).GetMethod().Name;
+                string[] headers =
                 {
-                    var stackTrace = new StackTrace();
-                    var function = stackTrace.GetFrame(1).GetMethod().Name;
-                    string[] headers =
-                    {
-                        "SessionID", "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType"
-                    };
-                    string[] LogEntry =
-                    {
-                        GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), message, function, type
-                    };
-                    LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
-                }
+                    "SessionID", "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType"
+                };
+                string[] LogEntry =
+                {
+                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), message, function, type
+                };
+                LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
             }
             catch
             {
@@ -88,18 +89,17 @@ namespace PlexDL.Common.Logging
         {
             try
             {
-                if (GlobalStaticVars.Settings.Logging.EnableXMLTransactionLogDel)
+                if (!GlobalStaticVars.Settings.Logging.EnableXmlTransactionLogDel) return;
+
+                string[] headers =
                 {
-                    string[] headers =
-                    {
-                        "SessionID","DateTime", "Uri", "StatusCode"
-                    };
-                    string[] LogEntry =
-                    {
-                        GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), uri, statusCode
-                    };
-                    LogWriter.LogDelWriter("TransactionLog.logdel", headers, LogEntry);
-                }
+                    "SessionID","DateTime", "Uri", "StatusCode"
+                };
+                string[] LogEntry =
+                {
+                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), uri, statusCode
+                };
+                LogWriter.LogDelWriter("TransactionLog.logdel", headers, LogEntry);
             }
             catch
             {
