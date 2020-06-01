@@ -2491,5 +2491,38 @@ namespace PlexDL.UI
             cxtTrackOptions.Close();
             Metadata();
         }
+
+        private void itmCleanupAllData_Click(object sender, EventArgs e)
+        {
+            //check if the AppData .plexdl folder actually exists
+            if (Directory.Exists(GlobalStaticVars.PlexDlAppData))
+            {
+                var ask = MessageBox.Show(
+                    @"Are you sure you want to do this? This will remove all logging, caching and secure data.",
+                    @"Cleanup Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                //if they clicked anything other than 'Yes' on the message above, then exit the method.
+                if (!Equals(ask, DialogResult.Yes)) return;
+
+                try
+                {
+                    //Try and delete the .plexdl AppData folder and all its subfolders and files
+                    Directory.Delete(GlobalStaticVars.PlexDlAppData, true);
+
+                    //alert user of the success
+                    MessageBox.Show(
+                        "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also.\n\nNote: This event has not been logged.",
+                        @"Cleanup Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    ShowError("Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
+                        @"Cleanup Failed");
+                }
+            }
+            else
+                ShowError(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
+                    @"Cleanup Failed");
+        }
     }
 }
