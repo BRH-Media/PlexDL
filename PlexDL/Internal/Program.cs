@@ -20,11 +20,15 @@ namespace PlexDL.Internal
         [STAThread]
         private static void Main(string[] args)
         {
-            List<string> arr = args.ToList();
+            var arr = args.ToList();
 
+            //setup arguments and their associated actions
             VisualStyles(arr);
             CheckDevStatus(arr);
             CheckDebug(arr);
+
+            //set default values
+            //GlobalStaticVars.PlexDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
 
             //check if the %APPDATA%\.plexdl folder is present. If it isn't then create it.
             CheckAppDataFolder();
@@ -78,7 +82,7 @@ namespace PlexDL.Internal
                 Application.Run(form);
             }
             else
-                MessageBox.Show("Invalid PlexMovie Metadata File; the decoded data was null.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Invalid PlexMovie Metadata File; the decoded data was null.", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private static void VisualStyles(List<string> args)

@@ -1960,12 +1960,15 @@ namespace PlexDL.UI
                     GlobalStaticVars.DebugForm.Show();
                 }
 
-                
+                //MessageBox.Show(GlobalStaticVars.PlexDlAppData);
+                //CachingFileDir.RootCacheDirectory = $"{GlobalStaticVars.PlexDlAppData}\\caching";
 
                 SetSessionId();
                 LoadDevStatus();
                 ResetDownloadDirectory();
                 LoggingHelpers.RecordGenericEntry("PlexDL Started");
+                LoggingHelpers.RecordGenericEntry($"Data location: {GlobalStaticVars.PlexDlAppData}");
+                LoggingHelpers.RecordCacheEvent($"Using cache directory: {CachingFileDir.RootCacheDirectory}", "N/A");
             }
             catch (Exception ex)
             {

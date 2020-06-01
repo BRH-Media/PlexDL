@@ -28,7 +28,10 @@ namespace PlexDL.Common.Globals
         public static int SessionIdLength { get; } = 10;
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(SessionIdLength);
 
-        public static string PlexDlAppData { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
+        public static string UserAppData { get; set; } =
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+        public static string PlexDlAppData { get; set; } = $"{UserAppData}\\.plexdl";
 
         public static string GetToken()
         {
