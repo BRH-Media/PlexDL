@@ -2494,6 +2494,10 @@ namespace PlexDL.UI
 
         private void itmCleanupAllData_Click(object sender, EventArgs e)
         {
+            DoCleanup();
+        }
+        
+        private void DoCleanup() {
             //check if the AppData .plexdl folder actually exists
             if (Directory.Exists(GlobalStaticVars.PlexDlAppData))
             {
