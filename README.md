@@ -15,9 +15,9 @@ PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gath
 ### Performance?
 PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
-It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `~\cache` of your `PlexDL.exe` location. The structure of the caching folder is as follows:
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the caching folder is as follows:
 ```
-\cache                                -- Root Folder
+\caching                              -- Root Folder
 └───\%TOKEN_HASH%                     -- MD5 of account token
     ├──\%SERVER_HASH%                 -- MD5 of server IP
     │  ├───\thumb                     -- Cached images with *.thumb filename
