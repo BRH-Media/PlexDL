@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
             this.tlpDebug = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -58,6 +58,8 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
+            this.btnExportAlbums = new System.Windows.Forms.Button();
+            this.btnExportTracks = new System.Windows.Forms.Button();
             this.tlpDebug.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbExportFormat.SuspendLayout();
@@ -121,9 +123,9 @@
             // gbExportFormat
             // 
             this.gbExportFormat.Controls.Add(this.cbxExportFormat);
-            this.gbExportFormat.Location = new System.Drawing.Point(6, 189);
+            this.gbExportFormat.Location = new System.Drawing.Point(6, 248);
             this.gbExportFormat.Name = "gbExportFormat";
-            this.gbExportFormat.Size = new System.Drawing.Size(204, 49);
+            this.gbExportFormat.Size = new System.Drawing.Size(207, 49);
             this.gbExportFormat.TabIndex = 9;
             this.gbExportFormat.TabStop = false;
             this.gbExportFormat.Text = "Export Format";
@@ -139,15 +141,15 @@
             "LOGDEL"});
             this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
             this.cbxExportFormat.Name = "cbxExportFormat";
-            this.cbxExportFormat.Size = new System.Drawing.Size(192, 21);
+            this.cbxExportFormat.Size = new System.Drawing.Size(195, 21);
             this.cbxExportFormat.TabIndex = 0;
             // 
             // gbExportMode
             // 
             this.gbExportMode.Controls.Add(this.pnlExportMode);
-            this.gbExportMode.Location = new System.Drawing.Point(6, 251);
+            this.gbExportMode.Location = new System.Drawing.Point(6, 303);
             this.gbExportMode.Name = "gbExportMode";
-            this.gbExportMode.Size = new System.Drawing.Size(204, 49);
+            this.gbExportMode.Size = new System.Drawing.Size(207, 49);
             this.gbExportMode.TabIndex = 8;
             this.gbExportMode.TabStop = false;
             this.gbExportMode.Text = "Export Mode";
@@ -185,6 +187,8 @@
             // 
             // gbDataExport
             // 
+            this.gbDataExport.Controls.Add(this.btnExportTracks);
+            this.gbDataExport.Controls.Add(this.btnExportAlbums);
             this.gbDataExport.Controls.Add(this.btnExportFiltered);
             this.gbDataExport.Controls.Add(this.btnExportSections);
             this.gbDataExport.Controls.Add(this.btnExportEpisodes);
@@ -192,7 +196,7 @@
             this.gbDataExport.Controls.Add(this.btnExportSeasons);
             this.gbDataExport.Location = new System.Drawing.Point(6, 19);
             this.gbDataExport.Name = "gbDataExport";
-            this.gbDataExport.Size = new System.Drawing.Size(207, 164);
+            this.gbDataExport.Size = new System.Drawing.Size(207, 223);
             this.gbDataExport.TabIndex = 4;
             this.gbDataExport.TabStop = false;
             this.gbDataExport.Text = "Data Export";
@@ -269,17 +273,18 @@
             this.dgvGlobalFlags.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvGlobalFlags.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvGlobalFlags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvGlobalFlags.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvGlobalFlags.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvGlobalFlags.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvGlobalFlags.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvGlobalFlags.IsContentTable = false;
             this.dgvGlobalFlags.Location = new System.Drawing.Point(3, 16);
             this.dgvGlobalFlags.MultiSelect = false;
             this.dgvGlobalFlags.Name = "dgvGlobalFlags";
@@ -439,6 +444,26 @@
             // 
             this.sfdExport.Title = "Export";
             // 
+            // btnExportAlbums
+            // 
+            this.btnExportAlbums.Location = new System.Drawing.Point(6, 164);
+            this.btnExportAlbums.Name = "btnExportAlbums";
+            this.btnExportAlbums.Size = new System.Drawing.Size(195, 23);
+            this.btnExportAlbums.TabIndex = 5;
+            this.btnExportAlbums.Text = "Music Albums";
+            this.btnExportAlbums.UseVisualStyleBackColor = true;
+            this.btnExportAlbums.Click += new System.EventHandler(this.btnExportAlbums_Click);
+            // 
+            // btnExportTracks
+            // 
+            this.btnExportTracks.Location = new System.Drawing.Point(6, 193);
+            this.btnExportTracks.Name = "btnExportTracks";
+            this.btnExportTracks.Size = new System.Drawing.Size(195, 23);
+            this.btnExportTracks.TabIndex = 6;
+            this.btnExportTracks.Text = "Music Tracks";
+            this.btnExportTracks.UseVisualStyleBackColor = true;
+            this.btnExportTracks.Click += new System.EventHandler(this.btnExportTracks_Click);
+            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,5 +525,7 @@
         private System.Windows.Forms.GroupBox gbExportMode;
         private System.Windows.Forms.GroupBox gbExportFormat;
         private System.Windows.Forms.ComboBox cbxExportFormat;
+        private System.Windows.Forms.Button btnExportTracks;
+        private System.Windows.Forms.Button btnExportAlbums;
     }
 }

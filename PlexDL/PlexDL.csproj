@@ -216,6 +216,7 @@
     <Compile Include="Common\SearchFramework\SearchQuery.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
+    <Compile Include="Common\WebCheck.cs" />
     <Compile Include="Internal\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
     <Compile Include="Common\wininet.cs" />

@@ -5,14 +5,14 @@ using PlexDL.Common.Globals;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
     public partial class Debug : Form
     {
-        public int RefreshCount { get; set; } = 0;
+        public int RefreshCount { get; set; }
         public bool TimerRunning { get; set; } = true;
 
         public Debug()
@@ -21,56 +21,56 @@ namespace PlexDL.UI
             cbxExportFormat.SelectedIndex = 0;
         }
 
-        private void ShowError(string error, string type = "Validation Error")
+        private static void ShowError(string error, string type = "Validation Error")
         {
             MessageBox.Show(error, type, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void ShowInfo(string msg, string caption = "Message")
+        private static void ShowInfo(string msg, string caption = "Message")
         {
             MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ExportSections()
         {
-            if (radModeTable.Checked)
-                ProcessExport(GlobalTables.SectionsTable);
-            else
-                ProcessExport(GlobalViews.SectionsViewTable);
+            ProcessExport(radModeTable.Checked ? GlobalTables.SectionsTable : GlobalViews.SectionsViewTable);
         }
 
         private void ExportMovies()
         {
-            if (radModeTable.Checked)
-                ProcessExport(GlobalTables.TitlesTable);
-            else
-                ProcessExport(GlobalViews.MoviesViewTable);
+            ProcessExport(radModeTable.Checked ? GlobalTables.TitlesTable : GlobalViews.MoviesViewTable);
         }
 
-        private void ExportTVTitles()
+        private void ExportTvTitles()
         {
-            if (radModeTable.Checked)
-                ProcessExport(GlobalTables.TitlesTable);
-            else
-                ProcessExport(GlobalViews.TvViewTable);
+            ProcessExport(radModeTable.Checked ? GlobalTables.TitlesTable : GlobalViews.TvViewTable);
         }
 
         private void ExportTitles()
         {
-            if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
-                ExportTVTitles();
-            else if (GlobalStaticVars.CurrentContentType == ContentType.Movies)
-                ExportMovies();
+            switch (GlobalStaticVars.CurrentContentType)
+            {
+                case ContentType.TvShows:
+                    ExportTvTitles();
+                    break;
+
+                case ContentType.Movies:
+                    ExportMovies();
+                    break;
+
+                case ContentType.Music:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void ExportFiltered()
         {
             if (Flags.IsFiltered)
             {
-                if (radModeTable.Checked)
-                    ProcessExport(GlobalTables.FilteredTable);
-                else
-                    ProcessExport(GlobalViews.FilteredViewTable);
+                ProcessExport(radModeTable.Checked ? GlobalTables.FilteredTable : GlobalViews.FilteredViewTable);
             }
             else
                 ShowError("Titles are not currently filtered");
@@ -80,10 +80,7 @@ namespace PlexDL.UI
         {
             if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
             {
-                if (radModeTable.Checked)
-                    ProcessExport(GlobalTables.SeasonsTable);
-                else
-                    ProcessExport(GlobalViews.SeasonsViewTable);
+                ProcessExport(radModeTable.Checked ? GlobalTables.SeasonsTable : GlobalViews.SeasonsViewTable);
             }
             else
                 ShowError("PlexDL is not in TV Mode");
@@ -93,25 +90,52 @@ namespace PlexDL.UI
         {
             if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
             {
-                if (radModeTable.Checked)
-                    ProcessExport(GlobalTables.EpisodesTable);
-                else
-                    ProcessExport(GlobalViews.EpisodesViewTable);
+                ProcessExport(radModeTable.Checked ? GlobalTables.EpisodesTable : GlobalViews.EpisodesViewTable);
             }
             else
                 ShowError("PlexDL is not in TV Mode");
         }
 
+        private void ExportAlbums()
+        {
+            if (GlobalStaticVars.CurrentContentType == ContentType.Music)
+            {
+                ProcessExport(radModeTable.Checked ? GlobalTables.AlbumsTable : GlobalViews.AlbumViewTable);
+            }
+            else
+                ShowError("PlexDL is not in Music Mode");
+        }
+
+        private void ExportTracks()
+        {
+            if (GlobalStaticVars.CurrentContentType == ContentType.Music)
+            {
+                ProcessExport(radModeTable.Checked ? GlobalTables.TracksTable : GlobalViews.TracksViewTable);
+            }
+            else
+                ShowError("PlexDL is not in Music Mode");
+        }
+
         private void ProcessExport(DataTable data)
         {
-            if (Equals(cbxExportFormat.SelectedItem, "CSV"))
-                ExportTableCsv(data);
-            else if (Equals(cbxExportFormat.SelectedItem, "XML"))
-                ExportTableXml(data);
-            else if (Equals(cbxExportFormat.SelectedItem, "LOGDEL"))
-                ExportTableLogdel(data);
-            else if (Equals(cbxExportFormat.SelectedItem, "JSON"))
-                ExportTableJson(data);
+            switch (cbxExportFormat.SelectedItem)
+            {
+                case "CSV":
+                    ExportTableCsv(data);
+                    break;
+
+                case "XML":
+                    ExportTableXml(data);
+                    break;
+
+                case "LOGDEL":
+                    ExportTableLogdel(data);
+                    break;
+
+                case "JSON":
+                    ExportTableJson(data);
+                    break;
+            }
         }
 
         private void ExportTableCsv(DataTable table)
@@ -122,14 +146,14 @@ namespace PlexDL.UI
                 {
                     if (table.Rows.Count > 0)
                     {
-                        sfdExport.Filter = "CSV File|*.csv";
+                        sfdExport.Filter = @"CSV File|*.csv";
                         sfdExport.DefaultExt = "csv";
-                        if (sfdExport.ShowDialog() == DialogResult.OK)
-                        {
-                            string file = sfdExport.FileName;
-                            table.ToCSV(file);
-                            ShowInfo("Success!");
-                        }
+
+                        if (sfdExport.ShowDialog() != DialogResult.OK) return;
+
+                        var file = sfdExport.FileName;
+                        table.ToCSV(file);
+                        ShowInfo("Success!");
                     }
                     else
                         ShowError("Couldn't export; table has no rows.");
@@ -151,14 +175,14 @@ namespace PlexDL.UI
                 {
                     if (table.Rows.Count > 0)
                     {
-                        sfdExport.Filter = "LOGDEL File|*.logdel";
+                        sfdExport.Filter = @"LOGDEL File|*.logdel";
                         sfdExport.DefaultExt = "logdel";
-                        if (sfdExport.ShowDialog() == DialogResult.OK)
-                        {
-                            string file = sfdExport.FileName;
-                            table.ToLogdel(file);
-                            ShowInfo("Success!");
-                        }
+
+                        if (sfdExport.ShowDialog() != DialogResult.OK) return;
+
+                        var file = sfdExport.FileName;
+                        table.ToLogdel(file);
+                        ShowInfo("Success!");
                     }
                     else
                         ShowError("Couldn't export; table has no rows.");
@@ -180,14 +204,14 @@ namespace PlexDL.UI
                 {
                     if (table.Rows.Count > 0)
                     {
-                        sfdExport.Filter = "JSON File|*.json";
+                        sfdExport.Filter = @"JSON File|*.json";
                         sfdExport.DefaultExt = "json";
-                        if (sfdExport.ShowDialog() == DialogResult.OK)
-                        {
-                            string file = sfdExport.FileName;
-                            table.ToJson(file);
-                            ShowInfo("Success!");
-                        }
+
+                        if (sfdExport.ShowDialog() != DialogResult.OK) return;
+
+                        var file = sfdExport.FileName;
+                        table.ToJson(file);
+                        ShowInfo("Success!");
                     }
                     else
                         ShowError("Couldn't export; table has no rows.");
@@ -209,14 +233,14 @@ namespace PlexDL.UI
                 {
                     if (table.Rows.Count > 0)
                     {
-                        sfdExport.Filter = "XML File|*.xml";
+                        sfdExport.Filter = @"XML File|*.xml";
                         sfdExport.DefaultExt = "xml";
-                        if (sfdExport.ShowDialog() == DialogResult.OK)
-                        {
-                            string file = sfdExport.FileName;
-                            table.ToXml(file);
-                            ShowInfo("Success!");
-                        }
+
+                        if (sfdExport.ShowDialog() != DialogResult.OK) return;
+
+                        var file = sfdExport.FileName;
+                        table.ToXml(file);
+                        ShowInfo("Success!");
                     }
                     else
                         ShowError("Couldn't export; table has no rows.");
@@ -255,30 +279,22 @@ namespace PlexDL.UI
 
         private void DoRefresh()
         {
-            Type t = typeof(Flags);
-            PropertyInfo[] fields = t.GetProperties();
-            List<string[]> values = new List<string[]>();
+            var t = typeof(Flags);
+            var fields = t.GetProperties();
 
-            foreach (var p in fields)
-            {
-                string pValue = p.GetValue(null, null).ToString();
-                string[] v = new string[] { p.Name, pValue };
-                values.Add(v);
-            }
-
-            RenderFlags(values.ToArray());
+            RenderFlags((from p in fields let pValue = p.GetValue(null, null).ToString() select new[] { p.Name, pValue }).ToArray());
             UpdateRefreshInt();
             UpdateRefreshCount();
         }
 
-        private void RenderFlags(string[][] flags)
+        private void RenderFlags(IEnumerable<string[]> flags)
         {
             dgvGlobalFlags.DataSource = null;
-            DataTable t = new DataTable();
+            var t = new DataTable();
             t.Columns.Add("Flag");
             t.Columns.Add("Value");
 
-            foreach (string[] f in flags)
+            foreach (object[] f in flags)
             {
                 if (t.Columns.Count == f.Length)
                     t.Rows.Add(f);
@@ -302,13 +318,11 @@ namespace PlexDL.UI
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            var msg = MessageBox.Show("Are you sure? If you cancel debugging, you will need to restart PlexDL with the appropriate flags in order to resume.",
-                "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (msg == DialogResult.Yes)
-            {
-                Flags.IsDebug = false;
-                Close();
-            }
+            var msg = MessageBox.Show(@"Are you sure? If you cancel debugging, you will need to restart PlexDL with the appropriate flags in order to resume.",
+                @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (msg != DialogResult.Yes) return;
+            Flags.IsDebug = false;
+            Close();
         }
 
         private void btnTimer_Click(object sender, EventArgs e)
@@ -317,13 +331,13 @@ namespace PlexDL.UI
             {
                 TimerRunning = false;
                 tmrAutoRefresh.Stop();
-                btnTimer.Text = "Auto-refresh Off";
+                btnTimer.Text = @"Auto-refresh Off";
             }
             else
             {
                 TimerRunning = true;
                 tmrAutoRefresh.Start();
-                btnTimer.Text = "Auto-refresh On";
+                btnTimer.Text = @"Auto-refresh On";
             }
         }
 
@@ -359,6 +373,16 @@ namespace PlexDL.UI
         private void btnExportEpisodes_Click(object sender, EventArgs e)
         {
             ExportEpisodes();
+        }
+
+        private void btnExportAlbums_Click(object sender, EventArgs e)
+        {
+            ExportAlbums();
+        }
+
+        private void btnExportTracks_Click(object sender, EventArgs e)
+        {
+            ExportTracks();
         }
     }
 }

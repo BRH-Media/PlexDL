@@ -38,7 +38,8 @@ namespace PlexDL.UI
                     ConnectionInfo.PlexPort = Convert.ToInt32(txtServerPort.Text);
                     var uri = "http://" + ConnectionInfo.PlexAddress + ":" + ConnectionInfo.PlexPort +
                               "/?X-Plex-Token=" + ConnectionInfo.PlexAccountToken;
-                    if (Methods.WebSiteCheckMT(uri))
+                    //MessageBox.Show(uri);
+                    if (WebCheck.TestUrl(uri).ConnectionSuccess)
                     {
                         //ConnectionStarted = true;
                         Success = true;

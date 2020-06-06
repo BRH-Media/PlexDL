@@ -5,7 +5,6 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using PlexDL.Properties;
-using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,11 +22,11 @@ namespace PlexDL.Common
     {
         public static int StringToInt(string value, int defaultValue = 0)
         {
-            int val = defaultValue;
+            var val = defaultValue;
 
             try
             {
-                if (int.TryParse(value, out int r))
+                if (int.TryParse(value, out var r))
                     val = r;
             }
             catch (Exception ex)
@@ -43,13 +42,16 @@ namespace PlexDL.Common
             try
             {
                 //Creating the HttpWebRequest
-                var request = WebRequest.Create(url) as HttpWebRequest;
-                //Setting the Request method HEAD, you can also use GET too.
+                var request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "HEAD";
+
                 //Getting the Web Response.
-                var response = request.GetResponse() as HttpWebResponse;
-                //Returns TRUE if the Status code == 200
+                var response = (HttpWebResponse)request.GetResponse();
+
+                //Release the stream
                 response.Close();
+
+                //Returns TRUE if the Status code == 200
                 return response.StatusCode == HttpStatusCode.OK;
             }
             catch
@@ -67,34 +69,22 @@ namespace PlexDL.Common
             }, StringSplitOptions.RemoveEmptyEntries)
             .Select(int.Parse).ToArray();
             // in private ip range
-            if (ipParts[0] == 10 ||
-                ipParts[0] == 192 && ipParts[1] == 168 ||
-                ipParts[0] == 172 && ipParts[1] >= 16 && ipParts[1] <= 31)
-                return true;
+            return ipParts[0] == 10 ||
+                   ipParts[0] == 192 && ipParts[1] == 168 ||
+                   ipParts[0] == 172 && ipParts[1] >= 16 && ipParts[1] <= 31;
 
             // IP Address is probably public.
             // This doesn't catch some VPN ranges like OpenVPN and Hamachi.
-            return false;
         }
 
         public static string MatchUriToToken(string uri, List<Server> plexServers)
         {
-            foreach (var s in plexServers)
+            foreach (var s in from s in plexServers let serverUri = "http://" + s.address + ":" + s.port + "/" where uri.Contains(serverUri) select s)
             {
-                var serverUri = "http://" + s.address + ":" + s.port + "/";
-                if (uri.Contains(serverUri))
-                    return s.accessToken;
+                return s.accessToken;
             }
 
             return "";
-        }
-
-        public static string GetFileExtensionFromUrl(string url)
-        {
-            url = url.Split('?')[0];
-            url = url.Split('/').Last();
-            var final = url.Contains('.') ? url.Substring(url.LastIndexOf('.')) : "";
-            return final;
         }
 
         public static void SetHeaderText(DataGridView dgv, DataTable table)
@@ -118,92 +108,41 @@ namespace PlexDL.Common
         public static bool PlexXmlValid(XmlDocument doc)
         {
             var checkNodes = doc.GetElementsByTagName("MediaContainer");
-
-            if (checkNodes.Count > 0)
-                return true;
-            return false;
+            return checkNodes.Count > 0;
         }
 
         public static List<string> OrderMatch(List<string> ordered, List<string> unordered)
         {
-            var newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
+            var newList = unordered.OrderBy(ordered.IndexOf).ToList();
             return newList;
         }
 
-        public static string CalculateTime(double Time)
+        public static string CalculateTime(double time, bool ms = true)
         {
-            string mm, ss, CalculatedTime;
-            int h, m, s, T;
-
             //convert back to seconds from miliseconds
-            Time = Math.Round(Time) / 1000;
-            T = Convert.ToInt32(Time);
+            if (ms)
+                time = Math.Round(time) / 1000;
+            var T = Convert.ToInt32(time);
 
-            h = T / 3600;
+            var h = T / 3600;
             T %= 3600;
-            m = T / 60;
-            s = T % 60;
+            var m = T / 60;
+            var s = T % 60;
 
-            if (m < 10)
-                mm = string.Format("0{0}", m);
-            else
-                mm = m.ToString();
-            if (s < 10)
-                ss = string.Format("0{0}", s);
-            else
-                ss = s.ToString();
+            var mm = m < 10 ? $"0{m}" : m.ToString();
+            var ss = s < 10 ? $"0{s}" : s.ToString();
 
-            CalculatedTime = string.Format("{0}:{1}:{2}", h, mm, ss);
+            var calculatedTime = $"{h}:{mm}:{ss}";
 
-            return CalculatedTime;
-        }
-
-        public static bool WebSiteCheckMT(string uri)
-        {
-            var args = new object[] { uri };
-            var available = (bool)WaitWindow.WaitWindow.Show(Methods.CheckWebWorker, "Checking Connection", args);
-            return available;
-        }
-
-        private static void CheckWebWorker(object sender, WaitWindowEventArgs e)
-        {
-            var uri = (string)e.Arguments[0];
-            //check with no wait-window. It's called WebSiteCheckST because of single-threaded...
-            e.Result = WebSiteCheckST(uri);
-        }
-
-        public static bool WebSiteCheckST(string Url)
-        {
-            var Message = string.Empty;
-            var request = (HttpWebRequest)WebRequest.Create(Url);
-
-            // Set the credentials to the current user account
-            request.Credentials = CredentialCache.DefaultCredentials;
-            request.Method = "GET";
-            //the request will timeout after 4.5 seconds
-            request.Timeout = 4500;
-
-            try
-            {
-                using (var response = (HttpWebResponse)request.GetResponse())
-                {
-                    // Do nothing; we're only testing to see if we can get the response
-                }
-            }
-            catch (WebException ex)
-            {
-                Message += (Message.Length > 0 ? "\n" : "") + ex.Message;
-            }
-
-            return Message.Length == 0;
+            return calculatedTime;
         }
 
         public static string GenerateRandomNumber(int length)
         {
-            Random random = new Random();
-            string r = "";
+            var random = new Random();
+            var r = "";
 
-            for (int i = 1; i < length + 1; i++)
+            for (var i = 1; i < length + 1; i++)
             {
                 r += random.Next(0, 9).ToString();
             }
@@ -212,19 +151,16 @@ namespace PlexDL.Common
 
         public static string FormatBytes(long bytes, bool includeSpace = false)
         {
-            string[] Suffix =
+            string[] suffix =
             {
                 "B", "KB", "MB", "GB", "TB"
             };
             int i;
             double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+            for (i = 0; i < suffix.Length && bytes >= 1024; i++, bytes /= 1024)
                 dblSByte = bytes / 1024.0;
 
-            if (includeSpace)
-                return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
-            else
-                return string.Format("{0:0.##}{1}", dblSByte, Suffix[i]);
+            return includeSpace ? $"{dblSByte:0.##} {suffix[i]}" : $"{dblSByte:0.##}{suffix[i]}";
         }
 
         public static bool AdultKeywordCheck(PlexObject stream)
@@ -259,18 +195,13 @@ namespace PlexDL.Common
 
         public static bool StreamAdultContentCheck(PlexObject stream)
         {
-            if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
-                //just to keep things family-friendly, show a warning for possibly adult-type content :)
-                if (AdultKeywordCheck(stream))
-                {
-                    var result =
-                    MessageBox.Show("The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", "Warning",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-                    if (result == DialogResult.No)
-                        return false;
-                }
+            if (!GlobalStaticVars.Settings.Generic.AdultContentProtection) return true;
+            if (!AdultKeywordCheck(stream)) return true;
 
-            return true;
+            var result =
+                MessageBox.Show(@"The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", @"Warning",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            return result != DialogResult.No;
         }
 
         public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
@@ -326,10 +257,7 @@ namespace PlexDL.Common
                 return false;
 
             var splitValues = ipString.Split('.');
-            if (splitValues.Length != 4)
-                return false;
-
-            return splitValues.All(r => byte.TryParse(r, out var tempForParsing));
+            return splitValues.Length == 4 && splitValues.All(r => byte.TryParse(r, out _));
         }
 
         public static string RemoveIllegalCharacters(string illegal)

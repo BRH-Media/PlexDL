@@ -32,6 +32,7 @@ namespace PlexDL.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerManager));
             this.menuMain = new System.Windows.Forms.MenuStrip();
@@ -42,11 +43,15 @@ namespace PlexDL.UI
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRelays = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDirectConnection = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLocalLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmRenderTokenColumn = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
-            this.itmLocalLink = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
+            this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,7 +82,7 @@ namespace PlexDL.UI
             // 
             this.itmViaToken.Name = "itmViaToken";
             this.itmViaToken.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.itmViaToken.Size = new System.Drawing.Size(180, 22);
+            this.itmViaToken.Size = new System.Drawing.Size(168, 22);
             this.itmViaToken.Text = "Via Token";
             this.itmViaToken.Click += new System.EventHandler(this.itmViaToken_Click);
             // 
@@ -85,7 +90,7 @@ namespace PlexDL.UI
             // 
             this.itmViaPlexTv.Name = "itmViaPlexTv";
             this.itmViaPlexTv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.itmViaPlexTv.Size = new System.Drawing.Size(180, 22);
+            this.itmViaPlexTv.Size = new System.Drawing.Size(168, 22);
             this.itmViaPlexTv.Text = "Via Plex.tv";
             this.itmViaPlexTv.Click += new System.EventHandler(this.itmViaPlexTv_Click);
             // 
@@ -95,7 +100,8 @@ namespace PlexDL.UI
             this.itmServers,
             this.itmRelays,
             this.itmDirectConnection,
-            this.itmLocalLink});
+            this.itmLocalLink,
+            this.itmRenderTokenColumn});
             this.itmLoad.Enabled = false;
             this.itmLoad.Name = "itmLoad";
             this.itmLoad.Size = new System.Drawing.Size(45, 20);
@@ -125,6 +131,22 @@ namespace PlexDL.UI
             this.itmDirectConnection.Text = "Direct Connection";
             this.itmDirectConnection.Click += new System.EventHandler(this.itmDirectConnection_Click);
             // 
+            // itmLocalLink
+            // 
+            this.itmLocalLink.Name = "itmLocalLink";
+            this.itmLocalLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.itmLocalLink.Size = new System.Drawing.Size(212, 22);
+            this.itmLocalLink.Text = "Local Link";
+            this.itmLocalLink.Click += new System.EventHandler(this.itmLocalLink_Click);
+            // 
+            // itmRenderTokenColumn
+            // 
+            this.itmRenderTokenColumn.CheckOnClick = true;
+            this.itmRenderTokenColumn.Name = "itmRenderTokenColumn";
+            this.itmRenderTokenColumn.Size = new System.Drawing.Size(212, 22);
+            this.itmRenderTokenColumn.Text = "Render Token Column";
+            this.itmRenderTokenColumn.Click += new System.EventHandler(this.itmRenderTokenColumn_Click);
+            // 
             // itmClearServers
             // 
             this.itmClearServers.Enabled = false;
@@ -142,6 +164,21 @@ namespace PlexDL.UI
             this.itmConnect.Text = "Connect to this server";
             this.itmConnect.Click += new System.EventHandler(this.itmConnect_Click);
             // 
+            // cxtServers
+            // 
+            this.cxtServers.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmViewLink});
+            this.cxtServers.Name = "cxtServers";
+            this.cxtServers.Size = new System.Drawing.Size(236, 48);
+            this.cxtServers.Opening += new System.ComponentModel.CancelEventHandler(this.cxtServers_Opening);
+            // 
+            // itmViewLink
+            // 
+            this.itmViewLink.Name = "itmViewLink";
+            this.itmViewLink.Size = new System.Drawing.Size(235, 22);
+            this.itmViewLink.Text = "View Connection Link (Debug)";
+            this.itmViewLink.Click += new System.EventHandler(this.itmViewLink_Click);
+            // 
             // dgvServers
             // 
             this.dgvServers.AllowUserToAddRows = false;
@@ -151,6 +188,7 @@ namespace PlexDL.UI
             this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvServers.ContextMenuStrip = this.cxtServers;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -162,6 +200,7 @@ namespace PlexDL.UI
             this.dgvServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvServers.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvServers.IsContentTable = false;
             this.dgvServers.Location = new System.Drawing.Point(0, 24);
             this.dgvServers.Margin = new System.Windows.Forms.Padding(2);
             this.dgvServers.MultiSelect = false;
@@ -174,14 +213,6 @@ namespace PlexDL.UI
             this.dgvServers.TabIndex = 16;
             this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
             this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
-            // 
-            // itmLocalLink
-            // 
-            this.itmLocalLink.Name = "itmLocalLink";
-            this.itmLocalLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.itmLocalLink.Size = new System.Drawing.Size(212, 22);
-            this.itmLocalLink.Text = "Local Link";
-            this.itmLocalLink.Click += new System.EventHandler(this.itmLocalLink_Click);
             // 
             // ServerManager
             // 
@@ -202,6 +233,7 @@ namespace PlexDL.UI
             this.Load += new System.EventHandler(this.ServerManager_Load);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            this.cxtServers.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -222,5 +254,8 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmViaPlexTv;
         private ToolStripMenuItem itmClearServers;
         private ToolStripMenuItem itmLocalLink;
+        private ToolStripMenuItem itmRenderTokenColumn;
+        private ContextMenuStrip cxtServers;
+        private ToolStripMenuItem itmViewLink;
     }
 }

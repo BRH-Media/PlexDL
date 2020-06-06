@@ -7,19 +7,27 @@ namespace PlexDL.Common.Renderers.DGVRenderers
 {
     public static class ServerViewRenderer
     {
-        public static void RenderView(List<Server> data, DataGridView target)
+        public static void RenderView(List<Server> data, bool renderTokenColumn, DataGridView target)
         {
-            var Name = new DataColumn("Name", typeof(string));
-            var Address = new DataColumn("Address", typeof(string));
-            var Port = new DataColumn("Port", typeof(string));
+            var name = new DataColumn("Name", typeof(string));
+            var address = new DataColumn("Address", typeof(string));
+            var port = new DataColumn("Port", typeof(string));
+            var token = new DataColumn("Token", typeof(string));
 
             var dgvBind = new DataTable("Servers");
-            dgvBind.Columns.Add(Name);
-            dgvBind.Columns.Add(Address);
-            dgvBind.Columns.Add(Port);
+
+            dgvBind.Columns.Add(name);
+            dgvBind.Columns.Add(address);
+            dgvBind.Columns.Add(port);
+
+            if (renderTokenColumn)
+                dgvBind.Columns.Add(token);
 
             foreach (var r1 in data)
-                dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString());
+                if (renderTokenColumn)
+                    dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString(), r1.accessToken);
+                else
+                    dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString());
 
             if (target.InvokeRequired)
             {
