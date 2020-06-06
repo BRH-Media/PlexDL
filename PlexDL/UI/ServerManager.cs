@@ -316,9 +316,9 @@ namespace PlexDL.UI
             if (CheckProfileDefinedServer())
             {
                 var shown = Properties.Settings.Default.PLSShown;
-                if (!shown)
+                var disable = Properties.Settings.Default.DisablePLSOnShown;
+                if (!shown || !disable)
                 {
-                    var disable = Properties.Settings.Default.DisablePLSOnShown;
                     const string msg =
                         @"It appears your loaded profile contains a previously loaded server. Would you like to prefill those details and connect?";
                     if (Question(msg))
