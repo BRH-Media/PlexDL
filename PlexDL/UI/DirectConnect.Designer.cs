@@ -37,12 +37,14 @@ namespace PlexDL.UI
             this.txtServerIP = new libbrhscgui.Components.WaterMarkTextBox();
             this.txtServerPort = new libbrhscgui.Components.WaterMarkTextBox();
             this.gbConnectionInformation = new System.Windows.Forms.GroupBox();
+            this.chkToken = new System.Windows.Forms.CheckBox();
+            this.txtToken = new libbrhscgui.Components.WaterMarkTextBox();
             this.gbConnectionInformation.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(12, 94);
+            this.btnConnect.Location = new System.Drawing.Point(12, 136);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(210, 23);
@@ -54,6 +56,7 @@ namespace PlexDL.UI
             // 
             this.txtServerIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.txtServerIP.Location = new System.Drawing.Point(6, 19);
+            this.txtServerIP.MaxLength = 128;
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(198, 20);
             this.txtServerIP.TabIndex = 0;
@@ -64,6 +67,7 @@ namespace PlexDL.UI
             // 
             this.txtServerPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtServerPort.Location = new System.Drawing.Point(6, 45);
+            this.txtServerPort.MaxLength = 5;
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(198, 20);
             this.txtServerPort.TabIndex = 1;
@@ -73,20 +77,44 @@ namespace PlexDL.UI
             // 
             // gbConnectionInformation
             // 
+            this.gbConnectionInformation.Controls.Add(this.txtToken);
+            this.gbConnectionInformation.Controls.Add(this.chkToken);
             this.gbConnectionInformation.Controls.Add(this.txtServerIP);
             this.gbConnectionInformation.Controls.Add(this.txtServerPort);
             this.gbConnectionInformation.Location = new System.Drawing.Point(12, 12);
             this.gbConnectionInformation.Name = "gbConnectionInformation";
-            this.gbConnectionInformation.Size = new System.Drawing.Size(210, 73);
+            this.gbConnectionInformation.Size = new System.Drawing.Size(210, 118);
             this.gbConnectionInformation.TabIndex = 15;
             this.gbConnectionInformation.TabStop = false;
             this.gbConnectionInformation.Text = "Connection Information";
+            // 
+            // chkToken
+            // 
+            this.chkToken.AutoSize = true;
+            this.chkToken.Location = new System.Drawing.Point(6, 71);
+            this.chkToken.Name = "chkToken";
+            this.chkToken.Size = new System.Drawing.Size(125, 17);
+            this.chkToken.TabIndex = 2;
+            this.chkToken.Text = "Use a different token";
+            this.chkToken.UseVisualStyleBackColor = true;
+            this.chkToken.CheckedChanged += new System.EventHandler(this.chkToken_CheckedChanged);
+            // 
+            // txtToken
+            // 
+            this.txtToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.txtToken.Location = new System.Drawing.Point(6, 92);
+            this.txtToken.MaxLength = 20;
+            this.txtToken.Name = "txtToken";
+            this.txtToken.Size = new System.Drawing.Size(198, 20);
+            this.txtToken.TabIndex = 3;
+            this.txtToken.WaterMarkColor = System.Drawing.Color.Gray;
+            this.txtToken.WaterMarkText = "Enter Token";
             // 
             // DirectConnect
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(234, 127);
+            this.ClientSize = new System.Drawing.Size(234, 165);
             this.Controls.Add(this.gbConnectionInformation);
             this.Controls.Add(this.btnConnect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -112,5 +140,7 @@ namespace PlexDL.UI
         private WaterMarkTextBox txtServerPort;
         private WaterMarkTextBox txtServerIP;
         private GroupBox gbConnectionInformation;
+        private CheckBox chkToken;
+        private WaterMarkTextBox txtToken;
     }
 }

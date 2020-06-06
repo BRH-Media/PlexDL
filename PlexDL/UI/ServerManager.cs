@@ -244,10 +244,21 @@ namespace PlexDL.UI
 
         private void RunDirectConnect(bool localLink)
         {
+            var info = new ConnectionInfo()
+            {
+                PlexAccountToken = GlobalStaticVars.User.authenticationToken,
+                PlexAddress = ""
+            };
+            RunDirectConnect(localLink, info);
+        }
+
+        private void RunDirectConnect(bool localLink, ConnectionInfo info, bool diffToken = false)
+        {
             var servers = new List<Server>();
             using (var frmDir = new DirectConnect())
             {
-                frmDir.ConnectionInfo.PlexAccountToken = GlobalStaticVars.User.authenticationToken;
+                frmDir.ConnectionInfo = info;
+                frmDir.DifferentToken = diffToken;
                 frmDir.LoadLocalLink = localLink;
 
                 if (frmDir.ShowDialog() != DialogResult.OK) return;
@@ -299,6 +310,35 @@ namespace PlexDL.UI
             }
         }
 
+        private void ProfileDefinedServer()
+        {
+            //check to see if a loaded profile instated some valid server details
+            if (CheckProfileDefinedServer())
+            {
+                var shown = Properties.Settings.Default.PLSShown;
+                if (!shown)
+                {
+                    var disable = Properties.Settings.Default.DisablePLSOnShown;
+                    const string msg =
+                        @"It appears your loaded profile contains a previously loaded server. Would you like to prefill those details and connect?";
+                    if (Question(msg))
+                    {
+                        LoadProfileDefinedServer();
+                        return;
+                    }
+
+                    if (disable)
+                    {
+                        MessageBox.Show(
+                            @"We won't ask again. You can reenable this dialog via the global application config file (not your profile).",
+                            @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Properties.Settings.Default.PLSShown = true;
+                        Properties.Settings.Default.Save();
+                    }
+                }
+            }
+        }
+
         private void ServerManager_Load(object sender, EventArgs e)
         {
             try
@@ -306,17 +346,20 @@ namespace PlexDL.UI
                 //check if there's an internet connection first; it may have been disconnected while the window was closed.
                 if (wininet.CheckForInternetConnection())
                 {
-                    // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
-                    if (GlobalStaticVars.PlexServers != null)
-                        if (GlobalStaticVars.PlexServers.Count > 0)
-                        {
-                            RenderServersView(GlobalStaticVars.PlexServers);
-                            SelectServer();
+                    //check to see if a loaded profile instated some valid server details. If there are, we can potentially fast-forward
+                    //the connection process!
+                    ProfileDefinedServer();
 
-                            itmConnect.Enabled = true;
-                            itmClearServers.Enabled = true;
-                            itmLoad.Enabled = true;
-                        }
+                    // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
+                    if (GlobalStaticVars.PlexServers == null) return;
+                    if (GlobalStaticVars.PlexServers.Count <= 0) return;
+
+                    RenderServersView(GlobalStaticVars.PlexServers);
+                    SelectServer();
+
+                    itmConnect.Enabled = true;
+                    itmClearServers.Enabled = true;
+                    itmLoad.Enabled = true;
                 }
                 else
                 {
@@ -333,31 +376,31 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmDirectConnection_Click(object sender, EventArgs e)
+        private void ItmDirectConnection_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
                 RunDirectConnect(false);
         }
 
-        private void itmLocalLink_Click(object sender, EventArgs e)
+        private void ItmLocalLink_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
                 RunDirectConnect(true);
         }
 
-        private void itmRelays_Click(object sender, EventArgs e)
+        private void ItmRelays_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
                 LoadRelays();
         }
 
-        private void itmServers_Click(object sender, EventArgs e)
+        private void ItmServers_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
                 LoadServers();
         }
 
-        private void itmViaPlexTv_Click(object sender, EventArgs e)
+        private void ItmViaPlexTv_Click(object sender, EventArgs e)
         {
             try
             {
@@ -386,7 +429,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmViaToken_Click(object sender, EventArgs e)
+        private void ItmViaToken_Click(object sender, EventArgs e)
         {
             try
             {
@@ -423,6 +466,29 @@ namespace PlexDL.UI
                 MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private static bool CheckProfileDefinedServer()
+        {
+            var settings = GlobalStaticVars.Settings.ConnectionInfo;
+            var defaultAddress = new ConnectionInfo().PlexAddress;
+            return !string.IsNullOrWhiteSpace(settings.PlexAccountToken) &&
+                   !string.IsNullOrWhiteSpace(settings.PlexAddress) &&
+                   settings.PlexAddress != defaultAddress;
+        }
+
+        private void LoadProfileDefinedServer()
+        {
+            if (!CheckProfileDefinedServer()) return;
+
+            var info = GlobalStaticVars.Settings.ConnectionInfo;
+            RunDirectConnect(false, info, true);
+        }
+
+        private bool Question(string msg, string caption = "Question")
+        {
+            var q = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return q == DialogResult.Yes;
         }
 
         private static bool IsTokenSet()
@@ -465,7 +531,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmClearServers_Click(object sender, EventArgs e)
+        private void ItmClearServers_Click(object sender, EventArgs e)
         {
             dgvServers.DataSource = null;
             //force a repaint
@@ -476,23 +542,36 @@ namespace PlexDL.UI
             itmClearServers.Enabled = false;
         }
 
-        private void itmRenderTokenColumn_Click(object sender, EventArgs e)
+        private void ItmRenderTokenColumn_Click(object sender, EventArgs e)
         {
             RenderTokenColumn = itmRenderTokenColumn.Checked;
             if (GlobalStaticVars.PlexServers != null)
                 RenderServersView(GlobalStaticVars.PlexServers);
         }
 
-        private void cxtServers_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void CxtServers_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!Flags.IsDebug || dgvServers.SelectedRows.Count == 0)
                 e.Cancel = true;
         }
 
-        private void itmViewLink_Click(object sender, EventArgs e)
+        private void ItmViewLink_Click(object sender, EventArgs e)
         {
             if (dgvServers.SelectedRows.Count == 1)
                 MessageBox.Show(ConnectionLink(CurrentServer()), @"Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ItmViewAccountToken_Click(object sender, EventArgs e)
+        {
+            var token = GlobalStaticVars.User.authenticationToken;
+
+            if (string.IsNullOrEmpty(token)) return;
+
+            MessageBox.Show($@"Your account token is: {token}
+
+We've also copied it to the clipboard for you :)", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Clipboard.SetText(token);
         }
     }
 }

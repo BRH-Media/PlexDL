@@ -35,7 +35,7 @@ namespace PlexDL.Common.Globals
 
         public static string GetToken()
         {
-            return Svr.accessToken;
+            return Svr != null ? Svr.accessToken : "";
         }
 
         public static string GetBaseUri(bool incToken)

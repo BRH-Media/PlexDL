@@ -50,6 +50,7 @@ namespace PlexDL.UI
             this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
+            this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
@@ -84,7 +85,7 @@ namespace PlexDL.UI
             this.itmViaToken.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.itmViaToken.Size = new System.Drawing.Size(168, 22);
             this.itmViaToken.Text = "Via Token";
-            this.itmViaToken.Click += new System.EventHandler(this.itmViaToken_Click);
+            this.itmViaToken.Click += new System.EventHandler(this.ItmViaToken_Click);
             // 
             // itmViaPlexTv
             // 
@@ -92,7 +93,7 @@ namespace PlexDL.UI
             this.itmViaPlexTv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.itmViaPlexTv.Size = new System.Drawing.Size(168, 22);
             this.itmViaPlexTv.Text = "Via Plex.tv";
-            this.itmViaPlexTv.Click += new System.EventHandler(this.itmViaPlexTv_Click);
+            this.itmViaPlexTv.Click += new System.EventHandler(this.ItmViaPlexTv_Click);
             // 
             // itmLoad
             // 
@@ -113,7 +114,7 @@ namespace PlexDL.UI
             this.itmServers.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.itmServers.Size = new System.Drawing.Size(212, 22);
             this.itmServers.Text = "Servers";
-            this.itmServers.Click += new System.EventHandler(this.itmServers_Click);
+            this.itmServers.Click += new System.EventHandler(this.ItmServers_Click);
             // 
             // itmRelays
             // 
@@ -121,7 +122,7 @@ namespace PlexDL.UI
             this.itmRelays.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.itmRelays.Size = new System.Drawing.Size(212, 22);
             this.itmRelays.Text = "Relays";
-            this.itmRelays.Click += new System.EventHandler(this.itmRelays_Click);
+            this.itmRelays.Click += new System.EventHandler(this.ItmRelays_Click);
             // 
             // itmDirectConnection
             // 
@@ -129,7 +130,7 @@ namespace PlexDL.UI
             this.itmDirectConnection.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.itmDirectConnection.Size = new System.Drawing.Size(212, 22);
             this.itmDirectConnection.Text = "Direct Connection";
-            this.itmDirectConnection.Click += new System.EventHandler(this.itmDirectConnection_Click);
+            this.itmDirectConnection.Click += new System.EventHandler(this.ItmDirectConnection_Click);
             // 
             // itmLocalLink
             // 
@@ -137,7 +138,7 @@ namespace PlexDL.UI
             this.itmLocalLink.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
             this.itmLocalLink.Size = new System.Drawing.Size(212, 22);
             this.itmLocalLink.Text = "Local Link";
-            this.itmLocalLink.Click += new System.EventHandler(this.itmLocalLink_Click);
+            this.itmLocalLink.Click += new System.EventHandler(this.ItmLocalLink_Click);
             // 
             // itmRenderTokenColumn
             // 
@@ -145,7 +146,7 @@ namespace PlexDL.UI
             this.itmRenderTokenColumn.Name = "itmRenderTokenColumn";
             this.itmRenderTokenColumn.Size = new System.Drawing.Size(212, 22);
             this.itmRenderTokenColumn.Text = "Render Token Column";
-            this.itmRenderTokenColumn.Click += new System.EventHandler(this.itmRenderTokenColumn_Click);
+            this.itmRenderTokenColumn.Click += new System.EventHandler(this.ItmRenderTokenColumn_Click);
             // 
             // itmClearServers
             // 
@@ -153,7 +154,7 @@ namespace PlexDL.UI
             this.itmClearServers.Name = "itmClearServers";
             this.itmClearServers.Size = new System.Drawing.Size(86, 20);
             this.itmClearServers.Text = "Clear Servers";
-            this.itmClearServers.Click += new System.EventHandler(this.itmClearServers_Click);
+            this.itmClearServers.Click += new System.EventHandler(this.ItmClearServers_Click);
             // 
             // itmConnect
             // 
@@ -167,17 +168,18 @@ namespace PlexDL.UI
             // cxtServers
             // 
             this.cxtServers.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmViewLink});
+            this.itmViewLink,
+            this.itmViewAccountToken});
             this.cxtServers.Name = "cxtServers";
             this.cxtServers.Size = new System.Drawing.Size(236, 48);
-            this.cxtServers.Opening += new System.ComponentModel.CancelEventHandler(this.cxtServers_Opening);
+            this.cxtServers.Opening += new System.ComponentModel.CancelEventHandler(this.CxtServers_Opening);
             // 
             // itmViewLink
             // 
             this.itmViewLink.Name = "itmViewLink";
             this.itmViewLink.Size = new System.Drawing.Size(235, 22);
             this.itmViewLink.Text = "View Connection Link (Debug)";
-            this.itmViewLink.Click += new System.EventHandler(this.itmViewLink_Click);
+            this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
             // 
             // dgvServers
             // 
@@ -213,6 +215,13 @@ namespace PlexDL.UI
             this.dgvServers.TabIndex = 16;
             this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
             this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
+            // 
+            // itmViewAccountToken
+            // 
+            this.itmViewAccountToken.Name = "itmViewAccountToken";
+            this.itmViewAccountToken.Size = new System.Drawing.Size(235, 22);
+            this.itmViewAccountToken.Text = "View Account Token (Debug)";
+            this.itmViewAccountToken.Click += new System.EventHandler(this.ItmViewAccountToken_Click);
             // 
             // ServerManager
             // 
@@ -257,5 +266,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmRenderTokenColumn;
         private ContextMenuStrip cxtServers;
         private ToolStripMenuItem itmViewLink;
+        private ToolStripMenuItem itmViewAccountToken;
     }
 }
