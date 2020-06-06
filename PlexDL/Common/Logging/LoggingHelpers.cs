@@ -9,10 +9,14 @@ namespace PlexDL.Common.Logging
     {
         private static int _logIncrementer;
 
-        public static void RecordGenericEntry(string logEntry)
+        public static void RecordGeneralEntry(string logEntry)
         {
             try
             {
+                if (!GlobalStaticVars.Settings.Logging.EnableGenericLogDel) return;
+
+                var finalEntry = $"[General] {logEntry}";
+
                 _logIncrementer++;
                 string[] headers =
                 {
@@ -20,10 +24,10 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, _logIncrementer.ToString(), DateTime.Now.ToString(), logEntry
+                    GlobalStaticVars.CurrentSessionId, _logIncrementer.ToString(), DateTime.Now.ToString(), finalEntry
                 };
-                if (GlobalStaticVars.Settings.Logging.EnableGenericLogDel)
-                    LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+
+                LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
             }
             catch
             {
@@ -39,13 +43,15 @@ namespace PlexDL.Common.Logging
             {
                 if (!GlobalStaticVars.Settings.Logging.EnableCacheLogDel) return;
 
+                var finalEntry = $"[Caching] {eventEntry}";
+
                 string[] headers =
                 {
                     "SessionID", "RequestedURL", "DateTime", "Entry"
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), eventEntry
+                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), finalEntry
                 };
 
                 LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
@@ -67,6 +73,8 @@ namespace PlexDL.Common.Logging
                 ////The in-app setting to prevent this method from firing.
                 if (!GlobalStaticVars.Settings.Logging.EnableExceptionLogDel) return;
 
+                var finalMessage = $"[Exception] {message}";
+
                 var stackTrace = new StackTrace();
                 var function = stackTrace.GetFrame(1).GetMethod().Name;
                 string[] headers =
@@ -75,7 +83,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] LogEntry =
                 {
-                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), message, function, type
+                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), finalMessage, function, type
                 };
                 LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
             }

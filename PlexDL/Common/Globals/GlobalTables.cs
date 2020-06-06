@@ -47,12 +47,12 @@ namespace PlexDL.Common.Globals
 
         public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null, string key = "title")
         {
-            Logging.LoggingHelpers.RecordGenericEntry("Table-to-Grid match has been requested on '" + dgv.Name + "', using field '" + key + "'.");
+            Logging.LoggingHelpers.RecordGeneralEntry("Table-to-Grid match has been requested on '" + dgv.Name + "', using field '" + key + "'.");
             var sel = dgv.SelectedRows[0];
             if (table == null)
             {
                 table = ReturnCorrectTable();
-                Logging.LoggingHelpers.RecordGenericEntry("Table-to-Grid match was not given a table; defaulting to the standard table selector.");
+                Logging.LoggingHelpers.RecordGeneralEntry("Table-to-Grid match was not given a table; defaulting to the standard table selector.");
             }
             bool fieldFound = false;
             foreach (DataRow r in table.Rows)
@@ -63,7 +63,7 @@ namespace PlexDL.Common.Globals
                     if (r[key].ToString() == titleValue)
                     {
                         int idx = table.Rows.IndexOf(r);
-                        Logging.LoggingHelpers.RecordGenericEntry("Table-To-Grid match has located the requested index: " + idx);
+                        Logging.LoggingHelpers.RecordGeneralEntry("Table-To-Grid match has located the requested index: " + idx);
                         return idx;
                     }
                 }

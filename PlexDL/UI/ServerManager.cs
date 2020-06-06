@@ -225,7 +225,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordGenericEntry($"Couldn't connect to \"{svr.address}:{svr.port}\"");
+                LoggingHelpers.RecordGeneralEntry($"Couldn't connect to \"{svr.address}:{svr.port}\"");
                 LoggingHelpers.RecordException(ex.Message, "ConnectionTestError");
             }
 

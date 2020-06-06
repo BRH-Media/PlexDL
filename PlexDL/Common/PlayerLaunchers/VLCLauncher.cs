@@ -28,7 +28,7 @@ namespace PlexDL.Common.PlayerLaunchers
                         p.StartInfo.FileName = vlc;
                         p.StartInfo.Arguments = arg;
                         p.Start();
-                        LoggingHelpers.RecordGenericEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (VLC)");
+                        LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (VLC)");
                     }
                     else
                     {

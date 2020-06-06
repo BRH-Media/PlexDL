@@ -25,7 +25,7 @@ namespace PlexDL.Common.API.Metadata
             {
                 MessageBox.Show(msgNoKey, @"Data Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoggingHelpers.RecordGenericEntry("Unique key error");
+                LoggingHelpers.RecordGeneralEntry("Unique key error");
                 LoggingHelpers.RecordException(logNoKeyMsg, logNoKeyType);
             }
             else
@@ -34,7 +34,7 @@ namespace PlexDL.Common.API.Metadata
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 
-                LoggingHelpers.RecordGenericEntry("Contacting the API");
+                LoggingHelpers.RecordGeneralEntry("Contacting the API");
                 reply = XmlGet.GetXmlTransaction(uri);
             }
 

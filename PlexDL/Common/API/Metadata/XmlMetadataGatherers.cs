@@ -12,7 +12,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting series list");
+                LoggingHelpers.RecordGeneralEntry("Getting series list");
 
                 var result = RowGet.GetDataRowContent(index);
 
@@ -32,7 +32,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting album list");
+                LoggingHelpers.RecordGeneralEntry("Getting album list");
 
                 var result = RowGet.GetDataRowContent(index);
 
@@ -52,7 +52,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting episodes list");
+                LoggingHelpers.RecordGeneralEntry("Getting episodes list");
 
                 var result = RowGet.GetDataRowSeries(index);
 
@@ -72,7 +72,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting track list");
+                LoggingHelpers.RecordGeneralEntry("Getting track list");
 
                 var result = RowGet.GetDataRowAlbums(index);
 
@@ -92,7 +92,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting movie metadata");
+                LoggingHelpers.RecordGeneralEntry("Getting movie metadata");
 
                 var result = RowGet.GetDataRowContent(index);
 
@@ -112,7 +112,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting episode metadata");
+                LoggingHelpers.RecordGeneralEntry("Getting episode metadata");
 
                 var result = RowGet.GetDataRowEpisodes(index);
 
@@ -132,7 +132,7 @@ namespace PlexDL.Common.API.Metadata
             XmlDocument doc;
             try
             {
-                LoggingHelpers.RecordGenericEntry("Getting track metadata");
+                LoggingHelpers.RecordGeneralEntry("Getting track metadata");
 
                 var result = RowGet.GetDataRowTracks(index);
 

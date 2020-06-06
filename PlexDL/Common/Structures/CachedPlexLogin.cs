@@ -48,7 +48,7 @@ namespace PlexDL.Common.Structures
 
                 File.WriteAllText(fileName, sww.ToString());
 
-                LoggingHelpers.RecordGenericEntry("Saved PlexLogin data to '" + fileName + "'");
+                LoggingHelpers.RecordGeneralEntry("Saved PlexLogin data to '" + fileName + "'");
             }
             catch (Exception ex)
             {

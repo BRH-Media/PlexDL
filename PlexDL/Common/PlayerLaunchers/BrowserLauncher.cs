@@ -15,7 +15,7 @@ namespace PlexDL.Common.PlayerLaunchers
                 if (Methods.StreamAdultContentCheck(stream))
                 {
                     Process.Start(stream.StreamInformation.Link);
-                    LoggingHelpers.RecordGenericEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
+                    LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
                 }
             }
             catch (Exception ex)

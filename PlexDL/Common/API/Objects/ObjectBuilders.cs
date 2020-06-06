@@ -14,21 +14,21 @@ namespace PlexDL.Common.API.Objects
             try
             {
                 var obj = new PlexTvShow();
-                LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
-                LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
+                LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
+                LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");
 
                 var metadata = XmlMetadataGatherers.GetEpisodeMetadata(index);
 
-                LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
+                LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.RecordGenericEntry(@"XML Valid");
+                    LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.RecordGenericEntry(@"Assembling Object");
+                        LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -52,15 +52,15 @@ namespace PlexDL.Common.API.Objects
                         LoggingHelpers.RecordException(
                             "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             "ContextDownloadInfoNull");
-                        LoggingHelpers.RecordGenericEntry("DownloadInfo is invalid (no stream contextual information)");
+                        LoggingHelpers.RecordGeneralEntry("DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
                 {
-                    LoggingHelpers.RecordGenericEntry("XML Invalid");
+                    LoggingHelpers.RecordGeneralEntry("XML Invalid");
                 }
 
-                LoggingHelpers.RecordGenericEntry("Returned assembled TV object");
+                LoggingHelpers.RecordGeneralEntry("Returned assembled TV object");
                 return obj;
             }
             catch (Exception ex)
@@ -76,20 +76,20 @@ namespace PlexDL.Common.API.Objects
             try
             {
                 var obj = new PlexMovie();
-                LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
-                LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
+                LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
+                LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");
                 var metadata = XmlMetadataGatherers.GetContentMetadata(index);
 
-                LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
+                LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.RecordGenericEntry(@"XML Valid");
+                    LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.RecordGenericEntry(@"Assembling Object");
+                        LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -106,15 +106,15 @@ namespace PlexDL.Common.API.Objects
                         LoggingHelpers.RecordException(
                             @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             @"ContextDownloadInfoNull");
-                        LoggingHelpers.RecordGenericEntry("DownloadInfo is invalid (no stream contextual information)");
+                        LoggingHelpers.RecordGeneralEntry("DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
                 {
-                    LoggingHelpers.RecordGenericEntry("XML Invalid");
+                    LoggingHelpers.RecordGeneralEntry("XML Invalid");
                 }
 
-                LoggingHelpers.RecordGenericEntry("Returned assembled Movie object");
+                LoggingHelpers.RecordGeneralEntry("Returned assembled Movie object");
                 return obj;
             }
             catch (Exception ex)
@@ -130,14 +130,14 @@ namespace PlexDL.Common.API.Objects
             try
             {
                 var obj = new PlexMusic();
-                LoggingHelpers.RecordGenericEntry(@"Content Parse Started");
-                LoggingHelpers.RecordGenericEntry(@"Grabbing Titles");
+                LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
+                LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");
                 var metadata = XmlMetadataGatherers.GetTrackMetadata(index);
 
-                LoggingHelpers.RecordGenericEntry(@"Checking XML validity");
+                LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
                 if (Methods.PlexXmlValid(metadata))
                 {
-                    LoggingHelpers.RecordGenericEntry(@"XML Valid");
+                    LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
                     //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
 
@@ -145,7 +145,7 @@ namespace PlexDL.Common.API.Objects
 
                     if (dlInfo != null)
                     {
-                        LoggingHelpers.RecordGenericEntry(@"Assembling Object");
+                        LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
                         obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
@@ -164,15 +164,15 @@ namespace PlexDL.Common.API.Objects
                         LoggingHelpers.RecordException(
                             @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             @"ContextDownloadInfoNull");
-                        LoggingHelpers.RecordGenericEntry("DownloadInfo is invalid (no stream contextual information)");
+                        LoggingHelpers.RecordGeneralEntry("DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
                 {
-                    LoggingHelpers.RecordGenericEntry("XML Invalid");
+                    LoggingHelpers.RecordGeneralEntry("XML Invalid");
                 }
 
-                LoggingHelpers.RecordGenericEntry("Returned assembled Music object");
+                LoggingHelpers.RecordGeneralEntry("Returned assembled Music object");
                 return obj;
             }
             catch (Exception ex)

@@ -34,13 +34,13 @@ namespace PlexDL.Common.API
         {
             var key = "";
 
-            LoggingHelpers.RecordGenericEntry("Parsing XML Reply");
+            LoggingHelpers.RecordGeneralEntry("Parsing XML Reply");
             using (XmlReader reader = new XmlNodeReader(doc))
             {
                 while (reader.Read())
                     if (reader.IsStartElement())
                     {
-                        LoggingHelpers.RecordGenericEntry("Checking for directories");
+                        LoggingHelpers.RecordGeneralEntry("Checking for directories");
 
                         switch (reader.Name)
                         {
@@ -49,7 +49,7 @@ namespace PlexDL.Common.API
                                 {
                                     var localKey = reader.GetAttribute("key");
                                     key = localKey;
-                                    LoggingHelpers.RecordGenericEntry("Found " + key);
+                                    LoggingHelpers.RecordGeneralEntry("Found " + key);
                                 }
 
                                 break;

@@ -19,7 +19,7 @@ namespace PlexDL.Common.API
                 {
                     var obj = new DownloadInfo();
 
-                    LoggingHelpers.RecordGenericEntry("Grabbing DownloadInfo object");
+                    LoggingHelpers.RecordGeneralEntry("Grabbing DownloadInfo object");
                     var sections = new DataSet();
                     sections.ReadXml(new XmlNodeReader(xml));
 

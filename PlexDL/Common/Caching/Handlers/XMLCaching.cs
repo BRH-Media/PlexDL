@@ -41,17 +41,17 @@ namespace PlexDL.Common.Caching.Handlers
                     {
                         var fqPath = XmlCachePath(sourceUrl);
                         doc.Save(fqPath);
-                        LoggingHelpers.RecordCacheEvent("[Caching] Successfully cached URL", sourceUrl);
+                        LoggingHelpers.RecordCacheEvent("Successfully cached URL", sourceUrl);
                     }
                     else
-                        LoggingHelpers.RecordCacheEvent("[Caching] URL is already cached", sourceUrl);
+                        LoggingHelpers.RecordCacheEvent("URL is already cached", sourceUrl);
                 }
                 return true;
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "XmlCacheWrtError");
-                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't create cached file (an error occurred)", sourceUrl);
+                LoggingHelpers.RecordCacheEvent("Couldn't create cached file (an error occurred)", sourceUrl);
                 return false;
             }
         }
@@ -73,7 +73,7 @@ namespace PlexDL.Common.Caching.Handlers
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "XmlCacheRplError");
-                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't replace existing cached file (an error occurred)", sourceUrl);
+                LoggingHelpers.RecordCacheEvent("Couldn't replace existing cached file (an error occurred)", sourceUrl);
                 //replacing didn't succeed
                 return false;
             }
@@ -87,14 +87,14 @@ namespace PlexDL.Common.Caching.Handlers
                     if (XmlInCache(sourceUrl))
                     {
                         File.Delete(XmlCachePath(sourceUrl));
-                        LoggingHelpers.RecordCacheEvent("[Caching] Removed URL from cache", sourceUrl);
+                        LoggingHelpers.RecordCacheEvent("Removed URL from cache", sourceUrl);
                     }
                 return true;
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "XmlCacheDelError");
-                LoggingHelpers.RecordCacheEvent("[Caching] Couldn't remove existing cached file (an error occurred)", sourceUrl);
+                LoggingHelpers.RecordCacheEvent("Couldn't remove existing cached file (an error occurred)", sourceUrl);
                 //deletion didn't succeed
                 return false;
             }
@@ -111,14 +111,14 @@ namespace PlexDL.Common.Caching.Handlers
                     {
                         if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath, GlobalStaticVars.Settings.CacheSettings.Expiry.Interval))
                         {
-                            LoggingHelpers.RecordCacheEvent("[Caching] Cached URL is not expired; loading from cached copy.", sourceUrl);
+                            LoggingHelpers.RecordCacheEvent("Cached URL is not expired; loading from cached copy.", sourceUrl);
                             var doc = new XmlDocument();
                             doc.Load(fqPath);
                             return doc;
                         }
                         else
                         {
-                            LoggingHelpers.RecordCacheEvent("[Caching] Cached URL is out-of-date; attempting to get a new copy.", sourceUrl);
+                            LoggingHelpers.RecordCacheEvent("Cached URL is out-of-date; attempting to get a new copy.", sourceUrl);
                             var doc = API.XmlGet.GetXmlTransaction(sourceUrl, "", true);
                             XmlReplaceCache(doc, sourceUrl);
                             return doc;
@@ -126,14 +126,14 @@ namespace PlexDL.Common.Caching.Handlers
                     }
                     else
                     {
-                        LoggingHelpers.RecordCacheEvent("[Caching] Loading from cached copy", sourceUrl);
+                        LoggingHelpers.RecordCacheEvent("Loading from cached copy", sourceUrl);
                         var doc = new XmlDocument();
                         doc.Load(fqPath);
                         return doc;
                     }
                 }
                 else
-                    LoggingHelpers.RecordCacheEvent("[Caching] URL isn't cached; couldn't load from specified file.", sourceUrl);
+                    LoggingHelpers.RecordCacheEvent("URL isn't cached; couldn't load from specified file.", sourceUrl);
             }
 
             return new XmlDocument();
