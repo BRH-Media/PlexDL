@@ -315,8 +315,13 @@ namespace PlexDL.UI
             //check to see if a loaded profile instated some valid server details
             if (CheckProfileDefinedServer())
             {
+                //refresh from app.config file(s)
+                Properties.Settings.Default.Reload();
+
+                //parse the values
                 var shown = Properties.Settings.Default.PLSShown;
                 var disable = Properties.Settings.Default.DisablePLSOnShown;
+
                 if (!shown || !disable)
                 {
                     const string msg =
