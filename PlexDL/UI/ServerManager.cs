@@ -329,6 +329,7 @@ namespace PlexDL.UI
                     if (Question(msg))
                     {
                         LoadProfileDefinedServer();
+                        PlsShown(true, false);
                         return;
                     }
 
@@ -337,11 +338,17 @@ namespace PlexDL.UI
                         MessageBox.Show(
                             @"We won't ask again. You can reenable this dialog via the global application config file (not your profile).",
                             @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Properties.Settings.Default.PLSShown = true;
-                        Properties.Settings.Default.Save();
+                        PlsShown(true);
                     }
                 }
             }
+        }
+
+        private static void PlsShown(bool value, bool save = true)
+        {
+            Properties.Settings.Default.PLSShown = value;
+            if (save)
+                Properties.Settings.Default.Save();
         }
 
         private void ServerManager_Load(object sender, EventArgs e)

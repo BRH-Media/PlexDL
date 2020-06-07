@@ -76,12 +76,12 @@ namespace PlexDL.UI
                         if (testUrl.LastException != null && testUrl.StatusCode != "Undetermined")
                         {
                             MessageBox.Show(
-                                $"Could not connect; the server declined to serve the correct response. The status result was: {testUrl.StatusCode}\n\nYou can exit the dialog by the button in the top-right.",
+                                $"Could not connect: {testUrl.StatusCode}\n\nYou can exit the dialog by clicking 'Cancel'.",
                                 @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         else
                             MessageBox.Show(
-                                "Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by the button in the top-right.",
+                                "Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by clicking 'Cancel'.",
                                 @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -109,14 +109,14 @@ namespace PlexDL.UI
         private void NoDiffToken()
         {
             Height = 178;
-            btnConnect.Location = new Point(btnConnect.Location.X, 110);
+            pnlControls.Location = new Point(pnlControls.Location.X, 110);
             gbConnectionInformation.Height = 92;
         }
 
         private void DiffToken()
         {
             Height = 204;
-            btnConnect.Location = new Point(btnConnect.Location.X, 136);
+            pnlControls.Location = new Point(pnlControls.Location.X, 136);
             gbConnectionInformation.Height = 118;
         }
 
@@ -140,6 +140,11 @@ namespace PlexDL.UI
         private void chkToken_CheckedChanged(object sender, EventArgs e)
         {
             CheckDiffToken();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

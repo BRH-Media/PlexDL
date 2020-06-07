@@ -37,17 +37,20 @@ namespace PlexDL.UI
             this.txtServerIP = new libbrhscgui.Components.WaterMarkTextBox();
             this.txtServerPort = new libbrhscgui.Components.WaterMarkTextBox();
             this.gbConnectionInformation = new System.Windows.Forms.GroupBox();
-            this.chkToken = new System.Windows.Forms.CheckBox();
             this.txtToken = new libbrhscgui.Components.WaterMarkTextBox();
+            this.chkToken = new System.Windows.Forms.CheckBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.pnlControls = new System.Windows.Forms.Panel();
             this.gbConnectionInformation.SuspendLayout();
+            this.pnlControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(12, 136);
+            this.btnConnect.Location = new System.Drawing.Point(107, 0);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(210, 23);
+            this.btnConnect.Size = new System.Drawing.Size(103, 23);
             this.btnConnect.TabIndex = 1;
             this.btnConnect.Text = "Connect";
             this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
@@ -88,17 +91,6 @@ namespace PlexDL.UI
             this.gbConnectionInformation.TabStop = false;
             this.gbConnectionInformation.Text = "Connection Information";
             // 
-            // chkToken
-            // 
-            this.chkToken.AutoSize = true;
-            this.chkToken.Location = new System.Drawing.Point(6, 71);
-            this.chkToken.Name = "chkToken";
-            this.chkToken.Size = new System.Drawing.Size(125, 17);
-            this.chkToken.TabIndex = 2;
-            this.chkToken.Text = "Use a different token";
-            this.chkToken.UseVisualStyleBackColor = true;
-            this.chkToken.CheckedChanged += new System.EventHandler(this.chkToken_CheckedChanged);
-            // 
             // txtToken
             // 
             this.txtToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -110,13 +102,45 @@ namespace PlexDL.UI
             this.txtToken.WaterMarkColor = System.Drawing.Color.Gray;
             this.txtToken.WaterMarkText = "Enter Token";
             // 
+            // chkToken
+            // 
+            this.chkToken.AutoSize = true;
+            this.chkToken.Location = new System.Drawing.Point(6, 71);
+            this.chkToken.Name = "chkToken";
+            this.chkToken.Size = new System.Drawing.Size(125, 17);
+            this.chkToken.TabIndex = 2;
+            this.chkToken.Text = "Use a different token";
+            this.chkToken.UseVisualStyleBackColor = true;
+            this.chkToken.CheckedChanged += new System.EventHandler(this.chkToken_CheckedChanged);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(0, 0);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(103, 23);
+            this.btnCancel.TabIndex = 16;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // pnlControls
+            // 
+            this.pnlControls.Controls.Add(this.btnCancel);
+            this.pnlControls.Controls.Add(this.btnConnect);
+            this.pnlControls.Location = new System.Drawing.Point(12, 136);
+            this.pnlControls.Name = "pnlControls";
+            this.pnlControls.Size = new System.Drawing.Size(210, 23);
+            this.pnlControls.TabIndex = 17;
+            // 
             // DirectConnect
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(234, 165);
+            this.Controls.Add(this.pnlControls);
             this.Controls.Add(this.gbConnectionInformation);
-            this.Controls.Add(this.btnConnect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -130,6 +154,7 @@ namespace PlexDL.UI
             this.Load += new System.EventHandler(this.DirectConnect_Load);
             this.gbConnectionInformation.ResumeLayout(false);
             this.gbConnectionInformation.PerformLayout();
+            this.pnlControls.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -142,5 +167,7 @@ namespace PlexDL.UI
         private GroupBox gbConnectionInformation;
         private CheckBox chkToken;
         private WaterMarkTextBox txtToken;
+        private Button btnCancel;
+        private Panel pnlControls;
     }
 }
