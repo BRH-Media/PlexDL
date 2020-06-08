@@ -31,45 +31,78 @@ namespace PlexDL.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestForm));
+            this.lblNewFunctionality = new System.Windows.Forms.Label();
+            this.lblNothingInteresting = new System.Windows.Forms.Label();
+            this.pnlTestingArea = new System.Windows.Forms.Panel();
+            this.pnlNothingInteresting = new System.Windows.Forms.Panel();
+            this.pnlTestingArea.SuspendLayout();
+            this.pnlNothingInteresting.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lblNewFunctionality
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(300, 110);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "This is for testing new functionality";
+            this.lblNewFunctionality.AutoSize = true;
+            this.lblNewFunctionality.Location = new System.Drawing.Point(3, 1);
+            this.lblNewFunctionality.Name = "lblNewFunctionality";
+            this.lblNewFunctionality.Size = new System.Drawing.Size(168, 13);
+            this.lblNewFunctionality.TabIndex = 0;
+            this.lblNewFunctionality.Text = "This is for testing new functionality";
             // 
-            // label2
+            // lblNothingInteresting
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(300, 123);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(260, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "You won\'t find anything of interest here, unfortunately.";
+            this.lblNothingInteresting.AutoSize = true;
+            this.lblNothingInteresting.Location = new System.Drawing.Point(3, 14);
+            this.lblNothingInteresting.Name = "lblNothingInteresting";
+            this.lblNothingInteresting.Size = new System.Drawing.Size(260, 13);
+            this.lblNothingInteresting.TabIndex = 1;
+            this.lblNothingInteresting.Text = "You won\'t find anything of interest here, unfortunately.";
+            // 
+            // pnlTestingArea
+            // 
+            this.pnlTestingArea.Controls.Add(this.pnlNothingInteresting);
+            this.pnlTestingArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTestingArea.Location = new System.Drawing.Point(0, 0);
+            this.pnlTestingArea.Name = "pnlTestingArea";
+            this.pnlTestingArea.Size = new System.Drawing.Size(800, 450);
+            this.pnlTestingArea.TabIndex = 2;
+            // 
+            // pnlNothingInteresting
+            // 
+            this.pnlNothingInteresting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlNothingInteresting.Controls.Add(this.lblNewFunctionality);
+            this.pnlNothingInteresting.Controls.Add(this.lblNothingInteresting);
+            this.pnlNothingInteresting.Location = new System.Drawing.Point(0, 0);
+            this.pnlNothingInteresting.Name = "pnlNothingInteresting";
+            this.pnlNothingInteresting.Size = new System.Drawing.Size(264, 30);
+            this.pnlNothingInteresting.TabIndex = 2;
             // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pnlTestingArea);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "TestForm";
-            this.Text = "TestForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Testing Area";
+            this.Load += new System.EventHandler(this.TestForm_Load);
+            this.pnlTestingArea.ResumeLayout(false);
+            this.pnlNothingInteresting.ResumeLayout(false);
+            this.pnlNothingInteresting.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private Label label1;
-        private Label label2;
+        private Label lblNewFunctionality;
+        private Label lblNothingInteresting;
+        private Panel pnlTestingArea;
+        private Panel pnlNothingInteresting;
     }
 }

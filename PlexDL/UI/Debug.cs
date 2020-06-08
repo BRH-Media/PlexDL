@@ -277,6 +277,20 @@ namespace PlexDL.UI
             lblRefreshCountValue.Text = RefreshCount.ToString();
         }
 
+        private void ResetRefreshCounter()
+        {
+            RefreshCount = 0;
+            UpdateRefreshCount();
+        }
+
+        private void UpdateRefreshInt()
+        {
+            if (RefreshCount < int.MaxValue)
+                RefreshCount++;
+            else
+                RefreshCount = 0;
+        }
+
         private void DoRefresh()
         {
             var t = typeof(Flags);
@@ -306,14 +320,6 @@ namespace PlexDL.UI
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             DoRefresh();
-        }
-
-        private void UpdateRefreshInt()
-        {
-            if (RefreshCount < int.MaxValue)
-                RefreshCount++;
-            else
-                RefreshCount = 0;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -383,6 +389,11 @@ namespace PlexDL.UI
         private void btnExportTracks_Click(object sender, EventArgs e)
         {
             ExportTracks();
+        }
+
+        private void btnResetRefreshCounter_Click(object sender, EventArgs e)
+        {
+            ResetRefreshCounter();
         }
     }
 }

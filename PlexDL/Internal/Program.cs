@@ -17,7 +17,7 @@ namespace PlexDL.Internal
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
-        [STAThread]
+        [MTAThread]
         private static void Main(string[] args)
         {
             var arr = args.ToList();
@@ -42,15 +42,15 @@ namespace PlexDL.Internal
 
             if (arr.Count > 0)
             {
-                string firstArg = arr[0];
+                var firstArg = arr[0];
                 //Windows will pass "Open With" files as the first argument; checking if the first argument
                 //exists as a file will validate whether this has occurred.
                 if (File.Exists(firstArg))
                 {
                     //Windows has passed a file; we need to check if it's a '.pmxml' file which we can load
                     //into the Metadata window.
-                    string ext = Path.GetExtension(firstArg);
-                    string expectedFormat = ".pmxml";
+                    var ext = Path.GetExtension(firstArg);
+                    const string expectedFormat = ".pmxml";
                     if (string.Equals(ext, expectedFormat))
                     {
                         var metadata = ImportExport.MetadataFromFile(firstArg);
@@ -61,12 +61,12 @@ namespace PlexDL.Internal
                 }
                 else
                 {
-                    if (arr.Contains("-testing"))
-                        Application.Run(new TestForm());
+                    if (arr.Contains("-tw"))
+                        RunTestingWindow();
                     else if (arr.Contains("-t"))
-                        Application.Run(new Translator());
+                        RunTranslator();
                     else
-                        Application.Run(new Home());
+                        RunPlexDlHome();
                 }
             }
             else
@@ -85,7 +85,25 @@ namespace PlexDL.Internal
                 MessageBox.Show(@"Invalid PlexMovie Metadata File; the decoded data was null.", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private static void VisualStyles(List<string> args)
+        private static void RunPlexDlHome()
+        {
+            var form = new Home();
+            Application.Run(form);
+        }
+
+        private static void RunTestingWindow()
+        {
+            var form = new TestForm();
+            Application.Run(form);
+        }
+
+        private static void RunTranslator()
+        {
+            var form = new Translator();
+            Application.Run(form);
+        }
+
+        private static void VisualStyles(ICollection<string> args)
         {
             if (args.Contains("-v1"))
                 Application.EnableVisualStyles();
@@ -95,17 +113,17 @@ namespace PlexDL.Internal
                     Application.EnableVisualStyles();
         }
 
-        private static void CheckDevStatus(List<string> args)
+        private static void CheckDevStatus(ICollection<string> args)
         {
-            if (args.Contains("-beta"))
+            if (args.Contains("-b"))
                 BuildState.State = DevStatus.InBeta;
-            else if (args.Contains("-prod"))
+            else if (args.Contains("-p"))
                 BuildState.State = DevStatus.ProductionReady;
-            else if (args.Contains("-dev"))
+            else if (args.Contains("-d"))
                 BuildState.State = DevStatus.InDevelopment;
         }
 
-        private static void CheckDebug(List<string> args)
+        private static void CheckDebug(ICollection<string> args)
         {
             Common.Flags.IsDebug = args.Contains("-debug");
         }
