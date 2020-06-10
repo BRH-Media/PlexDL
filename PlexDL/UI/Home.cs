@@ -17,12 +17,14 @@ using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.Common.Update;
 using PlexDL.PlexAPI;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -356,7 +358,7 @@ namespace PlexDL.UI
                 Disconnect();
         }
 
-        private void itmAbout_Click(object sender, EventArgs e)
+        private void ItmAbout_Click(object sender, EventArgs e)
         {
             using (var frm = new About())
             {
@@ -364,7 +366,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmCacheMetrics_Click(object sender, EventArgs e)
+        private void ItmCacheMetrics_Click(object sender, EventArgs e)
         {
             using (var frm = new CachingMetricsUi())
             {
@@ -2411,36 +2413,36 @@ namespace PlexDL.UI
 
         #endregion ButtonClicks
 
-        private void itmDownloadThisTrack_Click(object sender, EventArgs e)
+        private void ItmDownloadThisTrack_Click(object sender, EventArgs e)
         {
             cxtTracks.Close();
             DoDownloadSelected();
         }
 
-        private void itmDownloadThisAlbum_Click(object sender, EventArgs e)
+        private void ItmDownloadThisAlbum_Click(object sender, EventArgs e)
         {
             cxtTracks.Close();
             DoDownloadAll();
         }
 
-        private void cxtTrackOptions_Opening(object sender, CancelEventArgs e)
+        private void CxtTrackOptions_Opening(object sender, CancelEventArgs e)
         {
             if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
         }
 
-        private void itmDGVDownloadThisTrack_Click(object sender, EventArgs e)
+        private void ItmDGVDownloadThisTrack_Click(object sender, EventArgs e)
         {
             cxtTrackOptions.Close();
             DoDownloadSelected();
         }
 
-        private void itmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
+        private void ItmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
         {
             cxtTrackOptions.Close();
             DoDownloadAll();
         }
 
-        private void itmTrackMetadata_Click(object sender, EventArgs e)
+        private void ItmTrackMetadata_Click(object sender, EventArgs e)
         {
             cxtTrackOptions.Close();
             Metadata();
@@ -2482,6 +2484,24 @@ namespace PlexDL.UI
             else
                 ShowError(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
                     @"Cleanup Failed");
+        }
+
+        private void ItmRepo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(GlobalStaticVars.RepoUrl);
+            }
+            catch (Exception ex)
+            {
+                ShowError("Couldn't open repo url. Check exception log.");
+                LoggingHelpers.RecordException(ex.Message, @"OpenRepoError");
+            }
+        }
+
+        private void itmCheckForUpdates_Click(object sender, EventArgs e)
+        {
+            UpdateManager.RunUpdateCheck();
         }
     }
 }

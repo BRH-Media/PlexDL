@@ -49,8 +49,8 @@ namespace PlexDL.UI
             this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
@@ -181,6 +181,13 @@ namespace PlexDL.UI
             this.itmViewLink.Text = "View Connection Link (Debug)";
             this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
             // 
+            // itmViewAccountToken
+            // 
+            this.itmViewAccountToken.Name = "itmViewAccountToken";
+            this.itmViewAccountToken.Size = new System.Drawing.Size(235, 22);
+            this.itmViewAccountToken.Text = "View Account Token (Debug)";
+            this.itmViewAccountToken.Click += new System.EventHandler(this.ItmViewAccountToken_Click);
+            // 
             // dgvServers
             // 
             this.dgvServers.AllowUserToAddRows = false;
@@ -190,11 +197,11 @@ namespace PlexDL.UI
             this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvServers.ContextMenuStrip = this.cxtServers;
+            this.dgvServers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -204,7 +211,6 @@ namespace PlexDL.UI
             this.dgvServers.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvServers.IsContentTable = false;
             this.dgvServers.Location = new System.Drawing.Point(0, 24);
-            this.dgvServers.Margin = new System.Windows.Forms.Padding(2);
             this.dgvServers.MultiSelect = false;
             this.dgvServers.Name = "dgvServers";
             this.dgvServers.RowHeadersVisible = false;
@@ -212,16 +218,7 @@ namespace PlexDL.UI
             this.dgvServers.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvServers.Size = new System.Drawing.Size(800, 426);
-            this.dgvServers.TabIndex = 16;
-            this.dgvServers.CurrentCellChanged += new System.EventHandler(this.dgvServers_SelectionChanged);
-            this.dgvServers.DoubleClick += new System.EventHandler(this.dgvServers_DoubleClick);
-            // 
-            // itmViewAccountToken
-            // 
-            this.itmViewAccountToken.Name = "itmViewAccountToken";
-            this.itmViewAccountToken.Size = new System.Drawing.Size(235, 22);
-            this.itmViewAccountToken.Text = "View Account Token (Debug)";
-            this.itmViewAccountToken.Click += new System.EventHandler(this.ItmViewAccountToken_Click);
+            this.dgvServers.TabIndex = 18;
             // 
             // ServerManager
             // 
@@ -250,8 +247,6 @@ namespace PlexDL.UI
         }
 
         #endregion
-
-        private FlatDataGridView dgvServers;
         private MenuStrip menuMain;
         private ToolStripMenuItem itmAuthenticate;
         private ToolStripMenuItem itmLoad;
@@ -267,5 +262,6 @@ namespace PlexDL.UI
         private ContextMenuStrip cxtServers;
         private ToolStripMenuItem itmViewLink;
         private ToolStripMenuItem itmViewAccountToken;
+        private FlatDataGridView dgvServers;
     }
 }

@@ -35,15 +35,15 @@ namespace PlexDL.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSaveProfile = new System.Windows.Forms.SaveFileDialog();
             this.fbdSave = new System.Windows.Forms.FolderBrowserDialog();
@@ -108,6 +108,7 @@ namespace PlexDL.UI
             this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSetDlDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCleanupAllData = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,6 +121,9 @@ namespace PlexDL.UI
             this.itmCaching = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCacheMetrics = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearCache = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmRepo = new System.Windows.Forms.ToolStripMenuItem();
             this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.lblViewing = new System.Windows.Forms.ToolStripLabel();
@@ -143,7 +147,6 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmCleanupAllData = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -461,14 +464,14 @@ namespace PlexDL.UI
             this.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvMovies.ContextMenuStrip = this.cxtContentOptions;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMovies.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvMovies.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -525,14 +528,14 @@ namespace PlexDL.UI
             this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -560,14 +563,14 @@ namespace PlexDL.UI
             this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -595,14 +598,14 @@ namespace PlexDL.UI
             this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -658,14 +661,14 @@ namespace PlexDL.UI
             this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvArtists.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvArtists.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvArtists.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -693,14 +696,14 @@ namespace PlexDL.UI
             this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvAlbums.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlbums.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAlbums.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -728,14 +731,14 @@ namespace PlexDL.UI
             this.dgvTracks.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTracks.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTracks.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvTracks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTracks.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvTracks.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -760,14 +763,14 @@ namespace PlexDL.UI
             this.itmTrackDownload});
             this.cxtTrackOptions.Name = "cxtEpisodeOptions";
             this.cxtTrackOptions.Size = new System.Drawing.Size(129, 48);
-            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtTrackOptions_Opening);
+            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtTrackOptions_Opening);
             // 
             // itmTrackMetadata
             // 
             this.itmTrackMetadata.Name = "itmTrackMetadata";
             this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmTrackMetadata.Text = "Metadata";
-            this.itmTrackMetadata.Click += new System.EventHandler(this.itmTrackMetadata_Click);
+            this.itmTrackMetadata.Click += new System.EventHandler(this.ItmTrackMetadata_Click);
             // 
             // itmTrackDownload
             // 
@@ -783,14 +786,14 @@ namespace PlexDL.UI
             this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
             this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(134, 22);
             this.itmDGVDownloadThisTrack.Text = "This Track";
-            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.itmDGVDownloadThisTrack_Click);
+            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
             // 
             // itmDGVDownloadThisAlbum
             // 
             this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
             this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(134, 22);
             this.itmDGVDownloadThisAlbum.Text = "This Album";
-            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.itmDGVDownloadThisAlbum_Click);
+            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
             // 
             // tabLog
             // 
@@ -827,14 +830,14 @@ namespace PlexDL.UI
             this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -905,14 +908,14 @@ namespace PlexDL.UI
             this.dgvSections.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSections.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvSections.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvSections.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSections.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -938,7 +941,7 @@ namespace PlexDL.UI
             this.itmContent,
             this.itmLogging,
             this.itmCaching,
-            this.itmAbout});
+            this.itmHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(956, 24);
@@ -988,6 +991,13 @@ namespace PlexDL.UI
             this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
             this.itmSetDlDirectory.Text = "Set Download Directory";
             this.itmSetDlDirectory.Click += new System.EventHandler(this.itmSetDlDirectory_Click);
+            // 
+            // itmCleanupAllData
+            // 
+            this.itmCleanupAllData.Name = "itmCleanupAllData";
+            this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
+            this.itmCleanupAllData.Text = "Cleanup All Data";
+            this.itmCleanupAllData.Click += new System.EventHandler(this.itmCleanupAllData_Click);
             // 
             // itmSettings
             // 
@@ -1077,7 +1087,7 @@ namespace PlexDL.UI
             this.itmCacheMetrics.Name = "itmCacheMetrics";
             this.itmCacheMetrics.Size = new System.Drawing.Size(137, 22);
             this.itmCacheMetrics.Text = "Metrics";
-            this.itmCacheMetrics.Click += new System.EventHandler(this.itmCacheMetrics_Click);
+            this.itmCacheMetrics.Click += new System.EventHandler(this.ItmCacheMetrics_Click);
             // 
             // itmClearCache
             // 
@@ -1086,12 +1096,36 @@ namespace PlexDL.UI
             this.itmClearCache.Text = "Clear Cache";
             this.itmClearCache.Click += new System.EventHandler(this.itmClearCache_Click);
             // 
+            // itmHelp
+            // 
+            this.itmHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCheckForUpdates,
+            this.itmRepo,
+            this.itmAbout});
+            this.itmHelp.Name = "itmHelp";
+            this.itmHelp.Size = new System.Drawing.Size(44, 20);
+            this.itmHelp.Text = "Help";
+            // 
+            // itmCheckForUpdates
+            // 
+            this.itmCheckForUpdates.Name = "itmCheckForUpdates";
+            this.itmCheckForUpdates.Size = new System.Drawing.Size(180, 22);
+            this.itmCheckForUpdates.Text = "Check for Updates";
+            this.itmCheckForUpdates.Click += new System.EventHandler(this.itmCheckForUpdates_Click);
+            // 
+            // itmRepo
+            // 
+            this.itmRepo.Name = "itmRepo";
+            this.itmRepo.Size = new System.Drawing.Size(180, 22);
+            this.itmRepo.Text = "Repo";
+            this.itmRepo.Click += new System.EventHandler(this.ItmRepo_Click);
+            // 
             // itmAbout
             // 
             this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(52, 20);
+            this.itmAbout.Size = new System.Drawing.Size(180, 22);
             this.itmAbout.Text = "About";
-            this.itmAbout.Click += new System.EventHandler(this.itmAbout_Click);
+            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
             // 
             // tsMain
             // 
@@ -1242,21 +1276,14 @@ namespace PlexDL.UI
             this.itmDownloadThisTrack.Name = "itmDownloadThisTrack";
             this.itmDownloadThisTrack.Size = new System.Drawing.Size(191, 22);
             this.itmDownloadThisTrack.Text = "Download This Track";
-            this.itmDownloadThisTrack.Click += new System.EventHandler(this.itmDownloadThisTrack_Click);
+            this.itmDownloadThisTrack.Click += new System.EventHandler(this.ItmDownloadThisTrack_Click);
             // 
             // itmDownloadThisAlbum
             // 
             this.itmDownloadThisAlbum.Name = "itmDownloadThisAlbum";
             this.itmDownloadThisAlbum.Size = new System.Drawing.Size(191, 22);
             this.itmDownloadThisAlbum.Text = "Download This Album";
-            this.itmDownloadThisAlbum.Click += new System.EventHandler(this.itmDownloadThisAlbum_Click);
-            // 
-            // itmCleanupAllData
-            // 
-            this.itmCleanupAllData.Name = "itmCleanupAllData";
-            this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
-            this.itmCleanupAllData.Text = "Cleanup All Data";
-            this.itmCleanupAllData.Click += new System.EventHandler(this.itmCleanupAllData_Click);
+            this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
             // 
             // Home
             // 
@@ -1375,7 +1402,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmCaching;
         private ToolStripMenuItem itmCacheMetrics;
         private ToolStripMenuItem itmClearCache;
-        private ToolStripMenuItem itmAbout;
+        private ToolStripMenuItem itmHelp;
         private TableLayoutPanel tlpContentOptions;
         private TableLayoutPanel tlpContentOptionsControls;
         private ToolStripMenuItem itmDisconnect;
@@ -1417,6 +1444,9 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmDGVDownloadThisTrack;
         private ToolStripMenuItem itmDGVDownloadThisAlbum;
         private ToolStripMenuItem itmCleanupAllData;
+        private ToolStripMenuItem itmCheckForUpdates;
+        private ToolStripMenuItem itmAbout;
+        private ToolStripMenuItem itmRepo;
     }
 }
 

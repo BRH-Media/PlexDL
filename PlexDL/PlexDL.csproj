@@ -69,9 +69,6 @@
       <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RestSharp, Version=106.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.10.1\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -79,7 +76,6 @@
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -87,18 +83,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AltoHTTP\Classes\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="AltoHTTP\Classes\DownloadQueue.cs" />
-    <Compile Include="AltoHTTP\Classes\HttpDownloader.cs" />
-    <Compile Include="AltoHTTP\Classes\ProgressChangedEventHandler.cs" />
-    <Compile Include="AltoHTTP\Classes\QueueElement.cs" />
-    <Compile Include="AltoHTTP\Classes\QueueElementCompletedEventArgs.cs" />
-    <Compile Include="AltoHTTP\Classes\QueueElementCompletedEventHandler.cs" />
-    <Compile Include="AltoHTTP\Classes\SizeUnitConverter.cs" />
-    <Compile Include="AltoHTTP\Enums\DownloadState.cs" />
-    <Compile Include="AltoHTTP\Enums\FromTo.cs" />
-    <Compile Include="AltoHTTP\Interfaces\IDownloader.cs" />
-    <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
     <Compile Include="Common\API\Objects\ObjectBuilders.cs" />
     <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Utility.cs" />
@@ -112,29 +96,6 @@
     <Compile Include="Common\API\Metadata\XmlMetadataParsers.cs" />
     <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
     <Compile Include="Common\Caching\CachingFileDir.cs" />
-    <Compile Include="Common\Components\CircularProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Animation\WinFormAnimation\AnimationFunctions.cs" />
-    <Compile Include="Animation\WinFormAnimation\Animator.cs" />
-    <Compile Include="Animation\WinFormAnimation\Animator2D.cs" />
-    <Compile Include="Animation\WinFormAnimation\Animator3D.cs" />
-    <Compile Include="Animation\WinFormAnimation\AnimatorStatus.cs" />
-    <Compile Include="Animation\WinFormAnimation\float2D.cs" />
-    <Compile Include="Animation\WinFormAnimation\float3D.cs" />
-    <Compile Include="Animation\WinFormAnimation\FloatExtensions.cs" />
-    <Compile Include="Animation\WinFormAnimation\FPSLimiterKnownValues.cs" />
-    <Compile Include="Animation\WinFormAnimation\IAnimator.cs" />
-    <Compile Include="Animation\WinFormAnimation\KnownAnimationFunctions.cs" />
-    <Compile Include="Animation\WinFormAnimation\Path.cs" />
-    <Compile Include="Animation\WinFormAnimation\Path2D.cs" />
-    <Compile Include="Animation\WinFormAnimation\Path2DExtensions.cs" />
-    <Compile Include="Animation\WinFormAnimation\Path3D.cs" />
-    <Compile Include="Animation\WinFormAnimation\Path3DExtensions.cs" />
-    <Compile Include="Animation\WinFormAnimation\PathExtensions.cs" />
-    <Compile Include="Animation\WinFormAnimation\SafeInvoker.cs" />
-    <Compile Include="Animation\WinFormAnimation\SafeInvoker`1.cs" />
-    <Compile Include="Animation\WinFormAnimation\Timer.cs" />
     <Compile Include="Common\API\ImportExport.cs" />
     <Compile Include="Common\API\KeyGatherers.cs" />
     <Compile Include="Common\API\Relays.cs" />
@@ -188,9 +149,6 @@
     <Compile Include="Common\Caching\Handlers\ServerCaching.cs" />
     <Compile Include="Common\Caching\Handlers\ThumbCaching.cs" />
     <Compile Include="Common\Caching\Handlers\XmlCaching.cs" />
-    <Compile Include="Common\Components\NoAutoSelectDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Common\Globals\GlobalStaticVars.cs" />
     <Compile Include="Common\Logging\LoggingHelpers.cs" />
     <Compile Include="Common\Methods.cs" />
@@ -210,44 +168,14 @@
     <Compile Include="Common\Structures\Plex\PlexTvShow.cs" />
     <Compile Include="Common\Structures\Resolution.cs" />
     <Compile Include="Common\Structures\Plex\PlexActor.cs" />
-    <Compile Include="Common\Components\FlatDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Common\SearchFramework\SearchQuery.cs" />
     <Compile Include="Common\Structures\TVShowDirectoryLayout.cs" />
     <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
+    <Compile Include="Common\Update\UpdateManager.cs" />
     <Compile Include="Common\WebCheck.cs" />
     <Compile Include="Internal\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
     <Compile Include="Common\wininet.cs" />
-    <Compile Include="Player\AudioDevices.cs" />
-    <Compile Include="Player\CursorHide.cs" />
-    <Compile Include="Player\DisplayClones.cs" />
-    <Compile Include="Player\InfoLabel.cs" />
-    <Compile Include="Player\Interop.cs" />
-    <Compile Include="Player\Player.cs" />
-    <Compile Include="Player\SubClasses.cs" />
-    <Compile Include="Player\Subtitles.cs" />
-    <Compile Include="PlexAPI\Country.cs" />
-    <Compile Include="PlexAPI\Director.cs" />
-    <Compile Include="PlexAPI\Directory.cs" />
-    <Compile Include="PlexAPI\DirectoryTypes\Show.cs" />
-    <Compile Include="PlexAPI\Genre.cs" />
-    <Compile Include="PlexAPI\Location.cs" />
-    <Compile Include="PlexAPI\Media.cs" />
-    <Compile Include="PlexAPI\MediaContainer.cs" />
-    <Compile Include="PlexAPI\MyPlex.cs" />
-    <Compile Include="PlexAPI\Part.cs" />
-    <Compile Include="PlexAPI\Photo.cs" />
-    <Compile Include="PlexAPI\PlexItem.cs" />
-    <Compile Include="PlexAPI\PlexRest.cs" />
-    <Compile Include="PlexAPI\Role.cs" />
-    <Compile Include="PlexAPI\Server.cs" />
-    <Compile Include="PlexAPI\Track.cs" />
-    <Compile Include="PlexAPI\User.cs" />
-    <Compile Include="PlexAPI\Utils.cs" />
-    <Compile Include="PlexAPI\Video.cs" />
-    <Compile Include="PlexAPI\Writer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -345,11 +273,6 @@
     <Compile Include="UI\Translator.Designer.cs">
       <DependentUpon>Translator.cs</DependentUpon>
     </Compile>
-    <Compile Include="WaitWindow\WaitWindow.cs" />
-    <Compile Include="WaitWindow\WaitWindowEventArgs.cs" />
-    <Compile Include="WaitWindow\WaitWindowGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <EmbeddedResource Include="UI\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
@@ -401,7 +324,6 @@
     <EmbeddedResource Include="UI\Translator.resx">
       <DependentUpon>Translator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WaitWindow\WaitWindowGUI.resx" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\packages.config" />
@@ -530,9 +452,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\Components\Custom\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -546,9 +466,37 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GitHubUpdater\GitHubUpdater.csproj">
+      <Project>{9e90936d-f2b8-4ad6-940a-11178ae67082}</Project>
+      <Name>GitHubUpdater</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogDel\LogDel.csproj">
       <Project>{f983c455-7c57-469e-9152-9095f114d697}</Project>
       <Name>LogDel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.AltoHTTP\PlexDL.AltoHTTP.csproj">
+      <Project>{765ccd3e-b3c3-4948-a3c3-824a94f9ade8}</Project>
+      <Name>PlexDL.AltoHTTP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Animation\PlexDL.Animation.csproj">
+      <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
+      <Name>PlexDL.Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Components\PlexDL.Common.Components.csproj">
+      <Project>{3c18fc31-d361-42fb-ae18-42faacd4e419}</Project>
+      <Name>PlexDL.Common.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
+      <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>
+      <Name>PlexDL.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.PlexAPI.csproj">
+      <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
+      <Name>PlexDL.PlexAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
+      <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
+      <Name>PlexDL.WaitWindow</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

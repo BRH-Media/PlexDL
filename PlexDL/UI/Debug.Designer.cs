@@ -53,13 +53,13 @@
             this.lblPollRate = new System.Windows.Forms.Label();
             this.numPollRateValue = new System.Windows.Forms.NumericUpDown();
             this.tlpRefreshCount = new System.Windows.Forms.TableLayoutPanel();
+            this.lblRefreshCountValue = new System.Windows.Forms.Label();
             this.lblRefreshCount = new System.Windows.Forms.Label();
+            this.btnResetRefreshCounter = new System.Windows.Forms.Button();
             this.btnTimer = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
-            this.lblRefreshCountValue = new System.Windows.Forms.Label();
-            this.btnResetRefreshCounter = new System.Windows.Forms.Button();
             this.dgvGlobalFlags = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpDebug.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -377,6 +377,16 @@
             this.tlpRefreshCount.Size = new System.Drawing.Size(216, 38);
             this.tlpRefreshCount.TabIndex = 6;
             // 
+            // lblRefreshCountValue
+            // 
+            this.lblRefreshCountValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRefreshCountValue.Location = new System.Drawing.Point(94, 0);
+            this.lblRefreshCountValue.Name = "lblRefreshCountValue";
+            this.lblRefreshCountValue.Size = new System.Drawing.Size(85, 38);
+            this.lblRefreshCountValue.TabIndex = 1;
+            this.lblRefreshCountValue.Text = "0";
+            this.lblRefreshCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblRefreshCount
             // 
             this.lblRefreshCount.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -386,6 +396,17 @@
             this.lblRefreshCount.TabIndex = 0;
             this.lblRefreshCount.Text = "Refresh Count:";
             this.lblRefreshCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnResetRefreshCounter
+            // 
+            this.btnResetRefreshCounter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnResetRefreshCounter.Location = new System.Drawing.Point(185, 3);
+            this.btnResetRefreshCounter.Name = "btnResetRefreshCounter";
+            this.btnResetRefreshCounter.Size = new System.Drawing.Size(28, 32);
+            this.btnResetRefreshCounter.TabIndex = 2;
+            this.btnResetRefreshCounter.Text = "C";
+            this.btnResetRefreshCounter.UseVisualStyleBackColor = true;
+            this.btnResetRefreshCounter.Click += new System.EventHandler(this.btnResetRefreshCounter_Click);
             // 
             // btnTimer
             // 
@@ -425,27 +446,6 @@
             // 
             this.sfdExport.Title = "Export";
             // 
-            // lblRefreshCountValue
-            // 
-            this.lblRefreshCountValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRefreshCountValue.Location = new System.Drawing.Point(94, 0);
-            this.lblRefreshCountValue.Name = "lblRefreshCountValue";
-            this.lblRefreshCountValue.Size = new System.Drawing.Size(85, 38);
-            this.lblRefreshCountValue.TabIndex = 1;
-            this.lblRefreshCountValue.Text = "0";
-            this.lblRefreshCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnResetRefreshCounter
-            // 
-            this.btnResetRefreshCounter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnResetRefreshCounter.Location = new System.Drawing.Point(185, 3);
-            this.btnResetRefreshCounter.Name = "btnResetRefreshCounter";
-            this.btnResetRefreshCounter.Size = new System.Drawing.Size(28, 32);
-            this.btnResetRefreshCounter.TabIndex = 2;
-            this.btnResetRefreshCounter.Text = "C";
-            this.btnResetRefreshCounter.UseVisualStyleBackColor = true;
-            this.btnResetRefreshCounter.Click += new System.EventHandler(this.btnResetRefreshCounter_Click);
-            // 
             // dgvGlobalFlags
             // 
             this.dgvGlobalFlags.AllowUserToAddRows = false;
@@ -472,7 +472,7 @@
             this.dgvGlobalFlags.MultiSelect = false;
             this.dgvGlobalFlags.Name = "dgvGlobalFlags";
             this.dgvGlobalFlags.RowHeadersVisible = false;
-            this.dgvGlobalFlags.RowsEmptyText = "No Flags Found";
+            this.dgvGlobalFlags.RowsEmptyText = "No Flags";
             this.dgvGlobalFlags.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.dgvGlobalFlags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvGlobalFlags.Size = new System.Drawing.Size(213, 403);
@@ -514,7 +514,6 @@
         private System.Windows.Forms.Timer tmrAutoRefresh;
         private System.Windows.Forms.TableLayoutPanel tlpDebug;
         private System.Windows.Forms.GroupBox gbGlobalFlags;
-        private Common.Components.FlatDataGridView dgvGlobalFlags;
         private System.Windows.Forms.TableLayoutPanel tlpControls;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnTimer;
@@ -542,5 +541,6 @@
         private System.Windows.Forms.Button btnExportAlbums;
         private System.Windows.Forms.Label lblRefreshCountValue;
         private System.Windows.Forms.Button btnResetRefreshCounter;
+        private Common.Components.FlatDataGridView dgvGlobalFlags;
     }
 }

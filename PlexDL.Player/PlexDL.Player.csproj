@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8D6702F9-0556-405A-B0DF-0E0DE79E49C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlexDL.Player</RootNamespace>
+    <AssemblyName>PlexDL.Player</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio.cs" />
+    <Compile Include="AudioDevice.cs" />
+    <Compile Include="AudioDevices.cs" />
+    <Compile Include="AudioInput.cs" />
+    <Compile Include="AudioInputDevice.cs" />
+    <Compile Include="AudioStream.cs" />
+    <Compile Include="AudioTrack.cs" />
+    <Compile Include="CameraControlFlags.cs" />
+    <Compile Include="CameraControlProperty.cs" />
+    <Compile Include="CloneFlip.cs" />
+    <Compile Include="CloneLayout.cs" />
+    <Compile Include="CloneProperties.cs" />
+    <Compile Include="CloneQuality.cs" />
+    <Compile Include="ConstPropVariant.cs" />
+    <Compile Include="CursorHide.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="DeviceState.cs" />
+    <Compile Include="Display.cs" />
+    <Compile Include="DisplayClones.cs" />
+    <Compile Include="DisplayMode.cs" />
+    <Compile Include="DisplayShape.cs" />
+    <Compile Include="DXVA2ProcAmp.cs" />
+    <Compile Include="DXVA2ProcAmpValues.cs" />
+    <Compile Include="DXVA2ValueRange.cs" />
+    <Compile Include="DXVA2VideoProcessorCaps.cs" />
+    <Compile Include="EDataFlow.cs" />
+    <Compile Include="EndedEventArgs.cs" />
+    <Compile Include="ERole.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="FourCC.cs" />
+    <Compile Include="FullScreenMode.cs" />
+    <Compile Include="Has.cs" />
+    <Compile Include="HideObjectEventArgs.cs" />
+    <Compile Include="HideObjectMembers.cs" />
+    <Compile Include="HResult.cs" />
+    <Compile Include="IAMCameraControl.cs" />
+    <Compile Include="IAMVideoProcAmp.cs" />
+    <Compile Include="IAudioEndpointVolume.cs" />
+    <Compile Include="IAudioMeterInformation.cs" />
+    <Compile Include="Images.cs" />
+    <Compile Include="ImageSource.cs" />
+    <Compile Include="IMFActivate.cs" />
+    <Compile Include="IMFAsyncCallback.cs" />
+    <Compile Include="IMFAsyncResult.cs" />
+    <Compile Include="IMFAttributes.cs" />
+    <Compile Include="IMFAudioStreamVolume.cs" />
+    <Compile Include="IMFByteStream.cs" />
+    <Compile Include="IMFClock.cs" />
+    <Compile Include="IMFCollection.cs" />
+    <Compile Include="IMFMediaBuffer.cs" />
+    <Compile Include="IMFMediaEvent.cs" />
+    <Compile Include="IMFMediaEventGenerator.cs" />
+    <Compile Include="IMFMediaSession.cs" />
+    <Compile Include="IMFMediaSource.cs" />
+    <Compile Include="IMFMediaType.cs" />
+    <Compile Include="IMFMediaTypeHandler.cs" />
+    <Compile Include="IMFPresentationDescriptor.cs" />
+    <Compile Include="IMFRateControl.cs" />
+    <Compile Include="IMFRateSupport.cs" />
+    <Compile Include="IMFSample.cs" />
+    <Compile Include="IMFSimpleAudioVolume.cs" />
+    <Compile Include="IMFSinkWriter.cs" />
+    <Compile Include="IMFSourceReader.cs" />
+    <Compile Include="IMFSourceReaderAsync.cs" />
+    <Compile Include="IMFSourceReaderCallback.cs" />
+    <Compile Include="IMFSourceResolver.cs" />
+    <Compile Include="IMFStreamDescriptor.cs" />
+    <Compile Include="IMFTopology.cs" />
+    <Compile Include="IMFTopologyNode.cs" />
+    <Compile Include="IMFVideoDisplayControl.cs" />
+    <Compile Include="IMFVideoProcessor.cs" />
+    <Compile Include="IMMDevice.cs" />
+    <Compile Include="IMMDeviceCollection.cs" />
+    <Compile Include="IMMDeviceEnumerator.cs" />
+    <Compile Include="IMMNotificationClient.cs" />
+    <Compile Include="InfoLabel.cs" />
+    <Compile Include="SafeNativeMethods.cs" />
+    <Compile Include="IPropertyStore.cs" />
+    <Compile Include="ISequentialStream.cs" />
+    <Compile Include="IStream.cs" />
+    <Compile Include="Media.cs" />
+    <Compile Include="MediaChapter.cs" />
+    <Compile Include="MediaEventType.cs" />
+    <Compile Include="MediaName.cs" />
+    <Compile Include="MediaPart.cs" />
+    <Compile Include="MediaSourceType.cs" />
+    <Compile Include="Metadata.cs" />
+    <Compile Include="MFASync.cs" />
+    <Compile Include="MFAsyncCallbackQueue.cs" />
+    <Compile Include="MFAttributesClsid.cs" />
+    <Compile Include="MFAttributesMatchType.cs" />
+    <Compile Include="MFAttributeType.cs" />
+    <Compile Include="MFByteStreamCapabilities.cs" />
+    <Compile Include="MFByteStreamSeekingFlags.cs" />
+    <Compile Include="MFByteStreamSeekOrigin.cs" />
+    <Compile Include="MFCallback.cs" />
+    <Compile Include="MFClockCharacteristicsFlags.cs" />
+    <Compile Include="MFClockRelationalFlags.cs" />
+    <Compile Include="MFClockState.cs" />
+    <Compile Include="MFEventFlag.cs" />
+    <Compile Include="MFExtern.cs" />
+    <Compile Include="MfFloat.cs" />
+    <Compile Include="MFInt.cs" />
+    <Compile Include="MFMediaEqual.cs" />
+    <Compile Include="MFMediaSourceCharacteristics.cs" />
+    <Compile Include="MFMediaType.cs" />
+    <Compile Include="MFObjectType.cs" />
+    <Compile Include="MFRateDirection.cs" />
+    <Compile Include="MFRect.cs" />
+    <Compile Include="MFResolution.cs" />
+    <Compile Include="MFServices.cs" />
+    <Compile Include="MFSessionCapabilities.cs" />
+    <Compile Include="MFSessionGetFullTopologyFlags.cs" />
+    <Compile Include="MFSessionSetTopologyFlags.cs" />
+    <Compile Include="MFSize.cs" />
+    <Compile Include="MFStartup.cs" />
+    <Compile Include="MFTopologyType.cs" />
+    <Compile Include="MFTranscodeContainerType.cs" />
+    <Compile Include="MFVideoAspectRatioMode.cs" />
+    <Compile Include="MFVideoNormalizedRect.cs" />
+    <Compile Include="MFVideoRenderPrefs.cs" />
+    <Compile Include="MF_SINK_WRITER_STATISTICS.cs" />
+    <Compile Include="MF_SOURCE_READER_CONTROL_FLAG.cs" />
+    <Compile Include="MF_SOURCE_READER_FLAG.cs" />
+    <Compile Include="MMDeviceEnumerator.cs" />
+    <Compile Include="Overlay.cs" />
+    <Compile Include="OverlayBlend.cs" />
+    <Compile Include="OverlayMode.cs" />
+    <Compile Include="PeakLevelEventArgs.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Playlist.cs" />
+    <Compile Include="PointTo.cs" />
+    <Compile Include="Position.cs" />
+    <Compile Include="PositionEventArgs.cs" />
+    <Compile Include="PositionSlider.cs" />
+    <Compile Include="PositionSliderMode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyKey.cs" />
+    <Compile Include="PropertyKeys.cs" />
+    <Compile Include="PropVariant.cs" />
+    <Compile Include="PVMarshaler.cs" />
+    <Compile Include="ScreenCopy.cs" />
+    <Compile Include="ScreenCopyMode.cs" />
+    <Compile Include="ShapeCallback.cs" />
+    <Compile Include="SilentSeek.cs" />
+    <Compile Include="Sliders.cs" />
+    <Compile Include="SliderValue.cs" />
+    <Compile Include="Speed.cs" />
+    <Compile Include="STATFLAG.cs" />
+    <Compile Include="STGM.cs" />
+    <Compile Include="StopReason.cs" />
+    <Compile Include="SubClasses.cs" />
+    <Compile Include="SubtitleEventArgs.cs" />
+    <Compile Include="Subtitles.cs" />
+    <Compile Include="SystemAudioDevicesEventArgs.cs" />
+    <Compile Include="SystemAudioDevicesNotification.cs" />
+    <Compile Include="SystemPanels.cs" />
+    <Compile Include="TaskbarIndicator.cs" />
+    <Compile Include="TaskbarProgress.cs" />
+    <Compile Include="TaskbarProgressMode.cs" />
+    <Compile Include="TaskbarStates.cs" />
+    <Compile Include="UnmanagedNameAttribute.cs" />
+    <Compile Include="Video.cs" />
+    <Compile Include="VideoColorAttribute.cs" />
+    <Compile Include="VideoColorEventArgs.cs" />
+    <Compile Include="VideoDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="VideoProcAmpFlags.cs" />
+    <Compile Include="VideoProcAmpProperty.cs" />
+    <Compile Include="VideoStream.cs" />
+    <Compile Include="VideoTrack.cs" />
+    <Compile Include="Webcam.cs" />
+    <Compile Include="WebcamDevice.cs" />
+    <Compile Include="WebcamFormat.cs" />
+    <Compile Include="WebcamProperty.cs" />
+    <Compile Include="WebcamQuality.cs" />
+    <Compile Include="WebcamSettings.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

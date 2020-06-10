@@ -1,8 +1,6 @@
-LogDel/bin/
-LogDel/obj/
+**/bin
+**/obj
 PlexAPI_Rebase/
-PlexDL/bin/
-PlexDL/obj/
 packages/
 c/
 _old_/

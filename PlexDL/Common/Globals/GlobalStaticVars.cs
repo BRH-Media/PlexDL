@@ -25,6 +25,7 @@ namespace PlexDL.Common.Globals
         public static ContentType CurrentContentType { get; set; }
         public static List<Server> PlexServers { get; set; }
         public static string CurrentApiUri { get; set; } = "";
+        public static string RepoUrl { get; } = "https://github.com/brhsoftco/plexdl";
         public static int SessionIdLength { get; } = 10;
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(SessionIdLength);
 

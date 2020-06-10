@@ -17,7 +17,7 @@ namespace PlexDL.Internal
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
-        [MTAThread]
+        [STAThread]
         private static void Main(string[] args)
         {
             var arr = args.ToList();
