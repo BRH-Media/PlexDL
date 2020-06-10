@@ -1,22 +1,23 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    partial class About : Form
+    internal partial class About : Form
     {
         public About()
         {
             InitializeComponent();
 
-            string title = string.Format("About {0}", AssemblyTitle);
+            var title = $"About {AssemblyTitle}";
 
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = $@"Version {AssemblyVersion}";
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyCompany;
             textBoxDescription.Text = AssemblyDescription;
@@ -24,11 +25,11 @@ namespace PlexDL.UI
             switch (BuildState.State)
             {
                 case DevStatus.InDevelopment:
-                    Text = title + " - Developer Build";
+                    Text = $"{title} - Developer Build";
                     break;
 
                 case DevStatus.InBeta:
-                    Text = title + " - Beta Testing Build";
+                    Text = $"{title} - Beta Testing Build";
                     break;
 
                 case DevStatus.ProductionReady:
@@ -37,42 +38,38 @@ namespace PlexDL.UI
             }
         }
 
+        [Localizable(false)]
+        public sealed override string Text
+        {
+            get => base.Text;
+            set => base.Text = value;
+        }
+
         #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
-                    {
-                        return titleAttribute.Title;
-                    }
-                }
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
 
-                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                if (attributes.Length <= 0)
+                    return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+
+                var titleAttribute = (AssemblyTitleAttribute)attributes[0];
+
+                return titleAttribute.Title != "" ? titleAttribute.Title : Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 
-        public string AssemblyVersion
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
-        }
+        public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public string AssemblyDescription
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                return attributes.Length == 0 ? "" : ((AssemblyDescriptionAttribute)attributes[0]).Description;
             }
         }
 
@@ -80,13 +77,8 @@ namespace PlexDL.UI
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-
-                return ((AssemblyProductAttribute)attributes[0]).Product;
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                return attributes.Length == 0 ? "" : ((AssemblyProductAttribute)attributes[0]).Product;
             }
         }
 
@@ -94,13 +86,8 @@ namespace PlexDL.UI
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                return attributes.Length == 0 ? "" : ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
         }
 
@@ -108,13 +95,8 @@ namespace PlexDL.UI
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                return attributes.Length == 0 ? "" : ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
 
