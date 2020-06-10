@@ -11,6 +11,7 @@ namespace PlexDL.Common.Update
                 Author = "brhsoftco",
                 RepositoryName = "plexdl"
             };
+            updater.ShowUpdateForm();
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using PlexDL.WaitWindow;
+using RestSharp;
 using System;
+using System.Windows.Forms;
+using Application = GitHubUpdater.API.Application;
 
 namespace GitHubUpdater
 {
@@ -10,6 +14,35 @@ namespace GitHubUpdater
         public string ApiUrl => $"repos/{Author}/{RepositoryName}/releases/latest";
         private string BaseUrl => "http://api.github.com/";
 
+        public void ShowUpdateForm(Application data)
+        {
+            var frm = new Update { UpdateData = data };
+            frm.ShowDialog();
+        }
+
+        public void ShowUpdateForm()
+        {
+            var data = GetLatestRelease();
+            ShowUpdateForm(data);
+        }
+
+        public Application GetLatestRelease()
+        {
+            Application data = null;
+
+            try
+            {
+                var api = GetUpdateInfo();
+                data = JsonConvert.DeserializeObject<Application>(api);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Update error\r\n\r\n{ex}");
+            }
+
+            return data;
+        }
+
         protected RestClient GetRestClient()
         {
             var client = new RestClient
@@ -19,9 +52,25 @@ namespace GitHubUpdater
             return client;
         }
 
+        private string GetUpdateInfo()
+        {
+            return (string)WaitWindow.Show(GetUpdateInfoWorker, @"Contacting GitHub");
+        }
+
         protected virtual string GetBaseUrl()
         {
             return BaseUrl;
+        }
+
+        private void GetUpdateInfoWorker(object sender, WaitWindowEventArgs e)
+        {
+            var client = GetRestClient();
+            client.UseJson();
+
+            var request = new RestRequest { Resource = ApiUrl };
+            var response = client.Execute(request);
+
+            e.Result = response.Content;
         }
     }
 }

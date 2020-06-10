@@ -1,5 +1,11 @@
-﻿using System;
+﻿using Markdig;
+using PlexDL.AltoHTTP.Classes;
+using PlexDL.WaitWindow;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Application = GitHubUpdater.API.Application;
 
@@ -14,8 +20,36 @@ namespace GitHubUpdater
             InitializeComponent();
         }
 
+        private void LoadUi()
+        {
+            if (UpdateData == null)
+            {
+                lblUpdateTitle.Text = @"Update Unavailable";
+                Text = @"Error";
+                btnDownloadUpdate.Enabled = false;
+                btnDownloadUpdate.Text = @"Unavailable";
+                browserChanges.DocumentText = @"";
+            }
+            else
+            {
+                var title = UpdateData.name;
+                var changes = UpdateData.body;
+                var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
+                lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available!";
+
+                if (!string.IsNullOrEmpty(changes))
+                    changesHtml = Markdown.ToHtml(changes);
+
+                browserChanges.DocumentText = changesHtml;
+            }
+
+            //recenter the title (text has been changed so the size has too)
+            CenterTitle();
+        }
+
         private void Update_Load(object sender, EventArgs e)
         {
+            LoadUi();
         }
 
         private void CenterTitle()
@@ -39,7 +73,48 @@ namespace GitHubUpdater
 
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
         {
+            Download();
+        }
 
+        private void Download()
+        {
+            try
+            {
+                var dir = (string)WaitWindow.Show(DownloadWorker, @"Downloading update file(s)");
+                var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (msg == DialogResult.Yes)
+                    Process.Start(dir);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error downloading your update files\n{ex}", @"Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DownloadWorker(object sender, WaitWindowEventArgs e)
+        {
+            var dir = $@"update_files\{UpdateData.id}";
+            var dl = new List<HttpDownloader>();
+            foreach (var a in UpdateData.assets)
+            {
+                var dirA = $@"{dir}\{a.id}";
+                if (!Directory.Exists(dirA))
+                    Directory.CreateDirectory(dirA);
+                var uri = a.browser_download_url;
+                var file = $@"{dirA}\{a.name}";
+
+                //only download it if the file doesn't already exist
+                if (File.Exists(file)) continue;
+
+                var engine = new HttpDownloader(uri, file);
+                dl.Add(engine);
+                dl[dl.IndexOf(engine)].StartAsync();
+            }
+
+            e.Result = dir;
         }
     }
 }
