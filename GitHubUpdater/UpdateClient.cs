@@ -40,7 +40,8 @@ namespace GitHubUpdater
                 }
                 else
                 {
-                    MessageBox.Show($"You're running the latest version!\n\nVersion: {CurrentInstalledVersion}", @"Message",
+                    MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
+                                    $"\nLatest release: {vNew}", @"Message",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
