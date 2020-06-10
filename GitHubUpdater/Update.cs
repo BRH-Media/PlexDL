@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Application = GitHubUpdater.API.Application;
 
@@ -35,8 +36,11 @@ namespace GitHubUpdater
                 var title = UpdateData.name;
                 var changes = UpdateData.body;
 
+                tlpDownloadCount.Visible = true;
+                lblDownloadsValue.Text = NumberDownloads().ToString();
+
                 var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
-                lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available!";
+                lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
 
                 if (!string.IsNullOrEmpty(changes))
                     changesHtml = Markdown.ToHtml(changes);
@@ -90,6 +94,11 @@ namespace GitHubUpdater
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
         {
             Download();
+        }
+
+        private int NumberDownloads()
+        {
+            return UpdateData.assets.Sum(a => a.download_count);
         }
 
         private void Download()

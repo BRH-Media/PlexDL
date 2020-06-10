@@ -34,7 +34,13 @@
             this.btnDownloadUpdate = new System.Windows.Forms.Button();
             this.btnMaybeLater = new System.Windows.Forms.Button();
             this.browserChanges = new System.Windows.Forms.WebBrowser();
+            this.lblDownloads = new System.Windows.Forms.Label();
+            this.tlpDownloadCount = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlControls = new System.Windows.Forms.Panel();
+            this.lblDownloadsValue = new System.Windows.Forms.Label();
             this.gbUpdateChanges.SuspendLayout();
+            this.tlpDownloadCount.SuspendLayout();
+            this.pnlControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblUpdateTitle
@@ -61,7 +67,7 @@
             // btnDownloadUpdate
             // 
             this.btnDownloadUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDownloadUpdate.Location = new System.Drawing.Point(605, 335);
+            this.btnDownloadUpdate.Location = new System.Drawing.Point(192, 3);
             this.btnDownloadUpdate.Name = "btnDownloadUpdate";
             this.btnDownloadUpdate.Size = new System.Drawing.Size(183, 28);
             this.btnDownloadUpdate.TabIndex = 2;
@@ -73,7 +79,7 @@
             // 
             this.btnMaybeLater.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnMaybeLater.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMaybeLater.Location = new System.Drawing.Point(416, 335);
+            this.btnMaybeLater.Location = new System.Drawing.Point(3, 3);
             this.btnMaybeLater.Name = "btnMaybeLater";
             this.btnMaybeLater.Size = new System.Drawing.Size(183, 28);
             this.btnMaybeLater.TabIndex = 3;
@@ -95,14 +101,60 @@
             this.browserChanges.TabIndex = 0;
             this.browserChanges.WebBrowserShortcutsEnabled = false;
             // 
+            // lblDownloads
+            // 
+            this.lblDownloads.AutoSize = true;
+            this.lblDownloads.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDownloads.Location = new System.Drawing.Point(3, 0);
+            this.lblDownloads.Name = "lblDownloads";
+            this.lblDownloads.Size = new System.Drawing.Size(126, 28);
+            this.lblDownloads.TabIndex = 4;
+            this.lblDownloads.Text = "Version download count:";
+            this.lblDownloads.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tlpDownloadCount
+            // 
+            this.tlpDownloadCount.ColumnCount = 2;
+            this.tlpDownloadCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDownloadCount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDownloadCount.Controls.Add(this.lblDownloadsValue, 1, 0);
+            this.tlpDownloadCount.Controls.Add(this.lblDownloads, 0, 0);
+            this.tlpDownloadCount.Location = new System.Drawing.Point(12, 335);
+            this.tlpDownloadCount.Name = "tlpDownloadCount";
+            this.tlpDownloadCount.RowCount = 1;
+            this.tlpDownloadCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDownloadCount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDownloadCount.Size = new System.Drawing.Size(265, 28);
+            this.tlpDownloadCount.TabIndex = 5;
+            this.tlpDownloadCount.Visible = false;
+            // 
+            // pnlControls
+            // 
+            this.pnlControls.Controls.Add(this.btnMaybeLater);
+            this.pnlControls.Controls.Add(this.btnDownloadUpdate);
+            this.pnlControls.Location = new System.Drawing.Point(410, 332);
+            this.pnlControls.Name = "pnlControls";
+            this.pnlControls.Size = new System.Drawing.Size(378, 34);
+            this.pnlControls.TabIndex = 6;
+            // 
+            // lblDownloadsValue
+            // 
+            this.lblDownloadsValue.AutoSize = true;
+            this.lblDownloadsValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDownloadsValue.Location = new System.Drawing.Point(135, 0);
+            this.lblDownloadsValue.Name = "lblDownloadsValue";
+            this.lblDownloadsValue.Size = new System.Drawing.Size(127, 28);
+            this.lblDownloadsValue.TabIndex = 5;
+            this.lblDownloadsValue.Text = "0";
+            this.lblDownloadsValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Update
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 372);
-            this.ControlBox = false;
-            this.Controls.Add(this.btnMaybeLater);
-            this.Controls.Add(this.btnDownloadUpdate);
+            this.Controls.Add(this.pnlControls);
+            this.Controls.Add(this.tlpDownloadCount);
             this.Controls.Add(this.gbUpdateChanges);
             this.Controls.Add(this.lblUpdateTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -112,10 +164,13 @@
             this.Name = "Update";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Update Available!";
+            this.Text = "Update Available";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Update_Load);
             this.gbUpdateChanges.ResumeLayout(false);
+            this.tlpDownloadCount.ResumeLayout(false);
+            this.tlpDownloadCount.PerformLayout();
+            this.pnlControls.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +183,9 @@
         private System.Windows.Forms.Button btnDownloadUpdate;
         private System.Windows.Forms.Button btnMaybeLater;
         private System.Windows.Forms.WebBrowser browserChanges;
+        private System.Windows.Forms.Label lblDownloads;
+        private System.Windows.Forms.TableLayoutPanel tlpDownloadCount;
+        private System.Windows.Forms.Panel pnlControls;
+        private System.Windows.Forms.Label lblDownloadsValue;
     }
 }

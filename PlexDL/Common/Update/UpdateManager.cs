@@ -1,4 +1,6 @@
 ﻿using GitHubUpdater;
+using System;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.Update
 {
@@ -6,12 +8,15 @@ namespace PlexDL.Common.Update
     {
         public static void RunUpdateCheck()
         {
+            var version = new Version(Application.ProductVersion.TrimEnd('.', '*'));
             var updater = new UpdateClient()
             {
                 Author = "brhsoftco",
-                RepositoryName = "plexdl"
+                RepositoryName = "plexdl",
+                CurrentInstalledVersion = version
             };
-            updater.ShowUpdateForm();
+
+            updater.CheckIfLatest();
         }
     }
 }

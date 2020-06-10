@@ -13,11 +13,37 @@ namespace GitHubUpdater
         public string RepositoryName { get; set; } = "";
         public string ApiUrl => $"repos/{Author}/{RepositoryName}/releases/latest";
         private string BaseUrl => "http://api.github.com/";
+        public Version CurrentInstalledVersion { get; set; }
 
         public void ShowUpdateForm(Application data)
         {
             var frm = new Update { UpdateData = data };
             frm.ShowDialog();
+        }
+
+        public void CheckIfLatest()
+        {
+            if (CurrentInstalledVersion == null)
+            {
+                MessageBox.Show(@"Couldn't determine the currently installed version because it was null.", @"Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                var data = GetLatestRelease();
+                var vNow = CurrentInstalledVersion;
+                var vNew = new Version(data.tag_name.TrimStart('v'));
+                var vCompare = vNow.CompareTo(vNew);
+                if (vCompare < 0)
+                {
+                    ShowUpdateForm(data);
+                }
+                else
+                {
+                    MessageBox.Show($"You're running the latest version!\n\nVersion: {CurrentInstalledVersion}", @"Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         public void ShowUpdateForm()
