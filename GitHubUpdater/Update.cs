@@ -34,13 +34,29 @@ namespace GitHubUpdater
             {
                 var title = UpdateData.name;
                 var changes = UpdateData.body;
+
                 var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
                 lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available!";
 
                 if (!string.IsNullOrEmpty(changes))
                     changesHtml = Markdown.ToHtml(changes);
 
-                browserChanges.DocumentText = changesHtml;
+                var documentHtml = $@"<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=""utf-8"">
+        <style>
+            body {{
+                font-family: sans-serif;
+            }}
+        </style>
+    </head>
+    <body>
+        {changesHtml}
+    </body>
+</html>";
+
+                browserChanges.DocumentText = documentHtml;
             }
 
             //recenter the title (text has been changed so the size has too)
