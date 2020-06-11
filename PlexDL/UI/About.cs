@@ -35,6 +35,9 @@ namespace PlexDL.UI
                 case DevStatus.ProductionReady:
                     Text = title;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

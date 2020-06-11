@@ -7,14 +7,14 @@ namespace PlexDL.Common.Structures.AppOptions.Display.Grids.Library
         public LibraryDisplay()
         {
             DisplayColumns = new List<string>
-            {
-                "title", "type"
-            };
+                {
+                    "title", "type"
+                };
 
             DisplayCaptions = new List<string>
-            {
-                "Title", "Type"
-            };
+                {
+                    "Title", "Type"
+                };
         }
     }
 }

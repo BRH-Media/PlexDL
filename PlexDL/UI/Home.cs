@@ -27,6 +27,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
@@ -53,20 +54,19 @@ namespace PlexDL.UI
 
         #endregion Form
 
-        /*private void ManualSectionLoad()
+        private void ManualSectionLoad()
         {
-            if (dgvSections.Rows.Count > 0)
-            {
-                var ipt = GlobalStaticVars.LibUI.showInputForm("Enter section key", "Manual Section Lookup", true, "TV Library");
-                if (ipt.txt == "!cancel=user")
-                    return;
-                if (!int.TryParse(ipt.txt, out _))
-                    MessageBox.Show(@"Section key ust be numeric", @"Validation Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                else
-                    UpdateFromLibraryKey(ipt.txt, ipt.chkd);
-            }
-        }*/
+            if (dgvSections.Rows.Count <= 0) return;
+
+            var ipt = GlobalStaticVars.LibUi.showInputForm("Enter section key", "Manual Section Lookup", true, "TV Library");
+            if (ipt.txt == "!cancel=user")
+                return;
+            if (!int.TryParse(ipt.txt, out _))
+                MessageBox.Show(@"Section key ust be numeric", @"Validation Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            else
+                UpdateFromLibraryKey(ipt.txt, ipt.chkd ? ContentType.TvShows : ContentType.Movies);
+        }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -97,7 +97,7 @@ namespace PlexDL.UI
         private void ItmManuallyLoadSection_Click(object sender, EventArgs e)
         {
             cxtLibrarySections.Close();
-            //ManualSectionLoad();
+            ManualSectionLoad();
         }
 
         private void ItmEpisodeMetadata_Click(object sender, EventArgs e)
@@ -635,22 +635,22 @@ namespace PlexDL.UI
 
         private void Disconnect(bool silent = false)
         {
-            if (Flags.IsConnected)
-            {
-                if (GlobalStaticVars.Engine != null) CancelDownload();
-                ClearContentView();
-                ClearTVViews();
-                ClearMusicViews();
-                ClearLibraryViews();
-                SetProgressLabel(@"Disconnected from Plex");
-                SetConnect();
-                SelectMoviesTab();
-                Flags.IsConnected = false;
+            if (!Flags.IsConnected) return;
+            if (GlobalStaticVars.Engine != null) CancelDownload();
 
-                if (!silent)
-                    MessageBox.Show(@"Disconnected from Plex", @"Message", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-            }
+            ClearContentView();
+            ClearTVViews();
+            ClearMusicViews();
+            ClearLibraryViews();
+            SetProgressLabel(@"Disconnected from Plex");
+            SetConnect();
+            SelectMoviesTab();
+            Flags.IsConnected = false;
+            Flags.IsInitialFill = false;
+
+            if (!silent)
+                MessageBox.Show(@"Disconnected from Plex", @"Message", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
         }
 
         private void DoStreamExport(bool formatLinkDownload = true)
@@ -720,7 +720,6 @@ namespace PlexDL.UI
                 RenderLibraryView(sectionsTable);
                 Flags.IsLibraryFilled = true;
                 GlobalStaticVars.CurrentApiUri = baseUri + libraryDir + "/" + sectionDir + "/";
-                //we can render the content view if a row is already selected
             }
             catch (WebException ex)
             {
@@ -1325,24 +1324,18 @@ namespace PlexDL.UI
             }
         }
 
-        private void DgvLibrary_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (dgvSections.SortOrder.ToString() == "Descending") // Check if sorting is Descending
-                GlobalTables.SectionsTable.DefaultView.Sort =
-                dgvSections.SortedColumn.Name + " DESC"; // Get Sorted Column name and sort it in Descending order
-            else
-                GlobalTables.SectionsTable.DefaultView.Sort =
-                dgvSections.SortedColumn.Name + " ASC"; // Otherwise sort it in Ascending order
-            GlobalTables.SectionsTable =
-            GlobalTables.SectionsTable.DefaultView
-            .ToTable(); // The Sorted View converted to DataTable and then assigned to table object.
-        }
-
-        private void RenderLibraryView(DataTable content)
+        private void RenderLibraryView(DataTable content, bool renderKey = false)
         {
             if (content == null) return;
+
             var wantedColumns = GlobalStaticVars.Settings.DataDisplay.LibraryView.DisplayColumns;
             var wantedCaption = GlobalStaticVars.Settings.DataDisplay.LibraryView.DisplayCaptions;
+
+            if (renderKey)
+            {
+                wantedColumns = wantedColumns.Prepend("key").ToList();
+                wantedCaption = wantedCaption.Prepend("Key").ToList();
+            }
 
             var info = new RenderStruct
             {
@@ -1990,6 +1983,8 @@ namespace PlexDL.UI
             var key = (string)e.Arguments[0];
             try
             {
+                if (!Flags.IsInitialFill) Flags.IsInitialFill = true;
+
                 LoggingHelpers.RecordGeneralEntry(@"Requesting library contents");
                 var contentUri = GlobalStaticVars.CurrentApiUri + key + @"/all/?X-Plex-Token=";
                 var contentXml = XmlGet.GetXmlTransaction(contentUri);
@@ -2036,6 +2031,11 @@ namespace PlexDL.UI
         #region DGVRowChanges
 
         private void DgvLibrary_OnRowChange(object sender, EventArgs e)
+        {
+            LibrarySectionChange();
+        }
+
+        private void LibrarySectionChange()
         {
             if (dgvSections.SelectedRows.Count != 1 || !Flags.IsLibraryFilled) return;
 
@@ -2499,9 +2499,18 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmCheckForUpdates_Click(object sender, EventArgs e)
+        private void ItmCheckForUpdates_Click(object sender, EventArgs e)
         {
             UpdateManager.RunUpdateCheck();
+        }
+
+        private void DgvSections_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void ItmRenderKeyColumn_Click(object sender, EventArgs e)
+        {
+            RenderLibraryView(GlobalTables.SectionsTable, itmRenderKeyColumn.Checked);
         }
     }
 }

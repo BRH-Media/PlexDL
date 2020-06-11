@@ -147,6 +147,7 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmRenderKeyColumn = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -266,9 +267,10 @@ namespace PlexDL.UI
             // 
             this.cxtLibrarySections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cxtLibrarySections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmManuallyLoadSection});
+            this.itmManuallyLoadSection,
+            this.itmRenderKeyColumn});
             this.cxtLibrarySections.Name = "cxtLibrarySections";
-            this.cxtLibrarySections.Size = new System.Drawing.Size(195, 26);
+            this.cxtLibrarySections.Size = new System.Drawing.Size(195, 70);
             this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.CxtLibrarySections_Opening);
             // 
             // itmManuallyLoadSection
@@ -931,6 +933,7 @@ namespace PlexDL.UI
             this.dgvSections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSections.Size = new System.Drawing.Size(276, 278);
             this.dgvSections.TabIndex = 16;
+            this.dgvSections.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSections_CellContentClick);
             this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
             // 
             // menuMain
@@ -1111,7 +1114,7 @@ namespace PlexDL.UI
             this.itmCheckForUpdates.Name = "itmCheckForUpdates";
             this.itmCheckForUpdates.Size = new System.Drawing.Size(180, 22);
             this.itmCheckForUpdates.Text = "Check for Updates";
-            this.itmCheckForUpdates.Click += new System.EventHandler(this.itmCheckForUpdates_Click);
+            this.itmCheckForUpdates.Click += new System.EventHandler(this.ItmCheckForUpdates_Click);
             // 
             // itmRepo
             // 
@@ -1285,6 +1288,14 @@ namespace PlexDL.UI
             this.itmDownloadThisAlbum.Text = "Download This Album";
             this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
             // 
+            // itmRenderKeyColumn
+            // 
+            this.itmRenderKeyColumn.CheckOnClick = true;
+            this.itmRenderKeyColumn.Name = "itmRenderKeyColumn";
+            this.itmRenderKeyColumn.Size = new System.Drawing.Size(194, 22);
+            this.itmRenderKeyColumn.Text = "Render Key Column";
+            this.itmRenderKeyColumn.Click += new System.EventHandler(this.ItmRenderKeyColumn_Click);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1447,6 +1458,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmCheckForUpdates;
         private ToolStripMenuItem itmAbout;
         private ToolStripMenuItem itmRepo;
+        private ToolStripMenuItem itmRenderKeyColumn;
     }
 }
 
