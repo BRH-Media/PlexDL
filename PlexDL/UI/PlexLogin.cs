@@ -142,7 +142,7 @@ namespace PlexDL.UI
             {
                 if (!string.IsNullOrWhiteSpace(txtUsername.Text) && !string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
-                    string token = (string)WaitWindow.WaitWindow.Show(LoginWorker, "Logging you in");
+                    var token = (string)WaitWindow.WaitWindow.Show(LoginWorker, "Logging you in");
 
                     if (!string.IsNullOrWhiteSpace(token))
                     {

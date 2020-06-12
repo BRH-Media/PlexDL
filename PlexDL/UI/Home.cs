@@ -2448,7 +2448,7 @@ namespace PlexDL.UI
             Metadata();
         }
 
-        private void itmCleanupAllData_Click(object sender, EventArgs e)
+        private void ItmCleanupAllData_Click(object sender, EventArgs e)
         {
             DoCleanup();
         }
@@ -2502,10 +2502,6 @@ namespace PlexDL.UI
         private void ItmCheckForUpdates_Click(object sender, EventArgs e)
         {
             UpdateManager.RunUpdateCheck();
-        }
-
-        private void DgvSections_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
         }
 
         private void ItmRenderKeyColumn_Click(object sender, EventArgs e)

@@ -13,6 +13,7 @@ namespace GitHubUpdater
         public string RepositoryName { get; set; } = "";
         public string ApiUrl => $"repos/{Author}/{RepositoryName}/releases/latest";
         private string BaseUrl => "http://api.github.com/";
+        public bool DebugMode { get; set; } = false;
         public Version CurrentInstalledVersion { get; set; }
 
         public void ShowUpdateForm(Application data)
@@ -34,7 +35,7 @@ namespace GitHubUpdater
                 var vNow = CurrentInstalledVersion;
                 var vNew = new Version(data.tag_name.TrimStart('v'));
                 var vCompare = vNow.CompareTo(vNew);
-                if (vCompare < 0)
+                if (vCompare < 0 || DebugMode)
                 {
                     ShowUpdateForm(data);
                 }

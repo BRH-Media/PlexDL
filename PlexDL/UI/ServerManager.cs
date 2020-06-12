@@ -351,6 +351,14 @@ namespace PlexDL.UI
                 Properties.Settings.Default.Save();
         }
 
+        private void DgvServers_DoubleClick(object sender, EventArgs e)
+        {
+            if (dgvServers.SelectedRows.Count == 1)
+            {
+                DoConnect();
+            }
+        }
+
         private void ServerManager_Load(object sender, EventArgs e)
         {
             try

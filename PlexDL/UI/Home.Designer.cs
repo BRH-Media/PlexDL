@@ -933,7 +933,6 @@ namespace PlexDL.UI
             this.dgvSections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSections.Size = new System.Drawing.Size(276, 278);
             this.dgvSections.TabIndex = 16;
-            this.dgvSections.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSections_CellContentClick);
             this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
             // 
             // menuMain
@@ -1000,7 +999,7 @@ namespace PlexDL.UI
             this.itmCleanupAllData.Name = "itmCleanupAllData";
             this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
             this.itmCleanupAllData.Text = "Cleanup All Data";
-            this.itmCleanupAllData.Click += new System.EventHandler(this.itmCleanupAllData_Click);
+            this.itmCleanupAllData.Click += new System.EventHandler(this.ItmCleanupAllData_Click);
             // 
             // itmSettings
             // 

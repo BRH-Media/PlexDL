@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using PlexDL.Common.Components;
 
@@ -219,6 +220,7 @@ namespace PlexDL.UI
             this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvServers.Size = new System.Drawing.Size(800, 426);
             this.dgvServers.TabIndex = 18;
+            this.dgvServers.DoubleClick += new EventHandler(this.DgvServers_DoubleClick);
             // 
             // ServerManager
             // 

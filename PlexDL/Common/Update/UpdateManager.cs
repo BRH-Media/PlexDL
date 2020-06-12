@@ -12,7 +12,8 @@ namespace PlexDL.Common.Update
             {
                 Author = "brhsoftco",
                 RepositoryName = "plexdl",
-                CurrentInstalledVersion = version
+                CurrentInstalledVersion = version,
+                DebugMode = Flags.IsDebug
             };
 
             updater.CheckIfLatest();
