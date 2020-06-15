@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace PlexDL.Common
+namespace wininet
 {
-    public static class wininet
+    public static class ConnectionChecker
     {
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int Description, int ReservedValue);

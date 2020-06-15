@@ -4,6 +4,7 @@ using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.Metadata;
 using PlexDL.Common.API.Objects;
+using wininet;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
@@ -187,7 +188,7 @@ namespace PlexDL.UI
 
         private void itmServerManager_Click(object sender, EventArgs e)
         {
-            if (wininet.CheckForInternetConnection())
+            if (ConnectionChecker.CheckForInternetConnection())
                 using (var frm = new ServerManager())
                 {
                     if (frm.ShowDialog() == DialogResult.OK)

@@ -11,6 +11,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using wininet;
 
 namespace PlexDL.UI
 {
@@ -74,7 +75,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's a connection before trying to contact Plex.tv
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
                     if (!IsTokenSet()) return;
 
@@ -114,7 +115,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's a connection before trying to contact Plex.tv
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
                     if (!IsTokenSet()) return;
 
@@ -159,7 +160,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
                     if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet()) return;
 
@@ -364,7 +365,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's an internet connection first; it may have been disconnected while the window was closed.
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
                     //check to see if a loaded profile instated some valid server details. If there are, we can potentially fast-forward
                     //the connection process!
@@ -425,7 +426,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                     using (var frm = new PlexLogin())
                     {
                         if (frm.ShowDialog() != DialogResult.OK) return;
@@ -454,7 +455,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                     using (var frm = new Authenticate())
                     {
                         var existingInfo = new ConnectionInfo
@@ -521,7 +522,7 @@ namespace PlexDL.UI
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (wininet.CheckForInternetConnection())
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
                     GlobalStaticVars.User.authenticationToken = token;
                     GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = token;
