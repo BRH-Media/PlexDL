@@ -2,6 +2,7 @@
 using PlexDL.WaitWindow;
 using RestSharp;
 using System;
+using System.IO;
 using System.Windows.Forms;
 using Application = GitHubUpdater.API.Application;
 
@@ -22,29 +23,48 @@ namespace GitHubUpdater
             frm.ShowDialog();
         }
 
+        public void ConstructDirectory()
+        {
+            if (!Directory.Exists(Globals.UpdateRootDir))
+                Directory.CreateDirectory(Globals.UpdateRootDir);
+        }
+
         public void CheckIfLatest()
         {
-            if (CurrentInstalledVersion == null)
+            try
             {
-                MessageBox.Show(@"Couldn't determine the currently installed version because it was null.", @"Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                var data = GetLatestRelease();
-                var vNow = CurrentInstalledVersion;
-                var vNew = new Version(data.tag_name.TrimStart('v'));
-                var vCompare = vNow.CompareTo(vNew);
-                if (vCompare < 0 || DebugMode)
+                //make the update_files folder if it doesn't already exist
+                ConstructDirectory();
+
+                if (CurrentInstalledVersion == null)
                 {
-                    ShowUpdateForm(data);
+                    MessageBox.Show(@"Couldn't determine the currently installed version because it was null.",
+                        @"Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
-                                    $"\nLatest release: {vNew}", @"Message",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    var data = GetLatestRelease();
+                    var vNow = CurrentInstalledVersion;
+                    var vNew = new Version(data.tag_name.TrimStart('v'));
+                    var vCompare = vNow.CompareTo(vNew);
+                    if (vCompare < 0 || DebugMode)
+                    {
+                        ShowUpdateForm(data);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
+                                        $"\nLatest release: {vNew}", @"Message",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($@"Error whilst checking for the latest version:
+
+{ex}");
             }
         }
 

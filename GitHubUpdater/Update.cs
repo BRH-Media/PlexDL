@@ -113,14 +113,15 @@ namespace GitHubUpdater
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error downloading your update files\n{ex}", @"Error",
+                MessageBox.Show($@"Error downloading your update files
+{ex}", @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void DownloadWorker(object sender, WaitWindowEventArgs e)
         {
-            var dir = $@"update_files\{UpdateData.id}";
+            var dir = $@"{Globals.UpdateRootDir}\{UpdateData.id}";
             var dl = new List<HttpDownloader>();
             foreach (var a in UpdateData.assets)
             {

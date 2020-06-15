@@ -62,11 +62,13 @@
     <Compile Include="API\Author.cs" />
     <Compile Include="API\Application.cs" />
     <Compile Include="API\Uploader.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Stylesheet.cs" />
     <Compile Include="Update.cs">
       <SubType>Form</SubType>
     </Compile>
