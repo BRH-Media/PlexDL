@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using inet;
+using Newtonsoft.Json;
 using PlexDL.WaitWindow;
 using RestSharp;
 using System;
@@ -36,29 +37,35 @@ namespace GitHubUpdater
                 //make the update_files folder if it doesn't already exist
                 ConstructDirectory();
 
-                if (CurrentInstalledVersion == null)
+                if (ConnectionChecker.CheckForInternetConnection())
                 {
-                    MessageBox.Show(@"Couldn't determine the currently installed version because it was null.",
-                        @"Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    var data = GetLatestRelease();
-                    var vNow = CurrentInstalledVersion;
-                    var vNew = new Version(data.tag_name.TrimStart('v'));
-                    var vCompare = vNow.CompareTo(vNew);
-                    if (vCompare < 0 || DebugMode)
+                    if (CurrentInstalledVersion == null)
                     {
-                        ShowUpdateForm(data);
+                        MessageBox.Show(@"Couldn't determine the currently installed version because it was null.",
+                            @"Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
-                        MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
-                                        $"\nLatest release: {vNew}", @"Message",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        var data = GetLatestRelease();
+                        var vNow = CurrentInstalledVersion;
+                        var vNew = new Version(data.tag_name.TrimStart('v'));
+                        var vCompare = vNow.CompareTo(vNew);
+                        if (vCompare < 0 || DebugMode)
+                        {
+                            ShowUpdateForm(data);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
+                                            $"\nLatest release: {vNew}", @"Message",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                     }
                 }
+                else
+                    MessageBox.Show(@"No internet connection. Failed to perform update check!", @"Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {

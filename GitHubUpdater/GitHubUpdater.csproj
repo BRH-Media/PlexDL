@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\inet\inet.csproj">
+      <Project>{6423075d-fb6a-4a21-b8c3-2bdb02d3e744}</Project>
+      <Name>inet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.AltoHTTP\PlexDL.AltoHTTP.csproj">
       <Project>{765ccd3e-b3c3-4948-a3c3-824a94f9ade8}</Project>
       <Name>PlexDL.AltoHTTP</Name>
