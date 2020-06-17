@@ -5,7 +5,7 @@ namespace PlexDL.Common.Update
 {
     public static class UpdateManager
     {
-        public static void RunUpdateCheck()
+        public static void RunUpdateCheck(bool silentCheck = false)
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var updater = new UpdateClient()
@@ -16,7 +16,7 @@ namespace PlexDL.Common.Update
                 DebugMode = Flags.IsDebug
             };
 
-            updater.CheckIfLatest();
+            updater.CheckIfLatest(silentCheck);
         }
     }
 }

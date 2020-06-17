@@ -1,4 +1,6 @@
-﻿namespace PlexDL.Common
+﻿using PlexDL.Properties;
+
+namespace PlexDL.Common
 {
     public static class Flags
     {
@@ -7,7 +9,7 @@
         public static bool IsInitialFill { get; set; } = true;
         public static bool IsLibraryFilled { get; set; } = false;
         public static bool IsFiltered { get; set; } = false;
-        public static bool IsContentSortingEnabled { get; set; } = true;
+        public static bool IsAutoUpdateEnabled { get; set; } = Settings.Default.CheckUpdateOnStartup;
         public static bool IsDownloadQueueCancelled { get; set; } = false;
         public static bool IsDownloadRunning { get; set; } = false;
         public static bool IsDownloadPaused { get; set; } = false;

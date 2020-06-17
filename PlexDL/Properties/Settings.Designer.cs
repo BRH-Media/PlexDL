@@ -43,5 +43,14 @@ namespace PlexDL.Properties {
                 return ((bool)(this["DisablePLSOnShown"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckUpdateOnStartup {
+            get {
+                return ((bool)(this["CheckUpdateOnStartup"]));
+            }
+        }
     }
 }

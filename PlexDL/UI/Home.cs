@@ -1945,6 +1945,11 @@ namespace PlexDL.UI
         {
             try
             {
+                if (Flags.IsAutoUpdateEnabled)
+                {
+                    UpdateManager.RunUpdateCheck(true);
+                }
+
                 if (Flags.IsDebug)
                 {
                     GlobalStaticVars.DebugForm = new Debug();
