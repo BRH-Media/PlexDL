@@ -1,4 +1,5 @@
-﻿using PlexDL.Common;
+﻿using inet;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
@@ -11,7 +12,6 @@ using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using wininet;
 
 namespace PlexDL.UI
 {

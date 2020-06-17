@@ -68,12 +68,6 @@ namespace GitHubUpdater
             }
         }
 
-        public void ShowUpdateForm()
-        {
-            var data = GetLatestRelease();
-            ShowUpdateForm(data);
-        }
-
         public Application GetLatestRelease()
         {
             Application data = null;
@@ -103,11 +97,6 @@ namespace GitHubUpdater
         private string GetUpdateInfo()
         {
             return (string)WaitWindow.Show(GetUpdateInfoWorker, @"Contacting GitHub");
-        }
-
-        protected virtual string GetBaseUrl()
-        {
-            return BaseUrl;
         }
 
         private void GetUpdateInfoWorker(object sender, WaitWindowEventArgs e)

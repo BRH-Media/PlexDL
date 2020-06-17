@@ -469,6 +469,10 @@
       <Project>{9e90936d-f2b8-4ad6-940a-11178ae67082}</Project>
       <Name>GitHubUpdater</Name>
     </ProjectReference>
+    <ProjectReference Include="..\inet\inet.csproj">
+      <Project>{6423075d-fb6a-4a21-b8c3-2bdb02d3e744}</Project>
+      <Name>inet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogDel\LogDel.csproj">
       <Project>{f983c455-7c57-469e-9152-9095f114d697}</Project>
       <Name>LogDel</Name>
@@ -496,10 +500,6 @@
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
       <Name>PlexDL.WaitWindow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\wininet\wininet.csproj">
-      <Project>{159f1626-1fed-4d18-a451-745212aa8e83}</Project>
-      <Name>wininet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,4 @@
-﻿using GitHubUpdater.Properties;
-using Markdig;
+﻿using Markdig;
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.WaitWindow;
 using System;
@@ -36,7 +35,8 @@ namespace GitHubUpdater
             {
                 var title = UpdateData.name;
                 var changes = UpdateData.body;
-                var style = Resources.updateFormHtmlStyle;
+                var style = new Stylesheet();
+                var css = style.CssText;
 
                 var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
                 lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
@@ -50,7 +50,7 @@ namespace GitHubUpdater
         <meta charset=""utf-8"">
         <meta http-equiv=""X-UA-Compatible"" content=""IE=10"" />
         <style>
-            {style}
+            {css}
         </style>
     </head>
     <body>
@@ -58,7 +58,6 @@ namespace GitHubUpdater
         <p>Downloads: {NumberDownloads()}</p>
     </body>
 </html>";
-
                 browserChanges.DocumentText = documentHtml;
             }
 

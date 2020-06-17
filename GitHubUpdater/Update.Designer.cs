@@ -31,10 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Update));
             this.lblUpdateTitle = new System.Windows.Forms.Label();
             this.gbUpdateChanges = new System.Windows.Forms.GroupBox();
-            this.browserChanges = new System.Windows.Forms.WebBrowser();
             this.btnDownloadUpdate = new System.Windows.Forms.Button();
             this.btnMaybeLater = new System.Windows.Forms.Button();
             this.pnlControls = new System.Windows.Forms.Panel();
+            this.browserChanges = new System.Windows.Forms.WebBrowser();
             this.gbUpdateChanges.SuspendLayout();
             this.pnlControls.SuspendLayout();
             this.SuspendLayout();
@@ -59,20 +59,6 @@
             this.gbUpdateChanges.TabIndex = 1;
             this.gbUpdateChanges.TabStop = false;
             this.gbUpdateChanges.Text = "Changes";
-            // 
-            // browserChanges
-            // 
-            this.browserChanges.AllowNavigation = false;
-            this.browserChanges.AllowWebBrowserDrop = false;
-            this.browserChanges.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.browserChanges.IsWebBrowserContextMenuEnabled = false;
-            this.browserChanges.Location = new System.Drawing.Point(3, 22);
-            this.browserChanges.MinimumSize = new System.Drawing.Size(20, 20);
-            this.browserChanges.Name = "browserChanges";
-            this.browserChanges.ScriptErrorsSuppressed = true;
-            this.browserChanges.Size = new System.Drawing.Size(770, 242);
-            this.browserChanges.TabIndex = 0;
-            this.browserChanges.WebBrowserShortcutsEnabled = false;
             // 
             // btnDownloadUpdate
             // 
@@ -106,6 +92,20 @@
             this.pnlControls.Size = new System.Drawing.Size(378, 34);
             this.pnlControls.TabIndex = 6;
             // 
+            // browserChanges
+            // 
+            this.browserChanges.AllowNavigation = false;
+            this.browserChanges.AllowWebBrowserDrop = false;
+            this.browserChanges.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.browserChanges.IsWebBrowserContextMenuEnabled = false;
+            this.browserChanges.Location = new System.Drawing.Point(3, 22);
+            this.browserChanges.MinimumSize = new System.Drawing.Size(20, 20);
+            this.browserChanges.Name = "browserChanges";
+            this.browserChanges.ScriptErrorsSuppressed = true;
+            this.browserChanges.Size = new System.Drawing.Size(770, 242);
+            this.browserChanges.TabIndex = 0;
+            this.browserChanges.WebBrowserShortcutsEnabled = false;
+            // 
             // Update
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,7 +137,7 @@
         private System.Windows.Forms.GroupBox gbUpdateChanges;
         private System.Windows.Forms.Button btnDownloadUpdate;
         private System.Windows.Forms.Button btnMaybeLater;
-        private System.Windows.Forms.WebBrowser browserChanges;
         private System.Windows.Forms.Panel pnlControls;
+        private System.Windows.Forms.WebBrowser browserChanges;
     }
 }
