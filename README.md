@@ -10,10 +10,25 @@
 * Utilises CircularProgressBar by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 
 ### What does PlexDL do?
-PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content by going to `Content->Metadata`.
+Many different things!
+
+PlexDL uses a Plex Media Server's ability to serve XML API requests, and from the data returned, PlexDL gathers information and displays it in various gridviews to make it easier for you to enjoy your content. It supports the following and more:
+- Viewing Metadata about any media type currently supported. To do this, just head over to `Content->Metadata` on the main toolbar.
+- Streaming your media. PlexDL utilises a really cool media library known as PVS.MediaPlayer. It allows playback of supported files via the Windows Media Foundation (WMF), and the best part? It's possible to create a custom GUI and skin it how you want. That's what we've done for you in PlexDL, but if you're not wanting to use PVS, you can use VLC or your default browser.
+Note: If you're using VLC, make sure you follow the guide below about setting it up with PlexDL.
+- Downloading your media. PlexDL is named like this for a reason! We've created a specialised framework to allow authorised Plex downloads. Even if you're not a server owner, you can still download if you have an account or an account token.
+- Exporting media profiles. You can export a .pmxml file which will store infirmation about your content. At any time (and given your token is still valid), you can import this back into the `Content->Metadata` window and stream it without even logging in!
+
+### Supported Media
+PlexDL currently supports the following media types
+- Music - Artists, Albums and Tracks
+- TV - Shows, Seasons and Episodes
+- Movies
+
+More will be on the way, but please note that photos are current very difficult to implement. As such, we can't support this feature until sufficient resources can be devoted to it.
 
 ### Performance?
-PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
+PlexDL will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS aren't perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
 It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the caching folder is as follows:
 ```
@@ -32,7 +47,7 @@ Using the Settings dialog in `File->Settings`, you can enable/disable the three 
 - XML API Caching
 - Image Caching
 
-By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as cached data will become outdated.
+By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as cached data will quickly become outdated.
 
 ### How to get started
 #### __1. Building from Source__
@@ -103,3 +118,12 @@ Alternatively, can access the latest official build [here](https://github.com/Br
 * `Down Arrow`  - Load Next Content in Grid
 * `Right Arrow` - Skip Forward
 * `Left Arrow`  - Skip Backward
+
+#### Setting up VLC for use with PlexDL
+Because VLC accepts a vast array of command-line arguments and values, PlexDL only needs to know where the location of `vlc.exe` is. This way, it may execute it on the fly. To point PlexDL to VLC, please follow the following procedure:
+1. Load a server of your choice and populate the gridviews.
+2. Export a profile by using `Ctrl+S` on the home screen
+3. Open the resulting *.prof* file in Notepad or Notepad++ (preferred).
+4. Change `VLCMediaPlayerPath` to the location of `vlc.exe` on your system.
+5. Save and close your editor.
+6. Load this newly edited profile back into PlexDL, and it will now execute VLC perfectly.
