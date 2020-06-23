@@ -2,6 +2,7 @@
 using PlexDL.Common.Globals;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace PlexDL.Common.Logging
 {
@@ -24,7 +25,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, _logIncrementer.ToString(), DateTime.Now.ToString(), finalEntry
+                    _logIncrementer.ToString(), GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
                 LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
@@ -32,7 +33,7 @@ namespace PlexDL.Common.Logging
             catch
             {
                 //for debugging only!
-                //MessageBox.Show(ex);
+                //UIMessages.Error(ex);
                 //ignore the error
             }
         }
@@ -51,7 +52,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(), finalEntry
+                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
                 LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
@@ -59,7 +60,7 @@ namespace PlexDL.Common.Logging
             catch
             {
                 //for debugging only!
-                //MessageBox.Show(ex);
+                //UIMessages.Error(ex);
                 //ignore the error
             }
         }
@@ -83,7 +84,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] LogEntry =
                 {
-                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), finalMessage, function, type
+                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function, type
                 };
                 LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
             }
@@ -105,7 +106,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] LogEntry =
                 {
-                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(), uri, statusCode
+                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), uri, statusCode
                 };
                 LogWriter.LogDelWriter("TransactionLog.logdel", headers, LogEntry);
             }

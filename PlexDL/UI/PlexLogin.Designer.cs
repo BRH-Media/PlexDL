@@ -83,7 +83,7 @@
             this.btnShowHidePwd.TabIndex = 2;
             this.btnShowHidePwd.Text = "Show";
             this.btnShowHidePwd.UseVisualStyleBackColor = true;
-            this.btnShowHidePwd.Click += new System.EventHandler(this.btnShowHidePwd_Click);
+            this.btnShowHidePwd.Click += new System.EventHandler(this.BtnShowHidePwd_Click);
             // 
             // txtPassword
             // 
@@ -124,7 +124,7 @@
             this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // chkRememberMe
             // 

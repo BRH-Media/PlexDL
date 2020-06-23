@@ -82,7 +82,6 @@ namespace PlexDL.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plex Authentication";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConnect_FormClosing);
             this.Load += new System.EventHandler(this.FrmConnect_Load);
             this.gbToken.ResumeLayout(false);
             this.gbToken.PerformLayout();

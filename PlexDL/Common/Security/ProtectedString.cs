@@ -2,7 +2,7 @@
 using PlexDL.Common.Logging;
 using System;
 using System.Security.Cryptography;
-using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Common.Security
 {
@@ -61,7 +61,7 @@ namespace PlexDL.Common.Security
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "WDAPIEncryptError");
+                LoggingHelpers.RecordException(ex.Message, "WDPAPIEncryptError");
             }
 
             return value;
@@ -80,12 +80,12 @@ namespace PlexDL.Common.Security
                     DataProtectionScope.CurrentUser);
                 var plainText = DataHelpers.BytesToString(plainBytes);
                 value = plainText;
-                //MessageBox.Show(plainText);
+                //UIMessages.Info(plainText);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                LoggingHelpers.RecordException(ex.Message, "WDAPIDecryptError");
+                UIMessages.Error(ex.ToString());
+                LoggingHelpers.RecordException(ex.Message, "WDPAPIDecryptError");
             }
 
             return value;

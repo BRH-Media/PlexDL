@@ -12,6 +12,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -84,8 +85,9 @@ namespace PlexDL.UI
                     if (servers.Count == 0)
                     {
                         if (!silent)
-                            MessageBox.Show(@"No servers found for current account token. Please update your token or try a direct connection.",
-                                @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error(
+                                @"No servers found for current account token. Please update your token or try a direct connection.",
+                                @"Authentication Error");
                     }
                     else
                     {
@@ -98,14 +100,15 @@ namespace PlexDL.UI
                 {
                     // trying to connect on no connection will not end well; alert the user.
                     if (!silent)
-                        MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load servers.", @"Network Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        UIMessages.Warning(
+                            @"No internet connection. Please connect to a network before attempting to load servers.",
+                            @"Network Error");
                 }
             }
             catch (Exception ex)
             {
                 if (!silent)
-                    MessageBox.Show("Server retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UIMessages.Error("Server retrieval error\n\n" + ex, @"Data Error");
                 LoggingHelpers.RecordException(ex.Message, "ServerGetError");
             }
         }
@@ -124,8 +127,9 @@ namespace PlexDL.UI
                     if (servers.Count == 0)
                     {
                         if (!silent)
-                            MessageBox.Show(@"No relays found for current account token. Please update your token or try a direct connection.",
-                                @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error(
+                                @"No relays found for current account token. Please update your token or try a direct connection.",
+                                @"Authentication Error");
                     }
                     else
                     {
@@ -138,14 +142,15 @@ namespace PlexDL.UI
                 {
                     // trying to connect on no connection will not end well; alert the user.
                     if (!silent)
-                        MessageBox.Show(@"No internet connection. Please connect to a network before attempting to load relays.", @"Network Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        UIMessages.Warning(
+                            @"No internet connection. Please connect to a network before attempting to load relays.",
+                            @"Network Error");
                 }
             }
             catch (Exception ex)
             {
                 if (!silent)
-                    MessageBox.Show("Relay retrieval error\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UIMessages.Error("Relay retrieval error\n\n" + ex, @"Data Error");
                 LoggingHelpers.RecordException(ex.Message, "RelayGetError");
             }
         }
@@ -182,30 +187,29 @@ namespace PlexDL.UI
                     {
                         if (testUrl.LastException != null)
                         {
-                            MessageBox.Show(
-                                    testUrl.StatusCode != "Undetermined"
+                            UIMessages.Error(
+                                testUrl.StatusCode != "Undetermined"
                                     ? $@"Connection failed. The server result was: {testUrl.StatusCode}"
                                     : $@"Connection failed. The error was: {testUrl.LastException.Message}",
-                                @"Network Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                @"Network Error");
                             LoggingHelpers.RecordException(testUrl.LastException.Message, @"TestConnectionError");
                         }
                         else
-                            MessageBox.Show($@"Couldn't connect to ""{s.address}:{s.port}""", @"Network Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error($@"Couldn't connect to ""{s.address}:{s.port}""", @"Network Error");
                     }
                 }
                 else
                 {
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
-                        @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error");
                 }
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"ConnectionError");
-                MessageBox.Show("Server connection attempt failed\n\n" + ex, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Server connection attempt failed\n\n" + ex);
             }
         }
 
@@ -323,25 +327,23 @@ namespace PlexDL.UI
                 var shown = Properties.Settings.Default.PLSShown;
                 var disable = Properties.Settings.Default.DisablePLSOnShown;
 
-                if (!shown || !disable)
-                {
-                    const string msg =
-                        @"It appears your loaded profile contains a previously loaded server. Would you like to prefill those details and connect?";
-                    if (Question(msg))
-                    {
-                        LoadProfileDefinedServer();
-                        PlsShown(true, false);
-                        return;
-                    }
+                if (shown && disable) return;
 
-                    if (disable)
-                    {
-                        MessageBox.Show(
-                            @"We won't ask again. You can reenable this dialog via the global application config file (not your profile).",
-                            @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        PlsShown(true);
-                    }
+                const string msg =
+                    @"It appears your loaded profile contains a previously loaded server. Would you like to prefill those details and connect?";
+
+                if (UIMessages.Question(msg))
+                {
+                    LoadProfileDefinedServer();
+                    PlsShown(true, false);
+                    return;
                 }
+
+                if (!disable) return;
+
+                UIMessages.Info(
+                    @"We won't ask again. You can reenable this dialog via the global application config file (not your profile).");
+                PlsShown(true);
             }
         }
 
@@ -385,15 +387,16 @@ namespace PlexDL.UI
                 else
                 {
                     // trying to connect on no connection will not end well; close this window if there's no connection and alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
-                        @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error");
                     Close();
                 }
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"ServerManagerLoadError");
-                MessageBox.Show("Server manager failed to load necessary data\n\n" + ex, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Server manager failed to load necessary data\n\n" + ex);
             }
         }
 
@@ -435,18 +438,18 @@ namespace PlexDL.UI
                         if (ApplyToken(frm.AccountToken))
                             LoadServers(true);
                         else
-                            MessageBox.Show(@"An unknown error occurred", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error(@"An unknown error occurred");
                     }
                 else
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to authenticate.",
+                        @"Network Error");
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ConnectionError");
-                MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                UIMessages.Error("Connection Error:\n\n" + ex, @"Connection Error");
             }
         }
 
@@ -469,23 +472,23 @@ namespace PlexDL.UI
 
                         if (ApplyToken(frm.ConnectionInfo.PlexAccountToken))
                         {
-                            MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            UIMessages.Info(
+                                @"Token applied successfully. You can now load servers and relays from Plex.tv");
                             LoadServers(true);
                         }
                         else
-                            MessageBox.Show(@"An unknown error occurred", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error(@"An unknown error occurred");
                     }
                 else
                     // trying to connect on no connection will not end well; alert the user.
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to authenticate.",
+                        @"Network Error");
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ConnectionError");
-                MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                UIMessages.Error("Connection Error:\n\n" + ex, @"Connection Error");
             }
         }
 
@@ -506,12 +509,6 @@ namespace PlexDL.UI
             RunDirectConnect(false, info, true);
         }
 
-        private bool Question(string msg, string caption = "Question")
-        {
-            var q = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            return q == DialogResult.Yes;
-        }
-
         private static bool IsTokenSet()
         {
             return !string.IsNullOrEmpty(GlobalStaticVars.User.authenticationToken);
@@ -530,24 +527,24 @@ namespace PlexDL.UI
                     itmClearServers.Enabled = true;
                     dgvServers.DataSource = null;
                     if (!silent)
-                        MessageBox.Show(@"Token applied successfully. You can now load servers and relays from Plex.tv", @"Message",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        UIMessages.Info(
+                            @"Token applied successfully. You can now load servers and relays from Plex.tv");
 
                     return true;
                 }
 
                 // trying to connect on no connection will not end well; alert the user.
                 if (!silent)
-                    MessageBox.Show(@"No internet connection. Please connect to a network before attempting to authenticate.", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to authenticate.",
+                        @"Network Error");
                 return false;
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ConnectionError");
                 if (!silent)
-                    MessageBox.Show("Connection Error:\n\n" + ex, @"Connection Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    UIMessages.Error("Connection Error:\n\n" + ex, @"Connection Error");
                 return false;
             }
         }
@@ -579,7 +576,7 @@ namespace PlexDL.UI
         private void ItmViewLink_Click(object sender, EventArgs e)
         {
             if (dgvServers.SelectedRows.Count == 1)
-                MessageBox.Show(ConnectionLink(CurrentServer()), @"Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UIMessages.Info(ConnectionLink(CurrentServer()), @"Debug");
         }
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)
@@ -588,9 +585,9 @@ namespace PlexDL.UI
 
             if (string.IsNullOrEmpty(token)) return;
 
-            MessageBox.Show($@"Your account token is: {token}
+            UIMessages.Info($@"Your account token is: {token}
 
-We've also copied it to the clipboard for you :)", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+We've also copied it to the clipboard for you :)");
 
             Clipboard.SetText(token);
         }

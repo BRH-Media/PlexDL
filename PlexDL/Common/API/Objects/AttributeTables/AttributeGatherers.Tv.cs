@@ -2,7 +2,7 @@
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Data;
-using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Common.API.Objects.AttributeTables
 {
@@ -52,8 +52,7 @@ namespace PlexDL.Common.API.Objects.AttributeTables
             {
                 LoggingHelpers.RecordException(ex.Message, "AttributeTableError");
                 if (!silent)
-                    MessageBox.Show("Error occurred whilst building content attribute table:\n\n" + ex, @"Data Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UIMessages.Error("Error occurred whilst building content attribute table:\n\n" + ex, @"Data Error");
             }
 
             return table;

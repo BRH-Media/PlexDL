@@ -7,6 +7,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Common.SearchFramework
 {
@@ -54,11 +55,11 @@ namespace PlexDL.Common.SearchFramework
         {
             try
             {
-                //MessageBox.Show(data.SearchRule.ToString());
+                //UIMessages.Info(data.SearchRule.ToString());
 
-                DataTable filteredTable = Workers.GetFilteredTable(searchContext, false);
+                var filteredTable = Workers.GetFilteredTable(searchContext, false);
                 DataTable filteredView = null;
-                //MessageBox.Show(filteredTable.Rows.Count.ToString());
+                //UIMessages.Info(filteredTable.Rows.Count.ToString());
 
                 if (filteredTable == null)
                     return false;
@@ -72,18 +73,17 @@ namespace PlexDL.Common.SearchFramework
                     filteredView = RenderResult(dgvTarget, dgvRenderInfo);
                 }
 
-                if (copyToGlobalTables)
-                {
-                    GlobalTables.FilteredTable = filteredTable;
-                    GlobalViews.FilteredViewTable = filteredView;
-                }
+                if (!copyToGlobalTables) return true;
+
+                GlobalTables.FilteredTable = filteredTable;
+                GlobalViews.FilteredViewTable = filteredView;
 
                 return true;
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
-                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(ex.ToString());
                 return false;
             }
         }
@@ -131,7 +131,7 @@ namespace PlexDL.Common.SearchFramework
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
-                MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(ex.ToString());
                 return false;
             }
         }

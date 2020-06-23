@@ -3,6 +3,7 @@ using PlexDL.Common.Structures;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -37,18 +38,18 @@ namespace PlexDL.UI
         {
             if (string.IsNullOrWhiteSpace(txtServerIP.Text))
             {
-                MessageBox.Show(@"Incorrectly formatted address. Please enter your server address correctly.", @"Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(@"Incorrectly formatted address. Please enter your server address correctly.",
+                    @"Validation Error");
             }
-            else if (!int.TryParse(txtServerPort.Text, out var r))
+            else if (!int.TryParse(txtServerPort.Text, out _))
             {
-                MessageBox.Show(@"Incorrectly formatted port. Please enter your port correctly.", @"Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(@"Incorrectly formatted port. Please enter your port correctly.",
+                    @"Validation Error");
             }
             else if (!VerifyToken(txtToken.Text) && chkToken.Checked)
             {
-                MessageBox.Show(@"Incorrectly formatted token. Please enter your token correctly.", @"Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(@"Incorrectly formatted token. Please enter your token correctly.",
+                    @"Validation Error");
             }
             else
             {
@@ -59,7 +60,7 @@ namespace PlexDL.UI
                     var uri = chkToken.Checked
                         ? $"http://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={txtToken.Text}"
                         : $"http://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={ConnectionInfo.PlexAccountToken}";
-                    //MessageBox.Show(uri);
+                    //UIMessages.Info(uri);
                     var testUrl = WebCheck.TestUrl(uri);
                     if (testUrl.ConnectionSuccess)
                     {
@@ -75,20 +76,19 @@ namespace PlexDL.UI
                     {
                         if (testUrl.LastException != null && testUrl.StatusCode != "Undetermined")
                         {
-                            MessageBox.Show(
+                            UIMessages.Error(
                                 $"Could not connect: {testUrl.StatusCode}\n\nYou can exit the dialog by clicking 'Cancel'.",
-                                @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                @"Network Error");
                         }
                         else
-                            MessageBox.Show(
+                            UIMessages.Error(
                                 "Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by clicking 'Cancel'.",
-                                @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                @"Network Error");
                     }
                 }
                 else
                 {
-                    MessageBox.Show(@"Port out of range", @"Validation Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    UIMessages.Error(@"Port out of range", @"Validation Error");
                 }
             }
         }

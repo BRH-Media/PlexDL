@@ -3,7 +3,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Common.SearchFramework
 {
@@ -15,7 +15,7 @@ namespace PlexDL.Common.SearchFramework
             var column = (string)e.Arguments[2];
             var searchRule = (SearchRule)e.Arguments[1];
             var searchKey = (string)e.Arguments[0];
-            //MessageBox.Show(SearchQuery.SqlSearchFromRule(column, searchKey, searchRule));
+            //UIMessages.Info(SearchQuery.SqlSearchFromRule(column, searchKey, searchRule));
             var rowCollection = table.Select(SearchQuery.SqlSearchFromRule(column, searchKey, searchRule));
             e.Result = rowCollection;
         }
@@ -27,8 +27,8 @@ namespace PlexDL.Common.SearchFramework
 
         public static DataTable GetFilteredTable(SearchData data, bool silent = true)
         {
-            //MessageBox.Show(data.SearchTable.Rows.Count.ToString());
-            //MessageBox.Show(data.SearchTable.Rows[0].ItemArray.Length.ToString());
+            //UIMessages.Info(data.SearchTable.Rows.Count.ToString());
+            //UIMessages.Info(data.SearchTable.Rows[0].ItemArray.Length.ToString());
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
@@ -44,11 +44,10 @@ namespace PlexDL.Common.SearchFramework
             else
             {
                 if (!silent)
-                    MessageBox.Show(@"No Results Found for '" + data.SearchTerm + @"'", @"Message", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    UIMessages.Info(@"No Results Found for '" + data.SearchTerm + @"'");
             }
 
-            //MessageBox.Show("Filtered Table:" + filteredTable.Rows.Count + "\nTitles Table:" + titlesTable.Rows.Count);
+            //UIMessages.Info("Filtered Table:" + filteredTable.Rows.Count + "\nTitles Table:" + titlesTable.Rows.Count);
             return tblFiltered;
         }
     }

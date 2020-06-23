@@ -2,8 +2,8 @@
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.IO;
-using System.Windows.Forms;
 using System.Xml.Serialization;
+using UIHelpers;
 
 namespace PlexDL.Common.API
 {
@@ -27,8 +27,7 @@ namespace PlexDL.Common.API
             {
                 LoggingHelpers.RecordException(ex.Message, "LoadProfileError");
                 if (!silent)
-                    MessageBox.Show(ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    UIMessages.Error(ex.ToString(), @"XML Load Error");
                 return null;
             }
         }
@@ -53,8 +52,7 @@ namespace PlexDL.Common.API
             {
                 LoggingHelpers.RecordException(ex.Message, "@SaveProfileError");
                 if (!silent)
-                    MessageBox.Show(ex.ToString(), @"Error in saving XML Profile", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    UIMessages.Error(ex.ToString(), @"XML Save Error");
             }
         }
     }

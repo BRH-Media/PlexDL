@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -29,12 +30,13 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MessageBox.Show(@"Please enter required values or exit search", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UIMessages.Error(@"Please enter all required values or exit the search",
+                        @"Validation Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                UIMessages.Error(ex.ToString());
             }
         }
 
@@ -76,21 +78,19 @@ namespace PlexDL.UI
 
         private void ColumnPriorityMatch()
         {
-            if (cbxSearchColumn.Items.Count > 0)
-            {
-                bool matched = false;
+            if (cbxSearchColumn.Items.Count <= 0) return;
+            var matched = false;
 
-                foreach (string c in GlobalStaticVars.Settings.Generic.SearchColumnPriority)
-                    if (cbxSearchColumn.Items.Contains(c))
-                    {
-                        cbxSearchColumn.SelectedItem = c;
-                        matched = true;
-                        break;
-                    }
+            foreach (var c in GlobalStaticVars.Settings.Generic.SearchColumnPriority)
+                if (cbxSearchColumn.Items.Contains(c))
+                {
+                    cbxSearchColumn.SelectedItem = c;
+                    matched = true;
+                    break;
+                }
 
-                if (!matched)
-                    cbxSearchColumn.SelectedIndex = 0;
-            }
+            if (!matched)
+                cbxSearchColumn.SelectedIndex = 0;
         }
 
         private void FrmSearch_Load(object sender, EventArgs e)
@@ -104,37 +104,36 @@ namespace PlexDL.UI
             {
                 SearchContext = settings
             };
+
             var result = new SearchResult();
-            if (frm.ShowDialog() == DialogResult.OK)
+
+            if (frm.ShowDialog() != DialogResult.OK) return result;
+
+            result.SearchColumn = frm.cbxSearchColumn.SelectedItem.ToString();
+            result.SearchTerm = frm.txtSearchTerm.Text;
+
+            switch (frm.cbxSearchRule.SelectedIndex)
             {
-                result.SearchColumn = frm.cbxSearchColumn.SelectedItem.ToString();
-                result.SearchTerm = frm.txtSearchTerm.Text;
+                case 0:
+                    result.SearchRule = SearchRule.ContainsKey;
+                    break;
 
-                switch (frm.cbxSearchRule.SelectedIndex)
-                {
-                    case 0:
-                        result.SearchRule = SearchRule.ContainsKey;
-                        break;
+                case 1:
+                    result.SearchRule = SearchRule.EqualsKey;
+                    break;
 
-                    case 1:
-                        result.SearchRule = SearchRule.EqualsKey;
-                        break;
+                case 2:
+                    result.SearchRule = SearchRule.BeginsWith;
+                    break;
 
-                    case 2:
-                        result.SearchRule = SearchRule.BeginsWith;
-                        break;
-
-                    case 3:
-                        result.SearchRule = SearchRule.EndsWith;
-                        break;
-                }
-                return result;
+                case 3:
+                    result.SearchRule = SearchRule.EndsWith;
+                    break;
             }
-
             return result;
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }

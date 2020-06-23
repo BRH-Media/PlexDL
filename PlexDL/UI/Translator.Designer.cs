@@ -80,7 +80,7 @@
             this.btnBrowseLogdel.TabIndex = 1;
             this.btnBrowseLogdel.Text = "...";
             this.btnBrowseLogdel.UseVisualStyleBackColor = true;
-            this.btnBrowseLogdel.Click += new System.EventHandler(this.btnBrowseLogdel_Click);
+            this.btnBrowseLogdel.Click += new System.EventHandler(this.BtnBrowseLogdel_Click);
             // 
             // txtLogdel
             // 
@@ -192,13 +192,13 @@
             this.btnTranslate.TabIndex = 2;
             this.btnTranslate.Text = "Translate to *.prof";
             this.btnTranslate.UseVisualStyleBackColor = true;
-            this.btnTranslate.Click += new System.EventHandler(this.btnTranslate_Click);
+            this.btnTranslate.Click += new System.EventHandler(this.BtnTranslate_Click);
             // 
             // bwTranslate
             // 
             this.bwTranslate.WorkerReportsProgress = true;
             this.bwTranslate.WorkerSupportsCancellation = true;
-            this.bwTranslate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwTranslate_DoWork);
+            this.bwTranslate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BwTranslate_DoWork);
             // 
             // pbMain
             // 

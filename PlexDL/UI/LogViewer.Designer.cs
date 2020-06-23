@@ -123,7 +123,7 @@ namespace PlexDL.UI
             this.menuMain.Size = new System.Drawing.Size(674, 24);
             this.menuMain.TabIndex = 17;
             this.menuMain.Text = "menuStrip1";
-            this.menuMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuMain_ItemClicked);
+            this.menuMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MenuMain_ItemClicked);
             // 
             // itmRefresh
             // 
@@ -131,7 +131,7 @@ namespace PlexDL.UI
             this.itmRefresh.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.itmRefresh.Size = new System.Drawing.Size(58, 20);
             this.itmRefresh.Text = "Refresh";
-            this.itmRefresh.Click += new System.EventHandler(this.itmRefresh_Click);
+            this.itmRefresh.Click += new System.EventHandler(this.ItmRefresh_Click);
             // 
             // itmStartSearch
             // 
@@ -150,7 +150,7 @@ namespace PlexDL.UI
             this.itmThisSession.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.itmThisSession.Size = new System.Drawing.Size(231, 22);
             this.itmThisSession.Text = "Entries for this Session";
-            this.itmThisSession.Click += new System.EventHandler(this.itmThisSession_Click);
+            this.itmThisSession.Click += new System.EventHandler(this.ItmThisSession_Click);
             // 
             // itmSearchTerm
             // 
@@ -158,7 +158,7 @@ namespace PlexDL.UI
             this.itmSearchTerm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.itmSearchTerm.Size = new System.Drawing.Size(231, 22);
             this.itmSearchTerm.Text = "Search Term";
-            this.itmSearchTerm.Click += new System.EventHandler(this.itmSearchTerm_Click);
+            this.itmSearchTerm.Click += new System.EventHandler(this.ItmSearchTerm_Click);
             // 
             // itmCancelSearch
             // 
@@ -166,7 +166,7 @@ namespace PlexDL.UI
             this.itmCancelSearch.Name = "itmCancelSearch";
             this.itmCancelSearch.Size = new System.Drawing.Size(231, 22);
             this.itmCancelSearch.Text = "Cancel Search";
-            this.itmCancelSearch.Click += new System.EventHandler(this.itmCancelSearch_Click);
+            this.itmCancelSearch.Click += new System.EventHandler(this.ItmCancelSearch_Click);
             // 
             // itmGoToLine
             // 
@@ -174,7 +174,7 @@ namespace PlexDL.UI
             this.itmGoToLine.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.itmGoToLine.Size = new System.Drawing.Size(74, 20);
             this.itmGoToLine.Text = "Go To Line";
-            this.itmGoToLine.Click += new System.EventHandler(this.itmGoToLine_Click);
+            this.itmGoToLine.Click += new System.EventHandler(this.ItmGoToLine_Click);
             // 
             // itmExport
             // 
@@ -191,7 +191,7 @@ namespace PlexDL.UI
             this.itmCsv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.itmCsv.Size = new System.Drawing.Size(180, 22);
             this.itmCsv.Text = "To CSV";
-            this.itmCsv.Click += new System.EventHandler(this.itmCSV_Click);
+            this.itmCsv.Click += new System.EventHandler(this.ItmCSV_Click);
             // 
             // itmJson
             // 
@@ -199,7 +199,7 @@ namespace PlexDL.UI
             this.itmJson.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
             this.itmJson.Size = new System.Drawing.Size(180, 22);
             this.itmJson.Text = "To JSON";
-            this.itmJson.Click += new System.EventHandler(this.itmJson_Click);
+            this.itmJson.Click += new System.EventHandler(this.ItmJson_Click);
             // 
             // itmBackup
             // 
@@ -207,7 +207,7 @@ namespace PlexDL.UI
             this.itmBackup.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
             this.itmBackup.Size = new System.Drawing.Size(58, 20);
             this.itmBackup.Text = "Backup";
-            this.itmBackup.Click += new System.EventHandler(this.itmBackup_Click);
+            this.itmBackup.Click += new System.EventHandler(this.ItmBackup_Click);
             // 
             // sfdExportCsv
             // 

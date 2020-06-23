@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Internal
 {
@@ -57,7 +58,8 @@ namespace PlexDL.Internal
                         RunMetadataWindow(metadata);
                     }
                     else
-                        MessageBox.Show(@"PlexDL doesn't recognise this file-type: '" + ext + @"'", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        UIMessages.Error(@"PlexDL doesn't recognise this file-type: '" + ext + @"'",
+                            @"Validation Error");
                 }
                 else
                 {
@@ -82,7 +84,8 @@ namespace PlexDL.Internal
                 Application.Run(form);
             }
             else
-                MessageBox.Show(@"Invalid PlexMovie Metadata File; the decoded data was null.", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(@"Invalid PlexMovie Metadata File; the decoded data was null.",
+                    @"Validation Error");
         }
 
         private static void RunPlexDlHome()

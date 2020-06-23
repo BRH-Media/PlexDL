@@ -105,7 +105,6 @@
             this.tlpDebug.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpDebug.Size = new System.Drawing.Size(450, 523);
             this.tlpDebug.TabIndex = 0;
-            this.tlpDebug.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpDebug_Paint);
             // 
             // groupBox1
             // 
@@ -240,7 +239,7 @@
             this.btnExportSections.TabIndex = 0;
             this.btnExportSections.Text = "Sections";
             this.btnExportSections.UseVisualStyleBackColor = true;
-            this.btnExportSections.Click += new System.EventHandler(this.btnExportSections_Click);
+            this.btnExportSections.Click += new System.EventHandler(this.BtnExportSections_Click);
             // 
             // btnExportEpisodes
             // 
@@ -357,7 +356,7 @@
             0,
             0,
             0});
-            this.numPollRateValue.ValueChanged += new System.EventHandler(this.numPollRateValue_ValueChanged);
+            this.numPollRateValue.ValueChanged += new System.EventHandler(this.NumPollRateValue_ValueChanged);
             // 
             // tlpRefreshCount
             // 
@@ -418,7 +417,7 @@
             this.btnTimer.TabIndex = 1;
             this.btnTimer.Text = "Auto-refresh On";
             this.btnTimer.UseVisualStyleBackColor = true;
-            this.btnTimer.Click += new System.EventHandler(this.btnTimer_Click);
+            this.btnTimer.Click += new System.EventHandler(this.BtnTimer_Click);
             // 
             // btnRefresh
             // 
@@ -429,7 +428,7 @@
             this.btnRefresh.TabIndex = 0;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // btnCancel
             // 
@@ -440,7 +439,7 @@
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // sfdExport
             // 

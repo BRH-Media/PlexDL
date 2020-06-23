@@ -15,6 +15,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using UIHelpers;
 
 namespace PlexDL.Common
 {
@@ -168,7 +169,7 @@ namespace PlexDL.Common
             var keywords = Resources.keywordBlacklist.Split('\n');
             var search = stream.StreamInformation.ContentTitle.ToLower();
             var rgx = new Regex("[^a-zA-Z0-9_. ]+");
-            //MessageBox.Show(keywords.Length.ToString());
+            //UIMessages.Info(keywords.Length.ToString());
             search = rgx.Replace(search, "");
             var match = false;
             if (string.Equals(stream.ContentGenre.ToLower(), "porn") || string.Equals(stream.ContentGenre.ToLower(), "adult"))
@@ -177,17 +178,18 @@ namespace PlexDL.Common
             }
             else
             {
-                if (keywords.Length > 0)
-                    foreach (var k in keywords)
-                        if (!string.IsNullOrEmpty(k) && !string.IsNullOrWhiteSpace(k))
-                        {
-                            var clean = rgx.Replace(k, "").ToLower();
-                            if (search.Contains(clean))
-                            {
-                                match = true;
-                                break;
-                            }
-                        }
+                if (keywords.Length <= 0) return false;
+
+                foreach (var k in keywords)
+                    if (!string.IsNullOrEmpty(k) && !string.IsNullOrWhiteSpace(k))
+                    {
+                        var clean = rgx.Replace(k, "").ToLower();
+
+                        if (!search.Contains(clean)) continue;
+
+                        match = true;
+                        break;
+                    }
             }
 
             return match;
@@ -199,9 +201,10 @@ namespace PlexDL.Common
             if (!AdultKeywordCheck(stream)) return true;
 
             var result =
-                MessageBox.Show(@"The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?", @"Warning",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            return result != DialogResult.No;
+                UIMessages.Question(
+                    @"The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?",
+                    @"Warning");
+            return result;
         }
 
         public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)

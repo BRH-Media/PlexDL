@@ -6,8 +6,8 @@ using PlexDL.WaitWindow;
 using System;
 using System.IO;
 using System.Net;
-using System.Windows.Forms;
 using System.Xml;
+using UIHelpers;
 
 namespace PlexDL.Common.API
 {
@@ -35,10 +35,8 @@ namespace PlexDL.Common.API
             if (XmlCaching.XmlInCache(uri) && !forceNoCache)
                 try
                 {
-                    var xmlResponse = XmlCaching.XmlFromCache(uri);
-                    if (xmlResponse != null)
-                        return xmlResponse;
-                    return GetXmlTransaction(uri, "", true);
+                    var xmlCache = XmlCaching.XmlFromCache(uri);
+                    return xmlCache ?? GetXmlTransaction(uri, "", true);
                 }
                 catch (Exception ex)
                 {
@@ -48,13 +46,11 @@ namespace PlexDL.Common.API
                 }
 
             //Declare XMLResponse document
-            XmlDocument XMLResponse = null;
+            XmlDocument xmlResponse = null;
             //Declare an HTTP-specific implementation of the WebRequest class.
-            HttpWebRequest objHttpWebRequest;
             //Declare a generic view of a sequence of bytes
             Stream objResponseStream = null;
             //Declare XMLReader
-            XmlTextReader objXMLReader;
 
             var secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, GlobalStaticVars.PlexServers) : secret;
             if (string.IsNullOrEmpty(secret2))
@@ -62,13 +58,12 @@ namespace PlexDL.Common.API
 
             var fullUri = uri + secret2;
 
-            //6MessageBox.Show(fullUri);
+            //UIMessages.Info(fullUri);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             //Creates an HttpWebRequest for the specified URL.
-            objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
+            var objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
             //Declare an HTTP-specific implementation of the WebResponse class
-            HttpWebResponse objHttpWebResponse;
             //---------- Start HttpRequest
             try
             {
@@ -77,30 +72,35 @@ namespace PlexDL.Common.API
                 objHttpWebRequest.KeepAlive = false;
                 //---------- End HttpRequest
                 //Sends the HttpWebRequest, and waits for a response.
-                objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
-                //---------- Start HttpResponse, Return code 200
-                if (objHttpWebResponse.StatusCode == HttpStatusCode.OK)
+                var objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
+                switch (objHttpWebResponse.StatusCode)
                 {
-                    //Get response stream
-                    objResponseStream = objHttpWebResponse.GetResponseStream();
-                    //Load response stream into XMLReader
-                    objXMLReader = new XmlTextReader(objResponseStream);
-                    //Declare XMLDocument
-                    var xmldoc = new XmlDocument();
-                    xmldoc.Load(objXMLReader);
-                    //Set XMLResponse object returned from XMLReader
-                    XMLResponse = xmldoc;
-                    //Close XMLReader
-                    objXMLReader.Close();
-                }
-                else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    if (!silent)
-                        MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
+                    //---------- Start HttpResponse, Return code 200
+                    case HttpStatusCode.OK:
+                        {
+                            //Get response stream
+                            objResponseStream = objHttpWebResponse.GetResponseStream();
+                            //Load response stream into XMLReader
+                            var objXmlReader = new XmlTextReader(objResponseStream);
+                            //Declare XMLDocument
+                            var xmlDoc = new XmlDocument();
+                            xmlDoc.Load(objXmlReader);
+                            //Set XMLResponse object returned from XMLReader
+                            xmlResponse = xmlDoc;
+                            //Close XMLReader
+                            objXmlReader.Close();
+                            break;
+                        }
+                    case HttpStatusCode.Unauthorized:
+                        {
+                            if (!silent)
+                                UIMessages.Error("The web server denied access to the resource. Check your token and try again.");
+                            break;
+                        }
                 }
 
                 //Close Steam
-                objResponseStream.Close();
+                objResponseStream?.Close();
                 //Close HttpWebResponse
                 objHttpWebResponse.Close();
 
@@ -111,13 +111,12 @@ namespace PlexDL.Common.API
                 LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
                 LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
                 if (!silent)
-                    MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex, "Network Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    UIMessages.Error("Error Occurred in XML Transaction\n\n" + ex, @"Network Error");
                 return new XmlDocument();
             }
 
-            XmlCaching.XmlToCache(XMLResponse, uri);
-            return XMLResponse;
+            XmlCaching.XmlToCache(xmlResponse, uri);
+            return xmlResponse;
         }
     }
 }

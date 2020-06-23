@@ -6,8 +6,8 @@ namespace PlexDL.Common.Globals
     {
         public static DataRow GetDataRowTbl(DataTable table, int index)
         {
-            //MessageBox.Show(Flags.IsTVShow.ToString());
-            //MessageBox.Show(table.Rows[index].ItemArray.Length.ToString());
+            //UIMessages.Info(Flags.IsTVShow.ToString());
+            //UIMessages.Info(table.Rows[index].ItemArray.Length.ToString());
             return table.Rows[index];
         }
 

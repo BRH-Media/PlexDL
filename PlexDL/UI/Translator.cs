@@ -3,9 +3,11 @@ using PlexDL.Common.API;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -13,31 +15,30 @@ namespace PlexDL.UI
     {
         private List<string> ValidTokens { get; set; } = new List<string>();
         private List<string> AllTokens { get; set; } = new List<string>();
-        private int ValidCount { get; set; } = 0;
-        private int InvalidCount { get; set; } = 0;
-        private int TotalCount { get; set; } = 0;
-        private int DuplicateCount { get; set; } = 0;
+        private int ValidCount { get; set; }
+        private int InvalidCount { get; set; }
+        private int TotalCount { get; set; }
+        private int DuplicateCount { get; set; }
 
         public Translator()
         {
             InitializeComponent();
         }
 
-        private void btnBrowseLogdel_Click(object sender, EventArgs e)
+        private void BtnBrowseLogdel_Click(object sender, EventArgs e)
         {
             ShowSelector();
         }
 
         private void ShowSelector(bool textSet = true, bool resetStats = true)
         {
-            if (ofdLogdel.ShowDialog() == DialogResult.OK)
-            {
-                if (textSet)
-                    txtLogdel.Text = ofdLogdel.FileName;
-                if (resetStats)
-                    ResetStats();
-                btnTranslate.Enabled = false;
-            }
+            if (ofdLogdel.ShowDialog() != DialogResult.OK) return;
+
+            if (textSet)
+                txtLogdel.Text = ofdLogdel.FileName;
+            if (resetStats)
+                ResetStats();
+            btnTranslate.Enabled = false;
         }
 
         private void Translator_Load(object sender, EventArgs e)
@@ -63,7 +64,7 @@ namespace PlexDL.UI
             {
                 if (File.Exists(fileName))
                 {
-                    DataTable logLoad = LogReader.TableFromFile(fileName, false);
+                    var logLoad = LogReader.TableFromFile(fileName, false);
                     if (logLoad != null)
                     {
                         if (logLoad.Columns.Contains("Token"))
@@ -76,23 +77,23 @@ namespace PlexDL.UI
                             DuplicateCount = 0;
                             foreach (DataRow r in logLoad.Rows)
                             {
-                                if (r["Token"] != null)
+                                if (r["Token"] == null) continue;
+
+                                var t = r["Token"].ToString();
+
+                                if (!AllTokens.Contains(t))
                                 {
-                                    string t = r["Token"].ToString();
-                                    if (!AllTokens.Contains(t))
+                                    AllTokens.Add(t);
+                                    if (t.Length == 20 && !string.IsNullOrWhiteSpace(t))
                                     {
-                                        AllTokens.Add(t);
-                                        if (t.Length == 20 && !string.IsNullOrWhiteSpace(t))
-                                        {
-                                            ValidCount++;
-                                            ValidTokens.Add(t);
-                                        }
-                                        else
-                                            InvalidCount++;
+                                        ValidCount++;
+                                        ValidTokens.Add(t);
                                     }
                                     else
-                                        DuplicateCount++;
+                                        InvalidCount++;
                                 }
+                                else
+                                    DuplicateCount++;
                             }
 
                             //gui settings
@@ -101,22 +102,21 @@ namespace PlexDL.UI
                             lblTotalValue.Text = TotalCount.ToString();
                             lblValidValue.Text = ValidCount.ToString();
 
-                            MessageBox.Show(@"Load succeeded");
+                            UIMessages.Info(@"Load succeeded");
                             btnTranslate.Enabled = true;
                         }
                         else
-                            MessageBox.Show(@"Invalid table layout!");
+                            UIMessages.Error(@"Invalid table layout");
                     }
                     else
-                        MessageBox.Show(@"Null data!");
+                        UIMessages.Error(@"Null table data");
                 }
                 else
-                    MessageBox.Show(@"File doesn't exist!");
+                    UIMessages.Error(@"File doesn't exist");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                return;
+                UIMessages.Error(ex.ToString());
             }
         }
 
@@ -127,41 +127,37 @@ namespace PlexDL.UI
                 LoadStats(ofdLogdel.FileName);
             }
             else
-                MessageBox.Show(@"Incorrect value(s)");
+                UIMessages.Error(@"Incorrect value(s)");
         }
 
-        private ApplicationOptions ProfileFromToken(string token)
+        private static ApplicationOptions ProfileFromToken(string token)
         {
-            var prof = new ApplicationOptions();
-            prof.ConnectionInfo.PlexAccountToken = token;
+            var prof = new ApplicationOptions { ConnectionInfo = { PlexAccountToken = token } };
             return prof;
         }
 
-        private bool ExportTokenProf(string token, string dir = @"translator\profs")
+        private static void ExportTokenProf(string token, string dir = @"translator\profs")
         {
             try
             {
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                int fileCount = Directory.GetFiles(dir, "plexdl_sv*.prof").Length;
-                int fileIdx = fileCount + 1;
-                string fileName = "plexdl_sv" + fileIdx.ToString() + ".prof";
-                string fqPath = dir + @"\" + fileName;
+                var fileCount = Directory.GetFiles(dir, "plexdl_sv*.prof").Length;
+                var fileIdx = fileCount + 1;
+                var fileName = "plexdl_sv" + fileIdx + ".prof";
+                var fqPath = dir + @"\" + fileName;
 
                 var options = ProfileFromToken(token);
 
                 ProfileImportExport.ProfileToFile(fqPath, options);
-
-                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                return false;
+                UIMessages.Error(ex.ToString());
             }
         }
 
-        private void btnTranslate_Click(object sender, EventArgs e)
+        private void BtnTranslate_Click(object sender, EventArgs e)
         {
             try
             {
@@ -169,36 +165,35 @@ namespace PlexDL.UI
                 {
                     pbMain.Maximum = TotalCount;
                     pbMain.Value = 0;
-                    bwTranslate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(bwTranslate_RunWorkerCompleted);
-                    bwTranslate.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(bwTranslate_ProgressChanged);
+                    bwTranslate.RunWorkerCompleted += BwTranslate_RunWorkerCompleted;
+                    bwTranslate.ProgressChanged += BwTranslate_ProgressChanged;
                     bwTranslate.RunWorkerAsync();
                 }
                 else
-                    MessageBox.Show(@"Incorrect value(s)");
+                    UIMessages.Error(@"Incorrect value(s)");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                return;
+                UIMessages.Error(ex.ToString());
             }
         }
 
-        private void bwTranslate_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void BwTranslate_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbMain.PerformStep();
         }
 
-        private void bwTranslate_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void BwTranslate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show(@"Completed!");
+            UIMessages.Info(@"Completed", @"Success");
             Close();
         }
 
-        private void bwTranslate_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BwTranslate_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                foreach (string s in ValidTokens)
+                foreach (var s in ValidTokens)
                 {
                     ExportTokenProf(s);
                     bwTranslate.ReportProgress(1);
@@ -206,7 +201,7 @@ namespace PlexDL.UI
             }
             catch (Exception)
             {
-                return;
+                // ignored
             }
         }
     }

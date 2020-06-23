@@ -3,7 +3,7 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
-using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.Common.API.Objects
 {
@@ -46,9 +46,9 @@ namespace PlexDL.Common.API.Objects
                     }
                     else
                     {
-                        MessageBox.Show(
+                        UIMessages.Error(
                             @"Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
-                            @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            @"Data Error");
                         LoggingHelpers.RecordException(
                             "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             "ContextDownloadInfoNull");
@@ -65,7 +65,7 @@ namespace PlexDL.Common.API.Objects
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Content metadata error:\n\n" + ex, @"Data Error");
                 LoggingHelpers.RecordException(ex.Message, "TVObjectError");
                 return null;
             }
@@ -100,9 +100,9 @@ namespace PlexDL.Common.API.Objects
                     }
                     else
                     {
-                        MessageBox.Show(
+                        UIMessages.Error(
                             @"Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
-                            @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            @"Data Error");
                         LoggingHelpers.RecordException(
                             @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             @"ContextDownloadInfoNull");
@@ -119,7 +119,7 @@ namespace PlexDL.Common.API.Objects
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Content metadata error:\n\n" + ex, @"Data Error");
                 LoggingHelpers.RecordException(ex.Message, @"MovieObjectError");
                 return null;
             }
@@ -139,7 +139,7 @@ namespace PlexDL.Common.API.Objects
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
+                    //UIMessages.Info(GlobalStaticVars.CurrentContentType.ToString());
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 
@@ -158,9 +158,9 @@ namespace PlexDL.Common.API.Objects
                     }
                     else
                     {
-                        MessageBox.Show(
+                        UIMessages.Error(
                             @"Failed to get contextual information; an unknown error occurred. Check the exception log for more information.",
-                            @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            @"Data Error");
                         LoggingHelpers.RecordException(
                             @"DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             @"ContextDownloadInfoNull");
@@ -177,7 +177,7 @@ namespace PlexDL.Common.API.Objects
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Content metadata error:\n\n" + ex, @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Content metadata error:\n\n" + ex, @"Data Error");
                 LoggingHelpers.RecordException(ex.Message, @"MusicObjectError");
                 return null;
             }

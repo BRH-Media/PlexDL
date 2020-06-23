@@ -155,7 +155,7 @@ namespace PlexDL.UI
             StationaryMode = false;
         }
 
-        private Panel NoActorsFound()
+        private static Panel NoActorsFound()
         {
             var p = new Panel
             {
@@ -194,22 +194,14 @@ namespace PlexDL.UI
             return p;
         }
 
-        private Bitmap GetPoster(PlexObject stream)
+        private static Bitmap GetPoster(PlexObject stream)
         {
             var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-            if (result != Resources.image_not_available_png_8)
-            {
-                if (GlobalStaticVars.Settings.Generic.AdultContentProtection)
-                {
-                    if (Methods.AdultKeywordCheck(stream))
-                        return ImagePixelation.Pixelate(result, 64);
-                    return result;
-                }
 
-                return result;
-            }
+            if (result == Resources.image_not_available_png_8) return result;
+            if (!GlobalStaticVars.Settings.Generic.AdultContentProtection) return result;
 
-            return result;
+            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
         }
 
         private void Metadata_Load(object sender, EventArgs e)
@@ -217,7 +209,7 @@ namespace PlexDL.UI
             if (!StationaryMode)
             {
                 WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
-                //MessageBox.Show(StreamingContent.StreamResolution.Framerate);
+                //UIMessages.Info(StreamingContent.StreamResolution.Framerate);
             }
             else
             {
@@ -234,55 +226,54 @@ namespace PlexDL.UI
         {
             //check if the form has anything loaded (stationary mode), and if there is content loaded (note that the link is checked because StreamingContent is never null,
             //but the link will always be filled if there is valid content loaded)
-            if (!StationaryMode && StreamingContent.StreamInformation.Link != "")
-                if (sfdExport.ShowDialog() == DialogResult.OK)
-                    ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
+            if (StationaryMode || StreamingContent.StreamInformation.Link == "") return;
+            if (sfdExport.ShowDialog() == DialogResult.OK)
+                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
 
         private void DoImport()
         {
-            if (ofdImport.ShowDialog() == DialogResult.OK)
-            {
-                var obj = ImportExport.MetadataFromFile(ofdImport.FileName);
-                StreamingContent = obj;
-                flpActors.Controls.Clear();
-                //set this in-case the loader doesn't find anything; that way the user still gets feedback.
-                txtPlotSynopsis.Text = @"Plot synopsis not provided";
-                WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
-            }
+            if (ofdImport.ShowDialog() != DialogResult.OK) return;
+
+            var obj = ImportExport.MetadataFromFile(ofdImport.FileName);
+            StreamingContent = obj;
+            flpActors.Controls.Clear();
+            //set this in-case the loader doesn't find anything; that way the user still gets feedback.
+            txtPlotSynopsis.Text = @"Plot synopsis not provided";
+            WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
         }
 
-        private void itmImport_Click(object sender, EventArgs e)
+        private void ItmImport_Click(object sender, EventArgs e)
         {
             DoImport();
         }
 
-        private void itmExit_Click(object sender, EventArgs e)
+        private void ItmExit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void itmExport_Click(object sender, EventArgs e)
+        private void ItmExport_Click(object sender, EventArgs e)
         {
             DoExport();
         }
 
-        private void itmPvs_Click(object sender, EventArgs e)
+        private void ItmPvs_Click(object sender, EventArgs e)
         {
             PvsLauncher.LaunchPvs(StreamingContent, GlobalTables.ReturnCorrectTable());
         }
 
-        private void itmBrowser_Click(object sender, EventArgs e)
+        private void ItmBrowser_Click(object sender, EventArgs e)
         {
             BrowserLauncher.LaunchBrowser(StreamingContent);
         }
 
-        private void itmVlc_Click(object sender, EventArgs e)
+        private void ItmVlc_Click(object sender, EventArgs e)
         {
             VlcLauncher.LaunchVlc(StreamingContent);
         }
 
-        private void txtPlotSynopsis_SelectionChanged(object sender, EventArgs e)
+        private void TxtPlotSynopsis_SelectionChanged(object sender, EventArgs e)
         {
             txtPlotSynopsis.SelectionLength = 0;
         }

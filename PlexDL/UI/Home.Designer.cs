@@ -392,7 +392,7 @@ namespace PlexDL.UI
             this.btnPause.TabIndex = 31;
             this.btnPause.Text = "Resume";
             this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
             // 
             // btnHTTPPlay
             // 
@@ -403,7 +403,7 @@ namespace PlexDL.UI
             this.btnHTTPPlay.TabIndex = 32;
             this.btnHTTPPlay.Text = "Stream";
             this.btnHTTPPlay.UseVisualStyleBackColor = true;
-            this.btnHTTPPlay.Click += new System.EventHandler(this.btnHTTPPlay_Click);
+            this.btnHTTPPlay.Click += new System.EventHandler(this.BtnHTTPPlay_Click);
             // 
             // btnDownload
             // 
@@ -414,7 +414,7 @@ namespace PlexDL.UI
             this.btnDownload.TabIndex = 30;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            this.btnDownload.Click += new System.EventHandler(this.BtnDownload_Click);
             // 
             // tabMain
             // 
@@ -429,7 +429,7 @@ namespace PlexDL.UI
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(662, 370);
             this.tabMain.TabIndex = 26;
-            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
+            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.TabMain_SelectedIndexChanged);
             // 
             // tabMovies
             // 
@@ -873,7 +873,6 @@ namespace PlexDL.UI
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpMain.Size = new System.Drawing.Size(956, 384);
             this.tlpMain.TabIndex = 29;
-            this.tlpMain.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpMain_Paint);
             // 
             // tlpContentOptions
             // 
@@ -969,7 +968,7 @@ namespace PlexDL.UI
             this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.itmLoadProfile.Size = new System.Drawing.Size(198, 22);
             this.itmLoadProfile.Text = "Load";
-            this.itmLoadProfile.Click += new System.EventHandler(this.itmLoadProfile_Click);
+            this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
             // 
             // itmSaveProfile
             // 
@@ -977,7 +976,7 @@ namespace PlexDL.UI
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.itmSaveProfile.Size = new System.Drawing.Size(198, 22);
             this.itmSaveProfile.Text = "Save";
-            this.itmSaveProfile.Click += new System.EventHandler(this.itmSaveProfile_Click);
+            this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
             // 
             // itmExportObj
             // 
@@ -985,14 +984,14 @@ namespace PlexDL.UI
             this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.itmExportObj.Size = new System.Drawing.Size(198, 22);
             this.itmExportObj.Text = "Export";
-            this.itmExportObj.Click += new System.EventHandler(this.itmExportObj_Click);
+            this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
             // 
             // itmSetDlDirectory
             // 
             this.itmSetDlDirectory.Name = "itmSetDlDirectory";
             this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
             this.itmSetDlDirectory.Text = "Set Download Directory";
-            this.itmSetDlDirectory.Click += new System.EventHandler(this.itmSetDlDirectory_Click);
+            this.itmSetDlDirectory.Click += new System.EventHandler(this.ItmSetDlDirectory_Click);
             // 
             // itmCleanupAllData
             // 
@@ -1006,7 +1005,7 @@ namespace PlexDL.UI
             this.itmSettings.Name = "itmSettings";
             this.itmSettings.Size = new System.Drawing.Size(198, 22);
             this.itmSettings.Text = "Settings";
-            this.itmSettings.Click += new System.EventHandler(this.itmSettings_Click);
+            this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
             // 
             // itmServers
             // 
@@ -1023,7 +1022,7 @@ namespace PlexDL.UI
             this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.itmServerManager.Size = new System.Drawing.Size(198, 22);
             this.itmServerManager.Text = "Server Manager";
-            this.itmServerManager.Click += new System.EventHandler(this.itmServerManager_Click);
+            this.itmServerManager.Click += new System.EventHandler(this.ItmServerManager_Click);
             // 
             // itmDisconnect
             // 
@@ -1032,7 +1031,7 @@ namespace PlexDL.UI
             this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
             this.itmDisconnect.Text = "Disconnect";
-            this.itmDisconnect.Click += new System.EventHandler(this.itmDisconnect_Click);
+            this.itmDisconnect.Click += new System.EventHandler(this.ItmDisconnect_Click);
             // 
             // itmContent
             // 
@@ -1049,7 +1048,7 @@ namespace PlexDL.UI
             this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.itmMetadata.Size = new System.Drawing.Size(176, 22);
             this.itmMetadata.Text = "Metadata";
-            this.itmMetadata.Click += new System.EventHandler(this.itmMetadata_Click);
+            this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
             // 
             // itmStartSearch
             // 
@@ -1057,7 +1056,7 @@ namespace PlexDL.UI
             this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
             this.itmStartSearch.Text = "Start Search";
-            this.itmStartSearch.Click += new System.EventHandler(this.itmStartSearch_Click);
+            this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
             // 
             // itmLogging
             // 
@@ -1073,7 +1072,7 @@ namespace PlexDL.UI
             this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
             this.itmLogViewer.Text = "Log Viewer";
-            this.itmLogViewer.Click += new System.EventHandler(this.itmLogViewer_Click);
+            this.itmLogViewer.Click += new System.EventHandler(this.ItmLogViewer_Click);
             // 
             // itmCaching
             // 
@@ -1096,7 +1095,7 @@ namespace PlexDL.UI
             this.itmClearCache.Name = "itmClearCache";
             this.itmClearCache.Size = new System.Drawing.Size(137, 22);
             this.itmClearCache.Text = "Clear Cache";
-            this.itmClearCache.Click += new System.EventHandler(this.itmClearCache_Click);
+            this.itmClearCache.Click += new System.EventHandler(this.ItmClearCache_Click);
             // 
             // itmHelp
             // 

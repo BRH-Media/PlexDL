@@ -8,6 +8,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -43,24 +44,22 @@ namespace PlexDL.UI
         {
             try
             {
-                if (RememberMeFileExists())
-                {
-                    var login = CachedPlexLogin.FromFile(RememberMePath);
-                    //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
-                    if (login.VerifyThis())
-                    {
-                        //setup decryption processing
-                        var user = new ProtectedString(login.Username, StringProtectionMode.Decrypt);
-                        var pass = new ProtectedString(login.Password, StringProtectionMode.Decrypt);
+                if (!RememberMeFileExists()) return;
 
-                        //set the UI with decrypted values from the file
-                        txtUsername.Text = user.ProcessedValue;
-                        txtPassword.Text = pass.ProcessedValue;
+                var login = CachedPlexLogin.FromFile(RememberMePath);
+                //check if the MD5 checksum is still valid (small yet weak security measure; most users won't care).
+                if (!login.VerifyThis()) return;
 
-                        //check the "Remember Me" box
-                        chkRememberMe.Checked = true;
-                    }
-                }
+                //setup decryption processing
+                var user = new ProtectedString(login.Username, StringProtectionMode.Decrypt);
+                var pass = new ProtectedString(login.Password, StringProtectionMode.Decrypt);
+
+                //set the UI with decrypted values from the file
+                txtUsername.Text = user.ProcessedValue;
+                txtPassword.Text = pass.ProcessedValue;
+
+                //check the "Remember Me" box
+                chkRememberMe.Checked = true;
             }
             catch (Exception ex)
             {
@@ -71,13 +70,9 @@ namespace PlexDL.UI
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Enter)
-            {
-                btnLogin_Click(null, null);
-                return true;
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
+            if (keyData != Keys.Enter) return base.ProcessCmdKey(ref msg, keyData);
+            BtnLogin_Click(null, null);
+            return true;
         }
 
         private void LoginWorker(object sender, WaitWindowEventArgs e)
@@ -86,7 +81,7 @@ namespace PlexDL.UI
             {
                 var plex = new MyPlex();
                 var user = plex.Authenticate(txtUsername.Text, txtPassword.Text);
-                string token = user.authenticationToken;
+                var token = user.authenticationToken;
                 e.Result = token;
             }
             catch (Exception ex)
@@ -96,7 +91,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnShowHidePwd_Click(object sender, EventArgs e)
+        private void BtnShowHidePwd_Click(object sender, EventArgs e)
         {
             if (txtPassword.UseSystemPasswordChar)
             {
@@ -136,7 +131,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             try
             {
@@ -151,7 +146,9 @@ namespace PlexDL.UI
                         {
                             RememberMe(chkRememberMe.Checked);
 
-                            MessageBox.Show(@"Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv", @"Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            UIMessages.Info(
+                                @"Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv",
+                                @"Success");
                             AccountToken = token;
                             Success = true;
                             DialogResult = DialogResult.OK;
@@ -159,22 +156,26 @@ namespace PlexDL.UI
                         }
                         else
                         {
-                            MessageBox.Show(@"Received an invalid token from the server", @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UIMessages.Error(@"Received an invalid token from the server",
+                                @"Authentication Error");
                         }
                     }
                     else
                     {
-                        MessageBox.Show(@"Incorrect username/password", @"Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        UIMessages.Error(@"Incorrect username/password",
+                            @"Authentication Error");
                     }
                 }
                 else
                 {
-                    MessageBox.Show(@"Please enter your Plex.tv username and password correctly", @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UIMessages.Error(@"Please enter your Plex.tv username and password correctly",
+                        @"Validation Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to login to Plex.tv; an error occurred.\n\n" + ex, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("Failed to login to Plex.tv; an error occurred.\n\n" + ex,
+                    @"Connection Error");
                 LoggingHelpers.RecordException(ex.Message, "PlexLoginError");
                 Success = false;
                 DialogResult = DialogResult.OK;

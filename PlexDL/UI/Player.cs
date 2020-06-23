@@ -11,7 +11,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
-using System.Xml;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -19,13 +19,10 @@ namespace PlexDL.UI
     {
         public bool CanFadeOut = true;
 
-        public bool IsFullScreen = false;
-
         public bool IsWmp = false;
 
         private PlexDL.Player.Player _mPlayer;
 
-        public string PlayingPosition, Duration;
         public Timer T1 = new Timer();
 
         public DataTable TitlesTable;
@@ -40,13 +37,14 @@ namespace PlexDL.UI
         private void FrmPlayer_Load(object sender, EventArgs e)
         {
             var formTitle = StreamingContent.StreamInformation.ContentTitle;
-            Text = formTitle;
+            Text = formTitle ?? "Player";
             //player.URL = StreamingContent.StreamUrl;
 
             if (!PlexDL.Player.Player.MFPresent)
             {
-                MessageBox.Show(@"MediaFoundation is not installed. The player will not be able to stream the selected content :(", @"System Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(
+                    @"MediaFoundation is not installed. The player will not be able to stream the selected content :(",
+                    @"Playback Error");
                 CanFadeOut = false;
                 Close();
             }
@@ -55,13 +53,10 @@ namespace PlexDL.UI
             {
                 CanFadeOut = false;
                 var msg =
-                MessageBox.Show(
-                    @"PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed",
-                    @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    UIMessages.Question(
+                        @"PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed");
 
-                if (msg == DialogResult.No)
-                    Close();
-                else
+                if (msg)
                     try
                     {
                         VlcLauncher.LaunchVlc(StreamingContent);
@@ -69,11 +64,13 @@ namespace PlexDL.UI
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex, @"Launch Error", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        UIMessages.Error("Error occurred whilst trying to launch VLC\n\n" + ex,
+                            @"Launch Error");
                         LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
                         Close();
                     }
+                else
+                    Close();
             }
 
             _mPlayer = new PlexDL.Player.Player(pnlPlayer);
@@ -82,8 +79,8 @@ namespace PlexDL.UI
             _mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
             _mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
 
-            //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
-            //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
+            //UIMessages.Info(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
+            //UIMessages.Info("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
         }
 
         /*
@@ -97,43 +94,38 @@ namespace PlexDL.UI
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (!IsWmp)
+            if (IsWmp) return base.ProcessCmdKey(ref msg, keyData);
+
+            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PlayPause)
             {
-                if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PlayPause)
-                {
-                    PlayPause();
-                    return true;
-                }
+                PlayPause();
+                return true;
+            }
 
-                if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipForward)
-                {
-                    SkipForward();
-                    return true;
-                }
+            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipForward)
+            {
+                SkipForward();
+                return true;
+            }
 
-                if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward)
-                {
-                    SkipBack();
-                    return true;
-                }
+            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward)
+            {
+                SkipBack();
+                return true;
+            }
 
-                if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.NextTitle)
-                {
-                    Stop();
-                    NextTitle();
-                    return true;
-                }
+            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.NextTitle)
+            {
+                Stop();
+                NextTitle();
+                return true;
+            }
 
-                if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle)
-                {
-                    Stop();
-                    PrevTitle();
-                    return true;
-                }
-
-                if (keyData == Keys.Escape)
-                    if (_mPlayer.FullScreen)
-                        _mPlayer.FullScreen = false;
+            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle)
+            {
+                Stop();
+                PrevTitle();
+                return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -141,8 +133,7 @@ namespace PlexDL.UI
 
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_mPlayer != null)
-                _mPlayer.Dispose();
+            _mPlayer?.Dispose();
         }
 
         private void MPlayer_ContentFinished(object sender, EventArgs e)
@@ -227,19 +218,13 @@ namespace PlexDL.UI
             }
             else
             {
-                if (InvokeRequired)
-                    BeginInvoke((MethodInvoker)delegate
-                    {
-                        MessageBox.Show(@"Couldn't load the stream because the remote file doesn't exist or returned an error", @"Network Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    });
-                else
-                    MessageBox.Show(@"Couldn't load the stream because the remote file doesn't exist or returned an error", @"Network Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(
+                    @"Couldn't load the stream because the remote file doesn't exist or returned an error",
+                    @"Network Error");
             }
         }
 
-        private string GetBaseUri(bool incToken)
+        private static string GetBaseUri(bool incToken)
         {
             if (incToken)
                 return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort +
@@ -283,52 +268,13 @@ namespace PlexDL.UI
 
                 var reply = XmlGet.GetXmlTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
 
-                var obj = GetContentDownloadInfo_Xml(reply);
+                var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply, false);
                 return obj;
             }
 
-            MessageBox.Show(@"Index was higher than row count; could not process data.", @"Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            UIMessages.Error(@"Index was higher than row count; could not process data.",
+                @"Indexing Error");
             return new DownloadInfo();
-        }
-
-        private DownloadInfo GetContentDownloadInfo_Xml(XmlDocument xml)
-        {
-            var obj = new DownloadInfo();
-
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(xml));
-
-            var part = sections.Tables["Part"];
-            var video = sections.Tables["Video"].Rows[0];
-            var title = video["title"].ToString();
-            if (title.Length > GlobalStaticVars.Settings.Generic.DefaultStringLength)
-                title = title.Substring(0, GlobalStaticVars.Settings.Generic.DefaultStringLength);
-            var thumb = video["thumb"].ToString();
-            var thumbnailFullUri = "";
-            if (!string.IsNullOrEmpty(thumb))
-            {
-                var baseUri = GetBaseUri(false).TrimEnd('/');
-                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
-            }
-
-            var partRow = part.Rows[0];
-
-            var filePart = partRow["key"].ToString();
-            var container = partRow["container"].ToString();
-            var byteLength = Convert.ToInt64(partRow["size"]);
-            var contentDuration = Convert.ToInt32(partRow["duration"]);
-            var fileName = Methods.RemoveIllegalCharacters(title + "." + container);
-
-            var link = GetBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken;
-            obj.Link = link;
-            obj.Container = container;
-            obj.ByteLength = byteLength;
-            obj.ContentDuration = contentDuration;
-            obj.FileName = fileName;
-            obj.ContentTitle = title;
-            obj.ContentThumbnailUri = thumbnailFullUri;
-
-            return obj;
         }
 
         private void NextTitle()
@@ -340,7 +286,7 @@ namespace PlexDL.UI
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;
                 Refresh();
-                //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
+                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else if (StreamingContent.StreamIndex + 1 == TitlesTable.Rows.Count)
             {
@@ -349,7 +295,7 @@ namespace PlexDL.UI
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;
                 Refresh();
-                //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
+                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
 
@@ -362,7 +308,7 @@ namespace PlexDL.UI
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;
                 Refresh();
-                //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
+                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else
             {
@@ -371,7 +317,7 @@ namespace PlexDL.UI
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;
                 Refresh();
-                //MessageBox.Show(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
+                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
 

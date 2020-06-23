@@ -2,6 +2,7 @@
 using PlexDL.Common.Logging;
 using System;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -14,7 +15,7 @@ namespace PlexDL.UI
 
         public CachingMetrics Metrics { get; set; } = null;
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -46,7 +47,8 @@ namespace PlexDL.UI
             {
                 //log then inform user before exiting
                 LoggingHelpers.RecordException(ex.Message, "CacheMetricsLoadError");
-                MessageBox.Show("There was an error whilst loading caching metrics:\n\n" + ex, @"Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error("There was an error whilst loading caching metrics:\n\n" + ex,
+                    @"Load Error");
                 Close();
             }
         }

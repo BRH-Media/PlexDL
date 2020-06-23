@@ -104,9 +104,5 @@ namespace PlexDL.UI
         }
 
         #endregion Assembly Attribute Accessors
-
-        private void About_Load(object sender, EventArgs e)
-        {
-        }
     }
 }

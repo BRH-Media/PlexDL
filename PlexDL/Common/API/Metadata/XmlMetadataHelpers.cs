@@ -3,8 +3,8 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using System;
 using System.Data;
-using System.Windows.Forms;
 using System.Xml;
+using UIHelpers;
 
 namespace PlexDL.Common.API.Metadata
 {
@@ -23,8 +23,7 @@ namespace PlexDL.Common.API.Metadata
 
             if (string.IsNullOrEmpty(key))
             {
-                MessageBox.Show(msgNoKey, @"Data Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UIMessages.Error(msgNoKey, @"Data Error");
                 LoggingHelpers.RecordGeneralEntry("Unique key error");
                 LoggingHelpers.RecordException(logNoKeyMsg, logNoKeyType);
             }
@@ -55,7 +54,7 @@ namespace PlexDL.Common.API.Metadata
                     return GetContentAttribute(metadata, "Track", attributeName, defaultValue);
             }
 
-            //failsafe
+            //fail-safe
             return defaultValue;
         }
 

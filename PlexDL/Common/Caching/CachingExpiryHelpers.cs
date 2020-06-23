@@ -12,23 +12,15 @@ namespace PlexDL.Common.Caching
             {
                 if (File.Exists(filePath))
                 {
-                    int days = GetDaysOld(filePath);
+                    var days = GetDaysOld(filePath);
                     //DEBUG ONLY
-                    //MessageBox.Show(days.ToString());
-                    if (days >= interval)
-                    {
-                        //cache is expired; this signifies that it has expired, so PlexDL will try and get a new copy.
-                        return true;
-                    }
-                    else
-                        return false;
+                    //UIMessages.Info(days.ToString());
+                    return days >= interval;
                 }
-                else
-                {
-                    LoggingHelpers.RecordException("Specified cache file doesn't exist", "CacheExpiryChkError");
-                    //default is true; this signifies that it has expired, so PlexDL will try and get a new copy.
-                    return true;
-                }
+
+                LoggingHelpers.RecordException("Specified cache file doesn't exist", "CacheExpiryChkError");
+                //default is true; this signifies that it has expired, so PlexDL will try and get a new copy.
+                return true;
             }
             catch (Exception ex)
             {
@@ -42,15 +34,14 @@ namespace PlexDL.Common.Caching
         {
             try
             {
-                if (File.Exists(filePath))
-                {
-                    DateTime fileCreation = File.GetCreationTime(filePath);
-                    DateTime now = DateTime.Now;
-                    int days = (int)(now - fileCreation).TotalDays;
-                    return days;
-                }
+                if (!File.Exists(filePath)) return 0;
+
+                var fileCreation = File.GetCreationTime(filePath);
+                var now = DateTime.Now;
+                var days = (int)(now - fileCreation).TotalDays;
+
+                return days;
                 //default value
-                return 0;
             }
             catch (Exception ex)
             {

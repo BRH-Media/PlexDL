@@ -15,7 +15,6 @@ using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.SearchFramework;
 using PlexDL.Common.Structures;
-using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
@@ -33,6 +32,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using UIHelpers;
 using Directory = System.IO.Directory;
 
 //using System.Threading.Tasks;
@@ -63,8 +63,7 @@ namespace PlexDL.UI
             if (ipt.txt == "!cancel=user")
                 return;
             if (!int.TryParse(ipt.txt, out _))
-                MessageBox.Show(@"Section key ust be numeric", @"Validation Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                UIMessages.Error(@"Section key ust be numeric", @"Validation Error");
             else
                 UpdateFromLibraryKey(ipt.txt, ipt.chkd ? ContentType.TvShows : ContentType.Movies);
         }
@@ -172,12 +171,12 @@ namespace PlexDL.UI
             GlobalStaticVars.Settings.ConnectionInfo = connectInfo;
 
             var uri = GlobalStaticVars.GetBaseUri(true);
-            //MessageBox.Show(uri);
+            //UIMessages.Info(uri);
             var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", uri);
             Flags.IsConnected = true;
 
             if (GlobalStaticVars.Settings.Generic.ShowConnectionSuccess)
-                MessageBox.Show(@"Connection successful!", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UIMessages.Info(@"Connection successful!");
 
             SetProgressLabel("Connected");
             SetDisconnect();
@@ -186,47 +185,47 @@ namespace PlexDL.UI
                 PopulateLibrary(reply);
         }
 
-        private void itmServerManager_Click(object sender, EventArgs e)
+        private void ItmServerManager_Click(object sender, EventArgs e)
         {
             if (ConnectionChecker.CheckForInternetConnection())
                 using (var frm = new ServerManager())
                 {
-                    if (frm.ShowDialog() == DialogResult.OK)
-                    {
-                        GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = frm.SelectedServer.accessToken;
-                        GlobalStaticVars.Settings.ConnectionInfo.PlexAddress = frm.SelectedServer.address;
-                        GlobalStaticVars.Settings.ConnectionInfo.PlexPort = frm.SelectedServer.port;
-                        GlobalStaticVars.Svr = frm.SelectedServer;
-                        DoConnectFromServer(frm.SelectedServer);
-                    }
+                    if (frm.ShowDialog() != DialogResult.OK) return;
+
+                    GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = frm.SelectedServer.accessToken;
+                    GlobalStaticVars.Settings.ConnectionInfo.PlexAddress = frm.SelectedServer.address;
+                    GlobalStaticVars.Settings.ConnectionInfo.PlexPort = frm.SelectedServer.port;
+                    GlobalStaticVars.Svr = frm.SelectedServer;
+                    DoConnectFromServer(frm.SelectedServer);
                 }
             else
-                MessageBox.Show(@"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
-                    @"Network Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                UIMessages.Error(
+                    @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                    @"Network Error");
         }
 
-        private void itmStartSearch_Click(object sender, EventArgs e)
+        private void ItmStartSearch_Click(object sender, EventArgs e)
         {
             SearchProcedure();
         }
 
-        private void itmLoadProfile_Click(object sender, EventArgs e)
+        private void ItmLoadProfile_Click(object sender, EventArgs e)
         {
             LoadProfile();
         }
 
-        private void itmSaveProfile_Click(object sender, EventArgs e)
+        private void ItmSaveProfile_Click(object sender, EventArgs e)
         {
             SaveProfile();
         }
 
-        private void itmExportObj_Click(object sender, EventArgs e)
+        private void ItmExportObj_Click(object sender, EventArgs e)
         {
             if (Flags.IsConnected)
                 DoStreamExport();
         }
 
-        private void btnDownload_Click(object sender, EventArgs e)
+        private void BtnDownload_Click(object sender, EventArgs e)
         {
             if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) || (dgvTracks.SelectedRows.Count == 1))
             {
@@ -255,7 +254,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
+        private void BtnPause_Click(object sender, EventArgs e)
         {
             if (Flags.IsDownloadRunning && Flags.IsEngineRunning)
             {
@@ -275,12 +274,12 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmSetDlDirectory_Click(object sender, EventArgs e)
+        private void ItmSetDlDirectory_Click(object sender, EventArgs e)
         {
             SetDownloadDirectory();
         }
 
-        private void btnHTTPPlay_Click(object sender, EventArgs e)
+        private void BtnHTTPPlay_Click(object sender, EventArgs e)
         {
             try
             {
@@ -295,7 +294,7 @@ namespace PlexDL.UI
                                 "Getting Metadata", false);
                         else
                         {
-                            ShowError(@"No movie is selected", @"Validation Error");
+                            UIMessages.Error(@"No movie is selected", @"Validation Error");
                             return;
                         }
                         break;
@@ -306,7 +305,7 @@ namespace PlexDL.UI
                                 "Getting Metadata", false);
                         else
                         {
-                            ShowError(@"No episode is selected", @"Validation Error");
+                            UIMessages.Error(@"No episode is selected", @"Validation Error");
                             return;
                         }
                         break;
@@ -319,7 +318,7 @@ namespace PlexDL.UI
                         }
                         else
                         {
-                            ShowError(@"No track is selected", @"Validation Error");
+                            UIMessages.Error(@"No track is selected", @"Validation Error");
                         }
                         break;
                 }
@@ -335,25 +334,21 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "StartStreamError");
                 LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; an error occured.");
-                ShowError("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error");
+                UIMessages.Error("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error");
             }
         }
 
-        private void tlpMain_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void itmMetadata_Click(object sender, EventArgs e)
+        private void ItmMetadata_Click(object sender, EventArgs e)
         {
             Metadata();
         }
 
-        private void itmLogViewer_Click(object sender, EventArgs e)
+        private void ItmLogViewer_Click(object sender, EventArgs e)
         {
             ShowLogViewer();
         }
 
-        private void itmDisconnect_Click(object sender, EventArgs e)
+        private void ItmDisconnect_Click(object sender, EventArgs e)
         {
             if (Flags.IsConnected)
                 Disconnect();
@@ -376,7 +371,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmSettings_Click(object sender, EventArgs e)
+        private void ItmSettings_Click(object sender, EventArgs e)
         {
             using (var frm = new Settings())
             {
@@ -384,38 +379,35 @@ namespace PlexDL.UI
             }
         }
 
-        private void itmClearCache_Click(object sender, EventArgs e)
+        private void ItmClearCache_Click(object sender, EventArgs e)
         {
             try
             {
                 if (Directory.Exists(CachingFileDir.RootCacheDirectory))
                 {
-                    var result = MessageBox.Show(@"Are you sure you want to clear the cache?", @"Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result != DialogResult.Yes) return;
+                    if (!UIMessages.Question(@"Are you sure you want to clear the cache?")) return;
+
                     Directory.Delete(CachingFileDir.RootCacheDirectory, true);
-                    MessageBox.Show(@"Successfully deleted cached data", @"Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UIMessages.Info(@"Successfully deleted cached data");
                 }
                 else
                 {
-                    ShowError(@"There's no cached data to clear", @"Validation Error");
+                    UIMessages.Error(@"There's no cached data to clear", @"Validation Error");
                 }
             }
             catch (Exception ex)
             {
                 // ReSharper disable once LocalizableElement
-                MessageBox.Show("Error whilst trying to delete cached data:\n\n" + ex.Message);
+                UIMessages.Error("Error whilst trying to delete cached data:\n\n" + ex.Message);
                 LoggingHelpers.RecordException(ex.Message, "ClearCacheError");
             }
         }
 
-        private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabMain.SelectedTab == tabLog)
             {
-                if (File.Exists(@"Logs\PlexDL.logdel"))
-                    dgvLog.DataSource = LogReader.TableFromFile(@"Logs\PlexDL.logdel", false);
-                else
-                    dgvLog.DataSource = null;
+                dgvLog.DataSource = File.Exists(@"Logs\PlexDL.logdel") ? LogReader.TableFromFile(@"Logs\PlexDL.logdel", false) : null;
             }
             else
             {
@@ -439,7 +431,7 @@ namespace PlexDL.UI
                     if (wkrGetMetadata.IsBusy)
                         wkrGetMetadata.Abort();
                     //tell the user that the worker timed out
-                    ShowError(@"Failed to get metadata; the worker timed out.", @"Data Error");
+                    UIMessages.Error(@"Failed to get metadata; the worker timed out.", @"Data Error");
 
                     //cancel the download silently and with a custom log
                     //and label input
@@ -522,8 +514,8 @@ namespace PlexDL.UI
             }
             else
             {
-                MessageBox.Show(@"You can't load profiles while you're connected; please disconnect first.",
-                    @"Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                UIMessages.Warning(@"You can't load profiles while you're connected; please disconnect first.",
+                    @"Validation Error");
             }
         }
 
@@ -531,8 +523,7 @@ namespace PlexDL.UI
         {
             if (string.IsNullOrEmpty(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken))
             {
-                MessageBox.Show(@"You need to authenticate before saving a profile", @"Validation Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                UIMessages.Warning(@"You need to authenticate before saving a profile", @"Validation Error");
             }
             else
             {
@@ -547,8 +538,7 @@ namespace PlexDL.UI
                 ProfileImportExport.ProfileToFile(fileName, GlobalStaticVars.Settings, silent);
 
                 if (!silent)
-                    MessageBox.Show(@"Successfully saved profile!", @"Message", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    UIMessages.Info(@"Successfully saved profile!");
 
                 LoggingHelpers.RecordGeneralEntry(@"Saved profile " + fileName);
             }
@@ -556,7 +546,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, "@SaveProfileError");
                 if (!silent)
-                    ShowError(ex.ToString(), @"Error in saving XML Profile");
+                    UIMessages.Error(ex.ToString(), @"Error in saving XML Profile");
             }
         }
 
@@ -564,7 +554,7 @@ namespace PlexDL.UI
         {
             try
             {
-                ApplicationOptions subReq = ProfileImportExport.ProfileFromFile(fileName, silent);
+                var subReq = ProfileImportExport.ProfileFromFile(fileName, silent);
 
                 try
                 {
@@ -575,14 +565,13 @@ namespace PlexDL.UI
                     {
                         if (!silent)
                         {
-                            var result = MessageBox.Show(
+                            var result = UIMessages.Question(
                                 "You're trying to load a profile made in a newer version of PlexDL. This could have several implications:\n" +
                                 "- Possible data loss of your current profile if PlexDL overwrites it\n" +
                                 "- Features may not work as intended\n" +
                                 "- Increased risk of errors\n\n" +
-                                "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
-                                MessageBoxIcon.Exclamation);
-                            if (result == DialogResult.Cancel)
+                                "Are you sure you'd like to proceed?");
+                            if (!result)
                                 return;
                         }
 
@@ -592,14 +581,13 @@ namespace PlexDL.UI
                     {
                         if (!silent)
                         {
-                            var result = MessageBox.Show(
+                            var result = UIMessages.Question(
                                 "You're trying to load a profile made in an earlier version of PlexDL. This could have several implications:\n" +
                                 "- Possible data loss of your current profile if PlexDL overwrites it\n" +
                                 "- Features may not work as intended\n" +
                                 "- Increased risk of errors\n\n" +
-                                "Press 'OK' to continue loading, or 'Cancel' to stop loading.", "Warning", MessageBoxButtons.OKCancel,
-                                MessageBoxIcon.Exclamation);
-                            if (result == DialogResult.Cancel)
+                                "Are you sure you'd like to proceed?");
+                            if (!result)
                                 return;
                         }
 
@@ -612,21 +600,19 @@ namespace PlexDL.UI
                     LoggingHelpers.RecordException(ex.Message, "VersionLoadError");
                 }
 
-                if (subReq != null)
-                {
-                    GlobalStaticVars.Settings = subReq;
+                if (subReq == null) return;
 
-                    if (!silent)
-                        MessageBox.Show("Successfully loaded profile!", "Message", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                    LoggingHelpers.RecordGeneralEntry("Loaded profile " + fileName);
-                }
+                GlobalStaticVars.Settings = subReq;
+
+                if (!silent)
+                    UIMessages.Info("Successfully loaded profile!");
+                LoggingHelpers.RecordGeneralEntry("Loaded profile " + fileName);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "LoadProfileError");
                 if (!silent)
-                    ShowError(ex.ToString(), "Error in loading XML Profile");
+                    UIMessages.Error(ex.ToString(), "Error in loading XML Profile");
             }
         }
 
@@ -650,8 +636,7 @@ namespace PlexDL.UI
             Flags.IsInitialFill = false;
 
             if (!silent)
-                MessageBox.Show(@"Disconnected from Plex", @"Message", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                UIMessages.Info(@"Disconnected from Plex");
         }
 
         private void DoStreamExport(bool formatLinkDownload = true)
@@ -730,17 +715,17 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                ShowError(
+                                UIMessages.Error(
                                     @"The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                ShowError(
+                                UIMessages.Error(
                                     @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                ShowError(
+                                UIMessages.Error(
                                     @"The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
@@ -748,7 +733,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "LibPopError");
-                ShowError(ex.ToString());
+                UIMessages.Error(ex.ToString());
             }
         }
 
@@ -786,7 +771,7 @@ namespace PlexDL.UI
 
                 GlobalStaticVars.CurrentContentType = type;
 
-                //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
+                //UIMessages.Info(GlobalStaticVars.CurrentContentType.ToString());
 
                 switch (type)
                 {
@@ -806,7 +791,7 @@ namespace PlexDL.UI
                         break;
                 }
 
-                //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
             }
             else
             {
@@ -814,7 +799,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void UpdateEpisodeViewWorker(XmlDocument doc)
+        private void UpdateEpisodeViewWorker(XmlNode doc)
         {
             LoggingHelpers.RecordGeneralEntry("Updating episode contents");
 
@@ -829,10 +814,10 @@ namespace PlexDL.UI
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
             RenderEpisodesView(GlobalTables.EpisodesTable);
 
-            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
-        private void UpdateTracksViewWorker(XmlDocument doc)
+        private void UpdateTracksViewWorker(XmlNode doc)
         {
             LoggingHelpers.RecordGeneralEntry("Updating track contents");
 
@@ -847,10 +832,10 @@ namespace PlexDL.UI
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
             RenderTracksView(GlobalTables.TracksTable);
 
-            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
-        private void UpdateSeriesViewWorker(XmlDocument doc)
+        private void UpdateSeriesViewWorker(XmlNode doc)
         {
             LoggingHelpers.RecordGeneralEntry("Updating series contents");
 
@@ -865,10 +850,10 @@ namespace PlexDL.UI
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
             RenderSeasonsView(GlobalTables.SeasonsTable);
 
-            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
-        private void UpdateAlbumsViewWorker(XmlDocument doc)
+        private void UpdateAlbumsViewWorker(XmlNode doc)
         {
             LoggingHelpers.RecordGeneralEntry("Updating album contents");
 
@@ -883,7 +868,7 @@ namespace PlexDL.UI
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
             RenderAlbumsView(GlobalTables.AlbumsTable);
 
-            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
         #endregion UpdateWorkers
@@ -1015,7 +1000,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 SetProgressLabel(@"Errored - Check Log");
-                ShowError("Error occurred whilst getting needed metadata:\n\n" + ex);
+                UIMessages.Error("Error occurred whilst getting needed metadata:\n\n" + ex);
                 LoggingHelpers.RecordException(ex.Message, "MetadataWkrError");
             }
         }
@@ -1461,7 +1446,7 @@ namespace PlexDL.UI
                 DownloadIndex = 0;
 
                 if (!silent)
-                    ShowError(msg);
+                    UIMessages.Error(msg);
             }
         }
 
@@ -1471,7 +1456,7 @@ namespace PlexDL.UI
             GlobalStaticVars.Engine.QueueCompleted += Engine_DownloadCompleted;
 
             GlobalStaticVars.Engine.StartAsync();
-            //MessageBox.Show("Started!");
+            //UIMessages.Info("Started!");
             LoggingHelpers.RecordGeneralEntry("Download is Progressing");
             Flags.IsDownloadRunning = true;
             Flags.IsEngineRunning = true;
@@ -1484,8 +1469,7 @@ namespace PlexDL.UI
             if (fbdSave.ShowDialog() != DialogResult.OK) return;
 
             GlobalStaticVars.Settings.Generic.DownloadDirectory = fbdSave.SelectedPath;
-            MessageBox.Show($"Download directory updated to {GlobalStaticVars.Settings.Generic.DownloadDirectory}", @"Message",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            UIMessages.Info($"Download directory updated to {GlobalStaticVars.Settings.Generic.DownloadDirectory}");
             LoggingHelpers.RecordGeneralEntry("Download directory updated to " + GlobalStaticVars.Settings.Generic.DownloadDirectory);
         }
 
@@ -1540,9 +1524,8 @@ namespace PlexDL.UI
                 if (File.Exists(fqPath))
                 {
                     LoggingHelpers.RecordGeneralEntry(dl.FileName + " already exists; get user confirmation.");
-                    var msg = MessageBox.Show($"{dl.FileName} already exists. Skip this title?", @"Message",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (msg == DialogResult.Yes)
+
+                    if (UIMessages.Question($@"{dl.FileName} already exists. Skip this title?"))
                     {
                         SetDownloadCompleted();
                         return;
@@ -1634,7 +1617,7 @@ namespace PlexDL.UI
                 //misc. gui settings
                 pbMain.Value = (int)progress;
 
-                //MessageBox.Show("Started!");
+                //UIMessages.Info("Started!");
             }
             catch (Exception ex)
             {
@@ -1726,7 +1709,7 @@ namespace PlexDL.UI
                             break;
                     }
 
-                    //MessageBox.Show(info.Data.Rows.Count.ToString());
+                    //UIMessages.Info(info.Data.Rows.Count.ToString());
 
                     if (Search.RunTitleSearch(dgv, info, true))
                     {
@@ -1749,7 +1732,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "SearchError");
-                ShowError(ex.ToString());
+                UIMessages.Error(ex.ToString());
             }
         }
 
@@ -1839,19 +1822,6 @@ namespace PlexDL.UI
             itmDisconnect.Enabled = true;
         }
 
-        private void ShowError(string msg, string caption = "Error")
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke((MethodInvoker)delegate
-                {
-                    MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error); //thread-safe
-                });
-            }
-            else
-                MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         #endregion UIMethods
 
         #region FormEvents
@@ -1886,20 +1856,15 @@ namespace PlexDL.UI
             {
                 if (Flags.IsMsgAlreadyShown) return;
 
-                var msg = MessageBox.Show(@"Are you sure you want to exit PlexDL? A download is still running.",
-                    @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                switch (msg)
+                if (UIMessages.Question(@"Are you sure you want to exit PlexDL? A download is still running."))
                 {
-                    case DialogResult.Yes:
-                        Flags.IsMsgAlreadyShown = true;
-                        LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
-                        e.Cancel = false;
-                        break;
-
-                    case DialogResult.No:
-                        e.Cancel = true;
-                        break;
+                    Flags.IsMsgAlreadyShown = true;
+                    LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
+                    e.Cancel = false;
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
             else
@@ -1957,7 +1922,7 @@ namespace PlexDL.UI
                     GlobalStaticVars.DebugForm.Show();
                 }
 
-                //MessageBox.Show(GlobalStaticVars.PlexDlAppData);
+                //UIMessages.Info(GlobalStaticVars.PlexDlAppData);
                 //CachingFileDir.RootCacheDirectory = $"{GlobalStaticVars.PlexDlAppData}\\caching";
 
                 SetSessionId();
@@ -1970,7 +1935,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "StartupError");
-                ShowError("Startup Error:\n\n" + ex, "Startup Error");
+                UIMessages.Error("Startup Error:\n\n" + ex, "Startup Error");
             }
         }
 
@@ -2005,17 +1970,17 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                MessageBox.Show(
+                                UIMessages.Error(
                                     @"The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                MessageBox.Show(
+                                UIMessages.Error(
                                     @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                MessageBox.Show(
+                                UIMessages.Error(
                                     @"The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
@@ -2023,7 +1988,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "UpdateLibraryError");
-                ShowError(ex.ToString());
+                UIMessages.Error(ex.ToString());
             }
         }
 
@@ -2185,7 +2150,7 @@ namespace PlexDL.UI
                     {
                         if (gridView.Rows.Count <= 0) return;
                         var value = gridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                        MessageBox.Show(value, @"Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        UIMessages.Info(value, @"Cell Content");
                     }
                 }
                 else
@@ -2201,7 +2166,7 @@ namespace PlexDL.UI
         }
 
         //debugging stuff
-        private void XmlMessageBox(XmlDocument doc)
+        private void XmlMessageBox(XmlNode doc)
         {
             if (doc != null)
             {
@@ -2210,49 +2175,45 @@ namespace PlexDL.UI
                 {
                     doc.WriteTo(writer);
                     writer.Flush();
-                    MessageBox.Show(sww.GetStringBuilder().ToString());
+                    UIMessages.Info(sww.GetStringBuilder().ToString());
                 }
             }
             else
-                MessageBox.Show(@"XML Document was null");
+                UIMessages.Info(@"XML Document was null");
         }
 
         private void DgvTVShows_OnRowChange(object sender, EventArgs e)
         {
-            if (dgvTVShows.SelectedRows.Count == 1)
-            {
-                var index = GlobalTables.GetTableIndexFromDgv(dgvTVShows, GlobalTables.ReturnCorrectTable());
+            if (dgvTVShows.SelectedRows.Count != 1) return;
 
-                //debugging
-                //MessageBox.Show(index.ToString());
+            var index = GlobalTables.GetTableIndexFromDgv(dgvTVShows, GlobalTables.ReturnCorrectTable());
 
-                if (GlobalStaticVars.CurrentContentType == ContentType.TvShows)
-                {
-                    var series = XmlMetadataGatherers.GetSeriesXml(index);
-                    //debugging
-                    //XmlMessageBox(series);
-                    UpdateSeriesView(series);
-                }
-            }
+            //debugging
+            //UIMessages.Info(index.ToString());
+
+            if (GlobalStaticVars.CurrentContentType != ContentType.TvShows) return;
+
+            var series = XmlMetadataGatherers.GetSeriesXml(index);
+            //debugging
+            //XmlMessageBox(series);
+            UpdateSeriesView(series);
         }
 
         private void DgvArtists_OnRowChange(object sender, EventArgs e)
         {
-            if (dgvArtists.SelectedRows.Count == 1)
-            {
-                var index = GlobalTables.GetTableIndexFromDgv(dgvArtists, GlobalTables.ReturnCorrectTable());
+            if (dgvArtists.SelectedRows.Count != 1) return;
 
-                //debugging
-                //MessageBox.Show(index.ToString());
+            var index = GlobalTables.GetTableIndexFromDgv(dgvArtists, GlobalTables.ReturnCorrectTable());
 
-                if (GlobalStaticVars.CurrentContentType == ContentType.Music)
-                {
-                    var albums = XmlMetadataGatherers.GetAlbumsXml(index);
-                    //debugging
-                    //XmlMessageBox(series);
-                    UpdateAlbumsView(albums);
-                }
-            }
+            //debugging
+            //UIMessages.Info(index.ToString());
+
+            if (GlobalStaticVars.CurrentContentType != ContentType.Music) return;
+
+            var albums = XmlMetadataGatherers.GetAlbumsXml(index);
+            //debugging
+            //XmlMessageBox(series);
+            UpdateAlbumsView(albums);
         }
 
         #endregion DGVRowChanges
@@ -2282,7 +2243,7 @@ namespace PlexDL.UI
         private void DoDownloadSelected()
         {
             LoggingHelpers.RecordGeneralEntry("Awaiting download safety checks");
-            //MessageBox.Show(GlobalStaticVars.CurrentContentType.ToString());
+            //UIMessages.Info(GlobalStaticVars.CurrentContentType.ToString());
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
                 LoggingHelpers.RecordGeneralEntry("Download process is starting");
@@ -2335,8 +2296,8 @@ namespace PlexDL.UI
                         break;
                     }
                 default:
-                    MessageBox.Show($"Unrecognised Playback Mode (\"{playbackEngine}\")",
-                        @"Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning($"Unrecognised Playback Mode (\"{playbackEngine}\")",
+                        @"Playback Error");
                     LoggingHelpers.RecordGeneralEntry("Invalid Playback Mode: " + playbackEngine);
                     break;
             }
@@ -2395,8 +2356,8 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MessageBox.Show("You cannot view metadata while an internal download is running",
-                        "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UIMessages.Warning(@"You cannot view metadata while an internal download is running",
+                        @"Validation Error");
                 }
             }
             else if (dgvMovies.Rows.Count == 0 && dgvTVShows.Rows.Count == 0)
@@ -2464,12 +2425,12 @@ namespace PlexDL.UI
             //check if the AppData .plexdl folder actually exists
             if (Directory.Exists(GlobalStaticVars.PlexDlAppData))
             {
-                var ask = MessageBox.Show(
+                var ask = UIMessages.Question(
                     @"Are you sure you want to do this? This will remove all logging, caching and secure data.",
-                    @"Cleanup Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    @"Cleanup Confirmation");
 
                 //if they clicked anything other than 'Yes' on the message above, then exit the method.
-                if (!Equals(ask, DialogResult.Yes)) return;
+                if (!ask) return;
 
                 try
                 {
@@ -2477,18 +2438,18 @@ namespace PlexDL.UI
                     Directory.Delete(GlobalStaticVars.PlexDlAppData, true);
 
                     //alert user of the success
-                    MessageBox.Show(
+                    UIMessages.Info(
                         "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also.\n\nNote: This event has not been logged.",
-                        @"Cleanup Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        @"Cleanup Completed");
                 }
                 catch (Exception ex)
                 {
-                    ShowError("Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
+                    UIMessages.Error("Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
                         @"Cleanup Failed");
                 }
             }
             else
-                ShowError(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
+                UIMessages.Error(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
                     @"Cleanup Failed");
         }
 
@@ -2500,7 +2461,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
-                ShowError("Couldn't open repo url. Check exception log.");
+                UIMessages.Error("Couldn't open repo url. Check exception log.");
                 LoggingHelpers.RecordException(ex.Message, @"OpenRepoError");
             }
         }

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Player", "PlexDL.Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inet", "inet\inet.csproj", "{6423075D-FB6A-4A21-B8C3-2BDB02D3E744}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIHelpers", "UIHelpers\UIHelpers.csproj", "{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{6423075D-FB6A-4A21-B8C3-2BDB02D3E744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6423075D-FB6A-4A21-B8C3-2BDB02D3E744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6423075D-FB6A-4A21-B8C3-2BDB02D3E744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
