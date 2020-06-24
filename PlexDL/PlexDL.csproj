@@ -217,6 +217,12 @@
     <Compile Include="UI\Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\LinkViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LinkViewer.Designer.cs">
+      <DependentUpon>LinkViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\LogViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,6 +296,9 @@
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LinkViewer.resx">
+      <DependentUpon>LinkViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LogViewer.resx">
       <DependentUpon>LogViewer.cs</DependentUpon>

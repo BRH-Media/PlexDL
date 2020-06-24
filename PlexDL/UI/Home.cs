@@ -120,13 +120,13 @@ namespace PlexDL.UI
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            cxtContentOptions.Close();
+            cxtMovieOptions.Close();
             Metadata();
         }
 
-        private void ItmContentDownload_Click(object sender, EventArgs e)
+        private void ItmDGVDownloadThisMovie_Click(object sender, EventArgs e)
         {
-            cxtContentOptions.Close();
+            cxtMovieOptions.Close();
             DoDownloadSelected();
         }
 
@@ -227,30 +227,29 @@ namespace PlexDL.UI
 
         private void BtnDownload_Click(object sender, EventArgs e)
         {
-            if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) || (dgvTracks.SelectedRows.Count == 1))
+            if ((dgvMovies.SelectedRows.Count != 1) && (dgvEpisodes.SelectedRows.Count != 1) &&
+                (dgvTracks.SelectedRows.Count != 1)) return;
+            if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
-                if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
+                GlobalStaticVars.Queue = new List<DownloadInfo>();
+                switch (GlobalStaticVars.CurrentContentType)
                 {
-                    GlobalStaticVars.Queue = new List<DownloadInfo>();
-                    switch (GlobalStaticVars.CurrentContentType)
-                    {
-                        case ContentType.TvShows:
-                            if (dgvEpisodes.SelectedRows.Count == 1) cxtEpisodes.Show(MousePosition);
-                            break;
+                    case ContentType.TvShows:
+                        if (dgvEpisodes.SelectedRows.Count == 1) cxtEpisodes.Show(MousePosition);
+                        break;
 
-                        case ContentType.Movies:
-                            DoDownloadSelected();
-                            break;
+                    case ContentType.Movies:
+                        DoDownloadSelected();
+                        break;
 
-                        case ContentType.Music:
-                            if (dgvTracks.SelectedRows.Count == 1) cxtTracks.Show(MousePosition);
-                            break;
-                    }
+                    case ContentType.Music:
+                        if (dgvTracks.SelectedRows.Count == 1) cxtTracks.Show(MousePosition);
+                        break;
                 }
-                else
-                {
-                    CancelDownload();
-                }
+            }
+            else
+            {
+                CancelDownload();
             }
         }
 
@@ -415,7 +414,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void tmrWorkerTimeout_Tick(object sender, EventArgs e)
+        private void TmrWorkerTimeout_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -425,18 +424,17 @@ namespace PlexDL.UI
 
                 //check if we're still waiting for the worker to start doing
                 //something
-                if (string.Equals(lblProgress.Text.ToLower(), "waiting"))
-                {
-                    //it's still waiting; kill the worker thread.
-                    if (wkrGetMetadata.IsBusy)
-                        wkrGetMetadata.Abort();
-                    //tell the user that the worker timed out
-                    UIMessages.Error(@"Failed to get metadata; the worker timed out.", @"Data Error");
+                if (!string.Equals(lblProgress.Text.ToLower(), "waiting")) return;
 
-                    //cancel the download silently and with a custom log
-                    //and label input
-                    CancelDownload(true, "Worker Timeout");
-                }
+                //it's still waiting; kill the worker thread.
+                if (wkrGetMetadata.IsBusy)
+                    wkrGetMetadata.Abort();
+                //tell the user that the worker timed out
+                UIMessages.Error(@"Failed to get metadata; the worker timed out.", @"Data Error");
+
+                //cancel the download silently and with a custom log
+                //and label input
+                CancelDownload(true, "Worker Timeout");
             }
             catch (ThreadAbortException)
             {
@@ -908,6 +906,43 @@ namespace PlexDL.UI
                 dlInfo.DownloadPath = dir.SeasonPath;
                 GlobalStaticVars.Queue.Add(dlInfo);
             }
+        }
+
+        private PlexObject ObjectFromSelection()
+        {
+            PlexObject p = null;
+
+            try
+            {
+                if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) ||
+                    (dgvTracks.SelectedRows.Count == 1))
+                {
+                    var t = GlobalStaticVars.CurrentContentType;
+                    switch (t)
+                    {
+                        case ContentType.TvShows:
+                            p = GetTvObjectFromSelection(true);
+                            break;
+
+                        case ContentType.Movies:
+                            p = GetMovieObjectFromSelection(true);
+                            break;
+
+                        case ContentType.Music:
+                            p = GetMusicObjectFromSelection(true);
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"GetPlexObjectError");
+            }
+
+            return p;
         }
 
         private void WkrGrabMusic()
@@ -2263,7 +2298,7 @@ namespace PlexDL.UI
 
         private void StartStreaming(PlexObject stream)
         {
-            int def = GlobalStaticVars.Settings.Player.PlaybackEngine;
+            var def = GlobalStaticVars.Settings.Player.PlaybackEngine;
             StartStreaming(stream, def);
         }
 
@@ -2474,6 +2509,45 @@ namespace PlexDL.UI
         private void ItmRenderKeyColumn_Click(object sender, EventArgs e)
         {
             RenderLibraryView(GlobalTables.SectionsTable, itmRenderKeyColumn.Checked);
+        }
+
+        private static void ShowLinkViewer(PlexObject media)
+        {
+            var viewer = new LinkViewer { Link = media.StreamInformation.Link };
+            viewer.ShowDialog();
+        }
+
+        private void ShowLinkViewer_Worker(object sender, WaitWindowEventArgs e)
+        {
+            e.Result = ObjectFromSelection();
+        }
+
+        private void ShowLinkViewer()
+        {
+            var o = (PlexObject)WaitWindow.WaitWindow.Show(ShowLinkViewer_Worker, @"Getting link");
+            if (o != null)
+            {
+                ShowLinkViewer(o);
+            }
+            else
+            {
+                UIMessages.Error(@"Content object was null; couldn't construct a link for you.");
+            }
+        }
+
+        private void ItmDGVViewTrackDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
+        }
+
+        private void ItmDGVViewMovieDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
+        }
+
+        private void ItmDGVViewEpisodeDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
         }
     }
 }
