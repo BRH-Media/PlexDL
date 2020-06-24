@@ -235,13 +235,13 @@ namespace PlexDL.UI
             this.itmEpisodeMetadata,
             this.itmEpisodeDownload});
             this.cxtEpisodeOptions.Name = "cxtEpisodeOptions";
-            this.cxtEpisodeOptions.Size = new System.Drawing.Size(181, 70);
+            this.cxtEpisodeOptions.Size = new System.Drawing.Size(129, 48);
             this.cxtEpisodeOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtEpisodeOptions_Opening);
             // 
             // itmEpisodeMetadata
             // 
             this.itmEpisodeMetadata.Name = "itmEpisodeMetadata";
-            this.itmEpisodeMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeMetadata.Text = "Metadata";
             this.itmEpisodeMetadata.Click += new System.EventHandler(this.ItmEpisodeMetadata_Click);
             // 
@@ -252,21 +252,21 @@ namespace PlexDL.UI
             this.itmDGVDownloadThisSeason,
             this.itmDGVViewEpisodeDownloadLink});
             this.itmEpisodeDownload.Name = "itmEpisodeDownload";
-            this.itmEpisodeDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeDownload.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeDownload.Text = "Download";
             // 
             // itmDGVDownloadThisEpisode
             // 
             this.itmDGVDownloadThisEpisode.Name = "itmDGVDownloadThisEpisode";
             this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisEpisode.Text = "This Episode";
+            this.itmDGVDownloadThisEpisode.Text = "Download Episode";
             this.itmDGVDownloadThisEpisode.Click += new System.EventHandler(this.ItmDGVDownloadThisEpisode_Click);
             // 
             // itmDGVDownloadThisSeason
             // 
             this.itmDGVDownloadThisSeason.Name = "itmDGVDownloadThisSeason";
             this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisSeason.Text = "This Season";
+            this.itmDGVDownloadThisSeason.Text = "Download Season";
             this.itmDGVDownloadThisSeason.Click += new System.EventHandler(this.ItmDGVDownloadThisSeason_Click);
             // 
             // itmDGVViewEpisodeDownloadLink
@@ -825,14 +825,14 @@ namespace PlexDL.UI
             // 
             this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
             this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisTrack.Text = "This Track";
+            this.itmDGVDownloadThisTrack.Text = "Download Track";
             this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
             // 
             // itmDGVDownloadThisAlbum
             // 
             this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
             this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(180, 22);
-            this.itmDGVDownloadThisAlbum.Text = "This Album";
+            this.itmDGVDownloadThisAlbum.Text = "Download Album";
             this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
             // 
             // itmDGVViewTrackDownloadLink
