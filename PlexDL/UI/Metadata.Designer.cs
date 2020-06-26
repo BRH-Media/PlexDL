@@ -44,6 +44,7 @@ namespace PlexDL.UI
             this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
             this.gbStarring = new System.Windows.Forms.GroupBox();
             this.gbAttributes = new System.Windows.Forms.GroupBox();
+            this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,15 +55,15 @@ namespace PlexDL.UI
             this.itmBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
+            this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
             this.gbStarring.SuspendLayout();
             this.gbAttributes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.SuspendLayout();
             // 
             // flpActors
@@ -167,6 +168,38 @@ namespace PlexDL.UI
             this.gbAttributes.TabStop = false;
             this.gbAttributes.Text = "Content Attributes";
             // 
+            // dgvAttributes
+            // 
+            this.dgvAttributes.AllowUserToAddRows = false;
+            this.dgvAttributes.AllowUserToDeleteRows = false;
+            this.dgvAttributes.AllowUserToOrderColumns = true;
+            this.dgvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvAttributes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvAttributes.IsContentTable = false;
+            this.dgvAttributes.Location = new System.Drawing.Point(3, 16);
+            this.dgvAttributes.MultiSelect = false;
+            this.dgvAttributes.Name = "dgvAttributes";
+            this.dgvAttributes.RowHeadersVisible = false;
+            this.dgvAttributes.RowsEmptyText = "No Attributes";
+            this.dgvAttributes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAttributes.Size = new System.Drawing.Size(258, 172);
+            this.dgvAttributes.TabIndex = 0;
+            // 
             // tlpMain
             // 
             this.tlpMain.ColumnCount = 9;
@@ -223,7 +256,7 @@ namespace PlexDL.UI
             // 
             this.itmImport.Name = "itmImport";
             this.itmImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmImport.Size = new System.Drawing.Size(153, 22);
+            this.itmImport.Size = new System.Drawing.Size(180, 22);
             this.itmImport.Text = "Import";
             this.itmImport.Click += new System.EventHandler(this.ItmImport_Click);
             // 
@@ -231,7 +264,7 @@ namespace PlexDL.UI
             // 
             this.itmExport.Name = "itmExport";
             this.itmExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmExport.Size = new System.Drawing.Size(153, 22);
+            this.itmExport.Size = new System.Drawing.Size(180, 22);
             this.itmExport.Text = "Export";
             this.itmExport.Click += new System.EventHandler(this.ItmExport_Click);
             // 
@@ -240,7 +273,8 @@ namespace PlexDL.UI
             this.itmStream.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmPvs,
             this.itmBrowser,
-            this.itmVlc});
+            this.itmVlc,
+            this.itmViewLink});
             this.itmStream.Enabled = false;
             this.itmStream.Name = "itmStream";
             this.itmStream.Size = new System.Drawing.Size(56, 20);
@@ -250,7 +284,7 @@ namespace PlexDL.UI
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(157, 22);
+            this.itmPvs.Size = new System.Drawing.Size(180, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.ItmPvs_Click);
             // 
@@ -258,7 +292,7 @@ namespace PlexDL.UI
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
+            this.itmBrowser.Size = new System.Drawing.Size(180, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.ItmBrowser_Click);
             // 
@@ -266,7 +300,7 @@ namespace PlexDL.UI
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(157, 22);
+            this.itmVlc.Size = new System.Drawing.Size(180, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.ItmVlc_Click);
             // 
@@ -278,37 +312,12 @@ namespace PlexDL.UI
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
             // 
-            // dgvAttributes
+            // itmViewLink
             // 
-            this.dgvAttributes.AllowUserToAddRows = false;
-            this.dgvAttributes.AllowUserToDeleteRows = false;
-            this.dgvAttributes.AllowUserToOrderColumns = true;
-            this.dgvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvAttributes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvAttributes.IsContentTable = false;
-            this.dgvAttributes.Location = new System.Drawing.Point(3, 16);
-            this.dgvAttributes.MultiSelect = false;
-            this.dgvAttributes.Name = "dgvAttributes";
-            this.dgvAttributes.RowHeadersVisible = false;
-            this.dgvAttributes.RowsEmptyText = "No Attributes";
-            this.dgvAttributes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAttributes.Size = new System.Drawing.Size(258, 172);
-            this.dgvAttributes.TabIndex = 0;
+            this.itmViewLink.Name = "itmViewLink";
+            this.itmViewLink.Size = new System.Drawing.Size(180, 22);
+            this.itmViewLink.Text = "View Link";
+            this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
             // 
             // Metadata
             // 
@@ -333,10 +342,10 @@ namespace PlexDL.UI
             this.pnlPlotSynopsis.ResumeLayout(false);
             this.gbStarring.ResumeLayout(false);
             this.gbAttributes.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -364,5 +373,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmExit;
         private Panel pnlPlotSynopsis;
         private Common.Components.FlatDataGridView dgvAttributes;
+        private ToolStripMenuItem itmViewLink;
     }
 }

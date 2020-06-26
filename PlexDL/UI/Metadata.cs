@@ -275,7 +275,17 @@ namespace PlexDL.UI
 
         private void TxtPlotSynopsis_SelectionChanged(object sender, EventArgs e)
         {
+            // cancel any possible selection
             txtPlotSynopsis.SelectionLength = 0;
+        }
+
+        private void ItmViewLink_Click(object sender, EventArgs e)
+        {
+            var viewer = new LinkViewer
+            {
+                Link = StreamingContent.StreamInformation.Link
+            };
+            viewer.ShowDialog();
         }
     }
 }
