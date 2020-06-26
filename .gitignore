@@ -1,5 +1,7 @@
 **/bin
 **/obj
+**/Release
+**/Debug
 PlexAPI_Rebase/
 packages/
 c/
