@@ -51,6 +51,7 @@ namespace PlexDL.UI
             this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCopyServerToken = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
@@ -170,9 +171,10 @@ namespace PlexDL.UI
             // 
             this.cxtServers.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmViewLink,
-            this.itmViewAccountToken});
+            this.itmViewAccountToken,
+            this.itmCopyServerToken});
             this.cxtServers.Name = "cxtServers";
-            this.cxtServers.Size = new System.Drawing.Size(236, 48);
+            this.cxtServers.Size = new System.Drawing.Size(236, 70);
             this.cxtServers.Opening += new System.ComponentModel.CancelEventHandler(this.CxtServers_Opening);
             // 
             // itmViewLink
@@ -189,6 +191,13 @@ namespace PlexDL.UI
             this.itmViewAccountToken.Text = "View Account Token (Debug)";
             this.itmViewAccountToken.Click += new System.EventHandler(this.ItmViewAccountToken_Click);
             // 
+            // itmCopyServerToken
+            // 
+            this.itmCopyServerToken.Name = "itmCopyServerToken";
+            this.itmCopyServerToken.Size = new System.Drawing.Size(235, 22);
+            this.itmCopyServerToken.Text = "Copy Server Token (Debug)";
+            this.itmCopyServerToken.Click += new System.EventHandler(this.ItmCopyServerToken_Click);
+            // 
             // dgvServers
             // 
             this.dgvServers.AllowUserToAddRows = false;
@@ -199,6 +208,7 @@ namespace PlexDL.UI
             this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvServers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvServers.ContextMenuStrip = this.cxtServers;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -220,7 +230,7 @@ namespace PlexDL.UI
             this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvServers.Size = new System.Drawing.Size(800, 426);
             this.dgvServers.TabIndex = 18;
-            this.dgvServers.DoubleClick += new EventHandler(this.DgvServers_DoubleClick);
+            this.dgvServers.DoubleClick += new System.EventHandler(this.DgvServers_DoubleClick);
             // 
             // ServerManager
             // 
@@ -265,5 +275,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmViewLink;
         private ToolStripMenuItem itmViewAccountToken;
         private FlatDataGridView dgvServers;
+        private ToolStripMenuItem itmCopyServerToken;
     }
 }

@@ -576,7 +576,10 @@ namespace PlexDL.UI
         private void ItmViewLink_Click(object sender, EventArgs e)
         {
             if (dgvServers.SelectedRows.Count == 1)
-                UIMessages.Info(ConnectionLink(CurrentServer()), @"Debug");
+            {
+                var lnk = new LinkViewer() { Link = ConnectionLink(CurrentServer()) };
+                lnk.ShowDialog();
+            }
         }
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)
@@ -590,6 +593,18 @@ namespace PlexDL.UI
 We've also copied it to the clipboard for you :)");
 
             Clipboard.SetText(token);
+        }
+
+        private void ItmCopyServerToken_Click(object sender, EventArgs e)
+        {
+            if (dgvServers.SelectedRows.Count == 1)
+            {
+                var token = CurrentServer().accessToken;
+
+                if (string.IsNullOrEmpty(token)) return;
+
+                Clipboard.SetText(token);
+            }
         }
     }
 }

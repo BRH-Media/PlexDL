@@ -139,32 +139,36 @@ namespace PlexDL.UI
                 {
                     var token = (string)WaitWindow.WaitWindow.Show(LoginWorker, "Logging you in");
 
-                    if (!string.IsNullOrWhiteSpace(token))
+                    if (token != null)
                     {
-                        // valid account tokens are always 20 characters in length
-                        if (token.Length == 20)
+                        if (token != string.Empty)
                         {
-                            RememberMe(chkRememberMe.Checked);
+                            // valid account tokens are always 20 characters in length
+                            if (token.Length == 20)
+                            {
+                                RememberMe(chkRememberMe.Checked);
 
-                            UIMessages.Info(
-                                @"Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv",
-                                @"Success");
-                            AccountToken = token;
-                            Success = true;
-                            DialogResult = DialogResult.OK;
-                            Close();
+                                UIMessages.Info(
+                                    @"Successfully authenticated your Plex.tv account. You can now load servers and relays from Plex.tv",
+                                    @"Success");
+                                AccountToken = token;
+                                Success = true;
+                                DialogResult = DialogResult.OK;
+                                Close();
+                            }
+                            else
+                            {
+                                UIMessages.Error(@"Received an invalid token from the Plex.tv authorisation server",
+                                    @"Authentication Error");
+                            }
                         }
                         else
-                        {
-                            UIMessages.Error(@"Received an invalid token from the server",
+                            UIMessages.Error(@"Incorrect username/password",
                                 @"Authentication Error");
-                        }
                     }
                     else
-                    {
-                        UIMessages.Error(@"Incorrect username/password",
-                            @"Authentication Error");
-                    }
+                        UIMessages.Error(@"Server gave a null reply. Maybe an API error occurred?",
+                                @"Authentication Error");
                 }
                 else
                 {
