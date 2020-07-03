@@ -8,6 +8,7 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
+using PlexDL.PlexAPI.LoginHandler;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -224,6 +225,8 @@ namespace PlexDL.UI
             {
                 var uri = ConnectionLink(svr);
 
+                //UIMessages.Info(uri);
+
                 var testUrl = WebCheck.TestUrl(uri);
 
                 value = testUrl;
@@ -430,16 +433,23 @@ namespace PlexDL.UI
             {
                 //check if there's a connection before trying to update the authentication token
                 if (ConnectionChecker.CheckForInternetConnection())
-                    using (var frm = new PlexLogin())
+                {
+                    var auth = AuthRoutine.GetAuthToken();
+                    if (auth == null)
                     {
-                        if (frm.ShowDialog() != DialogResult.OK) return;
-                        if (!frm.Success) return;
-
-                        if (ApplyToken(frm.AccountToken))
+                        UIMessages.Error(@"Login failed: null result");
+                    }
+                    else
+                    {
+                        if (ApplyToken(auth))
+                        {
+                            UIMessages.Info(@"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.", @"Success");
                             LoadServers(true);
+                        }
                         else
                             UIMessages.Error(@"An unknown error occurred");
                     }
+                }
                 else
                     // trying to connect on no connection will not end well; alert the user.
                     UIMessages.Warning(

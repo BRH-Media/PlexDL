@@ -19,6 +19,7 @@ using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
 using PlexDL.PlexAPI;
+using PlexDL.PlexAPI.LoginHandler;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -2548,6 +2549,19 @@ namespace PlexDL.UI
         private void ItmDGVViewEpisodeDownloadLink_Click(object sender, EventArgs e)
         {
             ShowLinkViewer();
+        }
+
+        private void ItmClearMyToken_Click(object sender, EventArgs e)
+        {
+            if (TokenManager.IsTokenStored)
+            {
+                if (TokenManager.ClearStored())
+                    UIMessages.Info(@"Successfully cleared your Plex.tv token. It will be reinstated once you login via the Server Manager.");
+                else
+                    UIMessages.Error(@"Couldn't remove your token, because an unknown error occured. Please delete it manually, and report this issue via GitHub.");
+            }
+            else
+                UIMessages.Error(@"Couldn't remove your token, because PlexDL has not saved it yet.");
         }
     }
 }

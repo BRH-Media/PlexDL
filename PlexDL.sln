@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIHelpers", "UIHelpers\UIHe
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PlexDL.Installer", "PlexDL.Installer\PlexDL.Installer.vdproj", "{5878C22C-3FC3-4EBD-87EF-BABA7DB0E9E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.PlexAPI.LoginHandler", "PlexDL.PlexAPI.LoginHandler\PlexDL.PlexAPI.LoginHandler.csproj", "{F40A5D3C-078C-44A6-B6CF-53FF7B9C89DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{E3CE262B-B962-44FF-ABC0-5EBFB403D51D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5878C22C-3FC3-4EBD-87EF-BABA7DB0E9E7}.Debug|Any CPU.ActiveCfg = Debug
 		{5878C22C-3FC3-4EBD-87EF-BABA7DB0E9E7}.Release|Any CPU.ActiveCfg = Release
+		{F40A5D3C-078C-44A6-B6CF-53FF7B9C89DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F40A5D3C-078C-44A6-B6CF-53FF7B9C89DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F40A5D3C-078C-44A6-B6CF-53FF7B9C89DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F40A5D3C-078C-44A6-B6CF-53FF7B9C89DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

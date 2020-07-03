@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using PlexDL.Common.Caching;
+﻿using PlexDL.Common.Caching;
+using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Caching
 {

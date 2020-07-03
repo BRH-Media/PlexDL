@@ -1,8 +1,6 @@
-﻿using PlexDL.Animation.WinFormAnimation;
-using PlexDL.Common.Components;
+﻿using PlexDL.Common.Components;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
@@ -127,77 +125,75 @@ namespace PlexDL.WaitWindow
         /// </summary>
         private void InitializeComponent()
         {
-            components = new Container();
-            MessageLabel = new Label();
-            tmrDots = new Timer(components);
-            ProgressMain = new CircularProgressBar();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.MessageLabel = new System.Windows.Forms.Label();
+            this.tmrDots = new System.Windows.Forms.Timer(this.components);
+            this.ProgressMain = new PlexDL.Common.Components.CircularProgressBar();
+            this.SuspendLayout();
             //
             // MessageLabel
             //
-            MessageLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            MessageLabel.Location = new Point(130, 12);
-            MessageLabel.Name = "MessageLabel";
-            MessageLabel.Size = new Size(174, 108);
-            MessageLabel.TabIndex = 2;
-            MessageLabel.Text = "Working on it";
-            MessageLabel.TextAlign = ContentAlignment.MiddleCenter;
+            this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MessageLabel.Location = new System.Drawing.Point(130, 12);
+            this.MessageLabel.Name = "MessageLabel";
+            this.MessageLabel.Size = new System.Drawing.Size(174, 108);
+            this.MessageLabel.TabIndex = 2;
+            this.MessageLabel.Text = "Working on it";
+            this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
             // tmrDots
             //
-            tmrDots.Interval = 200;
-            tmrDots.Tick += tmrDots_Tick;
+            this.tmrDots.Interval = 200;
+            this.tmrDots.Tick += new System.EventHandler(this.TmrDots_Tick);
             //
             // ProgressMain
             //
-            ProgressMain.AnimationFunction = KnownAnimationFunctions.QuadraticEaseInOut;
-            ProgressMain.AnimationSpeed = 500;
-            ProgressMain.BackColor = Color.Transparent;
-            ProgressMain.Font = new Font("Microsoft Sans Serif", 72F, FontStyle.Bold);
-            ProgressMain.ForeColor = Color.FromArgb(64, 64, 64);
-            ProgressMain.InnerColor = Color.FromArgb(224, 224, 224);
-            ProgressMain.InnerMargin = 2;
-            ProgressMain.InnerWidth = -1;
-            ProgressMain.Location = new Point(12, 12);
-            ProgressMain.MarqueeAnimationSpeed = 2000;
-            ProgressMain.Name = "ProgressMain";
-            ProgressMain.OuterColor = Color.Gray;
-            ProgressMain.OuterMargin = -25;
-            ProgressMain.OuterWidth = 26;
-            ProgressMain.ProgressColor = Color.FromArgb(65, 177, 225);
-            ProgressMain.ProgressWidth = 25;
-            ProgressMain.SecondaryFont = new Font("Microsoft Sans Serif", 36F);
-            ProgressMain.Size = new Size(108, 108);
-            ProgressMain.StartAngle = 270;
-            ProgressMain.Style = ProgressBarStyle.Marquee;
-            ProgressMain.SubscriptColor = Color.FromArgb(166, 166, 166);
-            ProgressMain.SubscriptMargin = new Padding(10, -35, 0, 0);
-            ProgressMain.SubscriptText = ".23";
-            ProgressMain.SuperscriptColor = Color.FromArgb(166, 166, 166);
-            ProgressMain.SuperscriptMargin = new Padding(10, 35, 0, 0);
-            ProgressMain.SuperscriptText = "°C";
-            ProgressMain.TabIndex = 3;
-            ProgressMain.TextMargin = new Padding(8, 8, 0, 0);
-            ProgressMain.Value = 68;
+            this.ProgressMain.AnimationFunction = PlexDL.Animation.WinFormAnimation.KnownAnimationFunctions.QuadraticEaseInOut;
+            this.ProgressMain.AnimationSpeed = 500;
+            this.ProgressMain.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold);
+            this.ProgressMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ProgressMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ProgressMain.InnerMargin = 2;
+            this.ProgressMain.InnerWidth = -1;
+            this.ProgressMain.Location = new System.Drawing.Point(12, 12);
+            this.ProgressMain.MarqueeAnimationSpeed = 2000;
+            this.ProgressMain.Name = "ProgressMain";
+            this.ProgressMain.OuterColor = System.Drawing.Color.Gray;
+            this.ProgressMain.OuterMargin = -25;
+            this.ProgressMain.OuterWidth = 26;
+            this.ProgressMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ProgressMain.ProgressWidth = 25;
+            this.ProgressMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.ProgressMain.Size = new System.Drawing.Size(108, 108);
+            this.ProgressMain.StartAngle = 270;
+            this.ProgressMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.ProgressMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.ProgressMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.ProgressMain.SubscriptText = ".23";
+            this.ProgressMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.ProgressMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.ProgressMain.SuperscriptText = "°C";
+            this.ProgressMain.TabIndex = 3;
+            this.ProgressMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.ProgressMain.Value = 68;
             //
             // WaitWindowGUI
             //
-            AutoScaleMode = AutoScaleMode.None;
-            BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(316, 129);
-            ControlBox = false;
-            Controls.Add(ProgressMain);
-            Controls.Add(MessageLabel);
-            FormBorderStyle = FormBorderStyle.None;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "WaitWindowGUI";
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Working";
-            FormClosing += WaitWindowGUI_FormClosing;
-            Load += WaitWindowGUI_Load;
-            ResumeLayout(false);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ClientSize = new System.Drawing.Size(316, 129);
+            this.ControlBox = false;
+            this.Controls.Add(this.ProgressMain);
+            this.Controls.Add(this.MessageLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "WaitWindowGUI";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Working";
+            this.ResumeLayout(false);
         }
 
         private void WaitWindowGUI_Load(object sender, EventArgs e)
@@ -210,7 +206,7 @@ namespace PlexDL.WaitWindow
             tmrDots.Stop();
         }
 
-        private void tmrDots_Tick(object sender, EventArgs e)
+        private void TmrDots_Tick(object sender, EventArgs e)
         {
             if (dotCount < 3)
             {

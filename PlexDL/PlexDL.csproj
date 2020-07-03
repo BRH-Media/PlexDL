@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\baseline_cloud_download_black_48dp.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\PlexDL.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>PlexDL.Internal.Program</StartupObject>
@@ -235,12 +235,6 @@
     <Compile Include="UI\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PlexLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\PlexLogin.Designer.cs">
-      <DependentUpon>PlexLogin.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,9 +299,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\PlexLogin.resx">
-      <DependentUpon>PlexLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
@@ -433,7 +424,7 @@
     <None Include="Resources\baseline_book_black_48dp.png" />
     <None Include="Resources\baseline_backup_black_18dp.png" />
     <None Include="Resources\baseline_backup_black_48dp.png" />
-    <Content Include="Resources\baseline_cloud_download_black_48dp.ico" />
+    <Content Include="Resources\PlexDL.ico" />
     <Content Include="Resources\baseline_cancel_black_48dp.png" />
     <None Include="Resources\baseline_pause_black_18dp.png" />
     <None Include="Resources\baseline_power_black_18dp.png" />
@@ -497,6 +488,10 @@
     <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
       <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>
       <Name>PlexDL.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.PlexAPI.LoginHandler\PlexDL.PlexAPI.LoginHandler.csproj">
+      <Project>{f40a5d3c-078c-44a6-b6cf-53ff7b9c89df}</Project>
+      <Name>PlexDL.PlexAPI.LoginHandler</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.PlexAPI.csproj">
       <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
