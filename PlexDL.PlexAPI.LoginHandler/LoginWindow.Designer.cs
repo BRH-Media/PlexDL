@@ -34,6 +34,7 @@
             this.lblInstructions = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.tmrDotChange = new System.Windows.Forms.Timer(this.components);
+            this.lnkRelaunch = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // pbMain
@@ -98,11 +99,27 @@
             this.tmrDotChange.Interval = 200;
             this.tmrDotChange.Tick += new System.EventHandler(this.TmrDotChange_Tick);
             // 
+            // lnkRelaunch
+            // 
+            this.lnkRelaunch.ActiveLinkColor = System.Drawing.Color.Black;
+            this.lnkRelaunch.AutoSize = true;
+            this.lnkRelaunch.DisabledLinkColor = System.Drawing.Color.Gray;
+            this.lnkRelaunch.LinkColor = System.Drawing.Color.Black;
+            this.lnkRelaunch.Location = new System.Drawing.Point(238, 199);
+            this.lnkRelaunch.Name = "lnkRelaunch";
+            this.lnkRelaunch.Size = new System.Drawing.Size(176, 13);
+            this.lnkRelaunch.TabIndex = 3;
+            this.lnkRelaunch.TabStop = true;
+            this.lnkRelaunch.Text = "Click here to re-launch your browser";
+            this.lnkRelaunch.VisitedLinkColor = System.Drawing.Color.Black;
+            this.lnkRelaunch.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkRelaunch_LinkClicked);
+            // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(578, 225);
+            this.Controls.Add(this.lnkRelaunch);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.lblInstructions);
             this.Controls.Add(this.pbMain);
@@ -126,5 +143,6 @@
         private System.Windows.Forms.Label lblInstructions;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Timer tmrDotChange;
+        private System.Windows.Forms.LinkLabel lnkRelaunch;
     }
 }

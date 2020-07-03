@@ -14,11 +14,12 @@ namespace PlexDL.WaitWindow
         private readonly WaitWindow _Parent;
         internal Exception _Error;
 
+        private int _dotCount = 0;
+
         internal object _Result;
 
         private IContainer components;
 
-        private int dotCount;
         private string LabelText = "";
 
         public Label MessageLabel;
@@ -62,8 +63,7 @@ namespace PlexDL.WaitWindow
         {
             //	Invoke the worker method and return any results.
             var e = new WaitWindowEventArgs(_Parent, _Parent._Args);
-            if (_Parent._WorkerMethod != null)
-                _Parent._WorkerMethod(this, e);
+            _Parent._WorkerMethod?.Invoke(this, e);
 
             return e.Result;
         }
@@ -198,6 +198,7 @@ namespace PlexDL.WaitWindow
 
         private void WaitWindowGUI_Load(object sender, EventArgs e)
         {
+            _dotCount = 0;
             tmrDots.Start();
         }
 
@@ -206,16 +207,18 @@ namespace PlexDL.WaitWindow
             tmrDots.Stop();
         }
 
+        
+
         private void TmrDots_Tick(object sender, EventArgs e)
         {
-            if (dotCount < 3)
+            if (_dotCount < 3)
             {
-                dotCount++;
-                MessageLabel.Text += @".";
+                _dotCount++;
+                MessageLabel.Text += '.';
             }
             else
             {
-                dotCount = 0;
+                _dotCount = 0;
                 MessageLabel.Text = LabelText;
             }
         }
