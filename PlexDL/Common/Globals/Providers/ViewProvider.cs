@@ -1,8 +1,8 @@
 ﻿using System.Data;
 
-namespace PlexDL.Common.Globals
+namespace PlexDL.Common.Globals.Providers
 {
-    public static class GlobalViews
+    public static class ViewProvider
     {
         public static DataTable MoviesViewTable { get; set; }
         public static DataTable ArtistViewTable { get; set; }

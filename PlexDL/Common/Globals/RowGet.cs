@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Globals
 {
@@ -13,32 +14,32 @@ namespace PlexDL.Common.Globals
 
         public static DataRow GetDataRowContent(int index)
         {
-            return GetDataRowTbl(GlobalTables.ReturnCorrectTable(), index);
+            return GetDataRowTbl(TableProvider.ReturnCorrectTable(), index);
         }
 
         public static DataRow GetDataRowSeries(int index)
         {
-            return GetDataRowTbl(GlobalTables.SeasonsTable, index);
+            return GetDataRowTbl(TableProvider.SeasonsTable, index);
         }
 
         public static DataRow GetDataRowAlbums(int index)
         {
-            return GetDataRowTbl(GlobalTables.AlbumsTable, index);
+            return GetDataRowTbl(TableProvider.AlbumsTable, index);
         }
 
         public static DataRow GetDataRowEpisodes(int index)
         {
-            return GetDataRowTbl(GlobalTables.EpisodesTable, index);
+            return GetDataRowTbl(TableProvider.EpisodesTable, index);
         }
 
         public static DataRow GetDataRowTracks(int index)
         {
-            return GetDataRowTbl(GlobalTables.TracksTable, index);
+            return GetDataRowTbl(TableProvider.TracksTable, index);
         }
 
         public static DataRow GetDataRowLibrary(int index)
         {
-            return GetDataRowTbl(GlobalTables.SectionsTable, index);
+            return GetDataRowTbl(TableProvider.SectionsTable, index);
         }
     }
 }

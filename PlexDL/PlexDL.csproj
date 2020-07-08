@@ -109,9 +109,12 @@
     <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\BuildState.cs" />
-    <Compile Include="Common\Globals\GlobalTables.cs" />
-    <Compile Include="Common\Globals\GlobalViews.cs" />
+    <Compile Include="Common\Globals\Providers\TableProvider.cs" />
+    <Compile Include="Common\Globals\Providers\ViewProvider.cs" />
+    <Compile Include="Common\Globals\Integers.cs" />
+    <Compile Include="Common\Globals\Providers\ObjectProvider.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
+    <Compile Include="Common\Globals\Strings.cs" />
     <Compile Include="Common\MD5Helper.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
@@ -149,7 +152,6 @@
     <Compile Include="Common\Caching\Handlers\ServerCaching.cs" />
     <Compile Include="Common\Caching\Handlers\ThumbCaching.cs" />
     <Compile Include="Common\Caching\Handlers\XmlCaching.cs" />
-    <Compile Include="Common\Globals\GlobalStaticVars.cs" />
     <Compile Include="Common\Logging\LoggingHelpers.cs" />
     <Compile Include="Common\Methods.cs" />
     <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />

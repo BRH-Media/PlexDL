@@ -1,11 +1,11 @@
-﻿using PlexDL.Common.Enums;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using PlexDL.Common.Enums;
 
-namespace PlexDL.Common.Globals
+namespace PlexDL.Common.Globals.Providers
 {
-    public static class GlobalTables
+    public static class TableProvider
     {
         public static DataTable TitlesTable { get; set; }
         public static DataTable FilteredTable { get; set; }
@@ -17,7 +17,7 @@ namespace PlexDL.Common.Globals
 
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
-            switch (GlobalStaticVars.CurrentContentType)
+            switch (ObjectProvider.CurrentContentType)
             {
                 case ContentType.Movies:
                     return DecideFiltered();

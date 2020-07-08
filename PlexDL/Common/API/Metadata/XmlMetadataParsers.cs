@@ -4,6 +4,7 @@ using PlexDL.Common.Structures.Plex;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.API.Metadata
 {
@@ -87,21 +88,21 @@ namespace PlexDL.Common.API.Metadata
         {
             var attr = "summary";
             var def = @"Plot synopsis not provided";
-            var contentType = GlobalStaticVars.CurrentContentType;
+            var contentType = ObjectProvider.CurrentContentType;
             return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr, def);
         }
 
         public static string GetParentTitle(XmlDocument metadata)
         {
             var attr = "parentTitle";
-            var contentType = GlobalStaticVars.CurrentContentType;
+            var contentType = ObjectProvider.CurrentContentType;
             return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr);
         }
 
         public static string GetGrandparentTitle(XmlDocument metadata)
         {
             var attr = "grandparentTitle";
-            var contentType = GlobalStaticVars.CurrentContentType;
+            var contentType = ObjectProvider.CurrentContentType;
             return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr);
         }
     }

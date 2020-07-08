@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.PlayerLaunchers
@@ -19,8 +20,8 @@ namespace PlexDL.Common.PlayerLaunchers
 
                 var p = new Process();
                 var c = new SVarController();
-                var vlc = GlobalStaticVars.Settings.Player.VLCMediaPlayerPath;
-                var arg = GlobalStaticVars.Settings.Player.VLCMediaPlayerArgs;
+                var vlc = ObjectProvider.Settings.Player.VLCMediaPlayerPath;
+                var arg = ObjectProvider.Settings.Player.VLCMediaPlayerArgs;
                 if (VlcInstalled())
                 {
                     c.Input = arg;
@@ -48,7 +49,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     var baseName = Path.GetFileName(fileName);
                     if (baseName == "vlc.exe")
                     {
-                        GlobalStaticVars.Settings.Player.VLCMediaPlayerPath = fileName;
+                        ObjectProvider.Settings.Player.VLCMediaPlayerPath = fileName;
                         LaunchVlc(stream);
                     }
                     else
@@ -66,7 +67,7 @@ namespace PlexDL.Common.PlayerLaunchers
 
         public static bool VlcInstalled()
         {
-            return File.Exists(GlobalStaticVars.Settings.Player.VLCMediaPlayerPath);
+            return File.Exists(ObjectProvider.Settings.Player.VLCMediaPlayerPath);
         }
     }
 }

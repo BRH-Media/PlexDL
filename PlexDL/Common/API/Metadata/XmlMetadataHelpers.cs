@@ -29,7 +29,7 @@ namespace PlexDL.Common.API.Metadata
             }
             else
             {
-                var baseUri = GlobalStaticVars.GetBaseUri(false);
+                var baseUri = Strings.GetBaseUri(false);
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 

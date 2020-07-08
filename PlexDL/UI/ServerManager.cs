@@ -14,6 +14,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -53,23 +54,23 @@ namespace PlexDL.UI
         private static void GetServerListWorker(object sender, WaitWindowEventArgs e)
         {
             Helpers.CacheStructureBuilder();
-            if (ServerCaching.ServerInCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken) &&
-                GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (ServerCaching.ServerInCache(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken) &&
+                ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
             {
-                e.Result = ServerCaching.ServerFromCache(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+                e.Result = ServerCaching.ServerFromCache(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
             }
             else
             {
-                var result = GlobalStaticVars.Plex.GetServers(GlobalStaticVars.User);
-                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
-                    ServerCaching.ServerToCache(result, GlobalStaticVars.User.authenticationToken);
+                var result = ObjectProvider.PlexProvider.GetServers(ObjectProvider.User);
+                if (ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
+                    ServerCaching.ServerToCache(result, ObjectProvider.User.authenticationToken);
                 e.Result = result;
             }
         }
 
         private static void GetRelaysListWorker(object sender, WaitWindowEventArgs e)
         {
-            var result = Relays.GetServerRelays(GlobalStaticVars.User.authenticationToken);
+            var result = Relays.GetServerRelays(ObjectProvider.User.authenticationToken);
             e.Result = result;
         }
 
@@ -93,7 +94,7 @@ namespace PlexDL.UI
                     }
                     else
                     {
-                        GlobalStaticVars.PlexServers = servers;
+                        ObjectProvider.PlexServers = servers;
                         RenderServersView(servers);
                         itmConnect.Enabled = true;
                     }
@@ -135,7 +136,7 @@ namespace PlexDL.UI
                     }
                     else
                     {
-                        GlobalStaticVars.PlexServers = servers;
+                        ObjectProvider.PlexServers = servers;
                         RenderServersView(servers);
                         itmConnect.Enabled = true;
                     }
@@ -160,7 +161,7 @@ namespace PlexDL.UI
         private Server CurrentServer()
         {
             var index = dgvServers.CurrentCell.RowIndex;
-            return GlobalStaticVars.PlexServers[index];
+            return ObjectProvider.PlexServers[index];
         }
 
         private void DoConnect()
@@ -180,8 +181,8 @@ namespace PlexDL.UI
                     if (testUrl.ConnectionSuccess)
                     {
                         SelectedServer = s;
-                        GlobalStaticVars.Svr = s;
-                        GlobalStaticVars.User.authenticationToken = s.accessToken;
+                        ObjectProvider.Svr = s;
+                        ObjectProvider.User.authenticationToken = s.accessToken;
                         DialogResult = DialogResult.OK;
                         Close();
                     }
@@ -255,7 +256,7 @@ namespace PlexDL.UI
         {
             var info = new ConnectionInfo()
             {
-                PlexAccountToken = GlobalStaticVars.User.authenticationToken,
+                PlexAccountToken = ObjectProvider.User.authenticationToken,
                 PlexAddress = ""
             };
             RunDirectConnect(localLink, info);
@@ -273,17 +274,17 @@ namespace PlexDL.UI
                 if (frmDir.ShowDialog() != DialogResult.OK) return;
                 if (!frmDir.Success) return;
 
-                GlobalStaticVars.Settings.ConnectionInfo = frmDir.ConnectionInfo;
-                GlobalStaticVars.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+                ObjectProvider.Settings.ConnectionInfo = frmDir.ConnectionInfo;
+                ObjectProvider.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
                 var s = new Server
                 {
-                    accessToken = GlobalStaticVars.User.authenticationToken,
-                    address = GlobalStaticVars.Settings.ConnectionInfo.PlexAddress,
-                    port = GlobalStaticVars.Settings.ConnectionInfo.PlexPort,
+                    accessToken = ObjectProvider.User.authenticationToken,
+                    address = ObjectProvider.Settings.ConnectionInfo.PlexAddress,
+                    port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
                     name = "DirectConnect"
                 };
                 servers.Add(s);
-                GlobalStaticVars.PlexServers = servers;
+                ObjectProvider.PlexServers = servers;
                 SelectedServer = s;
                 DialogResult = DialogResult.OK;
                 Close();
@@ -306,9 +307,9 @@ namespace PlexDL.UI
             try
             {
                 //if we already selected a server, then we can remember this selection based on globals and clever indexing.
-                if (GlobalStaticVars.Svr != null)
+                if (ObjectProvider.Svr != null)
                 {
-                    var svrIndex = GlobalStaticVars.PlexServers.IndexOf(GlobalStaticVars.Svr);
+                    var svrIndex = ObjectProvider.PlexServers.IndexOf(ObjectProvider.Svr);
                     dgvServers.Rows[svrIndex].Selected = true;
                 }
             }
@@ -378,10 +379,10 @@ namespace PlexDL.UI
                     ProfileDefinedServer();
 
                     // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
-                    if (GlobalStaticVars.PlexServers == null) return;
-                    if (GlobalStaticVars.PlexServers.Count <= 0) return;
+                    if (ObjectProvider.PlexServers == null) return;
+                    if (ObjectProvider.PlexServers.Count <= 0) return;
 
-                    RenderServersView(GlobalStaticVars.PlexServers);
+                    RenderServersView(ObjectProvider.PlexServers);
                     SelectServer();
 
                     itmConnect.Enabled = true;
@@ -494,7 +495,7 @@ namespace PlexDL.UI
                     {
                         var existingInfo = new ConnectionInfo
                         {
-                            PlexAccountToken = GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken
+                            PlexAccountToken = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
                         };
                         frm.ConnectionInfo = existingInfo;
 
@@ -525,7 +526,7 @@ namespace PlexDL.UI
 
         private static bool CheckProfileDefinedServer()
         {
-            var settings = GlobalStaticVars.Settings.ConnectionInfo;
+            var settings = ObjectProvider.Settings.ConnectionInfo;
             var defaultAddress = new ConnectionInfo().PlexAddress;
             return !string.IsNullOrWhiteSpace(settings.PlexAccountToken) &&
                    !string.IsNullOrWhiteSpace(settings.PlexAddress) &&
@@ -536,13 +537,13 @@ namespace PlexDL.UI
         {
             if (!CheckProfileDefinedServer()) return;
 
-            var info = GlobalStaticVars.Settings.ConnectionInfo;
+            var info = ObjectProvider.Settings.ConnectionInfo;
             RunDirectConnect(false, info, true);
         }
 
         private static bool IsTokenSet()
         {
-            return !string.IsNullOrEmpty(GlobalStaticVars.User.authenticationToken);
+            return !string.IsNullOrEmpty(ObjectProvider.User.authenticationToken);
         }
 
         private bool ApplyToken(string token, bool silent = true)
@@ -552,8 +553,8 @@ namespace PlexDL.UI
                 //check if there's a connection before trying to update the authentication token
                 if (ConnectionChecker.CheckForInternetConnection())
                 {
-                    GlobalStaticVars.User.authenticationToken = token;
-                    GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken = token;
+                    ObjectProvider.User.authenticationToken = token;
+                    ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = token;
                     itmLoad.Enabled = true;
                     itmClearServers.Enabled = true;
                     dgvServers.DataSource = null;
@@ -585,7 +586,7 @@ namespace PlexDL.UI
             dgvServers.DataSource = null;
             //force a repaint
             dgvServers.Invalidate();
-            GlobalStaticVars.PlexServers = null;
+            ObjectProvider.PlexServers = null;
             itmConnect.Enabled = false;
             itmLoad.Enabled = false;
             itmClearServers.Enabled = false;
@@ -594,8 +595,8 @@ namespace PlexDL.UI
         private void ItmRenderTokenColumn_Click(object sender, EventArgs e)
         {
             RenderTokenColumn = itmRenderTokenColumn.Checked;
-            if (GlobalStaticVars.PlexServers != null)
-                RenderServersView(GlobalStaticVars.PlexServers);
+            if (ObjectProvider.PlexServers != null)
+                RenderServersView(ObjectProvider.PlexServers);
         }
 
         private void CxtServers_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -615,7 +616,7 @@ namespace PlexDL.UI
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)
         {
-            var token = GlobalStaticVars.User.authenticationToken;
+            var token = ObjectProvider.User.authenticationToken;
 
             if (string.IsNullOrEmpty(token)) return;
 

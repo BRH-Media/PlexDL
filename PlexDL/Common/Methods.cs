@@ -15,6 +15,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common
@@ -197,7 +198,7 @@ namespace PlexDL.Common
 
         public static bool StreamAdultContentCheck(PlexObject stream)
         {
-            if (!GlobalStaticVars.Settings.Generic.AdultContentProtection) return true;
+            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return true;
             if (!AdultKeywordCheck(stream)) return true;
 
             var result =

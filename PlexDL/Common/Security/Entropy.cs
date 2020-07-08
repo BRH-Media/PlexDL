@@ -8,12 +8,12 @@ namespace PlexDL.Common.Security
 {
     public static class Entropy
     {
-        private static string EntropyFileLocation { get; } = $"{GlobalStaticVars.PlexDlAppData}\\.entropy";
+        private static string EntropyFileLocation { get; } = $@"{Strings.PlexDlAppData}\.entropy";
         private static int EntropyByteLength { get; } = 20;
 
         public static byte[] GetEntropyBytes(bool forceNew = false)
         {
-            byte[] value = null;
+            byte[] value;
 
             if (!forceNew && File.Exists(EntropyFileLocation))
             {

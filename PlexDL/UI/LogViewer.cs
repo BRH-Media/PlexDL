@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -163,7 +164,7 @@ namespace PlexDL.UI
             {
                 if (dgvMain.Rows.Count <= 0) return;
 
-                var ipt = GlobalStaticVars.LibUi.showInputForm(@"Enter Row Number", @"Go To Row");
+                var ipt = ObjectProvider.LibUi.showInputForm(@"Enter Row Number", @"Go To Row");
 
                 if (string.Equals(ipt.txt, "!cancel=user"))
                 {
@@ -363,7 +364,7 @@ namespace PlexDL.UI
 
         private void ItmThisSession_Click(object sender, EventArgs e)
         {
-            SessionIdSearch(GlobalStaticVars.CurrentSessionId);
+            SessionIdSearch(Strings.CurrentSessionId);
         }
 
         private bool SessionIdPresent()

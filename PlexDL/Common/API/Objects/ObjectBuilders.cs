@@ -3,6 +3,7 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.API.Objects
@@ -33,7 +34,7 @@ namespace PlexDL.Common.API.Objects
                         obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
                         obj.StreamInformation = dlInfo;
                         obj.Season = XmlMetadataParsers.GetParentTitle(metadata);
-                        obj.EpisodesInSeason = GlobalTables.EpisodesTable.Rows.Count;
+                        obj.EpisodesInSeason = TableProvider.EpisodesTable.Rows.Count;
                         //this is in 0-based format. This means the lowest number is 0 instead of 1.
                         //we need to display "Episode 1" instead of "Episode 0" for the first episode,
                         //so bump the index by 1.
@@ -139,7 +140,7 @@ namespace PlexDL.Common.API.Objects
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    //UIMessages.Info(GlobalStaticVars.CurrentContentType.ToString());
+                    //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
 
                     var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
 

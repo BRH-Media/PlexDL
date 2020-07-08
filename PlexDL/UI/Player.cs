@@ -11,6 +11,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -96,32 +97,32 @@ namespace PlexDL.UI
         {
             if (IsWmp) return base.ProcessCmdKey(ref msg, keyData);
 
-            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PlayPause)
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.PlayPause)
             {
                 PlayPause();
                 return true;
             }
 
-            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipForward)
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.SkipForward)
             {
                 SkipForward();
                 return true;
             }
 
-            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.SkipBackward)
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.SkipBackward)
             {
                 SkipBack();
                 return true;
             }
 
-            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.NextTitle)
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.NextTitle)
             {
                 Stop();
                 NextTitle();
                 return true;
             }
 
-            if (keyData == GlobalStaticVars.Settings.Player.KeyBindings.PrevTitle)
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.PrevTitle)
             {
                 Stop();
                 PrevTitle();
@@ -138,7 +139,7 @@ namespace PlexDL.UI
 
         private void MPlayer_ContentFinished(object sender, EventArgs e)
         {
-            if (!GlobalStaticVars.Settings.Player.PlayNextTitleAutomatically)
+            if (!ObjectProvider.Settings.Player.PlayNextTitleAutomatically)
             {
                 SetIconPlay();
             }
@@ -227,10 +228,10 @@ namespace PlexDL.UI
         private static string GetBaseUri(bool incToken)
         {
             if (incToken)
-                return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort +
+                return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort +
                        "/?X-Plex-Token=";
 
-            return "http://" + GlobalStaticVars.Settings.ConnectionInfo.PlexAddress + ":" + GlobalStaticVars.Settings.ConnectionInfo.PlexPort + "/";
+            return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort + "/";
         }
 
         private void GetObjectFromIndexCallback(object sender, WaitWindowEventArgs e)
@@ -266,7 +267,7 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 
-                var reply = XmlGet.GetXmlTransaction(uri, GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+                var reply = XmlGet.GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
 
                 var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply, false);
                 return obj;
@@ -325,7 +326,7 @@ namespace PlexDL.UI
         {
             if (_mPlayer.Playing)
             {
-                var rewindAmount = GlobalStaticVars.Settings.Player.SkipBackwardInterval * -1;
+                var rewindAmount = ObjectProvider.Settings.Player.SkipBackwardInterval * -1;
 
                 _mPlayer.Position.Skip((int)rewindAmount);
             }
@@ -335,7 +336,7 @@ namespace PlexDL.UI
         {
             if (_mPlayer.Playing)
             {
-                var stepAmount = GlobalStaticVars.Settings.Player.SkipForwardInterval;
+                var stepAmount = ObjectProvider.Settings.Player.SkipForwardInterval;
 
                 _mPlayer.Position.Skip((int)stepAmount);
             }

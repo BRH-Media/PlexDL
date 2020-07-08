@@ -3,6 +3,7 @@ using PlexDL.Common.Logging;
 using System;
 using System.IO;
 using System.Xml;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Caching.Handlers
 {
@@ -10,8 +11,8 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string XmlCachePath(string sourceUrl)
         {
-            var accountHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
             var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ApiXmlExt;
             var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.XmlDirectory}";
             if (!Directory.Exists(cachePath))
@@ -22,7 +23,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static bool XmlInCache(string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
                 var fqPath = XmlCachePath(sourceUrl);
                 return File.Exists(fqPath);
@@ -35,7 +36,7 @@ namespace PlexDL.Common.Caching.Handlers
         {
             try
             {
-                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+                if (ObjectProvider.Settings.CacheSettings.Mode.EnableXmlCaching)
                 {
                     if (!XmlInCache(sourceUrl))
                     {
@@ -83,7 +84,7 @@ namespace PlexDL.Common.Caching.Handlers
         {
             try
             {
-                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+                if (ObjectProvider.Settings.CacheSettings.Mode.EnableXmlCaching)
                     if (XmlInCache(sourceUrl))
                     {
                         File.Delete(XmlCachePath(sourceUrl));
@@ -102,14 +103,14 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static XmlDocument XmlFromCache(string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableXmlCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableXmlCaching)
             {
                 if (XmlInCache(sourceUrl))
                 {
                     var fqPath = XmlCachePath(sourceUrl);
-                    if (GlobalStaticVars.Settings.CacheSettings.Expiry.Enabled)
+                    if (ObjectProvider.Settings.CacheSettings.Expiry.Enabled)
                     {
-                        if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath, GlobalStaticVars.Settings.CacheSettings.Expiry.Interval))
+                        if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath, ObjectProvider.Settings.CacheSettings.Expiry.Interval))
                         {
                             LoggingHelpers.RecordCacheEvent("Cached URL is not expired; loading from cached copy.", sourceUrl);
                             var doc = new XmlDocument();

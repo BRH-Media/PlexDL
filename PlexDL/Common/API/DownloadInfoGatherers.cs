@@ -5,6 +5,7 @@ using PlexDL.Common.Structures;
 using System;
 using System.Data;
 using System.Xml;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.API
@@ -27,9 +28,9 @@ namespace PlexDL.Common.API
 
                 DataRow dlRow = null;
 
-                //UIMessages.Info(GlobalStaticVars.CurrentContentType.ToString());
+                //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
 
-                switch (GlobalStaticVars.CurrentContentType)
+                switch (ObjectProvider.CurrentContentType)
                 {
                     case ContentType.Movies:
                         dlRow = sections.Tables["Video"].Rows[0];
@@ -47,8 +48,8 @@ namespace PlexDL.Common.API
                 if (dlRow == null) return new DownloadInfo();
 
                 var title = dlRow["title"].ToString();
-                if (title.Length > GlobalStaticVars.Settings.Generic.DefaultStringLength)
-                    title = title.Substring(0, GlobalStaticVars.Settings.Generic.DefaultStringLength);
+                if (title.Length > ObjectProvider.Settings.Generic.DefaultStringLength)
+                    title = title.Substring(0, ObjectProvider.Settings.Generic.DefaultStringLength);
                 var thumb = dlRow["thumb"].ToString();
                 var thumbnailFullUri = "";
                 if (string.IsNullOrEmpty(thumb))
@@ -56,8 +57,8 @@ namespace PlexDL.Common.API
                 }
                 else
                 {
-                    var baseUri = GlobalStaticVars.GetBaseUri(false).TrimEnd('/');
-                    thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + GlobalStaticVars.GetToken();
+                    var baseUri = Strings.GetBaseUri(false).TrimEnd('/');
+                    thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + Strings.GetToken();
                 }
 
                 var partRow = part.Rows[0];
@@ -77,9 +78,9 @@ namespace PlexDL.Common.API
                 //The PMS (Plex Media Server) will return the file as an octet-stream (download) if we set
                 //the GET parameter 'download' to '1' and a normal MP4 stream if we set it to '0'.
                 if (!formatLinkDownload)
-                    link = GlobalStaticVars.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + GlobalStaticVars.GetToken();
+                    link = Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken();
                 else
-                    link = GlobalStaticVars.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + GlobalStaticVars.GetToken();
+                    link = Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken();
 
                 obj.Link = link;
                 obj.Container = container;

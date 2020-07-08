@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common.Globals;
 using System.Drawing;
 using System.IO;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Caching.Handlers
 {
@@ -8,8 +9,8 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ThumbCachePath(string sourceUrl)
         {
-            var accountHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAddress);
+            var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
             var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ThumbExt;
             var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.ThumbDirectory}";
             if (!Directory.Exists(cachePath))
@@ -20,7 +21,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static bool ThumbInCache(string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 return File.Exists(fqPath);
@@ -31,7 +32,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static void ThumbToCache(Bitmap thumb, string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 thumb.Save(fqPath);
@@ -40,7 +41,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static Bitmap ThumbFromCache(string sourceUrl)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableThumbCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableThumbCaching)
             {
                 var fqPath = ThumbCachePath(sourceUrl);
                 return (Bitmap)Image.FromFile(fqPath);

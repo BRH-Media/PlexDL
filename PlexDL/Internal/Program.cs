@@ -29,7 +29,7 @@ namespace PlexDL.Internal
             CheckDebug(arr);
 
             //set default values
-            //GlobalStaticVars.PlexDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
+            //ObjectProvider.PlexProviderDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
 
             //check if the %APPDATA%\.plexdl folder is present. If it isn't then create it.
             CheckAppDataFolder();
@@ -133,8 +133,8 @@ namespace PlexDL.Internal
 
         private static void CheckAppDataFolder()
         {
-            if (!Directory.Exists(GlobalStaticVars.PlexDlAppData))
-                Directory.CreateDirectory(GlobalStaticVars.PlexDlAppData);
+            if (!Directory.Exists(Strings.PlexDlAppData))
+                Directory.CreateDirectory(Strings.PlexDlAppData);
         }
     }
 }

@@ -7,6 +7,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.SearchFramework
@@ -75,8 +76,8 @@ namespace PlexDL.Common.SearchFramework
 
                 if (!copyToGlobalTables) return true;
 
-                GlobalTables.FilteredTable = filteredTable;
-                GlobalViews.FilteredViewTable = filteredView;
+                TableProvider.FilteredTable = filteredTable;
+                ViewProvider.FilteredViewTable = filteredView;
 
                 return true;
             }

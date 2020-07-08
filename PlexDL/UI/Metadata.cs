@@ -10,6 +10,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.UI
 {
@@ -199,7 +200,7 @@ namespace PlexDL.UI
             var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
 
             if (result == Resources.image_not_available_png_8) return result;
-            if (!GlobalStaticVars.Settings.Generic.AdultContentProtection) return result;
+            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
 
             return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
         }
@@ -260,7 +261,7 @@ namespace PlexDL.UI
 
         private void ItmPvs_Click(object sender, EventArgs e)
         {
-            PvsLauncher.LaunchPvs(StreamingContent, GlobalTables.ReturnCorrectTable());
+            PvsLauncher.LaunchPvs(StreamingContent, TableProvider.ReturnCorrectTable());
         }
 
         private void ItmBrowser_Click(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using PlexDL.Common.Globals;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Logging
 {
@@ -14,7 +15,7 @@ namespace PlexDL.Common.Logging
         {
             try
             {
-                if (!GlobalStaticVars.Settings.Logging.EnableGenericLogDel) return;
+                if (!ObjectProvider.Settings.Logging.EnableGenericLogDel) return;
 
                 var finalEntry = $"[General] {logEntry}";
 
@@ -25,7 +26,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    _logIncrementer.ToString(), GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
+                    _logIncrementer.ToString(), Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
                 LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
@@ -42,7 +43,7 @@ namespace PlexDL.Common.Logging
         {
             try
             {
-                if (!GlobalStaticVars.Settings.Logging.EnableCacheLogDel) return;
+                if (!ObjectProvider.Settings.Logging.EnableCacheLogDel) return;
 
                 var finalEntry = $"[Caching] {eventEntry}";
 
@@ -52,7 +53,7 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    GlobalStaticVars.CurrentSessionId, reqUrl, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
+                    Strings.CurrentSessionId, reqUrl, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
                 LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
@@ -72,7 +73,7 @@ namespace PlexDL.Common.Logging
                 ////Options weren't too great performance-wise, so I ended up using a stack-walk.
                 ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
                 ////The in-app setting to prevent this method from firing.
-                if (!GlobalStaticVars.Settings.Logging.EnableExceptionLogDel) return;
+                if (!ObjectProvider.Settings.Logging.EnableExceptionLogDel) return;
 
                 var finalMessage = $"[Exception] {message}";
 
@@ -82,11 +83,11 @@ namespace PlexDL.Common.Logging
                 {
                     "SessionID", "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType"
                 };
-                string[] LogEntry =
+                string[] logEntry =
                 {
-                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function, type
+                    Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function, type
                 };
-                LogWriter.LogDelWriter("ExceptionLog.logdel", headers, LogEntry);
+                LogWriter.LogDelWriter("ExceptionLog.logdel", headers, logEntry);
             }
             catch
             {
@@ -98,17 +99,17 @@ namespace PlexDL.Common.Logging
         {
             try
             {
-                if (!GlobalStaticVars.Settings.Logging.EnableXmlTransactionLogDel) return;
+                if (!ObjectProvider.Settings.Logging.EnableXmlTransactionLogDel) return;
 
                 string[] headers =
                 {
                     "SessionID","DateTime", "Uri", "StatusCode"
                 };
-                string[] LogEntry =
+                string[] logEntry =
                 {
-                    GlobalStaticVars.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), uri, statusCode
+                    Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), uri, statusCode
                 };
-                LogWriter.LogDelWriter("TransactionLog.logdel", headers, LogEntry);
+                LogWriter.LogDelWriter("TransactionLog.logdel", headers, logEntry);
             }
             catch
             {

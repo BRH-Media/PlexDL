@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using PlexDL.Common.Globals.Providers;
 using Directory = System.IO.Directory;
 
 namespace PlexDL.Common.Caching.Handlers
@@ -13,7 +14,7 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ServerCachePath(string accountToken)
         {
-            var accountHash = MD5Helper.CalculateMd5Hash(GlobalStaticVars.Settings.ConnectionInfo.PlexAccountToken);
+            var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
             var fileName = accountHash + CachingFileExt.ServerListExt;
             var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}";
             if (!Directory.Exists(cachePath))
@@ -24,7 +25,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static bool ServerInCache(string accountToken)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 var fqPath = ServerCachePath(accountToken);
                 return File.Exists(fqPath);
@@ -37,7 +38,7 @@ namespace PlexDL.Common.Caching.Handlers
         {
             try
             {
-                if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
+                if (ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
                 {
                     var fqPath = ServerCachePath(accountToken);
                     var serialiser = new XmlSerializer(typeof(List<Server>));
@@ -54,7 +55,7 @@ namespace PlexDL.Common.Caching.Handlers
 
         public static List<Server> ServerFromCache(string accountToken)
         {
-            if (GlobalStaticVars.Settings.CacheSettings.Mode.EnableServerCaching)
+            if (ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
             {
                 var fqPath = ServerCachePath(accountToken);
                 var serialiser = new XmlSerializer(typeof(List<Server>));

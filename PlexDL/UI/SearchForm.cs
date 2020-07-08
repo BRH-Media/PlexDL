@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
+using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -81,7 +82,7 @@ namespace PlexDL.UI
             if (cbxSearchColumn.Items.Count <= 0) return;
             var matched = false;
 
-            foreach (var c in GlobalStaticVars.Settings.Generic.SearchColumnPriority)
+            foreach (var c in ObjectProvider.Settings.Generic.SearchColumnPriority)
                 if (cbxSearchColumn.Items.Contains(c))
                 {
                     cbxSearchColumn.SelectedItem = c;
