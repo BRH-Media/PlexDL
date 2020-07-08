@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\AuthObject.cs" />
+    <Compile Include="Auth\Enums\AuthResult.cs" />
     <Compile Include="AuthRoutine.cs" />
     <Compile Include="Auth\PlexPins.cs" />
     <Compile Include="Endpoints.cs" />
@@ -60,7 +62,7 @@
     <Compile Include="LoginWindow.Designer.cs">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlexDefs.cs" />
+    <Compile Include="PlexDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenManager.cs" />
   </ItemGroup>
@@ -90,5 +92,6 @@
       <Name>UIHelpers</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

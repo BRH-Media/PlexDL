@@ -163,17 +163,17 @@ namespace PlexDL.WaitWindow
             this.ProgressMain.OuterMargin = -25;
             this.ProgressMain.OuterWidth = 26;
             this.ProgressMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ProgressMain.ProgressWidth = 25;
+            this.ProgressMain.ProgressWidth = 18;
             this.ProgressMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.ProgressMain.Size = new System.Drawing.Size(108, 108);
             this.ProgressMain.StartAngle = 270;
             this.ProgressMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.ProgressMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.ProgressMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.ProgressMain.SubscriptText = ".23";
+            this.ProgressMain.SubscriptText = "";
             this.ProgressMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.ProgressMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            this.ProgressMain.SuperscriptText = "°C";
+            this.ProgressMain.SuperscriptText = "";
             this.ProgressMain.TabIndex = 3;
             this.ProgressMain.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.ProgressMain.Value = 68;
@@ -194,6 +194,8 @@ namespace PlexDL.WaitWindow
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Working";
             this.ResumeLayout(false);
+            this.Load += this.WaitWindowGUI_Load;
+            this.FormClosing += this.WaitWindowGUI_FormClosing;
         }
 
         private void WaitWindowGUI_Load(object sender, EventArgs e)
@@ -206,8 +208,6 @@ namespace PlexDL.WaitWindow
         {
             tmrDots.Stop();
         }
-
-        
 
         private void TmrDots_Tick(object sender, EventArgs e)
         {

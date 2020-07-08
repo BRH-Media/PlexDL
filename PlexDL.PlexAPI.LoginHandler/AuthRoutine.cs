@@ -1,4 +1,5 @@
 ﻿using PlexDL.PlexAPI.LoginHandler.Auth;
+using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
 using PlexDL.WaitWindow;
 using System.Windows.Forms;
 
@@ -6,7 +7,7 @@ namespace PlexDL.PlexAPI.LoginHandler
 {
     public static class AuthRoutine
     {
-        public static string GetAuthToken()
+        public static AuthObject GetAuthToken()
         {
             var stored = TokenManager.StoredToken();
 
@@ -26,20 +27,20 @@ namespace PlexDL.PlexAPI.LoginHandler
                             {
                                 var t = frm.Result.AuthToken;
                                 TokenManager.SaveToken(t);
-                                return t;
+                                return new AuthObject { Token = t, Result = AuthResult.Success };
                             }
-                            else
-                                return null;
+
+                            return new AuthObject { Result = AuthResult.Failed };
                         }
-                        else
-                            return null;
+
+                        return new AuthObject { Result = AuthResult.Failed };
                     }
-                    else
-                        return null;
+
+                    return new AuthObject { Result = AuthResult.Cancelled };
                 }
             }
-            else
-                return stored;
+
+            return new AuthObject { Token = stored, Result = AuthResult.Success }; ;
         }
 
         private static PlexPins NewInit()

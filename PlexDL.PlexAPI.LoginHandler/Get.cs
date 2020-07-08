@@ -11,10 +11,10 @@ namespace PlexDL.PlexAPI.LoginHandler
             client.Timeout = -1;
             var request = new RestRequest(method);
             request.AddHeader("Accept", "application/json");
-            request.AddHeader("X-Plex-Product", PlexDefs.Product);
-            request.AddHeader("X-Plex-Version", PlexDefs.Version);
-            request.AddHeader("X-Plex-Client-Identifier", PlexDefs.ClientID);
-            request.AddHeader("X-Plex-Model", PlexDefs.Model);
+            request.AddHeader("X-Plex-Product", PlexDefinitions.Product);
+            request.AddHeader("X-Plex-Version", PlexDefinitions.Version);
+            request.AddHeader("X-Plex-Client-Identifier", PlexDefinitions.ClientId);
+            request.AddHeader("X-Plex-Model", PlexDefinitions.Model);
             IRestResponse response = client.Execute(request);
 
             // if string with JSON data is not empty, deserialize it to class and return its instance

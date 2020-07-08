@@ -2553,15 +2553,7 @@ namespace PlexDL.UI
 
         private void ItmClearMyToken_Click(object sender, EventArgs e)
         {
-            if (TokenManager.IsTokenStored)
-            {
-                if (TokenManager.ClearStored())
-                    UIMessages.Info(@"Successfully cleared your Plex.tv token. It will be reinstated once you login via the Server Manager.");
-                else
-                    UIMessages.Error(@"Couldn't remove your token, because an unknown error occured. Please delete it manually, and report this issue via GitHub.");
-            }
-            else
-                UIMessages.Error(@"Couldn't remove your token, because PlexDL has not saved it yet.");
+            TokenManager.TokenClearProcedure();
         }
     }
 }

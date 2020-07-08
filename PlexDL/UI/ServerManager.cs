@@ -9,6 +9,7 @@ using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures;
 using PlexDL.PlexAPI;
 using PlexDL.PlexAPI.LoginHandler;
+using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -435,19 +436,39 @@ namespace PlexDL.UI
                 if (ConnectionChecker.CheckForInternetConnection())
                 {
                     var auth = AuthRoutine.GetAuthToken();
-                    if (auth == null)
+
+                    var r = auth.Result;
+
+                    switch (r)
                     {
-                        UIMessages.Error(@"Login failed: null result");
-                    }
-                    else
-                    {
-                        if (ApplyToken(auth))
-                        {
-                            UIMessages.Info(@"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.", @"Success");
-                            LoadServers(true);
-                        }
-                        else
-                            UIMessages.Error(@"An unknown error occurred");
+                        case AuthResult.Success:
+                            if (ApplyToken(auth.Token))
+                            {
+                                UIMessages.Info(@"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.", @"Success");
+                                LoadServers(true);
+                            }
+                            else
+                                UIMessages.Error(@"An unknown error occurred; we couldn't apply your account token.");
+
+                            break;
+
+                        case AuthResult.Cancelled: //nothing
+                            break;
+
+                        case AuthResult.Failed: //alert the user to the failure
+                            UIMessages.Error(@"Failed to apply your account token; the licensing authority didn't authorise the transaction or values were not valid.");
+                            break;
+
+                        case AuthResult.Error: //alert the user to the error
+                            UIMessages.Error(@"An unknown error occurred; we couldn't apply your account token.");
+                            break;
+
+                        case AuthResult.Invalid: //alert the user
+                            UIMessages.Error(@"Failed to apply your account token; details were invalid.");
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
                 else

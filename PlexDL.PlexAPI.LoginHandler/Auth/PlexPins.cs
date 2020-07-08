@@ -29,7 +29,7 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth
         }
 
         public string PinEndpointUrl => $"https://plex.tv/api/v2/pins/{Id}";
-        public string LoginInterfaceUrl => $"https://app.plex.tv/auth/#!?clientID={PlexDefs.ClientID}&context[device][version]=Plex OAuth&context[device][model]=Plex OAuth&code={Code}&context[device][product]=Plex Web";
+        public string LoginInterfaceUrl => $"https://app.plex.tv/auth/#!?clientID={PlexDefinitions.ClientId}&context[device][version]=Plex OAuth&context[device][model]=Plex OAuth&code={Code}&context[device][product]=Plex Web";
 
         [JsonProperty("id")]
         public long Id { get; set; }

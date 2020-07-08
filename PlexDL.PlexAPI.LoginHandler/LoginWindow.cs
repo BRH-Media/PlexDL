@@ -1,6 +1,7 @@
 ﻿using PlexDL.PlexAPI.LoginHandler.Auth;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -10,9 +11,9 @@ namespace PlexDL.PlexAPI.LoginHandler
     {
         public PlexPins PlexRequestPin { get; set; } = null;
 
-        public bool Success { get; set; } = false;
+        public bool Success { get; set; }
 
-        public PlexPins Result { get; set; } = null;
+        public PlexPins Result { get; set; }
 
         public string ChangeToBrowser = @"Press 'OK' once you've
 logged in with your
@@ -29,10 +30,10 @@ browser";
         {
             var dots = pbMain.Text;
             var len = dots.Length;
-            var lim = 3;
+            const int lim = 3;
             if (len < lim)
             {
-                dots += '.';
+                dots += '●';
             }
             else
             {
@@ -43,9 +44,9 @@ browser";
 
         private void LaunchBrowser()
         {
-            var endp = PlexRequestPin.LoginInterfaceUrl;
+            var endpoint = PlexRequestPin.LoginInterfaceUrl;
             //show in default browser
-            Process.Start(endp);
+            Process.Start(endpoint);
         }
 
         private void LoginWindow_Load(object sender, EventArgs e)
@@ -54,15 +55,16 @@ browser";
             LaunchBrowser();
         }
 
-        private void BtnOK_Click(object sender, EventArgs e)
+        private async void BtnOK_Click(object sender, EventArgs e)
         {
             try
             {
                 //change UI accordingly
                 lblInstructions.Text = TalkingToPlex;
+                btnOK.Enabled = false; //so the user can't click it twice
 
                 //try and grab the new token
-                var newPin = PlexRequestPin?.FromPinEndpoint();
+                var newPin = await Task.Run(() => PlexRequestPin?.FromPinEndpoint()); //run this on a background thread (avoids UI lockup)
 
                 //it's only successful if a token was actually provided
                 if (newPin != null)
