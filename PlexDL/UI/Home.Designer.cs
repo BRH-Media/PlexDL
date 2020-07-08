@@ -118,6 +118,7 @@ namespace PlexDL.UI
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmClearMyToken = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContent = new System.Windows.Forms.ToolStripMenuItem();
             this.itmMetadata = new System.Windows.Forms.ToolStripMenuItem();
@@ -153,7 +154,7 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmClearMyToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOpenDataFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -1002,6 +1003,7 @@ namespace PlexDL.UI
             this.itmSaveProfile,
             this.itmExportObj,
             this.itmSetDlDirectory,
+            this.itmOpenDataFolder,
             this.itmCleanupAllData,
             this.itmSettings});
             this.itmFile.Name = "itmFile";
@@ -1070,6 +1072,13 @@ namespace PlexDL.UI
             this.itmServerManager.Size = new System.Drawing.Size(198, 22);
             this.itmServerManager.Text = "Server Manager";
             this.itmServerManager.Click += new System.EventHandler(this.ItmServerManager_Click);
+            // 
+            // itmClearMyToken
+            // 
+            this.itmClearMyToken.Name = "itmClearMyToken";
+            this.itmClearMyToken.Size = new System.Drawing.Size(198, 22);
+            this.itmClearMyToken.Text = "Clear My Token";
+            this.itmClearMyToken.Click += new System.EventHandler(this.ItmClearMyToken_Click);
             // 
             // itmDisconnect
             // 
@@ -1333,12 +1342,12 @@ namespace PlexDL.UI
             this.itmDownloadThisAlbum.Text = "Download This Album";
             this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
             // 
-            // itmClearMyToken
+            // itmOpenDataFolder
             // 
-            this.itmClearMyToken.Name = "itmClearMyToken";
-            this.itmClearMyToken.Size = new System.Drawing.Size(198, 22);
-            this.itmClearMyToken.Text = "Clear My Token";
-            this.itmClearMyToken.Click += new System.EventHandler(this.ItmClearMyToken_Click);
+            this.itmOpenDataFolder.Name = "itmOpenDataFolder";
+            this.itmOpenDataFolder.Size = new System.Drawing.Size(198, 22);
+            this.itmOpenDataFolder.Text = "Open Data Folder";
+            this.itmOpenDataFolder.Click += new System.EventHandler(this.ItmOpenDataFolder_Click);
             // 
             // Home
             // 
@@ -1508,6 +1517,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmDGVDownloadThisMovie;
         private ToolStripMenuItem itmDGVViewMovieDownloadLink;
         private ToolStripMenuItem itmClearMyToken;
+        private ToolStripMenuItem itmOpenDataFolder;
     }
 }
 

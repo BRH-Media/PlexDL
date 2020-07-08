@@ -2555,5 +2555,10 @@ namespace PlexDL.UI
         {
             TokenManager.TokenClearProcedure();
         }
+
+        private void ItmOpenDataFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start(GlobalStaticVars.PlexDlAppData);
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace PlexDL.Common.Globals
         public static string UserAppData { get; set; } =
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        public static string PlexDlAppData { get; set; } = $"{UserAppData}\\.plexdl";
+        public static string PlexDlAppData { get; set; } = $@"{UserAppData}\.plexdl";
 
         public static string GetToken()
         {
