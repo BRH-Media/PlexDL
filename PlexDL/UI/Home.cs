@@ -2544,10 +2544,30 @@ namespace PlexDL.UI
 
         private void ItmCast_Click(object sender, EventArgs e)
         {
+            DoCast();
+        }
+
+        private void DoCast()
+        {
             if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
                 Cast.TryCast(ObjectFromSelection());
             else if (dgvTracks.SelectedRows.Count == 1)
                 UIMessages.Warning(@"Casting music is not yet supported");
+        }
+
+        private void ItmContentCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+
+        private void ItmEpisodeCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+        
+        private void ItmTrackCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
         }
     }
 }

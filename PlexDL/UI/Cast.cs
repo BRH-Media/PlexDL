@@ -190,6 +190,7 @@ namespace PlexDL.UI
                             //set UI
                             btnCast.Enabled = true;
                             btnCast.Text = @"Stop";
+                            btnDiscover.Enabled = false;
                             btnPlayPause.Enabled = true;
                             btnPlayPause.Text = @"Play";
 
@@ -231,6 +232,7 @@ namespace PlexDL.UI
                 //set UI
                 btnCast.Enabled = false;
                 btnCast.Text = @"Stopping";
+                btnDiscover.Enabled = true;
                 btnPlayPause.Enabled = false;
                 btnPlayPause.Text = @"Play";
 
