@@ -11,6 +11,7 @@ namespace PlexDL.Common.Structures.Plex
     public class PlexObject
     {
         public DownloadInfo StreamInformation { get; set; } = new DownloadInfo();
+        public string ApiUri { get; set; } = @""; //e.g. /library/metadata/<UNIQUE_NUMERIC_ID>
         public int StreamIndex { get; set; } = 0;
         public Resolution StreamResolution { get; set; } = new Resolution();
         public string ContentGenre { get; set; } = "";

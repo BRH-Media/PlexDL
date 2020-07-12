@@ -7,12 +7,12 @@ namespace PlexDL.Common.Structures
     public static class DownloadLayout
     {
         public static readonly int PlexStandardLayout = 0;
-        public static readonly int PlexDLLayout = 1;
+        public static readonly int PlexDlLayout = 1;
         public static readonly int NoLayout = 2;
 
-        public static TVShowDirectoryLayout CreateDownloadLayoutTVShow(PlexTvShow show, ApplicationOptions settings, int layout)
+        public static TvShowDirectoryLayout CreateDownloadLayoutTvShow(PlexTvShow show, ApplicationOptions settings, int layout)
         {
-            var dirLayout = new TVShowDirectoryLayout();
+            var dirLayout = new TvShowDirectoryLayout();
             if (layout == PlexStandardLayout)
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\TV\";

@@ -114,6 +114,7 @@ namespace PlexDL.UI
             this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSetDlDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOpenDataFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCleanupAllData = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,7 +155,7 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmOpenDataFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCast = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -1041,6 +1042,13 @@ namespace PlexDL.UI
             this.itmSetDlDirectory.Text = "Set Download Directory";
             this.itmSetDlDirectory.Click += new System.EventHandler(this.ItmSetDlDirectory_Click);
             // 
+            // itmOpenDataFolder
+            // 
+            this.itmOpenDataFolder.Name = "itmOpenDataFolder";
+            this.itmOpenDataFolder.Size = new System.Drawing.Size(198, 22);
+            this.itmOpenDataFolder.Text = "Open Data Folder";
+            this.itmOpenDataFolder.Click += new System.EventHandler(this.ItmOpenDataFolder_Click);
+            // 
             // itmCleanupAllData
             // 
             this.itmCleanupAllData.Name = "itmCleanupAllData";
@@ -1093,7 +1101,8 @@ namespace PlexDL.UI
             // 
             this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmMetadata,
-            this.itmStartSearch});
+            this.itmStartSearch,
+            this.itmCast});
             this.itmContent.Name = "itmContent";
             this.itmContent.Size = new System.Drawing.Size(62, 20);
             this.itmContent.Text = "Content";
@@ -1102,7 +1111,7 @@ namespace PlexDL.UI
             // 
             this.itmMetadata.Name = "itmMetadata";
             this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
+            this.itmMetadata.Size = new System.Drawing.Size(180, 22);
             this.itmMetadata.Text = "Metadata";
             this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
             // 
@@ -1110,7 +1119,7 @@ namespace PlexDL.UI
             // 
             this.itmStartSearch.Name = "itmStartSearch";
             this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
+            this.itmStartSearch.Size = new System.Drawing.Size(180, 22);
             this.itmStartSearch.Text = "Start Search";
             this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
             // 
@@ -1342,12 +1351,12 @@ namespace PlexDL.UI
             this.itmDownloadThisAlbum.Text = "Download This Album";
             this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
             // 
-            // itmOpenDataFolder
+            // itmCast
             // 
-            this.itmOpenDataFolder.Name = "itmOpenDataFolder";
-            this.itmOpenDataFolder.Size = new System.Drawing.Size(198, 22);
-            this.itmOpenDataFolder.Text = "Open Data Folder";
-            this.itmOpenDataFolder.Click += new System.EventHandler(this.ItmOpenDataFolder_Click);
+            this.itmCast.Name = "itmCast";
+            this.itmCast.Size = new System.Drawing.Size(180, 22);
+            this.itmCast.Text = "Cast";
+            this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
             // 
             // Home
             // 
@@ -1518,6 +1527,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmDGVViewMovieDownloadLink;
         private ToolStripMenuItem itmClearMyToken;
         private ToolStripMenuItem itmOpenDataFolder;
+        private ToolStripMenuItem itmCast;
     }
 }
 

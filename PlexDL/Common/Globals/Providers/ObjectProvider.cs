@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using libbrhscgui.Components;
+﻿using libbrhscgui.Components;
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.Globals.Providers
 {

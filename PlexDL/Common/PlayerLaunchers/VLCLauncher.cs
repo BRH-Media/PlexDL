@@ -20,8 +20,8 @@ namespace PlexDL.Common.PlayerLaunchers
 
                 var p = new Process();
                 var c = new SVarController();
-                var vlc = ObjectProvider.Settings.Player.VLCMediaPlayerPath;
-                var arg = ObjectProvider.Settings.Player.VLCMediaPlayerArgs;
+                var vlc = ObjectProvider.Settings.Player.VlcMediaPlayerPath;
+                var arg = ObjectProvider.Settings.Player.VlcMediaPlayerArgs;
                 if (VlcInstalled())
                 {
                     c.Input = arg;
@@ -49,7 +49,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     var baseName = Path.GetFileName(fileName);
                     if (baseName == "vlc.exe")
                     {
-                        ObjectProvider.Settings.Player.VLCMediaPlayerPath = fileName;
+                        ObjectProvider.Settings.Player.VlcMediaPlayerPath = fileName;
                         LaunchVlc(stream);
                     }
                     else
@@ -67,7 +67,7 @@ namespace PlexDL.Common.PlayerLaunchers
 
         public static bool VlcInstalled()
         {
-            return File.Exists(ObjectProvider.Settings.Player.VLCMediaPlayerPath);
+            return File.Exists(ObjectProvider.Settings.Player.VlcMediaPlayerPath);
         }
     }
 }

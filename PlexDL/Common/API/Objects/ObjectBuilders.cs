@@ -1,9 +1,8 @@
 ﻿using PlexDL.Common.API.Metadata;
-using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.API.Objects
@@ -21,29 +20,30 @@ namespace PlexDL.Common.API.Objects
                 var metadata = XmlMetadataGatherers.GetEpisodeMetadata(index);
 
                 LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
-                if (Methods.PlexXmlValid(metadata))
+                if (Methods.PlexXmlValid(metadata.Xml))
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
                         LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
-                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
+                        obj.ApiUri = metadata.ApiUri;
+                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata.Xml);
                         obj.StreamInformation = dlInfo;
-                        obj.Season = XmlMetadataParsers.GetParentTitle(metadata);
+                        obj.Season = XmlMetadataParsers.GetParentTitle(metadata.Xml);
                         obj.EpisodesInSeason = TableProvider.EpisodesTable.Rows.Count;
                         //this is in 0-based format. This means the lowest number is 0 instead of 1.
                         //we need to display "Episode 1" instead of "Episode 0" for the first episode,
                         //so bump the index by 1.
                         obj.EpisodeNumber = index + 1;
-                        obj.TvShowName = XmlMetadataParsers.GetGrandparentTitle(metadata);
-                        obj.StreamResolution = XmlMetadataParsers.GetContentResolution(metadata);
-                        obj.Actors = XmlMetadataParsers.GetActorsFromMetadata(metadata);
+                        obj.TvShowName = XmlMetadataParsers.GetGrandparentTitle(metadata.Xml);
+                        obj.StreamResolution = XmlMetadataParsers.GetContentResolution(metadata.Xml);
+                        obj.Actors = XmlMetadataParsers.GetActorsFromMetadata(metadata.Xml);
                         obj.StreamIndex = index;
-                        obj.Synopsis = XmlMetadataParsers.GetContentSynopsis(metadata);
+                        obj.Synopsis = XmlMetadataParsers.GetContentSynopsis(metadata.Xml);
                     }
                     else
                     {
@@ -82,22 +82,23 @@ namespace PlexDL.Common.API.Objects
                 var metadata = XmlMetadataGatherers.GetContentMetadata(index);
 
                 LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
-                if (Methods.PlexXmlValid(metadata))
+                if (Methods.PlexXmlValid(metadata.Xml))
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
                         LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
-                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
+                        obj.ApiUri = metadata.ApiUri;
+                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata.Xml);
                         obj.StreamInformation = dlInfo;
-                        obj.StreamResolution = XmlMetadataParsers.GetContentResolution(metadata);
-                        obj.Actors = XmlMetadataParsers.GetActorsFromMetadata(metadata);
+                        obj.StreamResolution = XmlMetadataParsers.GetContentResolution(metadata.Xml);
+                        obj.Actors = XmlMetadataParsers.GetActorsFromMetadata(metadata.Xml);
                         obj.StreamIndex = index;
-                        obj.Synopsis = XmlMetadataParsers.GetContentSynopsis(metadata);
+                        obj.Synopsis = XmlMetadataParsers.GetContentSynopsis(metadata.Xml);
                     }
                     else
                     {
@@ -136,25 +137,26 @@ namespace PlexDL.Common.API.Objects
                 var metadata = XmlMetadataGatherers.GetTrackMetadata(index);
 
                 LoggingHelpers.RecordGeneralEntry(@"Checking XML validity");
-                if (Methods.PlexXmlValid(metadata))
+                if (Methods.PlexXmlValid(metadata.Xml))
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
                     //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
 
                     if (dlInfo != null)
                     {
                         LoggingHelpers.RecordGeneralEntry(@"Assembling Object");
 
-                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata);
+                        obj.ApiUri = metadata.ApiUri;
+                        obj.ContentGenre = XmlMetadataParsers.GetContentGenre(metadata.Xml);
                         obj.StreamInformation = dlInfo;
                         obj.StreamResolution = new Structures.Resolution(); //audio doesn't have video-type resolution
                         obj.Actors = new System.Collections.Generic.List<PlexActor>(); //Plex audio does not contain the "<Role>" tag
                         obj.StreamIndex = index;
-                        obj.Album = XmlMetadataParsers.GetParentTitle(metadata);
-                        obj.Artist = XmlMetadataParsers.GetGrandparentTitle(metadata);
+                        obj.Album = XmlMetadataParsers.GetParentTitle(metadata.Xml);
+                        obj.Artist = XmlMetadataParsers.GetGrandparentTitle(metadata.Xml);
                         obj.Synopsis = "Auditory Content"; //Plex audio does not contain the "summary" attribute
                     }
                     else

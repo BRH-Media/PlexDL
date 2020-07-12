@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Enums;
+﻿using PlexDL.Common.API.Metadata.Objects;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using System;
@@ -10,9 +11,10 @@ namespace PlexDL.Common.API.Metadata
 {
     public static class XmlMetadataHelpers
     {
-        public static XmlDocument GetMetadata(DataRow result, string msgNoKey = "Error occurred whilst getting the unique content key",
+        public static XmlMetadata GetMetadata(DataRow result, string msgNoKey = "Error occurred whilst getting the unique content key",
             string logNoKeyMsg = "Error occurred whilst getting the unique content key", string logNoKeyType = "NoUnqKeyError", string column = "key")
         {
+            var obj = new XmlMetadata();
             XmlDocument reply = null;
 
             var key = "";
@@ -37,7 +39,9 @@ namespace PlexDL.Common.API.Metadata
                 reply = XmlGet.GetXmlTransaction(uri);
             }
 
-            return reply;
+            obj.Xml = reply;
+            obj.ApiUri = $"/{key}";
+            return obj;
         }
 
         public static string GetContentAttribute(XmlDocument metadata, ContentType type, string attributeName, string defaultValue = @"Unknown")

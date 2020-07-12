@@ -6,11 +6,11 @@ namespace PlexDL.Common.Structures.AppOptions.Player
     {
         [DisplayName("VLC Arguments")]
         [Description("When launching VLC Media Player, PlexDL will execute these arguments.")]
-        public string VLCMediaPlayerArgs { get; set; } = @"%FILE% --meta-title=%TITLE%";
+        public string VlcMediaPlayerArgs { get; set; } = @"%FILE% --meta-title=%TITLE%";
 
         [DisplayName("VLC Path")]
         [Description("The path to \"vlc.exe\"")]
-        public string VLCMediaPlayerPath { get; set; } = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
+        public string VlcMediaPlayerPath { get; set; } = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
 
         [DisplayName("Skip Forward Step")]
         [Description("The number of seconds to skip forward by in PVS Player.")]
@@ -36,7 +36,7 @@ namespace PlexDL.Common.Structures.AppOptions.Player
                      "[1] - VLC Media Player\n" +
                      "[2] - Default Browser\n" +
                      "[3] - MenuSelector")]
-        public int PlaybackEngine { get; set; } = PlaybackMode.MenuSelector;
+        public PlaybackMode PlaybackEngine { get; set; } = PlaybackMode.MenuSelector;
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

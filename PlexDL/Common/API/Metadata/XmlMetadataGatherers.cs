@@ -1,150 +1,150 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using System;
-using System.Xml;
+using PlexDL.Common.API.Metadata.Objects;
 
 namespace PlexDL.Common.API.Metadata
 {
     public static class XmlMetadataGatherers
     {
-        public static XmlDocument GetSeriesXml(int index)
+        public static XmlMetadata GetSeriesXml(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting series list");
 
                 var result = RowGet.GetDataRowContent(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetSeriesListError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetAlbumsXml(int index)
+        public static XmlMetadata GetAlbumsXml(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting album list");
 
                 var result = RowGet.GetDataRowContent(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetAlbumListError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetEpisodeXml(int index)
+        public static XmlMetadata GetEpisodeXml(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting episodes list");
 
                 var result = RowGet.GetDataRowSeries(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetEpisodesListError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetTracksXml(int index)
+        public static XmlMetadata GetTracksXml(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting track list");
 
                 var result = RowGet.GetDataRowAlbums(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetTrackListError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetContentMetadata(int index)
+        public static XmlMetadata GetContentMetadata(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting movie metadata");
 
                 var result = RowGet.GetDataRowContent(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetMovieMetadataError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetEpisodeMetadata(int index)
+        public static XmlMetadata GetEpisodeMetadata(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting episode metadata");
 
                 var result = RowGet.GetDataRowEpisodes(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetEpisodeMetadataError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
 
-        public static XmlDocument GetTrackMetadata(int index)
+        public static XmlMetadata GetTrackMetadata(int index)
         {
-            XmlDocument doc;
+            XmlMetadata obj;
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Getting track metadata");
 
                 var result = RowGet.GetDataRowTracks(index);
 
-                doc = XmlMetadataHelpers.GetMetadata(result);
+                obj = XmlMetadataHelpers.GetMetadata(result);
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "GetTrackMetadataError");
-                doc = new XmlDocument();
+                obj = new XmlMetadata();
             }
 
-            return doc;
+            return obj;
         }
     }
 }
