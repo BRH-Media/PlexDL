@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Has (active components) properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Has (active components) properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Has Class)
+        #endregion
 
         internal Has(Player player)
         {
@@ -22,7 +22,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media contains audio.
+        /// Gets a value that indicates whether the playing media contains audio.
         /// </summary>
         public bool Audio
         {
@@ -34,7 +34,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has audio output peak level information (by subscribing to the Player.Events.MediaPeakLevelChanged event).
+        /// Gets a value that indicates whether the player has audio output peak level information (by subscribing to the Player.Events.MediaPeakLevelChanged event).
         /// </summary>
         public bool AudioPeakLevels
         {
@@ -46,7 +46,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media contains video.
+        /// Gets a value that indicates whether the playing media contains video.
         /// </summary>
         public bool Video
         {
@@ -58,7 +58,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has a display overlay.
+        /// Gets a value that indicates whether the player has a display overlay.
         /// </summary>
         public bool Overlay
         {
@@ -70,7 +70,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has one or more display clones.
+        /// Gets a value that indicates whether the player has one or more display clones.
         /// </summary>
         public bool DisplayClones
         {
@@ -82,7 +82,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media has active subtitles.
+        /// Gets a value that indicates whether the playing media has active subtitles.
         /// </summary>
         public bool Subtitles
         {
@@ -94,7 +94,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has one or more taskbar progress indicators.
+        /// Gets a value that indicates whether the player has one or more taskbar progress indicators.
         /// </summary>
         public bool TaskbarProgress
         {
@@ -106,7 +106,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has a custom shaped display window.
+        /// Gets a value that indicates whether the player has a custom shaped display window.
         /// </summary>
         public bool DisplayShape
         {
@@ -118,7 +118,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing media (including paused media). See also: Player.Media.SourceType.
+        /// Gets a value that indicates whether the player is playing media (including paused media). See also: Player.Media.SourceType.
         /// </summary>
         public bool Media
         {
@@ -130,7 +130,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing an image (including paused webcam). See also: Player.Media.SourceType.
+        /// Gets a value that indicates whether the player is playing an image (including paused webcam). See also: Player.Media.SourceType.
         /// </summary>
         public bool Image
         {
@@ -142,7 +142,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing a webcam (including paused webcam). See also: Player.Media.SourceType.
+        /// Gets a value that indicates whether the player is playing a webcam (including paused webcam). See also: Player.Media.SourceType and Player.Media.SourceCategory.
         /// </summary>
         public bool Webcam
         {
@@ -154,7 +154,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing a live stream (including paused live stream). See also: Player.Media.SourceType.
+        /// Gets a value that indicates whether the player is playing a webcam with audio (including paused webcam). See also: Player.Media.SourceType and Player.Media.SourceCategory.
+        /// </summary>
+        public bool WebcamWithAudio
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._webcamAggregated;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the player is playing a live stream (including paused stream). See also: Player.Media.SourceType and Player.Media.SourceCategory.
         /// </summary>
         public bool LiveStream
         {
@@ -166,7 +178,31 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is playing an audio input device (with or without a webcam - including paused audio input). See also: Player.Media.SourceType.
+        /// Gets a value that indicates whether the player is playing an online file (not live) stream (including paused stream). See also: Player.Media.SourceType and Player.Media.SourceCategory.
+        /// </summary>
+        public bool FileStream
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._fileStreamMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the player is playing an online (file or live) stream (including paused stream). See also: Player.Media.SourceType and Player.Media.SourceCategory.
+        /// </summary>
+        public bool OnlineStream
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._liveStreamMode | _base._fileStreamMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the player is playing an audio input device (without a webcam - including paused audio input). See also: Player.Media.SourceType and Player.Media.SourceCategory.
         /// </summary>
         public bool AudioInput
         {
@@ -178,7 +214,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has a display window.
+        /// Gets a value that indicates whether the player has a display window.
         /// </summary>
         public bool Display
         {

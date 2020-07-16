@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Position methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Position methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Position Class)
+        #endregion
 
         internal Position(Player player)
         {
@@ -262,5 +262,30 @@ namespace PlexDL.Player
             }
             else return _base.Step(frames);
         }
+
+        /// <summary>
+        /// Gets or sets a value that indicates the margin at the end of media files that is used to avoid stepping past the end of media files using the Player.Position.Step method. Values from 10 to 1000 milliseconds (default: 200).
+        /// </summary>
+        public int StepEOFMargin
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return (int)(_base._stepMargin * Player.TICKS_TO_MS);
+            }
+            set
+            {
+                if (value < 10 || value > 1000)
+                {
+                    _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+                }
+                else
+                {
+                    _base._stepMargin = value * Player.MS_TO_TICKS;
+                    _base._lastError = Player.NO_ERROR;
+                }
+            }
+        }
+
     }
 }

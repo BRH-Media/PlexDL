@@ -8,7 +8,7 @@ using System.Text;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Playlist methods of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Playlist methods of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -18,7 +18,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Playlist Class)
+        #endregion
 
         internal Playlist(Player player)
         {
@@ -103,7 +103,7 @@ namespace PlexDL.Player
         /// </summary>
         /// <param name="playlist">The path and file name of the playlist. Supported file types are .m3u and .m3u8.</param>
         /// <param name="fileNames">The list of media file names to save to the specified playlist file.</param>
-        /// <param name="relativePaths">A value indicating whether to use relative (to the playlist) paths with the saved file names.</param>
+        /// <param name="relativePaths">A value that indicates whether to use relative (to the playlist) paths with the saved file names.</param>
         public int Save(string playlist, string[] fileNames, bool relativePaths)
         {
             if (string.IsNullOrWhiteSpace(playlist) || fileNames == null || fileNames.Length == 0)

@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PlexDL.Player - Version 0.99
-    May 2020, The Netherlands
+    PVS.MediaPlayer - Version 0.99.1
+    July 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,12 +12,12 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PlexDL.Player library:
+    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PlexDL.Player library source code is divided into 8 files:
+    The PVS.MediaPlayer library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
@@ -44,15 +44,15 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
+    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    May 2020, The Netherlands
+    July 2020, The Netherlands
 
     ****************************************************************/
 
@@ -295,7 +295,7 @@ namespace PlexDL.Player
         #region Info Label - Main
 
         /// <summary>
-        /// Initializes a new instance of the PlexDL.Player.InfoLabel class.
+        /// Initializes a new instance of the PVS.MediaPlayer.InfoLabel class.
         /// </summary>
         public InfoLabel()
         {
@@ -631,7 +631,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Hides the infolabel.
         /// </summary>
-        /// <param name="fade">A value indicating whether a fade effect should be used to hide the infolabel.</param>
+        /// <param name="fade">A value that indicates whether a fade effect should be used to hide the infolabel.</param>
         public void Hide(bool fade)
         {
             if (il_InfoForm.Visible)
@@ -663,7 +663,7 @@ namespace PlexDL.Player
         #region Info Label - Active / Text / Size / Location / Image
 
         /// <summary>
-        /// Gets a value indicating whether the infolabel is active (visible).
+        /// Gets a value that indicates whether the infolabel is active (visible).
         /// </summary>
         public bool Active
         {
@@ -749,7 +749,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the infolabel is automatically resized to display the entire text default: true).
+        /// Gets or sets a value that indicates whether the infolabel is automatically resized to display the entire text default: true).
         /// </summary>
         public bool AutoSize
         {
@@ -1040,7 +1040,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the corners of the infolabel are rounded (default: false).
+        /// Gets or sets a value that indicates whether the corners of the infolabel are rounded (default: false).
         /// </summary>
         public bool RoundedCorners
         {
@@ -1196,7 +1196,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the background of the infolabel is transparent - default value: false.
+        /// Gets or sets a value that indicates whether the background of the infolabel is transparent - default value: false.
         /// </summary>
         public bool Transparent
         {

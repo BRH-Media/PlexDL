@@ -22,7 +22,7 @@ namespace PlexDL.Player
 
             // ITaskbarList3
             void SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
-            void SetProgressState(IntPtr hwnd, TaskbarStates state);
+            void SetProgressState(IntPtr hwnd, TaskbarProgressState state);
         }
 
         [ComImport()]

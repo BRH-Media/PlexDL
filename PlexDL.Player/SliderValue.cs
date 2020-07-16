@@ -13,13 +13,12 @@ namespace PlexDL.Player
         #region Fields (Slider Value Class))
 
         // standard .Net TrackBar track margins (pixels between border and begin/end of track)
-        private const int SLIDER_LEFT_MARGIN = 13;
+        private const int SLIDER_LEFT_MARGIN    = 13;
+        private const int SLIDER_RIGHT_MARGIN   = 14;
+        private const int SLIDER_TOP_MARGIN     = 13;
+        private const int SLIDER_BOTTOM_MARGIN  = 14;
 
-        private const int SLIDER_RIGHT_MARGIN = 14;
-        private const int SLIDER_TOP_MARGIN = 13;
-        private const int SLIDER_BOTTOM_MARGIN = 14;
-
-        #endregion Fields (Slider Value Class))
+        #endregion
 
         /// <summary>
         /// Returns the slider value at the specified location on the specified slider (trackbar).

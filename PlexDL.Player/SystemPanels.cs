@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the System Panels methods of the PlexDL.Player.Player class.
+    /// A class that is used to group together the System Panels methods of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (SystemPanels Class)
+        #endregion
 
         internal SystemPanels(Player player)
         {

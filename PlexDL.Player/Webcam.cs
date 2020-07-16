@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Webcam methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Webcam methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,9 +14,10 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Class)
 
-        private Player _base;
+        private Player          _base;
 
-        #endregion Fields (Webcam Class)
+        #endregion
+
 
         #region Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
@@ -26,7 +27,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether a webcam is playing (including paused webcam). Use the Player.Play method to play a webcam device.
+        /// Gets a value that indicates whether a webcam is playing (including paused webcam). Use the Player.Play method to play a webcam device.
         /// </summary>
         public bool Playing
         {
@@ -217,7 +218,7 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion Main / Playing / Device / AudioInput / Format / GetDevices / Update
+        #endregion
 
         #region Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
@@ -367,6 +368,7 @@ namespace PlexDL.Player
                     settings._whiteBalance = props._value;
                     settings._autoWhiteBalance = props._auto;
 
+
                     props = GetControlProperties(CameraControlProperty.Exposure);
                     settings._exposure = props._value;
                     settings._autoExposure = props._auto;
@@ -414,9 +416,9 @@ namespace PlexDL.Player
         /// Applies previously obtained webcam settings selectively to the playing webcam. See also: Player.Webcam.Settings.
         /// </summary>
         /// <param name="settings">The settings to be applied to the playing webcam. The settings must have been obtained earlier from the webcam, settings from other webcams cannot be used.</param>
-        /// <param name="format">A value indicating whether to apply the webcam video output format (size and fps).</param>
-        /// /// <param name="procAmp">A value indicating whether to apply the webcam video quality properties (such as brightness and contrast).</param>
-        /// <param name="control">A value indicating whether to apply the webcam camera control properties (such as focus and zoom).</param>
+        /// <param name="format">A value that indicates whether to apply the webcam video output format (size and fps).</param>
+        /// /// <param name="procAmp">A value that indicates whether to apply the webcam video quality properties (such as brightness and contrast).</param>
+        /// <param name="control">A value that indicates whether to apply the webcam camera control properties (such as focus and zoom).</param>
         public int ApplySettings(WebcamSettings settings, bool format, bool procAmp, bool control)
         {
             if (_base._webcamMode)
@@ -500,7 +502,8 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
+        #endregion
+
 
         #region Private - Get/Set Video Control Properties / ProcAmp Properties
 
@@ -619,7 +622,7 @@ namespace PlexDL.Player
             _base._lastError = result;
         }
 
-        #endregion Private - Get/Set Video Control Properties / ProcAmp Properties
+        #endregion
 
         #region Public - Get/Set Video Control Properties
 
@@ -695,7 +698,7 @@ namespace PlexDL.Player
             set { SetControlProperties(CameraControlProperty.Zoom, value); }
         }
 
-        #endregion Public - Get/Set Video Control Properties
+        #endregion
 
         #region Public - Get/SetVideo ProcAmp Properties
 
@@ -798,7 +801,8 @@ namespace PlexDL.Player
             set { SetProcAmpProperties(VideoProcAmpProperty.WhiteBalance, value); }
         }
 
-        #endregion Public - Get/SetVideo ProcAmp Properties
+        #endregion
+
 
         #region Private - Get Video Output Format
 
@@ -956,7 +960,7 @@ namespace PlexDL.Player
             return format;
         }
 
-        #endregion Private - Get Video Output Format
+        #endregion
 
         #region Public - Get Video Output Formats
 
@@ -985,7 +989,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Returns the available video output formats of the playing webcam that match the specified values. The formats can be used with the Player.Webcam.Format and Player.Play methods.
         /// </summary>
-        /// <param name="exact">A value indicating whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
+        /// <param name="exact">A value that indicates whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
         /// <param name="width">The (minimum) width of the video frames. Use -1 to ignore this parameter.</param>
         /// <param name="height">The (minimum) height of the video frames. Use -1 to ignore this parameter.</param>
         /// <param name="frameRate">The (minimum) frame rate of the video output format. Use -1 to ignore this parameter.</param>
@@ -1003,7 +1007,7 @@ namespace PlexDL.Player
         /// Returns the available video output formats (or null) of the specified webcam that match the specified values. The formats can be used with the Player.Play methods for webcams.
         /// </summary>
         /// <param name="webcam">The webcam whose video output formats are to be obtained.</param>
-        /// <param name="exact">A value indicating whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
+        /// <param name="exact">A value that indicates whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
         /// <param name="width">The (minimum) width of the video frames. Use -1 to ignore this parameter.</param>
         /// <param name="height">The (minimum) height of the video frames. Use -1 to ignore this parameter.</param>
         /// <param name="frameRate">The (minimum) frame rate of the video output format. Use -1 to ignore this parameter.</param>
@@ -1012,6 +1016,7 @@ namespace PlexDL.Player
             return GetWebcamFormats(webcam._id, true, exact, width, height, frameRate);
         }
 
-        #endregion Public - Get Video Output Formats
+        #endregion
+
     }
 }

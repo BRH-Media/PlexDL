@@ -52,6 +52,8 @@
     <Compile Include="CloneProperties.cs" />
     <Compile Include="CloneQuality.cs" />
     <Compile Include="ConstPropVariant.cs" />
+    <Compile Include="Copy.cs" />
+    <Compile Include="CopyMode.cs" />
     <Compile Include="CursorHide.cs" />
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="DeviceState.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="MediaEventType.cs" />
     <Compile Include="MediaName.cs" />
     <Compile Include="MediaPart.cs" />
+    <Compile Include="MediaSourceCategory.cs" />
     <Compile Include="MediaSourceType.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="MFASync.cs" />
@@ -179,8 +182,6 @@
     <Compile Include="PropertyKeys.cs" />
     <Compile Include="PropVariant.cs" />
     <Compile Include="PVMarshaler.cs" />
-    <Compile Include="ScreenCopy.cs" />
-    <Compile Include="ScreenCopyMode.cs" />
     <Compile Include="ShapeCallback.cs" />
     <Compile Include="SilentSeek.cs" />
     <Compile Include="Sliders.cs" />
@@ -198,14 +199,12 @@
     <Compile Include="TaskbarIndicator.cs" />
     <Compile Include="TaskbarProgress.cs" />
     <Compile Include="TaskbarProgressMode.cs" />
-    <Compile Include="TaskbarStates.cs" />
+    <Compile Include="TaskbarProgressState.cs" />
     <Compile Include="UnmanagedNameAttribute.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoColorAttribute.cs" />
     <Compile Include="VideoColorEventArgs.cs" />
-    <Compile Include="VideoDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="VideoDisplay.cs" />
     <Compile Include="VideoProcAmpFlags.cs" />
     <Compile Include="VideoProcAmpProperty.cs" />
     <Compile Include="VideoStream.cs" />

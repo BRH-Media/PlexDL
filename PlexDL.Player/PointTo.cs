@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Point To conversion methods of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Point To conversion methods of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -16,7 +16,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (PointTo Class)
+        #endregion
 
         internal PointTo(Player player)
         {
@@ -24,7 +24,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Converts the specified screen location to coordinates of the player's display.
+        /// Converts the specified screen location to coordinates of the player's display window.
         /// </summary>
         /// <param name="p">The screen coordinate to convert.</param>
         public Point Display(Point p)
@@ -54,7 +54,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Converts the specified screen location to coordinates of the video image on the display of the player.
+        /// Converts the specified screen location to coordinates of the video image on the player's display window.
         /// </summary>
         /// <param name="p">The screen coordinate to convert.</param>
         public Point Video(Point p)

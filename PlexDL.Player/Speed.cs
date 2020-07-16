@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the playback Speed methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the playback Speed methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Speed Class)
+        #endregion
 
         internal Speed(Player player)
         {
@@ -22,7 +22,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the speed at which media is played by the player (default: 1.0 (normal speed)). The setting is adjusted by the player if media cannot be played at the set speed.
+        /// Gets or sets a value that indicates the speed at which media is played by the player (default: 1.0 (normal speed)). The setting is adjusted by the player if media cannot be played at the set speed.
         /// </summary>
         public float Rate
         {
@@ -42,7 +42,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether stream thinning (displaying fewer video frames) should be used when playing media. This option can be used to increase the maximum playback speed of media (default: false).
+        /// Gets or sets a value that indicates whether stream thinning (displaying fewer video frames) should be used when playing media. This option can be used to increase the maximum playback speed of media (default: false).
         /// </summary>
         public bool Boost
         {
@@ -81,7 +81,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating the minimum speed at which the playing media can be played by the player.
+        /// Gets a value that indicates the minimum speed at which the playing media can be played by the player.
         /// </summary>
         public float Minimum
         {
@@ -93,7 +93,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating the maximum speed at which the playing media can be played by the player.
+        /// Gets a value that indicates the maximum speed at which the playing media can be played by the player.
         /// </summary>
         public float Maximum
         {

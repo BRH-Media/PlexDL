@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Taskbar Progress methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Taskbar Progress methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,11 +14,12 @@ namespace PlexDL.Player
     {
         #region Fields (TaskbarProgress Class)
 
-        private Player _base;
-        private List<Form> _taskbarItems;
-        internal TaskbarProgressMode _progressMode;
+        private Player                  _base;
+        private List<Form>              _taskbarItems;
+        internal TaskbarProgressMode    _progressMode;
+        private TaskbarProgressState            _taskbarState = TaskbarProgressState.NoProgress;
 
-        #endregion Fields (TaskbarProgress Class)
+        #endregion
 
         internal TaskbarProgress(Player player)
         {
@@ -67,12 +68,12 @@ namespace PlexDL.Player
                             {
                                 if (_base._paused)
                                 {
-                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarStates.Paused);
+                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarProgressState.Paused);
                                     SetValue(_base.PositionX);
                                 }
-                                else if (!_base._fileMode)
+                                else if (!_base._fileMode || _base._liveStreamMode)
                                 {
-                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarStates.Indeterminate);
+                                    Player.TaskbarInstance.SetProgressState(form.Handle, TaskbarProgressState.Indeterminate);
                                 }
                             }
                             _base._hasTaskbarProgress = true;
@@ -105,7 +106,7 @@ namespace PlexDL.Player
                             {
                                 if (_taskbarItems[index] != null)
                                 {
-                                    Player.TaskbarInstance.SetProgressState(_taskbarItems[index].Handle, TaskbarStates.NoProgress);
+                                    Player.TaskbarInstance.SetProgressState(_taskbarItems[index].Handle, TaskbarProgressState.NoProgress);
                                 }
                                 _taskbarItems.RemoveAt(index);
                             }
@@ -136,7 +137,7 @@ namespace PlexDL.Player
                 {
                     _base._hasTaskbarProgress = false;
                     _base.StopMainTimerCheck();
-                    SetState(TaskbarStates.NoProgress);
+                    SetState(TaskbarProgressState.NoProgress);
                     _taskbarItems = new List<Form>(4);
                 }
                 _base._lastError = Player.NO_ERROR;
@@ -189,7 +190,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the mode (track or progress) of the taskbar progress indicator (default: TaskbarProgressMode.Progress).
+        /// Gets or sets the mode (track or progress) of the player's taskbar progress indicator (default: TaskbarProgressMode.Progress).
         /// </summary>
         public TaskbarProgressMode Mode
         {
@@ -206,7 +207,37 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Public - Taskbar Progress methods and properties
+        /// <summary>
+        /// Gets or sets a value that indicates how the player's progress indicator is displayed in the taskbar button. Changes when the player's playback status changes.
+        /// </summary>
+        public TaskbarProgressState State
+        {
+            get
+            {
+                if (_base._hasTaskbarProgress)
+                {
+                    _base._lastError = Player.NO_ERROR;
+                    return _taskbarState;
+                }
+                else
+                {
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                    return TaskbarProgressState.NoProgress;
+                }
+            }
+            set
+            {
+                if (_base._hasTaskbarProgress)
+                {
+                    SetState(value);
+                    if (!_base._fileMode || _base._liveStreamMode) SetValue(1);
+                    _base._lastError = Player.NO_ERROR;
+                }
+                else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            }
+        }
+
+        #endregion
 
         #region Private - SetValue / SetState
 
@@ -215,10 +246,12 @@ namespace PlexDL.Player
             long pos = progressValue;
             long total;
 
-            if (!_base._fileMode)
+            if (_taskbarState == TaskbarProgressState.Indeterminate) return;
+
+            if (!_base._fileMode || _base._liveStreamMode)
             {
-                total = 1;
-                pos = 1;
+                pos     = 1;
+                total   = 1;
             }
             else
             {
@@ -255,18 +288,22 @@ namespace PlexDL.Player
             }
         }
 
-        internal void SetState(TaskbarStates taskbarState)
+        internal void SetState(TaskbarProgressState taskbarState)
         {
-            for (int i = 0; i < _taskbarItems.Count; i++)
+            //if (_taskbarItems.Count > 0)
             {
-                if (_taskbarItems[i] != null)
+                _taskbarState = taskbarState;
+                for (int i = 0; i < _taskbarItems.Count; i++)
                 {
-                    try { Player.TaskbarInstance.SetProgressState(_taskbarItems[i].Handle, taskbarState); }
-                    catch { _taskbarItems[i] = null; }
+                    if (_taskbarItems[i] != null)
+                    {
+                        try { Player.TaskbarInstance.SetProgressState(_taskbarItems[i].Handle, taskbarState); }
+                        catch { _taskbarItems[i] = null; }
+                    }
                 }
             }
         }
 
-        #endregion Private - SetValue / SetState
+        #endregion
     }
 }

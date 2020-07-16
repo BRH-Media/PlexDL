@@ -183,7 +183,7 @@ namespace PlexDL.UI
                 else
                 {
                     foreach (DataGridViewRow row in dgvMain.Rows)
-                        if (dgvMain.Rows.IndexOf(row) == (Convert.ToInt32(ipt.txt) - 1))
+                        if (dgvMain.Rows.IndexOf(row) == Convert.ToInt32(ipt.txt) - 1)
                         {
                             dgvMain.CurrentCell = row.Cells[0];
                             return;

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Audio methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Audio methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Audio Class)
+        #endregion
 
         internal Audio(Player player)
         {
@@ -23,7 +23,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media contains audio.
+        /// Gets a value that indicates whether the playing media contains audio.
         /// </summary>
         public bool Present
         {
@@ -35,7 +35,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the audio output of the player is enabled (default: true).
+        /// Gets or sets a value that indicates whether the player's audio output is enabled (default: true).
         /// </summary>
         public bool Enabled
         {
@@ -48,7 +48,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the audio output of the player is muted (default: false).
+        /// Gets or sets a value that indicates whether the player's audio output is muted (default: false).
         /// </summary>
         public bool Mute
         {
@@ -171,7 +171,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio output volume of the player, values from 0.0 (mute) to 1.0 (max) (default: 1.0).
+        /// Gets or sets the volume of the player's audio output, values from 0.0 (mute) to 1.0 (max) (default: 1.0).
         /// </summary>
         public float Volume
         {
@@ -184,7 +184,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the audio output balance of the player, values from -1.0 (left) to 1.0 (right) (default: 0.0).
+        /// Gets or sets the balance of the player's audio output, values from -1.0 (left) to 1.0 (right) (default: 0.0).
         /// </summary>
         public float Balance
         {
@@ -238,15 +238,15 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
-                bool setDevice = false;
+                _base._lastError    = Player.NO_ERROR;
+                bool setDevice      = false;
 
                 if (value == null)
                 {
                     if (_base._audioDevice != null)
                     {
-                        _base._audioDevice = null;
-                        setDevice = true;
+                        _base._audioDevice  = null;
+                        setDevice           = true;
                     }
                 }
                 else if (_base._audioDevice == null || value._id != _base._audioDevice._id)
@@ -256,8 +256,8 @@ namespace PlexDL.Player
                     {
                         if (value._id == devices[i]._id)
                         {
-                            _base._audioDevice = devices[i];
-                            setDevice = true;
+                            _base._audioDevice  = devices[i];
+                            setDevice           = true;
                             break;
                         }
                     }
@@ -324,8 +324,8 @@ namespace PlexDL.Player
         public AudioDevice[] GetDevices()
         {
             IMMDeviceCollection deviceCollection;
-            IMMDevice device;
-            AudioDevice[] audioDevices = null;
+            IMMDevice           device;
+            AudioDevice[]       audioDevices = null;
 
             _base._lastError = HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE;
 
@@ -362,7 +362,7 @@ namespace PlexDL.Player
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
-            IMMDevice device;
+            IMMDevice   device;
             AudioDevice audioDevice = null;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
@@ -383,6 +383,24 @@ namespace PlexDL.Player
             }
 
             return audioDevice;
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether audio tracks in subsequent media files are ignored by the player (default: false). The audio track information remains available. Allows to play video from media with unsupported audio formats.
+        /// </summary>
+        public bool Cut
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._audioCut;
+            }
+            set
+            {
+                _base._audioCut = value;
+                if (value) _base._videoCut = false;
+                _base._lastError = Player.NO_ERROR;
+            }
         }
     }
 }

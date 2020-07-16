@@ -18,7 +18,7 @@ namespace PlexDL.Common.Security
             if (!forceNew && File.Exists(EntropyFileLocation))
             {
                 var read = File.ReadAllBytes(EntropyFileLocation);
-                value = (read.Length == EntropyByteLength) ? read : NewEntropy();
+                value = read.Length == EntropyByteLength ? read : NewEntropy();
             }
             else
                 value = NewEntropy();

@@ -10,18 +10,16 @@ namespace PlexDL.Player
     {
         #region Fields (Video Track Class)
 
-        internal Guid _mediaType;
+        internal Guid   _mediaType;
         internal string _name;
         internal string _language;
-        internal float _frameRate;
-        internal int _width;
-        internal int _height;
+        internal float  _frameRate;
+        internal int    _width;
+        internal int    _height;
 
-        #endregion Fields (Video Track Class)
+        #endregion
 
-        internal VideoTrack()
-        {
-        }
+        internal VideoTrack() { }
 
         /// <summary>
         /// Gets the media type (MF GUID) of the track (see Media Foundation documentation).

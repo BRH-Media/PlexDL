@@ -8,8 +8,6 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class AudioDevice : DeviceInfo
     {
-        internal AudioDevice()
-        {
-        }
+        internal AudioDevice() { }
     }
 }

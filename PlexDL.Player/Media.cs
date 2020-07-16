@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Text;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Media methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Media methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     [CLSCompliant(true)]
@@ -17,38 +18,39 @@ namespace PlexDL.Player
     {
         #region Fields (Media Class)
 
-        private Player _base;
+        private Player          _base;
 
         // Media album art information
-        private Image _tagImage;
-
-        private DirectoryInfo _directoryInfo;
-        private string[] _searchKeyWords = { "*front*", "*cover*" }; // , "*albumart*large*" };
-        private string[] _searchExtensions = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
+        private Image           _tagImage;
+        private DirectoryInfo   _directoryInfo;
+        private string[]        _searchKeyWords     = { "*front*", "*cover*" }; // , "*albumart*large*" };
+        private string[]        _searchExtensions   = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
 
         // Media chapter information
-        private const string ROOT_ATOM_TYPES = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
+        private const string    ROOT_ATOM_TYPES     = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
 
-        private byte[] MOOV_ATOM = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
-        private byte[] TRAK_ATOM = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
-        private byte[] TREF_ATOM = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
-        private byte[] CHAP_ATOM = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
-        private byte[] TKHD_ATOM = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
-        private byte[] MDIA_ATOM = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
-        private byte[] MINF_ATOM = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
-        private byte[] STBL_ATOM = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
-        private byte[] STTS_ATOM = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
-        private byte[] STCO_ATOM = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
-        private byte[] UDTA_ATOM = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
-        private byte[] CHPL_ATOM = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
+        private byte[]          MOOV_ATOM           = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
+        private byte[]          TRAK_ATOM           = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
+        private byte[]          TREF_ATOM           = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
+        private byte[]          CHAP_ATOM           = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
+        private byte[]          TKHD_ATOM           = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
+        private byte[]          MDIA_ATOM           = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
+        private byte[]          MINF_ATOM           = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
+        private byte[]          STBL_ATOM           = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
+        private byte[]          STTS_ATOM           = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
+        private byte[]          STCO_ATOM           = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
+        private byte[]          UDTA_ATOM           = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
+        private byte[]          CHPL_ATOM           = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
 
-        private FileStream _reader;
-        private long _fileLength;
-        private long _atomEnd;
-        private long _moovStart;
-        private long _moovEnd;
+        private FileStream      _reader;
+        private long            _fileLength;
+        private long            _atomEnd;
+        private long            _moovStart;
+        private long            _moovEnd;
+        private byte[]          _buffer;
 
-        #endregion Fields (Media Class)
+        #endregion
+
 
         internal Media(Player player)
         {
@@ -56,7 +58,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        ///  Gets a value indicating the source type of the playing media, such as a file or webcam.
+        ///  Gets a value that indicates the source type of the playing media, such as a local file or a webcam.
         /// </summary>
         public MediaSourceType SourceType
         {
@@ -66,6 +68,21 @@ namespace PlexDL.Player
                 MediaSourceType source = MediaSourceType.None;
 
                 if (_base._playing) source = _base.AV_GetSourceType();
+                return source;
+            }
+        }
+
+        /// <summary>
+        ///  Gets a value that indicates the source category of the playing media, such as local files or local capture devices.
+        /// </summary>
+        public MediaSourceCategory SourceCategory
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                MediaSourceCategory source = MediaSourceCategory.None;
+
+                if (_base._playing) source = _base.AV_GetSourceCategory();
                 return source;
             }
         }
@@ -157,19 +174,15 @@ namespace PlexDL.Player
                         case MediaName.FileName:
                             mediaName = Path.GetFileName(_base._fileName);
                             break;
-
                         case MediaName.DirectoryName:
                             mediaName = Path.GetDirectoryName(_base._fileName);
                             break;
-
                         case MediaName.PathRoot:
                             mediaName = Path.GetPathRoot(_base._fileName);
                             break;
-
                         case MediaName.Extension:
                             mediaName = Path.GetExtension(_base._fileName);
                             break;
-
                         case MediaName.FileNameWithoutExtension:
                             mediaName = Path.GetFileNameWithoutExtension(_base._fileName);
                             break;
@@ -367,7 +380,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Returns metadata (media information such as title and artist name) of the playing media (if available).
         /// </summary>
-        /// <param name="imageSource">A value indicating whether and where an image related to the media should be obtained.</param>
+        /// <param name="imageSource">A value that indicates whether and where an image related to the media should be obtained.</param>
         public Metadata GetMetadata(ImageSource imageSource)
         {
             if (_base._playing)
@@ -401,7 +414,7 @@ namespace PlexDL.Player
         /// Returns metadata (media information such as title and artist name) of the playing media (if available).
         /// </summary>
         /// <param name="fileName">The path and name of the file whose metadata is to be obtained.</param>
-        /// <param name="imageSource">A value indicating whether and where an image related to the media should be obtained.</param>
+        /// <param name="imageSource">A value that indicates whether and where an image related to the media should be obtained.</param>
         /// <returns></returns>
         public Metadata GetMetadata(string fileName, ImageSource imageSource)
         {
@@ -622,63 +635,78 @@ namespace PlexDL.Player
 
         /*
             Thanks to Zeugma440, https://github.com/Zeugma440/atldotnet/wiki/Focus-on-Chapter-metadata
-            A great help to defeat the uggly Apple chapter beast.
+            A great help to defeat the uggly QuickTime chapters beast.
         */
 
         /// <summary>
-        /// Returns chapter information of the playing media (if available).
+        /// Returns chapter information of the playing media (if available). Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
         /// </summary>
-        /// <param name="appleChapters">When this method returns, contains the chapter information of the media stored in the Apple format or null.</param>
-        /// <param name="neroChapters">When this method returns, contains the chapter information of the media stored the Nero format or null.</param>
-        public int GetChapters(out MediaChapter[] appleChapters, out MediaChapter[] neroChapters)
+        /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
+        /// <param name="chapters_II">When this method returns, contains the chapter information of the media stored the Nero (mp4 types) format or null.</param>
+        public int GetChapters(out MediaChapter[] chapters_I, out MediaChapter[] chapters_II)
         {
-            if (_base._playing) return GetChapters(_base._fileName, out appleChapters, out neroChapters);
+            if (_base._fileMode && !_base._imageMode) return GetChapters(_base._fileName, out chapters_I, out chapters_II);
 
-            appleChapters = null;
-            neroChapters = null;
+            chapters_I = null;
+            chapters_II = null;
 
             _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Returns chapter information of the specified media file (if available).
+        /// Returns chapter information of the specified media file (if available). Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
         /// </summary>
         /// <param name="fileName">The path and name of the file whose chapter information is to be obtained.</param>
-        /// <param name="appleChapters">When this method returns, contains the chapter information of the media stored in the Apple format or null.</param>
-        /// <param name="neroChapters">When this method returns, contains the chapter information of the media stored in the Nero format or null.</param>
-        public int GetChapters(string fileName, out MediaChapter[] appleChapters, out MediaChapter[] neroChapters)
+        /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
+        /// <param name="chapters_II">When this method returns, contains the chapter information of the media stored in the Nero (mp4 types) format or null.</param>
+        public int GetChapters(string fileName, out MediaChapter[] chapters_I, out MediaChapter[] chapters_II)
         {
-            appleChapters = null;
-            neroChapters = null;
+            chapters_I      = null;
+            chapters_II     = null;
+            int fileType    = 0;    // 0 = none, 1 = mp4, 2 = mkv
 
             if (string.IsNullOrWhiteSpace(fileName)) _base._lastError = HResult.E_INVALIDARG;
             else if (!File.Exists(fileName)) _base._lastError = HResult.ERROR_FILE_NOT_FOUND;
             else
             {
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                 try
                 {
                     byte[] buffer = new byte[16];
-
-                    // check length and if first atom type is valid
                     _reader = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                    _reader.Read(buffer, 0, 8);
-                    if (_reader.Length > 1024 && (ROOT_ATOM_TYPES.IndexOf(Encoding.ASCII.GetString(new byte[] { buffer[4], buffer[5], buffer[6], buffer[7] }), StringComparison.Ordinal) >= 0))
+                    if (_reader.Length > 1000)
                     {
-                        _base._lastError = Player.NO_ERROR;
+                        _reader.Read(buffer, 0, 8);
+                        if ((ROOT_ATOM_TYPES.IndexOf(Encoding.ASCII.GetString(new byte[] { buffer[4], buffer[5], buffer[6], buffer[7] }), StringComparison.Ordinal) >= 0))
+                        {
+                            fileType = 1;
+                            _base._lastError = Player.NO_ERROR;
+                        }
+                        else if(buffer[0] == 0x1A && buffer[1] == 0x45 && buffer[2] == 0xDF && buffer[3] == 0xA3)
+                        {
+                            fileType = 2;
+                            _base._lastError = Player.NO_ERROR;
+                        }
                     }
-                    else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                 }
                 catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
             }
 
             if (_base._lastError == Player.NO_ERROR)
             {
-                _fileLength = _reader.Length;
+                _fileLength      = _reader.Length;
                 _reader.Position = 0;
 
-                appleChapters = GetAppleChapters();
-                if (_moovStart != 0) neroChapters = GetNeroChapters();
+                if (fileType == 1)
+                {
+                    chapters_I = GetQuickTimeChapters();
+                    if (_moovStart != 0) chapters_II = GetNeroChapters();
+                }
+                else //if (fileType == 2)
+                {
+                    chapters_I = GetMatroskaChapters();
+                }
             }
 
             if (_reader != null)
@@ -690,9 +718,9 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        private MediaChapter[] GetAppleChapters()
+        private MediaChapter[] GetQuickTimeChapters()
         {
-            MediaChapter[] appleChapters = null;
+            MediaChapter[] chapters = null;
             byte[] buffer = new byte[256];
 
             try
@@ -814,23 +842,24 @@ namespace PlexDL.Player
                                                 index += 4;
                                                 _reader.Position = index;
                                                 _reader.Read(buffer, 0, 4);
-                                                int chapterCount = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                                int startTimeCounter = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
 
-                                                if (chapterCount > 0)
+                                                if (startTimeCounter > 0)
                                                 {
-                                                    int startTimeCounter = chapterCount;
-                                                    int startTimeIndex = 1; // first one is zero
+                                                    int chapterCount = 1;
                                                     int startTime = 0;
 
-                                                    int[] startTimes = new int[startTimeCounter];
+                                                    List<int> startTimes = new List<int>();
+                                                    startTimes.Add(0);
                                                     while (startTimeCounter > 1)
                                                     {
                                                         _reader.Read(buffer, 0, 8);
                                                         int sampleCount = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+                                                        chapterCount += sampleCount;
                                                         startTime += (buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) / timeScale;
-                                                        for (int i = 0; i < sampleCount; i++)
+                                                        for (int i = 1; i <= sampleCount; i++)
                                                         {
-                                                            startTimes[startTimeIndex++] = startTime;
+                                                            startTimes.Add(i * startTime);
                                                         }
                                                         startTimeCounter -= sampleCount;
                                                     }
@@ -848,7 +877,7 @@ namespace PlexDL.Player
                                                         int entries = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
                                                         if (entries == chapterCount)
                                                         {
-                                                            appleChapters = new MediaChapter[chapterCount];
+                                                            chapters = new MediaChapter[chapterCount];
                                                             for (int i = 0; i < chapterCount; i++)
                                                             {
                                                                 _reader.Read(buffer, 0, 4);
@@ -861,9 +890,9 @@ namespace PlexDL.Player
                                                                 int len = buffer[0] << 8 | buffer[1];
 
                                                                 _reader.Read(buffer, 0, len);
-                                                                appleChapters[i] = new MediaChapter();
-                                                                appleChapters[i]._title = Encoding.ASCII.GetString(buffer, 0, len);
-                                                                appleChapters[i]._startTime = TimeSpan.FromSeconds(startTimes[i]);
+                                                                chapters[i] = new MediaChapter();
+                                                                chapters[i]._title = new string[] { Encoding.UTF8.GetString(buffer, 0, len) };
+                                                                chapters[i]._startTime = TimeSpan.FromSeconds(startTimes[i]);
 
                                                                 _reader.Position = index;
                                                             }
@@ -881,17 +910,17 @@ namespace PlexDL.Player
             }
             catch
             {
-                appleChapters = null;
+                chapters = null;
             }
-            return appleChapters;
+            return chapters;
         }
 
         private MediaChapter[] GetNeroChapters()
         {
-            MediaChapter[] neroChapters = null;
+            MediaChapter[] chapters = null;
             byte[] buffer = new byte[256];
 
-            long index = _moovStart; // retrieved at GetAppleChapters
+            long index = _moovStart; // retrieved at GetChapters
             _reader.Position = index;
             long moovEnd = _moovEnd;
             _atomEnd = moovEnd;
@@ -914,19 +943,19 @@ namespace PlexDL.Player
                             _reader.Position = index;
                             _reader.Read(buffer, 0, 4);
                             int count = buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
-                            neroChapters = new MediaChapter[count];
+                            chapters = new MediaChapter[count];
                             int length;
 
                             for (int i = 0; i < count; i++)
                             {
                                 _reader.Read(buffer, 0, 9);
 
-                                neroChapters[i] = new MediaChapter();
-                                neroChapters[i]._startTime = TimeSpan.FromTicks(((long)(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]) << 32)
-                                                                                | ((buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) & 0xffffffff));
+                                chapters[i] = new MediaChapter();
+                                chapters[i]._startTime = TimeSpan.FromTicks(((long)(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]) << 32)
+                                                                            | ((buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) & 0xffffffff));
                                 length = buffer[8];
                                 _reader.Read(buffer, 0, length);
-                                neroChapters[i]._title = Encoding.ASCII.GetString(buffer, 0, length);
+                                chapters[i]._title = new string[] { Encoding.UTF8.GetString(buffer, 0, length) };
                             }
                             break; // chapters found and done
                         }
@@ -945,9 +974,9 @@ namespace PlexDL.Player
             }
             catch
             {
-                neroChapters = null;
+                chapters = null;
             }
-            return neroChapters;
+            return chapters;
         }
 
         private long FindAtom(byte[] type, long startIndex, long endIndex)
@@ -981,6 +1010,259 @@ namespace PlexDL.Player
                 _reader.Position = index;
             }
             return 0; // not found
+        }
+
+        // don't do: _reader.Position += GetDataSize(); etc.
+        private MediaChapter[] GetMatroskaChapters()
+        {
+            MediaChapter[] mkvChapters = null;
+            bool found = false;
+
+            try
+            {
+                _buffer = new byte[256];
+
+                // "EBML Header"
+                int idLength = GetElementID();
+                if (idLength == 4 && _buffer[0] == 0x1A && _buffer[1] == 0x45 && _buffer[2] == 0xDF && _buffer[3] == 0xA3)
+                {
+                    // skip
+                    _reader.Position = GetDataSize() + _reader.Position;
+
+                    // "Segment"
+                    idLength = GetElementID();
+                    if (idLength == 4 && _buffer[0] == 0x18 && _buffer[1] == 0x53 && _buffer[2] == 0x80 && _buffer[3] == 0x67)
+                    {
+                        GetDataSize();
+                        long segmentStart = _reader.Position;
+
+                        // "SeekHead" (Meta Seek Info)
+                        idLength = GetElementID();
+                        if (idLength == 4 && _buffer[0] == 0x11 && _buffer[1] == 0x4D && _buffer[2] == 0x9B && _buffer[3] == 0x74)
+                        {
+                            long seekEnd = GetDataSize() + _reader.Position;
+                            while (_reader.Position < seekEnd)
+                            {
+                                // "Seek"
+                                _reader.Read(_buffer, 0, 2);
+                                if (_buffer[0] == 0x4D && _buffer[1] == 0xBB)
+                                {
+                                    long nextSeek = GetDataSize() + _reader.Position;
+
+                                    // "SeekId"
+                                    _reader.Read(_buffer, 0, 2);
+                                    if (_buffer[0] == 0x53 && _buffer[1] == 0xAB)
+                                    {
+                                        // "Chapters"
+                                        if (GetDataSize() == 4)
+                                        {
+                                            _reader.Read(_buffer, 0, 4);
+                                            if (_buffer[0] == 0x10 && _buffer[1] == 0x43 && _buffer[2] == 0xA7 && _buffer[3] == 0x70)
+                                            {
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        _reader.Position = nextSeek;
+                                    }
+                                    else break;
+                                }
+                                else break;
+                            }
+
+                            if (found)
+                            {
+                                found = false;
+
+                                // "SeekPosition" of "Chapters"
+                                _reader.Read(_buffer, 0, 2);
+                                if (_buffer[0] == 0x53 && _buffer[1] == 0xAC)
+                                {
+                                    // get position of "Chapters"
+                                    long dataSize = GetDataSize();
+                                    _reader.Read(_buffer, 0, (int)dataSize);
+
+                                    long offset = 0;
+                                    for (int i = 0; i < dataSize; i++) offset = (offset << 8) + _buffer[i];
+                                    _reader.Position = segmentStart + offset;
+
+                                    // "Chapters"
+                                    idLength = GetElementID();
+                                    if (idLength == 4 && _buffer[0] == 0x10 && _buffer[1] == 0x43 && _buffer[2] == 0xA7 && _buffer[3] == 0x70)
+                                    {
+                                        dataSize = GetDataSize();
+
+                                        // "EditionEntry"
+                                        _reader.Read(_buffer, 0, 2);
+                                        if (_buffer[0] == 0x45 && _buffer[1] == 0xB9)
+                                        {
+                                            // find first "ChapterAtom"
+                                            long chapterEnd = GetDataSize() + _reader.Position;
+                                            while (!found && _reader.Position < chapterEnd)
+                                            {
+                                                idLength = GetElementID();
+                                                if (idLength == 1 && _buffer[0] == 0xB6)
+                                                {
+                                                    _reader.Position--;
+                                                    found = true;
+                                                }
+                                                else dataSize = GetDataSize();
+                                            }
+
+                                            if (found)
+                                            {
+                                                // parse all "ChapterAtom"
+                                                List<MediaChapter> chapters = new List<MediaChapter>();
+                                                do
+                                                {
+                                                    idLength = GetElementID();
+                                                    if (idLength == 1 && _buffer[0] == 0xB6)
+                                                    {
+                                                        dataSize = GetDataSize();
+                                                        long nextChapter = _reader.Position + dataSize;
+                                                        MediaChapter chapter = GetChapter(dataSize);
+                                                        if (chapter != null)
+                                                        {
+                                                            chapters.Add(chapter);
+                                                            _reader.Position = nextChapter;
+                                                        }
+                                                        else found = false;
+                                                    }
+                                                    else found = false;
+                                                }
+                                                while (found && _reader.Position < chapterEnd);
+
+                                                if (found) mkvChapters = chapters.ToArray();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return mkvChapters;
+        }
+
+        private int GetElementID()
+        {
+            int length = _reader.ReadByte();
+
+            if ((length & 0x80) != 0) length = 1;
+            else if ((length & 0x40) != 0) length = 2;
+            else if ((length & 0x20) != 0) length = 3;
+            else length = 4;
+
+            _reader.Position--;
+            _reader.Read(_buffer, 0, length);
+
+            return length;
+        }
+
+        private long GetDataSize()
+        {
+            byte mask   = 0x7F;
+            int length  = _reader.ReadByte();
+            _buffer[0]  = (byte)length;
+
+            // length == 1 less than true length
+            for (int i = 0; i < 8; i++)
+            {
+                if ((length & 0x80) != 0)
+                {
+                    length = i;
+                    break;
+                }
+                length <<= 1;
+                mask >>= 1;
+            }
+
+            _buffer[0]  &= mask;
+            long result = _buffer[0];
+
+            if (length > 0)
+            {
+                _reader.Read(_buffer, 1, length);
+                for (int i = 0; i <= length; i++)
+                {
+                    result = (result << 8) + _buffer[i];
+                }
+            }
+            return result;
+        }
+
+        private MediaChapter GetChapter(long length)
+        {
+            MediaChapter chapter    = null;
+            List<string> languages  = new List<string>();
+            List<string> titles     = new List<string>();
+            long startTime          = 0;
+            long endTime            = 0;
+            byte id0, id1;
+
+            try
+            {
+                long chapterEnd = _reader.Position + length;
+                while (_reader.Position < chapterEnd)
+                {
+                    long idLength = GetElementID();
+                    id0 = _buffer[0];
+                    long dataSize = GetDataSize();
+
+                    if (idLength == 1 && id0 == 0x80) // chapter display
+                    {
+                        long displayEnd = _reader.Position + dataSize;
+                        while (_reader.Position < displayEnd)
+                        {
+                            idLength = GetElementID();
+                            id0 = _buffer[0]; id1 = _buffer[1];
+                            dataSize = GetDataSize();
+                            _reader.Read(_buffer, 0, (int)dataSize);
+
+                            if (idLength == 1 && id0 == 0x85)
+                            {
+                                titles.Add(Encoding.UTF8.GetString(_buffer, 0, (int)dataSize));
+                            }
+                            else if (idLength == 2 && id0 == 0x43 && id1 == 0x7C)
+                            {
+                                languages.Add(Encoding.UTF8.GetString(_buffer, 0, (int)dataSize));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _reader.Read(_buffer, 0, (int)dataSize);
+                        if (idLength == 1 && id0 == 0x91) // time start
+                        {
+                            startTime = 0;
+                            for (int i = 0; i < dataSize; i++)
+                            {
+                                startTime = (startTime << 8) + _buffer[i];
+                            }
+                        }
+                        else if (idLength == 1 && id0 == 0x92) // time end
+                        {
+                            endTime = 0;
+                            for (int i = 0; i < dataSize; i++)
+                            {
+                                endTime = (endTime << 8) + _buffer[i];
+                            }
+                        }
+                    }
+                }
+                if (titles.Count > 0 && titles.Count == languages.Count)
+                {
+                    chapter             = new MediaChapter();
+                    chapter._title = titles.ToArray();
+                    chapter._language = languages.ToArray();
+                    chapter._startTime = TimeSpan.FromTicks(startTime / 100);
+                    chapter._endTime = TimeSpan.FromTicks(endTime / 100);
+                }
+            }
+            catch { chapter = null; }
+            return chapter;
         }
     }
 }

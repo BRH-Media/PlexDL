@@ -73,7 +73,7 @@
         ERROR_NOT_READY                 = 0x15,
         ERROR_BUSY                      = unchecked((int)0x800700AA),
         ERROR_INVALID_WINDOW_HANDLE     = 0x00000578,
-        //ERROR_SERVER_NOT_FOUND        = unchecked((int)0xC00D4287),
+        ERROR_SERVER_NOT_CONNECTED      = unchecked((int)0xC00D4287),
         ERROR_SERVER_NOT_FOUND          = 0x00000837,
 
         #endregion

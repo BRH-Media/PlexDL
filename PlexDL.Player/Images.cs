@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Images properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Images properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,12 +14,12 @@ namespace PlexDL.Player
 
         private const int MINIMUM_FRAMERATE = 4;
         private const int MAXIMUM_FRAMERATE = 30;
-        private const int MINIMUM_DURATION = 3;
-        private const int MAXIMUM_DURATION = 60;
+        private const int MINIMUM_DURATION  = 3;
+        private const int MAXIMUM_DURATION  = 60;
 
         private Player _base;
 
-        #endregion Fields (Images Class)
+        #endregion
 
         internal Images(Player player)
         {
@@ -27,7 +27,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player also plays images (default: true).
+        /// Gets or sets a value that indicates whether the player also plays images (default: true).
         /// </summary>
         public bool Enabled
         {
@@ -92,7 +92,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether an image is playing (including paused image). Use the Player.Play method to play an image.
+        /// Gets a value that indicates whether an image is playing (including paused image). Use the Player.Play method to play an image.
         /// </summary>
         public bool Playing
         {
@@ -104,7 +104,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Updates or restores the playing image on the display of the player. For special use only, generally not required.
+        /// Updates or restores the video image on the player's display window. For special use only, generally not required.
         /// </summary>
         public int Update()
         {
@@ -118,7 +118,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the image on the player's display will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. Same as: Player.Display.Hold. See also: Player.Image.HoldClear.
+        /// Gets or sets a value that indicates whether the image on the player's display will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. Same as: Player.Display.Hold. See also: Player.Image.HoldClear.
         /// </summary>
         public bool Hold
         {

@@ -11,21 +11,21 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Video Format Class)
 
-        internal int _streamIndex;
-        internal int _typeIndex;
-        internal int _width;
-        internal int _height;
-        internal float _frameRate;
+        internal int    _streamIndex;
+        internal int    _typeIndex;
+        internal int    _width;
+        internal int    _height;
+        internal float  _frameRate;
 
-        #endregion Fields (Webcam Video Format Class)
+        #endregion
 
         internal WebcamFormat(int streamIndex, int typeIndex, int width, int height, float frameRate)
         {
-            _streamIndex = streamIndex;
-            _typeIndex = typeIndex;
-            _width = width;
-            _height = height;
-            _frameRate = frameRate;
+            _streamIndex    = streamIndex;
+            _typeIndex      = typeIndex;
+            _width          = width;
+            _height         = height;
+            _frameRate      = frameRate;
         }
 
         /// <summary>
@@ -52,5 +52,6 @@ namespace PlexDL.Player
         /// Gets the video frame rate of the format, in frames per second.
         /// </summary>
         public float FrameRate { get { return _frameRate; } }
+
     }
 }

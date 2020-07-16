@@ -8,8 +8,6 @@ namespace PlexDL.Player
     [CLSCompliant(true)]
     public sealed class WebcamDevice : DeviceInfo
     {
-        internal WebcamDevice()
-        {
-        }
+        internal WebcamDevice() { }
     }
 }

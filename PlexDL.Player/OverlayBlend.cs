@@ -9,12 +9,10 @@
         /// The display overlays are not blended.
         /// </summary>
         None,
-
         /// <summary>
         /// The display overlays are blended opaque.
         /// </summary>
         Opaque,
-
         /// <summary>
         /// The display overlays are blended transparent.
         /// </summary>

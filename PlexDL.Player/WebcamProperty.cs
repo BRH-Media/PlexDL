@@ -11,24 +11,22 @@ namespace PlexDL.Player
         #region Fields (Webcam Property Class)
 
         internal string _name;
-        internal bool _supported;
-        internal int _min;
-        internal int _max;
-        internal int _step;
-        internal int _default;
-        internal int _value;
-        internal bool _autoSupport;
-        internal bool _auto;
+        internal bool   _supported;
+        internal int    _min;
+        internal int    _max;
+        internal int    _step;
+        internal int    _default;
+        internal int    _value;
+        internal bool   _autoSupport;
+        internal bool   _auto;
 
-        internal bool _isProcAmp;
-        internal CameraControlProperty _controlProp;
-        internal VideoProcAmpProperty _procAmpProp;
+        internal bool                   _isProcAmp;
+        internal CameraControlProperty  _controlProp;
+        internal VideoProcAmpProperty   _procAmpProp;
 
-        #endregion Fields (Webcam Property Class)
+        #endregion
 
-        internal WebcamProperty()
-        {
-        }
+        internal WebcamProperty() { }
 
         /// <summary>
         /// The name of the property.
@@ -37,7 +35,7 @@ namespace PlexDL.Player
         { get { return _name; } }
 
         /// <summary>
-        /// A value indicating whether the property is supported by the webcam.
+        /// A value that indicates whether the property is supported by the webcam.
         /// </summary>
         public bool Supported
         {
@@ -78,7 +76,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the property can be controlled automatically by the webcam. See also: WebcamProperty.AutoEnabled.
+        /// Gets a value that indicates whether the property can be controlled automatically by the webcam. See also: WebcamProperty.AutoEnabled.
         /// </summary>
         public bool AutoSupport
         {
@@ -86,12 +84,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the property is controlled automatically by the webcam. See also: WebcamProperty.AutoSupported.
+        /// Gets or sets a value that indicates whether the property is controlled automatically by the webcam. See also: WebcamProperty.AutoSupported.
         /// </summary>
         public bool AutoEnabled
         {
             get { return _auto; }
             set { _auto = value; }
         }
+
     }
 }

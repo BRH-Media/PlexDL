@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Position Slider methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Position Slider methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -16,7 +16,7 @@ namespace PlexDL.Player
         private const int MAX_SCROLL_VALUE = 60000;
         private Player _base;
 
-        #endregion Fields (PositionSlider Class)
+        #endregion
 
         internal PositionSlider(Player player)
         {
@@ -138,7 +138,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the display of the player is updated immediately when seeking with the player's position slider (default: false).
+        /// Gets or sets a value that indicates whether the player's display window is updated immediately when seeking with the player's position slider (default: false).
         /// </summary>
         public bool LiveUpdate
         {
@@ -174,7 +174,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating when the audio output is muted when seeking with the player's position slider (default: SilentSeek.OnMoving).
+        /// Gets or sets a value that indicates when the audio output is muted when seeking with the player's position slider (default: SilentSeek.OnMoving).
         /// </summary>
         public SilentSeek SilentSeek
         {

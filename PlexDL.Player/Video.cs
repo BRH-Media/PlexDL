@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Video methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Video methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,13 +15,13 @@ namespace PlexDL.Player
     {
         #region Fields (Video Class)
 
-        private Player _base;
-        private bool _zoomBusy;
-        private bool _boundsBusy;
-        private int _maxZoomWidth = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
-        private int _maxZoomHeight = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
+        private Player          _base;
+        private bool            _zoomBusy;
+        private bool            _boundsBusy;
+        private int             _maxZoomWidth   = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
+        private int             _maxZoomHeight  = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
 
-        #endregion Fields (Video Class)
+        #endregion
 
         internal Video(Player player)
         {
@@ -29,7 +29,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media contains video.
+        /// Gets a value that indicates whether the playing media contains video.
         /// </summary>
         public bool Present
         {
@@ -41,7 +41,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the maximum allowed width (in pixels) of the video image on the display of the player (default: 6400).
+        /// Gets or sets the maximum allowed width (in pixels) of the video image on the player's display window (default: 6400).
         /// </summary>
         public int MaxZoomWidth
         {
@@ -59,13 +59,13 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomWidth = value;
+                    _maxZoomWidth    = value;
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets the maximum allowed height (in pixels) of the video image on the display of the player (default: 6400).
+        /// Gets or sets the maximum allowed height (in pixels) of the video image on the player's display window (default: 6400).
         /// </summary>
         public int MaxZoomHeight
         {
@@ -83,13 +83,13 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomHeight = value;
+                    _maxZoomHeight   = value;
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's full screen display mode on all screens (video wall) is activated (default: false). See also: Player.FullScreenMode.
+        /// Gets or sets a value that indicates whether the player's full screen display mode on all screens (video wall) is activated (default: false). See also: Player.FullScreenMode.
         /// </summary>
         public bool Wall
         {
@@ -111,7 +111,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the size and location (in pixels) of the video image on the display of the player. When set, the display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Gets or sets the size and location (in pixels) of the video image on the player's display window. When set, the player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         public Rectangle Bounds
         {
@@ -166,7 +166,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Enlarges or reduces the size of the video image at the center location of the display of the player. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Enlarges or reduces the size of the video image at the center location of the player's display window. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         /// <param name="factor">The factor by which the video image is to be zoomed.</param>
         public int Zoom(double factor)
@@ -177,35 +177,35 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Enlarges or reduces the size of the player's video image at the specified display location. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Enlarges or reduces the size of the player's video image at the specified display location. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         /// <param name="factor">The factor by which the video image is to be zoomed.</param>
-        /// <param name="center">The center location of the zoom on the display of the player.</param>
+        /// <param name="center">The center location of the zoom on the player's display window.</param>
         public int Zoom(double factor, Point center)
         {
             return (Zoom(factor, center.X, center.Y));
         }
 
         /// <summary>
-        /// Enlarges or reduces the size of the player's video image at the specified display location. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Enlarges or reduces the size of the player's video image at the specified display location. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         /// <param name="factor">The factor by which the video image is to be zoomed.</param>
-        /// <param name="xCenter">The horizontal (x) center location of the zoom on the display of the player.</param>
-        /// <param name="yCenter">The vertical (y) center location of the zoom on the display of the player.</param>
+        /// <param name="xCenter">The horizontal (x) center location of the zoom on the player's display window.</param>
+        /// <param name="yCenter">The vertical (y) center location of the zoom on the player's display window.</param>
         public int Zoom(double factor, int xCenter, int yCenter)
         {
             if (_base._hasVideo && factor > 0)
             {
                 if (!_zoomBusy)
                 {
-                    _zoomBusy = true;
+                    _zoomBusy        = true;
                     _base._lastError = Player.NO_ERROR;
 
                     if (factor != 1)
                     {
-                        double width = 0;
-                        double height = 0;
-                        Rectangle r = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
+                        double width    = 0;
+                        double height   = 0;
+                        Rectangle r     = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
 
                         if (r.Width < r.Height)
                         {
@@ -213,19 +213,19 @@ namespace PlexDL.Player
                             if (width > _maxZoomWidth)
                             {
                                 factor = (double)_maxZoomWidth / r.Width;
-                                width = r.Width * factor;
+                                width  = r.Width * factor;
                             }
                             else if ((width / r.Width) * r.Height > _maxZoomHeight)
                             {
                                 factor = (double)_maxZoomHeight / r.Height;
-                                width = r.Width * factor;
+                                width  = r.Width * factor;
                             }
                             r.X = (int)Math.Round(-factor * (xCenter - r.X)) + xCenter;
 
                             if (width >= 10)
                             {
-                                r.Y = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
-                                height = (width / r.Width) * r.Height;
+                                r.Y     = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
+                                height  = (width / r.Width) * r.Height;
                             }
                         }
                         else
@@ -245,14 +245,14 @@ namespace PlexDL.Player
 
                             if (height >= 10)
                             {
-                                r.X = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
+                                r.X   = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
                                 width = (height / r.Height) * r.Width;
                             }
                         }
 
-                        r.Width = (int)Math.Round(width);
+                        r.Width  = (int)Math.Round(width);
                         r.Height = (int)Math.Round(height);
-                        Bounds = r;
+                        Bounds   = r;
                     }
                     _zoomBusy = false;
                 }
@@ -263,9 +263,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Enlarges the specified part of the display of the player to the entire display of the player. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Enlarges the specified part of the player's display window to the entire display window of the player. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
-        /// <param name="area">The area of the display of the player to enlarge.</param>
+        /// <param name="area">The area of the player's display window to enlarge.</param>
         public int Zoom(Rectangle area)
         {
             if (_base._hasVideo)
@@ -301,7 +301,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Moves the location of the video image on the display of the player by the given amount of pixels. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Moves the location of the video image on the player's display window by the given amount of pixels. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         /// <param name="horizontal">The amount of pixels to move the video image in the horizontal (x) direction.</param>
         /// <param name="vertical">The amount of pixels to move the video image in the vertical (y) direction.</param>
@@ -316,7 +316,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Enlarges or reduces the size of the player's video image by the given amount of pixels at the center of the video image. The display mode of the player (Player.Display.Mode) is set to Displaymode.Manual.
+        /// Enlarges or reduces the size of the player's video image by the given amount of pixels at the center of the video image. The player's display mode (Player.Display.Mode) is set to Displaymode.Manual.
         /// </summary>
         /// <param name="horizontal">The amount of pixels to stretch the video image in the horizontal (x) direction.</param>
         /// <param name="vertical">The amount of pixels to stretch the video image in the vertical (y) direction.</param>
@@ -331,7 +331,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the brightness of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
+        /// Gets or sets a value that indicates the brightness of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
         /// </summary>
         public double Brightness
         {
@@ -347,7 +347,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the contrast of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
+        /// Gets or sets a value that indicates the contrast of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
         /// </summary>
         public double Contrast
         {
@@ -363,7 +363,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the hue of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
+        /// Gets or sets a value that indicates the hue of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
         /// </summary>
         public double Hue
         {
@@ -379,7 +379,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the saturation of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
+        /// Gets or sets a value that indicates the saturation of the player's video image. Values from -1.0 to 1.0 (default: 0.0).
         /// </summary>
         public double Saturation
         {
@@ -394,8 +394,9 @@ namespace PlexDL.Player
             }
         }
 
+
         /// <summary>
-        /// Returns a copy of the currently displayed video image of the player (without display overlay). See also: Player.ScreenCopy.ToImage.
+        /// Returns a copy of the player's currently displayed video image (without display overlay). See also: Player.Copy.ToImage.
         /// </summary>
         public Image ToImage()
         {
@@ -403,25 +404,107 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies the currently displayed video image of the player (without display overlay) to the system's clipboard. See also: Player.ScreenCopy.ToClipboard.
+        /// Returns a copy of the player's currently displayed video image (without display overlay) with the specified dimensions. See also: Player.Copy.ToImage.
+        /// </summary>
+        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio.</param>
+        public Image ToImage(int size)
+        {
+            Image theImage = null;
+            if (size >= 8)
+            {
+                Image copy = _base.AV_DisplayCopy(true, false);
+                if (copy != null)
+                {
+                    try
+                    {
+                        //if (copy.Width > copy.Height) theImage = new Bitmap(copy, size, (size * copy.Height) / copy.Width);
+                        //else theImage = new Bitmap(copy, (size * copy.Width) / copy.Height, size);
+                        if (copy.Width > copy.Height) theImage = _base.AV_ResizeImage(copy, size, (size * copy.Height) / copy.Width);
+                        else theImage = _base.AV_ResizeImage(copy, (size * copy.Width) / copy.Height, size);
+                    }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                    copy.Dispose();
+                }
+            }
+            else _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+            return theImage;
+        }
+
+        /// <summary>
+        /// Returns a copy of the player's currently displayed video image (without display overlay) with the specified dimensions. See also: Player.Copy.ToImage.
+        /// </summary>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
+        public Image ToImage(int width, int height)
+        {
+            Image theImage = null;
+            if (width >= 8 && height >= 8)
+            {
+                Image copy = _base.AV_DisplayCopy(true, false);
+                if (copy != null)
+                {
+                    //try { theImage = new Bitmap(copy, width, height); }
+                    try { theImage = _base.AV_ResizeImage(copy, width, height); }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                    copy.Dispose();
+                }
+            }
+            else _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+            return theImage;
+        }
+
+
+        /// <summary>
+        /// Copies the player's currently displayed video image (without display overlay) to the system's clipboard. See also: Player.Copy.ToClipboard.
         /// </summary>
         public int ToClipboard()
         {
-            Image theImage = _base.AV_DisplayCopy(true, false);
-            if (_base._lastError == Player.NO_ERROR)
+            Image copy = _base.AV_DisplayCopy(true, false);
+            if (copy != null)
             {
-                try { Clipboard.SetImage(theImage); }
-                catch (Exception e)
-                {
-                    _base._lastError = (HResult)Marshal.GetHRForException(e);
-                }
-                theImage.Dispose();
+                try { Clipboard.SetImage(copy); }
+                catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                copy.Dispose();
             }
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Saves a copy of the currently displayed video image of the player (without display overlay) to the specified file. See also: Player.ScreenCopy.ToFile.
+        /// Copies the player's currently displayed video image (without display overlay) with the specified dimensions to the system's clipboard. See also: Player.Copy.ToClipboard.
+        /// </summary>
+        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio.</param>
+        public int ToClipboard(int size)
+        {
+            Image copy = ToImage(size);
+            if (copy != null)
+            {
+                try { Clipboard.SetImage(copy); }
+                catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                copy.Dispose();
+            }
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Copies the player's currently displayed video image (without display overlay) with the specified dimensions to the system's clipboard. See also: Player.Copy.ToClipboard.
+        /// </summary>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
+        public int ToClipboard(int width, int height)
+        {
+            Image copy = ToImage(width, height);
+            if (copy != null)
+            {
+                try { Clipboard.SetImage(copy); }
+                catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                copy.Dispose();
+            }
+            return (int)_base._lastError;
+        }
+
+
+        /// <summary>
+        /// Saves a copy of the player's currently displayed video image (without display overlay) to the specified file. See also: Player.Copy.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
@@ -429,22 +512,81 @@ namespace PlexDL.Player
         {
             if ((fileName != null) && (fileName.Length > 3))
             {
-                Image theImage = _base.AV_DisplayCopy(true, false);
-                if (_base._lastError == Player.NO_ERROR)
+                Image copy = _base.AV_DisplayCopy(true, false);
+                if (copy != null)
                 {
-                    try { theImage.Save(fileName, imageFormat); }
-                    catch (Exception e)
-                    {
-                        _base._lastError = (HResult)Marshal.GetHRForException(e);
-                    }
-                    theImage.Dispose();
+                    try { copy.Save(fileName, imageFormat); }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                    copy.Dispose();
                 }
             }
-            else
-            {
-                _base._lastError = HResult.ERROR_INVALID_NAME;
-            }
+            else _base._lastError = HResult.ERROR_INVALID_NAME;
             return (int)_base._lastError;
         }
+
+        /// <summary>
+        /// Saves a copy of the player's currently displayed video image (without display overlay) with the specified dimensions to the specified file. See also: Player.Copy.ToFile.
+        /// </summary>
+        /// <param name="fileName">The name of the file to save.</param>
+        /// <param name="imageFormat">The file format of the image to save.</param>
+        /// <param name="size">The size of the longest side of the image to save while maintaining the aspect ratio.</param>
+        public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int size)
+        {
+            if ((fileName != null) && (fileName.Length > 3))
+            {
+                Image copy = ToImage(size);
+                if (copy != null)
+                {
+                    try { copy.Save(fileName, imageFormat); }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                    copy.Dispose();
+                }
+            }
+            else _base._lastError = HResult.ERROR_INVALID_NAME;
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Saves a copy of the player's currently displayed video image (without display overlay) with the specified dimensions to the specified file. See also: Player.Copy.ToFile.
+        /// </summary>
+        /// <param name="fileName">The name of the file to save.</param>
+        /// <param name="imageFormat">The file format of the image to save.</param>
+        /// <param name="width">The width of the image to save.</param>
+        /// <param name="height">The height of the image to save.</param>
+        public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int width, int height)
+        {
+            if ((fileName != null) && (fileName.Length > 3))
+            {
+                Image copy = ToImage(width, height);
+                if (copy != null)
+                {
+                    try { copy.Save(fileName, imageFormat); }
+                    catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
+                    copy.Dispose();
+                }
+            }
+            else _base._lastError = HResult.ERROR_INVALID_NAME;
+            return (int)_base._lastError;
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether video tracks in subsequent media files are ignored by the player (default: false). The video track information remains available. Allows to play audio from media with unsupported video formats.
+        /// </summary>
+        public bool Cut
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._videoCut;
+            }
+            set
+            {
+                _base._videoCut = value;
+                if (value) _base._audioCut = false;
+                _base._lastError = Player.NO_ERROR;
+            }
+        }
+
     }
 }

@@ -10,21 +10,29 @@ namespace PlexDL.Player
     {
         #region Fields (Media Chapter Class)
 
-        internal string _title;
-        internal TimeSpan _startTime;
+        internal string[]   _title;
+        internal string[]   _language;
+        internal TimeSpan   _startTime;
+        internal TimeSpan   _endTime;
 
-        #endregion Fields (Media Chapter Class)
+        #endregion
 
-        internal MediaChapter()
+        internal MediaChapter() { }
+
+        /// <summary>
+        /// Gets the title of the media chapter. The chapter can have multiple titles in different languages.
+        /// </summary>
+        public string[] Title
         {
+            get { return _title; }
         }
 
         /// <summary>
-        /// Gets the title of the media chapter.
+        /// Gets the language (3 letter name (ISO 639.2)) used for the title of the media chapter or null if not available. The index of the language corresponds to the index of the title.
         /// </summary>
-        public string Title
+        public string[] Language
         {
-            get { return _title; }
+            get { return _language; }
         }
 
         /// <summary>
@@ -33,6 +41,14 @@ namespace PlexDL.Player
         public TimeSpan StartTime
         {
             get { return _startTime; }
+        }
+
+        /// <summary>
+        /// Gets the end time of the media chapter. TimeSpan.Zero indicates the beginning of the next chapter or the end of the file.
+        /// </summary>
+        public TimeSpan EndTime
+        {
+            get { return _endTime; }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Events of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Events of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Events Class)
+        #endregion
 
         internal Events(Player player)
         {
@@ -48,7 +48,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the media repeat setting of the player has changed.
+        /// Occurs when the player's media repeat setting has changed.
         /// </summary>
         public event EventHandler MediaRepeatChanged
         {
@@ -126,7 +126,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the display window of the player has changed.
+        /// Occurs when the player's display window has changed.
         /// </summary>
         public event EventHandler MediaDisplayChanged
         {
@@ -139,7 +139,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the displaymode of the player has changed.
+        /// Occurs when the player's displaymode has changed.
         /// </summary>
         public event EventHandler MediaDisplayModeChanged
         {
@@ -152,7 +152,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the shape of the display window of the player has changed.
+        /// Occurs when the shape of the player's display window has changed.
         /// </summary>
         public event EventHandler MediaDisplayShapeChanged
         {
@@ -165,7 +165,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the full screen mode of the player has changed.
+        /// Occurs when the player's full screen mode has changed.
         /// </summary>
         public event EventHandler MediaFullScreenChanged
         {
@@ -178,7 +178,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the full screen display mode of the player has changed.
+        /// Occurs when the player's full screen display mode has changed.
         /// </summary>
         public event EventHandler MediaFullScreenModeChanged
         {
@@ -191,7 +191,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio volume of the player has changed.
+        /// Occurs when the player's audio volume has changed.
         /// </summary>
         public event EventHandler MediaAudioVolumeChanged
         {
@@ -204,7 +204,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio balance of the player has changed.
+        /// Occurs when the player's audio balance has changed.
         /// </summary>
         public event EventHandler MediaAudioBalanceChanged
         {
@@ -217,7 +217,7 @@ namespace PlexDL.Player
         }
 
         ///// <summary>
-        ///// Occurs when the audio enabled setting of the player has changed.
+        ///// Occurs when the player's audio enabled setting has changed.
         ///// </summary>
         //public event EventHandler MediaAudioEnabledChanged
         //{
@@ -230,7 +230,7 @@ namespace PlexDL.Player
         //}
 
         /// <summary>
-        /// Occurs when the audio mute setting of the player has changed.
+        /// Occurs when the player's audio mute setting has changed.
         /// </summary>
         public event EventHandler MediaAudioMuteChanged
         {
@@ -243,7 +243,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the videobounds of the video on the display window of the player have changed (by using VideoBounds, VideoZoom or VideoMove options).
+        /// Occurs when the videobounds of the video on the player's display window have changed (by using VideoBounds, VideoZoom or VideoMove options).
         /// </summary>
         public event EventHandler MediaVideoBoundsChanged
         {
@@ -256,7 +256,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the playback speed setting of the player has changed.
+        /// Occurs when the player's playback speed setting has changed.
         /// </summary>
         public event EventHandler MediaSpeedChanged
         {
@@ -269,7 +269,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the display overlay of the player has changed.
+        /// Occurs when the player's display overlay has changed.
         /// </summary>
         public event EventHandler MediaOverlayChanged
         {
@@ -282,7 +282,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the display overlay mode setting of the player has changed.
+        /// Occurs when the player's display overlay mode setting has changed.
         /// </summary>
         public event EventHandler MediaOverlayModeChanged
         {
@@ -295,7 +295,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the display overlay hold setting of the player has changed.
+        /// Occurs when the player's display overlay hold setting has changed.
         /// </summary>
         public event EventHandler MediaOverlayHoldChanged
         {
@@ -308,7 +308,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the active state of the display overlay of the player has changed.
+        /// Occurs when the active state of the player's display overlay has changed.
         /// </summary>
         public event EventHandler MediaOverlayActiveChanged
         {
@@ -321,7 +321,20 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio output peak level of the player has changed. Device changes are handled automatically by the player.
+        /// Occurs when a display clone is added or removed from the player.
+        /// </summary>
+        public event EventHandler MediaDisplayClonesChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaDisplayClonesChanged += value;
+            }
+            remove { _base._mediaDisplayClonesChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's audio output peak level has changed. Device changes are handled automatically by the player.
         /// </summary>
         public event EventHandler<PeakLevelEventArgs> MediaPeakLevelChanged
         {
@@ -356,7 +369,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio input peak level of the player has changed.
+        /// Occurs when the player's audio input peak level has changed.
         /// </summary>
         public event EventHandler<PeakLevelEventArgs> MediaInputLevelChanged
         {
@@ -398,7 +411,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the current subtitle of the player has changed.
+        /// Occurs when the player's current subtitle has changed.
         /// </summary>
         public event EventHandler<SubtitleEventArgs> MediaSubtitleChanged
         {
@@ -462,7 +475,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio output device of the player is set to a different device. The player handles all changes to the audio output devices. You can use this event to update the application's interface.
+        /// Occurs when the player's audio output device has changed. The player handles all changes to the audio output devices. You can use this event to update the application's interface.
         /// </summary>
         public event EventHandler MediaAudioDeviceChanged
         {
@@ -522,7 +535,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the audio input device of the player is set to a different device.
+        /// Occurs when the player's audio input device has changed.
         /// </summary>
         public event EventHandler MediaAudioInputDeviceChanged
         {
@@ -545,6 +558,45 @@ namespace PlexDL.Player
                 _base._mediaWebcamFormatChanged += value;
             }
             remove { _base._mediaWebcamFormatChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video recorder starts recording.
+        /// </summary>
+        public event EventHandler MediaRecorderStarted
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaRecorderStarted += value;
+            }
+            remove { _base._mediaRecorderStarted -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video recorder stops recording.
+        /// </summary>
+        public event EventHandler MediaRecorderStopped
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaRecorderStopped += value;
+            }
+            remove { _base._mediaRecorderStopped -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video recorder pause mode is activated (recording is paused) or deactivated (recording is resumed).
+        /// </summary>
+        public event EventHandler MediaRecorderPausedChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaRecorderPausedChanged += value;
+            }
+            remove { _base._mediaRecorderPausedChanged -= value; }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Audio Input methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Audio Input methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Audio Input Class)
+        #endregion
 
         internal AudioInput(Player player)
         {
@@ -115,7 +115,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether an audio input device is playing (on its own or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
+        /// Gets a value that indicates whether an audio input device is playing (on its own or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
         /// </summary>
         public bool Playing
         {

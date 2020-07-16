@@ -19,7 +19,7 @@ namespace PlexDL.Player
         internal bool _dragEnabled = false;
         internal Cursor _dragCursor = Cursors.SizeAll;
 
-        #endregion Fields (Clone Properties Class)
+        #endregion
 
         /// <summary>
         /// Gets or sets the video quality of the display clone (default: CloneQuality.Auto).
@@ -58,7 +58,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the CloneProperties.Shape property applies to the video image (or to the display window) of the display clone (default: true (video)).
+        /// Gets or sets a value that indicates whether the CloneProperties.Shape property applies to the video image (or to the display window) of the display clone (default: true (video)).
         /// </summary>
         public bool ShapeVideo
         {
@@ -67,7 +67,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the parent window (form) of the display clone can be moved by dragging the display clone window (default: false). See also: CloneProperties.DragCursor.
+        /// Gets or sets a value that indicates whether the parent window (form) of the display clone can be moved by dragging the display clone window (default: false). See also: CloneProperties.DragCursor.
         /// </summary>
         public bool DragEnabled
         {

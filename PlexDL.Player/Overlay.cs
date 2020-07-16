@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used to group together the Display Overlay methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Display Overlay methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Overlay Class)
+        #endregion
 
         internal Overlay(Player player)
         {
@@ -23,7 +23,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the display overlay of the player.
+        /// Gets or sets the player's display overlay.
         /// </summary>
         public Form Window
         {
@@ -44,7 +44,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the display mode (video or display size) of the display overlay of the player (default: OverlayMode.Video).
+        /// Gets or sets the display mode (video or display size) of the player's display overlay (default: OverlayMode.Video).
         /// </summary>
         public OverlayMode Mode
         {
@@ -70,7 +70,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the display overlay of the player is always shown (default: false).
+        /// Gets or sets a value that indicates whether the player's display overlay is always shown (default: false).
         /// </summary>
         public bool Hold
         {
@@ -107,7 +107,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the display overlay of the player can be activated for input and selection (default: false).
+        /// Gets or sets a value that indicates whether the player's display overlay can be activated for input and selection (default: false).
         /// </summary>
         public bool CanFocus
         {
@@ -123,7 +123,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the number of milliseconds that the visibilty of the display overlay of the player is delayed when restoring the minimized display (form) of the player. Set to 0 to disable (default: 200 ms).
+        /// Gets or sets the number of milliseconds that the visibilty of the player's display overlay is delayed when restoring the player's minimized display window (form). Set to 0 to disable (default: 200 ms).
         /// </summary>
         public int Delay
         {
@@ -152,7 +152,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the display overlay of the player is active.
+        /// Gets a value that indicates whether the player's display overlay is active.
         /// </summary>
         public bool Active
         {
@@ -164,7 +164,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has a display overlay (set, but not necessarily active or visible).
+        /// Gets a value that indicates whether the player has a display overlay (set, but not necessarily active or visible).
         /// </summary>
         public bool Present
         {
@@ -176,7 +176,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the display overlay of the player is active and visible.
+        /// Gets a value that indicates whether the player's display overlay is active and visible.
         /// </summary>
         public bool Visible
         {
@@ -188,7 +188,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether clipping of the display overlay of the player is enabled. The overlay is clipped when it protrudes outside the parent form of the display window of the player (default: false).
+        /// Gets or sets a value that indicates whether clipping of the player's display overlay is enabled. The overlay is clipped when it protrudes outside the parent form of the player's display window (default: false).
         /// </summary>
         public bool Clipping
         {
@@ -208,7 +208,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the opacity of display overlays displayed on screen copies and player display clones. May require specially designed display overlays (default: OverlayBlend.None).
+        /// Gets or sets a value that indicates the opacity of display overlays displayed on screen copies and player display clones. May require specially designed display overlays (default: OverlayBlend.None).
         /// </summary>
         public OverlayBlend Blend
         {

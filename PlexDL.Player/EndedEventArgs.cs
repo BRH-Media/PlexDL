@@ -10,13 +10,13 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class EndedEventArgs : HideObjectEventArgs
     {
-        internal StopReason _reason;
-        internal int _error;
-        internal string _mediaName;
-        internal MediaSourceType _sourceType;
+        internal StopReason         _reason;
+        internal int                _error;
+        internal string             _mediaName;
+        internal MediaSourceType    _sourceType;
 
         /// <summary>
-        /// Gets a value indicating the reason why the media has stopped playing.
+        /// Gets a value that indicates the reason why the media has stopped playing.
         /// </summary>
         public StopReason StopReason
         {
@@ -24,7 +24,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the error code indicating why the media has stopped playing (for a (localized) description of the error use Player.GetErrorString(e.ErrorCode)).
+        /// Gets the error code that indicates why the media has stopped playing (for a (localized) description of the error use Player.GetErrorString(e.ErrorCode)).
         /// </summary>
         public int ErrorCode
         {
@@ -32,7 +32,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating the source type of the media that has stopped playing.
+        /// Gets a value that indicates the source type of the media that has stopped playing.
         /// </summary>
         public MediaSourceType MediaSourceType
         {

@@ -16,7 +16,7 @@ namespace PlexDL.Player
         internal string _name;
         internal string _adapter;
 
-        #endregion Fields (Device Info Class)
+        #endregion
 
         /// <summary>
         /// Gets the identifier of the device.

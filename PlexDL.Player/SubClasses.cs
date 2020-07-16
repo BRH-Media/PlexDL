@@ -1,10 +1,10 @@
 ﻿/****************************************************************
 
-    PlexDL.Player - Version 0.99
-    May 2020, The Netherlands
+    PVS.MediaPlayer - Version 0.99.1
+    July 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
-    PlexDL.Player uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
+    PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
@@ -12,18 +12,18 @@
     For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
-    Article on CodeProject with information on the use of the PlexDL.Player library:
+    Article on CodeProject with information on the use of the PVS.MediaPlayer library:
     https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
     ****************
 
-    The PlexDL.Player library source code is divided into 8 files:
+    The PVS.MediaPlayer library source code is divided into 8 files:
 
     1. Player.cs        - main source code
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -65,16 +65,16 @@
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
-    PlexDL.Player articles with comments and suggestions and, of course, the people at CodeProject.
+    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
 
     Special thanks to the creators of Media Foundation .NET for their great library!
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
-    code updates and changes in the PlexDL.Player articles in a friendly, fast, and highly competent manner.
+    code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
     Thank you very much, Sean and Deeksha!
 
     Peter Vegter
-    May 2020, The Netherlands
+    July 2020, The Netherlands
 
     ****************************************************************/
 
@@ -88,7 +88,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-#endregion Usings
+#endregion
 
 #region Disable Some Warnings
 
@@ -99,105 +99,123 @@ using System.Windows.Forms;
 #pragma warning disable IDE0018 // Inline variable declaration
 #pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion Disable Some Warnings
+#endregion
+
 
 namespace PlexDL.Player
 {
+
     // ******************************** Device Info Class
 
     #region Device Info Class
 
-    #endregion Device Info Class
+    #endregion
+
 
     // ******************************** Video Track Class
 
     #region Video Track Class
 
-    #endregion Video Track Class
+    #endregion
+
 
     // ******************************** Video Stream Struct
 
     #region Video Stream Struct
 
-    #endregion Video Stream Struct
+    #endregion
+
 
     // ******************************** Video Display Class
 
     #region Video Display Class
 
-    #endregion Video Display Class
+    #endregion
+
 
     // ******************************** Webcam Device Class
 
     #region Webcam Device Class
 
-    #endregion Webcam Device Class
+    #endregion
+
 
     // ******************************** Webcam Property Info Class
 
     #region Webcam Property Class
 
-    #endregion Webcam Property Class
+    #endregion
+
 
     // ******************************** Webcam Video Format Class
 
     #region Webcam Video Format Class
 
-    #endregion Webcam Video Format Class
+    #endregion
+
 
     // ******************************** Webcam Settings Class
 
     #region Webcam Settings Class
 
-    #endregion Webcam Settings Class
+    #endregion
+
 
     // ******************************** Audio Track Class
 
     #region Audio Track Class
 
-    #endregion Audio Track Class
+    #endregion
+
 
     // ******************************** Audio Stream Struct
 
     #region Audio Stream Struct
 
-    #endregion Audio Stream Struct
+    #endregion
+
 
     // ******************************** Audio Device Class
 
     #region Audio Device Class
 
-    #endregion Audio Device Class
+    #endregion
+
 
     // ******************************** Audio Input Device Class
 
     #region Audio Input Device Class
 
-    #endregion Audio Input Device Class
+    #endregion
+
 
     // ******************************** Slider Value Class
 
     #region Slider Value Class
 
-    #endregion Slider Value Class
+    #endregion
+
 
     // ******************************** Metadata Class
 
     #region Metadata Class
 
-    #endregion Metadata Class
+    #endregion
+
 
     // ******************************** Media Chapter Class
 
     #region Media Chapter Class
 
-    #endregion Media Chapter Class
+    #endregion
+
 
     // ******************************** Display Clone Properties Class
 
     #region Display Clone Properties Class
 
-    #endregion Display Clone Properties Class
+    #endregion
+
 
     // ******************************** Player MF Callback Class
 
@@ -205,40 +223,42 @@ namespace PlexDL.Player
 
     // Media Foundation Callback Class
 
-    #endregion Player MF Callback Class
+    #endregion
+
 
     // ******************************** Hide System Object Members Classes
 
-    #region Hide System Object Members Classes
+    #region  Hide System Object Members Classes
 
-    #endregion Hide System Object Members Classes
+    #endregion
+
 
     // ******************************** Player Grouping Classes
 
     #region Audio Class
 
-    #endregion Audio Class
+    #endregion
 
     #region Audio Input Class
 
-    #endregion Audio Input Class
+    #endregion
 
     #region Video Class
 
-    #endregion Video Class
+    #endregion
 
     #region Webcam Class
 
-    #endregion Webcam Class
+    #endregion
 
     #region Display Class
 
-    #endregion Display Class
+    #endregion
 
     #region CursorHide Class
 
     /// <summary>
-    /// A class that is used to group together the CursorHide methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the CursorHide methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -248,7 +268,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (CursorHide Class)
+        #endregion
 
         internal CursorHide(Player player)
         {
@@ -289,7 +309,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatic hiding of the cursor is enabled. This option can be used to temporarily disable the hiding of the cursor. This setting is used by all players in this assembly.
+        /// Gets or sets a value that indicates whether automatic hiding of the cursor is enabled. This option can be used to temporarily disable the hiding of the cursor. This setting is used by all players in this assembly.
         /// </summary>
         public bool Enabled
         {
@@ -330,7 +350,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Get a value indicating whether the cursor has been hidden by the player.
+        /// Get a value that indicates whether the cursor has been hidden by the player.
         /// </summary>
         public bool CursorHidden
         {
@@ -369,16 +389,16 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion CursorHide Class
+    #endregion
 
     #region Overlay Class
 
-    #endregion Overlay Class
+    #endregion
 
     #region DisplayClones Class
 
     /// <summary>
-    /// A class that is used to group together the Display Clones methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Display Clones methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -394,7 +414,7 @@ namespace PlexDL.Player
         private Player _base;
         private CloneProperties _defaultProps;
 
-        #endregion Fields (DisplayClones Class)
+        #endregion
 
         internal DisplayClones(Player player)
         {
@@ -507,7 +527,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a value indicating whether the specified control is a display clone of the player.
+        /// Returns a value that indicates whether the specified control is a display clone of the player.
         /// </summary>
         /// <param name="control">The control to search for.</param>
         public bool Contains(Control control)
@@ -530,7 +550,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the display clones of the player.
+        /// Returns a list of the player's display clones.
         /// </summary>
         public Control[] GetList()
         {
@@ -561,7 +581,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the number of video frames per second used for displaying the display clones of the player (default: 30 fps).
+        /// Gets or sets a value that indicates the number of video frames per second used for displaying the player's display clones (default: 30 fps).
         /// </summary>
         public int FrameRate
         {
@@ -582,7 +602,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the display clones of the player also show display overlays (default: true).
+        /// Gets or sets a value that indicates whether the player's display clones also show display overlays (default: true).
         /// </summary>
         public bool ShowOverlay
         {
@@ -795,6 +815,7 @@ namespace PlexDL.Player
                     clone.HasShape = true;
 
                     if (oldRegion != null) oldRegion.Dispose();
+                    while (_base.dc_PaintBusy) ;
                     clone.Control.Invalidate();
                 }
             }
@@ -820,32 +841,32 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion DisplayClones Class
+    #endregion
 
     #region PointTo Class
 
-    #endregion PointTo Class
+    #endregion
 
-    #region ScreenCopy Class
+    #region Copy Class
 
-    #endregion ScreenCopy Class
+    #endregion
 
     #region Sliders Classes
 
-    #endregion Sliders Classes
+    #endregion
 
     #region TaskbarProgress Class
 
-    #endregion TaskbarProgress Class
+    #endregion
 
     #region SystemPanels Class
 
-    #endregion SystemPanels Class
+    #endregion
 
     #region Subtitles Class
 
     /// <summary>
-    /// A class that is used to group together the Subtitles methods and properties of the PlexDL.Player.Player class.
+    /// A class that is used to group together the Subtitles methods and properties of the PVS.MediaPlayer.Player class.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -856,7 +877,7 @@ namespace PlexDL.Player
         private const int MAX_DIRECTORY_DEPTH = 3;
         private Player _base;
 
-        #endregion Fields (Subtitles Class)
+        #endregion
 
         internal Subtitles(Player player)
         {
@@ -864,7 +885,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the subtitles of the player are activated (by subscribing to the Player.Events.MediaSubtitleChanged event) (default: false).
+        /// Gets a value that indicates whether the player's subtitles are activated (by subscribing to the Player.Events.MediaSubtitleChanged event) (default: false).
         /// </summary>
         public bool Enabled
         {
@@ -876,7 +897,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the playing media (or the media specified with Player.Subtitles.Filename) has a subtitles (.srt) file.
+        /// Gets a value that indicates whether the playing media (or the media specified with Player.Subtitles.Filename) has a subtitles (.srt) file.
         /// </summary>
         public bool Exists
         {
@@ -888,7 +909,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player has active subtitles.
+        /// Gets a value that indicates whether the player has active subtitles.
         /// </summary>
         public bool Present
         {
@@ -1046,7 +1067,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the number of nested directories to search for subtitles files (values 0 to 3, default: 0 (base directory only)).
+        /// Gets or sets a value that indicates the number of nested directories to search for subtitles files (values 0 to 3, default: 0 (base directory only)).
         /// </summary>
         public int DirectoryDepth
         {
@@ -1100,7 +1121,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the number of milliseconds that subtitles appear earlier (negative values) or later (positive values) than specified by the subtitles data. Reset when media ends playing.
+        /// Gets or sets a value that indicates the number of milliseconds that subtitles appear earlier (negative values) or later (positive values) than specified by the subtitles data. Reset when media ends playing.
         /// </summary>
         public int TimeShift
         {
@@ -1121,7 +1142,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether any HTML tags are removed from subtitles (default: true).
+        /// Gets or sets a value that indicates whether any HTML tags are removed from subtitles (default: true).
         /// </summary>
         public bool RemoveHTMLTags
         {
@@ -1142,7 +1163,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether audio only media can activate subtitles (default: false).
+        /// Gets or sets a value that indicates whether audio only media can activate subtitles (default: false).
         /// </summary>
         public bool AudioOnly
         {
@@ -1170,33 +1191,34 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion Subtitles Class
+    #endregion
 
     #region Position Class
 
-    #endregion Position Class
+    #endregion
 
     #region Media Class
 
-    #endregion Media Class
+    #endregion
 
     #region Images Class
 
-    #endregion Images Class
+    #endregion
 
     #region Playlist Class
 
-    #endregion Playlist Class
+    #endregion
 
     #region Has Class
 
-    #endregion Has Class
+    #endregion
 
     #region Speed Class
 
-    #endregion Speed Class
+    #endregion
 
     #region Events Class
 
-    #endregion Events Class
+    #endregion
+
 }

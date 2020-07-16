@@ -229,8 +229,8 @@ namespace PlexDL.UI
 
         private void BtnDownload_Click(object sender, EventArgs e)
         {
-            if ((dgvMovies.SelectedRows.Count != 1) && (dgvEpisodes.SelectedRows.Count != 1) &&
-                (dgvTracks.SelectedRows.Count != 1)) return;
+            if (dgvMovies.SelectedRows.Count != 1 && dgvEpisodes.SelectedRows.Count != 1 &&
+                dgvTracks.SelectedRows.Count != 1) return;
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
                 ObjectProvider.Queue = new List<DownloadInfo>();
@@ -650,8 +650,8 @@ namespace PlexDL.UI
         {
             try
             {
-                if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) ||
-                    (dgvTracks.SelectedRows.Count == 1))
+                if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1 ||
+                    dgvTracks.SelectedRows.Count == 1)
                 {
                     PlexObject content = null;
                     switch (ObjectProvider.CurrentContentType)
@@ -929,8 +929,8 @@ namespace PlexDL.UI
 
             try
             {
-                if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) ||
-                    (dgvTracks.SelectedRows.Count == 1))
+                if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1 ||
+                    dgvTracks.SelectedRows.Count == 1)
                 {
                     var t = ObjectProvider.CurrentContentType;
                     switch (t)
@@ -1609,7 +1609,7 @@ namespace PlexDL.UI
                 var progress = Math.Round(engineProgress);
                 var speed = Methods.FormatBytes(engineSpeed) + "/s";
                 var total = Methods.FormatBytes((long)contentSize);
-                var order = (ObjectProvider.Engine.CurrentIndex + 1) + "/" + ObjectProvider.Engine.QueueLength;
+                var order = ObjectProvider.Engine.CurrentIndex + 1 + "/" + ObjectProvider.Engine.QueueLength;
                 var eta = @"~";
 
                 //it'd be really bad if we tried to divide by 0 and 0
@@ -1619,7 +1619,7 @@ namespace PlexDL.UI
                     var diff = contentSize - bytesGet;
 
                     //~needs to be in millisecond format; so * seconds by 1000~
-                    var val = (diff / engineSpeed) * 1000;
+                    var val = diff / engineSpeed * 1000;
 
                     //this converts the raw "ETA" data into human-readable information, then sets it up for display.
                     eta = Methods.CalculateTime(val);
@@ -1688,7 +1688,7 @@ namespace PlexDL.UI
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Title search requested");
-                if ((dgvMovies.Rows.Count > 0) || (dgvTVShows.Rows.Count > 0) || (dgvArtists.Rows.Count > 0))
+                if (dgvMovies.Rows.Count > 0 || dgvTVShows.Rows.Count > 0 || dgvArtists.Rows.Count > 0)
                 {
                     RenderStruct info = null;
                     DataGridView dgv = null;
@@ -2184,6 +2184,7 @@ namespace PlexDL.UI
         }
 
         //debugging stuff
+/*
         private void XmlMessageBox(XmlNode doc)
         {
             if (doc != null)
@@ -2199,6 +2200,7 @@ namespace PlexDL.UI
             else
                 UIMessages.Info(@"XML Document was null");
         }
+*/
 
         private void DgvTVShows_OnRowChange(object sender, EventArgs e)
         {
@@ -2338,8 +2340,8 @@ namespace PlexDL.UI
 
         private void Metadata(PlexObject result = null)
         {
-            if ((dgvMovies.SelectedRows.Count == 1) || (dgvEpisodes.SelectedRows.Count == 1) ||
-                (dgvTracks.SelectedRows.Count == 1))
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1 ||
+                dgvTracks.SelectedRows.Count == 1)
             {
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
@@ -2386,7 +2388,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void ShowLogViewer()
+        private static void ShowLogViewer()
         {
             using (var frm = new LogViewer())
             {
@@ -2436,7 +2438,7 @@ namespace PlexDL.UI
             DoCleanup();
         }
 
-        private void DoCleanup()
+        private static void DoCleanup()
         {
             //check if the AppData .plexdl folder actually exists
             if (Directory.Exists(Strings.PlexDlAppData))
