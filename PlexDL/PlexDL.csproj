@@ -216,8 +216,9 @@
     <Compile Include="Common\Structures\Plex\PlexMusic.cs" />
     <Compile Include="Common\Structures\ResolutionStandards.cs" />
     <Compile Include="Common\Structures\MusicDirectoryLayout.cs" />
+    <Compile Include="Common\Structures\StreamLinks.cs" />
     <Compile Include="Common\SVarController.cs" />
-    <Compile Include="Common\Structures\DownloadInfo.cs" />
+    <Compile Include="Common\Structures\StreamInfo.cs" />
     <Compile Include="Common\Structures\DownloadLayout.cs" />
     <Compile Include="Common\Structures\AppOptions\GenericAppSettings.cs" />
     <Compile Include="Common\Structures\Plex\PlexMovie.cs" />

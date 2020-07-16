@@ -227,7 +227,8 @@ namespace PlexDL.UI
         {
             //check if the form has anything loaded (stationary mode), and if there is content loaded (note that the link is checked because StreamingContent is never null,
             //but the link will always be filled if there is valid content loaded)
-            if (StationaryMode || StreamingContent.StreamInformation.Link == "") return;
+            if (StationaryMode || StreamingContent.StreamInformation.Links.Download == null ||
+                StreamingContent.StreamInformation.Links.View == null) return;
             if (sfdExport.ShowDialog() == DialogResult.OK)
                 ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
@@ -284,7 +285,7 @@ namespace PlexDL.UI
         {
             var viewer = new LinkViewer
             {
-                Link = StreamingContent.StreamInformation.Link
+                Link = StreamingContent.StreamInformation.Links.Download.ToString() //download link (octet-stream)
             };
             viewer.ShowDialog();
         }

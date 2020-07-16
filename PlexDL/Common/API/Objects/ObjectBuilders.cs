@@ -9,7 +9,7 @@ namespace PlexDL.Common.API.Objects
 {
     public static class ObjectBuilders
     {
-        public static PlexTvShow GetTvObjectFromIndex(int index, bool formatLinkDownload)
+        public static PlexTvShow GetTvObjectFromIndex(int index)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace PlexDL.Common.API.Objects
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml);
 
                     if (dlInfo != null)
                     {
@@ -72,7 +72,7 @@ namespace PlexDL.Common.API.Objects
             }
         }
 
-        public static PlexMovie GetMovieObjectFromIndex(int index, bool formatLinkDownload)
+        public static PlexMovie GetMovieObjectFromIndex(int index)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace PlexDL.Common.API.Objects
                 {
                     LoggingHelpers.RecordGeneralEntry(@"XML Valid");
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml);
 
                     if (dlInfo != null)
                     {
@@ -127,7 +127,7 @@ namespace PlexDL.Common.API.Objects
             }
         }
 
-        public static PlexMusic GetMusicObjectFromIndex(int index, bool formatLinkDownload)
+        public static PlexMusic GetMusicObjectFromIndex(int index)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace PlexDL.Common.API.Objects
 
                     //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
 
-                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml, formatLinkDownload);
+                    var dlInfo = DownloadInfoGatherers.GetContentDownloadInfo(metadata.Xml);
 
                     if (dlInfo != null)
                     {

@@ -14,7 +14,7 @@ namespace PlexDL.Common.Globals.Providers
     {
         public static Form DebugForm { get; set; } = null;
         public static DownloadQueue Engine { get; set; } = new DownloadQueue();
-        public static List<DownloadInfo> Queue { get; set; }
+        public static List<StreamInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();
         public static MyPlex PlexProvider { get; set; } = new MyPlex();
         public static UserInteraction LibUi { get; set; } = new UserInteraction();

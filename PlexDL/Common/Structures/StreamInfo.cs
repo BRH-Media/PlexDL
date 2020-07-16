@@ -1,8 +1,8 @@
 ﻿namespace PlexDL.Common.Structures
 {
-    public class DownloadInfo
+    public class StreamInfo
     {
-        public string Link { get; set; } = "";
+        public StreamLinks Links { get; set; } = new StreamLinks();
         public string Container { get; set; } = "";
         public long ByteLength { get; set; } = 0;
         public long ContentDuration { get; set; } = 0;

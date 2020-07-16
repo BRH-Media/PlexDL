@@ -20,10 +20,10 @@ namespace PlexDL.Common
             return result;
         }
 
-        public List<StringVariable> BuildFromDlInfo(DownloadInfo stream)
+        public List<StringVariable> BuildFromDlInfo(StreamInfo stream)
         {
             DefaultStringVariables.ContentTitle.VariableValue = stream.ContentTitle;
-            DefaultStringVariables.FileName.VariableValue = stream.Link;
+            DefaultStringVariables.FileName.VariableValue = stream.Links.View.ToString();
             DefaultStringVariables.TokenHash.VariableValue = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
             DefaultStringVariables.ServerPort.VariableValue = ObjectProvider.Settings.ConnectionInfo.PlexPort;
             DefaultStringVariables.ServerIp.VariableValue = ObjectProvider.Settings.ConnectionInfo.PlexAddress;

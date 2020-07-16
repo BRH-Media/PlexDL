@@ -10,7 +10,7 @@ namespace PlexDL.Common.Structures.Plex
     [Serializable]
     public class PlexObject
     {
-        public DownloadInfo StreamInformation { get; set; } = new DownloadInfo();
+        public StreamInfo StreamInformation { get; set; } = new StreamInfo();
         public string ApiUri { get; set; } = @""; //e.g. /library/metadata/<UNIQUE_NUMERIC_ID>
         public int StreamIndex { get; set; } = 0;
         public Resolution StreamResolution { get; set; } = new Resolution();

@@ -1,11 +1,10 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.PlayerLaunchers
@@ -37,10 +36,9 @@ namespace PlexDL.Common.PlayerLaunchers
                     UIMessages.Error(@"PlexDL could not find VLC Media Player. Please locate VLC and then try again.");
                     var ofd = new OpenFileDialog
                     {
-                        Filter = @"vlc.exe",
+                        Filter = @"VLC Executable|vlc.exe",
                         Title = @"Locate VLC Media Player",
-                        Multiselect = false,
-                        FileName = @"vlc.exe"
+                        Multiselect = false
                     };
 
                     if (ofd.ShowDialog() != DialogResult.OK) return;

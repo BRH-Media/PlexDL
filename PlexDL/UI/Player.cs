@@ -211,7 +211,7 @@ namespace PlexDL.UI
         {
             if (_mPlayer.Playing) return;
 
-            if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Link))
+            if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Links.View.ToString()))
             {
                 var fileName = (string)e.Arguments[0];
                 StartPlayer(fileName);
@@ -257,7 +257,7 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private DownloadInfo GetContentDownloadInfo(int index)
+        private StreamInfo GetContentDownloadInfo(int index)
         {
             if (index + 1 <= TitlesTable.Rows.Count)
             {
@@ -269,13 +269,13 @@ namespace PlexDL.UI
 
                 var reply = XmlGet.GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
 
-                var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply, false);
+                var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply);
                 return obj;
             }
 
             UIMessages.Error(@"Index was higher than row count; could not process data.",
                 @"Indexing Error");
-            return new DownloadInfo();
+            return new StreamInfo();
         }
 
         private void NextTitle()
@@ -408,7 +408,7 @@ namespace PlexDL.UI
                 if (_mPlayer.Paused)
                     Resume();
                 else
-                    Play(StreamingContent.StreamInformation.Link);
+                    Play(StreamingContent.StreamInformation.Links.View.ToString());
             }
         }
 

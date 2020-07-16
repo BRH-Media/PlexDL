@@ -12,13 +12,13 @@ namespace PlexDL.Common.API
 {
     public static class DownloadInfoGatherers
     {
-        public static DownloadInfo GetContentDownloadInfo(XmlDocument xml, bool formatLinkDownload)
+        public static StreamInfo GetContentDownloadInfo(XmlDocument xml)
         {
             try
             {
-                if (!Methods.PlexXmlValid(xml)) return new DownloadInfo();
+                if (!Methods.PlexXmlValid(xml)) return new StreamInfo();
 
-                var obj = new DownloadInfo();
+                var obj = new StreamInfo();
 
                 LoggingHelpers.RecordGeneralEntry("Grabbing DownloadInfo object");
                 var sections = new DataSet();
@@ -45,7 +45,7 @@ namespace PlexDL.Common.API
                         break;
                 }
 
-                if (dlRow == null) return new DownloadInfo();
+                if (dlRow == null) return new StreamInfo();
 
                 var title = dlRow["title"].ToString();
                 if (title.Length > ObjectProvider.Settings.Generic.DefaultStringLength)
@@ -73,16 +73,12 @@ namespace PlexDL.Common.API
                 var contentDuration = Convert.ToInt32(partRow["duration"]);
                 var fileName = Methods.RemoveIllegalCharacters(title + "." + container);
 
-                string link;
-
                 //The PMS (Plex Media Server) will return the file as an octet-stream (download) if we set
                 //the GET parameter 'download' to '1' and a normal MP4 stream if we set it to '0'.
-                if (!formatLinkDownload)
-                    link = Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken();
-                else
-                    link = Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken();
-
-                obj.Link = link;
+                obj.Links.View = new Uri(
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken());
+                obj.Links.Download = new Uri(
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken());
                 obj.Container = container;
                 obj.ByteLength = byteLength;
                 obj.ContentDuration = contentDuration;

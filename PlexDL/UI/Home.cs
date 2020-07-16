@@ -233,7 +233,7 @@ namespace PlexDL.UI
                 dgvTracks.SelectedRows.Count != 1) return;
             if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
             {
-                ObjectProvider.Queue = new List<DownloadInfo>();
+                ObjectProvider.Queue = new List<StreamInfo>();
                 switch (ObjectProvider.CurrentContentType)
                 {
                     case ContentType.TvShows:
@@ -280,66 +280,9 @@ namespace PlexDL.UI
             SetDownloadDirectory();
         }
 
-        private void BtnHTTPPlay_Click(object sender, EventArgs e)
+        private void BtnStream_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (!Flags.IsConnected || !Flags.IsLibraryFilled) return;
-
-                PlexObject result = null;
-                switch (ObjectProvider.CurrentContentType)
-                {
-                    case ContentType.Movies:
-                        if (dgvMovies.SelectedRows.Count == 1)
-                            result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                                "Getting Metadata", false);
-                        else
-                        {
-                            UIMessages.Error(@"No movie is selected", @"Validation Error");
-                            return;
-                        }
-
-                        break;
-
-                    case ContentType.TvShows:
-                        if (dgvEpisodes.SelectedRows.Count == 1)
-                            result = (PlexTvShow)WaitWindow.WaitWindow.Show(GetTvObjectFromSelectionWorker,
-                                "Getting Metadata", false);
-                        else
-                        {
-                            UIMessages.Error(@"No episode is selected", @"Validation Error");
-                            return;
-                        }
-
-                        break;
-
-                    case ContentType.Music:
-                        if (dgvTracks.SelectedRows.Count == 1)
-                        {
-                            result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
-                                "Getting Metadata", false);
-                        }
-                        else
-                        {
-                            UIMessages.Error(@"No track is selected", @"Validation Error");
-                        }
-
-                        break;
-                }
-
-                if (result != null)
-                    StartStreaming(result);
-                else
-                {
-                    LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; object was null.");
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "StartStreamError");
-                LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; an error occured.");
-                UIMessages.Error("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error");
-            }
+            StartStreaming();
         }
 
         private void ItmMetadata_Click(object sender, EventArgs e)
@@ -476,7 +419,7 @@ namespace PlexDL.UI
             if (dgvMovies.SelectedRows.Count != 1) return obj;
 
             var index = TableProvider.GetTableIndexFromDgv(dgvMovies);
-            obj = ObjectBuilders.GetMovieObjectFromIndex(index, formatLinkDownload);
+            obj = ObjectBuilders.GetMovieObjectFromIndex(index);
 
             return obj;
         }
@@ -488,7 +431,7 @@ namespace PlexDL.UI
             if (dgvTVShows.SelectedRows.Count != 1 || dgvEpisodes.SelectedRows.Count != 1) return obj;
 
             var index = TableProvider.GetTableIndexFromDgv(dgvEpisodes, TableProvider.EpisodesTable);
-            obj = ObjectBuilders.GetTvObjectFromIndex(index, formatLinkDownload);
+            obj = ObjectBuilders.GetTvObjectFromIndex(index);
 
             return obj;
         }
@@ -500,7 +443,7 @@ namespace PlexDL.UI
             if (dgvArtists.SelectedRows.Count != 1 || dgvTracks.SelectedRows.Count != 1) return obj;
 
             var index = TableProvider.GetTableIndexFromDgv(dgvTracks, TableProvider.TracksTable);
-            obj = ObjectBuilders.GetMusicObjectFromIndex(index, formatLinkDownload);
+            obj = ObjectBuilders.GetMusicObjectFromIndex(index);
 
             return obj;
         }
@@ -900,7 +843,7 @@ namespace PlexDL.UI
                 {
                     SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
 
-                    var show = ObjectBuilders.GetTvObjectFromIndex(i, true);
+                    var show = ObjectBuilders.GetTvObjectFromIndex(i);
                     var dlInfo = show.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutTvShow(show, ObjectProvider.Settings,
                         DownloadLayout.PlexStandardLayout);
@@ -972,7 +915,7 @@ namespace PlexDL.UI
                 {
                     SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
 
-                    var track = ObjectBuilders.GetMusicObjectFromIndex(i, true);
+                    var track = ObjectBuilders.GetMusicObjectFromIndex(i);
                     var dlInfo = track.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
                         DownloadLayout.PlexStandardLayout);
@@ -1011,7 +954,7 @@ namespace PlexDL.UI
             {
                 //set needed globals
                 ObjectProvider.Engine = new DownloadQueue();
-                ObjectProvider.Queue = new List<DownloadInfo>();
+                ObjectProvider.Queue = new List<StreamInfo>();
 
                 LoggingHelpers.RecordGeneralEntry(@"Metadata worker started");
                 LoggingHelpers.RecordGeneralEntry(@"Doing directory checks");
@@ -1522,7 +1465,7 @@ namespace PlexDL.UI
             Flags.IsEngineRunning = false;
         }
 
-        private void StartDownload(IReadOnlyList<DownloadInfo> queue)
+        private void StartDownload(IReadOnlyList<StreamInfo> queue)
         {
             LoggingHelpers.RecordGeneralEntry("Download Process Started");
             pbMain.Value = 0;
@@ -1537,7 +1480,7 @@ namespace PlexDL.UI
                     if (File.Exists(fqPath))
                         LoggingHelpers.RecordGeneralEntry(dl.FileName + " already exists; will not download.");
                     else
-                        ObjectProvider.Engine.Add(dl.Link, fqPath);
+                        ObjectProvider.Engine.Add(dl.Links.Download.ToString(), fqPath);
                 }
             }
             else
@@ -1555,7 +1498,7 @@ namespace PlexDL.UI
                     }
                 }
 
-                ObjectProvider.Engine.Add(dl.Link, fqPath);
+                ObjectProvider.Engine.Add(dl.Links.Download.ToString(), fqPath);
             }
 
             btnPause.Enabled = true;
@@ -2184,23 +2127,23 @@ namespace PlexDL.UI
         }
 
         //debugging stuff
-/*
-        private void XmlMessageBox(XmlNode doc)
-        {
-            if (doc != null)
-            {
-                using (var sww = new StringWriter())
-                using (var writer = XmlWriter.Create(sww))
+        /*
+                private void XmlMessageBox(XmlNode doc)
                 {
-                    doc.WriteTo(writer);
-                    writer.Flush();
-                    UIMessages.Info(sww.GetStringBuilder().ToString());
+                    if (doc != null)
+                    {
+                        using (var sww = new StringWriter())
+                        using (var writer = XmlWriter.Create(sww))
+                        {
+                            doc.WriteTo(writer);
+                            writer.Flush();
+                            UIMessages.Info(sww.GetStringBuilder().ToString());
+                        }
+                    }
+                    else
+                        UIMessages.Info(@"XML Document was null");
                 }
-            }
-            else
-                UIMessages.Info(@"XML Document was null");
-        }
-*/
+        */
 
         private void DgvTVShows_OnRowChange(object sender, EventArgs e)
         {
@@ -2281,6 +2224,68 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordGeneralEntry("Download process failed; download is already running.");
         }
 
+        private void StartStreaming()
+        {
+            try
+            {
+                if (!Flags.IsConnected || !Flags.IsLibraryFilled) return;
+
+                PlexObject result = null;
+                switch (ObjectProvider.CurrentContentType)
+                {
+                    case ContentType.Movies:
+                        if (dgvMovies.SelectedRows.Count == 1)
+                            result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
+                                @"Getting Metadata", false);
+                        else
+                        {
+                            UIMessages.Error(@"No movie is selected", @"Validation Error");
+                            return;
+                        }
+
+                        break;
+
+                    case ContentType.TvShows:
+                        if (dgvEpisodes.SelectedRows.Count == 1)
+                            result = (PlexTvShow)WaitWindow.WaitWindow.Show(GetTvObjectFromSelectionWorker,
+                                "Getting Metadata", false);
+                        else
+                        {
+                            UIMessages.Error(@"No episode is selected", @"Validation Error");
+                            return;
+                        }
+
+                        break;
+
+                    case ContentType.Music:
+                        if (dgvTracks.SelectedRows.Count == 1)
+                        {
+                            result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
+                                "Getting Metadata", false);
+                        }
+                        else
+                        {
+                            UIMessages.Error(@"No track is selected", @"Validation Error");
+                        }
+
+                        break;
+                }
+
+                if (result != null)
+                    StartStreaming(result);
+                else
+                {
+                    LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; object was null.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "StartStreamError");
+                LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; an error occured.");
+                UIMessages.Error("Streaming preparation error occurred:\n\n" + ex, "Start Stream Error");
+            }
+        }
+
         private void StartStreaming(PlexObject stream)
         {
             var def = ObjectProvider.Settings.Player.PlaybackEngine;
@@ -2307,8 +2312,9 @@ namespace PlexDL.UI
 
                 case PlaybackMode.MenuSelector:
                     {
-                        //display the options menu where the
-                        var loc = new Point(Location.X + btnHTTPPlay.Location.X, Location.Y + btnHTTPPlay.Location.Y);
+                        //display the options menu where the MousePointer is, but adjust the height a bit so it isn't awkward to operate.
+                        var loc = MousePosition;
+                        loc.Y = loc.Y - cxtStreamOptions.Height / 2;
                         cxtStreamOptions.Show(loc);
                         break;
                     }
@@ -2497,7 +2503,7 @@ namespace PlexDL.UI
 
         private static void ShowLinkViewer(PlexObject media)
         {
-            var viewer = new LinkViewer { Link = media.StreamInformation.Link };
+            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download.ToString() }; //download link (octet-stream)
             viewer.ShowDialog();
         }
 
@@ -2566,10 +2572,25 @@ namespace PlexDL.UI
         {
             DoCast();
         }
-        
+
         private void ItmTrackCast_Click(object sender, EventArgs e)
         {
             DoCast();
+        }
+
+        private void ItmContentStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
+        }
+
+        private void ItmEpisodeStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
+        }
+
+        private void ItmTrackStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
         }
     }
 }
