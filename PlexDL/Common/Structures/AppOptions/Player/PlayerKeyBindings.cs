@@ -8,8 +8,8 @@ namespace PlexDL.Common.Structures.AppOptions.Player
         public Keys SkipForward { get; set; } = Keys.Right;
         public Keys SkipBackward { get; set; } = Keys.Left;
         public Keys NextTitle { get; set; } = Keys.Up;
-
         public Keys PrevTitle { get; set; } = Keys.Down;
+        public Keys FullscreenToggle { get; set; } = Keys.F;
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

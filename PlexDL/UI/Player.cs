@@ -129,15 +129,9 @@ namespace PlexDL.UI
                 return true;
             }
 
-            if (keyData == Keys.Escape) //exit fullscreen test
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.FullscreenToggle)
             {
-                Fullscreen(false);
-                return true;
-            }
-
-            if (keyData == Keys.Q) //enter fullscreen test
-            {
-                Fullscreen(true);
+                Fullscreen(!_mPlayer.FullScreen); //toggle fullscreen mode
                 return true;
             }
 
@@ -146,7 +140,6 @@ namespace PlexDL.UI
 
         private void FrmPlayer_Resize(object sender, EventArgs e)
         {
-            
         }
 
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
