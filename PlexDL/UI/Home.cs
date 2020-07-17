@@ -1480,7 +1480,7 @@ namespace PlexDL.UI
                     if (File.Exists(fqPath))
                         LoggingHelpers.RecordGeneralEntry(dl.FileName + " already exists; will not download.");
                     else
-                        ObjectProvider.Engine.Add(dl.Links.Download.ToString(), fqPath);
+                        ObjectProvider.Engine.Add(dl.Links.Download, fqPath);
                 }
             }
             else
@@ -1498,7 +1498,7 @@ namespace PlexDL.UI
                     }
                 }
 
-                ObjectProvider.Engine.Add(dl.Links.Download.ToString(), fqPath);
+                ObjectProvider.Engine.Add(dl.Links.Download, fqPath);
             }
 
             btnPause.Enabled = true;
@@ -2503,7 +2503,7 @@ namespace PlexDL.UI
 
         private static void ShowLinkViewer(PlexObject media)
         {
-            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download.ToString() }; //download link (octet-stream)
+            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download }; //download link (octet-stream)
             viewer.ShowDialog();
         }
 

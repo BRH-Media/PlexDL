@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
@@ -11,7 +12,6 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -129,7 +129,24 @@ namespace PlexDL.UI
                 return true;
             }
 
+            if (keyData == Keys.Escape) //exit fullscreen test
+            {
+                Fullscreen(false);
+                return true;
+            }
+
+            if (keyData == Keys.Q) //enter fullscreen test
+            {
+                Fullscreen(true);
+                return true;
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void FrmPlayer_Resize(object sender, EventArgs e)
+        {
+            
         }
 
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
@@ -151,7 +168,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void MPlayer_ContentStarted(object sender, EventArgs e)
+        private static void MPlayer_ContentStarted(object sender, EventArgs e)
         {
             //nothing just yet :)
         }
@@ -211,7 +228,7 @@ namespace PlexDL.UI
         {
             if (_mPlayer.Playing) return;
 
-            if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Links.View.ToString()))
+            if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Links.View))
             {
                 var fileName = (string)e.Arguments[0];
                 StartPlayer(fileName);
@@ -225,13 +242,10 @@ namespace PlexDL.UI
             }
         }
 
-        private static string GetBaseUri(bool incToken)
+        private void Fullscreen(bool t)
         {
-            if (incToken)
-                return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort +
-                       "/?X-Plex-Token=";
-
-            return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort + "/";
+            _mPlayer.FullScreenMode = FullScreenMode.Form;
+            _mPlayer.FullScreen = t;
         }
 
         private void GetObjectFromIndexCallback(object sender, WaitWindowEventArgs e)
@@ -263,7 +277,7 @@ namespace PlexDL.UI
             {
                 var result = TitlesTable.Rows[index];
                 var key = result["key"].ToString();
-                var baseUri = GetBaseUri(false);
+                var baseUri = Strings.GetBaseUri(false);
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 
@@ -360,39 +374,39 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void BtnExit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void btnPlayPause_Click(object sender, EventArgs e)
+        private void BtnPlayPause_Click(object sender, EventArgs e)
         {
             PlayPause();
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void BtnStop_Click(object sender, EventArgs e)
         {
             Stop();
         }
 
-        private void btnPrevTitle_Click(object sender, EventArgs e)
+        private void BtnPrevTitle_Click(object sender, EventArgs e)
         {
             Stop();
             PrevTitle();
         }
 
-        private void btnNextTitle_Click(object sender, EventArgs e)
+        private void BtnNextTitle_Click(object sender, EventArgs e)
         {
             Stop();
             NextTitle();
         }
 
-        private void btnSkipForward_Click(object sender, EventArgs e)
+        private void BtnSkipForward_Click(object sender, EventArgs e)
         {
             SkipForward();
         }
 
-        private void btnSkipBack_Click(object sender, EventArgs e)
+        private void BtnSkipBack_Click(object sender, EventArgs e)
         {
             SkipBack();
         }
@@ -408,7 +422,7 @@ namespace PlexDL.UI
                 if (_mPlayer.Paused)
                     Resume();
                 else
-                    Play(StreamingContent.StreamInformation.Links.View.ToString());
+                    Play(StreamingContent.StreamInformation.Links.View);
             }
         }
 
@@ -448,5 +462,9 @@ namespace PlexDL.UI
         */
 
         private delegate void SafePlayDelegate(string fileName);
+
+        private void TlpPlayerControls_Paint(object sender, PaintEventArgs e)
+        {
+        }
     }
 }

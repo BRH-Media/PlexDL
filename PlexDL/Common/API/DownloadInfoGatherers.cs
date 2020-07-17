@@ -75,10 +75,10 @@ namespace PlexDL.Common.API
 
                 //The PMS (Plex Media Server) will return the file as an octet-stream (download) if we set
                 //the GET parameter 'download' to '1' and a normal MP4 stream if we set it to '0'.
-                obj.Links.View = new Uri(
-                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken());
-                obj.Links.Download = new Uri(
-                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken());
+                obj.Links.View =
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken();
+                obj.Links.Download =
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken();
                 obj.Container = container;
                 obj.ByteLength = byteLength;
                 obj.ContentDuration = contentDuration;

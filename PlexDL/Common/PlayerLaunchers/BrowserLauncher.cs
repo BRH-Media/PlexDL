@@ -14,7 +14,7 @@ namespace PlexDL.Common.PlayerLaunchers
             {
                 if (Methods.StreamAdultContentCheck(stream))
                 {
-                    Process.Start(stream.StreamInformation.Links.View.ToString()); //normal MP4 stream (this won't trigger a browser download if it's a supported file)
+                    Process.Start(stream.StreamInformation.Links.View); //normal MP4 stream (this won't trigger a browser download if it's a supported file)
                     LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
                 }
             }

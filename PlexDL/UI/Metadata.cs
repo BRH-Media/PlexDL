@@ -285,7 +285,7 @@ namespace PlexDL.UI
         {
             var viewer = new LinkViewer
             {
-                Link = StreamingContent.StreamInformation.Links.Download.ToString() //download link (octet-stream)
+                Link = StreamingContent.StreamInformation.Links.Download //download link (octet-stream)
             };
             viewer.ShowDialog();
         }
