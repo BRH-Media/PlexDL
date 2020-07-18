@@ -857,7 +857,7 @@ namespace PlexDL.UI
                     var show = ObjectBuilders.GetTvObjectFromIndex(i);
                     var dlInfo = show.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutTvShow(show, ObjectProvider.Settings,
-                        DownloadLayout.PlexStandardLayout);
+                        DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
                     dlInfo.DownloadPath = dir.SeasonPath;
                     ObjectProvider.Queue.Add(dlInfo);
                 }
@@ -871,7 +871,7 @@ namespace PlexDL.UI
                 var show = GetTvObjectFromSelection();
                 var dlInfo = show.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutTvShow(show, ObjectProvider.Settings,
-                    DownloadLayout.PlexStandardLayout);
+                    DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
                 dlInfo.DownloadPath = dir.SeasonPath;
                 ObjectProvider.Queue.Add(dlInfo);
             }
@@ -929,7 +929,7 @@ namespace PlexDL.UI
                     var track = ObjectBuilders.GetMusicObjectFromIndex(i);
                     var dlInfo = track.StreamInformation;
                     var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
-                        DownloadLayout.PlexStandardLayout);
+                        DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
                     dlInfo.DownloadPath = dir.AlbumPath;
                     ObjectProvider.Queue.Add(dlInfo);
                 }
@@ -943,7 +943,7 @@ namespace PlexDL.UI
                 var track = GetMusicObjectFromSelection();
                 var dlInfo = track.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
-                    DownloadLayout.PlexStandardLayout);
+                    DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
                 dlInfo.DownloadPath = dir.AlbumPath;
                 ObjectProvider.Queue.Add(dlInfo);
             }
@@ -952,6 +952,10 @@ namespace PlexDL.UI
         private void WkrGrabMovie()
         {
             SetProgressLabel(@"Getting Metadata 1/1");
+
+            //create Movies folder if it doesn't exist
+            if (!Directory.Exists($@"{ObjectProvider.Settings.Generic.DownloadDirectory}\Movies"))
+                Directory.CreateDirectory($@"{ObjectProvider.Settings.Generic.DownloadDirectory}\Movies");
 
             var movie = GetMovieObjectFromSelection();
             var dlInfo = movie.StreamInformation;
@@ -1837,7 +1841,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void ResetDownloadDirectory()
+        private static void ResetDownloadDirectory()
         {
             var curUser = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
             ObjectProvider.Settings.Generic.DownloadDirectory = curUser + @"\PlexDL";

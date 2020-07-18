@@ -6,14 +6,14 @@ namespace PlexDL.Common.Structures
 {
     public static class DownloadLayout
     {
-        public static readonly int PlexStandardLayout = 0;
-        public static readonly int PlexDlLayout = 1;
-        public static readonly int NoLayout = 2;
+        public static readonly int MF_PLEX_STANDARD_LAYOUT = 0;
+        public static readonly int MF_PLEX_DL_LAYOUT = 1;
+        public static readonly int MF_NO_LAYOUT = 2;
 
         public static TvShowDirectoryLayout CreateDownloadLayoutTvShow(PlexTvShow show, ApplicationOptions settings, int layout)
         {
             var dirLayout = new TvShowDirectoryLayout();
-            if (layout == PlexStandardLayout)
+            if (layout == MF_PLEX_STANDARD_LAYOUT)
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\TV\";
                 var season = show.Season;
@@ -38,7 +38,7 @@ namespace PlexDL.Common.Structures
         public static MusicDirectoryLayout CreateDownloadLayoutMusic(PlexMusic track, ApplicationOptions settings, int layout)
         {
             var dirLayout = new MusicDirectoryLayout();
-            if (layout == PlexStandardLayout)
+            if (layout == MF_PLEX_STANDARD_LAYOUT)
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\Music\";
                 var album = track.Album;
