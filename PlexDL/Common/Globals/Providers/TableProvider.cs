@@ -16,14 +16,18 @@ namespace PlexDL.Common.Globals.Providers
         public static DataTable AlbumsTable { get; set; }
         public static DataTable TracksTable { get; set; }
 
-        public static bool TitlesTableFilled()
+        public static bool TitlesTableFilled => TableFilled(TitlesTable);
+        public static bool FilteredTableFilled => TableFilled(FilteredTable);
+        public static bool ActiveTableFilled => TableFilled(ReturnCorrectTable());
+
+        private static bool TableFilled(DataTable table)
         {
             //check if the table isn't null. This check precedes the count check,
             //because if the table is null you can't check its properties, i.e. its row count.
-            if (TitlesTable == null) return false;
+            if (table == null) return false;
 
             //it isn't null, but does it have rows? If no, then it's invalid. If yes, then the table's valid.
-            return TitlesTable.Rows.Count > 0;
+            return table.Rows.Count > 0;
         }
 
         public static void ClearAllTables()
@@ -36,16 +40,6 @@ namespace PlexDL.Common.Globals.Providers
             SectionsTable = null;
             AlbumsTable = null;
             TracksTable = null;
-        }
-
-        public static bool FilteredTableFilled()
-        {
-            //check if the table isn't null. This check precedes the count check,
-            //because if the table is null you can't check its properties, i.e. its row count.
-            if (FilteredTable == null) return false;
-
-            //it isn't null, but does it have rows? If no, then it's invalid. If yes, then the table's valid.
-            return FilteredTable.Rows.Count > 0;
         }
 
         public static DataTable ReturnCorrectTable(bool directTable = false)

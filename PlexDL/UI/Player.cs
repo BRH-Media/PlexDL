@@ -128,7 +128,7 @@ namespace PlexDL.UI
 
             if (keyData == ObjectProvider.Settings.Player.KeyBindings.FullscreenToggle)
             {
-                Fullscreen(!_mPlayer.FullScreen); //toggle fullscreen mode
+                ToggleFullscreen();
                 return true;
             }
 
@@ -232,6 +232,18 @@ namespace PlexDL.UI
             }
         }
 
+        private void ToggleFullscreen()
+        {
+            var fsStatus = _mPlayer.FullScreen;
+
+            if (fsStatus)
+                SetIconOpenFs();
+            else
+                SetIconExitFs();
+
+            Fullscreen(!fsStatus);
+        }
+
         private void Fullscreen(bool t)
         {
             _mPlayer.FullScreenMode = FullScreenMode.Form;
@@ -284,9 +296,9 @@ namespace PlexDL.UI
 
         private void NextTitle()
         {
-            //check if the titles table or the filtered table has been loaded correctly before trying
-            //to get data from them.
-            if (!TableProvider.TitlesTableFilled() && !TableProvider.FilteredTableFilled()) return;
+            //check if the table has been loaded correctly before trying
+            //to get data from it.
+            if (!TableProvider.ActiveTableFilled) return;
 
             if (StreamingContent.StreamIndex + 1 < TableProvider.ReturnCorrectTable().Rows.Count)
             {
@@ -310,9 +322,9 @@ namespace PlexDL.UI
 
         private void PrevTitle()
         {
-            //check if the titles table or the filtered table has been loaded correctly before trying
-            //to get data from them.
-            if (!TableProvider.TitlesTableFilled() && !TableProvider.FilteredTableFilled()) return;
+            //check if the table has been loaded correctly before trying
+            //to get data from it.
+            if (!TableProvider.ActiveTableFilled) return;
 
             if (StreamingContent.StreamIndex != 0)
             {
@@ -409,6 +421,11 @@ namespace PlexDL.UI
             SkipBack();
         }
 
+        private void BtnFullScreen_Click(object sender, EventArgs e)
+        {
+            ToggleFullscreen();
+        }
+
         private void PlayPause()
         {
             if (_mPlayer.Playing && !_mPlayer.Paused)
@@ -424,40 +441,35 @@ namespace PlexDL.UI
             }
         }
 
-        /*
-         *
-         * FUTURE FEATURE!
-         *
-        private void SetIconExitFS()
+        private void SetIconExitFs()
         {
             if (btnFullScreen.InvokeRequired)
             {
                 btnFullScreen.BeginInvoke((MethodInvoker)delegate
                 {
-                    btnFullScreen.Icon = PlexDL.Properties.Resources.baseline_fullscreen_exit_black_18dp;
+                    btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_exit_black_18dp;
                 });
             }
             else
             {
-                btnFullScreen.Icon = PlexDL.Properties.Resources.baseline_fullscreen_exit_black_18dp;
+                btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_exit_black_18dp;
             }
         }
 
-        private void SetIconOpenFS()
+        private void SetIconOpenFs()
         {
             if (btnFullScreen.InvokeRequired)
             {
                 btnFullScreen.BeginInvoke((MethodInvoker)delegate
                 {
-                    btnFullScreen.Icon = PlexDL.Properties.Resources.baseline_fullscreen_black_18dp;
+                    btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
                 });
             }
             else
             {
-                btnFullScreen.Icon = PlexDL.Properties.Resources.baseline_fullscreen_black_18dp;
+                btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
             }
         }
-        */
 
         private delegate void SafePlayDelegate(string fileName);
     }
