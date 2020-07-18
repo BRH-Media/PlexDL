@@ -10,7 +10,6 @@ using PlexDL.Player;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
 using System;
-using System.Data;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -25,8 +24,6 @@ namespace PlexDL.UI
         private PlexDL.Player.Player _mPlayer;
 
         public Timer T1 = new Timer();
-
-        public DataTable TitlesTable;
 
         public Player()
         {
@@ -241,19 +238,19 @@ namespace PlexDL.UI
             _mPlayer.FullScreen = t;
         }
 
-        private void GetObjectFromIndexCallback(object sender, WaitWindowEventArgs e)
+        private static void GetObjectFromIndexCallback(object sender, WaitWindowEventArgs e)
         {
             var index = (int)e.Arguments[0];
             e.Result = GetObjectFromIndexWorker(index);
         }
 
-        private PlexMovie GetObjectFromIndex(int index)
+        private static PlexMovie GetObjectFromIndex(int index)
         {
             var result = (PlexMovie)WaitWindow.WaitWindow.Show(GetObjectFromIndexCallback, "Getting Metadata", index);
             return result;
         }
 
-        private PlexMovie GetObjectFromIndexWorker(int index)
+        private static PlexMovie GetObjectFromIndexWorker(int index)
         {
             var obj = new PlexMovie();
 
@@ -264,11 +261,11 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private StreamInfo GetContentDownloadInfo(int index)
+        private static StreamInfo GetContentDownloadInfo(int index)
         {
-            if (index + 1 <= TitlesTable.Rows.Count)
+            if (index + 1 <= TableProvider.ReturnCorrectTable().Rows.Count)
             {
-                var result = TitlesTable.Rows[index];
+                var result = TableProvider.ReturnCorrectTable().Rows[index];
                 var key = result["key"].ToString();
                 var baseUri = Strings.GetBaseUri(false);
                 key = key.TrimStart('/');
@@ -287,7 +284,11 @@ namespace PlexDL.UI
 
         private void NextTitle()
         {
-            if (StreamingContent.StreamIndex + 1 < TitlesTable.Rows.Count)
+            //check if the titles table or the filtered table has been loaded correctly before trying
+            //to get data from them.
+            if (!TableProvider.TitlesTableFilled() && !TableProvider.FilteredTableFilled()) return;
+
+            if (StreamingContent.StreamIndex + 1 < TableProvider.ReturnCorrectTable().Rows.Count)
             {
                 var next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
                 StreamingContent = next;
@@ -296,7 +297,7 @@ namespace PlexDL.UI
                 Refresh();
                 //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
-            else if (StreamingContent.StreamIndex + 1 == TitlesTable.Rows.Count)
+            else if (StreamingContent.StreamIndex + 1 == TableProvider.ReturnCorrectTable().Rows.Count)
             {
                 var next = GetObjectFromIndex(0);
                 StreamingContent = next;
@@ -309,6 +310,10 @@ namespace PlexDL.UI
 
         private void PrevTitle()
         {
+            //check if the titles table or the filtered table has been loaded correctly before trying
+            //to get data from them.
+            if (!TableProvider.TitlesTableFilled() && !TableProvider.FilteredTableFilled()) return;
+
             if (StreamingContent.StreamIndex != 0)
             {
                 var next = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
@@ -320,7 +325,7 @@ namespace PlexDL.UI
             }
             else
             {
-                var next = GetObjectFromIndex(TitlesTable.Rows.Count - 1);
+                var next = GetObjectFromIndex(TableProvider.ReturnCorrectTable().Rows.Count - 1);
                 StreamingContent = next;
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;
@@ -455,9 +460,5 @@ namespace PlexDL.UI
         */
 
         private delegate void SafePlayDelegate(string fileName);
-
-        private void TlpPlayerControls_Paint(object sender, PaintEventArgs e)
-        {
-        }
     }
 }

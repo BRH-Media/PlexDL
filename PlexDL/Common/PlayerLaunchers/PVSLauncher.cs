@@ -8,9 +8,9 @@ namespace PlexDL.Common.PlayerLaunchers
 {
     public static class PvsLauncher
     {
-        public static void LaunchPvs(PlexObject stream, DataTable titles)
+        public static void LaunchPvs(PlexObject stream)
         {
-            if (stream != null && titles != null)
+            if (stream != null)
                 try
                 {
                     if (!Methods.StreamAdultContentCheck(stream)) return;
@@ -20,8 +20,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     {
                         var frm = new UI.Player
                         {
-                            StreamingContent = stream,
-                            TitlesTable = titles
+                            StreamingContent = stream
                         };
                         LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
                         frm.ShowDialog();

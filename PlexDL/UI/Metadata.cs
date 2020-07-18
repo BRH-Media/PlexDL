@@ -261,7 +261,7 @@ namespace PlexDL.UI
 
         private void ItmPvs_Click(object sender, EventArgs e)
         {
-            PvsLauncher.LaunchPvs(StreamingContent, TableProvider.ReturnCorrectTable());
+            PvsLauncher.LaunchPvs(StreamingContent);
         }
 
         private void ItmBrowser_Click(object sender, EventArgs e)

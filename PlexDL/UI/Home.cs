@@ -142,7 +142,7 @@ namespace PlexDL.UI
         private void ItmStreamInPVS_Click(object sender, EventArgs e)
         {
             cxtStreamOptions.Close();
-            PvsLauncher.LaunchPvs(ObjectProvider.CurrentStream, TableProvider.ReturnCorrectTable());
+            PvsLauncher.LaunchPvs(ObjectProvider.CurrentStream);
         }
 
         private void ItmStreamInVLC_Click(object sender, EventArgs e)
@@ -568,21 +568,36 @@ namespace PlexDL.UI
 
         private void Disconnect(bool silent = false)
         {
-            if (!Flags.IsConnected) return;
-            if (ObjectProvider.Engine != null) CancelDownload();
+            try
+            {
+                if (!Flags.IsConnected) return;
+                if (ObjectProvider.Engine != null) CancelDownload();
 
-            ClearContentView();
-            ClearTvViews();
-            ClearMusicViews();
-            ClearLibraryViews();
-            SetProgressLabel(@"Disconnected from Plex");
-            SetConnect();
-            SelectMoviesTab();
-            Flags.IsConnected = false;
-            Flags.IsInitialFill = false;
+                ClearContentView();
+                ClearTvViews();
+                ClearMusicViews();
+                ClearLibraryViews();
+                SetProgressLabel(@"Disconnected from Plex");
+                SetConnect();
+                SelectMoviesTab();
+                Flags.IsConnected = false;
+                Flags.IsInitialFill = false;
 
-            if (!silent)
-                UIMessages.Info(@"Disconnected from Plex");
+                //clear all stored table data
+                TableProvider.ClearAllTables();
+
+                //clear all stored view data (simplified table data)
+                ViewProvider.ClearAllViews();
+
+                if (!silent)
+                    UIMessages.Info(@"Disconnected from Plex");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"DisconnectError");
+                if (!silent)
+                    UIMessages.Error($"Disconnect error:\n\n{ex}");
+            }
         }
 
         private void DoStreamExport()
@@ -2274,7 +2289,7 @@ namespace PlexDL.UI
             switch (playbackEngine)
             {
                 case PlaybackMode.PvsPlayer:
-                    PvsLauncher.LaunchPvs(stream, TableProvider.ReturnCorrectTable());
+                    PvsLauncher.LaunchPvs(stream);
                     break;
 
                 case PlaybackMode.VlcPlayer:

@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Logging;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,6 +16,38 @@ namespace PlexDL.Common.Globals.Providers
         public static DataTable AlbumsTable { get; set; }
         public static DataTable TracksTable { get; set; }
 
+        public static bool TitlesTableFilled()
+        {
+            //check if the table isn't null. This check precedes the count check,
+            //because if the table is null you can't check its properties, i.e. its row count.
+            if (TitlesTable == null) return false;
+
+            //it isn't null, but does it have rows? If no, then it's invalid. If yes, then the table's valid.
+            return TitlesTable.Rows.Count > 0;
+        }
+
+        public static void ClearAllTables()
+        {
+            //WARNING! This may result in errors, use only when data needs to be 100% cleared (like on disconnect).
+            TitlesTable = null;
+            FilteredTable = null;
+            SeasonsTable = null;
+            EpisodesTable = null;
+            SectionsTable = null;
+            AlbumsTable = null;
+            TracksTable = null;
+        }
+
+        public static bool FilteredTableFilled()
+        {
+            //check if the table isn't null. This check precedes the count check,
+            //because if the table is null you can't check its properties, i.e. its row count.
+            if (FilteredTable == null) return false;
+
+            //it isn't null, but does it have rows? If no, then it's invalid. If yes, then the table's valid.
+            return FilteredTable.Rows.Count > 0;
+        }
+
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
             switch (ObjectProvider.CurrentContentType)
@@ -23,16 +56,10 @@ namespace PlexDL.Common.Globals.Providers
                     return DecideFiltered();
 
                 case ContentType.Music:
-                    if (directTable)
-                        return TracksTable;
-                    else
-                        return DecideFiltered();
+                    return directTable ? TracksTable : DecideFiltered();
 
                 case ContentType.TvShows:
-                    if (directTable)
-                        return EpisodesTable;
-                    else
-                        return DecideFiltered();
+                    return directTable ? EpisodesTable : DecideFiltered();
             }
 
             return null; //fallback
@@ -40,38 +67,33 @@ namespace PlexDL.Common.Globals.Providers
 
         public static DataTable DecideFiltered()
         {
-            if (Flags.IsFiltered)
-                return FilteredTable;
-            else
-                return TitlesTable;
+            return Flags.IsFiltered ? FilteredTable : TitlesTable;
         }
 
         public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null)
         {
-            int val = 0;
+            var val = 0;
 
-            Logging.LoggingHelpers.RecordGeneralEntry($"Table-to-Grid match has been requested on '{dgv.Name}'");
+            LoggingHelpers.RecordGeneralEntry($"Table-to-Grid match has been requested on '{dgv.Name}'");
 
             if (table == null)
             {
                 table = ReturnCorrectTable();
-                Logging.LoggingHelpers.RecordGeneralEntry("Table-to-Grid match was not given a table; defaulting to the standard table selector.");
+                LoggingHelpers.RecordGeneralEntry("Table-to-Grid match was not given a table; defaulting to the standard table selector.");
             }
 
             var selRow = ((DataRowView)dgv.SelectedRows[0].DataBoundItem).Row.ItemArray;
 
             foreach (DataRow r in table.Rows)
             {
-                var m = 0;
                 var i = table.Rows.IndexOf(r);
-                foreach (var o in selRow)
-                    if (r.ItemArray.Contains(o))
-                        m++;
-                if (m == selRow.Length)
-                {
-                    val = i;
-                    break;
-                }
+                var m = selRow.Count(o => r.ItemArray.Contains(o));
+
+                //ALL column values must match, so the match count will be equal to the cell length.
+                if (m != selRow.Length) continue;
+
+                val = i;
+                break;
             }
 
             return val;
