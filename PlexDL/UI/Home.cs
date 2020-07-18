@@ -353,15 +353,11 @@ namespace PlexDL.UI
         private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabMain.SelectedTab == tabLog)
-            {
-                dgvLog.DataSource = File.Exists(@"Logs\PlexDL.logdel")
-                    ? LogReader.TableFromFile(@"Logs\PlexDL.logdel", false)
-                    : null;
-            }
+                dgvLog.DataSource = File.Exists($@"{LogWriter.LogDirectory}\PlexDL.logdel") //check if the main log file exists
+                    ? LogReader.TableFromFile($@"{LogWriter.LogDirectory}\PlexDL.logdel", false) //if it does, load it.
+                    : null; //if it doesn't, clear the grid by applying a null value.
             else
-            {
-                dgvLog.DataSource = null;
-            }
+                dgvLog.DataSource = null; //clear log grid to save on memory (it won't be in focus anyway)
         }
 
         private void TmrWorkerTimeout_Tick(object sender, EventArgs e)
