@@ -408,7 +408,7 @@ namespace PlexDL.UI
 
         #region PlexMovieBuilders
 
-        private PlexMovie GetMovieObjectFromSelection(bool formatLinkDownload)
+        private PlexMovie GetMovieObjectFromSelection()
         {
             var obj = new PlexMovie();
 
@@ -420,7 +420,7 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private PlexTvShow GetTvObjectFromSelection(bool formatLinkDownload)
+        private PlexTvShow GetTvObjectFromSelection()
         {
             var obj = new PlexTvShow();
 
@@ -432,7 +432,7 @@ namespace PlexDL.UI
             return obj;
         }
 
-        private PlexMusic GetMusicObjectFromSelection(bool formatLinkDownload)
+        private PlexMusic GetMusicObjectFromSelection()
         {
             var obj = new PlexMusic();
 
@@ -585,7 +585,7 @@ namespace PlexDL.UI
                 UIMessages.Info(@"Disconnected from Plex");
         }
 
-        private void DoStreamExport(bool formatLinkDownload = true)
+        private void DoStreamExport()
         {
             try
             {
@@ -596,15 +596,15 @@ namespace PlexDL.UI
                     switch (ObjectProvider.CurrentContentType)
                     {
                         case ContentType.Movies:
-                            content = GetMovieObjectFromSelection(formatLinkDownload);
+                            content = GetMovieObjectFromSelection();
                             break;
 
                         case ContentType.TvShows:
-                            content = GetTvObjectFromSelection(formatLinkDownload);
+                            content = GetTvObjectFromSelection();
                             break;
 
                         case ContentType.Music:
-                            content = GetMusicObjectFromSelection(formatLinkDownload);
+                            content = GetMusicObjectFromSelection();
                             break;
                     }
 
@@ -853,7 +853,7 @@ namespace PlexDL.UI
 
                 SetProgressLabel(@"Getting Metadata 1/1");
 
-                var show = GetTvObjectFromSelection(true);
+                var show = GetTvObjectFromSelection();
                 var dlInfo = show.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutTvShow(show, ObjectProvider.Settings,
                     DownloadLayout.PlexStandardLayout);
@@ -875,15 +875,15 @@ namespace PlexDL.UI
                     switch (t)
                     {
                         case ContentType.TvShows:
-                            p = GetTvObjectFromSelection(true);
+                            p = GetTvObjectFromSelection();
                             break;
 
                         case ContentType.Movies:
-                            p = GetMovieObjectFromSelection(true);
+                            p = GetMovieObjectFromSelection();
                             break;
 
                         case ContentType.Music:
-                            p = GetMusicObjectFromSelection(true);
+                            p = GetMusicObjectFromSelection();
                             break;
 
                         default:
@@ -925,7 +925,7 @@ namespace PlexDL.UI
 
                 SetProgressLabel(@"Getting Metadata 1/1");
 
-                var track = GetMusicObjectFromSelection(true);
+                var track = GetMusicObjectFromSelection();
                 var dlInfo = track.StreamInformation;
                 var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
                     DownloadLayout.PlexStandardLayout);
@@ -938,7 +938,7 @@ namespace PlexDL.UI
         {
             SetProgressLabel(@"Getting Metadata 1/1");
 
-            var movie = GetMovieObjectFromSelection(true);
+            var movie = GetMovieObjectFromSelection();
             var dlInfo = movie.StreamInformation;
             dlInfo.DownloadPath = ObjectProvider.Settings.Generic.DownloadDirectory + @"\Movies";
             ObjectProvider.Queue.Add(dlInfo);
@@ -1334,26 +1334,17 @@ namespace PlexDL.UI
 
         private void GetMovieObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            var formatLinkDownload = false;
-            if (e.Arguments.Count > 0)
-                formatLinkDownload = (bool)e.Arguments[0];
-            e.Result = GetMovieObjectFromSelection(formatLinkDownload);
+            e.Result = GetMovieObjectFromSelection();
         }
 
         private void GetTvObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            var formatLinkDownload = false;
-            if (e.Arguments.Count > 0)
-                formatLinkDownload = (bool)e.Arguments[0];
-            e.Result = GetTvObjectFromSelection(formatLinkDownload);
+            e.Result = GetTvObjectFromSelection();
         }
 
         private void GetMusicObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
         {
-            bool formatLinkDownload = false;
-            if (e.Arguments.Count > 0)
-                formatLinkDownload = (bool)e.Arguments[0];
-            e.Result = GetMusicObjectFromSelection(formatLinkDownload);
+            e.Result = GetMusicObjectFromSelection();
         }
 
         #endregion PlexAPIWorkers
@@ -2024,7 +2015,7 @@ namespace PlexDL.UI
             //nothing, more or less.
         }
 
-        private void DoubleClickLaunch(bool formatLinkDownload = false)
+        private void DoubleClickLaunch()
         {
             PlexObject stream = null;
 
@@ -2033,7 +2024,7 @@ namespace PlexDL.UI
                 case ContentType.Movies:
                     if (dgvMovies.SelectedRows.Count == 1)
                     {
-                        var obj = GetMovieObjectFromSelection(formatLinkDownload);
+                        var obj = GetMovieObjectFromSelection();
                         if (obj != null)
                         {
                             stream = obj;
@@ -2047,7 +2038,7 @@ namespace PlexDL.UI
                 case ContentType.TvShows:
                     if (dgvEpisodes.SelectedRows.Count == 1 && dgvTVShows.SelectedRows.Count == 1)
                     {
-                        var obj = GetTvObjectFromSelection(formatLinkDownload);
+                        var obj = GetTvObjectFromSelection();
                         if (obj != null)
                         {
                             stream = obj;
@@ -2061,7 +2052,7 @@ namespace PlexDL.UI
                 case ContentType.Music:
                     if (dgvTracks.SelectedRows.Count == 1 && dgvArtists.SelectedRows.Count == 1)
                     {
-                        var obj = GetMusicObjectFromSelection(formatLinkDownload);
+                        var obj = GetMusicObjectFromSelection();
                         if (obj != null)
                         {
                             stream = obj;
