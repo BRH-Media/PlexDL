@@ -1,11 +1,11 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using System;
 using System.Data;
 using System.Xml;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.API

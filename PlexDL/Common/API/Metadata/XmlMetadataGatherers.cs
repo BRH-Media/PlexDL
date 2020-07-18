@@ -1,7 +1,7 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.API.Metadata.Objects;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using System;
-using PlexDL.Common.API.Metadata.Objects;
 
 namespace PlexDL.Common.API.Metadata
 {

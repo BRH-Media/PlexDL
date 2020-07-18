@@ -1,10 +1,9 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
-using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.API.Metadata
 {

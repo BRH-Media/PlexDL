@@ -1,8 +1,7 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using System;
 using System.IO;
-using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Caching
 {

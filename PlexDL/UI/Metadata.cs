@@ -1,7 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.Objects.AttributeTables;
-using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
@@ -10,7 +10,6 @@ using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.UI
 {
@@ -57,10 +56,10 @@ namespace PlexDL.UI
                 if (txtPlotSynopsis.InvokeRequired)
                     txtPlotSynopsis.BeginInvoke((MethodInvoker)delegate
                     {
-                        txtPlotSynopsis.Text = StreamingContent.Synopsis;
+                        txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent) ? StreamingContent.Synopsis : @"Plot synopsis for this title is unavailable due to adult content protection";
                     });
                 else
-                    txtPlotSynopsis.Text = StreamingContent.Synopsis;
+                    txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent) ? StreamingContent.Synopsis : @"Plot synopsis for this title is unavailable due to adult content protection";
             }
 
             //Clear all previous actors (maybe there's a dud panel in place?)

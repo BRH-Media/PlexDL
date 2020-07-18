@@ -1,11 +1,10 @@
 ﻿using PlexDL.Common.Enums;
-using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.SearchFramework;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.UI

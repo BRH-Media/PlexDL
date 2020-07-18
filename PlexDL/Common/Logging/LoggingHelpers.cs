@@ -1,9 +1,9 @@
 ﻿using LogDel;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common.Logging
 {

@@ -1,7 +1,7 @@
-﻿using System.Data;
+﻿using PlexDL.Common.Enums;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using PlexDL.Common.Enums;
 
 namespace PlexDL.Common.Globals.Providers
 {

@@ -1,13 +1,12 @@
 ﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.WaitWindow;
 using System;
 using System.IO;
 using System.Net;
 using System.Xml;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.API

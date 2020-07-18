@@ -2026,9 +2026,7 @@ namespace PlexDL.UI
                     {
                         var obj = GetMovieObjectFromSelection();
                         if (obj != null)
-                        {
                             stream = obj;
-                        }
                         else
                             LoggingHelpers.RecordGeneralEntry("Double-click stream failed; null object.");
                     }
@@ -2040,9 +2038,7 @@ namespace PlexDL.UI
                     {
                         var obj = GetTvObjectFromSelection();
                         if (obj != null)
-                        {
                             stream = obj;
-                        }
                         else
                             LoggingHelpers.RecordGeneralEntry("Double-click stream failed; null object.");
                     }
@@ -2054,9 +2050,7 @@ namespace PlexDL.UI
                     {
                         var obj = GetMusicObjectFromSelection();
                         if (obj != null)
-                        {
                             stream = obj;
-                        }
                         else
                             LoggingHelpers.RecordGeneralEntry("Double-click stream failed; null object.");
                     }
@@ -2064,18 +2058,14 @@ namespace PlexDL.UI
                     break;
             }
 
-            if (stream != null)
-            {
-                if (ObjectProvider.Settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
-                {
-                    StartStreaming(stream,
-                        VlcLauncher.VlcInstalled() ? PlaybackMode.VlcPlayer : PlaybackMode.PvsPlayer);
-                }
-                else
-                {
-                    StartStreaming(stream);
-                }
-            }
+            //null stream; exit operation.
+            if (stream == null) return;
+
+            if (ObjectProvider.Settings.Player.PlaybackEngine == PlaybackMode.MenuSelector)
+                StartStreaming(stream,
+                    VlcLauncher.VlcInstalled() ? PlaybackMode.VlcPlayer : PlaybackMode.PvsPlayer);
+            else
+                StartStreaming(stream);
         }
 
         private void DoubleClickProcessor(object sender, DataGridViewCellEventArgs e)
@@ -2100,10 +2090,8 @@ namespace PlexDL.UI
                     }
                 }
                 else
-                {
                     LoggingHelpers.RecordGeneralEntry(
                         "Double-click launch failed; incorrect object type. Expecting object of type FlatDataGridView.");
-                }
             }
             catch (Exception ex)
             {

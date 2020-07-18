@@ -1,5 +1,5 @@
-﻿using System.Data;
-using PlexDL.Common.Globals.Providers;
+﻿using PlexDL.Common.Globals.Providers;
+using System.Data;
 
 namespace PlexDL.Common.Globals
 {

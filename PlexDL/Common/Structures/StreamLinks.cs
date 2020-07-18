@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PlexDL.Common.Structures
+﻿namespace PlexDL.Common.Structures
 {
     public class StreamLinks
     {

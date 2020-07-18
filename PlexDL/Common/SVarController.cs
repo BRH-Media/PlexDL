@@ -1,7 +1,6 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Structures;
 using System.Collections.Generic;
-using PlexDL.Common.Globals.Providers;
 
 namespace PlexDL.Common
 {

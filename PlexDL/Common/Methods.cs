@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
@@ -15,7 +15,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common
@@ -168,7 +167,8 @@ namespace PlexDL.Common
         public static bool AdultKeywordCheck(PlexObject stream)
         {
             var keywords = Resources.keywordBlacklist.Split('\n');
-            var search = stream.StreamInformation.ContentTitle.ToLower();
+            //search through content title and plot summary
+            var search = stream.StreamInformation.ContentTitle.ToLower() + stream.Synopsis.ToLower();
             var rgx = new Regex("[^a-zA-Z0-9_. ]+");
             //UIMessages.Info(keywords.Length.ToString());
             search = rgx.Replace(search, "");

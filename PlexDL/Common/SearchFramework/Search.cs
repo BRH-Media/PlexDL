@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Globals;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
@@ -7,7 +7,6 @@ using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.Windows.Forms;
-using PlexDL.Common.Globals.Providers;
 using UIHelpers;
 
 namespace PlexDL.Common.SearchFramework
