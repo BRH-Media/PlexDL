@@ -1,7 +1,6 @@
 ﻿using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
-using System.Data;
 using UIHelpers;
 
 namespace PlexDL.Common.PlayerLaunchers

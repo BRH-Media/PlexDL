@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
+    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataStrings.cs" />
+    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataContent.cs" />
     <Compile Include="Common\API\Metadata\Objects\XmlMetadata.cs" />
     <Compile Include="Common\API\Objects\ObjectBuilders.cs" />
     <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Utility.cs" />
@@ -127,9 +129,9 @@
     <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Tv.cs" />
     <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.cs" />
     <Compile Include="Common\API\ProfileImportExport.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataGatherers.cs" />
+    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataLists.cs" />
     <Compile Include="Common\API\Metadata\Handlers\XmlMetadataHelpers.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataParsers.cs" />
+    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataObjects.cs" />
     <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
     <Compile Include="Common\Caching\CachingFileDir.cs" />
     <Compile Include="Common\API\ImportExport.cs" />

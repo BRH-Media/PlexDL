@@ -1,13 +1,12 @@
-﻿using PlexDL.Common.Globals.Providers;
-using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-namespace PlexDL.Common.API.Metadata.Handlers
+namespace PlexDL.Common.API.Metadata.Handlers.Parsers
 {
-    public static class XmlMetadataParsers
+    public static class XmlMetadataObjects
     {
         public static List<PlexActor> GetActorsFromMetadata(XmlDocument metadata)
         {
@@ -51,7 +50,7 @@ namespace PlexDL.Common.API.Metadata.Handlers
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(metadata));
 
-            var def = "";
+            const string def = "";
             var video = sections.Tables["Media"];
 
             var widthString = XmlMetadataHelpers.GetContentAttribute(video, "width", def);
@@ -74,35 +73,6 @@ namespace PlexDL.Common.API.Metadata.Handlers
             };
 
             return result;
-        }
-
-        public static string GetContentGenre(XmlDocument metadata)
-        {
-            var table = "Genre";
-            var attr = "tag";
-            return XmlMetadataHelpers.GetContentAttribute(metadata, table, attr);
-        }
-
-        public static string GetContentSynopsis(XmlDocument metadata)
-        {
-            var attr = "summary";
-            var def = @"Plot synopsis not provided";
-            var contentType = ObjectProvider.CurrentContentType;
-            return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr, def);
-        }
-
-        public static string GetParentTitle(XmlDocument metadata)
-        {
-            var attr = "parentTitle";
-            var contentType = ObjectProvider.CurrentContentType;
-            return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr);
-        }
-
-        public static string GetGrandparentTitle(XmlDocument metadata)
-        {
-            var attr = "grandparentTitle";
-            var contentType = ObjectProvider.CurrentContentType;
-            return XmlMetadataHelpers.GetContentAttribute(metadata, contentType, attr);
         }
     }
 }

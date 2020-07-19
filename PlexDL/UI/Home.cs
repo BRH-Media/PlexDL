@@ -3,7 +3,7 @@ using LogDel;
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
-using PlexDL.Common.API.Metadata;
+using PlexDL.Common.API.Metadata.Handlers;
 using PlexDL.Common.API.Objects;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Components;
@@ -34,7 +34,6 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.API.Metadata.Handlers;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
@@ -2017,7 +2016,7 @@ namespace PlexDL.UI
             if (dgvSeasons.SelectedRows.Count != 1) return;
 
             var index = TableProvider.GetTableIndexFromDgv(dgvSeasons, TableProvider.SeasonsTable);
-            var episodes = XmlMetadataGatherers.GetEpisodeXml(index);
+            var episodes = XmlMetadataLists.GetEpisodeListXml(index);
             UpdateEpisodeView(episodes.Xml);
         }
 
@@ -2026,7 +2025,7 @@ namespace PlexDL.UI
             if (dgvAlbums.SelectedRows.Count != 1) return;
 
             var index = TableProvider.GetTableIndexFromDgv(dgvAlbums, TableProvider.AlbumsTable);
-            var tracks = XmlMetadataGatherers.GetTracksXml(index);
+            var tracks = XmlMetadataLists.GetTracksListXml(index);
             UpdateTracksView(tracks.Xml);
         }
 
@@ -2151,7 +2150,7 @@ namespace PlexDL.UI
 
             if (ObjectProvider.CurrentContentType != ContentType.TvShows) return;
 
-            var series = XmlMetadataGatherers.GetSeriesXml(index);
+            var series = XmlMetadataLists.GetSeriesListXml(index);
             //debugging
             //XmlMessageBox(series);
             UpdateSeriesView(series.Xml);
@@ -2168,7 +2167,7 @@ namespace PlexDL.UI
 
             if (ObjectProvider.CurrentContentType != ContentType.Music) return;
 
-            var albums = XmlMetadataGatherers.GetAlbumsXml(index);
+            var albums = XmlMetadataLists.GetAlbumsListXml(index);
             //debugging
             //XmlMessageBox(series);
             UpdateAlbumsView(albums.Xml);
