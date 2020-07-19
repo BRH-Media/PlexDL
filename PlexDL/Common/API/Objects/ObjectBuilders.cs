@@ -3,6 +3,7 @@ using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
+using PlexDL.Common.API.Metadata.Handlers;
 using UIHelpers;
 
 namespace PlexDL.Common.API.Objects

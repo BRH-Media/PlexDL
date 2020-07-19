@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-namespace PlexDL.Common.API.Metadata
+namespace PlexDL.Common.API.Metadata.Handlers
 {
     public static class XmlMetadataParsers
     {

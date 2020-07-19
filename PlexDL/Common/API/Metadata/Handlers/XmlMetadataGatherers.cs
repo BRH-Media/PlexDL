@@ -3,7 +3,7 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using System;
 
-namespace PlexDL.Common.API.Metadata
+namespace PlexDL.Common.API.Metadata.Handlers
 {
     public static class XmlMetadataGatherers
     {

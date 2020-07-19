@@ -7,7 +7,7 @@ using System.Data;
 using System.Xml;
 using UIHelpers;
 
-namespace PlexDL.Common.API.Metadata
+namespace PlexDL.Common.API.Metadata.Handlers
 {
     public static class XmlMetadataHelpers
     {

@@ -34,6 +34,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.API.Metadata.Handlers;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
