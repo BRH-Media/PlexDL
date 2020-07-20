@@ -20,7 +20,7 @@ PlexDL uses a Plex Media Server's ability to serve XML API requests, and from th
 
 **Important Notes**
 
-- PVS.MediaPlayer can play some codecs (any that are native to WMF), but the diversity of the container specification makes it unsafe (code-wise) to implement it at this point. Hence, PlexDL will not allow its default player to accept *.mkv files._
+- PVS.MediaPlayer can play some codecs (any that are native to WMF), but the diversity of the container specification makes it unsafe (code-wise) to implement it at this point. Hence, PlexDL will not allow its default player to accept \*.mkv files.
 - If you're using VLC, make sure you follow the guide below about setting it up with PlexDL.
 
 ### Supported Media
