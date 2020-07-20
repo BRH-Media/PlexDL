@@ -77,10 +77,11 @@ Alternatively, can access the latest official build [here](https://github.com/Br
 7. The "Library Content" area is your hub for titles. Here, you can select TV Shows and Movies from their respective tabs.
 8. If you select a movie from the "Movies" panel, the options to stream or download the content will become immediately available.
 9. If you select a TV Show from the "TV" panel, you may browse the TV seasons (Top-Right grid) and episodes (Bottom-Right grid) associated with that title.
-10. You may only stream or download a TV/Movie title upon selecting an item from the appropriate grid.
-11. You may browse metadata associated with your selected content by using `Right-click->Metadata` or `Content->Metadata`.
-12. PlexDL allows profile loading and saving, which allows you to save your account token for later use, or change internal settings to your liking and then save those changes. To do this, first follow Steps 1-6, and then select `File->Save` (it's also possible to use `Ctrl+S`). You can then edit the *.prof* XML file in any ordinary text editor.
-13. Likewise, to load the profile, simply select `File->Load` (you can also use `Ctrl+O`), then browse to your generated XML *.prof* file.
+10. Music titles follow the exact same principles as TV titles.
+11. You may only stream or download a TV/Movie/Music title upon selecting an item from the appropriate grid.
+12. You may browse metadata associated with your selected content by using `Right-click->Metadata` or `Content->Metadata`.
+13. PlexDL allows profile loading and saving, which allows you to save your account token for later use, or change internal settings to your liking and then save those changes. To do this, first follow Steps 1-6, and then select `File->Save` (it's also possible to use `Ctrl+S`). You can then edit the *.prof* XML file in any ordinary text editor.
+14. Likewise, to load the profile, simply select `File->Load` (you can also use `Ctrl+O`), then browse to your generated XML *.prof* file.
 
 #### __Content Filtering__
 * PlexDL natively filters potentially adult-orientated content.
@@ -118,6 +119,7 @@ Alternatively, can access the latest official build [here](https://github.com/Br
 * `Down Arrow`  - Load Next Content in Grid
 * `Right Arrow` - Skip Forward
 * `Left Arrow`  - Skip Backward
+* `F` - Toggle Fullscreen Mode
 
 #### Setting up VLC for use with PlexDL
 Because VLC accepts a vast array of command-line arguments and values, PlexDL only needs to know where the location of `vlc.exe` is. This way, it may execute it on the fly. To point PlexDL to VLC, please follow the following procedure:
