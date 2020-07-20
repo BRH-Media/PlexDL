@@ -15,9 +15,13 @@ Many different things!
 PlexDL uses a Plex Media Server's ability to serve XML API requests, and from the data returned, PlexDL gathers information and displays it in various gridviews to make it easier for you to enjoy your content. It supports the following and more:
 - Viewing Metadata about any media type currently supported. To do this, just head over to `Content->Metadata` on the main toolbar.
 - Streaming your media. PlexDL utilises a really cool media library known as PVS.MediaPlayer. It allows playback of supported files via the Windows Media Foundation (WMF), and the best part? It's possible to create a custom GUI and skin it how you want. That's what we've done for you in PlexDL, but if you're not wanting to use PVS, you can use VLC or your default browser.
-Note: If you're using VLC, make sure you follow the guide below about setting it up with PlexDL.
 - Downloading your media. PlexDL is named like this for a reason! We've created a specialised framework to allow authorised Plex downloads. Even if you're not a server owner, you can still download if you have an account or an account token.
 - Exporting media profiles. You can export a .pmxml file which will store infirmation about your content. At any time (and given your token is still valid), you can import this back into the `Content->Metadata` window and stream it without even logging in!
+
+**Important Notes**
+
+- PVS.MediaPlayer can play some codecs (any that are native to WMF), but the diversity of the container specification makes it unsafe (code-wise) to implement it at this point. Hence, PlexDL will not allow its default player to accept *.mkv files._
+- If you're using VLC, make sure you follow the guide below about setting it up with PlexDL.
 
 ### Supported Media
 PlexDL currently supports the following media types
