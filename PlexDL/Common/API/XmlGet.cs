@@ -13,7 +13,7 @@ namespace PlexDL.Common.API
 {
     public static class XmlGet
     {
-        public static void GetXMLTransactionWorker(object sender, WaitWindowEventArgs e)
+        public static void GetXmlTransactionWorker(object sender, WaitWindowEventArgs e)
         {
             var uri = (string)e.Arguments[0];
             var forceNoCache = false;
@@ -78,17 +78,8 @@ namespace PlexDL.Common.API
                     //---------- Start HttpResponse, Return code 200
                     case HttpStatusCode.OK:
                         {
-                            //Get response stream
                             objResponseStream = objHttpWebResponse.GetResponseStream();
-                            //Load response stream into XMLReader
-                            var objXmlReader = new XmlTextReader(objResponseStream);
-                            //Declare XMLDocument
-                            var xmlDoc = new XmlDocument();
-                            xmlDoc.Load(objXmlReader);
-                            //Set XMLResponse object returned from XMLReader
-                            xmlResponse = xmlDoc;
-                            //Close XMLReader
-                            objXmlReader.Close();
+                            xmlResponse = objResponseStream.ToXmlDocument();
                             break;
                         }
                     case HttpStatusCode.Unauthorized:
@@ -117,6 +108,34 @@ namespace PlexDL.Common.API
 
             XmlCaching.XmlToCache(xmlResponse, uri);
             return xmlResponse;
+        }
+
+        public static XmlDocument ToXmlDocument(this XmlTextReader reader)
+        {
+            //Declare XMLDocument
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(reader);
+            //Set XMLResponse object returned from XMLReader
+            var val = xmlDoc;
+            //Close XMLReader
+            reader.Close();
+            return val;
+        }
+
+        public static XmlDocument ToXmlDocument(this Stream dataStream)
+        {
+            //Load stream into XMLReader
+            var objXmlReader = new XmlTextReader(dataStream);
+
+            return objXmlReader.ToXmlDocument(); //using the method above
+        }
+
+        public static XmlDocument ToXmlDocument(this string xmlString)
+        {
+            //Load string into XmlReader
+            var objXmlReader = new XmlTextReader(xmlString);
+
+            return objXmlReader.ToXmlDocument(); //using the method above
         }
     }
 }

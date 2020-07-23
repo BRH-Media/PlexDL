@@ -174,7 +174,7 @@ namespace PlexDL.UI
 
             var uri = Strings.GetBaseUri(true);
             //UIMessages.Info(uri);
-            var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXMLTransactionWorker, "Connecting", uri);
+            var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXmlTransactionWorker, "Connecting", uri);
             Flags.IsConnected = true;
 
             if (ObjectProvider.Settings.Generic.ShowConnectionSuccess)

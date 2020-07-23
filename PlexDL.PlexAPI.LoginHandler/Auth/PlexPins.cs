@@ -13,7 +13,6 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth
     using System.Globalization;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
-    using UIHelpers;
 
     public partial class PlexPins
     {
@@ -121,8 +120,7 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth
         {
             if (reader.TokenType == JsonToken.Null) return null;
             var value = serializer.Deserialize<string>(reader);
-            long l;
-            if (Int64.TryParse(value, out l))
+            if (long.TryParse(value, out var l))
             {
                 return l;
             }
@@ -138,9 +136,6 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth
             }
             var value = (long)untypedValue;
             serializer.Serialize(writer, value.ToString());
-            return;
         }
-
-        public static readonly ParseStringConverter Singleton = new ParseStringConverter();
     }
 }

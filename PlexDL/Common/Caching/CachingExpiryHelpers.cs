@@ -15,16 +15,19 @@ namespace PlexDL.Common.Caching
                     var days = GetDaysOld(filePath);
                     //DEBUG ONLY
                     //UIMessages.Info(days.ToString());
-                    return days >= interval;
+                    var result = days >= interval;
+                    var logMessage = $"XML record {(result ? @"has" : @"has not")} expired [{days}/{interval}]";
+                    LoggingHelpers.RecordCacheEvent(logMessage, $"file://{filePath}");
+                    return result;
                 }
 
-                LoggingHelpers.RecordException("Specified cache file doesn't exist", "CacheExpiryChkError");
+                LoggingHelpers.RecordException(@"Specified cache file doesn't exist", @"CacheExpiryChkError");
                 //default is true; this signifies that it has expired, so PlexDL will try and get a new copy.
                 return true;
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "CacheExpiryChkError");
+                LoggingHelpers.RecordException(ex.Message, @"CacheExpiryChkError");
                 //default is true; this signifies that it has expired, so PlexDL will try and get a new copy.
                 return true;
             }
@@ -38,7 +41,9 @@ namespace PlexDL.Common.Caching
 
                 var fileCreation = File.GetCreationTime(filePath);
                 var now = DateTime.Now;
-                var days = (int)(now - fileCreation).TotalDays;
+                var days = (int)(now - fileCreation).TotalDays + 1; //adding one ensures if it was created on the same day it counts as one day passed
+
+                LoggingHelpers.RecordCacheEvent($"Requested XML record is {days} day(s) old", $"file://{filePath}");
 
                 return days;
                 //default value
