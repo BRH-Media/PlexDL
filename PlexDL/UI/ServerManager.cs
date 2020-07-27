@@ -456,7 +456,7 @@ namespace PlexDL.UI
                             break;
 
                         case AuthResult.Failed: //alert the user to the failure
-                            UIMessages.Error(@"Failed to apply your account token; the licensing authority didn't authorise the transaction or values were not valid.");
+                            UIMessages.Error(@"Failed to apply your account token; the ticket authority didn't authorise the transaction or values were not valid.");
                             break;
 
                         case AuthResult.Error: //alert the user to the error
@@ -465,6 +465,10 @@ namespace PlexDL.UI
 
                         case AuthResult.Invalid: //alert the user
                             UIMessages.Error(@"Failed to apply your account token; details were invalid.");
+                            break;
+
+                        case AuthResult.IncorrectResponse:
+                            UIMessages.Error(@"Failed to get an authentication ticket from Plex.tv; an incorrectly formatted response was received.");
                             break;
 
                         default:

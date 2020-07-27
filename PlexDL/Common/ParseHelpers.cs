@@ -16,7 +16,7 @@ namespace PlexDL.Common
             return stream;
         }
 
-        public static T ParseXML<T>(this string @this) where T : class
+        public static T ParseXml<T>(this string @this) where T : class
         {
             var reader = XmlReader.Create(@this.Trim().ToStream(), new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Document });
             return new XmlSerializer(typeof(T)).Deserialize(reader) as T;

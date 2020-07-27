@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Logging;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -66,6 +67,7 @@ namespace PlexDL.Common.Globals.Providers
 
         public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null)
         {
+            //MessageBox.Show(@"Hello!");
             LoggingHelpers.RecordGeneralEntry($"Table-to-Grid match has been requested on '{dgv.Name}'");
 
             //if the table's null we can't do anything with it, because there's no data to work with.
@@ -78,6 +80,9 @@ namespace PlexDL.Common.Globals.Providers
 
             var selRow = ((DataRowView)dgv.SelectedRows[0].DataBoundItem).Row.ItemArray; //array of cell values from the selected row
             var val = 0; //value to return back to the caller
+
+            //create a new performance counting stopwatch
+            var sw = new Stopwatch();
 
             //go through every row in the TABLE
             foreach (DataRow r in table.Rows)

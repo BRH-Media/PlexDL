@@ -19,12 +19,12 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth
         public static PlexPins NewPlexAuthPin()
         {
             var j = Get.DownloadJson(Endpoints.PlexPinsEndpoint,RestSharp.Method.POST);
-            return FromJson(j);
+            return Validation.IsValidJson(j) ? FromJson(j) : null;
         }
         public PlexPins FromPinEndpoint()
         {
             var j = Get.DownloadJson(PinEndpointUrl);
-            return FromJson(j);
+            return Validation.IsValidJson(j) ? FromJson(j) : null;
         }
 
         public string PinEndpointUrl => $"https://plex.tv/api/v2/pins/{Id}";

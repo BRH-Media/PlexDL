@@ -56,6 +56,7 @@
     <Compile Include="Auth\PlexPins.cs" />
     <Compile Include="Endpoints.cs" />
     <Compile Include="Get.cs" />
+    <Compile Include="Validation.cs" />
     <Compile Include="LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>

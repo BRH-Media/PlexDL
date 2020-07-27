@@ -6,6 +6,7 @@
         Success,
         Failed,
         Error,
-        Invalid
+        Invalid,
+        IncorrectResponse
     }
 }

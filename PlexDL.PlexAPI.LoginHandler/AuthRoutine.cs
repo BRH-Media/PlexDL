@@ -16,6 +16,10 @@ namespace PlexDL.PlexAPI.LoginHandler
                 //request a new Auth ticket
                 var init = NewInit();
 
+                //check if the new ticket is valid (not null)
+                if (init == null)
+                    return new AuthObject { Result = AuthResult.IncorrectResponse }; //null return value always means incorrect JSON response
+
                 using (var frm = new LoginWindow())
                 {
                     frm.PlexRequestPin = init;
@@ -45,7 +49,7 @@ namespace PlexDL.PlexAPI.LoginHandler
 
         private static PlexPins NewInit()
         {
-            return (PlexPins)WaitWindow.WaitWindow.Show(NewInit_Callback, @"Talking to Plex.tv");
+            return (PlexPins)WaitWindow.WaitWindow.Show(NewInit_Callback, @"Getting a new ticket");
         }
 
         private static void NewInit_Callback(object sender, WaitWindowEventArgs e)

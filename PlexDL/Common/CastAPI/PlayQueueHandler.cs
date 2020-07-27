@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
-using RestSharp;
 using System;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 
 namespace PlexDL.Common.CastAPI
@@ -17,17 +13,20 @@ namespace PlexDL.Common.CastAPI
 
             try
             {
-                var token = server.accessToken;
                 var ip = server.address;
                 var port = server.port;
-                var protocol = @"http";
+                const string protocol = @"http";
 
                 //POST data values
-                var type = @"video";
-                var shuffle = 0;
-                var repeat = 0;
-                var continuous = 0;
-                var own = 1;
+
+                //Constants
+                const string type = @"video";
+                const int shuffle = 0;
+                const int repeat = 0;
+                const int continuous = 0;
+                const int own = 1;
+
+                //Dynamic
                 var uri = $"server://{server.machineIdentifier}/com.plexapp.plugins.library{content.ApiUri}";
 
                 //assemble URLs
@@ -50,7 +49,7 @@ namespace PlexDL.Common.CastAPI
                             if (response.Content != null)
                             {
                                 var d = response.Content.ReadAsStringAsync().Result
-                                    .ParseXML<PlayQueue.MediaContainer>();
+                                    .ParseXml<PlayQueue.MediaContainer>();
 
                                 q.QueueId = d.playQueueID;
                                 q.QueueSuccess = true;
@@ -67,39 +66,6 @@ namespace PlexDL.Common.CastAPI
             }
 
             return q;
-        }
-
-        private static void LogRequest(RestClient client, IRestRequest request, IRestResponse response)
-        {
-            var requestToLog = new
-            {
-                resource = request.Resource,
-                // Parameters are custom anonymous objects in order to have the parameter type as a nice string
-                // otherwise it will just show the enum value
-                parameters = request.Parameters.Select(parameter => new
-                {
-                    name = parameter.Name,
-                    value = parameter.Value,
-                    type = parameter.Type.ToString()
-                }),
-                // ToString() here to have the method as a nice string otherwise it will just show the enum value
-                method = request.Method.ToString(),
-                // This will generate the actual Uri used in the request
-                uri = client.BuildUri(request),
-            };
-
-            var responseToLog = new
-            {
-                statusCode = response.StatusCode,
-                content = response.Content,
-                headers = response.Headers,
-                // The Uri that actually responded (could be different from the requestUri if a redirection occurred)
-                responseUri = response.ResponseUri,
-                errorMessage = response.ErrorMessage,
-            };
-
-            File.WriteAllText(@"qDebug_Request.log",
-                $"Request completed\n\nRequest:\n{JsonConvert.SerializeObject(requestToLog, Formatting.Indented)}\n\nResponse:\n{JsonConvert.SerializeObject(responseToLog, Formatting.Indented)}");
         }
     }
 }
