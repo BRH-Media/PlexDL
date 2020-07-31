@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.JsonConverters;
 using SharpCaster.Models.Enums;
 using SharpCaster.Models.MediaStatus;
+using System.Collections.Generic;
 
 namespace SharpCaster.Models.Metadata
 {
@@ -13,14 +13,17 @@ namespace SharpCaster.Models.Metadata
         {
             metadataType = MetadataTypeEnum.MUSIC_TRACK;
         }
+
         public string albumArtist { get; set; }
         public string albumName { get; set; }
         public string artist { get; set; }
         public string composer { get; set; }
         public int discNumber { get; set; }
         public List<ChromecastImage> images { get; set; }
+
         [JsonConverter(typeof(MetadataTypeEnumConverter))]
         public MetadataTypeEnum metadataType { get; set; }
+
         public string releaseDate { get; set; }
         public string songName { get; set; }
         public string title { get; set; }

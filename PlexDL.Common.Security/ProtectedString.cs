@@ -1,8 +1,8 @@
 ﻿using PlexDL.Common.Enums;
-using PlexDL.Common.Logging;
 using System;
 using System.Security.Cryptography;
-using UIHelpers;
+
+//using PlexDL.Common.Logging;
 
 namespace PlexDL.Common.Security
 {
@@ -38,9 +38,9 @@ namespace PlexDL.Common.Security
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                LoggingHelpers.RecordException(ex.Message, "WDAPIError");
+                //ignore the error
             }
 
             return value;
@@ -59,9 +59,9 @@ namespace PlexDL.Common.Security
                 var cipherBase64 = DataHelpers.BytesToBase64(cipherText);
                 value = cipherBase64;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                LoggingHelpers.RecordException(ex.Message, "WDPAPIEncryptError");
+                //ignore the error
             }
 
             return value;
@@ -82,10 +82,9 @@ namespace PlexDL.Common.Security
                 value = plainText;
                 //UIMessages.Info(plainText);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                UIMessages.Error(ex.ToString());
-                LoggingHelpers.RecordException(ex.Message, "WDPAPIDecryptError");
+                //ignore the error
             }
 
             return value;

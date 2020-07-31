@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Position Class)
 
         internal Position(Player player)
         {
@@ -286,6 +286,5 @@ namespace PlexDL.Player
                 }
             }
         }
-
     }
 }

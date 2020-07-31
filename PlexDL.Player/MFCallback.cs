@@ -5,20 +5,22 @@ namespace PlexDL.Player
 {
     internal sealed class MFCallback : IMFAsyncCallback
     {
-        private Player              _basePlayer;
-        private delegate void       EndOfMediaDelegate();
-        private EndOfMediaDelegate  CallEndOfMedia;
+        private Player _basePlayer;
+
+        private delegate void EndOfMediaDelegate();
+
+        private EndOfMediaDelegate CallEndOfMedia;
 
         public MFCallback(Player player)
         {
-            _basePlayer     = player;
-            CallEndOfMedia  = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
+            _basePlayer = player;
+            CallEndOfMedia = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
         }
 
         public void Dispose()
         {
-            _basePlayer     = null;
-            CallEndOfMedia  = null;
+            _basePlayer = null;
+            CallEndOfMedia = null;
         }
 
         public HResult GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
@@ -30,10 +32,10 @@ namespace PlexDL.Player
 
         public HResult Invoke(IMFAsyncResult result)
         {
-            IMFMediaEvent   mediaEvent      = null;
-            MediaEventType  mediaEventType  = MediaEventType.MEUnknown;
-            HResult         errorCode;
-            bool            getNext         = true;
+            IMFMediaEvent mediaEvent = null;
+            MediaEventType mediaEventType = MediaEventType.MEUnknown;
+            HResult errorCode;
+            bool getNext = true;
 
             try
             {
@@ -46,7 +48,7 @@ namespace PlexDL.Player
                     if (mediaEventType == MediaEventType.MEError
                         || (_basePlayer._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
                         || (_basePlayer._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
-                        //if (errorCode < 0)
+                    //if (errorCode < 0)
                     {
                         _basePlayer._lastError = errorCode;
                         errorCode = Player.NO_ERROR;

@@ -24,7 +24,7 @@ namespace PlexDL.Player
             [In] IntPtr bytesWritten
         );
 
-        #endregion
+        #endregion ISequentialStream Methods
 
         [PreserveSig]
         HResult Seek(

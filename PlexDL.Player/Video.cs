@@ -15,13 +15,13 @@ namespace PlexDL.Player
     {
         #region Fields (Video Class)
 
-        private Player          _base;
-        private bool            _zoomBusy;
-        private bool            _boundsBusy;
-        private int             _maxZoomWidth   = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
-        private int             _maxZoomHeight  = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
+        private Player _base;
+        private bool _zoomBusy;
+        private bool _boundsBusy;
+        private int _maxZoomWidth = Player.DEFAULT_VIDEO_WIDTH_MAXIMUM;
+        private int _maxZoomHeight = Player.DEFAULT_VIDEO_HEIGHT_MAXIMUM;
 
-        #endregion
+        #endregion Fields (Video Class)
 
         internal Video(Player player)
         {
@@ -59,7 +59,7 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomWidth    = value;
+                    _maxZoomWidth = value;
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace PlexDL.Player
                 else
                 {
                     _base._lastError = Player.NO_ERROR;
-                    _maxZoomHeight   = value;
+                    _maxZoomHeight = value;
                 }
             }
         }
@@ -198,14 +198,14 @@ namespace PlexDL.Player
             {
                 if (!_zoomBusy)
                 {
-                    _zoomBusy        = true;
+                    _zoomBusy = true;
                     _base._lastError = Player.NO_ERROR;
 
                     if (factor != 1)
                     {
-                        double width    = 0;
-                        double height   = 0;
-                        Rectangle r     = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
+                        double width = 0;
+                        double height = 0;
+                        Rectangle r = new Rectangle(_base._videoBounds.Location, _base._videoBounds.Size);
 
                         if (r.Width < r.Height)
                         {
@@ -213,19 +213,19 @@ namespace PlexDL.Player
                             if (width > _maxZoomWidth)
                             {
                                 factor = (double)_maxZoomWidth / r.Width;
-                                width  = r.Width * factor;
+                                width = r.Width * factor;
                             }
                             else if ((width / r.Width) * r.Height > _maxZoomHeight)
                             {
                                 factor = (double)_maxZoomHeight / r.Height;
-                                width  = r.Width * factor;
+                                width = r.Width * factor;
                             }
                             r.X = (int)Math.Round(-factor * (xCenter - r.X)) + xCenter;
 
                             if (width >= 10)
                             {
-                                r.Y     = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
-                                height  = (width / r.Width) * r.Height;
+                                r.Y = (int)Math.Round(-(width / r.Width) * (yCenter - r.Y)) + yCenter;
+                                height = (width / r.Width) * r.Height;
                             }
                         }
                         else
@@ -245,14 +245,14 @@ namespace PlexDL.Player
 
                             if (height >= 10)
                             {
-                                r.X   = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
+                                r.X = (int)Math.Round(-(height / r.Height) * (xCenter - r.X)) + xCenter;
                                 width = (height / r.Height) * r.Width;
                             }
                         }
 
-                        r.Width  = (int)Math.Round(width);
+                        r.Width = (int)Math.Round(width);
                         r.Height = (int)Math.Round(height);
-                        Bounds   = r;
+                        Bounds = r;
                     }
                     _zoomBusy = false;
                 }
@@ -394,7 +394,6 @@ namespace PlexDL.Player
             }
         }
 
-
         /// <summary>
         /// Returns a copy of the player's currently displayed video image (without display overlay). See also: Player.Copy.ToImage.
         /// </summary>
@@ -453,7 +452,6 @@ namespace PlexDL.Player
             return theImage;
         }
 
-
         /// <summary>
         /// Copies the player's currently displayed video image (without display overlay) to the system's clipboard. See also: Player.Copy.ToClipboard.
         /// </summary>
@@ -501,7 +499,6 @@ namespace PlexDL.Player
             }
             return (int)_base._lastError;
         }
-
 
         /// <summary>
         /// Saves a copy of the player's currently displayed video image (without display overlay) to the specified file. See also: Player.Copy.ToFile.
@@ -569,7 +566,6 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-
         /// <summary>
         /// Gets or sets a value that indicates whether video tracks in subsequent media files are ignored by the player (default: false). The video track information remains available. Allows to play audio from media with unsupported video formats.
         /// </summary>
@@ -587,6 +583,5 @@ namespace PlexDL.Player
                 _base._lastError = Player.NO_ERROR;
             }
         }
-
     }
 }

@@ -6,6 +6,7 @@ namespace SharpCaster.Channels
     public class PlexChannel : MediaChannel
     {
         public static string Urn = "urn:x-cast:plex";
+
         public PlexChannel(ChromeCastClient client) : base(client, Urn)
         {
         }
@@ -74,7 +75,7 @@ namespace SharpCaster.Channels
         //}
 
         /// <summary>
-        /// Used to select a video stream, audio stream, subtitle stream or lyrics stream 
+        /// Used to select a video stream, audio stream, subtitle stream or lyrics stream
         /// </summary>
         /// <remarks>This is the case when there are e.g. multiple languages in one contrainer</remarks>
         /// <returns></returns>
@@ -101,7 +102,7 @@ namespace SharpCaster.Channels
         //}
     }
 
-    public static class 
+    public static class
         ChannelExtension
     {
         public static PlexChannel GetPlexChannel(this IEnumerable<IChromecastChannel> channels)

@@ -11,7 +11,7 @@ namespace PlexDL.Player
     public sealed class VideoColorEventArgs : HideObjectEventArgs
     {
         internal VideoColorAttribute _colorAttribute;
-        internal double              _colorValue;
+        internal double _colorValue;
 
         internal VideoColorEventArgs(VideoColorAttribute attribute, double value)
         {

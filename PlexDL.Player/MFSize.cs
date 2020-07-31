@@ -31,6 +31,7 @@ namespace PlexDL.Player
                 cx = value;
             }
         }
+
         public int Height
         {
             get

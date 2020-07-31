@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
-using SharpCaster.Interfaces;
+﻿using SharpCaster.Interfaces;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Controllers
 {
     public abstract class BaseController : IController
     {
         public string ApplicationId { get; set; }
+
         public async Task LaunchApplication()
         {
             await Client.ReceiverChannel.LaunchApplication(ApplicationId);
@@ -23,6 +24,5 @@ namespace SharpCaster.Controllers
         {
             await Client.ReceiverChannel.StopApplication();
         }
-
     }
 }

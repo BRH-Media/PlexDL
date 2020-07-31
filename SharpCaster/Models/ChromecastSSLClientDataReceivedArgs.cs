@@ -1,5 +1,5 @@
-﻿using System;
-using Extensions.Api.CastChannel;
+﻿using Extensions.Api.CastChannel;
+using System;
 
 namespace SharpCaster.Models
 {
@@ -9,6 +9,7 @@ namespace SharpCaster.Models
         {
             Message = message;
         }
+
         public CastMessage Message { get; set; }
     }
 }

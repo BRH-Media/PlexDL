@@ -40,14 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\AuthObject.cs" />
@@ -83,6 +76,14 @@
     <ProjectReference Include="..\PlexDL.Common.Components\PlexDL.Common.Components.csproj">
       <Project>{3c18fc31-d361-42fb-ae18-42faacd4e419}</Project>
       <Name>PlexDL.Common.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Enums\PlexDL.Common.Enums.csproj">
+      <Project>{2c0b4243-5d9e-454a-9a7b-dcac2787b13e}</Project>
+      <Name>PlexDL.Common.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>

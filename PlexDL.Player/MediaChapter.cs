@@ -10,14 +10,16 @@ namespace PlexDL.Player
     {
         #region Fields (Media Chapter Class)
 
-        internal string[]   _title;
-        internal string[]   _language;
-        internal TimeSpan   _startTime;
-        internal TimeSpan   _endTime;
+        internal string[] _title;
+        internal string[] _language;
+        internal TimeSpan _startTime;
+        internal TimeSpan _endTime;
 
-        #endregion
+        #endregion Fields (Media Chapter Class)
 
-        internal MediaChapter() { }
+        internal MediaChapter()
+        {
+        }
 
         /// <summary>
         /// Gets the title of the media chapter. The chapter can have multiple titles in different languages.

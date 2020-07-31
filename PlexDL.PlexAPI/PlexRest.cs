@@ -10,7 +10,7 @@ namespace PlexDL.PlexAPI
 
         protected RestClient GetRestClient()
         {
-            var client = new RestClient {BaseUrl = new Uri(GetBaseUrl())};
+            var client = new RestClient { BaseUrl = new Uri(GetBaseUrl()) };
             return client;
         }
 

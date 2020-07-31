@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Overlay Class)
 
         internal Overlay(Player player)
         {

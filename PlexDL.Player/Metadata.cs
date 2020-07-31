@@ -11,20 +11,22 @@ namespace PlexDL.Player
     {
         #region Fields (Metadata Class)
 
-        internal string     _artist;
-        internal string     _title;
-        internal string     _album;
-        internal int        _trackNumber;
-        internal string     _year;
-        internal TimeSpan   _duration;
-        internal string     _genre;
-        internal Image      _image;
+        internal string _artist;
+        internal string _title;
+        internal string _album;
+        internal int _trackNumber;
+        internal string _year;
+        internal TimeSpan _duration;
+        internal string _genre;
+        internal Image _image;
 
-        private bool        _disposed;
+        private bool _disposed;
 
-        #endregion
+        #endregion Fields (Metadata Class)
 
-        internal Metadata() { }
+        internal Metadata()
+        {
+        }
 
         /// <summary>
         /// Gets the main artist(s)/performer(s)/band/orchestra of the media.
@@ -73,12 +75,12 @@ namespace PlexDL.Player
         {
             if (!_disposed)
             {
-                _disposed   = true;
-                _artist     = null;
-                _title      = null;
-                _album      = null;
-                _year       = null;
-                _genre      = null;
+                _disposed = true;
+                _artist = null;
+                _title = null;
+                _album = null;
+                _year = null;
+                _genre = null;
                 if (_image != null)
                 {
                     try { _image.Dispose(); }

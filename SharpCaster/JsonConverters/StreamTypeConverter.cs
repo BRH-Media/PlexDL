@@ -1,6 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.Models.ChromecastRequests;
+using System;
 
 namespace SharpCaster.JsonConverters
 {
@@ -14,12 +14,15 @@ namespace SharpCaster.JsonConverters
                 case StreamType.BUFFERED:
                     writer.WriteValue("BUFFERED");
                     break;
+
                 case StreamType.LIVE:
                     writer.WriteValue("LIVE");
                     break;
+
                 case StreamType.NONE:
                     writer.WriteValue("NONE");
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

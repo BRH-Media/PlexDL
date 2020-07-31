@@ -1,5 +1,4 @@
-﻿using PlexDL.PlexAPI.LoginHandler;
-using RestSharp;
+﻿using RestSharp;
 
 namespace PlexDL.PlexAPI.LoginHandler
 {
@@ -7,7 +6,7 @@ namespace PlexDL.PlexAPI.LoginHandler
     {
         public static string DownloadJson(string url, Method method = Method.GET)
         {
-            var client = new RestClient(url) {Timeout = -1};
+            var client = new RestClient(url) { Timeout = -1 }; //don't timeout
             var request = new RestRequest(method);
 
             request.AddHeader("Accept", "application/json");

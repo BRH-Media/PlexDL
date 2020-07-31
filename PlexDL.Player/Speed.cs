@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Speed Class)
 
         internal Speed(Player player)
         {

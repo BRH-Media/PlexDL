@@ -14,10 +14,9 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Class)
 
-        private Player          _base;
+        private Player _base;
 
-        #endregion
-
+        #endregion Fields (Webcam Class)
 
         #region Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
@@ -218,7 +217,7 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion
+        #endregion Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
         #region Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
@@ -368,7 +367,6 @@ namespace PlexDL.Player
                     settings._whiteBalance = props._value;
                     settings._autoWhiteBalance = props._auto;
 
-
                     props = GetControlProperties(CameraControlProperty.Exposure);
                     settings._exposure = props._value;
                     settings._autoExposure = props._auto;
@@ -502,8 +500,7 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion
-
+        #endregion Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
         #region Private - Get/Set Video Control Properties / ProcAmp Properties
 
@@ -622,7 +619,7 @@ namespace PlexDL.Player
             _base._lastError = result;
         }
 
-        #endregion
+        #endregion Private - Get/Set Video Control Properties / ProcAmp Properties
 
         #region Public - Get/Set Video Control Properties
 
@@ -698,7 +695,7 @@ namespace PlexDL.Player
             set { SetControlProperties(CameraControlProperty.Zoom, value); }
         }
 
-        #endregion
+        #endregion Public - Get/Set Video Control Properties
 
         #region Public - Get/SetVideo ProcAmp Properties
 
@@ -801,8 +798,7 @@ namespace PlexDL.Player
             set { SetProcAmpProperties(VideoProcAmpProperty.WhiteBalance, value); }
         }
 
-        #endregion
-
+        #endregion Public - Get/SetVideo ProcAmp Properties
 
         #region Private - Get Video Output Format
 
@@ -960,7 +956,7 @@ namespace PlexDL.Player
             return format;
         }
 
-        #endregion
+        #endregion Private - Get Video Output Format
 
         #region Public - Get Video Output Formats
 
@@ -1016,7 +1012,6 @@ namespace PlexDL.Player
             return GetWebcamFormats(webcam._id, true, exact, width, height, frameRate);
         }
 
-        #endregion
-
+        #endregion Public - Get Video Output Formats
     }
 }

@@ -16,7 +16,7 @@ namespace PlexDL.Player
         private const int MAX_SCROLL_VALUE = 60000;
         private Player _base;
 
-        #endregion
+        #endregion Fields (PositionSlider Class)
 
         internal PositionSlider(Player player)
         {

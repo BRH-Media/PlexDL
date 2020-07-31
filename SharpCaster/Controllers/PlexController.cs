@@ -13,7 +13,6 @@ namespace SharpCaster.Controllers
         {
         }
 
-
         public override async Task Play()
         {
             await Client.Channels.GetPlexChannel().Play();

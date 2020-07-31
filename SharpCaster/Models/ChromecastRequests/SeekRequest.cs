@@ -4,8 +4,8 @@ namespace SharpCaster.Models.ChromecastRequests
 {
     public class SeekRequest : MediaRequest
     {
-        public SeekRequest(long mediaSessionId, double seconds, int? requestId = null) 
-            : base("SEEK", mediaSessionId,requestId)
+        public SeekRequest(long mediaSessionId, double seconds, int? requestId = null)
+            : base("SEEK", mediaSessionId, requestId)
         {
             CurrentTime = seconds;
         }

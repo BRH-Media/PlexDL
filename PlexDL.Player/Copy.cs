@@ -15,17 +15,15 @@ namespace PlexDL.Player
     {
         #region Fields (Copy Class)
 
-        private Player  _base;
-        private bool    _cloneCopy = true;
+        private Player _base;
+        private bool _cloneCopy = true;
 
-        #endregion
-
+        #endregion Fields (Copy Class)
 
         internal Copy(Player player)
         {
             _base = player;
         }
-
 
         /// <summary>
         /// Gets or sets a value that indicates whether to use the display clones copy method (that is fast and does not copy overlapping windows) with CopyMode.Video and CopyMode.Display (default: true). When enabled, display overlays are copied according to the Player.DisplayClones.ShowOverlay setting.
@@ -33,7 +31,7 @@ namespace PlexDL.Player
         public bool CloneMode
         {
             get { return _cloneCopy; }
-            set{ _cloneCopy = value; }
+            set { _cloneCopy = value; }
         }
 
         /// <summary>
@@ -52,7 +50,6 @@ namespace PlexDL.Player
                 _base._copyMode = value;
             }
         }
-
 
         /// <summary>
         /// Returns an image from the Player.Copy.Mode part of the screen. See also: Player.Video.ToImage.
@@ -75,12 +72,15 @@ namespace PlexDL.Player
                     case CopyMode.Display:
                         r = _base._display.RectangleToScreen(_base._display.DisplayRectangle);
                         break;
+
                     case CopyMode.Form:
                         r = _base._display.FindForm().RectangleToScreen(_base._display.FindForm().DisplayRectangle);
                         break;
+
                     case CopyMode.Parent:
                         r = _base._display.Parent.RectangleToScreen(_base._display.Parent.DisplayRectangle);
                         break;
+
                     case CopyMode.Screen:
                         r = Screen.GetBounds(_base._display);
                         break;
@@ -204,7 +204,6 @@ namespace PlexDL.Player
             return image;
         }
 
-
         /// <summary>
         /// Copies an image from the Player.Copy.Mode part of the screen to the system's clipboard. See also: Player.Video.ToClipboard.
         /// </summary>
@@ -295,7 +294,6 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-
         /// <summary>
         /// Saves an image from the Player.Copy.Mode part of the screen to the specified file. See also: Player.Video.ToFile.
         /// </summary>
@@ -313,7 +311,7 @@ namespace PlexDL.Player
                     copy.Dispose();
                 }
             }
-            else  _base._lastError = HResult.ERROR_INVALID_NAME;
+            else _base._lastError = HResult.ERROR_INVALID_NAME;
             return (int)_base._lastError;
         }
 
@@ -409,6 +407,5 @@ namespace PlexDL.Player
             _base._copyMode = oldMode;
             return (int)_base._lastError;
         }
-
     }
 }

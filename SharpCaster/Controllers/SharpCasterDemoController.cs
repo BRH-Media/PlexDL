@@ -1,14 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
-using SharpCaster.Models.ChromecastRequests;
+﻿using SharpCaster.Models.ChromecastRequests;
 using SharpCaster.Models.MediaStatus;
 using SharpCaster.Models.Metadata;
+using System;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Controllers
 {
     public class SharpCasterDemoController : BaseMediaController
     {
         public static string SharpCasterApplicationId = "B3419EF5";
+
         public SharpCasterDemoController(ChromeCastClient client)
             : base(client, SharpCasterApplicationId)
         {
@@ -32,6 +33,7 @@ namespace SharpCaster.Controllers
             await LoadMedia(mediaUrl, contentType, metadata, parsedStreamType, duration, customData, tracks, activeTrackIds,
                 autoPlay, currentTime);
         }
+
         public async Task LoadMedia(
             string mediaUrl,
             string contentType = "application/vnd.ms-sstr+xml",

@@ -9,14 +9,17 @@
         /// Specifies no flipping.
         /// </summary>
         FlipNone,
+
         /// <summary>
         /// Specifies a horizontal flip.
         /// </summary>
         FlipX,
+
         /// <summary>
         /// Specifies a vertical flip.
         /// </summary>
         FlipY,
+
         /// <summary>
         /// Specifies a horizontal and vertical flip.
         /// </summary>

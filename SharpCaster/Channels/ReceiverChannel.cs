@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.Models;
 using SharpCaster.Models.ChromecastStatus;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Channels
 {
-    public class ReceiverChannel : ChromecastChannel 
+    public class ReceiverChannel : ChromecastChannel
     {
         public ReceiverChannel(ChromeCastClient client) :
             base(client, "urn:x-cast:com.google.cast.receiver")
@@ -48,12 +48,10 @@ namespace SharpCaster.Channels
             return true;
         }
 
-
         public async void GetChromecastStatus()
         {
             await Write(MessageFactory.Status());
         }
-
 
         public async Task SetMute(bool muted)
         {
@@ -83,7 +81,5 @@ namespace SharpCaster.Channels
         {
             await Write(MessageFactory.StopApplication(Client.CurrentApplicationSessionId));
         }
-
-
     }
 }

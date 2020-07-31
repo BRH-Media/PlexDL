@@ -68,7 +68,7 @@ namespace PlexDL.PlexAPI
 
         public void Load()
         {
-            var request = new RestRequest {Resource = uri};
+            var request = new RestRequest { Resource = uri };
             Console.WriteLine("Getting items from: " + uri);
 
             showDirectories = new List<Show>();

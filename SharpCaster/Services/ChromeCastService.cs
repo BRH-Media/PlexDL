@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SharpCaster.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using SharpCaster.Models;
 
 namespace SharpCaster.Services
 {
@@ -20,13 +20,11 @@ namespace SharpCaster.Services
             ChromeCastClient = new ChromeCastClient();
         }
 
-  
         public async Task ConnectToChromecast(Chromecast chromecast)
         {
             ConnectedChromecast = chromecast;
             await ChromeCastClient.ConnectChromecast(chromecast.DeviceUri);
         }
-        
 
         public async Task<ObservableCollection<Chromecast>> StartLocatingDevices()
         {

@@ -45,7 +45,7 @@
         ///// <summary>Operation timed out</summary>
         COR_E_TIMEOUT = unchecked((int)0x80131505),
 
-        #endregion
+        #endregion COM HRESULTs
 
         #region Win32 HRESULTs
 
@@ -65,18 +65,18 @@
         ///// <unmanaged>HRESULT_FROM_WIN32(ERROR_NOT_FOUND)</unmanaged>
         //WIN32_ERROR_NOT_FOUND = unchecked((int)0x80070490),
 
-        ERROR_FILE_NOT_FOUND            = 0x02,
-        ERROR_INVALID_NAME              = unchecked((int)0x8007007B),
-        ERROR_PATH_NOT_FOUND            = unchecked((int)0x80070003),
-        ERROR_SYSTEM_DEVICE_NOT_FOUND   = 0x00003BC3,
-        ERROR_DEVICE_NOT_CONNECTED      = 0x0000048F,
-        ERROR_NOT_READY                 = 0x15,
-        ERROR_BUSY                      = unchecked((int)0x800700AA),
-        ERROR_INVALID_WINDOW_HANDLE     = 0x00000578,
-        ERROR_SERVER_NOT_CONNECTED      = unchecked((int)0xC00D4287),
-        ERROR_SERVER_NOT_FOUND          = 0x00000837,
+        ERROR_FILE_NOT_FOUND = 0x02,
+        ERROR_INVALID_NAME = unchecked((int)0x8007007B),
+        ERROR_PATH_NOT_FOUND = unchecked((int)0x80070003),
+        ERROR_SYSTEM_DEVICE_NOT_FOUND = 0x00003BC3,
+        ERROR_DEVICE_NOT_CONNECTED = 0x0000048F,
+        ERROR_NOT_READY = 0x15,
+        ERROR_BUSY = unchecked((int)0x800700AA),
+        ERROR_INVALID_WINDOW_HANDLE = 0x00000578,
+        ERROR_SERVER_NOT_CONNECTED = unchecked((int)0xC00D4287),
+        ERROR_SERVER_NOT_FOUND = 0x00000837,
 
-        #endregion
+        #endregion Win32 HRESULTs
 
         #region Structured Storage HRESULTs
 
@@ -140,7 +140,7 @@
         ///// <summary>Can't save.</summary>
         //STG_E_CANTSAVE = unchecked((int)0x80030103),
 
-        #endregion
+        #endregion Structured Storage HRESULTs
 
         #region Media Foundation HRESULTs
 
@@ -178,6 +178,7 @@
         //MF_E_NOT_INITIALIZED = unchecked((int)0xC00D36B6),
         //MF_E_UNSUPPORTED_REPRESENTATION = unchecked((int)0xC00D36B7),
         MF_E_NO_MORE_TYPES = unchecked((int)0xC00D36B9),
+
         //MF_E_UNSUPPORTED_SERVICE = unchecked((int)0xC00D36BA),
         //MF_E_UNEXPECTED = unchecked((int)0xC00D36BB),
         //MF_E_INVALIDNAME = unchecked((int)0xC00D36BC),
@@ -187,24 +188,28 @@
         //MF_E_INVALID_TIMESTAMP = unchecked((int)0xC00D36C0),
         //MF_E_UNSUPPORTED_SCHEME = unchecked((int)0xC00D36C3),
         MF_E_UNSUPPORTED_BYTESTREAM_TYPE = unchecked((int)0xC00D36C4),
+
         //MF_E_UNSUPPORTED_TIME_FORMAT = unchecked((int)0xC00D36C5),
         //MF_E_NO_SAMPLE_TIMESTAMP = unchecked((int)0xC00D36C8),
         //MF_E_NO_SAMPLE_DURATION = unchecked((int)0xC00D36C9),
         //MF_E_INVALID_STREAM_DATA = unchecked((int)0xC00D36CB),
         //MF_E_RT_UNAVAILABLE = unchecked((int)0xC00D36CF),
         MF_E_UNSUPPORTED_RATE = unchecked((int)0xC00D36D0),
+
         //MF_E_THINNING_UNSUPPORTED = unchecked((int)0xC00D36D1),
         //MF_E_REVERSE_UNSUPPORTED = unchecked((int)0xC00D36D2),
         //MF_E_UNSUPPORTED_RATE_TRANSITION = unchecked((int)0xC00D36D3),
         //MF_E_RATE_CHANGE_PREEMPTED = unchecked((int)0xC00D36D4),
         //MF_E_NOT_FOUND = unchecked((int)0xC00D36D5),
         MF_E_NOT_AVAILABLE = unchecked((int)0xC00D36D6),
+
         //MF_E_NO_CLOCK = unchecked((int)0xC00D36D7),
         //MF_S_MULTIPLE_BEGIN = unchecked((int)0x000D36D8),
         //MF_E_MULTIPLE_BEGIN = unchecked((int)0xC00D36D9),
         //MF_E_MULTIPLE_SUBSCRIBERS = unchecked((int)0xC00D36DA),
         //MF_E_TIMER_ORPHANED = unchecked((int)0xC00D36DB),
         MF_E_STATE_TRANSITION_PENDING = unchecked((int)0xC00D36DC),
+
         //MF_E_UNSUPPORTED_STATE_TRANSITION = unchecked((int)0xC00D36DD),
         //MF_E_UNRECOVERABLE_ERROR_OCCURRED = unchecked((int)0xC00D36DE),
         //MF_E_SAMPLE_HAS_TOO_MANY_BUFFERS = unchecked((int)0xC00D36DF),
@@ -214,6 +219,7 @@
         //MF_E_UNSUPPORTED_CAPTION = unchecked((int)0xC00D36E4),
         //MF_E_INVALID_POSITION = unchecked((int)0xC00D36E5),
         MF_E_ATTRIBUTENOTFOUND = unchecked((int)0xC00D36E6),
+
         //MF_E_PROPERTY_TYPE_NOT_ALLOWED = unchecked((int)0xC00D36E7),
         //MF_E_PROPERTY_TYPE_NOT_SUPPORTED = unchecked((int)0xC00D36E8),
         //MF_E_PROPERTY_EMPTY = unchecked((int)0xC00D36E9),
@@ -242,8 +248,10 @@
         //MF_E_DRM_UNSUPPORTED = unchecked((int)0xC00D3700),
         //MF_E_UNAUTHORIZED = unchecked((int)0xC00D3701),
         MF_E_OUT_OF_RANGE = unchecked((int)0xC00D3702),
+
         //MF_E_INVALID_CODEC_MERIT = unchecked((int)0xC00D3703),
         MF_E_HW_MFT_FAILED_START_STREAMING = unchecked((int)0xC00D3704),
+
         //MF_S_ASF_PARSEINPROGRESS = unchecked((int)0x400D3A98),
         //MF_E_ASF_PARSINGINCOMPLETE = unchecked((int)0xC00D3A98),
         //MF_E_ASF_MISSINGDATA = unchecked((int)0xC00D3A99),
@@ -264,6 +272,7 @@
         //MF_E_MP3_NOTMP3 = unchecked((int)0xC00D3E88),
         //MF_E_MP3_NOTSUPPORTED = unchecked((int)0xC00D3E89),
         MF_E_NO_DURATION = unchecked((int)0xC00D3E8A),
+
         //MF_E_INVALID_FORMAT = unchecked((int)0xC00D3E8C),
         //MF_E_PROPERTY_NOT_FOUND = unchecked((int)0xC00D3E8D),
         //MF_E_PROPERTY_READ_ONLY = unchecked((int)0xC00D3E8E),
@@ -274,12 +283,15 @@
         //MF_E_NOT_PROTECTED = unchecked((int)0xC00D3E9A),
         //MF_E_MEDIA_SOURCE_WRONGSTATE = unchecked((int)0xC00D3E9B),
         MF_E_MEDIA_SOURCE_NO_STREAMS_SELECTED = unchecked((int)0xC00D3E9C),
+
         //MF_E_CANNOT_FIND_KEYFRAME_SAMPLE = unchecked((int)0xC00D3E9D),
 
         //MF_E_UNSUPPORTED_CHARACTERISTICS = unchecked((int)0xC00D3E9E),
         MF_E_NO_AUDIO_RECORDING_DEVICE = unchecked((int)0xC00D3E9F),
+
         //MF_E_AUDIO_RECORDING_DEVICE_IN_USE = unchecked((int)0xC00D3EA0),
         MF_E_AUDIO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA1),
+
         MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA2),
         //MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED = unchecked((int)0xC00D3EA3),
 
@@ -357,6 +369,7 @@
         //MF_E_NEW_VIDEO_DEVICE = unchecked((int)0xC00D4E25),
         //MF_E_NO_VIDEO_SAMPLE_AVAILABLE = unchecked((int)0xC00D4E26),
         MF_E_NO_AUDIO_PLAYBACK_DEVICE = unchecked((int)0xC00D4E84),
+
         //MF_E_AUDIO_PLAYBACK_DEVICE_IN_USE = unchecked((int)0xC00D4E85),
         //MF_E_AUDIO_PLAYBACK_DEVICE_INVALIDATED = unchecked((int)0xC00D4E86),
         //MF_E_AUDIO_SERVICE_NOT_RUNNING = unchecked((int)0xC00D4E87),
@@ -364,6 +377,7 @@
         //MF_E_TOPO_CANNOT_FIND_DECRYPTOR = unchecked((int)0xC00D5211),
         //MF_E_TOPO_CODEC_NOT_FOUND = unchecked((int)0xC00D5212),
         MF_E_TOPO_CANNOT_CONNECT = unchecked((int)0xC00D5213),
+
         //MF_E_TOPO_UNSUPPORTED = unchecked((int)0xC00D5214),
         //MF_E_TOPO_INVALID_TIME_ATTRIBUTES = unchecked((int)0xC00D5215),
         //MF_E_TOPO_LOOPS_IN_TOPOLOGY = unchecked((int)0xC00D5216),
@@ -496,6 +510,6 @@
         //MF_E_DXGI_NEW_VIDEO_DEVICE = unchecked((int)0x80041001),
         //MF_E_DXGI_VIDEO_DEVICE_LOCKED = unchecked((int)0x80041002),
 
-        #endregion
+        #endregion Media Foundation HRESULTs
     }
 }

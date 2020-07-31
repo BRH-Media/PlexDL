@@ -1,11 +1,11 @@
-﻿using System;
-using Extensions.Api.CastChannel;
+﻿using Extensions.Api.CastChannel;
 using SharpCaster.Models.ChromecastRequests;
+using System;
 
 namespace SharpCaster.Models
 {
     public static class MessageFactory
-    {     
+    {
         /// <summary>
         /// Only change this value if you have a good reason to do it
         /// </summary>
@@ -61,19 +61,19 @@ namespace SharpCaster.Models
             PayloadUtf8 = new PauseRequest(mediaSessionId, requestId).ToJson()
         };
 
-        public static CastMessage Next(string destinationId, long mediaSessionId,int? requestId = null) => new CastMessage(destinationId, UniqueSourceID)
+        public static CastMessage Next(string destinationId, long mediaSessionId, int? requestId = null) => new CastMessage(destinationId, UniqueSourceID)
         {
             PayloadUtf8 = new NextRequest(mediaSessionId, requestId).ToJson()
         };
 
         public static CastMessage Previous(string destinationId, long mediaSessionId, int? requestId = null) => new CastMessage(destinationId, UniqueSourceID)
         {
-            PayloadUtf8 = new PreviousRequest(mediaSessionId,requestId).ToJson()
+            PayloadUtf8 = new PreviousRequest(mediaSessionId, requestId).ToJson()
         };
 
         public static CastMessage Launch(string appId, int? requestId = null) => new CastMessage
         {
-            PayloadUtf8 = new LaunchRequest(appId,requestId).ToJson()
+            PayloadUtf8 = new LaunchRequest(appId, requestId).ToJson()
         };
 
         public static CastMessage Load(string destinationId, string payload) => new CastMessage(destinationId, UniqueSourceID)
@@ -89,7 +89,7 @@ namespace SharpCaster.Models
 
         public static CastMessage StopApplication(string sessionId, int? requestId = null) => new CastMessage
         {
-            PayloadUtf8 = new StopApplicationRequest(sessionId,requestId).ToJson()
+            PayloadUtf8 = new StopApplicationRequest(sessionId, requestId).ToJson()
         };
 
         public static CastMessage MediaStatus(string destinationId, int? requestId = null) => new CastMessage(destinationId, UniqueSourceID)
@@ -101,7 +101,5 @@ namespace SharpCaster.Models
         {
             PayloadUtf8 = new StopMediaRequest(mediaSessionId, requestId).ToJson()
         };
-
-
     }
 }

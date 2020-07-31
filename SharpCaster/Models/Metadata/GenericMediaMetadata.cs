@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.JsonConverters;
 using SharpCaster.Models.Enums;
 using SharpCaster.Models.MediaStatus;
+using System.Collections.Generic;
 
 namespace SharpCaster.Models.Metadata
 {
@@ -10,8 +10,10 @@ namespace SharpCaster.Models.Metadata
     public class GenericMediaMetadata : IMetadata
     {
         public List<ChromecastImage> images { get; set; }
+
         [JsonConverter(typeof(MetadataTypeEnumConverter))]
         public MetadataTypeEnum metadataType { get; set; }
+
         public string releaseDate { get; set; }
         public string subtitle { get; set; }
         public string title { get; set; }

@@ -13,7 +13,7 @@ namespace PlexDL.Player
         [DllImport("ole32.dll", ExactSpelling = true, PreserveSig = false), SuppressUnmanagedCodeSecurity]
         protected static extern void PropVariantClear([In, MarshalAs(UnmanagedType.LPStruct)] PropVariant pvar);
 
-        #endregion
+        #endregion Declarations
 
         public PropVariant()
             : base(VariantType.None)
@@ -168,6 +168,6 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+        #endregion IDisposable Members
     }
 }

@@ -16,7 +16,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (PointTo Class)
 
         internal PointTo(Player player)
         {

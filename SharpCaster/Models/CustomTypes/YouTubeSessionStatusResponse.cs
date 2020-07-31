@@ -7,10 +7,11 @@ namespace SharpCaster.Models.CustomTypes
     {
         [DataMember(Name = "type")]
         public string Type { get; set; }
+
         [DataMember(Name = "data")]
         public YouTubeSessionStatusDataResponse Data { get; set; }
-
     }
+
     [DataContract]
     public class YouTubeSessionStatusDataResponse
     {

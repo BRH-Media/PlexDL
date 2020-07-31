@@ -17,7 +17,7 @@ namespace SharpCaster.Extensions
             // reverse the byte array.
             Array.Reverse(sizeBuffer);
             //Retrieve the size of message
-            var messageSize = BitConverter.ToInt32(sizeBuffer,0);
+            var messageSize = BitConverter.ToInt32(sizeBuffer, 0);
             var messageBuffer = new byte[messageSize];
             await stream.ReadAsync(messageBuffer, 0, messageBuffer.Length, cancellationToken);
             return messageBuffer;

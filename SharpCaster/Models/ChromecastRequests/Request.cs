@@ -1,5 +1,5 @@
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace SharpCaster.Models.ChromecastRequests
 {
@@ -9,16 +9,14 @@ namespace SharpCaster.Models.ChromecastRequests
         protected Request(string requestType)
         {
             RequestType = requestType;
-
         }
 
         [DataMember(Name = "type")]
         public string RequestType { get; set; }
 
-
         public string ToJson()
         {
-            var settings = new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};
+            var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             return JsonConvert.SerializeObject(this, settings);
         }
     }

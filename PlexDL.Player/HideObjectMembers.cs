@@ -36,6 +36,6 @@ namespace PlexDL.Player
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object obj) { return base.Equals(obj); }
 
-        #endregion
+        #endregion Hide Inherited System.Object members
     }
 }

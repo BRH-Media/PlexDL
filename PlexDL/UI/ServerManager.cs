@@ -13,6 +13,7 @@ using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -26,7 +27,7 @@ namespace PlexDL.UI
         }
 
         public Server SelectedServer { get; set; }
-        public bool RenderTokenColumn { get; set; } = false;
+        public bool RenderTokenColumn { get; set; }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -253,7 +254,7 @@ namespace PlexDL.UI
 
         private void RunDirectConnect(bool localLink)
         {
-            var info = new ConnectionInfo()
+            var info = new ConnectionInfo
             {
                 PlexAccountToken = ObjectProvider.User.authenticationToken,
                 PlexAddress = ""
@@ -602,7 +603,7 @@ namespace PlexDL.UI
                 RenderServersView(ObjectProvider.PlexServers);
         }
 
-        private void CxtServers_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void CxtServers_Opening(object sender, CancelEventArgs e)
         {
             if (!Flags.IsDebug || dgvServers.SelectedRows.Count == 0)
                 e.Cancel = true;
@@ -612,7 +613,7 @@ namespace PlexDL.UI
         {
             if (dgvServers.SelectedRows.Count == 1)
             {
-                var lnk = new LinkViewer() { Link = ConnectionLink(CurrentServer()) };
+                var lnk = new LinkViewer { Link = ConnectionLink(CurrentServer()) };
                 lnk.ShowDialog();
             }
         }

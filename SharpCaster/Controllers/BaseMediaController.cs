@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using SharpCaster.Interfaces;
+﻿using SharpCaster.Interfaces;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Controllers
 {
@@ -8,7 +8,6 @@ namespace SharpCaster.Controllers
         protected BaseMediaController(ChromeCastClient client, string applicationId)
             : base(client, applicationId)
         {
-            
         }
 
         public virtual async Task Play()

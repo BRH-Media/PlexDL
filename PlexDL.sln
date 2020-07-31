@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.PlexAPI.LoginHandler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpCaster.Portable", "SharpCaster\SharpCaster.Portable.csproj", "{56D42483-550D-4817-844B-6C27D880130F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Common.Enums", "PlexDL.Common.Enums\PlexDL.Common.Enums.csproj", "{2C0B4243-5D9E-454A-9A7B-DCAC2787B13E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Common.Security", "PlexDL.Common.Security\PlexDL.Common.Security.csproj", "{ABA08E30-BCBB-4EB8-A187-8C8B7037BC48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,14 @@ Global
 		{56D42483-550D-4817-844B-6C27D880130F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56D42483-550D-4817-844B-6C27D880130F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56D42483-550D-4817-844B-6C27D880130F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C0B4243-5D9E-454A-9A7B-DCAC2787B13E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C0B4243-5D9E-454A-9A7B-DCAC2787B13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C0B4243-5D9E-454A-9A7B-DCAC2787B13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C0B4243-5D9E-454A-9A7B-DCAC2787B13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA08E30-BCBB-4EB8-A187-8C8B7037BC48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA08E30-BCBB-4EB8-A187-8C8B7037BC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA08E30-BCBB-4EB8-A187-8C8B7037BC48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA08E30-BCBB-4EB8-A187-8C8B7037BC48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

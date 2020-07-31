@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -64,15 +64,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
 // the library can be compiled with all versions of c#:
 #pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
@@ -89,7 +88,7 @@ namespace PlexDL.Player
 
         private sealed class CH_Item
         {
-            internal Form   _form;
+            internal Form _form;
             internal Player _player;
 
             internal CH_Item(Form form, Player player)
@@ -101,7 +100,7 @@ namespace PlexDL.Player
 
         private sealed class CH_MessageFilter : IMessageFilter
         {
-            private const int WM_MOUSEMOVE  = 0x0200;
+            private const int WM_MOUSEMOVE = 0x0200;
             private const int WM_MOUSEWHEEL = 0x020A;
 
             public bool PreFilterMessage(ref Message m)
@@ -149,30 +148,28 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Item Class / MessageFilter
 
         // ******************************** Cursor Hide - Fields
 
         #region Cursor Hide - Fields
 
-        private const int                   CH_DEFAULT_HIDE_DELAY_SEC = 3;
+        private const int CH_DEFAULT_HIDE_DELAY_SEC = 3;
 
-        internal static Timer               ch_Timer;
-        private static bool                 ch_Busy;
-        internal static int                 ch_Delay = CH_DEFAULT_HIDE_DELAY_SEC; // default hide delay seconds
-        private static DateTime             ch_Moved;
-        private static Point                ch_OldPosition;
-        private static bool                 ch_Active;
-        internal static bool                ch_Disabled;
-        private static int                  ch_DisabledCount;
-        internal static bool                ch_Hidden;
-        private static CH_MessageFilter     ch_MessageFilter;
-        private static List<CH_Item>        ch_Items;
-        private static bool                 ch_ModalThread;
+        internal static Timer ch_Timer;
+        private static bool ch_Busy;
+        internal static int ch_Delay = CH_DEFAULT_HIDE_DELAY_SEC; // default hide delay seconds
+        private static DateTime ch_Moved;
+        private static Point ch_OldPosition;
+        private static bool ch_Active;
+        internal static bool ch_Disabled;
+        private static int ch_DisabledCount;
+        internal static bool ch_Hidden;
+        private static CH_MessageFilter ch_MessageFilter;
+        private static List<CH_Item> ch_Items;
+        private static bool ch_ModalThread;
 
-        #endregion
-
+        #endregion Cursor Hide - Fields
 
         // ******************************** Cursor Hide - Main
 
@@ -190,8 +187,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Main
 
         // ******************************** Cursor Hide - Add / Remove / Has Items / Form Closed Handler
 
@@ -328,8 +324,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Add / Remove / Has Items / Form Closed Handler
 
         // ******************************** Cursor Hide - Show Cursor / Hide Cursor (Forced)
 
@@ -357,8 +352,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Show Cursor / Hide Cursor (Forced)
 
         // ******************************** Cursor Hide - Start / Stop / Disable / Modal Thread
 
@@ -471,8 +465,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Start / Stop / Disable / Modal Thread
 
         // ******************************** Cursor Hide - Timer Tick
 
@@ -507,8 +500,6 @@ namespace PlexDL.Player
             ch_Busy = false;
         }
 
-        #endregion
-
+        #endregion Cursor Hide - Timer Tick
     }
 }
-

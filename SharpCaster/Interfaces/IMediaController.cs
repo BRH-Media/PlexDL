@@ -2,7 +2,7 @@
 
 namespace SharpCaster.Interfaces
 {
-    public interface  IMediaController : IController
+    public interface IMediaController : IController
     {
         /// <summary>
         /// Start playing

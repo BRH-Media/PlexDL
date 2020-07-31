@@ -1,10 +1,9 @@
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
 namespace SharpCaster.Models.ChromecastRequests
 {
     [DataContract]
-    public class WebRequest : RequestWithId 
+    public class WebRequest : RequestWithId
     {
         public WebRequest(string appId, string strUrl, string type) : base(type)
         {

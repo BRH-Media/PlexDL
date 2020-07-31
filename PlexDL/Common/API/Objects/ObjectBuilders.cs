@@ -1,9 +1,9 @@
 ﻿using PlexDL.Common.API.Metadata.Handlers;
+using PlexDL.Common.API.Metadata.Handlers.Parsers;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
-using PlexDL.Common.API.Metadata.Handlers.Parsers;
 using UIHelpers;
 
 namespace PlexDL.Common.API.Objects

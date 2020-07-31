@@ -7,14 +7,18 @@ namespace PlexDL.Player
     internal interface IMMNotificationClient
     {
         [PreserveSig]
-        void OnDeviceStateChanged([MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrDeviceId, [In] DeviceState dwNewState);
+        void OnDeviceStateChanged([MarshalAs(UnmanagedType.LPWStr)][In] string pwstrDeviceId, [In] DeviceState dwNewState);
+
         [PreserveSig]
-        void OnDeviceAdded([MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrDeviceId);
+        void OnDeviceAdded([MarshalAs(UnmanagedType.LPWStr)][In] string pwstrDeviceId);
+
         [PreserveSig]
-        void OnDeviceRemoved([MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrDeviceId);
+        void OnDeviceRemoved([MarshalAs(UnmanagedType.LPWStr)][In] string pwstrDeviceId);
+
         [PreserveSig]
-        void OnDefaultDeviceChanged([ComAliasName("MMDevAPI.Interop.EDataFlow")] [In] EDataFlow flow, [ComAliasName("MMDevAPI.Interop.ERole")] [In] ERole role, [MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrDefaultDeviceId);
+        void OnDefaultDeviceChanged([ComAliasName("MMDevAPI.Interop.EDataFlow")][In] EDataFlow flow, [ComAliasName("MMDevAPI.Interop.ERole")][In] ERole role, [MarshalAs(UnmanagedType.LPWStr)][In] string pwstrDefaultDeviceId);
+
         [PreserveSig]
-        void OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrDeviceId, [In] PropertyKey key);
+        void OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)][In] string pwstrDeviceId, [In] PropertyKey key);
     }
 }

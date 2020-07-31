@@ -65,49 +65,15 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.Protobuf, Version=3.12.3.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.12.3\lib\net45\Google.Protobuf.dll</HintPath>
-    </Reference>
     <Reference Include="libbrhscgui, Version=1.0.7261.35271, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RestSharp, Version=106.11.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.11.4\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Rssdp, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rssdp.4.0.2\lib\net45\Rssdp.dll</HintPath>
-    </Reference>
-    <Reference Include="Sockets.Plugin, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sharpcaster.SocketsForPCL.2.0.4\lib\net45\Sockets.Plugin.dll</HintPath>
-    </Reference>
-    <Reference Include="Sockets.Plugin.Abstractions, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sharpcaster.SocketsForPCL.2.0.4\lib\net45\Sockets.Plugin.Abstractions.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -158,11 +124,7 @@
     <Compile Include="Common\CastAPI\PlexMediaData.cs" />
     <Compile Include="Common\CastAPI\QueueResult.cs" />
     <Compile Include="Common\CastAPI\TestClasses.cs" />
-    <Compile Include="Common\DataHelpers.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
-    <Compile Include="Common\Enums\StringProtectionMode.cs" />
-    <Compile Include="Common\Enums\ContentType.cs" />
-    <Compile Include="Common\Enums\DevStatus.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\BuildState.cs" />
     <Compile Include="Common\Globals\Providers\TableProvider.cs" />
@@ -175,13 +137,10 @@
     <Compile Include="Common\ParseHelpers.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
-    <Compile Include="Common\Enums\SearchRule.cs" />
     <Compile Include="Common\SearchFramework\Search.cs" />
     <Compile Include="Common\SearchFramework\SearchData.cs" />
     <Compile Include="Common\SearchFramework\SearchResult.cs" />
     <Compile Include="Common\SearchFramework\Workers.cs" />
-    <Compile Include="Common\Security\Entropy.cs" />
-    <Compile Include="Common\Security\ProtectedString.cs" />
     <Compile Include="Common\StringVariable.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
     <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
@@ -426,7 +385,9 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\Security\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -459,6 +420,10 @@
     <ProjectReference Include="..\PlexDL.Common.Components\PlexDL.Common.Components.csproj">
       <Project>{3c18fc31-d361-42fb-ae18-42faacd4e419}</Project>
       <Name>PlexDL.Common.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Enums\PlexDL.Common.Enums.csproj">
+      <Project>{2c0b4243-5d9e-454a-9a7b-dcac2787b13e}</Project>
+      <Name>PlexDL.Common.Enums</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
       <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>

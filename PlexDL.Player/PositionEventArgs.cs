@@ -19,7 +19,7 @@ namespace PlexDL.Player
         internal long _fromStart;
         internal long _toStop;
 
-        #endregion
+        #endregion Fields (PositionEventArgs)
 
         /// <summary>
         /// Gets the playback position of the playing media, measured from the (natural) beginning of the media. Values in ticks (for example, use TimeSpan.FromTicks).

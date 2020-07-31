@@ -18,7 +18,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Playlist Class)
 
         internal Playlist(Player player)
         {

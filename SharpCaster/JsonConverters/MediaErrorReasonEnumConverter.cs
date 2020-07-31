@@ -1,6 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.Models.Enums;
+using System;
 
 namespace SharpCaster.JsonConverters
 {

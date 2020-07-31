@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using Extensions.Api.CastChannel;
+using System;
 using System.Linq;
-using Extensions.Api.CastChannel;
 
 namespace SharpCaster.Extensions
 {
@@ -29,5 +28,3 @@ namespace SharpCaster.Extensions
         }
     }
 }
-
-

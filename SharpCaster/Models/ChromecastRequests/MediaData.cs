@@ -1,8 +1,8 @@
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using SharpCaster.JsonConverters;
 using SharpCaster.Models.MediaStatus;
 using SharpCaster.Models.Metadata;
+using System.Runtime.Serialization;
 
 namespace SharpCaster.Models.ChromecastRequests
 {

@@ -191,7 +191,7 @@ namespace PlexDL.Player
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
         );
 
-        #endregion
+        #endregion IMFAttributes methods
 
         [PreserveSig]
         HResult GetSampleFlags(

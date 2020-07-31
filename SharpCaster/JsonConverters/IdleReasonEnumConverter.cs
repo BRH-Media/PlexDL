@@ -14,17 +14,22 @@ namespace SharpCaster.JsonConverters
                 case IdleReason.CANCELLED:
                     writer.WriteValue("CANCELLED");
                     break;
+
                 case IdleReason.ERROR:
                     writer.WriteValue("CANCELLED");
                     break;
+
                 case IdleReason.FINISHED:
                     writer.WriteValue("FINISHED");
                     break;
+
                 case IdleReason.INTERRUPTED:
                     writer.WriteValue("INTERRUPTED");
                     break;
+
                 case IdleReason.NONE:
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -32,7 +37,7 @@ namespace SharpCaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var enumString = (string) reader.Value;
+            var enumString = (string)reader.Value;
             IdleReason idleReason = IdleReason.NONE;
 
             Enum.TryParse<IdleReason>(enumString, out idleReason);
@@ -42,7 +47,7 @@ namespace SharpCaster.JsonConverters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof (string);
+            return objectType == typeof(string);
         }
     }
 }

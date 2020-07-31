@@ -51,7 +51,7 @@ namespace PlexDL.Player
             public static MyProps GetTop(int iIndex)
             {
                 // If the member hasn't been initialized, do it now.  And no, we can't
-                // do this in the PVMarshaler constructor, since the constructor may 
+                // do this in the PVMarshaler constructor, since the constructor may
                 // have been called on a different thread.
                 if (m_CurrentProps == null)
                 {
@@ -118,101 +118,100 @@ namespace PlexDL.Player
 
         public IntPtr MarshalManagedToNative(object managedObj)
         {
-
             MyProps t = MyProps.GetTop(m_Index);
 
             switch (t.GetStage())
             {
                 case 0:
-                {
-                    // We are just starting a "Managed calling unmanaged"
-                    // call.
-
-                    // Cast the object back to a PropVariant and save it
-                    // for use in MarshalNativeToManaged.
-                    t.m_obj = managedObj as PropVariant;
-
-                    // This could happen if (somehow) managedObj isn't a
-                    // PropVariant.  During normal marshaling, the custom
-                    // marshaler doesn't get called if the parameter is
-                    // null.
-
-                    // Release any memory currently allocated in the
-                    // PropVariant.  In theory, the (managed) caller
-                    // should have done this before making the call that
-                    // got us here, but .Net programmers don't generally
-                    // think that way.  To avoid any leaks, do it for them.
-                    t.m_obj.Clear();
-
-                    // Create an appropriately sized buffer (varies from
-                    // x86 to x64).
-                    int iSize = GetNativeDataSize();
-                    t.m_ptr = t.Alloc(iSize);
-
-                    // Copy in the (empty) PropVariant.  In theory we could
-                    // just zero out the first 2 bytes (the VariantType),
-                    // but since PropVariantClear wipes the whole struct,
-                    // that's what we do here to be safe.
-                    Marshal.StructureToPtr(t.m_obj, t.m_ptr, false);
-
-                    break;
-                }
-                case 1:
-                {
-                    if (!System.Object.ReferenceEquals(t.m_obj, managedObj))
                     {
-                        // If we get here, we have already received a call
-                        // to MarshalNativeToManaged where we created a
-                        // PropVariant and stored it into t.m_obj.  But
-                        // the object we just got passed here isn't the
-                        // same one.  Therefore instead of being the second
-                        // half of an "Unmanaged calling managed" (as
-                        // m_InProcsss led us to believe), this is really
-                        // the first half of a nested "Managed calling
-                        // unmanaged" (see Recursion in the comments at the
-                        // top of this class).  Add another layer.
-                        MyProps.AddLayer(m_Index);
+                        // We are just starting a "Managed calling unmanaged"
+                        // call.
+
+                        // Cast the object back to a PropVariant and save it
+                        // for use in MarshalNativeToManaged.
+                        t.m_obj = managedObj as PropVariant;
+
+                        // This could happen if (somehow) managedObj isn't a
+                        // PropVariant.  During normal marshaling, the custom
+                        // marshaler doesn't get called if the parameter is
+                        // null.
+
+                        // Release any memory currently allocated in the
+                        // PropVariant.  In theory, the (managed) caller
+                        // should have done this before making the call that
+                        // got us here, but .Net programmers don't generally
+                        // think that way.  To avoid any leaks, do it for them.
+                        t.m_obj.Clear();
+
+                        // Create an appropriately sized buffer (varies from
+                        // x86 to x64).
+                        int iSize = GetNativeDataSize();
+                        t.m_ptr = t.Alloc(iSize);
+
+                        // Copy in the (empty) PropVariant.  In theory we could
+                        // just zero out the first 2 bytes (the VariantType),
+                        // but since PropVariantClear wipes the whole struct,
+                        // that's what we do here to be safe.
+                        Marshal.StructureToPtr(t.m_obj, t.m_ptr, false);
+
+                        break;
+                    }
+                case 1:
+                    {
+                        if (!System.Object.ReferenceEquals(t.m_obj, managedObj))
+                        {
+                            // If we get here, we have already received a call
+                            // to MarshalNativeToManaged where we created a
+                            // PropVariant and stored it into t.m_obj.  But
+                            // the object we just got passed here isn't the
+                            // same one.  Therefore instead of being the second
+                            // half of an "Unmanaged calling managed" (as
+                            // m_InProcsss led us to believe), this is really
+                            // the first half of a nested "Managed calling
+                            // unmanaged" (see Recursion in the comments at the
+                            // top of this class).  Add another layer.
+                            MyProps.AddLayer(m_Index);
+
+                            // Try this call again now that we have fixed
+                            // m_CurrentProps.
+                            return MarshalManagedToNative(managedObj);
+                        }
+
+                        // This is (probably) the second half of "Unmanaged
+                        // calling managed."  However, it could be the first
+                        // half of a nested usage of PropVariants.  If it is a
+                        // nested, we'll eventually figure that out in case 2.
+
+                        // Copy the data from the managed object into the
+                        // native pointer that we received in
+                        // MarshalNativeToManaged.
+                        Marshal.StructureToPtr(t.m_obj, t.m_ptr, false);
+
+                        break;
+                    }
+                case 2:
+                    {
+                        // Apparently this is 'part 3' of a 2 part call.  Which
+                        // means we are doing a nested call.  Normally we would
+                        // catch the fact that this is a nested call with the
+                        // ReferenceEquals check above.  However, if the same
+                        // PropVariant instance is being passed thru again, we
+                        // end up here.
+                        // So, add a layer.
+                        MyProps.SplitLayer(m_Index);
 
                         // Try this call again now that we have fixed
                         // m_CurrentProps.
                         return MarshalManagedToNative(managedObj);
                     }
-
-                    // This is (probably) the second half of "Unmanaged
-                    // calling managed."  However, it could be the first
-                    // half of a nested usage of PropVariants.  If it is a
-                    // nested, we'll eventually figure that out in case 2.
-
-                    // Copy the data from the managed object into the
-                    // native pointer that we received in
-                    // MarshalNativeToManaged.
-                    Marshal.StructureToPtr(t.m_obj, t.m_ptr, false);
-
-                    break;
-                }
-                case 2:
-                {
-                    // Apparently this is 'part 3' of a 2 part call.  Which
-                    // means we are doing a nested call.  Normally we would
-                    // catch the fact that this is a nested call with the
-                    // ReferenceEquals check above.  However, if the same
-                    // PropVariant instance is being passed thru again, we
-                    // end up here.
-                    // So, add a layer.
-                    MyProps.SplitLayer(m_Index);
-
-                    // Try this call again now that we have fixed
-                    // m_CurrentProps.
-                    return MarshalManagedToNative(managedObj);
-                }
                 default:
-                {
-                    Environment.FailFast("Something horrible has " +
-                                         "happened, probaby due to " +
-                                         "marshaling of nested " +
-                                         "PropVariant calls.");
-                    break;
-                }
+                    {
+                        Environment.FailFast("Something horrible has " +
+                                             "happened, probaby due to " +
+                                             "marshaling of nested " +
+                                             "PropVariant calls.");
+                        break;
+                    }
             }
             t.StageComplete();
 
@@ -226,82 +225,82 @@ namespace PlexDL.Player
             switch (t.GetStage())
             {
                 case 0:
-                {
-                    // We are just starting a "Unmanaged calling managed"
-                    // call.
-
-                    // Caller should have cleared variant before calling
-                    // us.  Might be acceptable for types *other* than
-                    // IUnknown, String, Blob and StringArray, but it is
-                    // still bad design.  We're checking for it, but we
-                    // work around it.
-
-                    // Read the 16bit VariantType.
-
-                    // Create an empty managed PropVariant without using
-                    // pNativeData.
-                    t.m_obj = new PropVariant();
-
-                    // Save the pointer for use in MarshalManagedToNative.
-                    t.m_ptr = pNativeData;
-
-                    break;
-                }
-                case 1:
-                {
-                    if (t.m_ptr != pNativeData)
                     {
-                        // If we get here, we have already received a call
-                        // to MarshalManagedToNative where we created an
-                        // IntPtr and stored it into t.m_ptr.  But the
-                        // value we just got passed here isn't the same
-                        // one.  Therefore instead of being the second half
-                        // of a "Managed calling unmanaged" (as m_InProcsss
-                        // led us to believe) this is really the first half
-                        // of a nested "Unmanaged calling managed" (see
-                        // Recursion in the comments at the top of this
-                        // class).  Add another layer.
-                        MyProps.AddLayer(m_Index);
+                        // We are just starting a "Unmanaged calling managed"
+                        // call.
+
+                        // Caller should have cleared variant before calling
+                        // us.  Might be acceptable for types *other* than
+                        // IUnknown, String, Blob and StringArray, but it is
+                        // still bad design.  We're checking for it, but we
+                        // work around it.
+
+                        // Read the 16bit VariantType.
+
+                        // Create an empty managed PropVariant without using
+                        // pNativeData.
+                        t.m_obj = new PropVariant();
+
+                        // Save the pointer for use in MarshalManagedToNative.
+                        t.m_ptr = pNativeData;
+
+                        break;
+                    }
+                case 1:
+                    {
+                        if (t.m_ptr != pNativeData)
+                        {
+                            // If we get here, we have already received a call
+                            // to MarshalManagedToNative where we created an
+                            // IntPtr and stored it into t.m_ptr.  But the
+                            // value we just got passed here isn't the same
+                            // one.  Therefore instead of being the second half
+                            // of a "Managed calling unmanaged" (as m_InProcsss
+                            // led us to believe) this is really the first half
+                            // of a nested "Unmanaged calling managed" (see
+                            // Recursion in the comments at the top of this
+                            // class).  Add another layer.
+                            MyProps.AddLayer(m_Index);
+
+                            // Try this call again now that we have fixed
+                            // m_CurrentProps.
+                            return MarshalNativeToManaged(pNativeData);
+                        }
+
+                        // This is (probably) the second half of "Managed
+                        // calling unmanaged."  However, it could be the first
+                        // half of a nested usage of PropVariants.  If it is a
+                        // nested, we'll eventually figure that out in case 2.
+
+                        // Copy the data from the native pointer into the
+                        // managed object that we received in
+                        // MarshalManagedToNative.
+                        Marshal.PtrToStructure(pNativeData, t.m_obj);
+
+                        break;
+                    }
+                case 2:
+                    {
+                        // Apparently this is 'part 3' of a 2 part call.  Which
+                        // means we are doing a nested call.  Normally we would
+                        // catch the fact that this is a nested call with the
+                        // (t.m_ptr != pNativeData) check above.  However, if
+                        // the same PropVariant instance is being passed thru
+                        // again, we end up here.  So, add a layer.
+                        MyProps.SplitLayer(m_Index);
 
                         // Try this call again now that we have fixed
                         // m_CurrentProps.
                         return MarshalNativeToManaged(pNativeData);
                     }
-
-                    // This is (probably) the second half of "Managed
-                    // calling unmanaged."  However, it could be the first
-                    // half of a nested usage of PropVariants.  If it is a
-                    // nested, we'll eventually figure that out in case 2.
-
-                    // Copy the data from the native pointer into the
-                    // managed object that we received in
-                    // MarshalManagedToNative.
-                    Marshal.PtrToStructure(pNativeData, t.m_obj);
-
-                    break;
-                }
-                case 2:
-                {
-                    // Apparently this is 'part 3' of a 2 part call.  Which
-                    // means we are doing a nested call.  Normally we would
-                    // catch the fact that this is a nested call with the
-                    // (t.m_ptr != pNativeData) check above.  However, if
-                    // the same PropVariant instance is being passed thru
-                    // again, we end up here.  So, add a layer.
-                    MyProps.SplitLayer(m_Index);
-
-                    // Try this call again now that we have fixed
-                    // m_CurrentProps.
-                    return MarshalNativeToManaged(pNativeData);
-                }
                 default:
-                {
-                    Environment.FailFast("Something horrible has " +
-                                         "happened, probaby due to " +
-                                         "marshaling of nested " +
-                                         "PropVariant calls.");
-                    break;
-                }
+                    {
+                        Environment.FailFast("Something horrible has " +
+                                             "happened, probaby due to " +
+                                             "marshaling of nested " +
+                                             "PropVariant calls.");
+                        break;
+                    }
             }
             t.StageComplete();
 
@@ -350,6 +349,7 @@ namespace PlexDL.Player
         // The (optional) cookie is the value specified in
         // MarshalCookie="asdf", or "" if none is specified.
 #pragma warning disable IDE0051 // Remove unused private members
+
         private static ICustomMarshaler GetInstance(string cookie)
 #pragma warning restore IDE0051 // Remove unused private members
         {

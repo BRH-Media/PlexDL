@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using SharpCaster.Models;
+﻿using SharpCaster.Models;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Channels
 {

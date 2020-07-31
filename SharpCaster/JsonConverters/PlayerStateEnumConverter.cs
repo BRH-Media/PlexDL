@@ -1,6 +1,6 @@
-using System;
 using Newtonsoft.Json;
 using SharpCaster.Models.MediaStatus;
+using System;
 
 namespace SharpCaster.JsonConverters
 {
@@ -14,15 +14,19 @@ namespace SharpCaster.JsonConverters
                 case PlayerState.Buffering:
                     writer.WriteValue("BUFFERING");
                     break;
+
                 case PlayerState.Idle:
                     writer.WriteValue("IDLE");
                     break;
+
                 case PlayerState.Paused:
                     writer.WriteValue("PAUSED");
                     break;
+
                 case PlayerState.Playing:
                     writer.WriteValue("PLAYING");
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -30,7 +34,7 @@ namespace SharpCaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var enumString = (string) reader.Value;
+            var enumString = (string)reader.Value;
             PlayerState? playerState = null;
 
             switch (enumString)
@@ -38,12 +42,15 @@ namespace SharpCaster.JsonConverters
                 case "BUFFERING":
                     playerState = PlayerState.Buffering;
                     break;
+
                 case "IDLE":
                     playerState = PlayerState.Idle;
                     break;
+
                 case "PAUSED":
                     playerState = PlayerState.Paused;
                     break;
+
                 case "PLAYING":
                     playerState = PlayerState.Playing;
                     break;
@@ -53,7 +60,7 @@ namespace SharpCaster.JsonConverters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof (string);
+            return objectType == typeof(string);
         }
     }
 }

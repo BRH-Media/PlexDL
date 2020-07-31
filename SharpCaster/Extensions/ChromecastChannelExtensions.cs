@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SharpCaster.Channels;
+﻿using SharpCaster.Channels;
+using System.Collections.Generic;
 
 namespace SharpCaster.Extensions
 {
@@ -18,7 +18,7 @@ namespace SharpCaster.Extensions
 
         public static void MakeSureChannelExist(this ChromeCastClient client, IChromecastChannel channel)
         {
-            client.MakeSureChannelExist(new List<IChromecastChannel> {channel});
+            client.MakeSureChannelExist(new List<IChromecastChannel> { channel });
         }
     }
 }

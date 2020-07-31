@@ -8,6 +8,7 @@ namespace PlexDL.Player
     {
         [PreserveSig]
         void GetCount(out uint pcDevices);
+
         [PreserveSig]
         void Item([In] uint nDevice, [MarshalAs(UnmanagedType.Interface)] out IMMDevice ppDevice);
     }

@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.Models;
 using SharpCaster.Models.CustomTypes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SharpCaster.Channels
 {
     public class YouTubeChannel : ChromecastChannel
     {
         public static string Urn = "urn:x-cast:com.google.youtube.mdx";
+
         public event EventHandler<string> ScreenIdChanged;
+
         public YouTubeChannel(ChromeCastClient client) : base(client, Urn)
         {
             MessageReceived += YouTubeChannel_MessageReceived;

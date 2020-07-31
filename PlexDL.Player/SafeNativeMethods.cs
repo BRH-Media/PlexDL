@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -66,7 +66,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
@@ -77,12 +77,10 @@ using System.Windows.Forms;
 #pragma warning disable IDE0017 // Simplify object initialization
 #pragma warning disable IDE0041 // Use 'is null' check
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
-
     // ******************************** Native Methods - DLL Import
 
     #region Native Methods
@@ -124,7 +122,7 @@ namespace PlexDL.Player
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
 
-        #endregion
+        #endregion Win32 Windows
 
         // ******************************** BitBlt (VideoCopy)
 
@@ -201,13 +199,13 @@ namespace PlexDL.Player
         [StructLayout(LayoutKind.Sequential)]
         internal struct BLENDFUNCTION
         {
-            byte BlendOp;
-            byte BlendFlags;
+            private byte BlendOp;
+            private byte BlendFlags;
             internal byte SourceConstantAlpha;
             internal byte AlphaFormat;
         }
 
-        #endregion
+        #endregion BitBlt
 
         // ******************************** Center System Dialogs
 
@@ -266,7 +264,7 @@ namespace PlexDL.Player
             return result;
         }
 
-        #endregion
+        #endregion Center System Dialogs
 
         // ******************************** Change System Sleep Mode
 
@@ -299,8 +297,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Change System Sleep Mode
 
         // ******************************** Rounded Rectangle
 
@@ -320,11 +317,10 @@ namespace PlexDL.Player
         [DllImport("gdi32.dll")]
         internal static extern bool DeleteObject(IntPtr hObject);
 
-        #endregion
+        #endregion Rounded Rectangle (used with InfoLabel + Preset Display Clip)
     }
 
-    #endregion
-
+    #endregion Native Methods
 
     // ******************************** Taskbar Indicator - Com Import
 
@@ -333,8 +329,7 @@ namespace PlexDL.Player
     // TaskbarProgress class based on code by WhoIsRich at:
     // stackoverflow.com/questions/1295890/windows-7-progress-bar-in-taskbar-in-c
 
-    #endregion
-
+    #endregion Taskbar Indicator
 
     // ******************************** Media Foundation - Com Import
 
@@ -397,7 +392,7 @@ namespace PlexDL.Player
     //    Unknown = 0
     //}
 
-    #endregion
+    #endregion Enums
 
     #region Structs
 
@@ -412,7 +407,7 @@ namespace PlexDL.Player
     //    public int dwClockJitter;
     //}
 
-    #endregion
+    #endregion Structs
 
     //#region Abstract Classes
 
@@ -455,9 +450,7 @@ namespace PlexDL.Player
 
     //#endregion
 
-    #region Static Classes
 
-    #endregion
 
     #region Classes
 
@@ -611,7 +604,7 @@ namespace PlexDL.Player
     //}
 
     // Class to handle BITMAPINFO.  Only used by MFCalculateBitmapImageSize &
-    // MFCreateVideoMediaTypeFromBitMapInfoHeader (as [In]) and 
+    // MFCreateVideoMediaTypeFromBitMapInfoHeader (as [In]) and
     // IMFVideoDisplayControl::GetCurrentImage ([In, Out]).  Since
     // IMFVideoDisplayControl can be implemented on a managed class, we must
     // support nesting.
@@ -851,7 +844,6 @@ namespace PlexDL.Player
     //    return new BMMarshaler();
     //}
 
-
     // PVMarshaler - Class to marshal PropVariants on parameters that
     // *output* PropVariants.
 
@@ -861,8 +853,8 @@ namespace PlexDL.Player
     // the order they are called depends on exactly what's happening,
     // m_InProcess lets us know which way things are being called.
     //
-    // Managed calling unmanaged: 
-    // In this case, MarshalManagedToNative is called first with m_InProcess 
+    // Managed calling unmanaged:
+    // In this case, MarshalManagedToNative is called first with m_InProcess
     // == 0.  When MarshalManagedToNative is called, we store the managed
     // object (so we know where to copy it back to), then we clear the variant,
     // allocate some COM memory and pass a pointer to the COM memory to the
@@ -953,7 +945,7 @@ namespace PlexDL.Player
     //    public int nRetries;
     //}
 
-    #endregion
+    #endregion Classes
 
     #region Interfaces
 
@@ -1157,7 +1149,6 @@ namespace PlexDL.Player
     // This is the ASync version of IMFSourceReader.  The only difference is the ReadSample method, which must allow
     // the final 4 params to be null.
 
-
     // Authentication - not yet
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
@@ -1223,15 +1214,9 @@ namespace PlexDL.Player
     //        );
     //}
 
-    #endregion
+    #endregion Interfaces
 
-    #endregion
-
+    #endregion Media Foundation
 
     // ******************************** Windows Core Audio API - Com Import
-
-    #region Windows Core Audio API
-
-    #endregion
-
 }

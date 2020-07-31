@@ -11,22 +11,24 @@ namespace PlexDL.Player
         #region Fields (Webcam Property Class)
 
         internal string _name;
-        internal bool   _supported;
-        internal int    _min;
-        internal int    _max;
-        internal int    _step;
-        internal int    _default;
-        internal int    _value;
-        internal bool   _autoSupport;
-        internal bool   _auto;
+        internal bool _supported;
+        internal int _min;
+        internal int _max;
+        internal int _step;
+        internal int _default;
+        internal int _value;
+        internal bool _autoSupport;
+        internal bool _auto;
 
-        internal bool                   _isProcAmp;
-        internal CameraControlProperty  _controlProp;
-        internal VideoProcAmpProperty   _procAmpProp;
+        internal bool _isProcAmp;
+        internal CameraControlProperty _controlProp;
+        internal VideoProcAmpProperty _procAmpProp;
 
-        #endregion
+        #endregion Fields (Webcam Property Class)
 
-        internal WebcamProperty() { }
+        internal WebcamProperty()
+        {
+        }
 
         /// <summary>
         /// The name of the property.
@@ -91,6 +93,5 @@ namespace PlexDL.Player
             get { return _auto; }
             set { _auto = value; }
         }
-
     }
 }

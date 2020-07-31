@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Audio Class)
 
         internal Audio(Player player)
         {
@@ -238,15 +238,15 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError    = Player.NO_ERROR;
-                bool setDevice      = false;
+                _base._lastError = Player.NO_ERROR;
+                bool setDevice = false;
 
                 if (value == null)
                 {
                     if (_base._audioDevice != null)
                     {
-                        _base._audioDevice  = null;
-                        setDevice           = true;
+                        _base._audioDevice = null;
+                        setDevice = true;
                     }
                 }
                 else if (_base._audioDevice == null || value._id != _base._audioDevice._id)
@@ -256,8 +256,8 @@ namespace PlexDL.Player
                     {
                         if (value._id == devices[i]._id)
                         {
-                            _base._audioDevice  = devices[i];
-                            setDevice           = true;
+                            _base._audioDevice = devices[i];
+                            setDevice = true;
                             break;
                         }
                     }
@@ -324,8 +324,8 @@ namespace PlexDL.Player
         public AudioDevice[] GetDevices()
         {
             IMMDeviceCollection deviceCollection;
-            IMMDevice           device;
-            AudioDevice[]       audioDevices = null;
+            IMMDevice device;
+            AudioDevice[] audioDevices = null;
 
             _base._lastError = HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE;
 
@@ -362,7 +362,7 @@ namespace PlexDL.Player
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
-            IMMDevice   device;
+            IMMDevice device;
             AudioDevice audioDevice = null;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();

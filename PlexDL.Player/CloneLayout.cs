@@ -9,10 +9,12 @@
         /// The video image is stretched across the display of the clone.
         /// </summary>
         Stretch,
+
         /// <summary>
         /// The video image is maximally enlarged within the display of the clone while maintaining the aspect ratio.
         /// </summary>
         Zoom,
+
         /// <summary>
         /// The video image completely fills the display of the clone while maintaining the aspect ratio, but possibly with horizontal or vertical image cropping.
         /// </summary>

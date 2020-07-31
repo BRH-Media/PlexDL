@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using SharpCaster.Models;
-using System.Linq;
 using SharpCaster.Models.ChromecastRequests;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SharpCaster.Channels
 {
@@ -19,8 +19,9 @@ namespace SharpCaster.Channels
             var req = new WebRequest(Client.CurrentApplicationSessionId, url, type);
             var reqJson = req.ToJson();
             await Write(MessageFactory.Load(Client.CurrentApplicationTransportId, reqJson));
-        }     
+        }
     }
+
     public static class WebChannelExtension
     {
         public static WebChannel GetWebChannel(this IEnumerable<IChromecastChannel> channels)

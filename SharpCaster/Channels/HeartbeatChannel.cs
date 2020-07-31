@@ -1,16 +1,15 @@
-﻿using System;
+﻿using SharpCaster.Models;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SharpCaster.Models;
 
 namespace SharpCaster.Channels
 {
     public class HeartbeatChannel : ChromecastChannel
     {
-        public HeartbeatChannel(ChromeCastClient client) : 
+        public HeartbeatChannel(ChromeCastClient client) :
             base(client, "urn:x-cast:com.google.cast.tp.heartbeat")
         {
-            
             MessageReceived += HeartbeatChannel_MessageReceived;
         }
 

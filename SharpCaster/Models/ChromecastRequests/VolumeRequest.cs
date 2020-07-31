@@ -7,8 +7,9 @@ namespace SharpCaster.Models.ChromecastRequests
     {
         public VolumeRequest(double level, int? requestId = null) : base("SET_VOLUME", requestId)
         {
-            VolumeDataObject = new VolumeDataObject {Level = level};
+            VolumeDataObject = new VolumeDataObject { Level = level };
         }
+
         public VolumeRequest(bool muted, int? requestId = null) : base("SET_VOLUME", requestId)
         {
             VolumeDataObject = new VolumeDataObject { Muted = muted };
@@ -16,6 +17,5 @@ namespace SharpCaster.Models.ChromecastRequests
 
         [DataMember(Name = "volume")]
         public VolumeDataObject VolumeDataObject { get; set; }
-
     }
 }

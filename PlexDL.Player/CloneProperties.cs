@@ -19,7 +19,7 @@ namespace PlexDL.Player
         internal bool _dragEnabled = false;
         internal Cursor _dragCursor = Cursors.SizeAll;
 
-        #endregion
+        #endregion Fields (Clone Properties Class)
 
         /// <summary>
         /// Gets or sets the video quality of the display clone (default: CloneQuality.Auto).

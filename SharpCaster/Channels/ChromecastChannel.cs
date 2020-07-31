@@ -1,15 +1,14 @@
+using Extensions.Api.CastChannel;
+using SharpCaster.Models;
 using System;
 using System.Threading.Tasks;
-using Extensions.Api.CastChannel;
-using Google.Protobuf;
-using SharpCaster.Models;
 
 namespace SharpCaster.Channels
 {
     public abstract class ChromecastChannel : IChromecastChannel
     {
         protected ChromeCastClient Client { get; }
-        public string Namespace { get;}
+        public string Namespace { get; }
 
         public event EventHandler<ChromecastSSLClientDataReceivedArgs> MessageReceived;
 
@@ -18,7 +17,7 @@ namespace SharpCaster.Channels
             Namespace = ns;
             Client = client;
         }
-        
+
         public async Task Write(CastMessage message, bool includeNameSpace = true)
         {
             if (includeNameSpace)

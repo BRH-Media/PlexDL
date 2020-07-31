@@ -8,17 +8,23 @@ namespace PlexDL.Player
     {
         [PreserveSig]
         int NotImpl1();
+
         [PreserveSig]
         int NotImpl2();
+
         [PreserveSig]
-        int GetChannelCount([Out] [MarshalAs(UnmanagedType.U4)] out UInt32 channelCount);
+        int GetChannelCount([Out][MarshalAs(UnmanagedType.U4)] out UInt32 channelCount);
+
         [PreserveSig]
-        int SetMasterVolumeLevel([In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetMasterVolumeLevel([In][MarshalAs(UnmanagedType.R4)] float level, [In][MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+
         [PreserveSig]
-        int SetMasterVolumeLevelScalar([In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetMasterVolumeLevelScalar([In][MarshalAs(UnmanagedType.R4)] float level, [In][MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+
         [PreserveSig]
-        int GetMasterVolumeLevel([Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetMasterVolumeLevel([Out][MarshalAs(UnmanagedType.R4)] out float level);
+
         [PreserveSig]
-        int GetMasterVolumeLevelScalar([Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetMasterVolumeLevelScalar([Out][MarshalAs(UnmanagedType.R4)] out float level);
     }
 }

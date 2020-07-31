@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.JsonConverters;
 using SharpCaster.Models.Enums;
 using SharpCaster.Models.MediaStatus;
+using System.Collections.Generic;
 
 namespace SharpCaster.Models.Metadata
 {
@@ -13,6 +13,7 @@ namespace SharpCaster.Models.Metadata
         {
             metadataType = MetadataTypeEnum.PHOTO;
         }
+
         public string artist { get; set; }
         public string creationDateTime { get; set; }
         public int height { get; set; }
@@ -20,8 +21,10 @@ namespace SharpCaster.Models.Metadata
         public int latitude { get; set; }
         public string location { get; set; }
         public int longitude { get; set; }
+
         [JsonConverter(typeof(MetadataTypeEnumConverter))]
         public MetadataTypeEnum metadataType { get; set; }
+
         public string title { get; set; }
         public int width { get; set; }
     }

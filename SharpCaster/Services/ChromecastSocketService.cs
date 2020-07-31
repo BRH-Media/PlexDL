@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SharpCaster.Channels;
+using SharpCaster.Interfaces;
+using Sockets.Plugin;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpCaster.Channels;
-using SharpCaster.Interfaces;
-using Sockets.Plugin;
 
 namespace SharpCaster.Services
 {
@@ -43,12 +43,13 @@ namespace SharpCaster.Services
             }, cancellationToken);
         }
 
-        #pragma warning disable 1998
+#pragma warning disable 1998
+
         public async Task Write(byte[] bytes, CancellationToken cancellationToken)
-        #pragma warning restore 1998
+#pragma warning restore 1998
         {
             if (_client == null) return;
-            
+
             lock (LockObject)
             {
                 if (cancellationToken.IsCancellationRequested) return;

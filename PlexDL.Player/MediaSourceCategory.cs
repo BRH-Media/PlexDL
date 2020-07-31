@@ -11,18 +11,22 @@
         /// Represents no category.
         /// </summary>
         None,
+
         /// <summary>
         /// Represents local media files (including byte arrays and images).
         /// </summary>
         LocalFile,
+
         /// <summary>
         /// Represents online (internet) media files (including file streams and live streams).
         /// </summary>
         OnlineFile,
+
         /// <summary>
         /// Represents local capture devices (including webcams and audio input devices).
         /// </summary>
         LocalCapture,
+
         /// <summary>
         /// Represents online (internet) capture devices.
         /// </summary>

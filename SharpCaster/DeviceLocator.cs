@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Rssdp;
+using Rssdp.Infrastructure;
+using SharpCaster.Annotations;
+using SharpCaster.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Rssdp;
-using Rssdp.Infrastructure;
-using SharpCaster.Annotations;
-using SharpCaster.Models;
 
 namespace SharpCaster
 {
@@ -36,7 +36,7 @@ namespace SharpCaster
                 var deviceType = "urn:dial-multiscreen-org:device:dial:1";
                 deviceLocator.NotificationFilter = deviceType;
                 var foundDevices = await deviceLocator.SearchAsync(deviceType, TimeSpan.FromMilliseconds(5000));
-                
+
                 foreach (var foundDevice in foundDevices)
                 {
                     var fullDevice = await foundDevice.GetDeviceInfo();
@@ -52,9 +52,6 @@ namespace SharpCaster
             }
             return DiscoveredDevices;
         }
-
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

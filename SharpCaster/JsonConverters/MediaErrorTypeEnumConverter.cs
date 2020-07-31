@@ -1,10 +1,10 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpCaster.Models.Enums;
+using System;
 
 namespace SharpCaster.JsonConverters
 {
-    public class MediaErrorTypeEnumConverter :JsonConverter
+    public class MediaErrorTypeEnumConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {

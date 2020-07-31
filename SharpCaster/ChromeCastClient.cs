@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Extensions.Api.CastChannel;
+using SharpCaster.Channels;
+using SharpCaster.Controllers;
+using SharpCaster.Extensions;
+using SharpCaster.Interfaces;
+using SharpCaster.Models;
+using SharpCaster.Models.ChromecastStatus;
+using SharpCaster.Models.MediaStatus;
+using SharpCaster.Services;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Extensions.Api.CastChannel;
-using SharpCaster.Channels;
-using SharpCaster.Controllers;
-using SharpCaster.Extensions;
-using SharpCaster.Models;
-using SharpCaster.Models.ChromecastStatus;
-using SharpCaster.Models.MediaStatus;
-using SharpCaster.Interfaces;
-using SharpCaster.Services;
 
 namespace SharpCaster
 {
@@ -98,7 +98,6 @@ namespace SharpCaster
 
         private ChromecastApplication _runningApplication;
 
-
         private Dictionary<string, IController> _controllerDictionaryBackingField { get; set; }
 
         private Dictionary<string, IController> GetControllerDictionary()
@@ -127,10 +126,15 @@ namespace SharpCaster
         public int CurrentMediaSessionId;
 
         public event EventHandler ConnectedChanged;
+
         public event EventHandler<ChromecastApplication> ApplicationStarted;
+
         public event EventHandler<MediaStatus> MediaStatusChanged;
+
         public event EventHandler<ChromecastStatus> ChromecastStatusChanged;
+
         public event EventHandler<Volume> VolumeChanged;
+
         public List<IChromecastChannel> Channels;
 
         private const string ChromecastPort = "8009";
@@ -149,7 +153,6 @@ namespace SharpCaster
             MediaChannel = new MediaChannel(this);
             Channels.Add(MediaChannel);
         }
-
 
         public async Task ConnectChromecast(Uri uri)
         {

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Google.Protobuf;
+﻿using Google.Protobuf;
 using Newtonsoft.Json;
 using SharpCaster.Extensions;
 
@@ -12,6 +11,7 @@ namespace Extensions.Api.CastChannel
             DestinationId = "receiver-0";
             SourceId = "sender-0";
         }
+
         public CastMessage(string destinationId, string sourceId)
         {
             OnConstruction();

@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using SharpCaster.JsonConverters;
+using System.Collections.Generic;
 
 namespace SharpCaster.Models.MediaStatus
 {

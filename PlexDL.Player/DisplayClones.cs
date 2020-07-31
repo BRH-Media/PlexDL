@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -64,10 +64,10 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
@@ -76,18 +76,11 @@ using System.Threading;
 // the library can be compiled with all versions of c#:
 #pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
-
     // ******************************** Display Clones - Enumerations
-
-    #region Display Clones - Enumerations
-
-    #endregion
-
 
     public partial class Player
     {
@@ -105,54 +98,54 @@ namespace PlexDL.Player
         // Display Clone data
         internal class Clone
         {
-            internal Control            Control;
-            internal CloneQuality       Quality;
-            internal CloneLayout        Layout;
-            internal CloneFlip          Flip;
-            internal bool               HasShape;
-            internal DisplayShape       Shape;
-            internal bool               HasVideoShape;
-            internal ShapeCallback      ShapeCallback;
-            internal bool               Drag;
-            internal Cursor             DragCursor;
-            internal bool               Refresh;
-            internal int                Errors;     // count errors because there can be 'no-true-error glitches' (?)
+            internal Control Control;
+            internal CloneQuality Quality;
+            internal CloneLayout Layout;
+            internal CloneFlip Flip;
+            internal bool HasShape;
+            internal DisplayShape Shape;
+            internal bool HasVideoShape;
+            internal ShapeCallback ShapeCallback;
+            internal bool Drag;
+            internal Cursor DragCursor;
+            internal bool Refresh;
+            internal int Errors;     // count errors because there can be 'no-true-error glitches' (?)
         }
 
-        private const int               DC_DEFAULT_FRAMERATE        = 30;
-        private const bool              DC_DEFAULT_OVERLAY_SHOW     = true;
-        private const int               DC_BUSY_TIME_OUT            = 1000;
+        private const int DC_DEFAULT_FRAMERATE = 30;
+        private const bool DC_DEFAULT_OVERLAY_SHOW = true;
+        private const int DC_BUSY_TIME_OUT = 1000;
 
-        internal int                    dc_CloneFrameRate           = DC_DEFAULT_FRAMERATE;
-        internal bool                   dc_CloneOverlayShow         = DC_DEFAULT_OVERLAY_SHOW;
+        internal int dc_CloneFrameRate = DC_DEFAULT_FRAMERATE;
+        internal bool dc_CloneOverlayShow = DC_DEFAULT_OVERLAY_SHOW;
 
-        internal bool                   dc_HasDisplayClones;
-        internal bool                   dc_DisplayClonesRunning;
-        internal volatile bool          dc_PaintBusy;
-        internal volatile Clone[]       dc_DisplayClones;
+        internal bool dc_HasDisplayClones;
+        internal bool dc_DisplayClonesRunning;
+        internal volatile bool dc_PaintBusy;
+        internal volatile Clone[] dc_DisplayClones;
 
-        private volatile System.Threading.Timer  dc_Timer;
-        internal volatile int           dc_TimerInterval            = 1000 / DC_DEFAULT_FRAMERATE;
-        private volatile bool           dc_TimerRestart;
+        private volatile System.Threading.Timer dc_Timer;
+        internal volatile int dc_TimerInterval = 1000 / DC_DEFAULT_FRAMERATE;
+        private volatile bool dc_TimerRestart;
 
-        private Bitmap                  dc_BackBuffer;
+        private Bitmap dc_BackBuffer;
 
-        private Region                  dc_RefreshRegion;
-        private Rectangle               dc_RefreshRect;
-        private bool                    dc_NoSizeDisplay;
+        private Region dc_RefreshRegion;
+        private Rectangle dc_RefreshRect;
+        private bool dc_NoSizeDisplay;
 
-        private delegate void           RefreshCloneCallback(int index);
-        private RefreshCloneCallback    dc_RefreshCallback;
+        private delegate void RefreshCloneCallback(int index);
 
-        private bool                    dc_IsDragging;
-        internal Cursor                 dc_OldCursor;
-        private Form                    dc_DragForm;
-        private Point                   dc_OldLocation;
+        private RefreshCloneCallback dc_RefreshCallback;
 
-        private object                  dc_Lock                     = new object();
+        private bool dc_IsDragging;
+        internal Cursor dc_OldCursor;
+        private Form dc_DragForm;
+        private Point dc_OldLocation;
 
-        #endregion
+        private object dc_Lock = new object();
 
+        #endregion Display Clones - Fields
 
         // ******************************** Display Clones - Main
 
@@ -170,8 +163,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - Main
 
         // ******************************** Display Clones - Add / DisplayCheck / Clear / Remove
 
@@ -257,28 +249,28 @@ namespace PlexDL.Player
                     {
                         if (addClones[i] != null)
                         {
-                            newClones[index]                        = new Clone();
-                            newClones[index].Control                = addClones[i];
-                            newClones[index].Control.SizeChanged    += DisplayClones_SizeChanged;
-                            newClones[index].Control.Invalidated    += DisplayClones_SizeChanged;
-                            newClones[index].Flip                   = properties._flip;
-                            newClones[index].Layout                 = properties._layout;
-                            newClones[index].Quality                = properties._quality;
+                            newClones[index] = new Clone();
+                            newClones[index].Control = addClones[i];
+                            newClones[index].Control.SizeChanged += DisplayClones_SizeChanged;
+                            newClones[index].Control.Invalidated += DisplayClones_SizeChanged;
+                            newClones[index].Flip = properties._flip;
+                            newClones[index].Layout = properties._layout;
+                            newClones[index].Quality = properties._quality;
                             if (properties._dragEnabled)
                             {
-                                newClones[index].Control.MouseDown  += DisplayClones_MouseDown;
-                                newClones[index].Drag               = true;
+                                newClones[index].Control.MouseDown += DisplayClones_MouseDown;
+                                newClones[index].Drag = true;
                             }
-                            newClones[index].DragCursor             = properties.DragCursor;
+                            newClones[index].DragCursor = properties.DragCursor;
                             if (properties._shape != DisplayShape.Normal)
                             {
-                                newClones[index].Shape              = properties._shape;
-                                newClones[index].HasVideoShape      = properties._videoShape;
-                                newClones[index].ShapeCallback      = AV_GetShapeCallback(properties._shape);
-                                newClones[index].HasShape           = true;
+                                newClones[index].Shape = properties._shape;
+                                newClones[index].HasVideoShape = properties._videoShape;
+                                newClones[index].ShapeCallback = AV_GetShapeCallback(properties._shape);
+                                newClones[index].HasShape = true;
                                 //newClones[index].Control.Invalidate();
                             }
-                            newClones[index++].Refresh              = true;
+                            newClones[index++].Refresh = true;
                         }
                     }
 
@@ -304,8 +296,8 @@ namespace PlexDL.Player
                     {
                         dc_DisplayClones[i].Control.SizeChanged -= DisplayClones_SizeChanged;
                         dc_DisplayClones[i].Control.Invalidated -= DisplayClones_SizeChanged;
-                        dc_DisplayClones[i].Control             = null;
-                        dc_DisplayClones[i]                     = null;
+                        dc_DisplayClones[i].Control = null;
+                        dc_DisplayClones[i] = null;
                     }
                 }
             }
@@ -336,8 +328,8 @@ namespace PlexDL.Player
                                 }
                                 if (dc_DisplayClones[i].HasShape)
                                 {
-                                    dc_DisplayClones[i].HasShape        = false;
-                                    dc_DisplayClones[i].ShapeCallback   = null;
+                                    dc_DisplayClones[i].HasShape = false;
+                                    dc_DisplayClones[i].ShapeCallback = null;
                                     if (dc_DisplayClones[i].Control.Region != null)
                                     {
                                         dc_DisplayClones[i].Control.Region.Dispose();
@@ -347,11 +339,11 @@ namespace PlexDL.Player
                             }
                             catch { /* ignore */ }
                             dc_DisplayClones[i].Control = null;
-                            dc_DisplayClones[i]         = null;
+                            dc_DisplayClones[i] = null;
                         }
                     }
                     dc_HasDisplayClones = false;
-                    dc_DisplayClones    = null;
+                    dc_DisplayClones = null;
 
                     if (_mediaDisplayClonesChanged != null) _mediaDisplayClonesChanged(this, EventArgs.Empty);
                 }
@@ -388,12 +380,12 @@ namespace PlexDL.Player
                                         }
                                         if (dc_DisplayClones[j].HasShape)
                                         {
-                                            dc_DisplayClones[j].HasShape        = false;
-                                            dc_DisplayClones[j].ShapeCallback   = null;
+                                            dc_DisplayClones[j].HasShape = false;
+                                            dc_DisplayClones[j].ShapeCallback = null;
                                             if (dc_DisplayClones[j].Control.Region != null)
                                             {
                                                 dc_DisplayClones[j].Control.Region.Dispose();
-                                                dc_DisplayClones[j].Control.Region  = null;
+                                                dc_DisplayClones[j].Control.Region = null;
                                             }
                                         }
                                         dc_DisplayClones[j].Control.Invalidate();
@@ -401,8 +393,8 @@ namespace PlexDL.Player
                                     catch { /* ignore */ }
 
                                     dc_DisplayClones[j].Control = null;
-                                    dc_DisplayClones[j]         = null;
-                                    clonesStopped               = true;
+                                    dc_DisplayClones[j] = null;
+                                    clonesStopped = true;
                                 }
                             }
                         }
@@ -486,8 +478,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - Add / DisplayCheck / Clear / Remove
 
         // ******************************** Display Clones - Start / Stop / Pause / Resume
 
@@ -594,8 +585,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - Start / Stop / Pause / Resume
 
         // ******************************** Display Clones - Timer Start / Stop
 
@@ -628,8 +618,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - Timer Start / Stop
 
         // ******************************** Display Clones - SizeChanged / Refresh / UpdateShape
 
@@ -690,8 +679,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - SizeChanged / Refresh / UpdateShape
 
         // ******************************** Display Clones - Drag
 
@@ -753,8 +741,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
-
+        #endregion Display Clones - Drag
 
         // ******************************** Display Clones - Paint
 
@@ -767,6 +754,7 @@ namespace PlexDL.Player
             dc_PaintBusy = true;
 
             // Player display too small check
+
             #region Player display too small check
 
             try
@@ -800,7 +788,7 @@ namespace PlexDL.Player
                 return;
             }
 
-            #endregion
+            #endregion Player display too small check
 
             // Determine whether also to paint the display overlay
             bool overlayMode = dc_CloneOverlayShow && (_hasOverlay && _overlay.Visible);
@@ -808,19 +796,20 @@ namespace PlexDL.Player
             // Paint only if there's a video image or a display overlay (hold)
             if (_hasVideo || overlayMode)
             {
-                double      difX;
-                double      difY;
-                int         newSize;
-                bool        fullSize        = false;
+                double difX;
+                double difY;
+                int newSize;
+                bool fullSize = false;
 
-                IntPtr      sourceHdc       = IntPtr.Zero;
-                Graphics    sourceGraphics  = null;
-                Rectangle   sourceRect;
+                IntPtr sourceHdc = IntPtr.Zero;
+                Graphics sourceGraphics = null;
+                Rectangle sourceRect;
 
-                Graphics    tempGraphics    = null;
-                IntPtr      tempHdc         = IntPtr.Zero;
+                Graphics tempGraphics = null;
+                IntPtr tempHdc = IntPtr.Zero;
 
                 // Get source - video and/or overlay
+
                 #region Get source - video and/or overlay
 
                 if (overlayMode)
@@ -839,8 +828,8 @@ namespace PlexDL.Player
                             sourceRect = _videoBoundsClip; // with overlay - same size as video
                             if (sourceRect.Width <= 2 || sourceRect.Height <= 2)
                             {
-                                sourceRect  = _display.DisplayRectangle;
-                                fullSize    = true;
+                                sourceRect = _display.DisplayRectangle;
+                                fullSize = true;
                             }
                         }
 
@@ -850,20 +839,20 @@ namespace PlexDL.Player
                             if (dc_BackBuffer != null) dc_BackBuffer.Dispose();
                             dc_BackBuffer = new Bitmap(sourceRect.Width, sourceRect.Height);
                         }
-                        sourceGraphics  = Graphics.FromImage(dc_BackBuffer);
-                        sourceHdc       = sourceGraphics.GetHdc();
+                        sourceGraphics = Graphics.FromImage(dc_BackBuffer);
+                        sourceHdc = sourceGraphics.GetHdc();
 
                         // copy display to buffer
-                        tempGraphics    = _display.CreateGraphics();
-                        tempHdc         = tempGraphics.GetHdc();
+                        tempGraphics = _display.CreateGraphics();
+                        tempHdc = tempGraphics.GetHdc();
                         SafeNativeMethods.BitBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, sourceRect.X, sourceRect.Y, SafeNativeMethods.SRCCOPY);
                         tempGraphics.ReleaseHdc(tempHdc);
                         tempGraphics.Dispose();
-                        tempGraphics    = null;
+                        tempGraphics = null;
 
                         // copy overlay to buffer - transparent + opacity
-                        tempGraphics    = _overlay.CreateGraphics();
-                        tempHdc         = tempGraphics.GetHdc();
+                        tempGraphics = _overlay.CreateGraphics();
+                        tempHdc = tempGraphics.GetHdc();
 
                         if (_overlay.Opacity == 1 || _overlayBlend == OverlayBlend.None)
                         {
@@ -933,9 +922,9 @@ namespace PlexDL.Player
 
                         try
                         {
-                            sourceGraphics  = _display.CreateGraphics(); // player display is source
-                            sourceHdc       = sourceGraphics.GetHdc();
-                            sourceRect      = _videoBoundsClip;
+                            sourceGraphics = _display.CreateGraphics(); // player display is source
+                            sourceHdc = sourceGraphics.GetHdc();
+                            sourceRect = _videoBoundsClip;
                         }
                         catch
                         {
@@ -954,9 +943,9 @@ namespace PlexDL.Player
                 {
                     try
                     {
-                        sourceGraphics  = _display.CreateGraphics(); // player display is source
-                        sourceHdc       = sourceGraphics.GetHdc();
-                        sourceRect      = _videoBoundsClip;
+                        sourceGraphics = _display.CreateGraphics(); // player display is source
+                        sourceHdc = sourceGraphics.GetHdc();
+                        sourceRect = _videoBoundsClip;
                     }
                     catch
                     {
@@ -971,26 +960,27 @@ namespace PlexDL.Player
                     }
                 }
 
-                #endregion
+                #endregion Get source - video and/or overlay
 
                 // Paint the clones - one by one
+
                 #region Paint the clones - one by one
 
                 for (int i = 0; i < dc_DisplayClones.Length && dc_TimerRestart; i++)
                 {
-                    Graphics    destGraphics = null;
-                    Rectangle   destRect;
-                    IntPtr      destHdc      = IntPtr.Zero;
-                    CloneFlip   flipMode;
+                    Graphics destGraphics = null;
+                    Rectangle destRect;
+                    IntPtr destHdc = IntPtr.Zero;
+                    CloneFlip flipMode;
 
                     try
                     {
                         if (dc_DisplayClones[i] != null && dc_DisplayClones[i].Control.Visible)
                         {
-                            flipMode        = dc_DisplayClones[i].Flip;
-                            destGraphics    = dc_DisplayClones[i].Control.CreateGraphics();
-                            destRect        = dc_DisplayClones[i].Control.DisplayRectangle;
-                            destHdc         = destGraphics.GetHdc();
+                            flipMode = dc_DisplayClones[i].Flip;
+                            destGraphics = dc_DisplayClones[i].Control.CreateGraphics();
+                            destRect = dc_DisplayClones[i].Control.DisplayRectangle;
+                            destHdc = destGraphics.GetHdc();
 
                             if (_displayMode == DisplayMode.Stretch || fullSize || dc_DisplayClones[i].Layout == CloneLayout.Stretch)
                             {
@@ -1036,11 +1026,11 @@ namespace PlexDL.Player
                                 if ((dc_DisplayClones[i].Layout == CloneLayout.Zoom && (difX < difY)) || (dc_DisplayClones[i].Layout == CloneLayout.Cover && (difX > difY)))
                                 //if (difX < difY)
                                 {
-                                    newSize                 = (int)(sourceRect.Height * difX);
-                                    dc_RefreshRect.X        = 0;
-                                    dc_RefreshRect.Y        = (destRect.Height - newSize) / 2;
-                                    dc_RefreshRect.Width    = (int)(sourceRect.Width * difX);
-                                    dc_RefreshRect.Height   = newSize;
+                                    newSize = (int)(sourceRect.Height * difX);
+                                    dc_RefreshRect.X = 0;
+                                    dc_RefreshRect.Y = (destRect.Height - newSize) / 2;
+                                    dc_RefreshRect.Width = (int)(sourceRect.Width * difX);
+                                    dc_RefreshRect.Height = newSize;
 
                                     if (dc_DisplayClones[i].Refresh)
                                     {
@@ -1087,11 +1077,11 @@ namespace PlexDL.Player
                                 }
                                 else
                                 {
-                                    newSize                 = (int)(sourceRect.Width * difY);
-                                    dc_RefreshRect.X        = (destRect.Width - newSize) / 2;
-                                    dc_RefreshRect.Y        = 0;
-                                    dc_RefreshRect.Width    = newSize;
-                                    dc_RefreshRect.Height   = (int)(sourceRect.Height * difY);
+                                    newSize = (int)(sourceRect.Width * difY);
+                                    dc_RefreshRect.X = (destRect.Width - newSize) / 2;
+                                    dc_RefreshRect.Y = 0;
+                                    dc_RefreshRect.Width = newSize;
+                                    dc_RefreshRect.Height = (int)(sourceRect.Height * difY);
 
                                     if (dc_DisplayClones[i].Refresh)
                                     {
@@ -1158,16 +1148,16 @@ namespace PlexDL.Player
                     }
                 }
 
-                #endregion
+                #endregion Paint the clones - one by one
 
                 // Release source items
+
                 #region Release source items
 
                 sourceGraphics.ReleaseHdc(sourceHdc);
                 sourceGraphics.Dispose();
 
-                #endregion
-
+                #endregion Release source items
             }
             if (dc_TimerRestart) dc_Timer.Change(dc_TimerInterval, Timeout.Infinite);
             dc_PaintBusy = false;
@@ -1183,7 +1173,6 @@ namespace PlexDL.Player
             catch { /* ignore */ }
         }
 
-        #endregion
-
+        #endregion Display Clones - Paint
     }
 }

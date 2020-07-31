@@ -10,17 +10,19 @@ namespace PlexDL.Player
     {
         #region Fields (Audio Track Class)
 
-        internal Guid   _mediaType;
+        internal Guid _mediaType;
         internal string _name;
         internal string _language;
-        internal int    _channelCount;
-        internal int    _samplerate;
-        internal int    _bitdepth;
-        internal int    _bitrate;
+        internal int _channelCount;
+        internal int _samplerate;
+        internal int _bitdepth;
+        internal int _bitrate;
 
-        #endregion
+        #endregion Fields (Audio Track Class)
 
-        internal AudioTrack() { }
+        internal AudioTrack()
+        {
+        }
 
         /// <summary>
         /// Gets the media type (GUID) of the track (see Media Foundation documentation).

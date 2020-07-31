@@ -13,5 +13,3 @@ namespace SharpCaster.Models.ChromecastRequests
         private static int currentId = new Random((int)DateTime.Now.Ticks).Next();
     }
 }
-
-

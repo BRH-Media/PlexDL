@@ -1,8 +1,8 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SharpCaster.Models.Enums;
 using SharpCaster.Models.Metadata;
+using System;
 
 namespace SharpCaster.JsonConverters
 {
@@ -15,9 +15,8 @@ namespace SharpCaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-         
             JObject jObject = JObject.Load(reader);
-            
+
             var value = jObject.GetValue("metadataType").ToString();
             MetadataTypeEnum metadataType;
 
@@ -26,14 +25,19 @@ namespace SharpCaster.JsonConverters
             {
                 case MetadataTypeEnum.GENERIC:
                     return jObject.ToObject<GenericMediaMetadata>();
+
                 case MetadataTypeEnum.MOVIE:
                     return jObject.ToObject<MovieMediaMetadata>();
+
                 case MetadataTypeEnum.TV_SHOW:
                     return jObject.ToObject<TvShowMediaMetadata>();
+
                 case MetadataTypeEnum.MUSIC_TRACK:
                     return jObject.ToObject<MusicTrackMediaMetadata>();
+
                 case MetadataTypeEnum.PHOTO:
                     return jObject.ToObject<PhotoMediaMetadata>();
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -14,12 +14,12 @@ namespace PlexDL.Player
 
         private const int MINIMUM_FRAMERATE = 4;
         private const int MAXIMUM_FRAMERATE = 30;
-        private const int MINIMUM_DURATION  = 3;
-        private const int MAXIMUM_DURATION  = 60;
+        private const int MINIMUM_DURATION = 3;
+        private const int MAXIMUM_DURATION = 60;
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (Images Class)
 
         internal Images(Player player)
         {

@@ -1,6 +1,4 @@
-﻿using PlexDL.Common.Globals;
-using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -8,7 +6,8 @@ namespace PlexDL.Common.Security
 {
     public static class Entropy
     {
-        private static string EntropyFileLocation { get; } = $@"{Strings.PlexDlAppData}\.entropy";
+        private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        private static string EntropyFileLocation { get; } = $@"{AppData}\.plexdl\.entropy";
         private static int EntropyByteLength { get; } = 20;
 
         public static byte[] GetEntropyBytes(bool forceNew = false)
@@ -52,10 +51,9 @@ namespace PlexDL.Common.Security
 
                 value = entropy;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //log the error
-                LoggingHelpers.RecordException(ex.Message, @"EntropyGenError");
+                //ignore the error
             }
 
             return value;
@@ -70,10 +68,9 @@ namespace PlexDL.Common.Security
                 if (File.Exists(EntropyFileLocation))
                     value = File.ReadAllBytes(EntropyFileLocation);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //log the error
-                LoggingHelpers.RecordException(ex.Message, @"EntropyReadError");
+                //ignore the error
             }
 
             return value;

@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays 
+    5. DisplayClones.cs - multiple video displays
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -88,7 +88,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-#endregion
+#endregion Usings
 
 #region Disable Some Warnings
 
@@ -99,123 +99,41 @@ using System.Windows.Forms;
 #pragma warning disable IDE0018 // Inline variable declaration
 #pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion
-
+#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
-
     // ******************************** Device Info Class
-
-    #region Device Info Class
-
-    #endregion
-
 
     // ******************************** Video Track Class
 
-    #region Video Track Class
-
-    #endregion
-
-
     // ******************************** Video Stream Struct
-
-    #region Video Stream Struct
-
-    #endregion
-
 
     // ******************************** Video Display Class
 
-    #region Video Display Class
-
-    #endregion
-
-
     // ******************************** Webcam Device Class
-
-    #region Webcam Device Class
-
-    #endregion
-
 
     // ******************************** Webcam Property Info Class
 
-    #region Webcam Property Class
-
-    #endregion
-
-
     // ******************************** Webcam Video Format Class
-
-    #region Webcam Video Format Class
-
-    #endregion
-
 
     // ******************************** Webcam Settings Class
 
-    #region Webcam Settings Class
-
-    #endregion
-
-
     // ******************************** Audio Track Class
-
-    #region Audio Track Class
-
-    #endregion
-
 
     // ******************************** Audio Stream Struct
 
-    #region Audio Stream Struct
-
-    #endregion
-
-
     // ******************************** Audio Device Class
-
-    #region Audio Device Class
-
-    #endregion
-
 
     // ******************************** Audio Input Device Class
 
-    #region Audio Input Device Class
-
-    #endregion
-
-
     // ******************************** Slider Value Class
-
-    #region Slider Value Class
-
-    #endregion
-
 
     // ******************************** Metadata Class
 
-    #region Metadata Class
-
-    #endregion
-
-
     // ******************************** Media Chapter Class
 
-    #region Media Chapter Class
-
-    #endregion
-
-
     // ******************************** Display Clone Properties Class
-
-    #region Display Clone Properties Class
-
-    #endregion
-
 
     // ******************************** Player MF Callback Class
 
@@ -223,37 +141,13 @@ namespace PlexDL.Player
 
     // Media Foundation Callback Class
 
-    #endregion
-
+    #endregion Player MF Callback Class
 
     // ******************************** Hide System Object Members Classes
 
-    #region  Hide System Object Members Classes
-
-    #endregion
-
-
     // ******************************** Player Grouping Classes
 
-    #region Audio Class
 
-    #endregion
-
-    #region Audio Input Class
-
-    #endregion
-
-    #region Video Class
-
-    #endregion
-
-    #region Webcam Class
-
-    #endregion
-
-    #region Display Class
-
-    #endregion
 
     #region CursorHide Class
 
@@ -268,7 +162,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion
+        #endregion Fields (CursorHide Class)
 
         internal CursorHide(Player player)
         {
@@ -389,11 +283,9 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion CursorHide Class
 
-    #region Overlay Class
 
-    #endregion
 
     #region DisplayClones Class
 
@@ -414,7 +306,7 @@ namespace PlexDL.Player
         private Player _base;
         private CloneProperties _defaultProps;
 
-        #endregion
+        #endregion Fields (DisplayClones Class)
 
         internal DisplayClones(Player player)
         {
@@ -841,27 +733,9 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
+    #endregion DisplayClones Class
 
-    #region PointTo Class
 
-    #endregion
-
-    #region Copy Class
-
-    #endregion
-
-    #region Sliders Classes
-
-    #endregion
-
-    #region TaskbarProgress Class
-
-    #endregion
-
-    #region SystemPanels Class
-
-    #endregion
 
     #region Subtitles Class
 
@@ -877,7 +751,7 @@ namespace PlexDL.Player
         private const int MAX_DIRECTORY_DEPTH = 3;
         private Player _base;
 
-        #endregion
+        #endregion Fields (Subtitles Class)
 
         internal Subtitles(Player player)
         {
@@ -1191,34 +1065,5 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion
-
-    #region Position Class
-
-    #endregion
-
-    #region Media Class
-
-    #endregion
-
-    #region Images Class
-
-    #endregion
-
-    #region Playlist Class
-
-    #endregion
-
-    #region Has Class
-
-    #endregion
-
-    #region Speed Class
-
-    #endregion
-
-    #region Events Class
-
-    #endregion
-
+    #endregion Subtitles Class
 }

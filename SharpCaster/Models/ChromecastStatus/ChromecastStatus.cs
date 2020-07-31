@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SharpCaster.Models.ChromecastStatus
 {
@@ -7,10 +7,13 @@ namespace SharpCaster.Models.ChromecastStatus
     {
         [JsonProperty("applications")]
         public List<ChromecastApplication> Applications { get; set; }
+
         [JsonProperty("isActiveInput")]
         public bool IsActiveInput { get; set; }
+
         [JsonProperty("isStandBy")]
         public bool IsStandBy { get; set; }
+
         [JsonProperty("volume")]
         public Volume Volume { get; set; }
     }
