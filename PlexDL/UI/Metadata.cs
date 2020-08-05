@@ -1,9 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.Objects.AttributeTables;
-using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.PlayerLaunchers;
-using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
@@ -41,10 +39,10 @@ namespace PlexDL.UI
                 if (picPoster.InvokeRequired)
                     picPoster.BeginInvoke((MethodInvoker)delegate
                    {
-                       picPoster.BackgroundImage = GetPoster(StreamingContent);
+                       picPoster.BackgroundImage = ImageHandler.GetPoster(StreamingContent);
                    });
                 else
-                    picPoster.BackgroundImage = GetPoster(StreamingContent);
+                    picPoster.BackgroundImage = ImageHandler.GetPoster(StreamingContent);
             }
 
             //fill the plot synopsis infobox
@@ -104,7 +102,7 @@ namespace PlexDL.UI
                         Size = new Size(79, 119),
                         Location = new Point(3, 3),
                         BackgroundImageLayout = ImageLayout.Zoom,
-                        BackgroundImage = Methods.GetImageFromUrl(a.ThumbnailUri),
+                        BackgroundImage = ImageHandler.GetImageFromUrl(a.ThumbnailUri),
                         Visible = true
                     };
                     p.Controls.Add(lblActorRole);
@@ -184,16 +182,6 @@ namespace PlexDL.UI
             p.Controls.Add(actorPortrait);
 
             return p;
-        }
-
-        private static Bitmap GetPoster(PlexObject stream)
-        {
-            var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-
-            if (result == Resources.image_not_available_png_8) return result;
-            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
-
-            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
         }
 
         private void Metadata_Load(object sender, EventArgs e)

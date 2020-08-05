@@ -2,17 +2,13 @@
 using PlexDL.Common.CastAPI;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
-using PlexDL.Properties;
-using PlexDL.WaitWindow;
 using SharpCaster;
 using SharpCaster.Controllers;
 using SharpCaster.Models;
 using SharpCaster.Services;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -258,30 +254,12 @@ namespace PlexDL.UI
             }
         }
 
-        private Bitmap GetPoster(PlexObject stream, bool multiThreaded = true)
-        {
-            if (multiThreaded)
-                return (Bitmap)WaitWindow.WaitWindow.Show(GetPoster_Callback, @"Grabbing poster");
-
-            var result = Methods.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-
-            if (result == Resources.image_not_available_png_8) return result;
-            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
-
-            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
-        }
-
-        private void GetPoster_Callback(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = GetPoster(StreamingContent, false);
-        }
-
         private void Cast_Load(object sender, EventArgs e)
         {
             try
             {
                 lblTitle.Text = StreamingContent.StreamInformation.ContentTitle;
-                picPoster.BackgroundImage = GetPoster(StreamingContent);
+                picPoster.BackgroundImage = ImageHandler.GetPoster(StreamingContent);
             }
             catch (Exception ex)
             {

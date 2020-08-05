@@ -1,6 +1,4 @@
-﻿using PlexDL.Common.Caching;
-using PlexDL.Common.Caching.Handlers;
-using PlexDL.Common.Globals.Providers;
+﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
@@ -8,7 +6,6 @@ using PlexDL.Properties;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -204,55 +201,6 @@ namespace PlexDL.Common
                     @"The content you're about to view may contain adult (18+) themes. Are you okay with viewing this content?",
                     @"Warning");
             return result;
-        }
-
-        public static Bitmap GetImageFromUrl(string url, bool forceNoCache = false)
-        {
-            try
-            {
-                Helpers.CacheStructureBuilder();
-                if (string.IsNullOrEmpty(url))
-                    return Resources.image_not_available_png_8;
-
-                if (!forceNoCache)
-                    if (ThumbCaching.ThumbInCache(url))
-                        return ThumbCaching.ThumbFromCache(url);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "ThumbIOAccessError");
-                return ForceImageFromUrl(url);
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Resources.image_not_available_png_8;
-            }
-
-            return ForceImageFromUrl(url);
-        }
-
-        private static Bitmap ForceImageFromUrl(string url)
-        {
-            try
-            {
-                var request = WebRequest.Create(url);
-
-                using (var response = request.GetResponse())
-                using (var stream = response.GetResponseStream())
-                {
-                    var result = stream != null
-                        ? (Bitmap)Image.FromStream(stream)
-                        : Resources.image_not_available_png_8;
-                    ThumbCaching.ThumbToCache(result, url);
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Resources.image_not_available_png_8;
-            }
         }
 
         /// <summary>
