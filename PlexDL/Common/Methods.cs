@@ -65,10 +65,10 @@ namespace PlexDL.Common
         public static bool IsPrivateIp(string ipAddress)
         {
             var ipParts = ipAddress.Split(new[]
-            {
-                "."
-            }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(int.Parse).ToArray();
+                {
+                    "."
+                }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse).ToArray();
             // in private ip range
             return ipParts[0] == 10 ||
                    ipParts[0] == 192 && ipParts[1] == 168 ||
@@ -80,10 +80,10 @@ namespace PlexDL.Common
 
         public static string MatchUriToToken(string uri, List<Server> plexServers)
         {
-            foreach (var s in from s in plexServers let serverUri = "http://" + s.address + ":" + s.port + "/" where uri.Contains(serverUri) select s)
-            {
-                return s.accessToken;
-            }
+            foreach (var s in from s in plexServers
+                              let serverUri = "http://" + s.address + ":" + s.port + "/"
+                              where uri.Contains(serverUri)
+                              select s) return s.accessToken;
 
             return "";
         }
@@ -143,10 +143,7 @@ namespace PlexDL.Common
             var random = new Random();
             var r = "";
 
-            for (var i = 1; i < length + 1; i++)
-            {
-                r += random.Next(0, 9).ToString();
-            }
+            for (var i = 1; i < length + 1; i++) r += random.Next(0, 9).ToString();
             return r;
         }
 
@@ -173,7 +170,8 @@ namespace PlexDL.Common
             //UIMessages.Info(keywords.Length.ToString());
             search = rgx.Replace(search, "");
             var match = false;
-            if (string.Equals(stream.ContentGenre.ToLower(), "porn") || string.Equals(stream.ContentGenre.ToLower(), "adult"))
+            if (string.Equals(stream.ContentGenre.ToLower(), "porn") ||
+                string.Equals(stream.ContentGenre.ToLower(), "adult"))
             {
                 match = true;
             }
@@ -243,7 +241,9 @@ namespace PlexDL.Common
                 using (var response = request.GetResponse())
                 using (var stream = response.GetResponseStream())
                 {
-                    var result = (Bitmap)Image.FromStream(stream);
+                    var result = stream != null
+                        ? (Bitmap)Image.FromStream(stream)
+                        : Resources.image_not_available_png_8;
                     ThumbCaching.ThumbToCache(result, url);
                     return result;
                 }
@@ -255,16 +255,12 @@ namespace PlexDL.Common
             }
         }
 
-        public static bool ValidateIPv4(string ipString)
-        {
-            if (string.IsNullOrWhiteSpace(ipString))
-                return false;
-
-            var splitValues = ipString.Split('.');
-            return splitValues.Length == 4 && splitValues.All(r => byte.TryParse(r, out _));
-        }
-
-        public static string RemoveIllegalCharacters(string illegal)
+        /// <summary>
+        ///     Removes illegal Window pathname characters
+        /// </summary>
+        /// <param name="illegal"></param>
+        /// <returns></returns>
+        public static string ToClean(this string illegal)
         {
             var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             var r = new Regex($"[{Regex.Escape(regexSearch)}]");

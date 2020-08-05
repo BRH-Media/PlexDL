@@ -11,8 +11,10 @@ namespace PlexDL.Common.API.Metadata.Handlers
 {
     public static class XmlMetadataHelpers
     {
-        public static XmlMetadata GetMetadata(DataRow result, string msgNoKey = "Error occurred whilst getting the unique content key",
-            string logNoKeyMsg = "Error occurred whilst getting the unique content key", string logNoKeyType = "NoUnqKeyError", string column = "key")
+        public static XmlMetadata GetMetadata(DataRow result,
+            string msgNoKey = "Error occurred whilst getting the unique content key",
+            string logNoKeyMsg = "Error occurred whilst getting the unique content key",
+            string logNoKeyType = "NoUnqKeyError", string column = "key")
         {
             var obj = new XmlMetadata();
             XmlDocument reply = null;
@@ -44,7 +46,8 @@ namespace PlexDL.Common.API.Metadata.Handlers
             return obj;
         }
 
-        public static string GetContentAttribute(XmlDocument metadata, ContentType type, string attributeName, string defaultValue = @"Unknown")
+        public static string GetContentAttribute(XmlDocument metadata, ContentType type, string attributeName,
+            string defaultValue = @"Unknown")
         {
             switch (type)
             {
@@ -62,7 +65,8 @@ namespace PlexDL.Common.API.Metadata.Handlers
             return defaultValue;
         }
 
-        public static string GetContentAttribute(DataTable tableObject, string attributeName, string defaultValue = @"Unknown")
+        public static string GetContentAttribute(DataTable tableObject, string attributeName,
+            string defaultValue = @"Unknown")
         {
             var attributeValue = defaultValue;
             try
@@ -83,10 +87,12 @@ namespace PlexDL.Common.API.Metadata.Handlers
             {
                 LoggingHelpers.RecordException(ex.Message, "GetAttrError");
             }
+
             return attributeValue;
         }
 
-        public static string GetContentAttribute(XmlDocument metadata, string tableName, string attributeName, string defaultValue = @"Unknown")
+        public static string GetContentAttribute(XmlDocument metadata, string tableName, string attributeName,
+            string defaultValue = @"Unknown")
         {
             var attributeValue = defaultValue;
             try
@@ -106,6 +112,7 @@ namespace PlexDL.Common.API.Metadata.Handlers
             {
                 LoggingHelpers.RecordException(ex.Message, "GetAttrError");
             }
+
             return attributeValue;
         }
     }

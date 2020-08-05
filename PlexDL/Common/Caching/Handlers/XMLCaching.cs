@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Globals.Providers;
+﻿using PlexDL.Common.API;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using System;
 using System.IO;
@@ -13,7 +14,8 @@ namespace PlexDL.Common.Caching.Handlers
             var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
             var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
             var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ApiXmlExt;
-            var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.XmlDirectory}";
+            var cachePath =
+                $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.XmlDirectory}";
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
             var fqPath = $"{cachePath}\\{fileName}";
@@ -44,8 +46,11 @@ namespace PlexDL.Common.Caching.Handlers
                         LoggingHelpers.RecordCacheEvent("Successfully cached URL", sourceUrl);
                     }
                     else
+                    {
                         LoggingHelpers.RecordCacheEvent("URL is already cached", sourceUrl);
+                    }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -64,11 +69,10 @@ namespace PlexDL.Common.Caching.Handlers
                 {
                     if (XmlToCache(doc, sourceUrl))
                         return true;
-                    else
-                        return false;
-                }
-                else
                     return false;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -89,6 +93,7 @@ namespace PlexDL.Common.Caching.Handlers
                         File.Delete(XmlCachePath(sourceUrl));
                         LoggingHelpers.RecordCacheEvent("Removed URL from cache", sourceUrl);
                     }
+
                 return true;
             }
             catch (Exception ex)
@@ -109,22 +114,25 @@ namespace PlexDL.Common.Caching.Handlers
                     var fqPath = XmlCachePath(sourceUrl);
                     if (ObjectProvider.Settings.CacheSettings.Expiry.Enabled)
                     {
-                        if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath, ObjectProvider.Settings.CacheSettings.Expiry.Interval))
+                        if (!CachingExpiryHelpers.CheckCacheExpiry(fqPath,
+                            ObjectProvider.Settings.CacheSettings.Expiry.Interval))
                         {
-                            LoggingHelpers.RecordCacheEvent("Cached URL is not expired; loading from cached copy.", sourceUrl);
+                            LoggingHelpers.RecordCacheEvent("Cached URL is not expired; loading from cached copy.",
+                                sourceUrl);
                             var doc = new XmlDocument();
                             doc.Load(fqPath);
                             return doc;
                         }
                         else
                         {
-                            LoggingHelpers.RecordCacheEvent("Cached URL is out-of-date; attempting to get a new copy.", sourceUrl);
-                            var doc = API.XmlGet.GetXmlTransaction(sourceUrl, "", true);
+                            LoggingHelpers.RecordCacheEvent("Cached URL is out-of-date; attempting to get a new copy.",
+                                sourceUrl);
+                            var doc = XmlGet.GetXmlTransaction(sourceUrl, "", true);
                             XmlReplaceCache(doc, sourceUrl);
                             return doc;
                         }
                     }
-                    else
+
                     {
                         LoggingHelpers.RecordCacheEvent("Loading from cached copy", sourceUrl);
                         var doc = new XmlDocument();
@@ -132,8 +140,8 @@ namespace PlexDL.Common.Caching.Handlers
                         return doc;
                     }
                 }
-                else
-                    LoggingHelpers.RecordCacheEvent("URL isn't cached; couldn't load from specified file.", sourceUrl);
+
+                LoggingHelpers.RecordCacheEvent("URL isn't cached; couldn't load from specified file.", sourceUrl);
             }
 
             return new XmlDocument();

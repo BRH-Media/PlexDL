@@ -23,10 +23,12 @@ namespace PlexDL.Common
         {
             DefaultStringVariables.ContentTitle.VariableValue = stream.ContentTitle;
             DefaultStringVariables.FileName.VariableValue = stream.Links.View;
-            DefaultStringVariables.TokenHash.VariableValue = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+            DefaultStringVariables.TokenHash.VariableValue =
+                MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
             DefaultStringVariables.ServerPort.VariableValue = ObjectProvider.Settings.ConnectionInfo.PlexPort;
             DefaultStringVariables.ServerIp.VariableValue = ObjectProvider.Settings.ConnectionInfo.PlexAddress;
-            DefaultStringVariables.ServerHash.VariableValue = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
+            DefaultStringVariables.ServerHash.VariableValue =
+                MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
             return new List<StringVariable>
             {
                 DefaultStringVariables.ContentTitle,

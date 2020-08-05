@@ -21,7 +21,8 @@ namespace PlexDL.Common.Structures.AppOptions.Player
         public decimal SkipBackwardInterval { get; set; } = 10;
 
         [DisplayName("Autoplay")]
-        [Description("When the current title is finished playing, PlexDL can automatically play the next one (if using PVS Player)")]
+        [Description(
+            "When the current title is finished playing, PlexDL can automatically play the next one (if using PVS Player)")]
         public bool PlayNextTitleAutomatically { get; set; } = false;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]

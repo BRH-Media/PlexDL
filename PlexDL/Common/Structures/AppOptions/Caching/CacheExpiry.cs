@@ -10,7 +10,8 @@ namespace PlexDL.Common.Structures.AppOptions.Caching
 
         [DisplayName("Expiry Enabled")]
         [Description("Is cache expiry enabled?")]
-        public bool Enabled { get; set; } = true; //cache will expire (be replaced) if the Interval is reached or exceeded
+        public bool Enabled { get; set; } =
+            true; //cache will expire (be replaced) if the Interval is reached or exceeded
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
@@ -10,7 +11,7 @@ namespace PlexDL.UI
             InitializeComponent();
         }
 
-        private void TestForm_Load(object sender, System.EventArgs e)
+        private void TestForm_Load(object sender, EventArgs e)
         {
             CenterInfoPanel();
         }
@@ -39,9 +40,12 @@ namespace PlexDL.UI
             pnlNothingInteresting.Location = newLocation;
         }
 
-        private void BtnCast_Click(object sender, System.EventArgs e)
+        private void BtnCast_Click(object sender, EventArgs e)
         {
-            using (var frm = new Cast()) frm.ShowDialog();
+            using (var frm = new Cast())
+            {
+                frm.ShowDialog();
+            }
         }
     }
 }

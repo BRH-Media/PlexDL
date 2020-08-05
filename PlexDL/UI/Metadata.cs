@@ -30,10 +30,7 @@ namespace PlexDL.UI
             if (attributes.Rows.Count > 0)
             {
                 if (dgvAttributes.InvokeRequired)
-                    dgvAttributes.BeginInvoke((MethodInvoker)delegate
-                   {
-                       dgvAttributes.DataSource = attributes;
-                   });
+                    dgvAttributes.BeginInvoke((MethodInvoker)delegate { dgvAttributes.DataSource = attributes; });
                 else
                     dgvAttributes.DataSource = attributes;
             }
@@ -43,9 +40,9 @@ namespace PlexDL.UI
             {
                 if (picPoster.InvokeRequired)
                     picPoster.BeginInvoke((MethodInvoker)delegate
-                    {
-                        picPoster.BackgroundImage = GetPoster(StreamingContent);
-                    });
+                   {
+                       picPoster.BackgroundImage = GetPoster(StreamingContent);
+                   });
                 else
                     picPoster.BackgroundImage = GetPoster(StreamingContent);
             }
@@ -55,21 +52,22 @@ namespace PlexDL.UI
             {
                 if (txtPlotSynopsis.InvokeRequired)
                     txtPlotSynopsis.BeginInvoke((MethodInvoker)delegate
-                    {
-                        txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent) ? StreamingContent.Synopsis : @"Plot synopsis for this title is unavailable due to adult content protection";
-                    });
+                   {
+                       txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent)
+                           ? StreamingContent.Synopsis
+                           : @"Plot synopsis for this title is unavailable due to adult content protection";
+                   });
                 else
-                    txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent) ? StreamingContent.Synopsis : @"Plot synopsis for this title is unavailable due to adult content protection";
+                    txtPlotSynopsis.Text = !Methods.AdultKeywordCheck(StreamingContent)
+                        ? StreamingContent.Synopsis
+                        : @"Plot synopsis for this title is unavailable due to adult content protection";
             }
 
             //Clear all previous actors (maybe there's a dud panel in place?)
             if (flpActors.Controls.Count > 0)
             {
                 if (flpActors.InvokeRequired)
-                    flpActors.BeginInvoke((MethodInvoker)delegate
-                    {
-                        flpActors.Controls.Clear();
-                    });
+                    flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Clear(); });
                 else
                     flpActors.Controls.Clear();
             }
@@ -114,10 +112,7 @@ namespace PlexDL.UI
                     p.Controls.Add(actorPortrait);
 
                     if (flpActors.InvokeRequired)
-                        flpActors.BeginInvoke((MethodInvoker)delegate
-                        {
-                            flpActors.Controls.Add(p);
-                        });
+                        flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(p); });
                     else
                         flpActors.Controls.Add(p);
                 }
@@ -126,10 +121,7 @@ namespace PlexDL.UI
             {
                 //no actors, so tell the user with a dud panel
                 if (flpActors.InvokeRequired)
-                    flpActors.BeginInvoke((MethodInvoker)delegate
-                    {
-                        flpActors.Controls.Add(NoActorsFound());
-                    });
+                    flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(NoActorsFound()); });
                 else
                     flpActors.Controls.Add(NoActorsFound());
             }
@@ -138,11 +130,11 @@ namespace PlexDL.UI
             if (InvokeRequired)
             {
                 BeginInvoke((MethodInvoker)delegate
-                {
-                    itmStream.Enabled = true;
-                    Text = StreamingContent.StreamInformation.ContentTitle;
-                    Refresh();
-                });
+               {
+                   itmStream.Enabled = true;
+                   Text = StreamingContent.StreamInformation.ContentTitle;
+                   Refresh();
+               });
             }
             else
             {

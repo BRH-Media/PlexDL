@@ -15,9 +15,7 @@ namespace PlexDL.Common
             WebCheck obj;
 
             if (waitWindow)
-            {
                 obj = (WebCheck)WaitWindow.WaitWindow.Show(TestUrl_WaitWindow, @"Checking connection", url);
-            }
             else
                 obj = TestUrl_Worker(url);
 

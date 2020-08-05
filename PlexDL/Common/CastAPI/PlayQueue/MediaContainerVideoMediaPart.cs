@@ -4,90 +4,89 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common.CastAPI.PlayQueue
 {
-    /// <remarks/>
+    /// <remarks />
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     public class MediaContainerVideoMediaPart
     {
-        private MediaContainerVideoMediaPartStream[] streamField;
-
-        private ushort idField;
-
-        private string keyField;
+        private string containerField;
 
         private uint durationField;
 
         private string fileField;
 
-        private ulong sizeField;
+        private ushort idField;
 
-        private string containerField;
+        private string keyField;
+
+        private ulong sizeField;
+        private MediaContainerVideoMediaPartStream[] streamField;
 
         private string videoProfileField;
 
-        /// <remarks/>
+        /// <remarks />
         [XmlElement("Stream")]
         public MediaContainerVideoMediaPartStream[] Stream
         {
-            get { return streamField; }
-            set { streamField = value; }
+            get => streamField;
+            set => streamField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort id
         {
-            get { return idField; }
-            set { idField = value; }
+            get => idField;
+            set => idField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string key
         {
-            get { return keyField; }
-            set { keyField = value; }
+            get => keyField;
+            set => keyField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public uint duration
         {
-            get { return durationField; }
-            set { durationField = value; }
+            get => durationField;
+            set => durationField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string file
         {
-            get { return fileField; }
-            set { fileField = value; }
+            get => fileField;
+            set => fileField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ulong size
         {
-            get { return sizeField; }
-            set { sizeField = value; }
+            get => sizeField;
+            set => sizeField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string container
         {
-            get { return containerField; }
-            set { containerField = value; }
+            get => containerField;
+            set => containerField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string videoProfile
         {
-            get { return videoProfileField; }
-            set { videoProfileField = value; }
+            get => videoProfileField;
+            set => videoProfileField = value;
         }
     }
 }

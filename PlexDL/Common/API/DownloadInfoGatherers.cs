@@ -26,7 +26,7 @@ namespace PlexDL.Common.API
 
                 var part = sections.Tables["Part"];
 
-                DataRow dlRow = null;
+                DataRow dlRow;
 
                 //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
 
@@ -43,6 +43,9 @@ namespace PlexDL.Common.API
                     case ContentType.Music:
                         dlRow = sections.Tables["Track"].Rows[0];
                         break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
                 if (dlRow == null) return new StreamInfo();
@@ -50,12 +53,11 @@ namespace PlexDL.Common.API
                 var title = dlRow["title"].ToString();
                 if (title.Length > ObjectProvider.Settings.Generic.DefaultStringLength)
                     title = title.Substring(0, ObjectProvider.Settings.Generic.DefaultStringLength);
+
                 var thumb = dlRow["thumb"].ToString();
                 var thumbnailFullUri = "";
-                if (string.IsNullOrEmpty(thumb))
-                {
-                }
-                else
+
+                if (!string.IsNullOrEmpty(thumb))
                 {
                     var baseUri = Strings.GetBaseUri(false).TrimEnd('/');
                     thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + Strings.GetToken();
@@ -65,20 +67,25 @@ namespace PlexDL.Common.API
 
                 var filePart = "";
                 var container = "";
+
                 if (partRow["key"] != null)
                     filePart = partRow["key"].ToString();
+
                 if (partRow["container"] != null)
                     container = partRow["container"].ToString();
                 var byteLength = Convert.ToInt64(partRow["size"]);
+
                 var contentDuration = Convert.ToInt32(partRow["duration"]);
-                var fileName = Methods.RemoveIllegalCharacters(title + "." + container);
+                var fileName = (title + "." + container).ToClean();
 
                 //The PMS (Plex Media Server) will return the file as an octet-stream (download) if we set
                 //the GET parameter 'download' to '1' and a normal MP4 stream if we set it to '0'.
                 obj.Links.View =
-                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" + Strings.GetToken();
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=0&X-Plex-Token=" +
+                    Strings.GetToken();
                 obj.Links.Download =
-                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" + Strings.GetToken();
+                    Strings.GetBaseUri(false).TrimEnd('/') + filePart + "?download=1&X-Plex-Token=" +
+                    Strings.GetToken();
                 obj.Container = container;
                 obj.ByteLength = byteLength;
                 obj.ContentDuration = contentDuration;

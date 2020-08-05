@@ -23,7 +23,8 @@ namespace PlexDL.UI
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtSearchTerm.Text) && cbxSearchColumn.SelectedItem != null && cbxSearchRule.SelectedIndex >= 0)
+                if (!string.IsNullOrEmpty(txtSearchTerm.Text) && cbxSearchColumn.SelectedItem != null &&
+                    cbxSearchRule.SelectedIndex >= 0)
                 {
                     DialogResult = DialogResult.OK;
                     Close();
@@ -60,13 +61,9 @@ namespace PlexDL.UI
             if (SearchContext.ColumnCollection != null)
             {
                 if (SearchContext.ColumnCollection.Count > 0)
-                {
                     PopulateFilteredColumns();
-                }
                 else
-                {
                     PopulateAllColumns();
-                }
             }
             else
             {
@@ -130,6 +127,7 @@ namespace PlexDL.UI
                     result.SearchRule = SearchRule.EndsWith;
                     break;
             }
+
             return result;
         }
 

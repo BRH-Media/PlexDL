@@ -23,6 +23,11 @@ namespace PlexDL.UI
 {
     public partial class Cast : Form
     {
+        public Cast()
+        {
+            InitializeComponent();
+        }
+
         public ChromecastService Service { get; set; } = ChromecastService.Current;
         public ChromeCastClient Client { get; set; }
         public List<Chromecast> Devices { get; set; } = new List<Chromecast>();
@@ -34,26 +39,20 @@ namespace PlexDL.UI
 
         public bool PlayState { get; set; }
 
-        public Cast()
-        {
-            InitializeComponent();
-        }
-
         public static void TryCast(PlexObject content)
         {
-            using (var frm = new Cast { StreamingContent = content }) frm.ShowDialog();
+            using (var frm = new Cast { StreamingContent = content })
+            {
+                frm.ShowDialog();
+            }
         }
 
         public static string GetLocalIpAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
-            {
                 if (ip.AddressFamily == AddressFamily.InterNetwork && Methods.IsPrivateIp(ip.ToString()))
-                {
                     return ip.ToString();
-                }
-            }
 
             return @"";
         }
@@ -100,7 +99,9 @@ namespace PlexDL.UI
                         }
                 }
                 else
+                {
                     UIMessages.Warning(@"No devices found");
+                }
 
                 if (devices.Count > 0) Devices = devices;
 
@@ -209,11 +210,15 @@ namespace PlexDL.UI
                         }
                     }
                     else
+                    {
                         UIMessages.Warning(
                             @"Please select a device from the list. To populate the device list, please press 'Discover'.");
+                    }
                 }
                 else
+                {
                     StopApplication();
+                }
             }
             catch (Exception ex)
             {

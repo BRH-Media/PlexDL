@@ -6,6 +6,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Xml;
 using UIHelpers;
 
@@ -24,10 +25,12 @@ namespace PlexDL.Common.API
             if (e.Arguments.Count > 2)
                 silent = (bool)e.Arguments[2];
 
-            e.Result = GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken, forceNoCache, silent);
+            e.Result = GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken, forceNoCache,
+                silent);
         }
 
-        public static XmlDocument GetXmlTransaction(string uri, string secret = "", bool forceNoCache = false, bool silent = false)
+        public static XmlDocument GetXmlTransaction(string uri, string secret = "", bool forceNoCache = false,
+            bool silent = false)
         {
             //Create the cache folder structure
             Helpers.CacheStructureBuilder();
@@ -52,7 +55,9 @@ namespace PlexDL.Common.API
             Stream objResponseStream = null;
             //Declare XMLReader
 
-            var secret2 = string.IsNullOrEmpty(secret) ? Methods.MatchUriToToken(uri, ObjectProvider.PlexServers) : secret;
+            var secret2 = string.IsNullOrEmpty(secret)
+                ? Methods.MatchUriToToken(uri, ObjectProvider.PlexServers)
+                : secret;
             if (string.IsNullOrEmpty(secret2))
                 secret2 = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken;
 
@@ -85,7 +90,8 @@ namespace PlexDL.Common.API
                     case HttpStatusCode.Unauthorized:
                         {
                             if (!silent)
-                                UIMessages.Error("The web server denied access to the resource. Check your token and try again.");
+                                UIMessages.Error(
+                                    "The web server denied access to the resource. Check your token and try again.");
                             break;
                         }
                 }
@@ -96,6 +102,10 @@ namespace PlexDL.Common.API
                 objHttpWebResponse.Close();
 
                 LoggingHelpers.RecordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
+            }
+            catch (ThreadAbortException)
+            {
+                //literally nothing; this gets raised when a cancellation happens.
             }
             catch (Exception ex)
             {

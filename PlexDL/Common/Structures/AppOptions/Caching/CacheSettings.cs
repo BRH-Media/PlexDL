@@ -11,7 +11,8 @@ namespace PlexDL.Common.Structures.AppOptions.Caching
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Expiry")]
-        [Description("PlexDL can automatically download newer versions of cached files, if their creation date exceeds a fixed interval.")]
+        [Description(
+            "PlexDL can automatically download newer versions of cached files, if their creation date exceeds a fixed interval.")]
         public CacheExpiry Expiry { get; set; } = new CacheExpiry();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]

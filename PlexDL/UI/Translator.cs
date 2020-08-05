@@ -13,17 +13,17 @@ namespace PlexDL.UI
 {
     public partial class Translator : Form
     {
+        public Translator()
+        {
+            InitializeComponent();
+        }
+
         private List<string> ValidTokens { get; set; } = new List<string>();
         private List<string> AllTokens { get; set; } = new List<string>();
         private int ValidCount { get; set; }
         private int InvalidCount { get; set; }
         private int TotalCount { get; set; }
         private int DuplicateCount { get; set; }
-
-        public Translator()
-        {
-            InitializeComponent();
-        }
 
         private void BtnBrowseLogdel_Click(object sender, EventArgs e)
         {
@@ -90,10 +90,14 @@ namespace PlexDL.UI
                                         ValidTokens.Add(t);
                                     }
                                     else
+                                    {
                                         InvalidCount++;
+                                    }
                                 }
                                 else
+                                {
                                     DuplicateCount++;
+                                }
                             }
 
                             //gui settings
@@ -106,13 +110,19 @@ namespace PlexDL.UI
                             btnTranslate.Enabled = true;
                         }
                         else
+                        {
                             UIMessages.Error(@"Invalid table layout");
+                        }
                     }
                     else
+                    {
                         UIMessages.Error(@"Null table data");
+                    }
                 }
                 else
+                {
                     UIMessages.Error(@"File doesn't exist");
+                }
             }
             catch (Exception ex)
             {
@@ -123,9 +133,7 @@ namespace PlexDL.UI
         private void btnLoadDict_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtLogdel.Text) && !string.IsNullOrEmpty(ofdLogdel.FileName))
-            {
                 LoadStats(ofdLogdel.FileName);
-            }
             else
                 UIMessages.Error(@"Incorrect value(s)");
         }
@@ -170,7 +178,9 @@ namespace PlexDL.UI
                     bwTranslate.RunWorkerAsync();
                 }
                 else
+                {
                     UIMessages.Error(@"Incorrect value(s)");
+                }
             }
             catch (Exception ex)
             {

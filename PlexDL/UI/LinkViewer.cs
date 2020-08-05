@@ -6,13 +6,13 @@ namespace PlexDL.UI
 {
     public partial class LinkViewer : Form
     {
-        private bool CopyState { get; set; }
-        public string Link { get; set; } = @"";
-
         public LinkViewer()
         {
             InitializeComponent();
         }
+
+        private bool CopyState { get; set; }
+        public string Link { get; set; } = @"";
 
         private void BtnCopy_Click(object sender, EventArgs e)
         {

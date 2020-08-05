@@ -7,14 +7,14 @@ namespace PlexDL.UI
 {
     public partial class Authenticate : Form
     {
-        public bool ConnectionStarted { get; set; }
-        public bool Success { get; set; }
-        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
-
         public Authenticate()
         {
             InitializeComponent();
         }
+
+        public bool ConnectionStarted { get; set; }
+        public bool Success { get; set; }
+        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
         private void BtnConnect_Click(object sender, EventArgs e)
         {

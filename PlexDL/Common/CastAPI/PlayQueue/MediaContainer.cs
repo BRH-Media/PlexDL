@@ -6,17 +6,13 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common.CastAPI.PlayQueue
 {
-    /// <remarks/>
+    /// <remarks />
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     [XmlRoot(Namespace = "", IsNullable = false)]
     public class MediaContainer
     {
-        private MediaContainerVideo videoField;
-
-        private byte sizeField;
-
         private string identifierField;
 
         private string mediaTagPrefixField;
@@ -39,107 +35,110 @@ namespace PlexDL.Common.CastAPI.PlayQueue
 
         private byte playQueueVersionField;
 
-        /// <remarks/>
+        private byte sizeField;
+        private MediaContainerVideo videoField;
+
+        /// <remarks />
         public MediaContainerVideo Video
         {
-            get { return videoField; }
-            set { videoField = value; }
+            get => videoField;
+            set => videoField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte size
         {
-            get { return sizeField; }
-            set { sizeField = value; }
+            get => sizeField;
+            set => sizeField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string identifier
         {
-            get { return identifierField; }
-            set { identifierField = value; }
+            get => identifierField;
+            set => identifierField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string mediaTagPrefix
         {
-            get { return mediaTagPrefixField; }
-            set { mediaTagPrefixField = value; }
+            get => mediaTagPrefixField;
+            set => mediaTagPrefixField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public uint mediaTagVersion
         {
-            get { return mediaTagVersionField; }
-            set { mediaTagVersionField = value; }
+            get => mediaTagVersionField;
+            set => mediaTagVersionField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string playQueueID
         {
-            get { return playQueueIDField; }
-            set { playQueueIDField = value; }
+            get => playQueueIDField;
+            set => playQueueIDField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public uint playQueueSelectedItemID
         {
-            get { return playQueueSelectedItemIDField; }
-            set { playQueueSelectedItemIDField = value; }
+            get => playQueueSelectedItemIDField;
+            set => playQueueSelectedItemIDField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte playQueueSelectedItemOffset
         {
-            get { return playQueueSelectedItemOffsetField; }
-            set { playQueueSelectedItemOffsetField = value; }
+            get => playQueueSelectedItemOffsetField;
+            set => playQueueSelectedItemOffsetField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort playQueueSelectedMetadataItemID
         {
-            get { return playQueueSelectedMetadataItemIDField; }
-            set { playQueueSelectedMetadataItemIDField = value; }
+            get => playQueueSelectedMetadataItemIDField;
+            set => playQueueSelectedMetadataItemIDField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte playQueueShuffled
         {
-            get { return playQueueShuffledField; }
-            set { playQueueShuffledField = value; }
+            get => playQueueShuffledField;
+            set => playQueueShuffledField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string playQueueSourceURI
         {
-            get { return playQueueSourceURIField; }
-            set { playQueueSourceURIField = value; }
+            get => playQueueSourceURIField;
+            set => playQueueSourceURIField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte playQueueTotalCount
         {
-            get { return playQueueTotalCountField; }
-            set { playQueueTotalCountField = value; }
+            get => playQueueTotalCountField;
+            set => playQueueTotalCountField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte playQueueVersion
         {
-            get { return playQueueVersionField; }
-            set { playQueueVersionField = value; }
+            get => playQueueVersionField;
+            set => playQueueVersionField = value;
         }
     }
 }

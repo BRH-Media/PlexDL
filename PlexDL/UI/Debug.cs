@@ -13,14 +13,14 @@ namespace PlexDL.UI
 {
     public partial class Debug : Form
     {
-        public int RefreshCount { get; set; }
-        public bool TimerRunning { get; set; } = true;
-
         public Debug()
         {
             InitializeComponent();
             cbxExportFormat.SelectedIndex = 0;
         }
+
+        public int RefreshCount { get; set; }
+        public bool TimerRunning { get; set; } = true;
 
         private void ExportSections()
         {
@@ -60,9 +60,7 @@ namespace PlexDL.UI
         private void ExportFiltered()
         {
             if (Flags.IsFiltered)
-            {
                 ProcessExport(radModeTable.Checked ? TableProvider.FilteredTable : ViewProvider.FilteredViewTable);
-            }
             else
                 UIMessages.Error("Titles are not currently filtered");
         }
@@ -70,9 +68,7 @@ namespace PlexDL.UI
         private void ExportSeasons()
         {
             if (ObjectProvider.CurrentContentType == ContentType.TvShows)
-            {
                 ProcessExport(radModeTable.Checked ? TableProvider.SeasonsTable : ViewProvider.SeasonsViewTable);
-            }
             else
                 UIMessages.Error("PlexDL is not in TV Mode");
         }
@@ -80,9 +76,7 @@ namespace PlexDL.UI
         private void ExportEpisodes()
         {
             if (ObjectProvider.CurrentContentType == ContentType.TvShows)
-            {
                 ProcessExport(radModeTable.Checked ? TableProvider.EpisodesTable : ViewProvider.EpisodesViewTable);
-            }
             else
                 UIMessages.Error("PlexDL is not in TV Mode");
         }
@@ -90,9 +84,7 @@ namespace PlexDL.UI
         private void ExportAlbums()
         {
             if (ObjectProvider.CurrentContentType == ContentType.Music)
-            {
                 ProcessExport(radModeTable.Checked ? TableProvider.AlbumsTable : ViewProvider.AlbumViewTable);
-            }
             else
                 UIMessages.Error("PlexDL is not in Music Mode");
         }
@@ -100,9 +92,7 @@ namespace PlexDL.UI
         private void ExportTracks()
         {
             if (ObjectProvider.CurrentContentType == ContentType.Music)
-            {
                 ProcessExport(radModeTable.Checked ? TableProvider.TracksTable : ViewProvider.TracksViewTable);
-            }
             else
                 UIMessages.Error("PlexDL is not in Music Mode");
         }
@@ -147,10 +137,14 @@ namespace PlexDL.UI
                         UIMessages.Info("Success!");
                     }
                     else
+                    {
                         UIMessages.Error("Couldn't export; table has no rows.");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Couldn't export; table is null.");
+                }
             }
             catch (Exception ex)
             {
@@ -176,10 +170,14 @@ namespace PlexDL.UI
                         UIMessages.Info("Success!");
                     }
                     else
+                    {
                         UIMessages.Error("Couldn't export; table has no rows.");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Couldn't export; table is null.");
+                }
             }
             catch (Exception ex)
             {
@@ -205,10 +203,14 @@ namespace PlexDL.UI
                         UIMessages.Info("Success!");
                     }
                     else
+                    {
                         UIMessages.Error("Couldn't export; table has no rows.");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Couldn't export; table is null.");
+                }
             }
             catch (Exception ex)
             {
@@ -234,10 +236,14 @@ namespace PlexDL.UI
                         UIMessages.Info("Success!");
                     }
                     else
+                    {
                         UIMessages.Error("Couldn't export; table has no rows.");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Couldn't export; table is null.");
+                }
             }
             catch (Exception ex)
             {
@@ -287,7 +293,8 @@ namespace PlexDL.UI
             var t = typeof(Flags);
             var fields = t.GetProperties();
 
-            RenderFlags((from p in fields let pValue = p.GetValue(null, null).ToString() select new[] { p.Name, pValue }).ToArray());
+            RenderFlags((from p in fields let pValue = p.GetValue(null, null).ToString() select new[] { p.Name, pValue })
+                .ToArray());
             UpdateRefreshInt();
             UpdateRefreshCount();
         }
@@ -300,10 +307,8 @@ namespace PlexDL.UI
             t.Columns.Add("Value");
 
             foreach (object[] f in flags)
-            {
                 if (t.Columns.Count == f.Length)
                     t.Rows.Add(f);
-            }
 
             dgvGlobalFlags.DataSource = t;
         }

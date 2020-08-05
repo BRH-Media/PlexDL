@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.CastAPI.PlayQueue;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Net.Http;
@@ -35,28 +36,28 @@ namespace PlexDL.Common.CastAPI
 
                 using (var httpClient = new HttpClient())
                 {
-                    using (var request = new HttpRequestMessage(new HttpMethod("POST"), $"{baseUri}/{resource}?type={type}&shuffle={shuffle}" +
-                                                                                        $"&repeat={repeat}&continuous={continuous}" +
-                                                                                        $"&own={own}&uri={uri}"))
+                    using (var request = new HttpRequestMessage(new HttpMethod("POST"),
+                        $"{baseUri}/{resource}?type={type}&shuffle={shuffle}" +
+                        $"&repeat={repeat}&continuous={continuous}" +
+                        $"&own={own}&uri={uri}"))
                     {
-                        request.Headers.TryAddWithoutValidation("X-Plex-Client-Identifier", "AB6CCCC7-5CF5-4523-826A-B969E0FFD8A0");
+                        request.Headers.TryAddWithoutValidation("X-Plex-Client-Identifier",
+                            "AB6CCCC7-5CF5-4523-826A-B969E0FFD8A0");
                         request.Headers.TryAddWithoutValidation("X-Plex-Token", "PzhwzBRtb1jQqfRypxDo");
 
                         var response = httpClient.SendAsync(request).Result;
 
                         if (response.IsSuccessStatusCode)
-                        {
                             if (response.Content != null)
                             {
                                 var d = response.Content.ReadAsStringAsync().Result
-                                    .ParseXml<PlayQueue.MediaContainer>();
+                                    .ParseXml<MediaContainer>();
 
                                 q.QueueId = d.playQueueID;
                                 q.QueueSuccess = true;
                                 q.QueueObject = d;
                                 q.QueueUri = $"/playQueues/{d.playQueueID}?own=1&window=200";
                             }
-                        }
                     }
                 }
             }

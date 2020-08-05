@@ -26,7 +26,8 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntryToAdd =
                 {
-                    _logIncrementer.ToString(), Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
+                    _logIncrementer.ToString(), Strings.CurrentSessionId,
+                    DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
                 LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
@@ -85,7 +86,8 @@ namespace PlexDL.Common.Logging
                 };
                 string[] logEntry =
                 {
-                    Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function, type
+                    Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function,
+                    type
                 };
                 LogWriter.LogDelWriter("ExceptionLog.logdel", headers, logEntry);
             }
@@ -103,7 +105,7 @@ namespace PlexDL.Common.Logging
 
                 string[] headers =
                 {
-                    "SessionID","DateTime", "Uri", "StatusCode"
+                    "SessionID", "DateTime", "Uri", "StatusCode"
                 };
                 string[] logEntry =
                 {

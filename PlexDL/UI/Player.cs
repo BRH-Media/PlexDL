@@ -17,11 +17,10 @@ namespace PlexDL.UI
 {
     public partial class Player : Form
     {
+        private PlexDL.Player.Player _mPlayer;
         public bool CanFadeOut = true;
 
         public bool IsWmp = false;
-
-        private PlexDL.Player.Player _mPlayer;
 
         public Timer T1 = new Timer();
 
@@ -444,31 +443,23 @@ namespace PlexDL.UI
         private void SetIconExitFs()
         {
             if (btnFullScreen.InvokeRequired)
-            {
                 btnFullScreen.BeginInvoke((MethodInvoker)delegate
-                {
-                    btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_exit_black_18dp;
-                });
-            }
+               {
+                   btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_exit_black_18dp;
+               });
             else
-            {
                 btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_exit_black_18dp;
-            }
         }
 
         private void SetIconOpenFs()
         {
             if (btnFullScreen.InvokeRequired)
-            {
                 btnFullScreen.BeginInvoke((MethodInvoker)delegate
-                {
-                    btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
-                });
-            }
+               {
+                   btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
+               });
             else
-            {
                 btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
-            }
         }
 
         private delegate void SafePlayDelegate(string fileName);

@@ -198,7 +198,9 @@ namespace PlexDL.UI
                             LoggingHelpers.RecordException(testUrl.LastException.Message, @"TestConnectionError");
                         }
                         else
+                        {
                             UIMessages.Error($@"Couldn't connect to ""{s.address}:{s.port}""", @"Network Error");
+                        }
                     }
                 }
                 else
@@ -361,10 +363,7 @@ namespace PlexDL.UI
 
         private void DgvServers_DoubleClick(object sender, EventArgs e)
         {
-            if (dgvServers.SelectedRows.Count == 1)
-            {
-                DoConnect();
-            }
+            if (dgvServers.SelectedRows.Count == 1) DoConnect();
         }
 
         private void ServerManager_Load(object sender, EventArgs e)
@@ -445,11 +444,15 @@ namespace PlexDL.UI
                         case AuthResult.Success:
                             if (ApplyToken(auth.Token))
                             {
-                                UIMessages.Info(@"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.", @"Success");
+                                UIMessages.Info(
+                                    @"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.",
+                                    @"Success");
                                 LoadServers(true);
                             }
                             else
+                            {
                                 UIMessages.Error(@"An unknown error occurred; we couldn't apply your account token.");
+                            }
 
                             break;
 
@@ -457,7 +460,8 @@ namespace PlexDL.UI
                             break;
 
                         case AuthResult.Failed: //alert the user to the failure
-                            UIMessages.Error(@"Failed to apply your account token; the ticket authority didn't authorise the transaction or values were not valid.");
+                            UIMessages.Error(
+                                @"Failed to apply your account token; the ticket authority didn't authorise the transaction or values were not valid.");
                             break;
 
                         case AuthResult.Error: //alert the user to the error
@@ -469,7 +473,8 @@ namespace PlexDL.UI
                             break;
 
                         case AuthResult.IncorrectResponse:
-                            UIMessages.Error(@"Failed to get an authentication ticket from Plex.tv; an incorrectly formatted response was received.");
+                            UIMessages.Error(
+                                @"Failed to get an authentication ticket from Plex.tv; an incorrectly formatted response was received.");
                             break;
 
                         default:
@@ -477,10 +482,12 @@ namespace PlexDL.UI
                     }
                 }
                 else
-                    // trying to connect on no connection will not end well; alert the user.
+                // trying to connect on no connection will not end well; alert the user.
+                {
                     UIMessages.Warning(
                         @"No internet connection. Please connect to a network before attempting to authenticate.",
                         @"Network Error");
+                }
             }
             catch (Exception ex)
             {
@@ -513,7 +520,9 @@ namespace PlexDL.UI
                             LoadServers(true);
                         }
                         else
+                        {
                             UIMessages.Error(@"An unknown error occurred");
+                        }
                     }
                 else
                     // trying to connect on no connection will not end well; alert the user.

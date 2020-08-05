@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.API;
+﻿using PlexDL.Common;
+using PlexDL.Common.API;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Structures.Plex;
@@ -58,8 +59,10 @@ namespace PlexDL.Internal
                         RunMetadataWindow(metadata);
                     }
                     else
+                    {
                         UIMessages.Error(@"PlexDL doesn't recognise this file-type: '" + ext + @"'",
                             @"Validation Error");
+                    }
                 }
                 else
                 {
@@ -72,7 +75,9 @@ namespace PlexDL.Internal
                 }
             }
             else
+            {
                 Application.Run(new Home());
+            }
         }
 
         private static void RunMetadataWindow(PlexObject metadata)
@@ -84,8 +89,10 @@ namespace PlexDL.Internal
                 Application.Run(form);
             }
             else
+            {
                 UIMessages.Error(@"Invalid PlexMovie Metadata File; the decoded data was null.",
                     @"Validation Error");
+            }
         }
 
         private static void RunPlexDlHome()
@@ -110,8 +117,7 @@ namespace PlexDL.Internal
         {
             if (args.Contains("-v1"))
                 Application.EnableVisualStyles();
-            else
-                if (!args.Contains("-v0"))
+            else if (!args.Contains("-v0"))
                 if (!args.Contains("-t"))
                     Application.EnableVisualStyles();
         }
@@ -128,7 +134,7 @@ namespace PlexDL.Internal
 
         private static void CheckDebug(ICollection<string> args)
         {
-            Common.Flags.IsDebug = args.Contains("-debug");
+            Flags.IsDebug = args.Contains("-debug");
         }
 
         private static void CheckAppDataFolder()

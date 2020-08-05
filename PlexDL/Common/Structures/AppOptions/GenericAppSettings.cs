@@ -12,13 +12,15 @@ namespace PlexDL.Common.Structures.AppOptions
         public string StoredAppVersion { get; set; } = Application.ProductVersion;
 
         [DisplayName("Autostream")]
-        [Description("When the user double-clicks on a selected episode, or a selected movie, it will launch the default Playback Engine. If the engine is set to MenuSelect, then VLC will be launched. When this is disabled," +
+        [Description(
+            "When the user double-clicks on a selected episode, or a selected movie, it will launch the default Playback Engine. If the engine is set to MenuSelect, then VLC will be launched. When this is disabled," +
             "grids will resume showing the cell content instead of launching a player.")]
         public bool DoubleClickLaunch { get; set; } = true;
 
         [ReadOnly(true)]
         [DisplayName("Download Folder")]
-        [Description("The location where PlexDL will store your downloaded content. Change this value via the File menu.")]
+        [Description(
+            "The location where PlexDL will store your downloaded content. Change this value via the File menu.")]
         public string DownloadDirectory { get; set; } = "";
 
         [DisplayName("Adult Content Filtering")]
@@ -27,7 +29,8 @@ namespace PlexDL.Common.Structures.AppOptions
         public bool AdultContentProtection { get; set; } = true;
 
         [DisplayName("Connection Success Message")]
-        [Description("For debugging. This enables/disables a message informing the user that the connection was successful.")]
+        [Description(
+            "For debugging. This enables/disables a message informing the user that the connection was successful.")]
         public bool ShowConnectionSuccess { get; set; } = false;
 
         [ReadOnly(true)]
@@ -41,9 +44,10 @@ namespace PlexDL.Common.Structures.AppOptions
         public int DefaultStringLength { get; set; } = 64;
 
         [DisplayName("Search Column Priority")]
-        [Description("When searching, PlexDL will prioritise what column to autoselect in the Search Form. Matches are performed from index 0 onwards, so " +
+        [Description(
+            "When searching, PlexDL will prioritise what column to autoselect in the Search Form. Matches are performed from index 0 onwards, so " +
             "the first value in this field to be matched will be selected, and other matches will be aborted.")]
-        public List<string> SearchColumnPriority { get; set; } = new List<string>()
+        public List<string> SearchColumnPriority { get; set; } = new List<string>
         {
             "title",
             "Entry",

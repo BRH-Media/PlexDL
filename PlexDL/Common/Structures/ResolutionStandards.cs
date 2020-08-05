@@ -5,29 +5,32 @@ namespace PlexDL.Common.Structures
 {
     public static class ResolutionStandards
     {
-        public static string[][] HeightStandards { get; } = {
-            new[] { "480", "SD NTSC" },
-            new[] { "576", "SD PAL"  },
-            new[] { "720","HD"       },
-            new[] { "1080","FHD"     },
-            new[] { "1440","QHD"     },
-            new[] { "2160", "4K UHD" },
-            new[] { "4320", "8K UHD" }
+        public static string[][] HeightStandards { get; } =
+        {
+            new[] {"480", "SD NTSC"},
+            new[] {"576", "SD PAL"},
+            new[] {"720", "HD"},
+            new[] {"1080", "FHD"},
+            new[] {"1440", "QHD"},
+            new[] {"2160", "4K UHD"},
+            new[] {"4320", "8K UHD"}
         };
 
-        public static string[][] PlexFramerates { get; } = {
-            new[] { "ntsc", "29.97" },
-            new[] { "pal", "25.00"  },
-            new[] { "24p", "24.00"  },
-            new[] { "60p", "60.00"  },
-            new[] { "50p", "50.00"  },
-            new[] { "25p", "25.00"  }
+        public static string[][] PlexFramerates { get; } =
+        {
+            new[] {"ntsc", "29.97"},
+            new[] {"pal", "25.00"},
+            new[] {"24p", "24.00"},
+            new[] {"60p", "60.00"},
+            new[] {"50p", "50.00"},
+            new[] {"25p", "25.00"}
         };
 
         //for organisational reasons
-        public static string[][] RegionalFramerates { get; } = {
-            new[] { "ntsc", "29.97" },
-            new[] { "pal", "25.00"  }
+        public static string[][] RegionalFramerates { get; } =
+        {
+            new[] {"ntsc", "29.97"},
+            new[] {"pal", "25.00"}
         };
 
         public static string FpsPSuffix(string fps)
@@ -45,6 +48,7 @@ namespace PlexDL.Common.Structures
             {
                 LoggingHelpers.RecordException(ex.Message, "FpsFromStdError");
             }
+
             return suffixed;
         }
 
@@ -68,6 +72,7 @@ namespace PlexDL.Common.Structures
             {
                 LoggingHelpers.RecordException(ex.Message, "FpsFromStdError");
             }
+
             return fps;
         }
 
@@ -94,6 +99,7 @@ namespace PlexDL.Common.Structures
                 std = s[0].ToUpper();
                 break;
             }
+
             return std;
         }
 
@@ -107,6 +113,7 @@ namespace PlexDL.Common.Structures
                 std = s[1];
                 break;
             }
+
             return std;
         }
     }

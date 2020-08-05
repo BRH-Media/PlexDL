@@ -9,6 +9,11 @@ namespace PlexDL.UI
 {
     public partial class DirectConnect : Form
     {
+        public DirectConnect()
+        {
+            InitializeComponent();
+        }
+
         //public bool ConnectionStarted { get; set; } = false;
         public bool Success { get; set; }
 
@@ -22,17 +27,12 @@ namespace PlexDL.UI
             set => chkToken.Checked = value;
         }
 
-        public DirectConnect()
-        {
-            InitializeComponent();
-        }
+        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
         private static bool VerifyToken(string token)
         {
             return token.Length == 20 && !string.IsNullOrWhiteSpace(token);
         }
-
-        public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
         private void BtnConnect_Click(object sender, EventArgs e)
         {
@@ -75,11 +75,9 @@ namespace PlexDL.UI
                     else
                     {
                         if (testUrl.LastException != null && testUrl.StatusCode != "Undetermined")
-                        {
                             UIMessages.Error(
                                 $"Could not connect: {testUrl.StatusCode}\n\nYou can exit the dialog by clicking 'Cancel'.",
                                 @"Network Error");
-                        }
                         else
                             UIMessages.Error(
                                 "Could not connect; the web server either returned an incorrect response, or the client could not establish a connection.\n\nYou can exit the dialog by clicking 'Cancel'.",

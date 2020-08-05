@@ -4,149 +4,148 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common.CastAPI.PlayQueue
 {
-    /// <remarks/>
+    /// <remarks />
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     public class MediaContainerVideoMedia
     {
-        private MediaContainerVideoMediaPart partField;
-
-        private ushort idField;
-
-        private uint durationField;
-
-        private ushort bitrateField;
-
-        private ushort widthField;
-
-        private ushort heightField;
-
         private decimal aspectRatioField;
 
         private byte audioChannelsField;
 
         private string audioCodecField;
 
-        private string videoCodecField;
-
-        private ushort videoResolutionField;
+        private ushort bitrateField;
 
         private string containerField;
+
+        private uint durationField;
+
+        private ushort heightField;
+
+        private ushort idField;
+        private MediaContainerVideoMediaPart partField;
+
+        private string videoCodecField;
 
         private string videoFrameRateField;
 
         private string videoProfileField;
 
-        /// <remarks/>
+        private ushort videoResolutionField;
+
+        private ushort widthField;
+
+        /// <remarks />
         public MediaContainerVideoMediaPart Part
         {
-            get { return partField; }
-            set { partField = value; }
+            get => partField;
+            set => partField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort id
         {
-            get { return idField; }
-            set { idField = value; }
+            get => idField;
+            set => idField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public uint duration
         {
-            get { return durationField; }
-            set { durationField = value; }
+            get => durationField;
+            set => durationField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort bitrate
         {
-            get { return bitrateField; }
-            set { bitrateField = value; }
+            get => bitrateField;
+            set => bitrateField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort width
         {
-            get { return widthField; }
-            set { widthField = value; }
+            get => widthField;
+            set => widthField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort height
         {
-            get { return heightField; }
-            set { heightField = value; }
+            get => heightField;
+            set => heightField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public decimal aspectRatio
         {
-            get { return aspectRatioField; }
-            set { aspectRatioField = value; }
+            get => aspectRatioField;
+            set => aspectRatioField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte audioChannels
         {
-            get { return audioChannelsField; }
-            set { audioChannelsField = value; }
+            get => audioChannelsField;
+            set => audioChannelsField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string audioCodec
         {
-            get { return audioCodecField; }
-            set { audioCodecField = value; }
+            get => audioCodecField;
+            set => audioCodecField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string videoCodec
         {
-            get { return videoCodecField; }
-            set { videoCodecField = value; }
+            get => videoCodecField;
+            set => videoCodecField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public ushort videoResolution
         {
-            get { return videoResolutionField; }
-            set { videoResolutionField = value; }
+            get => videoResolutionField;
+            set => videoResolutionField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string container
         {
-            get { return containerField; }
-            set { containerField = value; }
+            get => containerField;
+            set => containerField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string videoFrameRate
         {
-            get { return videoFrameRateField; }
-            set { videoFrameRateField = value; }
+            get => videoFrameRateField;
+            set => videoFrameRateField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string videoProfile
         {
-            get { return videoProfileField; }
-            set { videoProfileField = value; }
+            get => videoProfileField;
+            set => videoProfileField = value;
         }
     }
 }

@@ -21,7 +21,8 @@ namespace PlexDL.Common.PlayerLaunchers
                         {
                             StreamingContent = stream
                         };
-                        LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (PVS)");
+                        LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle +
+                                                          " (PVS)");
                         frm.ShowDialog();
                     }
                     else
@@ -30,7 +31,8 @@ namespace PlexDL.Common.PlayerLaunchers
                             "You cannot stream \n" + stream.StreamInformation.ContentTitle +
                             "\n because a download is already running. Cancel the download before attempting to stream within PlexDL.",
                             @"Validation Error");
-                        LoggingHelpers.RecordGeneralEntry("Tried to stream content via PVS, but a download is running.");
+                        LoggingHelpers.RecordGeneralEntry(
+                            "Tried to stream content via PVS, but a download is running.");
                     }
                 }
                 catch (Exception ex)

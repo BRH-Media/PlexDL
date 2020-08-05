@@ -91,7 +91,8 @@ namespace PlexDL.Common.Caching
             {
             };
             if (Directory.Exists(CachingFileDir.RootCacheDirectory))
-                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ServerListExt, SearchOption.AllDirectories);
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ServerListExt,
+                    SearchOption.AllDirectories);
             return files;
         }
 
@@ -101,7 +102,8 @@ namespace PlexDL.Common.Caching
             {
             };
             if (Directory.Exists(CachingFileDir.RootCacheDirectory))
-                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ThumbExt, SearchOption.AllDirectories);
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ThumbExt,
+                    SearchOption.AllDirectories);
             return files;
         }
 
@@ -111,7 +113,8 @@ namespace PlexDL.Common.Caching
             {
             };
             if (Directory.Exists(CachingFileDir.RootCacheDirectory))
-                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ApiXmlExt, SearchOption.AllDirectories);
+                files = Directory.GetFiles(CachingFileDir.RootCacheDirectory, "*" + CachingFileExt.ApiXmlExt,
+                    SearchOption.AllDirectories);
             return files;
         }
     }

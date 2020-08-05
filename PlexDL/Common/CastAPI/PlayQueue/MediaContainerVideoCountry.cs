@@ -4,40 +4,39 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common.CastAPI.PlayQueue
 {
-    /// <remarks/>
+    /// <remarks />
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     public class MediaContainerVideoCountry
     {
-        private byte idField;
-
         private string filterField;
+        private byte idField;
 
         private string tagField;
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public byte id
         {
-            get { return idField; }
-            set { idField = value; }
+            get => idField;
+            set => idField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string filter
         {
-            get { return filterField; }
-            set { filterField = value; }
+            get => filterField;
+            set => filterField = value;
         }
 
-        /// <remarks/>
+        /// <remarks />
         [XmlAttribute]
         public string tag
         {
-            get { return tagField; }
-            set { tagField = value; }
+            get => tagField;
+            set => tagField = value;
         }
     }
 }

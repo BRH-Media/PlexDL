@@ -41,7 +41,8 @@ namespace PlexDL.Common.Caching
 
                 var fileCreation = File.GetCreationTime(filePath);
                 var now = DateTime.Now;
-                var days = (int)(now - fileCreation).TotalDays + 1; //adding one ensures if it was created on the same day it counts as one day passed
+                var days = (int)(now - fileCreation).TotalDays +
+                           1; //adding one ensures if it was created on the same day it counts as one day passed
 
                 LoggingHelpers.RecordCacheEvent($"Requested XML record is {days} day(s) old", $"file://{filePath}");
 

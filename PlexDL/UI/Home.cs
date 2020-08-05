@@ -353,9 +353,11 @@ namespace PlexDL.UI
         private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabMain.SelectedTab == tabLog)
-                dgvLog.DataSource = File.Exists($@"{LogWriter.LogDirectory}\PlexDL.logdel") //check if the main log file exists
-                    ? LogReader.TableFromFile($@"{LogWriter.LogDirectory}\PlexDL.logdel", false) //if it does, load it.
-                    : null; //if it doesn't, clear the grid by applying a null value.
+                dgvLog.DataSource =
+                    File.Exists($@"{LogWriter.LogDirectory}\PlexDL.logdel") //check if the main log file exists
+                        ? LogReader.TableFromFile($@"{LogWriter.LogDirectory}\PlexDL.logdel",
+                            false) //if it does, load it.
+                        : null; //if it doesn't, clear the grid by applying a null value.
             else
                 dgvLog.DataSource = null; //clear log grid to save on memory (it won't be in focus anyway)
         }
@@ -394,6 +396,193 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
                 CancelDownload(true, "Worker Timeout");
             }
+        }
+
+        private void ItmDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadSelected();
+        }
+
+        private void ItmDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadAll();
+        }
+
+        private void CxtTrackOptions_Opening(object sender, CancelEventArgs e)
+        {
+            if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
+        }
+
+        private void ItmDGVDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadSelected();
+        }
+
+        private void ItmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadAll();
+        }
+
+        private void ItmTrackMetadata_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            Metadata();
+        }
+
+        private void ItmCleanupAllData_Click(object sender, EventArgs e)
+        {
+            DoCleanup();
+        }
+
+        private static void DoCleanup()
+        {
+            //check if the AppData .plexdl folder actually exists
+            if (Directory.Exists(Strings.PlexDlAppData))
+            {
+                var ask = UIMessages.Question(
+                    @"Are you sure you want to do this? This will remove all logging, caching and secure data.",
+                    @"Cleanup Confirmation");
+
+                //if they clicked anything other than 'Yes' on the message above, then exit the method.
+                if (!ask) return;
+
+                try
+                {
+                    //Try and delete the .plexdl AppData folder and all its subfolders and files
+                    Directory.Delete(Strings.PlexDlAppData, true);
+
+                    //alert user of the success
+                    UIMessages.Info(
+                        "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also.\n\nNote: This event has not been logged.",
+                        @"Cleanup Completed");
+                }
+                catch (Exception ex)
+                {
+                    UIMessages.Error(
+                        "Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
+                        @"Cleanup Failed");
+                }
+            }
+            else
+            {
+                UIMessages.Error(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
+                    @"Cleanup Failed");
+            }
+        }
+
+        private void ItmRepo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Strings.RepoUrl);
+            }
+            catch (Exception ex)
+            {
+                UIMessages.Error("Couldn't open repo url. Check exception log.");
+                LoggingHelpers.RecordException(ex.Message, @"OpenRepoError");
+            }
+        }
+
+        private void ItmCheckForUpdates_Click(object sender, EventArgs e)
+        {
+            UpdateManager.RunUpdateCheck();
+        }
+
+        private void ItmRenderKeyColumn_Click(object sender, EventArgs e)
+        {
+            RenderLibraryView(TableProvider.SectionsTable, itmRenderKeyColumn.Checked);
+        }
+
+        private static void ShowLinkViewer(PlexObject media)
+        {
+            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download }; //download link (octet-stream)
+            viewer.ShowDialog();
+        }
+
+        private void ShowLinkViewer_Worker(object sender, WaitWindowEventArgs e)
+        {
+            e.Result = ObjectFromSelection();
+        }
+
+        private void ShowLinkViewer()
+        {
+            var o = (PlexObject)WaitWindow.WaitWindow.Show(ShowLinkViewer_Worker, @"Getting link");
+            if (o != null)
+                ShowLinkViewer(o);
+            else
+                UIMessages.Error(@"Content object was null; couldn't construct a link for you.");
+        }
+
+        private void ItmDGVViewTrackDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
+        }
+
+        private void ItmDGVViewMovieDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
+        }
+
+        private void ItmDGVViewEpisodeDownloadLink_Click(object sender, EventArgs e)
+        {
+            ShowLinkViewer();
+        }
+
+        private void ItmClearMyToken_Click(object sender, EventArgs e)
+        {
+            TokenManager.TokenClearProcedure();
+        }
+
+        private void ItmOpenDataFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start(Strings.PlexDlAppData); //open the %APPDATA%\.plexdl folder in Explorer
+        }
+
+        private void ItmCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+
+        private void DoCast()
+        {
+            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
+                Cast.TryCast(ObjectFromSelection());
+            else if (dgvTracks.SelectedRows.Count == 1)
+                UIMessages.Warning(@"Casting music is not yet supported");
+        }
+
+        private void ItmContentCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+
+        private void ItmEpisodeCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+
+        private void ItmTrackCast_Click(object sender, EventArgs e)
+        {
+            DoCast();
+        }
+
+        private void ItmContentStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
+        }
+
+        private void ItmEpisodeStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
+        }
+
+        private void ItmTrackStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
         }
 
         #region GlobalIntVariables
@@ -1006,6 +1195,10 @@ namespace PlexDL.UI
                    LoggingHelpers.RecordGeneralEntry("Worker has started the download process");
                });
             }
+            catch (ThreadAbortException)
+            {
+                //literally nothing; this gets raised when a cancellation happens.
+            }
             catch (Exception ex)
             {
                 SetProgressLabel(@"Errored - Check Log");
@@ -1084,37 +1277,25 @@ namespace PlexDL.UI
         private void SelectMoviesTab()
         {
             if (InvokeRequired)
-            {
                 BeginInvoke((MethodInvoker)delegate { tabMain.SelectedTab = tabMovies; });
-            }
             else
-            {
                 tabMain.SelectedTab = tabMovies;
-            }
         }
 
         private void SelectTvTab()
         {
             if (InvokeRequired)
-            {
                 BeginInvoke((MethodInvoker)delegate { tabMain.SelectedTab = tabTV; });
-            }
             else
-            {
                 tabMain.SelectedTab = tabTV;
-            }
         }
 
         private void SelectMusicTab()
         {
             if (InvokeRequired)
-            {
                 BeginInvoke((MethodInvoker)delegate { tabMain.SelectedTab = tabMusic; });
-            }
             else
-            {
                 tabMain.SelectedTab = tabMusic;
-            }
         }
 
         private void ClearContentView()
@@ -1609,7 +1790,6 @@ namespace PlexDL.UI
             if (Flags.IsFiltered)
             {
                 if (renderTables)
-                {
                     switch (ObjectProvider.CurrentContentType)
                     {
                         case ContentType.TvShows:
@@ -1624,7 +1804,6 @@ namespace PlexDL.UI
                             RenderArtistsView(TableProvider.TitlesTable);
                             break;
                     }
-                }
 
                 TableProvider.FilteredTable = null;
                 Flags.IsFiltered = false;
@@ -1878,10 +2057,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (Flags.IsAutoUpdateEnabled)
-                {
-                    UpdateManager.RunUpdateCheck(true);
-                }
+                if (Flags.IsAutoUpdateEnabled) UpdateManager.RunUpdateCheck(true);
 
                 if (Flags.IsDebug)
                 {
@@ -2109,8 +2285,10 @@ namespace PlexDL.UI
                     }
                 }
                 else
+                {
                     LoggingHelpers.RecordGeneralEntry(
                         "Double-click launch failed; incorrect object type. Expecting object of type FlatDataGridView.");
+                }
             }
             catch (Exception ex)
             {
@@ -2194,7 +2372,9 @@ namespace PlexDL.UI
                 SetDownloadCancel();
             }
             else
+            {
                 LoggingHelpers.RecordGeneralEntry("Download process failed; download is already running.");
+            }
         }
 
         private void DoDownloadSelected()
@@ -2215,7 +2395,9 @@ namespace PlexDL.UI
                 SetDownloadCancel();
             }
             else
+            {
                 LoggingHelpers.RecordGeneralEntry("Download process failed; download is already running.");
+            }
         }
 
         private void StartStreaming()
@@ -2229,8 +2411,10 @@ namespace PlexDL.UI
                 {
                     case ContentType.Movies:
                         if (dgvMovies.SelectedRows.Count == 1)
+                        {
                             result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
                                 @"Getting Metadata", false);
+                        }
                         else
                         {
                             UIMessages.Error(@"No movie is selected", @"Validation Error");
@@ -2241,8 +2425,10 @@ namespace PlexDL.UI
 
                     case ContentType.TvShows:
                         if (dgvEpisodes.SelectedRows.Count == 1)
+                        {
                             result = (PlexTvShow)WaitWindow.WaitWindow.Show(GetTvObjectFromSelectionWorker,
                                 "Getting Metadata", false);
+                        }
                         else
                         {
                             UIMessages.Error(@"No episode is selected", @"Validation Error");
@@ -2253,14 +2439,10 @@ namespace PlexDL.UI
 
                     case ContentType.Music:
                         if (dgvTracks.SelectedRows.Count == 1)
-                        {
                             result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
                                 "Getting Metadata", false);
-                        }
                         else
-                        {
                             UIMessages.Error(@"No track is selected", @"Validation Error");
-                        }
 
                         break;
                 }
@@ -2268,9 +2450,7 @@ namespace PlexDL.UI
                 if (result != null)
                     StartStreaming(result);
                 else
-                {
                     LoggingHelpers.RecordGeneralEntry("Couldn't start streaming; object was null.");
-                }
             }
             catch (Exception ex)
             {
@@ -2346,7 +2526,6 @@ namespace PlexDL.UI
                 if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                 {
                     if (result == null)
-                    {
                         switch (ObjectProvider.CurrentContentType)
                         {
                             case ContentType.Movies:
@@ -2364,7 +2543,6 @@ namespace PlexDL.UI
                                     "Getting Metadata", false);
                                 break;
                         }
-                    }
 
                     using (var frm = new Metadata())
                     {
@@ -2397,194 +2575,5 @@ namespace PlexDL.UI
         }
 
         #endregion ButtonClicks
-
-        private void ItmDownloadThisTrack_Click(object sender, EventArgs e)
-        {
-            cxtTracks.Close();
-            DoDownloadSelected();
-        }
-
-        private void ItmDownloadThisAlbum_Click(object sender, EventArgs e)
-        {
-            cxtTracks.Close();
-            DoDownloadAll();
-        }
-
-        private void CxtTrackOptions_Opening(object sender, CancelEventArgs e)
-        {
-            if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
-        }
-
-        private void ItmDGVDownloadThisTrack_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            DoDownloadSelected();
-        }
-
-        private void ItmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            DoDownloadAll();
-        }
-
-        private void ItmTrackMetadata_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            Metadata();
-        }
-
-        private void ItmCleanupAllData_Click(object sender, EventArgs e)
-        {
-            DoCleanup();
-        }
-
-        private static void DoCleanup()
-        {
-            //check if the AppData .plexdl folder actually exists
-            if (Directory.Exists(Strings.PlexDlAppData))
-            {
-                var ask = UIMessages.Question(
-                    @"Are you sure you want to do this? This will remove all logging, caching and secure data.",
-                    @"Cleanup Confirmation");
-
-                //if they clicked anything other than 'Yes' on the message above, then exit the method.
-                if (!ask) return;
-
-                try
-                {
-                    //Try and delete the .plexdl AppData folder and all its subfolders and files
-                    Directory.Delete(Strings.PlexDlAppData, true);
-
-                    //alert user of the success
-                    UIMessages.Info(
-                        "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also.\n\nNote: This event has not been logged.",
-                        @"Cleanup Completed");
-                }
-                catch (Exception ex)
-                {
-                    UIMessages.Error(
-                        "Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
-                        @"Cleanup Failed");
-                }
-            }
-            else
-                UIMessages.Error(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
-                    @"Cleanup Failed");
-        }
-
-        private void ItmRepo_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process.Start(Strings.RepoUrl);
-            }
-            catch (Exception ex)
-            {
-                UIMessages.Error("Couldn't open repo url. Check exception log.");
-                LoggingHelpers.RecordException(ex.Message, @"OpenRepoError");
-            }
-        }
-
-        private void ItmCheckForUpdates_Click(object sender, EventArgs e)
-        {
-            UpdateManager.RunUpdateCheck();
-        }
-
-        private void ItmRenderKeyColumn_Click(object sender, EventArgs e)
-        {
-            RenderLibraryView(TableProvider.SectionsTable, itmRenderKeyColumn.Checked);
-        }
-
-        private static void ShowLinkViewer(PlexObject media)
-        {
-            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download }; //download link (octet-stream)
-            viewer.ShowDialog();
-        }
-
-        private void ShowLinkViewer_Worker(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = ObjectFromSelection();
-        }
-
-        private void ShowLinkViewer()
-        {
-            var o = (PlexObject)WaitWindow.WaitWindow.Show(ShowLinkViewer_Worker, @"Getting link");
-            if (o != null)
-            {
-                ShowLinkViewer(o);
-            }
-            else
-            {
-                UIMessages.Error(@"Content object was null; couldn't construct a link for you.");
-            }
-        }
-
-        private void ItmDGVViewTrackDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
-        private void ItmDGVViewMovieDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
-        private void ItmDGVViewEpisodeDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
-        private void ItmClearMyToken_Click(object sender, EventArgs e)
-        {
-            TokenManager.TokenClearProcedure();
-        }
-
-        private void ItmOpenDataFolder_Click(object sender, EventArgs e)
-        {
-            Process.Start(Strings.PlexDlAppData); //open the %APPDATA%\.plexdl folder in Explorer
-        }
-
-        private void ItmCast_Click(object sender, EventArgs e)
-        {
-            DoCast();
-        }
-
-        private void DoCast()
-        {
-            if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1)
-                Cast.TryCast(ObjectFromSelection());
-            else if (dgvTracks.SelectedRows.Count == 1)
-                UIMessages.Warning(@"Casting music is not yet supported");
-        }
-
-        private void ItmContentCast_Click(object sender, EventArgs e)
-        {
-            DoCast();
-        }
-
-        private void ItmEpisodeCast_Click(object sender, EventArgs e)
-        {
-            DoCast();
-        }
-
-        private void ItmTrackCast_Click(object sender, EventArgs e)
-        {
-            DoCast();
-        }
-
-        private void ItmContentStream_Click(object sender, EventArgs e)
-        {
-            StartStreaming();
-        }
-
-        private void ItmEpisodeStream_Click(object sender, EventArgs e)
-        {
-            StartStreaming();
-        }
-
-        private void ItmTrackStream_Click(object sender, EventArgs e)
-        {
-            StartStreaming();
-        }
     }
 }

@@ -32,11 +32,11 @@ namespace PlexDL.Common.Renderers.DGVRenderers
             if (target.InvokeRequired)
             {
                 target.BeginInvoke((MethodInvoker)delegate
-                {
-                    target.DataSource = dgvBind;
-                    Methods.SortingEnabled(target, false);
-                    target.Refresh();
-                });
+               {
+                   target.DataSource = dgvBind;
+                   Methods.SortingEnabled(target, false);
+                   target.Refresh();
+               });
             }
             else
             {

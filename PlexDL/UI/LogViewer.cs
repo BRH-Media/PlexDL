@@ -16,7 +16,6 @@ namespace PlexDL.UI
 {
     public partial class LogViewer : Form
     {
-        public string LogDir { get; set; } = Vars.LogDirectory;
         private bool _isFiltered;
 
 #pragma warning disable 414
@@ -28,6 +27,8 @@ namespace PlexDL.UI
         {
             InitializeComponent();
         }
+
+        public string LogDir { get; set; } = Vars.LogDirectory;
 
         public void RefreshLogItems()
         {
@@ -149,13 +150,9 @@ namespace PlexDL.UI
         private void ItmSearchTerm_Click(object sender, EventArgs e)
         {
             if (_isFiltered)
-            {
                 CancelSearch();
-            }
             else
-            {
                 RunTitleSearch();
-            }
         }
 
         private void ItmGoToLine_Click(object sender, EventArgs e)
@@ -245,12 +242,16 @@ namespace PlexDL.UI
                             "Success");
                     }
                     else
+                    {
                         UIMessages.Error("Selected file does not exist",
                             "Validation Error");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Nothing is selected",
                         "Validation Error");
+                }
             }
             catch (Exception ex)
             {
@@ -277,12 +278,16 @@ namespace PlexDL.UI
                             "Success");
                     }
                     else
+                    {
                         UIMessages.Error("Selected file does not exist",
                             "Validation Error");
+                    }
                 }
                 else
+                {
                     UIMessages.Error("Nothing is selected",
                         "Validation Error");
+                }
             }
             catch (Exception ex)
             {

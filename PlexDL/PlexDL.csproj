@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\API\DownloadInfoGatherers.cs" />
+    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataIntegers.cs" />
     <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataStrings.cs" />
     <Compile Include="Common\API\Metadata\Handlers\XmlMetadataContent.cs" />
     <Compile Include="Common\API\Metadata\Objects\XmlMetadata.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Common\Globals\Providers\ObjectProvider.cs" />
     <Compile Include="Common\Globals\RowGet.cs" />
     <Compile Include="Common\Globals\Strings.cs" />
+    <Compile Include="Common\ImageHandler.cs" />
     <Compile Include="Common\MD5Helper.cs" />
     <Compile Include="Common\ParseHelpers.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />

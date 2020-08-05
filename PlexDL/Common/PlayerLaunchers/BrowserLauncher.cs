@@ -14,13 +14,16 @@ namespace PlexDL.Common.PlayerLaunchers
             {
                 if (Methods.StreamAdultContentCheck(stream))
                 {
-                    Process.Start(stream.StreamInformation.Links.View); //normal MP4 stream (this won't trigger a browser download if it's a supported file)
-                    LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle + " (Browser)");
+                    Process.Start(stream.StreamInformation.Links
+                        .View); //normal MP4 stream (this won't trigger a browser download if it's a supported file)
+                    LoggingHelpers.RecordGeneralEntry("Started streaming " + stream.StreamInformation.ContentTitle +
+                                                      " (Browser)");
                 }
             }
             catch (Exception ex)
             {
-                UIMessages.Error("Error occurred whilst trying to launch the default browser\n\n" + ex, @"Launch Error");
+                UIMessages.Error("Error occurred whilst trying to launch the default browser\n\n" + ex,
+                    @"Launch Error");
                 LoggingHelpers.RecordException(ex.Message, "BrowserLaunchError");
             }
         }

@@ -2,6 +2,15 @@
 {
     public class CustomData
     {
+        public int offset { get; set; } = 0;
+        public bool directPlay { get; set; } = true;
+        public bool directStream { get; set; } = true;
+        public int subtitleSize { get; set; } = 100;
+        public int audioBoost { get; set; } = 100;
+        public Server server { get; set; }
+        public User user { get; set; }
+        public string containerKey { get; set; }
+
         public static CustomData FillFromApiServer(PlexAPI.Server svr, bool transcode = false)
         {
             var data = new CustomData();
@@ -26,15 +35,6 @@
 
             return data;
         }
-
-        public int offset { get; set; } = 0;
-        public bool directPlay { get; set; } = true;
-        public bool directStream { get; set; } = true;
-        public int subtitleSize { get; set; } = 100;
-        public int audioBoost { get; set; } = 100;
-        public Server server { get; set; }
-        public User user { get; set; }
-        public string containerKey { get; set; }
     }
 
     public class User

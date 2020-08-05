@@ -8,11 +8,6 @@ namespace PlexDL.Common.Structures
 {
     public class CachedPlexLogin
     {
-        public string Username { get; set; } = "";
-        public string Password { get; set; } = "";
-        public string WriteDateTime { get; set; } = "";
-        public string MD5Checksum { get; set; } = "";
-
         //for just making the object; no arguments needed.
         public CachedPlexLogin()
         {
@@ -22,9 +17,9 @@ namespace PlexDL.Common.Structures
         //for specifying credentials then calculating everything else
         public CachedPlexLogin(string un, string pw)
         {
-            string dt = DateTime.Now.ToString();
-            string content = un + "\n" + pw + "\n" + dt;
-            string hash = MD5Helper.CalculateMd5Hash(content);
+            var dt = DateTime.Now.ToString();
+            var content = un + "\n" + pw + "\n" + dt;
+            var hash = MD5Helper.CalculateMd5Hash(content);
 
             //set the object values
             Username = un;
@@ -32,6 +27,11 @@ namespace PlexDL.Common.Structures
             WriteDateTime = dt;
             MD5Checksum = hash;
         }
+
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string WriteDateTime { get; set; } = "";
+        public string MD5Checksum { get; set; } = "";
 
         public void ToFile(string fileName = "plex.account")
         {
@@ -60,9 +60,9 @@ namespace PlexDL.Common.Structures
         {
             try
             {
-                string content = Username + "\n" + Password + "\n" + WriteDateTime;
-                string actualHash = MD5Helper.CalculateMd5Hash(content);
-                string storedHash = MD5Checksum;
+                var content = Username + "\n" + Password + "\n" + WriteDateTime;
+                var actualHash = MD5Helper.CalculateMd5Hash(content);
+                var storedHash = MD5Checksum;
                 return string.Equals(storedHash, actualHash);
             }
             catch (Exception ex)

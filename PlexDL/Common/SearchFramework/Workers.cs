@@ -35,7 +35,8 @@ namespace PlexDL.Common.SearchFramework
             DataTable tblFiltered = null;
 
             var rowCollection =
-                (DataRow[])WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", data.SearchTerm, data.SearchRule, data.SearchColumn, data.SearchTable);
+                (DataRow[])WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", data.SearchTerm,
+                    data.SearchRule, data.SearchColumn, data.SearchTable);
 
             if (rowCollection.Any())
             {

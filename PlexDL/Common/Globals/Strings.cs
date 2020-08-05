@@ -22,9 +22,11 @@ namespace PlexDL.Common.Globals
         public static string GetBaseUri(bool incToken)
         {
             if (incToken)
-                return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort +
+                return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" +
+                       ObjectProvider.Settings.ConnectionInfo.PlexPort +
                        "/?X-Plex-Token=";
-            return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" + ObjectProvider.Settings.ConnectionInfo.PlexPort + "/";
+            return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" +
+                   ObjectProvider.Settings.ConnectionInfo.PlexPort + "/";
         }
     }
 }

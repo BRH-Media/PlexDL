@@ -10,14 +10,15 @@ namespace PlexDL.Common.Structures
         public static readonly int MF_PLEX_DL_LAYOUT = 1;
         public static readonly int MF_NO_LAYOUT = 2;
 
-        public static TvShowDirectoryLayout CreateDownloadLayoutTvShow(PlexTvShow show, ApplicationOptions settings, int layout)
+        public static TvShowDirectoryLayout CreateDownloadLayoutTvShow(PlexTvShow show, ApplicationOptions settings,
+            int layout)
         {
             var dirLayout = new TvShowDirectoryLayout();
             if (layout == MF_PLEX_STANDARD_LAYOUT)
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\TV\";
                 var season = show.Season;
-                var title = Methods.RemoveIllegalCharacters(show.TvShowName);
+                var title = show.TvShowName.ToClean();
                 var seasonPath = basePath + title + @"\" + season;
                 var titlePath = basePath + title;
 
@@ -35,14 +36,15 @@ namespace PlexDL.Common.Structures
             return dirLayout;
         }
 
-        public static MusicDirectoryLayout CreateDownloadLayoutMusic(PlexMusic track, ApplicationOptions settings, int layout)
+        public static MusicDirectoryLayout CreateDownloadLayoutMusic(PlexMusic track, ApplicationOptions settings,
+            int layout)
         {
             var dirLayout = new MusicDirectoryLayout();
             if (layout == MF_PLEX_STANDARD_LAYOUT)
             {
                 var basePath = settings.Generic.DownloadDirectory + @"\Music\";
                 var album = track.Album;
-                var artist = Methods.RemoveIllegalCharacters(track.Artist);
+                var artist = track.Artist.ToClean();
                 var albumPath = basePath + artist + @"\" + album;
                 var artistPath = basePath + artist;
 

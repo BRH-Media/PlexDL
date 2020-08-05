@@ -7,7 +7,8 @@ namespace PlexDL.Common.Structures.AppOptions.Caching
     {
         [ReadOnly(true)]
         [DisplayName("Server Lists")]
-        [Description("Location where PlexDL will store the hashed server list (if Server Caching is enabled) for each token")]
+        [Description(
+            "Location where PlexDL will store the hashed server list (if Server Caching is enabled) for each token")]
         public string ServerCachePath { get; set; } = $"{CachingFileDir.RootCacheDirectory}\\%TOKEN%";
 
         [ReadOnly(true)]
