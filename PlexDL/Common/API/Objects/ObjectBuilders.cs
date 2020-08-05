@@ -4,6 +4,7 @@ using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,10 +14,21 @@ namespace PlexDL.Common.API.Objects
 {
     public static class ObjectBuilders
     {
-        public static PlexTvShow GetTvObjectFromIndex(int index)
+        //FOR THE TV OBJECT BUILDER: WAITWINDOW WORKER CALLBACK
+        private static void GetTvObjectFromIndex_Callback(object sender, WaitWindowEventArgs e)
+        {
+            var i = (int)e.Arguments[0];
+            e.Result = GetTvObjectFromIndex(i, false);
+        }
+
+        //TV OBJECT BUILDER
+        public static PlexTvShow GetTvObjectFromIndex(int index, bool waitWindow = true)
         {
             try
             {
+                if (waitWindow)
+                    return (PlexTvShow)WaitWindow.WaitWindow.Show(GetTvObjectFromIndex_Callback, @"Getting metadata", index);
+
                 var obj = new PlexTvShow();
                 LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
                 LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");
@@ -62,7 +74,8 @@ namespace PlexDL.Common.API.Objects
                         LoggingHelpers.RecordException(
                             "DownloadInfo invalid. This may be an internal error; please report this issue on GitHub.",
                             "ContextDownloadInfoNull");
-                        LoggingHelpers.RecordGeneralEntry("DownloadInfo is invalid (no stream contextual information)");
+                        LoggingHelpers.RecordGeneralEntry(
+                            "DownloadInfo is invalid (no stream contextual information)");
                     }
                 }
                 else
@@ -86,10 +99,21 @@ namespace PlexDL.Common.API.Objects
             }
         }
 
-        public static PlexMovie GetMovieObjectFromIndex(int index)
+        //FOR THE MOVIE OBJECT BUILDER: WAITWINDOW WORKER CALLBACK
+        private static void GetMovieObjectFromIndex_Callback(object sender, WaitWindowEventArgs e)
+        {
+            var i = (int)e.Arguments[0];
+            e.Result = GetMovieObjectFromIndex(i, false);
+        }
+
+        //MOVIE OBJECT BUILDER
+        public static PlexMovie GetMovieObjectFromIndex(int index, bool waitWindow = true)
         {
             try
             {
+                if (waitWindow)
+                    return (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromIndex_Callback, @"Getting metadata", index);
+
                 var obj = new PlexMovie();
                 LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
                 LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");
@@ -146,10 +170,21 @@ namespace PlexDL.Common.API.Objects
             }
         }
 
-        public static PlexMusic GetMusicObjectFromIndex(int index)
+        //FOR THE MUSIC OBJECT BUILDER: WAITWINDOW WORKER CALLBACK
+        private static void GetMusicObjectFromIndex_Callback(object sender, WaitWindowEventArgs e)
+        {
+            var i = (int)e.Arguments[0];
+            e.Result = GetMusicObjectFromIndex(i, false);
+        }
+
+        //MUSIC OBJECT BUILDER
+        public static PlexMusic GetMusicObjectFromIndex(int index, bool waitWindow = true)
         {
             try
             {
+                if (waitWindow)
+                    return (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromIndex_Callback, @"Getting metadata", index);
+
                 var obj = new PlexMusic();
                 LoggingHelpers.RecordGeneralEntry(@"Content Parse Started");
                 LoggingHelpers.RecordGeneralEntry(@"Grabbing Titles");

@@ -40,25 +40,6 @@ namespace PlexDL.Common
             return ForceImageFromUrl(url);
         }
 
-        public static Bitmap GetPoster(PlexObject stream, bool multiThreaded = true)
-        {
-            if (multiThreaded)
-                return (Bitmap)WaitWindow.WaitWindow.Show(GetPoster_Callback, @"Grabbing poster", stream);
-
-            var result = ImageHandler.GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
-
-            if (result == Resources.image_not_available_png_8) return result;
-            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
-
-            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
-        }
-
-        public static void GetPoster_Callback(object sender, WaitWindowEventArgs e)
-        {
-            var c = (PlexObject)e.Arguments[0];
-            e.Result = GetPoster(c, false);
-        }
-
         private static Bitmap ForceImageFromUrl(string url)
         {
             try
@@ -80,6 +61,25 @@ namespace PlexDL.Common
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
                 return Resources.image_not_available_png_8;
             }
+        }
+
+        public static Bitmap GetPoster(PlexObject stream, bool waitWindow = true)
+        {
+            if (waitWindow)
+                return (Bitmap)WaitWindow.WaitWindow.Show(GetPoster_Callback, @"Grabbing poster", stream);
+
+            var result = GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
+
+            if (result == Resources.image_not_available_png_8) return result;
+            if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
+
+            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
+        }
+
+        private static void GetPoster_Callback(object sender, WaitWindowEventArgs e)
+        {
+            var c = (PlexObject)e.Arguments[0];
+            e.Result = GetPoster(c, false);
         }
     }
 }

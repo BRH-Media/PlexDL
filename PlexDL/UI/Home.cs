@@ -1530,25 +1530,6 @@ namespace PlexDL.UI
 
         #endregion UpdateWaitWorkers
 
-        #region PlexAPIWorkers
-
-        private void GetMovieObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = GetMovieObjectFromSelection();
-        }
-
-        private void GetTvObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = GetTvObjectFromSelection();
-        }
-
-        private void GetMusicObjectFromSelectionWorker(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = GetMusicObjectFromSelection();
-        }
-
-        #endregion PlexAPIWorkers
-
         #endregion Workers
 
         #region Download
@@ -2412,8 +2393,7 @@ namespace PlexDL.UI
                     case ContentType.Movies:
                         if (dgvMovies.SelectedRows.Count == 1)
                         {
-                            result = (PlexMovie)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                                @"Getting Metadata", false);
+                            result = GetMovieObjectFromSelection();
                         }
                         else
                         {
@@ -2426,8 +2406,7 @@ namespace PlexDL.UI
                     case ContentType.TvShows:
                         if (dgvEpisodes.SelectedRows.Count == 1)
                         {
-                            result = (PlexTvShow)WaitWindow.WaitWindow.Show(GetTvObjectFromSelectionWorker,
-                                "Getting Metadata", false);
+                            result = GetTvObjectFromSelection();
                         }
                         else
                         {
@@ -2439,8 +2418,7 @@ namespace PlexDL.UI
 
                     case ContentType.Music:
                         if (dgvTracks.SelectedRows.Count == 1)
-                            result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
-                                "Getting Metadata", false);
+                            result = GetMusicObjectFromSelection();
                         else
                             UIMessages.Error(@"No track is selected", @"Validation Error");
 
@@ -2529,18 +2507,15 @@ namespace PlexDL.UI
                         switch (ObjectProvider.CurrentContentType)
                         {
                             case ContentType.Movies:
-                                result = (PlexObject)WaitWindow.WaitWindow.Show(GetMovieObjectFromSelectionWorker,
-                                    "Getting Metadata", false);
+                                result = GetMovieObjectFromSelection();
                                 break;
 
                             case ContentType.TvShows:
-                                result = (PlexObject)WaitWindow.WaitWindow.Show(GetTvObjectFromSelectionWorker,
-                                    "Getting Metadata", false);
+                                result = GetTvObjectFromSelection();
                                 break;
 
                             case ContentType.Music:
-                                result = (PlexMusic)WaitWindow.WaitWindow.Show(GetMusicObjectFromSelectionWorker,
-                                    "Getting Metadata", false);
+                                result = GetMusicObjectFromSelection();
                                 break;
                         }
 
