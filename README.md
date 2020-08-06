@@ -8,6 +8,7 @@
 * Utilises PVS.MediaPlayer by Peter Vegter - [CodeProject Article](https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library)
 * Utilises WinFormAnimation by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
 * Utilises CircularProgressBar by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
+* Utilises SharpCaster by Tapanila - [GitHub Repo](https://github.com/Tapanila/SharpCaster)
 
 ### What does PlexDL do?
 Many different things!
@@ -55,9 +56,29 @@ By using caching, you can drastically increase the performance of the applicatio
 
 ### How to get started
 #### __1. Building from Source__
-PlexDL targets the .NET Framework 4.7.2, and was initially built with Visual Studio 2019. The PlexDL source comes preloaded with all necessary icons and resources, AltoHttp, chsarp-plex-api, WinFormAnimation, CircularProgressBar and PVS.MediaPlayer.
 
-PlexDL includes the appropriate NuGet references to libbrhscgui (prebuilt for you) and RestSharp, and upon cloning this repo, you'll just need to restore the packages. In addition, LogDel (a separate project linked with PlexDL in this repo), will need to have Newtonsoft.Json restored from NuGet in order to build. Note that LogDel is required for PlexDL operation, and cannot be excluded without modifying the source.
+The main PlexDL project includes NuGet references to the following packages:
+- [libbrhscgui](https://www.nuget.org/packages/libbrhscgui/)
+- [RestSharp](https://www.nuget.org/packages/RestSharp/)
+- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json/)
+- [Google.Protobuf](https://www.nuget.org/packages/Google.Protobuf/)
+- [Rssdp](https://www.nuget.org/packages/Rssdp/)
+- [Sharpcaster.SocketsForPCL](https://www.nuget.org/packages/sharpcaster.SocketsForPCL/)
+- [System.Buffers](https://www.nuget.org/packages/System.Buffers/)
+- [System.Memory](https://www.nuget.org/packages/System.Memory/)
+- [System.Numerics.Vectors](https://www.nuget.org/packages/System.Numerics.Vectors/)
+- [System.Runtime.CompilerServices.Unsafe](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/)
+
+In addition, other projects included in the source may need NuGet package restorations. The following third-party projects are included in the source:
+- SharpCaster by Tapanila \[`SharpCaster`]
+- AltoHttp (modified) by aalitor \[`PlexDL.AltoHttp`]
+- WinFormAnimation by falahati \[`PlexDL.Animation`]
+- PVS.MediaPlayer by Peter Vegter \[`PlexDL.Player`]
+
+Build Prerequisites
+- Visual Studio 2017/2019
+- .NET Framework 4.7.2+
+- C# 8.0 Language Support
 
 Steps for building
 1. `git clone http://github.com/Brhsoftco/PlexDL.git`
@@ -67,6 +88,10 @@ Steps for building
 5. Select `Restore NuGet Packages`
 6. `Build->Build Solution`
 7. Run resulting `PlexDL.exe` in the `~\bin` folder
+
+**PlexDL won't build?**
+The `master` branch should always be able to compile successfully. However, sometimes problems may arise.
+If you have any trouble after following the steps above, please create an issue and tag it as a build problem. We'll get back to you as soon as we can!
 
 #### __2. Downloading from Releases__
 Alternatively, can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all needed dependencies and the pre-built executable.
@@ -128,8 +153,10 @@ Alternatively, can access the latest official build [here](https://github.com/Br
 #### Setting up VLC for use with PlexDL
 Because VLC accepts a vast array of command-line arguments and values, PlexDL only needs to know where the location of `vlc.exe` is. This way, it may execute it on the fly. To point PlexDL to VLC, please follow the following procedure:
 1. Load a server of your choice and populate the gridviews.
-2. Export a profile by using `Ctrl+S` on the home screen
-3. Open the resulting *.prof* file in Notepad or Notepad++ (preferred).
-4. Change `VLCMediaPlayerPath` to the location of `vlc.exe` on your system.
-5. Save and close your editor.
-6. Load this newly edited profile back into PlexDL, and it will now execute VLC perfectly.
+2. `File->Settings`
+3. Expand `Streaming Settings`
+4. Set `VLC Path` to the location of `vlc.exe`<br>
+i.e. `C:\Program Files (x86)\VideoLAN\VLC\vlc.exe`
+5. After setting the value, click `OK` and the window will close.
+
+_**Note: These changes won't be saved on a restart of PlexDL unless you export a profile, then reimport it each time.**_
