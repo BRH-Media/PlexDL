@@ -36,7 +36,6 @@ namespace PlexDL.UI
             this.lblNothingInteresting = new System.Windows.Forms.Label();
             this.pnlTestingArea = new System.Windows.Forms.Panel();
             this.pnlNothingInteresting = new System.Windows.Forms.Panel();
-            this.btnCast = new System.Windows.Forms.Button();
             this.pnlTestingArea.SuspendLayout();
             this.pnlNothingInteresting.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +60,6 @@ namespace PlexDL.UI
             // 
             // pnlTestingArea
             // 
-            this.pnlTestingArea.Controls.Add(this.btnCast);
             this.pnlTestingArea.Controls.Add(this.pnlNothingInteresting);
             this.pnlTestingArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTestingArea.Location = new System.Drawing.Point(0, 0);
@@ -78,16 +76,6 @@ namespace PlexDL.UI
             this.pnlNothingInteresting.Name = "pnlNothingInteresting";
             this.pnlNothingInteresting.Size = new System.Drawing.Size(264, 30);
             this.pnlNothingInteresting.TabIndex = 2;
-            // 
-            // btnCast
-            // 
-            this.btnCast.Location = new System.Drawing.Point(528, 45);
-            this.btnCast.Name = "btnCast";
-            this.btnCast.Size = new System.Drawing.Size(75, 23);
-            this.btnCast.TabIndex = 3;
-            this.btnCast.Text = "Cast";
-            this.btnCast.UseVisualStyleBackColor = true;
-            this.btnCast.Click += new System.EventHandler(this.BtnCast_Click);
             // 
             // TestForm
             // 
@@ -116,6 +104,5 @@ namespace PlexDL.UI
         private Label lblNothingInteresting;
         private Panel pnlTestingArea;
         private Panel pnlNothingInteresting;
-        private Button btnCast;
     }
 }
