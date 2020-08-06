@@ -39,13 +39,5 @@ namespace PlexDL.UI
             // And finally, apply the re-centering to the object.
             pnlNothingInteresting.Location = newLocation;
         }
-
-        private void BtnCast_Click(object sender, EventArgs e)
-        {
-            using (var frm = new Cast())
-            {
-                frm.ShowDialog();
-            }
-        }
     }
 }
