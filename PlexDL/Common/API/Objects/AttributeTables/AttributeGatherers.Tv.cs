@@ -21,9 +21,10 @@ namespace PlexDL.Common.API.Objects.AttributeTables
                 });
             try
             {
-                var season = new[] { "Season", content.Season };
-                var totalEpisodes = new[] { "Episode Count", content.EpisodesInSeason.ToString() };
-                var episode = new[] { "Episode #", content.EpisodeNumber.ToString() };
+                var season = new[] { "Season Name", content.Season };
+                var episodeCount = new[] { "Episode Count", content.EpisodesInSeason.ToString() };
+                var seasonNumber = new[] { "Season #", content.SeasonNumber.ToString() };
+                var episodeNumber = new[] { "Episode #", content.EpisodeNumber.ToString() };
                 var genre = new[] { "Genre", content.ContentGenre };
                 var runtime = new[]
                     {"Runtime", Methods.CalculateTime(content.StreamInformation.ContentDuration)};
@@ -35,8 +36,9 @@ namespace PlexDL.Common.API.Objects.AttributeTables
                 var newRows = new[]
                 {
                     season,
-                    totalEpisodes,
-                    episode,
+                    episodeCount,
+                    seasonNumber,
+                    episodeNumber,
                     genre,
                     runtime,
                     resolution,
