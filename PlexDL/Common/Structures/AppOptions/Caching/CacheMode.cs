@@ -1,8 +1,10 @@
 ﻿using PlexDL.PlexAPI.LoginHandler;
+using System;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Caching
 {
+    [Serializable]
     public class CacheMode
     {
         private bool _authCaching = true;

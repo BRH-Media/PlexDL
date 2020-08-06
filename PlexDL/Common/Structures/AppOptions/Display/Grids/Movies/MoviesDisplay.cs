@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlexDL.Common.Structures.AppOptions.Display.Grids.Movies
 {
+    [Serializable]
     public class MoviesDisplay : ColumnAdapter
     {
         public MoviesDisplay()

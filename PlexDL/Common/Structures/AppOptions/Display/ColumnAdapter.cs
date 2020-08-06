@@ -1,9 +1,11 @@
 ﻿using PlexDL.Common.TypeConverters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Display
 {
+    [Serializable]
     public class ColumnAdapter
     {
         [TypeConverter(typeof(StringListTypeConverter))]

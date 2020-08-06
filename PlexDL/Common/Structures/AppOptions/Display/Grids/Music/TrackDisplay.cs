@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlexDL.Common.Structures.AppOptions.Display.Grids.Music
 {
+    [Serializable]
     public class TrackDisplay : ColumnAdapter
     {
         public TrackDisplay()

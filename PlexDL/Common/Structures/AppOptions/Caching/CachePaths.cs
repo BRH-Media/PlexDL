@@ -1,8 +1,10 @@
 ﻿using PlexDL.Common.Caching;
+using System;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Caching
 {
+    [Serializable]
     public class CachePaths
     {
         [ReadOnly(true)]

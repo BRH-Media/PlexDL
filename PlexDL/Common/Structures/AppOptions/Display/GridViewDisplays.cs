@@ -2,10 +2,12 @@
 using PlexDL.Common.Structures.AppOptions.Display.Grids.Movies;
 using PlexDL.Common.Structures.AppOptions.Display.Grids.Music;
 using PlexDL.Common.Structures.AppOptions.Display.Grids.TV;
+using System;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Display
 {
+    [Serializable]
     public class GridViewDisplays
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]

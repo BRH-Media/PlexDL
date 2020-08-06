@@ -2,10 +2,12 @@
 using PlexDL.Common.Structures.AppOptions.Caching;
 using PlexDL.Common.Structures.AppOptions.Display;
 using PlexDL.Common.Structures.AppOptions.Player;
+using System;
 using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions
 {
+    [Serializable]
     public class ApplicationOptions
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]

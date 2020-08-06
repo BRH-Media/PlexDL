@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace PlexDL.Common.Structures
 {
+    [Serializable]
     public class ConnectionInfo
     {
         [NonSerialized] public bool RelaysOnly = false;

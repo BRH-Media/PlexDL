@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace PlexDL.Common.Logging
 {
+    [Serializable]
     public class LoggingSettings
     {
         [DisplayName("Transaction Logging")]

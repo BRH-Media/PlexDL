@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace PlexDL.Common.Structures.AppOptions.Player
 {
+    [Serializable]
     public class PlayerSettings
     {
         [DisplayName("VLC Arguments")]

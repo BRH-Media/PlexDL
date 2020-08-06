@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace PlexDL.Common.Structures.AppOptions
 {
+    [Serializable]
     public class GenericAppSettings
     {
         [ReadOnly(true)]

@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace PlexDL.Common.Structures.AppOptions.Player
 {
+    [Serializable]
     public class PlayerKeyBindings
     {
         public Keys PlayPause { get; set; } = Keys.Space;
