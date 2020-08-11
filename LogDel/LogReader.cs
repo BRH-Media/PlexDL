@@ -1,7 +1,10 @@
-﻿using System;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Security;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 // ReSharper disable CoVariantArrayConversion
@@ -47,8 +50,28 @@ namespace LogDel
                     //this will be set to true.
                     var headersFound = false;
 
+                    //store all log lines here
+                    var log = File.ReadAllLines(fileName).ToList();
+
+                    //check if it needs to be decrypted
+                    if (Vars.Protected == LogSecurity.Protected)
+                    {
+                        //if its encrypted, DPAPI content always consists of one line.
+                        var cipherText = log.Count == 1 ? log[0] : null;
+
+                        //decrypt the cipherText
+                        var provider = new ProtectedString(cipherText, StringProtectionMode.Decrypt);
+                        var decryptedLog = provider.ProcessedValue;
+
+                        //DEBUG PURPOSES ONLY
+                        //MessageBox.Show(decryptedLog);
+
+                        //override the log array above with the decrypted values
+                        log = decryptedLog.Split('\n').ToList();
+                    }
+
                     //loop through every line in the .logdel file
-                    foreach (var line in File.ReadAllLines(fileName))
+                    foreach (var line in log)
                     {
                         //increment the row counter
                         intRowCount++;

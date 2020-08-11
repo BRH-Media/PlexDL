@@ -1,4 +1,6 @@
 ﻿using LogDel.Utilities.Extensions;
+using PlexDL.Common.Enums;
+using PlexDL.Common.Security;
 using System;
 using System.Data;
 using System.IO;
@@ -7,14 +9,16 @@ namespace LogDel.Utilities
 {
     public static class LdUtility
     {
-        public static void ToLogdel(this DataTable table, string path)
+        public static void ToLogdel(this DataTable table, string path, LogSecurity security = LogSecurity.Unprotected)
         {
             try
             {
                 //null values cannot be processed
                 if (table == null) return;
 
-                var sw = new StreamWriter(path, false);
+                //store all characters here
+                var sw = new StringWriter();
+
                 //headers
                 sw.Write("###");
                 for (var i = 0; i < table.Columns.Count; i++)
@@ -41,6 +45,21 @@ namespace LogDel.Utilities
                 }
 
                 sw.Close();
+
+                var contentToWrite = sw.ToString();
+
+                //check if the content needs to be protected with DPAPI
+                if (security == LogSecurity.Protected)
+                {
+                    //encrypt the log
+                    var provider = new ProtectedString(contentToWrite, StringProtectionMode.Encrypt);
+
+                    //replace the plainText contents with the new encrypted contents
+                    contentToWrite = provider.ProcessedValue;
+                }
+
+                //finalise the log file
+                File.WriteAllText(path, contentToWrite);
             }
             catch (Exception) //catch all exceptions
             {

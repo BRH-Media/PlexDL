@@ -8,10 +8,12 @@ namespace LogDel.Utilities.Extensions
 		public static string CleanLogDel(this string line)
 		{
 			var clean = line;
+
 			char[] bannedChars =
 			{
-				'#', '!', '\n' //newline causes parsing problems
-            };
+				'#', '!', '\n', '\r' //newline characters cause parsing problems
+			};
+
 			foreach (var c in line)
 				if (bannedChars.Contains(c))
 				{

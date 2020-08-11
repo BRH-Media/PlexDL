@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogSecurity.cs" />
     <Compile Include="Utilities\CsvUtility.cs" />
     <Compile Include="LogReader.cs" />
     <Compile Include="LogWriter.cs" />
