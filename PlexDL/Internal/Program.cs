@@ -1,4 +1,5 @@
-﻿using PlexDL.Common;
+﻿using LogDel;
+using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
@@ -28,6 +29,7 @@ namespace PlexDL.Internal
             VisualStyles(arr);
             CheckDevStatus(arr);
             CheckDebug(arr);
+            CheckOverrideLogProtection(args);
 
             //set default values
             //ObjectProvider.PlexProviderDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
@@ -78,6 +80,15 @@ namespace PlexDL.Internal
             {
                 Application.Run(new Home());
             }
+        }
+
+        private static void CheckOverrideLogProtection(ICollection<string> args)
+        {
+            //toggle log file (.logdel) DPAPI protection
+            if (args.Contains("-lpon"))
+                Vars.Protected = LogSecurity.Protected;
+            else if (args.Contains("-lpoff"))
+                Vars.Protected = LogSecurity.Unprotected;
         }
 
         private static void RunMetadataWindow(PlexObject metadata)
