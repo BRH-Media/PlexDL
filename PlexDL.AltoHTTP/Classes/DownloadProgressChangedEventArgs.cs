@@ -10,7 +10,8 @@
         /// </summary>
         /// <param name="progress">Current download progress</param>
         /// <param name="speed">Current download speed</param>
-        public DownloadProgressChangedEventArgs(double progress, int speed, double bytesGet)
+        /// <param name="bytesGet"></param>
+        public DownloadProgressChangedEventArgs(double progress, double speed, double bytesGet)
         {
             Progress = progress;
             Speed = speed;
@@ -25,7 +26,7 @@
         /// <summary>
         ///     Gets the current speed
         /// </summary>
-        public int Speed { get; }
+        public double Speed { get; }
 
         public double BytesReceived { get; }
     }

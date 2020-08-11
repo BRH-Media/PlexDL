@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LogDel.Utilities.Extensions;
+using System;
 using System.Data;
 using System.IO;
-using System.Linq;
 
 namespace LogDel.Utilities
 {
@@ -11,46 +11,38 @@ namespace LogDel.Utilities
         {
             try
             {
-                if (table != null)
+                //null values cannot be processed
+                if (table == null) return;
+
+                var sw = new StreamWriter(path, false);
+                //headers
+                sw.Write("###");
+                for (var i = 0; i < table.Columns.Count; i++)
                 {
-                    var sw = new StreamWriter(path, false);
-                    //headers
-                    sw.Write("###");
+                    sw.Write(table.Columns[i]);
+                    if (i < table.Columns.Count - 1) sw.Write("!");
+                }
+
+                sw.Write(sw.NewLine);
+                foreach (DataRow dr in table.Rows)
+                {
                     for (var i = 0; i < table.Columns.Count; i++)
                     {
-                        sw.Write(table.Columns[i]);
+                        if (!Convert.IsDBNull(dr[i]))
+                        {
+                            var value = dr[i].ToString().CleanLogDel();
+                            sw.Write(value);
+                        }
+
                         if (i < table.Columns.Count - 1) sw.Write("!");
                     }
 
                     sw.Write(sw.NewLine);
-                    foreach (DataRow dr in table.Rows)
-                    {
-                        for (var i = 0; i < table.Columns.Count; i++)
-                        {
-                            if (!Convert.IsDBNull(dr[i]))
-                            {
-                                var value = dr[i].ToString();
-                                if (value.Contains('!'))
-                                {
-                                    value = string.Format("\"{0}\"", value);
-                                    sw.Write(value);
-                                }
-                                else
-                                {
-                                    sw.Write(dr[i].ToString());
-                                }
-                            }
-
-                            if (i < table.Columns.Count - 1) sw.Write("!");
-                        }
-
-                        sw.Write(sw.NewLine);
-                    }
-
-                    sw.Close();
                 }
+
+                sw.Close();
             }
-            catch (Exception)
+            catch (Exception) //catch all exceptions
             {
                 //ignore it
             }

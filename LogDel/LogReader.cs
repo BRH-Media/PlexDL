@@ -4,6 +4,8 @@ using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
+// ReSharper disable CoVariantArrayConversion
+
 namespace LogDel
 {
     public static class LogReader
@@ -171,34 +173,33 @@ namespace LogDel
                         else
                         {
                             //to verify that it isn't LogDel, we can check to see if no headers have been found.
-                            if (!headersFound)
-                            {
-                                //define a new List in order to add line numbers (if enabled).
-                                //This is needed due to string[] arrays being fixed.
-                                var arrItems = new List<string>();
+                            if (headersFound) continue; //headers were found, don't worry about the next section of code :)
 
-                                //check if we're meant to be including line numbers
-                                if (lineNumbers)
-                                    //we are, so add the current row count - 1.
-                                    //we subtract 1, because the row count includes the header row.
-                                    //If we didn't do this, it would show up in a grid as the first row being
-                                    //line 2, instead of line 1. This is added first, so that it is the first item
-                                    //in the array (first column value).
-                                    arrItems.Add((intRowCount - 1).ToString());
+                            //define a new List in order to add line numbers (if enabled).
+                            //This is needed due to string[] arrays being fixed.
+                            var arrItems = new List<string>();
 
-                                //add the whole line as a single cell
-                                arrItems.Add(line);
+                            //check if we're meant to be including line numbers
+                            if (lineNumbers)
+                                //we are, so add the current row count - 1.
+                                //we subtract 1, because the row count includes the header row.
+                                //If we didn't do this, it would show up in a grid as the first row being
+                                //line 2, instead of line 1. This is added first, so that it is the first item
+                                //in the array (first column value).
+                                arrItems.Add((intRowCount - 1).ToString());
 
-                                //convert the dynamic array (List) back into a static string[] array
-                                var items = arrItems.ToArray();
+                            //add the whole line as a single cell
+                            arrItems.Add(line);
 
-                                //check if the cell-count (amount of values in the items[] array) is equal
-                                //to the header-count (amount of Columns in our table).
-                                //If this isn't equal, it will error out, and complain that it can't add the row.
-                                //So to fix that, we only add it if they're both equal.
-                                if (items.Length == table.Columns.Count)
-                                    table.Rows.Add(items);
-                            }
+                            //convert the dynamic array (List) back into a static string[] array
+                            var items = arrItems.ToArray();
+
+                            //check if the cell-count (amount of values in the items[] array) is equal
+                            //to the header-count (amount of Columns in our table).
+                            //If this isn't equal, it will error out, and complain that it can't add the row.
+                            //So to fix that, we only add it if they're both equal.
+                            if (items.Length == table.Columns.Count)
+                                table.Rows.Add(items);
                         }
                     }
                 }

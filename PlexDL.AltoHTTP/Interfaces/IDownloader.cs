@@ -9,8 +9,8 @@ namespace PlexDL.AltoHTTP.Interfaces
         long ContentSize { get; }
         long BytesReceived { get; }
         double Progress { get; }
-        int SpeedInBytes { get; }
-        string FileURL { get; }
+        long SpeedInBytes { get; }
+        string FileUrl { get; }
         string DestPath { get; }
         bool AcceptRange { get; }
         DownloadState State { get; }

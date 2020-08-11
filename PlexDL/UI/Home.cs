@@ -1711,15 +1711,25 @@ namespace PlexDL.UI
             try
             {
                 //engine values - very important information.
+
+                //Double
                 var engineProgress = ObjectProvider.Engine.CurrentProgress;
+
+                //64-bit Long
                 var bytesGet = ObjectProvider.Engine.BytesReceived;
                 var engineSpeed = ObjectProvider.Engine.CurrentDownloadSpeed;
                 var contentSize = ObjectProvider.Engine.CurrentContentLength;
 
                 //proper formatting of engine data for display
+
+                //Double
                 var progress = Math.Round(engineProgress);
-                var speed = Methods.FormatBytes(engineSpeed) + "/s";
+
+                //64-bit Long
+                var speed = Methods.FormatBytes((long)engineSpeed) + "/s";
                 var total = Methods.FormatBytes((long)contentSize);
+
+                //String
                 var order = ObjectProvider.Engine.CurrentIndex + 1 + "/" + ObjectProvider.Engine.QueueLength;
                 var eta = @"~";
 
@@ -1730,7 +1740,7 @@ namespace PlexDL.UI
                     var diff = contentSize - bytesGet;
 
                     //~needs to be in millisecond format; so * seconds by 1000~
-                    var val = diff / engineSpeed * 1000;
+                    var val = (diff / engineSpeed) * 1000;
 
                     //this converts the raw "ETA" data into human-readable information, then sets it up for display.
                     eta = Methods.CalculateTime(val);
@@ -2232,6 +2242,9 @@ namespace PlexDL.UI
                     }
 
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             //null stream; exit operation.

@@ -1,35 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LogDel.Utilities.Extensions;
+using System;
 using System.IO;
-using System.Linq;
 
 namespace LogDel
 {
     public static class LogWriter
     {
-        public static string LogDirectory { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl\\logs";
-
-        private static string CleanseLogDel(string line)
-        {
-            var clean = line;
-            char[] bannedChars =
-            {
-                '#', '!'
-            };
-            foreach (var c in line)
-                if (bannedChars.Contains(c))
-                {
-                    var index = clean.IndexOf(c);
-                    clean.Remove(index, 1);
-                }
-
-            return clean;
-        }
-
-        private static string[] CleanLogDel(IEnumerable<string> line)
-        {
-            return line.Select(CleanseLogDel).ToArray();
-        }
+        public static string LogDirectory { get; set; } = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.plexdl\logs";
 
         public static void LogDelWriter(string fileName, string[] headers, string[] logEntry)
         {
@@ -46,7 +23,7 @@ namespace LogDel
                 if (headers.Length != logEntry.Length) return;
 
                 //remove forbidden characters from log entry like '!' and '#'
-                logEntry = CleanLogDel(logEntry);
+                logEntry = logEntry.CleanLogDel();
 
                 foreach (var l in logEntry)
                     logdelLine += l + "!";
@@ -55,11 +32,11 @@ namespace LogDel
                 logdelLine = logdelLine.TrimEnd('!');
 
                 //remove forbidden characters from log entry like '!' and '#'
-                headers = CleanLogDel(headers);
+                headers = headers.CleanLogDel();
 
                 var headersString = "###";
                 foreach (var h in headers)
-                    headersString += CleanseLogDel(h) + @"!";
+                    headersString += h.CleanLogDel() + @"!";
 
                 //remove trailing '!'
                 headersString = headersString.TrimEnd('!');
