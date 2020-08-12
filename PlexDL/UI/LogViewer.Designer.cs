@@ -189,7 +189,7 @@ namespace PlexDL.UI
             // 
             this.itmCsv.Name = "itmCsv";
             this.itmCsv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmCsv.Size = new System.Drawing.Size(180, 22);
+            this.itmCsv.Size = new System.Drawing.Size(155, 22);
             this.itmCsv.Text = "To CSV";
             this.itmCsv.Click += new System.EventHandler(this.ItmCSV_Click);
             // 
@@ -197,7 +197,7 @@ namespace PlexDL.UI
             // 
             this.itmJson.Name = "itmJson";
             this.itmJson.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
-            this.itmJson.Size = new System.Drawing.Size(180, 22);
+            this.itmJson.Size = new System.Drawing.Size(155, 22);
             this.itmJson.Text = "To JSON";
             this.itmJson.Click += new System.EventHandler(this.ItmJson_Click);
             // 
@@ -230,7 +230,6 @@ namespace PlexDL.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LogViewer";
             this.ShowInTaskbar = false;
