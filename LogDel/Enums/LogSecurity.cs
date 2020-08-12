@@ -1,4 +1,4 @@
-﻿namespace LogDel
+﻿namespace LogDel.Enums
 {
     public enum LogSecurity
     {

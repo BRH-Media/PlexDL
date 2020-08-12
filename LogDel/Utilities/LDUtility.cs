@@ -4,6 +4,7 @@ using PlexDL.Common.Security;
 using System;
 using System.Data;
 using System.IO;
+using LogDel.Enums;
 
 namespace LogDel.Utilities
 {

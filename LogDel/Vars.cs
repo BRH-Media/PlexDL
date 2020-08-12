@@ -1,4 +1,5 @@
 ﻿using System;
+using LogDel.Enums;
 
 namespace LogDel
 {
