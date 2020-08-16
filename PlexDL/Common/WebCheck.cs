@@ -35,6 +35,11 @@ namespace PlexDL.Common
             {
                 //Creating the HttpWebRequest
                 var request = (HttpWebRequest)WebRequest.Create(url);
+
+                //5s timeout
+                request.Timeout = 5000;
+
+                //don't try and request the full page!
                 request.Method = "HEAD";
 
                 //Getting the Web Response.

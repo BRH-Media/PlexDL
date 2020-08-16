@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using libbrhscgui.Components;
 using PlexDL.Common.Components;
@@ -56,21 +57,27 @@ namespace PlexDL.UI
             this.itmDownloadAllEpisodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodeOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmEpisodeMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmEpisodeMetadataView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmEpisodeMetadataExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisSeason = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVViewEpisodeDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeStream = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmEpisodeSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeCast = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtLibrarySections = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmManuallyLoadSection = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRenderKeyColumn = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtMovieOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmContentMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContentMetadataView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContentMetadataExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisMovie = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVViewMovieDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentStream = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContentSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentCast = new System.Windows.Forms.ToolStripMenuItem();
             this.ofdMetadata = new System.Windows.Forms.OpenFileDialog();
             this.nfyMain = new System.Windows.Forms.NotifyIcon(this.components);
@@ -96,16 +103,19 @@ namespace PlexDL.UI
             this.tabMusic = new System.Windows.Forms.TabPage();
             this.tlpMusic = new System.Windows.Forms.TableLayoutPanel();
             this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmTrackMetadataView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmTrackMetadataExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVViewTrackDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackStream = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmTrackSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackCast = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
             this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
@@ -181,9 +191,9 @@ namespace PlexDL.UI
             this.tabMusic.SuspendLayout();
             this.tlpMusic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).BeginInit();
+            this.cxtTrackOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).BeginInit();
-            this.cxtTrackOptions.SuspendLayout();
             this.tabLog.SuspendLayout();
             this.tlpLog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
@@ -244,17 +254,34 @@ namespace PlexDL.UI
             this.itmEpisodeMetadata,
             this.itmEpisodeDownload,
             this.itmEpisodeStream,
+            this.itmEpisodeSearch,
             this.itmEpisodeCast});
             this.cxtEpisodeOptions.Name = "cxtEpisodeOptions";
-            this.cxtEpisodeOptions.Size = new System.Drawing.Size(129, 92);
+            this.cxtEpisodeOptions.Size = new System.Drawing.Size(129, 114);
             this.cxtEpisodeOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtEpisodeOptions_Opening);
             // 
             // itmEpisodeMetadata
             // 
+            this.itmEpisodeMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmEpisodeMetadataView,
+            this.itmEpisodeMetadataExport});
             this.itmEpisodeMetadata.Name = "itmEpisodeMetadata";
             this.itmEpisodeMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeMetadata.Text = "Metadata";
-            this.itmEpisodeMetadata.Click += new System.EventHandler(this.ItmEpisodeMetadata_Click);
+            // 
+            // itmEpisodeMetadataView
+            // 
+            this.itmEpisodeMetadataView.Name = "itmEpisodeMetadataView";
+            this.itmEpisodeMetadataView.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadataView.Text = "View";
+            this.itmEpisodeMetadataView.Click += new System.EventHandler(this.ItmEpisodeMetadataView_Click);
+            // 
+            // itmEpisodeMetadataExport
+            // 
+            this.itmEpisodeMetadataExport.Name = "itmEpisodeMetadataExport";
+            this.itmEpisodeMetadataExport.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadataExport.Text = "Export";
+            this.itmEpisodeMetadataExport.Click += new System.EventHandler(this.ItmEpisodeMetadataExport_Click);
             // 
             // itmEpisodeDownload
             // 
@@ -293,6 +320,13 @@ namespace PlexDL.UI
             this.itmEpisodeStream.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeStream.Text = "Stream";
             this.itmEpisodeStream.Click += new System.EventHandler(this.ItmEpisodeStream_Click);
+            // 
+            // itmEpisodeSearch
+            // 
+            this.itmEpisodeSearch.Name = "itmEpisodeSearch";
+            this.itmEpisodeSearch.Size = new System.Drawing.Size(128, 22);
+            this.itmEpisodeSearch.Text = "Search";
+            this.itmEpisodeSearch.Click += new System.EventHandler(this.ItmEpisodeSearch_Click);
             // 
             // itmEpisodeCast
             // 
@@ -333,17 +367,34 @@ namespace PlexDL.UI
             this.itmContentMetadata,
             this.itmContentDownload,
             this.itmContentStream,
+            this.itmContentSearch,
             this.itmContentCast});
             this.cxtMovieOptions.Name = "cxtEpisodeOptions";
-            this.cxtMovieOptions.Size = new System.Drawing.Size(129, 92);
+            this.cxtMovieOptions.Size = new System.Drawing.Size(181, 136);
             this.cxtMovieOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtContentOptions_Opening);
             // 
             // itmContentMetadata
             // 
+            this.itmContentMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmContentMetadataView,
+            this.itmContentMetadataExport});
             this.itmContentMetadata.Name = "itmContentMetadata";
-            this.itmContentMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmContentMetadata.Size = new System.Drawing.Size(180, 22);
             this.itmContentMetadata.Text = "Metadata";
-            this.itmContentMetadata.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            // 
+            // itmContentMetadataView
+            // 
+            this.itmContentMetadataView.Name = "itmContentMetadataView";
+            this.itmContentMetadataView.Size = new System.Drawing.Size(180, 22);
+            this.itmContentMetadataView.Text = "View";
+            this.itmContentMetadataView.Click += new System.EventHandler(this.ItmContentMetadataView_Click);
+            // 
+            // itmContentMetadataExport
+            // 
+            this.itmContentMetadataExport.Name = "itmContentMetadataExport";
+            this.itmContentMetadataExport.Size = new System.Drawing.Size(180, 22);
+            this.itmContentMetadataExport.Text = "Export";
+            this.itmContentMetadataExport.Click += new System.EventHandler(this.ItmContentMetadataExport_Click);
             // 
             // itmContentDownload
             // 
@@ -351,7 +402,7 @@ namespace PlexDL.UI
             this.itmDGVDownloadThisMovie,
             this.itmDGVViewMovieDownloadLink});
             this.itmContentDownload.Name = "itmContentDownload";
-            this.itmContentDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmContentDownload.Size = new System.Drawing.Size(180, 22);
             this.itmContentDownload.Text = "Download";
             // 
             // itmDGVDownloadThisMovie
@@ -371,14 +422,21 @@ namespace PlexDL.UI
             // itmContentStream
             // 
             this.itmContentStream.Name = "itmContentStream";
-            this.itmContentStream.Size = new System.Drawing.Size(128, 22);
+            this.itmContentStream.Size = new System.Drawing.Size(180, 22);
             this.itmContentStream.Text = "Stream";
             this.itmContentStream.Click += new System.EventHandler(this.ItmContentStream_Click);
+            // 
+            // itmContentSearch
+            // 
+            this.itmContentSearch.Name = "itmContentSearch";
+            this.itmContentSearch.Size = new System.Drawing.Size(180, 22);
+            this.itmContentSearch.Text = "Search";
+            this.itmContentSearch.Click += new System.EventHandler(this.ItmContentSearch_Click);
             // 
             // itmContentCast
             // 
             this.itmContentCast.Name = "itmContentCast";
-            this.itmContentCast.Size = new System.Drawing.Size(128, 22);
+            this.itmContentCast.Size = new System.Drawing.Size(180, 22);
             this.itmContentCast.Text = "Cast";
             this.itmContentCast.Click += new System.EventHandler(this.ItmContentCast_Click);
             // 
@@ -608,6 +666,7 @@ namespace PlexDL.UI
             this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTVShows.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -643,6 +702,7 @@ namespace PlexDL.UI
             this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvSeasons.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -741,6 +801,7 @@ namespace PlexDL.UI
             this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvArtists.ContextMenuStrip = this.cxtTrackOptions;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -767,6 +828,94 @@ namespace PlexDL.UI
             this.dgvArtists.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
             this.dgvArtists.SelectionChanged += new System.EventHandler(this.DgvArtists_OnRowChange);
             // 
+            // cxtTrackOptions
+            // 
+            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmTrackMetadata,
+            this.itmTrackDownload,
+            this.itmTrackStream,
+            this.itmTrackSearch,
+            this.itmTrackCast});
+            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
+            this.cxtTrackOptions.Size = new System.Drawing.Size(129, 114);
+            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtTrackOptions_Opening);
+            // 
+            // itmTrackMetadata
+            // 
+            this.itmTrackMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmTrackMetadataView,
+            this.itmTrackMetadataExport});
+            this.itmTrackMetadata.Name = "itmTrackMetadata";
+            this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackMetadata.Text = "Metadata";
+            // 
+            // itmTrackMetadataView
+            // 
+            this.itmTrackMetadataView.Name = "itmTrackMetadataView";
+            this.itmTrackMetadataView.Size = new System.Drawing.Size(108, 22);
+            this.itmTrackMetadataView.Text = "View";
+            this.itmTrackMetadataView.Click += new System.EventHandler(this.ItmTrackMetadataView_Click);
+            // 
+            // itmTrackMetadataExport
+            // 
+            this.itmTrackMetadataExport.Name = "itmTrackMetadataExport";
+            this.itmTrackMetadataExport.Size = new System.Drawing.Size(108, 22);
+            this.itmTrackMetadataExport.Text = "Export";
+            this.itmTrackMetadataExport.Click += new System.EventHandler(this.ItmTrackMetadataExport_Click);
+            // 
+            // itmTrackDownload
+            // 
+            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVDownloadThisTrack,
+            this.itmDGVDownloadThisAlbum,
+            this.itmDGVViewTrackDownloadLink});
+            this.itmTrackDownload.Name = "itmTrackDownload";
+            this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackDownload.Text = "Download";
+            // 
+            // itmDGVDownloadThisTrack
+            // 
+            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
+            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisTrack.Text = "Download Track";
+            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
+            // 
+            // itmDGVDownloadThisAlbum
+            // 
+            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
+            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisAlbum.Text = "Download Album";
+            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
+            // 
+            // itmDGVViewTrackDownloadLink
+            // 
+            this.itmDGVViewTrackDownloadLink.Name = "itmDGVViewTrackDownloadLink";
+            this.itmDGVViewTrackDownloadLink.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVViewTrackDownloadLink.Text = "View Link";
+            this.itmDGVViewTrackDownloadLink.Click += new System.EventHandler(this.ItmDGVViewTrackDownloadLink_Click);
+            // 
+            // itmTrackStream
+            // 
+            this.itmTrackStream.Name = "itmTrackStream";
+            this.itmTrackStream.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackStream.Text = "Stream";
+            this.itmTrackStream.Click += new System.EventHandler(this.ItmTrackStream_Click);
+            // 
+            // itmTrackSearch
+            // 
+            this.itmTrackSearch.Name = "itmTrackSearch";
+            this.itmTrackSearch.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackSearch.Text = "Search";
+            this.itmTrackSearch.Click += new System.EventHandler(this.ItmTrackSearch_Click);
+            // 
+            // itmTrackCast
+            // 
+            this.itmTrackCast.Name = "itmTrackCast";
+            this.itmTrackCast.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackCast.Text = "Cast";
+            this.itmTrackCast.Click += new System.EventHandler(this.ItmTrackCast_Click);
+            // 
             // dgvAlbums
             // 
             this.dgvAlbums.AllowUserToAddRows = false;
@@ -776,6 +925,7 @@ namespace PlexDL.UI
             this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvAlbums.ContextMenuStrip = this.cxtTrackOptions;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -834,70 +984,6 @@ namespace PlexDL.UI
             this.dgvTracks.Size = new System.Drawing.Size(320, 165);
             this.dgvTracks.TabIndex = 21;
             this.dgvTracks.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            // 
-            // cxtTrackOptions
-            // 
-            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmTrackMetadata,
-            this.itmTrackDownload,
-            this.itmTrackStream,
-            this.itmTrackCast});
-            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
-            this.cxtTrackOptions.Size = new System.Drawing.Size(129, 92);
-            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtTrackOptions_Opening);
-            // 
-            // itmTrackMetadata
-            // 
-            this.itmTrackMetadata.Name = "itmTrackMetadata";
-            this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackMetadata.Text = "Metadata";
-            this.itmTrackMetadata.Click += new System.EventHandler(this.ItmTrackMetadata_Click);
-            // 
-            // itmTrackDownload
-            // 
-            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmDGVDownloadThisTrack,
-            this.itmDGVDownloadThisAlbum,
-            this.itmDGVViewTrackDownloadLink});
-            this.itmTrackDownload.Name = "itmTrackDownload";
-            this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackDownload.Text = "Download";
-            // 
-            // itmDGVDownloadThisTrack
-            // 
-            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
-            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVDownloadThisTrack.Text = "Download Track";
-            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
-            // 
-            // itmDGVDownloadThisAlbum
-            // 
-            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
-            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVDownloadThisAlbum.Text = "Download Album";
-            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
-            // 
-            // itmDGVViewTrackDownloadLink
-            // 
-            this.itmDGVViewTrackDownloadLink.Name = "itmDGVViewTrackDownloadLink";
-            this.itmDGVViewTrackDownloadLink.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVViewTrackDownloadLink.Text = "View Link";
-            this.itmDGVViewTrackDownloadLink.Click += new System.EventHandler(this.ItmDGVViewTrackDownloadLink_Click);
-            // 
-            // itmTrackStream
-            // 
-            this.itmTrackStream.Name = "itmTrackStream";
-            this.itmTrackStream.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackStream.Text = "Stream";
-            this.itmTrackStream.Click += new System.EventHandler(this.ItmTrackStream_Click);
-            // 
-            // itmTrackCast
-            // 
-            this.itmTrackCast.Name = "itmTrackCast";
-            this.itmTrackCast.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackCast.Text = "Cast";
-            this.itmTrackCast.Click += new System.EventHandler(this.ItmTrackCast_Click);
             // 
             // tabLog
             // 
@@ -1067,7 +1153,7 @@ namespace PlexDL.UI
             // 
             this.itmLoadProfile.Name = "itmLoadProfile";
             this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmLoadProfile.Size = new System.Drawing.Size(180, 22);
+            this.itmLoadProfile.Size = new System.Drawing.Size(148, 22);
             this.itmLoadProfile.Text = "Load";
             this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
             // 
@@ -1075,7 +1161,7 @@ namespace PlexDL.UI
             // 
             this.itmSaveProfile.Name = "itmSaveProfile";
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(180, 22);
+            this.itmSaveProfile.Size = new System.Drawing.Size(148, 22);
             this.itmSaveProfile.Text = "Save";
             this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
             // 
@@ -1083,14 +1169,14 @@ namespace PlexDL.UI
             // 
             this.itmExportObj.Name = "itmExportObj";
             this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmExportObj.Size = new System.Drawing.Size(180, 22);
+            this.itmExportObj.Size = new System.Drawing.Size(148, 22);
             this.itmExportObj.Text = "Export";
             this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
             // 
             // itmSettings
             // 
             this.itmSettings.Name = "itmSettings";
-            this.itmSettings.Size = new System.Drawing.Size(180, 22);
+            this.itmSettings.Size = new System.Drawing.Size(148, 22);
             this.itmSettings.Text = "Settings";
             this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
             // 
@@ -1459,9 +1545,9 @@ namespace PlexDL.UI
             this.tabMusic.ResumeLayout(false);
             this.tlpMusic.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).EndInit();
+            this.cxtTrackOptions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).EndInit();
-            this.cxtTrackOptions.ResumeLayout(false);
             this.tabLog.ResumeLayout(false);
             this.tlpLog.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
@@ -1597,6 +1683,15 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmContentStream;
         private ToolStripMenuItem itmTrackStream;
         private ToolStripMenuItem itmData;
+        private ToolStripMenuItem itmEpisodeSearch;
+        private ToolStripMenuItem itmTrackSearch;
+        private ToolStripMenuItem itmContentSearch;
+        private ToolStripMenuItem itmContentMetadataView;
+        private ToolStripMenuItem itmContentMetadataExport;
+        private ToolStripMenuItem itmTrackMetadataView;
+        private ToolStripMenuItem itmTrackMetadataExport;
+        private ToolStripMenuItem itmEpisodeMetadataView;
+        private ToolStripMenuItem itmEpisodeMetadataExport;
     }
 }
 

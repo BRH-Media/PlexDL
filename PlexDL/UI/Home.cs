@@ -102,7 +102,7 @@ namespace PlexDL.UI
             ManualSectionLoad();
         }
 
-        private void ItmEpisodeMetadata_Click(object sender, EventArgs e)
+        private void ItmEpisodeMetadataView_Click(object sender, EventArgs e)
         {
             cxtEpisodeOptions.Close();
             Metadata();
@@ -120,7 +120,7 @@ namespace PlexDL.UI
             DoDownloadAll();
         }
 
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ItmContentMetadataView_Click(object sender, EventArgs e)
         {
             cxtMovieOptions.Close();
             Metadata();
@@ -427,7 +427,7 @@ namespace PlexDL.UI
             DoDownloadAll();
         }
 
-        private void ItmTrackMetadata_Click(object sender, EventArgs e)
+        private void ItmTrackMetadataView_Click(object sender, EventArgs e)
         {
             cxtTrackOptions.Close();
             Metadata();
@@ -2576,5 +2576,35 @@ namespace PlexDL.UI
         }
 
         #endregion ButtonClicks
+
+        private void ItmTrackSearch_Click(object sender, EventArgs e)
+        {
+            SearchProcedure();
+        }
+
+        private void ItmEpisodeSearch_Click(object sender, EventArgs e)
+        {
+            SearchProcedure();
+        }
+
+        private void ItmContentSearch_Click(object sender, EventArgs e)
+        {
+            SearchProcedure();
+        }
+
+        private void ItmTrackMetadataExport_Click(object sender, EventArgs e)
+        {
+            DoStreamExport();
+        }
+
+        private void ItmEpisodeMetadataExport_Click(object sender, EventArgs e)
+        {
+            DoStreamExport();
+        }
+
+        private void ItmContentMetadataExport_Click(object sender, EventArgs e)
+        {
+            DoStreamExport();
+        }
     }
 }
