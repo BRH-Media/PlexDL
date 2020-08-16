@@ -284,7 +284,16 @@ namespace PlexDL.UI
             {
                 Link = StreamingContent.StreamInformation.Links.Download //download link (octet-stream)
             };
+
             viewer.ShowDialog();
+        }
+
+        private void ItmDataExplorer_Click(object sender, EventArgs e)
+        {
+            if (StationaryMode || StreamingContent.StreamInformation.Links.Download == null ||
+                StreamingContent.StreamInformation.Links.View == null) return;
+
+            DataExplorer.ShowExplorer(StreamingContent);
         }
     }
 }

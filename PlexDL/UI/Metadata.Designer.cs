@@ -32,7 +32,7 @@ namespace PlexDL.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
@@ -56,6 +56,7 @@ namespace PlexDL.UI
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDataExplorer = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
@@ -178,14 +179,14 @@ namespace PlexDL.UI
             this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -247,7 +248,8 @@ namespace PlexDL.UI
             // 
             this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmImport,
-            this.itmExport});
+            this.itmExport,
+            this.itmDataExplorer});
             this.itmFile.Name = "itmFile";
             this.itmFile.Size = new System.Drawing.Size(37, 20);
             this.itmFile.Text = "File";
@@ -284,7 +286,7 @@ namespace PlexDL.UI
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(157, 22);
+            this.itmPvs.Size = new System.Drawing.Size(180, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.ItmPvs_Click);
             // 
@@ -292,7 +294,7 @@ namespace PlexDL.UI
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
+            this.itmBrowser.Size = new System.Drawing.Size(180, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.ItmBrowser_Click);
             // 
@@ -300,14 +302,14 @@ namespace PlexDL.UI
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(157, 22);
+            this.itmVlc.Size = new System.Drawing.Size(180, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.ItmVlc_Click);
             // 
             // itmViewLink
             // 
             this.itmViewLink.Name = "itmViewLink";
-            this.itmViewLink.Size = new System.Drawing.Size(157, 22);
+            this.itmViewLink.Size = new System.Drawing.Size(180, 22);
             this.itmViewLink.Text = "View Link";
             this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
             // 
@@ -318,6 +320,13 @@ namespace PlexDL.UI
             this.itmExit.Size = new System.Drawing.Size(38, 20);
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
+            // 
+            // itmDataExplorer
+            // 
+            this.itmDataExplorer.Name = "itmDataExplorer";
+            this.itmDataExplorer.Size = new System.Drawing.Size(180, 22);
+            this.itmDataExplorer.Text = "Data Explorer";
+            this.itmDataExplorer.Click += new System.EventHandler(this.ItmDataExplorer_Click);
             // 
             // Metadata
             // 
@@ -374,5 +383,6 @@ namespace PlexDL.UI
         private Panel pnlPlotSynopsis;
         private Common.Components.FlatDataGridView dgvAttributes;
         private ToolStripMenuItem itmViewLink;
+        private ToolStripMenuItem itmDataExplorer;
     }
 }

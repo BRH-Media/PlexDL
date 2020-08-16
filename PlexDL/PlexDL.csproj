@@ -209,6 +209,12 @@
     <Compile Include="UI\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DataExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DataExplorer.Designer.cs">
+      <DependentUpon>DataExplorer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Authenticate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,6 +308,9 @@
     </Compile>
     <EmbeddedResource Include="UI\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DataExplorer.resx">
+      <DependentUpon>DataExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Authenticate.resx">
       <DependentUpon>Authenticate.cs</DependentUpon>
