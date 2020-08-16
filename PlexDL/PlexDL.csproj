@@ -428,6 +428,10 @@
       <Project>{2c0b4243-5d9e-454a-9a7b-dcac2787b13e}</Project>
       <Name>PlexDL.Common.Enums</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Pxz\PlexDL.Common.Pxz.csproj">
+      <Project>{1764ca80-f851-4e2c-acc8-37696d499d3b}</Project>
+      <Name>PlexDL.Common.Pxz</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
       <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>
       <Name>PlexDL.Player</Name>

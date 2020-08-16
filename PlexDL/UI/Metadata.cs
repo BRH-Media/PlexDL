@@ -209,15 +209,16 @@ namespace PlexDL.UI
             if (StationaryMode || StreamingContent.StreamInformation.Links.Download == null ||
                 StreamingContent.StreamInformation.Links.View == null) return;
             if (sfdExport.ShowDialog() == DialogResult.OK)
-                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
+            {
+            }
         }
 
         private void DoImport()
         {
             if (ofdImport.ShowDialog() != DialogResult.OK) return;
 
-            var obj = ImportExport.MetadataFromFile(ofdImport.FileName);
-            StreamingContent = obj;
+            StreamingContent = ImportExport.MetadataFromFile(ofdImport.FileName);
+
             flpActors.Controls.Clear();
             //set this in-case the loader doesn't find anything; that way the user still gets feedback.
             txtPlotSynopsis.Text = @"Plot synopsis not provided";

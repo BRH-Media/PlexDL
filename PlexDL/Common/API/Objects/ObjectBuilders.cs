@@ -63,6 +63,9 @@ namespace PlexDL.Common.API.Objects
                         obj.Synopsis = XmlMetadataStrings.GetContentSynopsis(metadata.Xml);
                         obj.StreamInformation = dlInfo;
 
+                        //apply the raw metadata to the object (it won't get serialised)
+                        obj.RawMetadata = metadata.Xml;
+
                         //This works, but it shouldn't - I feel like it shouldn't.
 
                         //Check if the season information is valid (must have a number).
@@ -148,6 +151,9 @@ namespace PlexDL.Common.API.Objects
                         obj.Actors = XmlMetadataObjects.GetActorsFromMetadata(metadata.Xml);
                         obj.StreamIndex = index;
                         obj.Synopsis = XmlMetadataStrings.GetContentSynopsis(metadata.Xml);
+
+                        //apply the raw metadata to the object (it won't get serialised)
+                        obj.RawMetadata = metadata.Xml;
                     }
                     else
                     {
@@ -223,6 +229,9 @@ namespace PlexDL.Common.API.Objects
                         obj.Album = XmlMetadataStrings.GetParentTitle(metadata.Xml);
                         obj.Artist = XmlMetadataStrings.GetGrandparentTitle(metadata.Xml);
                         obj.Synopsis = "Auditory Content"; //Plex audio does not contain the "summary" attribute
+
+                        //apply the raw metadata to the object (it won't get serialised)
+                        obj.RawMetadata = metadata.Xml;
                     }
                     else
                     {

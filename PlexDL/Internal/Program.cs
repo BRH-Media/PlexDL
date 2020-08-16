@@ -1,8 +1,10 @@
 ﻿using LogDel;
+using LogDel.Enums;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.UI;
 using System;
@@ -11,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using LogDel.Enums;
 using UIHelpers;
 
 namespace PlexDL.Internal
@@ -55,11 +56,19 @@ namespace PlexDL.Internal
                     //Windows has passed a file; we need to check if it's a '.pmxml' file which we can load
                     //into the Metadata window.
                     var ext = Path.GetExtension(firstArg);
-                    const string expectedFormat = ".pmxml";
+                    const string expectedFormat = ".pxz";
                     if (string.Equals(ext, expectedFormat))
                     {
-                        var metadata = ImportExport.MetadataFromFile(firstArg);
-                        RunMetadataWindow(metadata);
+                        try
+                        {
+                            var metadata = ImportExport.MetadataFromFile(firstArg);
+                            RunMetadataWindow(metadata);
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggingHelpers.RecordException(ex.Message, @"StartupLoadPxz");
+                            UIMessages.Error($"Error occurred whilst loading PXZ file:\n\n{ex}");
+                        }
                     }
                     else
                     {

@@ -118,10 +118,11 @@ namespace PlexDL.UI
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmData = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSetDlDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.itmOpenDataFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCleanupAllData = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearMyToken = new System.Windows.Forms.ToolStripMenuItem();
@@ -161,7 +162,6 @@ namespace PlexDL.UI
             this.cxtTracks = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmData = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -427,8 +427,8 @@ namespace PlexDL.UI
             // 
             // sfdExport
             // 
-            this.sfdExport.DefaultExt = "pmxml";
-            this.sfdExport.Filter = "PlexMovie XML|*.pmxml";
+            this.sfdExport.DefaultExt = "pxz";
+            this.sfdExport.Filter = "PXZ File |*.pxz";
             this.sfdExport.Title = "Export PlexMovie Metadata";
             // 
             // gbStreamControl
@@ -1067,7 +1067,7 @@ namespace PlexDL.UI
             // 
             this.itmLoadProfile.Name = "itmLoadProfile";
             this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmLoadProfile.Size = new System.Drawing.Size(198, 22);
+            this.itmLoadProfile.Size = new System.Drawing.Size(180, 22);
             this.itmLoadProfile.Text = "Load";
             this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
             // 
@@ -1075,7 +1075,7 @@ namespace PlexDL.UI
             // 
             this.itmSaveProfile.Name = "itmSaveProfile";
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(198, 22);
+            this.itmSaveProfile.Size = new System.Drawing.Size(180, 22);
             this.itmSaveProfile.Text = "Save";
             this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
             // 
@@ -1083,9 +1083,26 @@ namespace PlexDL.UI
             // 
             this.itmExportObj.Name = "itmExportObj";
             this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmExportObj.Size = new System.Drawing.Size(198, 22);
+            this.itmExportObj.Size = new System.Drawing.Size(180, 22);
             this.itmExportObj.Text = "Export";
             this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
+            // 
+            // itmSettings
+            // 
+            this.itmSettings.Name = "itmSettings";
+            this.itmSettings.Size = new System.Drawing.Size(180, 22);
+            this.itmSettings.Text = "Settings";
+            this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
+            // 
+            // itmData
+            // 
+            this.itmData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmSetDlDirectory,
+            this.itmOpenDataFolder,
+            this.itmCleanupAllData});
+            this.itmData.Name = "itmData";
+            this.itmData.Size = new System.Drawing.Size(43, 20);
+            this.itmData.Text = "Data";
             // 
             // itmSetDlDirectory
             // 
@@ -1107,13 +1124,6 @@ namespace PlexDL.UI
             this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
             this.itmCleanupAllData.Text = "Cleanup All Data";
             this.itmCleanupAllData.Click += new System.EventHandler(this.ItmCleanupAllData_Click);
-            // 
-            // itmSettings
-            // 
-            this.itmSettings.Name = "itmSettings";
-            this.itmSettings.Size = new System.Drawing.Size(198, 22);
-            this.itmSettings.Text = "Settings";
-            this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
             // 
             // itmServers
             // 
@@ -1409,18 +1419,6 @@ namespace PlexDL.UI
             this.itmDownloadThisAlbum.Size = new System.Drawing.Size(191, 22);
             this.itmDownloadThisAlbum.Text = "Download This Album";
             this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
-            // 
-            // itmData
-            // 
-            this.itmData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
-            {
-                this.itmSetDlDirectory,
-                this.itmOpenDataFolder,
-                this.itmCleanupAllData
-            });
-            this.itmData.Name = "itmData";
-            this.itmData.Size = new System.Drawing.Size(43, 20);
-            this.itmData.Text = "Data";
             // 
             // Home
             // 

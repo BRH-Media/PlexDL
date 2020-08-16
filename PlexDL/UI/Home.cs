@@ -789,31 +789,44 @@ namespace PlexDL.UI
             }
         }
 
+        private void DoStreamExport_Handler(object sender, WaitWindowEventArgs e)
+        {
+            var content = (PlexObject)e.Arguments[0];
+            var fileName = (string)e.Arguments[1];
+            var poster = e.Arguments.Count > 2 ? (Bitmap)e.Arguments[2] : null;
+
+            ImportExport.MetadataToFile(fileName, content);
+        }
+
         private void DoStreamExport()
         {
             try
             {
-                if (dgvMovies.SelectedRows.Count == 1 || dgvEpisodes.SelectedRows.Count == 1 ||
-                    dgvTracks.SelectedRows.Count == 1)
+                if (dgvMovies.SelectedRows.Count != 1 && dgvEpisodes.SelectedRows.Count != 1 &&
+                    dgvTracks.SelectedRows.Count != 1) return;
+
+                PlexObject content;
+                switch (ObjectProvider.CurrentContentType)
                 {
-                    PlexObject content = null;
-                    switch (ObjectProvider.CurrentContentType)
-                    {
-                        case ContentType.Movies:
-                            content = GetMovieObjectFromSelection();
-                            break;
+                    case ContentType.Movies:
+                        content = GetMovieObjectFromSelection();
+                        break;
 
-                        case ContentType.TvShows:
-                            content = GetTvObjectFromSelection();
-                            break;
+                    case ContentType.TvShows:
+                        content = GetTvObjectFromSelection();
+                        break;
 
-                        case ContentType.Music:
-                            content = GetMusicObjectFromSelection();
-                            break;
-                    }
+                    case ContentType.Music:
+                        content = GetMusicObjectFromSelection();
+                        break;
 
-                    if (sfdExport.ShowDialog() == DialogResult.OK)
-                        ImportExport.MetadataToFile(sfdExport.FileName, content);
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                if (sfdExport.ShowDialog() == DialogResult.OK)
+                {
+                    WaitWindow.WaitWindow.Show(DoStreamExport_Handler, @"Exporting", content, sfdExport.FileName);
                 }
             }
             catch (Exception ex)
@@ -1740,7 +1753,7 @@ namespace PlexDL.UI
                     var diff = contentSize - bytesGet;
 
                     //~needs to be in millisecond format; so * seconds by 1000~
-                    var val = (diff / engineSpeed) * 1000;
+                    var val = diff / engineSpeed * 1000;
 
                     //this converts the raw "ETA" data into human-readable information, then sets it up for display.
                     eta = Methods.CalculateTime(val);
