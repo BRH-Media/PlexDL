@@ -57,7 +57,10 @@ namespace PlexDL.Common.API
         {
             try
             {
-                var pxz = new PxzFile(contentToExport.RawMetadata, contentToExport.ToXml());
+                //try and obtain a poster
+                var p = ImageHandler.GetPoster(contentToExport);
+
+                var pxz = new PxzFile(contentToExport.RawMetadata, contentToExport.ToXml(), p);
                 pxz.Save(fileName);
 
                 if (!silent)
@@ -71,21 +74,39 @@ namespace PlexDL.Common.API
             }
         }
 
-        public static PlexObject MetadataFromFile(string fileName, bool silent = false)
+        public static PxzFile LoadMetadataArchive(string fileName)
         {
             try
             {
                 var pxz = new PxzFile();
                 pxz.Load(fileName);
 
+                return pxz;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
+                return null;
+            }
+        }
+
+        public static PlexObject MetadataFromFile(string fileName, bool silent = false)
+        {
+            return MetadataFromFile(LoadMetadataArchive(fileName), silent);
+        }
+
+        public static PlexObject MetadataFromFile(PxzFile file, bool silent = false)
+        {
+            try
+            {
                 var serializer = new XmlSerializer(typeof(PlexObject));
 
-                var reader = new StringReader(pxz.ObjMetadata.OuterXml);
+                var reader = new StringReader(file.ObjMetadata.OuterXml);
                 var subReq = (PlexObject)serializer.Deserialize(reader);
                 reader.Close();
 
                 //apply raw XML from PXZ file
-                subReq.RawMetadata = pxz.RawMetadata;
+                subReq.RawMetadata = file.RawMetadata;
 
                 return subReq;
             }

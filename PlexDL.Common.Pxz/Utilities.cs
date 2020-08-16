@@ -34,6 +34,14 @@ namespace PlexDL.Common.Pxz
             return (byte[])converter.ConvertTo(img, typeof(byte[]));
         }
 
+        public static Bitmap ByteToImage(byte[] img)
+        {
+            using (var mStream = new MemoryStream(img))
+            {
+                return (Bitmap)Image.FromStream(mStream);
+            }
+        }
+
         public static PxzAuthor FromCurrent()
         {
             try

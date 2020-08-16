@@ -90,9 +90,10 @@ namespace PlexDL.Common.Pxz.Structures
                 var objFile = zip[objName];
                 var ptrFile = zip.ContainsEntry(ptrName) ? zip[ptrName] : null;
 
-                var idxString = @"";
-                var rawString = @"";
-                var objString = @"";
+                string idxString;
+                string rawString;
+                string objString;
+                Bitmap ptrBytes = null;
 
                 using (var idxStream = new MemoryStream())
                 {
@@ -107,6 +108,14 @@ namespace PlexDL.Common.Pxz.Structures
                     rawStream.Position = 0;
                     rawString = new StreamReader(rawStream).ReadToEnd();
                 }
+
+                if (ptrFile != null)
+                    using (var ptrStream = new MemoryStream())
+                    {
+                        ptrFile.Extract(ptrStream);
+                        ptrStream.Position = 0;
+                        ptrBytes = Utilities.ByteToImage(ptrStream.ToArray());
+                    }
 
                 using (var objStream = new MemoryStream())
                 {
@@ -131,6 +140,7 @@ namespace PlexDL.Common.Pxz.Structures
 
                 RawMetadata = rawDoc;
                 ObjMetadata = objDoc;
+                Poster = ptrBytes;
             }
         }
     }

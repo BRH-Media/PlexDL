@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.Objects.AttributeTables;
+using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Properties;
@@ -8,6 +9,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -19,6 +21,7 @@ namespace PlexDL.UI
         }
 
         public PlexObject StreamingContent { get; set; } = new PlexObject();
+        public Bitmap Poster { get; set; } = null;
         public bool StationaryMode { get; set; }
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
@@ -39,10 +42,10 @@ namespace PlexDL.UI
                 if (picPoster.InvokeRequired)
                     picPoster.BeginInvoke((MethodInvoker)delegate
                    {
-                       picPoster.BackgroundImage = ImageHandler.GetPoster(StreamingContent);
+                       picPoster.BackgroundImage = Poster ?? ImageHandler.GetPoster(StreamingContent);
                    });
                 else
-                    picPoster.BackgroundImage = ImageHandler.GetPoster(StreamingContent);
+                    picPoster.BackgroundImage = Poster ?? ImageHandler.GetPoster(StreamingContent);
             }
 
             //fill the plot synopsis infobox
@@ -210,19 +213,33 @@ namespace PlexDL.UI
                 StreamingContent.StreamInformation.Links.View == null) return;
             if (sfdExport.ShowDialog() == DialogResult.OK)
             {
+                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
             }
         }
 
         private void DoImport()
         {
-            if (ofdImport.ShowDialog() != DialogResult.OK) return;
+            try
+            {
+                if (ofdImport.ShowDialog() != DialogResult.OK) return;
 
-            StreamingContent = ImportExport.MetadataFromFile(ofdImport.FileName);
+                var pxz = ImportExport.LoadMetadataArchive(ofdImport.FileName);
 
-            flpActors.Controls.Clear();
-            //set this in-case the loader doesn't find anything; that way the user still gets feedback.
-            txtPlotSynopsis.Text = @"Plot synopsis not provided";
-            WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+                StreamingContent = ImportExport.MetadataFromFile(pxz);
+                Poster = pxz.Poster;
+
+                flpActors.Controls.Clear();
+
+                //set this in-case the loader doesn't find anything; that way the user still gets feedback.
+                txtPlotSynopsis.Text = @"Plot synopsis not provided";
+
+                WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"MetadataPxzImportError");
+                UIMessages.Error($"Import error:\n\n{ex}");
+            }
         }
 
         private void ItmImport_Click(object sender, EventArgs e)
