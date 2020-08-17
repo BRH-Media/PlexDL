@@ -36,7 +36,6 @@ namespace PlexDL.UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
-            this.picPoster = new System.Windows.Forms.PictureBox();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
             this.gbPlot = new System.Windows.Forms.GroupBox();
@@ -50,14 +49,14 @@ namespace PlexDL.UI
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmImport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDataExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmPvs = new System.Windows.Forms.ToolStripMenuItem();
             this.itmBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDataExplorer = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
+            this.picPoster = new System.Windows.Forms.PictureBox();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
             this.gbStarring.SuspendLayout();
@@ -65,6 +64,7 @@ namespace PlexDL.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.SuspendLayout();
             // 
             // flpActors
@@ -84,22 +84,6 @@ namespace PlexDL.UI
             this.sfdExport.DefaultExt = "pmxml";
             this.sfdExport.Filter = "PXZ File|*.pxz";
             this.sfdExport.Title = "Export PlexMovie Metadata";
-            // 
-            // picPoster
-            // 
-            this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.Properties.Resources.image_not_available_png_8;
-            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tlpMain.SetColumnSpan(this.picPoster, 3);
-            this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPoster.Location = new System.Drawing.Point(2, 2);
-            this.picPoster.Margin = new System.Windows.Forms.Padding(2);
-            this.picPoster.Name = "picPoster";
-            this.tlpMain.SetRowSpan(this.picPoster, 4);
-            this.picPoster.Size = new System.Drawing.Size(266, 232);
-            this.picPoster.TabIndex = 12;
-            this.picPoster.TabStop = false;
-            this.tipMain.SetToolTip(this.picPoster, "Poster");
             // 
             // ofdImport
             // 
@@ -258,7 +242,7 @@ namespace PlexDL.UI
             // 
             this.itmImport.Name = "itmImport";
             this.itmImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmImport.Size = new System.Drawing.Size(180, 22);
+            this.itmImport.Size = new System.Drawing.Size(153, 22);
             this.itmImport.Text = "Import";
             this.itmImport.Click += new System.EventHandler(this.ItmImport_Click);
             // 
@@ -266,9 +250,16 @@ namespace PlexDL.UI
             // 
             this.itmExport.Name = "itmExport";
             this.itmExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmExport.Size = new System.Drawing.Size(180, 22);
+            this.itmExport.Size = new System.Drawing.Size(153, 22);
             this.itmExport.Text = "Export";
             this.itmExport.Click += new System.EventHandler(this.ItmExport_Click);
+            // 
+            // itmDataExplorer
+            // 
+            this.itmDataExplorer.Name = "itmDataExplorer";
+            this.itmDataExplorer.Size = new System.Drawing.Size(153, 22);
+            this.itmDataExplorer.Text = "Data Explorer";
+            this.itmDataExplorer.Click += new System.EventHandler(this.ItmDataExplorer_Click);
             // 
             // itmStream
             // 
@@ -286,7 +277,7 @@ namespace PlexDL.UI
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(180, 22);
+            this.itmPvs.Size = new System.Drawing.Size(157, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.ItmPvs_Click);
             // 
@@ -294,7 +285,7 @@ namespace PlexDL.UI
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(180, 22);
+            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.ItmBrowser_Click);
             // 
@@ -302,14 +293,14 @@ namespace PlexDL.UI
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(180, 22);
+            this.itmVlc.Size = new System.Drawing.Size(157, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.ItmVlc_Click);
             // 
             // itmViewLink
             // 
             this.itmViewLink.Name = "itmViewLink";
-            this.itmViewLink.Size = new System.Drawing.Size(180, 22);
+            this.itmViewLink.Size = new System.Drawing.Size(157, 22);
             this.itmViewLink.Text = "View Link";
             this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
             // 
@@ -321,12 +312,21 @@ namespace PlexDL.UI
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
             // 
-            // itmDataExplorer
+            // picPoster
             // 
-            this.itmDataExplorer.Name = "itmDataExplorer";
-            this.itmDataExplorer.Size = new System.Drawing.Size(180, 22);
-            this.itmDataExplorer.Text = "Data Explorer";
-            this.itmDataExplorer.Click += new System.EventHandler(this.ItmDataExplorer_Click);
+            this.picPoster.BackColor = System.Drawing.SystemColors.Control;
+            this.picPoster.BackgroundImage = global::PlexDL.Properties.Resources.image_not_available_png_8;
+            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tlpMain.SetColumnSpan(this.picPoster, 3);
+            this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPoster.Location = new System.Drawing.Point(2, 2);
+            this.picPoster.Margin = new System.Windows.Forms.Padding(2);
+            this.picPoster.Name = "picPoster";
+            this.tlpMain.SetRowSpan(this.picPoster, 4);
+            this.picPoster.Size = new System.Drawing.Size(266, 232);
+            this.picPoster.TabIndex = 12;
+            this.picPoster.TabStop = false;
+            this.tipMain.SetToolTip(this.picPoster, "Poster");
             // 
             // Metadata
             // 
@@ -346,7 +346,6 @@ namespace PlexDL.UI
             this.Text = "Metadata";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
             this.Load += new System.EventHandler(this.Metadata_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.gbPlot.ResumeLayout(false);
             this.pnlPlotSynopsis.ResumeLayout(false);
             this.gbStarring.ResumeLayout(false);
@@ -355,6 +354,7 @@ namespace PlexDL.UI
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -362,7 +362,6 @@ namespace PlexDL.UI
 
         #endregion
         private FlowLayoutPanel flpActors;
-        private PictureBox picPoster;
         private SaveFileDialog sfdExport;
         private OpenFileDialog ofdImport;
         private ToolTip tipMain;
@@ -384,5 +383,6 @@ namespace PlexDL.UI
         private Common.Components.FlatDataGridView dgvAttributes;
         private ToolStripMenuItem itmViewLink;
         private ToolStripMenuItem itmDataExplorer;
+        private PictureBox picPoster;
     }
 }

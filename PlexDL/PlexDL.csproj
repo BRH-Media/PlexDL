@@ -306,6 +306,12 @@
     <Compile Include="UI\Translator.Designer.cs">
       <DependentUpon>Translator.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\XmlExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\XmlExplorer.Designer.cs">
+      <DependentUpon>XmlExplorer.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="UI\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
@@ -362,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Translator.resx">
       <DependentUpon>Translator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\XmlExplorer.resx">
+      <DependentUpon>XmlExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataExplorer));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
@@ -38,9 +39,12 @@
             this.lblTableValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblViewing = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblViewingValue = new System.Windows.Forms.ToolStripStatusLabel();
+            this.cxtMain = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itmRawXml = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.statusMain.SuspendLayout();
+            this.cxtMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMain
@@ -137,16 +141,31 @@
             this.lblViewingValue.Size = new System.Drawing.Size(24, 17);
             this.lblViewingValue.Text = "0/0";
             // 
-            // ApiExplorer
+            // cxtMain
+            // 
+            this.cxtMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmRawXml});
+            this.cxtMain.Name = "cxtMain";
+            this.cxtMain.Size = new System.Drawing.Size(124, 26);
+            // 
+            // itmRawXml
+            // 
+            this.itmRawXml.Name = "itmRawXml";
+            this.itmRawXml.Size = new System.Drawing.Size(123, 22);
+            this.itmRawXml.Text = "Raw XML";
+            this.itmRawXml.Click += new System.EventHandler(this.ItmRawXml_Click);
+            // 
+            // DataExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ContextMenuStrip = this.cxtMain;
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.statusMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
-            this.Name = "ApiExplorer";
+            this.Name = "DataExplorer";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Data Explorer";
@@ -155,6 +174,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
+            this.cxtMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,5 +190,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lblViewingValue;
         private System.Windows.Forms.ToolStripStatusLabel lblTable;
         private System.Windows.Forms.ToolStripStatusLabel lblTableValue;
+        private System.Windows.Forms.ContextMenuStrip cxtMain;
+        private System.Windows.Forms.ToolStripMenuItem itmRawXml;
     }
 }

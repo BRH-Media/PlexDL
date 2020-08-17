@@ -93,5 +93,10 @@ namespace PlexDL.UI
 
             frm.ShowDialog();
         }
+
+        private void ItmRawXml_Click(object sender, EventArgs e)
+        {
+            XmlExplorer.ShowXmlExplorer(PlexData.RawMetadata);
+        }
     }
 }
