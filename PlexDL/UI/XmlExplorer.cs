@@ -40,6 +40,7 @@ namespace PlexDL.UI
             frm.ShowDialog();
         }
 
+        //https://stackoverflow.com/questions/1123718/format-xml-string-to-print-friendly-xml-string
         private static string NiceXml(XmlNode xml)
         {
             var result = "";
