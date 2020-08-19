@@ -213,8 +213,13 @@ namespace PlexDL.UI
                 StreamingContent.StreamInformation.Links.View == null) return;
             if (sfdExport.ShowDialog() == DialogResult.OK)
             {
-                ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
+                WaitWindow.WaitWindow.Show(DoExport_Callback, @"Exporting");
             }
+        }
+
+        private void DoExport_Callback(object sender, WaitWindowEventArgs e)
+        {
+            ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
 
         private void DoImport()
@@ -225,15 +230,25 @@ namespace PlexDL.UI
 
                 var pxz = ImportExport.LoadMetadataArchive(ofdImport.FileName);
 
-                StreamingContent = ImportExport.MetadataFromFile(pxz);
-                Poster = (Bitmap)pxz.LoadRecord(pxz.Location, @"poster").Content.ToImage();
+                if (pxz != null)
+                {
+                    StreamingContent = ImportExport.MetadataFromFile(pxz);
 
-                flpActors.Controls.Clear();
+                    var profilePoster = (Bitmap)pxz.LoadRecord(@"poster").Content.ToImage();
 
-                //set this in-case the loader doesn't find anything; that way the user still gets feedback.
-                txtPlotSynopsis.Text = @"Plot synopsis not provided";
+                    Poster = profilePoster;
 
-                WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+                    flpActors.Controls.Clear();
+
+                    //set this in-case the loader doesn't find anything; that way the user still gets feedback.
+                    txtPlotSynopsis.Text = @"Plot synopsis not provided";
+
+                    WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
+                }
+                else
+                {
+                    UIMessages.Error(@"Import error; PXZ parse returned null.");
+                }
             }
             catch (Exception ex)
             {

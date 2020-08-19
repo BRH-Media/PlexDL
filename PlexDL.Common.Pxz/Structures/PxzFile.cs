@@ -88,67 +88,17 @@ namespace PlexDL.Common.Pxz.Structures
             }
         }
 
-        public PxzRecord LoadRecord(string pxzFileName, string recordName)
-        {
-            if (FileIndex.RecordReference.Count > 0)
-            {
-                if (!File.Exists(pxzFileName)) return null;
-
-                Records.Clear();
-
-                const string dirName = @"records";
-                const string idxName = @"index";
-
-                using (var zip = ZipFile.Read(pxzFileName))
-                {
-                    var idxFile = zip[idxName];
-
-                    using (var idxStream = new MemoryStream())
-                    {
-                        idxFile.Extract(idxStream);
-                        idxStream.Position = 0;
-                        var idxString = new StreamReader(idxStream).ReadToEnd();
-
-                        //Gzip decompress
-                        var idxXml = GZipCompressor.DecompressString(idxString);
-                        var index = Serializers.StringToPxzIndex(idxXml);
-
-                        foreach (var r in index.RecordReference)
-                        {
-                            if (r.RecordName != recordName) continue;
-
-                            var recName = $"{dirName}/{r.StoredName}";
-
-                            var recFile = zip[recName];
-
-                            using (var recStream = new MemoryStream())
-                            {
-                                recFile.Extract(recStream);
-                                recStream.Position = 0;
-                                var rec = PxzRecord.FromRawForm(new StreamReader(recStream).ReadToEnd());
-
-                                return rec;
-                            }
-                        }
-
-                        return null;
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public PxzRecord LoadRecord(string recordName)
         {
-            foreach (var r in FileIndex.RecordReference)
-            {
-                if (r.RecordName == recordName)
+            if (Records.Count > 0 && FileIndex.RecordReference.Count > 0)
+                foreach (var r in FileIndex.RecordReference)
                 {
-                    var i = FileIndex.RecordReference.IndexOf(r);
-                    return Records[i];
+                    if (r.RecordName == recordName)
+                    {
+                        var i = FileIndex.RecordReference.IndexOf(r);
+                        return Records[i];
+                    }
                 }
-            }
 
             return null;
         }
@@ -159,8 +109,10 @@ namespace PlexDL.Common.Pxz.Structures
 
             Location = path;
             Records.Clear();
+            FileIndex.RecordReference.Clear();
 
             const string idxName = @"index";
+            const string dirName = @"records";
 
             using (var zip = ZipFile.Read(path))
             {
@@ -177,9 +129,28 @@ namespace PlexDL.Common.Pxz.Structures
 
                 //Gzip decompress
                 var idxByte = GZipCompressor.DecompressString(idxString);
+                var index = Serializers.StringToPxzIndex(idxByte);
+
+                //load all records into memory
+                foreach (var r in index.RecordReference)
+                {
+                    var recName = $"{dirName}/{r.StoredName}";
+
+                    var recFile = zip[recName];
+
+                    using (var recStream = new MemoryStream())
+                    {
+                        recFile.Extract(recStream);
+                        recStream.Position = 0;
+                        var rec = PxzRecord.FromRawForm(new StreamReader(recStream).ReadToEnd());
+
+                        Records.Add(rec);
+                        FileIndex.RecordReference.Add(rec.Header.Naming);
+                    }
+                }
 
                 //apply new values
-                FileIndex = Serializers.StringToPxzIndex(idxByte);
+                FileIndex = index;
             }
         }
     }

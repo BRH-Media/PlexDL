@@ -113,12 +113,12 @@ namespace PlexDL.Common.API
             {
                 var serializer = new XmlSerializer(typeof(PlexObject));
 
-                var reader = new StringReader(file.LoadRecord(file.Location, @"obj").Content.ToXmlDocument().OuterXml);
+                var reader = new StringReader(file.LoadRecord(@"obj").Content.ToXmlDocument().OuterXml);
                 var subReq = (PlexObject)serializer.Deserialize(reader);
                 reader.Close();
 
                 //apply raw XML from PXZ file
-                subReq.RawMetadata = file.LoadRecord(file.Location, @"raw").Content.ToXmlDocument();
+                subReq.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
 
                 return subReq;
             }
