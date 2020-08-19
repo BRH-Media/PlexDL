@@ -1,44 +1,57 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Pxz.Compressors;
-using System.Drawing;
+using PlexDL.Common.Pxz.Extensions;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
 
 namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzFile
     {
-        public XmlDocument RawMetadata { get; set; }
-        public XmlDocument ObjMetadata { get; set; }
         public PxzIndex FileIndex { get; set; } = new PxzIndex();
-        public Bitmap Poster { get; set; }
+
+        private List<PxzRecord> Records { get; set; } = new List<PxzRecord>();
+        public string Location { get; set; } = @"";
 
         public PxzFile()
         {
             //blank initializer
         }
 
-        public PxzFile(XmlDocument raw, XmlDocument obj, Bitmap ptr = null, PxzIndex idx = null)
+        public PxzFile(ICollection<PxzRecord> records)
         {
-            if (idx != null) FileIndex = idx;
-            if (ptr != null)
-                Poster = ptr;
-            else
-            {
-                //make a new index (it wasn't specified)
-                var a = Utilities.FromCurrent();
-                var i = new PxzIndex
-                {
-                    Author = a,
-                    FormatVersion = Utilities.GetVersion()
-                };
+            FileIndex.RecordReference.Clear();
+            Records.Clear();
 
-                //apply newly generated index
-                FileIndex = i;
+            foreach (var r in records)
+            {
+                FileIndex.RecordReference.Add(r.Header.Naming);
+                records.Add(r);
             }
-            RawMetadata = raw;
-            ObjMetadata = obj;
+        }
+
+        public void AddRecord(PxzRecord record)
+        {
+            Records.Add(record);
+            FileIndex.RecordReference.Add(record.Header.Naming);
+        }
+
+        public void RemoveRecord(PxzRecord record)
+        {
+            if (Records.Contains(record)) Records.Remove(record);
+        }
+
+        public void RemoveRecord(string recordName)
+        {
+            foreach (var r in FileIndex.RecordReference)
+            {
+                if (r.RecordName == recordName)
+                {
+                    var i = FileIndex.RecordReference.IndexOf(r);
+                    Records.RemoveAt(i);
+                }
+            }
         }
 
         public void Save(string path)
@@ -48,52 +61,112 @@ namespace PlexDL.Common.Pxz.Structures
                 File.Delete(path);
 
             var idxDoc = FileIndex.ToXml();
-            var rawDoc = RawMetadata;
-            var objDoc = ObjMetadata;
 
             //deflate the content to save room (poster isn't compressed via Zlib)
             var idxByte = GZipCompressor.CompressString(idxDoc.OuterXml);
-            var rawByte = GZipCompressor.CompressString(rawDoc.OuterXml);
-            var objByte = GZipCompressor.CompressString(objDoc.OuterXml);
-            var ptrByte = Poster != null ? Utilities.ImageToByte(Poster) : null;
 
-            const string idxName = @"idx";
-            const string rawName = @"raw";
-            const string objName = @"obj";
-            const string ptrName = @"ptr";
+            const string idxName = @"index";
+            const string recName = @"records";
 
             using (var archive = new ZipFile(path, Encoding.Default))
             {
                 archive.AddEntry(idxName, idxByte);
-                archive.AddEntry(rawName, rawByte);
-                archive.AddEntry(objName, objByte);
-                if (ptrByte != null) archive.AddEntry(ptrName, ptrByte);
+
+                //add records folder
+                archive.AddDirectoryByName(recName);
+
+                //traverse the records list
+                foreach (var r in Records)
+                {
+                    var raw = r.ToRawForm();
+                    var fileName = $"{recName}/{r.Header.Naming.StoredName}";
+                    archive.AddEntry(fileName, raw);
+                }
 
                 //finalise ZIP file
                 archive.Save(path);
             }
         }
 
+        public PxzRecord LoadRecord(string pxzFileName, string recordName)
+        {
+            if (FileIndex.RecordReference.Count > 0)
+            {
+                if (!File.Exists(pxzFileName)) return null;
+
+                Records.Clear();
+
+                const string dirName = @"records";
+                const string idxName = @"index";
+
+                using (var zip = ZipFile.Read(pxzFileName))
+                {
+                    var idxFile = zip[idxName];
+
+                    using (var idxStream = new MemoryStream())
+                    {
+                        idxFile.Extract(idxStream);
+                        idxStream.Position = 0;
+                        var idxString = new StreamReader(idxStream).ReadToEnd();
+
+                        //Gzip decompress
+                        var idxXml = GZipCompressor.DecompressString(idxString);
+                        var index = Serializers.StringToPxzIndex(idxXml);
+
+                        foreach (var r in index.RecordReference)
+                        {
+                            if (r.RecordName != recordName) continue;
+
+                            var recName = $"{dirName}/{r.StoredName}";
+
+                            var recFile = zip[recName];
+
+                            using (var recStream = new MemoryStream())
+                            {
+                                recFile.Extract(recStream);
+                                recStream.Position = 0;
+                                var rec = PxzRecord.FromRawForm(new StreamReader(recStream).ReadToEnd());
+
+                                return rec;
+                            }
+                        }
+
+                        return null;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public PxzRecord LoadRecord(string recordName)
+        {
+            foreach (var r in FileIndex.RecordReference)
+            {
+                if (r.RecordName == recordName)
+                {
+                    var i = FileIndex.RecordReference.IndexOf(r);
+                    return Records[i];
+                }
+            }
+
+            return null;
+        }
+
         public void Load(string path)
         {
             if (!File.Exists(path)) return;
 
-            const string idxName = @"idx";
-            const string rawName = @"raw";
-            const string objName = @"obj";
-            const string ptrName = @"ptr";
+            Location = path;
+            Records.Clear();
+
+            const string idxName = @"index";
 
             using (var zip = ZipFile.Read(path))
             {
                 var idxFile = zip[idxName];
-                var rawFile = zip[rawName];
-                var objFile = zip[objName];
-                var ptrFile = zip.ContainsEntry(ptrName) ? zip[ptrName] : null;
 
                 string idxString;
-                string rawString;
-                string objString;
-                Bitmap ptrBytes = null;
 
                 using (var idxStream = new MemoryStream())
                 {
@@ -102,45 +175,11 @@ namespace PlexDL.Common.Pxz.Structures
                     idxString = new StreamReader(idxStream).ReadToEnd();
                 }
 
-                using (var rawStream = new MemoryStream())
-                {
-                    rawFile.Extract(rawStream);
-                    rawStream.Position = 0;
-                    rawString = new StreamReader(rawStream).ReadToEnd();
-                }
-
-                if (ptrFile != null)
-                    using (var ptrStream = new MemoryStream())
-                    {
-                        ptrFile.Extract(ptrStream);
-                        ptrStream.Position = 0;
-                        ptrBytes = Utilities.ByteToImage(ptrStream.ToArray());
-                    }
-
-                using (var objStream = new MemoryStream())
-                {
-                    objFile.Extract(objStream);
-                    objStream.Position = 0;
-                    objString = new StreamReader(objStream).ReadToEnd();
-                }
-
-                //Zlib decompress
+                //Gzip decompress
                 var idxByte = GZipCompressor.DecompressString(idxString);
-                var rawByte = GZipCompressor.DecompressString(rawString);
-                var objByte = GZipCompressor.DecompressString(objString);
 
                 //apply new values
                 FileIndex = Serializers.StringToPxzIndex(idxByte);
-
-                var objDoc = new XmlDocument();
-                objDoc.LoadXml(objByte);
-
-                var rawDoc = new XmlDocument();
-                rawDoc.LoadXml(rawByte);
-
-                RawMetadata = rawDoc;
-                ObjMetadata = objDoc;
-                Poster = ptrBytes;
             }
         }
     }

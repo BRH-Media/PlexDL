@@ -2,6 +2,7 @@
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Structures.Plex;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -60,7 +61,18 @@ namespace PlexDL.Common.API
                 //try and obtain a poster
                 var p = ImageHandler.GetPoster(contentToExport);
 
-                var pxz = new PxzFile(contentToExport.RawMetadata, contentToExport.ToXml(), p);
+                var rawMetadata = new PxzRecord(contentToExport.RawMetadata, @"raw");
+                var objMetadata = new PxzRecord(contentToExport.ToXml(), @"obj");
+                var ptrMetadata = new PxzRecord(p, @"poster");
+
+                var data = new List<PxzRecord>()
+                {
+                    rawMetadata,
+                    objMetadata,
+                    ptrMetadata
+                };
+
+                var pxz = new PxzFile(data);
                 pxz.Save(fileName);
 
                 if (!silent)
@@ -101,12 +113,12 @@ namespace PlexDL.Common.API
             {
                 var serializer = new XmlSerializer(typeof(PlexObject));
 
-                var reader = new StringReader(file.ObjMetadata.OuterXml);
+                var reader = new StringReader(file.LoadRecord(file.Location, @"obj").Content.ToXmlDocument().OuterXml);
                 var subReq = (PlexObject)serializer.Deserialize(reader);
                 reader.Close();
 
                 //apply raw XML from PXZ file
-                subReq.RawMetadata = file.RawMetadata;
+                subReq.RawMetadata = file.LoadRecord(file.Location, @"raw").Content.ToXmlDocument();
 
                 return subReq;
             }

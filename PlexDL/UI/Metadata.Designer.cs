@@ -38,6 +38,7 @@ namespace PlexDL.UI
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.picPoster = new System.Windows.Forms.PictureBox();
             this.gbPlot = new System.Windows.Forms.GroupBox();
             this.pnlPlotSynopsis = new System.Windows.Forms.Panel();
             this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
@@ -56,7 +57,7 @@ namespace PlexDL.UI
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.picPoster = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
             this.gbStarring.SuspendLayout();
@@ -64,7 +65,6 @@ namespace PlexDL.UI
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.SuspendLayout();
             // 
             // flpActors
@@ -89,6 +89,22 @@ namespace PlexDL.UI
             // 
             this.ofdImport.Filter = "PXZ File |*.pxz";
             this.ofdImport.Title = "Import PlexMovie Metadata";
+            // 
+            // picPoster
+            // 
+            this.picPoster.BackColor = System.Drawing.SystemColors.Control;
+            this.picPoster.BackgroundImage = global::PlexDL.Properties.Resources.image_not_available_png_8;
+            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tlpMain.SetColumnSpan(this.picPoster, 3);
+            this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPoster.Location = new System.Drawing.Point(2, 2);
+            this.picPoster.Margin = new System.Windows.Forms.Padding(2);
+            this.picPoster.Name = "picPoster";
+            this.tlpMain.SetRowSpan(this.picPoster, 4);
+            this.picPoster.Size = new System.Drawing.Size(266, 232);
+            this.picPoster.TabIndex = 12;
+            this.picPoster.TabStop = false;
+            this.tipMain.SetToolTip(this.picPoster, "Poster");
             // 
             // gbPlot
             // 
@@ -307,26 +323,9 @@ namespace PlexDL.UI
             // itmExit
             // 
             this.itmExit.Name = "itmExit";
-            this.itmExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.itmExit.Size = new System.Drawing.Size(38, 20);
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
-            // 
-            // picPoster
-            // 
-            this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.Properties.Resources.image_not_available_png_8;
-            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tlpMain.SetColumnSpan(this.picPoster, 3);
-            this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPoster.Location = new System.Drawing.Point(2, 2);
-            this.picPoster.Margin = new System.Windows.Forms.Padding(2);
-            this.picPoster.Name = "picPoster";
-            this.tlpMain.SetRowSpan(this.picPoster, 4);
-            this.picPoster.Size = new System.Drawing.Size(266, 232);
-            this.picPoster.TabIndex = 12;
-            this.picPoster.TabStop = false;
-            this.tipMain.SetToolTip(this.picPoster, "Poster");
             // 
             // Metadata
             // 
@@ -346,6 +345,7 @@ namespace PlexDL.UI
             this.Text = "Metadata";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
             this.Load += new System.EventHandler(this.Metadata_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.gbPlot.ResumeLayout(false);
             this.pnlPlotSynopsis.ResumeLayout(false);
             this.gbStarring.ResumeLayout(false);
@@ -354,7 +354,6 @@ namespace PlexDL.UI
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

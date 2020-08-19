@@ -226,7 +226,7 @@ namespace PlexDL.UI
                 var pxz = ImportExport.LoadMetadataArchive(ofdImport.FileName);
 
                 StreamingContent = ImportExport.MetadataFromFile(pxz);
-                Poster = pxz.Poster;
+                Poster = (Bitmap)pxz.LoadRecord(pxz.Location, @"poster").Content.ToImage();
 
                 flpActors.Controls.Clear();
 

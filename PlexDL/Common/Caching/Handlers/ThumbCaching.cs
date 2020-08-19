@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Globals.Providers;
+using PlexDL.Common.Security;
 using System.Drawing;
 using System.IO;
 
@@ -8,9 +9,9 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ThumbCachePath(string sourceUrl)
         {
-            var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
-            var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ThumbExt;
+            var accountHash = Md5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+            var serverHash = Md5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
+            var fileName = Md5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ThumbExt;
             var cachePath =
                 $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.ThumbDirectory}";
             if (!Directory.Exists(cachePath))

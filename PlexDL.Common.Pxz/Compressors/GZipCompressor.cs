@@ -8,13 +8,32 @@ namespace PlexDL.Common.Pxz.Compressors
     public static class GZipCompressor
     {
         /// <summary>
-        /// Compresses the string.
+        /// Compresses the byte data into a Base64 string
+        /// </summary>
+        /// <param name="buffer">The data to compress</param>
+        /// <returns></returns>
+        public static string CompressString(byte[] buffer)
+        {
+            return Convert.ToBase64String(CompressBytes(buffer));
+        }
+
+        /// <summary>
+        /// Compresses the string into a Base64 string.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
         public static string CompressString(string text)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(text);
+            return Convert.ToBase64String(CompressBytes(text));
+        }
+
+        /// <summary>
+        /// Compresses the data into a byte array.
+        /// </summary>
+        /// <param name="buffer">The bytes to compress.</param>
+        /// <returns></returns>
+        public static byte[] CompressBytes(byte[] buffer)
+        {
             var memoryStream = new MemoryStream();
             using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
             {
@@ -29,7 +48,19 @@ namespace PlexDL.Common.Pxz.Compressors
             var gZipBuffer = new byte[compressedData.Length + 4];
             Buffer.BlockCopy(compressedData, 0, gZipBuffer, 4, compressedData.Length);
             Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gZipBuffer, 0, 4);
-            return Convert.ToBase64String(gZipBuffer);
+
+            return gZipBuffer;
+        }
+
+        /// <summary>
+        /// Compresses the string into a byte array.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        public static byte[] CompressBytes(string text)
+        {
+            var buffer = Encoding.UTF8.GetBytes(text);
+            return CompressBytes(buffer);
         }
 
         /// <summary>
@@ -39,21 +70,41 @@ namespace PlexDL.Common.Pxz.Compressors
         /// <returns></returns>
         public static string DecompressString(string compressedText)
         {
-            byte[] gZipBuffer = Convert.FromBase64String(compressedText);
+            return Encoding.UTF8.GetString(DecompressBytes(compressedText));
+        }
+
+        /// <summary>
+        /// Decompresses the string into a byte array.
+        /// </summary>
+        /// <param name="compressedText">The text to decompress (Base64)</param>
+        /// <returns></returns>
+        public static byte[] DecompressBytes(string compressedText)
+        {
+            var buffer = Convert.FromBase64String(compressedText);
+            return DecompressBytes(buffer);
+        }
+
+        /// <summary>
+        /// Decompresses the data into a byte array.
+        /// </summary>
+        /// <param name="buffer">The bytes to compress.</param>
+        /// <returns></returns>
+        public static byte[] DecompressBytes(byte[] buffer)
+        {
             using (var memoryStream = new MemoryStream())
             {
-                int dataLength = BitConverter.ToInt32(gZipBuffer, 0);
-                memoryStream.Write(gZipBuffer, 4, gZipBuffer.Length - 4);
+                var dataLength = BitConverter.ToInt32(buffer, 0);
+                memoryStream.Write(buffer, 4, buffer.Length - 4);
 
-                var buffer = new byte[dataLength];
+                var gZipBuffer = new byte[dataLength];
 
                 memoryStream.Position = 0;
                 using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
                 {
-                    gZipStream.Read(buffer, 0, buffer.Length);
+                    gZipStream.Read(gZipBuffer, 0, gZipBuffer.Length);
                 }
 
-                return Encoding.UTF8.GetString(buffer);
+                return gZipBuffer;
             }
         }
     }

@@ -43,12 +43,20 @@
   <ItemGroup>
     <Compile Include="Compressors\GZipCompressor.cs" />
     <Compile Include="Compressors\ZlibCompressor.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Enum\PxzRecordType.cs" />
+    <Compile Include="Extensions\VerifyChecksumExt.cs" />
+    <Compile Include="Extensions\ToXmlExt.cs" />
     <Compile Include="Serializers.cs" />
     <Compile Include="Structures\PxzAuthor.cs" />
+    <Compile Include="Structures\PxzRecordChecksum.cs" />
     <Compile Include="Structures\PxzFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\PxzIndex.cs" />
+    <Compile Include="Structures\PxzRecord.cs" />
+    <Compile Include="Structures\PxzRecordContent.cs" />
+    <Compile Include="Structures\PxzRecordHeader.cs" />
+    <Compile Include="Structures\PxzRecordNaming.cs" />
+    <Compile Include="Structures\PxzRecordSize.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +66,10 @@
     <ProjectReference Include="..\PlexDL.Common.Enums\PlexDL.Common.Enums.csproj">
       <Project>{2c0b4243-5d9e-454a-9a7b-dcac2787b13e}</Project>
       <Name>PlexDL.Common.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIHelpers\UIHelpers.csproj">
       <Project>{e3ce262b-b962-44ff-abc0-5ebfb403d51d}</Project>

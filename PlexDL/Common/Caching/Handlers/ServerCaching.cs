@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Security;
 using PlexDL.PlexAPI;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace PlexDL.Common.Caching.Handlers
     {
         public static string ServerCachePath(string accountToken)
         {
-            var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+            var accountHash = Md5Helper.CalculateMd5Hash(accountToken);
             var fileName = accountHash + CachingFileExt.ServerListExt;
             var cachePath = $"{CachingFileDir.RootCacheDirectory}\\{accountHash}";
             if (!Directory.Exists(cachePath))

@@ -136,7 +136,6 @@
     <Compile Include="Common\Globals\RowGet.cs" />
     <Compile Include="Common\Globals\Strings.cs" />
     <Compile Include="Common\ImageHandler.cs" />
-    <Compile Include="Common\MD5Helper.cs" />
     <Compile Include="Common\ParseHelpers.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
     <Compile Include="Common\Renderers\ImagePixelation.cs" />
@@ -449,6 +448,10 @@
     <ProjectReference Include="..\PlexDL.Common.Pxz\PlexDL.Common.Pxz.csproj">
       <Project>{1764ca80-f851-4e2c-acc8-37696d499d3b}</Project>
       <Name>PlexDL.Common.Pxz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
       <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>
