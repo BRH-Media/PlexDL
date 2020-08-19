@@ -27,7 +27,7 @@ namespace PlexDL.Common.Pxz.Structures
             foreach (var r in records)
             {
                 FileIndex.RecordReference.Add(r.Header.Naming);
-                records.Add(r);
+                Records.Add(r);
             }
         }
 
