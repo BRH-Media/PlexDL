@@ -1,4 +1,6 @@
-﻿using PlexDL.Common.Pxz.Compressors;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Pxz.Compressors;
+using PlexDL.Common.Security;
 using System.Drawing;
 using System.Text;
 using System.Xml;
@@ -8,6 +10,9 @@ namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordContent
     {
+        [XmlIgnore]
+        private bool _encrypted = false;
+
         public PxzRecordContent()
         {
             //blank initialiser
@@ -55,6 +60,11 @@ namespace PlexDL.Common.Pxz.Structures
         public Image ToImage() => Utilities.ByteToImage(Record);
 
         /// <summary>
+        /// Determines whether the record's contents have been encrypted via DPAPI
+        /// </summary>
+        public bool Encrypted => _encrypted;
+
+        /// <summary>
         /// Raw compressed base64-encoded (ASCII/UTF8) Gzipped bytes
         /// </summary>
         public string RawRecord { get; set; } = @"";
@@ -75,7 +85,15 @@ namespace PlexDL.Common.Pxz.Structures
         {
             get
             {
-                var r = !string.IsNullOrEmpty(RawRecord) ? GZipCompressor.DecompressBytes(RawRecord) : null;
+                var raw = RawRecord;
+
+                if (Encrypted)
+                {
+                    var provider = new ProtectedString(raw, StringProtectionMode.Decrypt);
+                    raw = provider.ProcessedValue;
+                }
+
+                var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
                 TmpRecord = r;
                 return r;
             }
