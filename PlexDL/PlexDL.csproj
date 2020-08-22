@@ -192,6 +192,7 @@
     <Compile Include="Common\SearchFramework\SearchQuery.cs" />
     <Compile Include="Common\Structures\TvShowDirectoryLayout.cs" />
     <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
+    <Compile Include="Common\UiUtils.cs" />
     <Compile Include="Common\Update\UpdateManager.cs" />
     <Compile Include="Common\WebCheck.cs" />
     <Compile Include="Internal\UnhandledExceptionHandler.cs" />

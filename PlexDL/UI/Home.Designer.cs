@@ -217,7 +217,7 @@ namespace PlexDL.UI
             // 
             // ofdLoadProfile
             // 
-            this.ofdLoadProfile.Filter = "XML Profile|*.prof";
+            this.ofdLoadProfile.Filter = "XML Profile|*.prof|PXZ File|*.pxz";
             this.ofdLoadProfile.Title = "Load XML Profile";
             // 
             // wkrGetMetadata
@@ -272,14 +272,14 @@ namespace PlexDL.UI
             // itmEpisodeMetadataView
             // 
             this.itmEpisodeMetadataView.Name = "itmEpisodeMetadataView";
-            this.itmEpisodeMetadataView.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadataView.Size = new System.Drawing.Size(108, 22);
             this.itmEpisodeMetadataView.Text = "View";
             this.itmEpisodeMetadataView.Click += new System.EventHandler(this.ItmEpisodeMetadataView_Click);
             // 
             // itmEpisodeMetadataExport
             // 
             this.itmEpisodeMetadataExport.Name = "itmEpisodeMetadataExport";
-            this.itmEpisodeMetadataExport.Size = new System.Drawing.Size(180, 22);
+            this.itmEpisodeMetadataExport.Size = new System.Drawing.Size(108, 22);
             this.itmEpisodeMetadataExport.Text = "Export";
             this.itmEpisodeMetadataExport.Click += new System.EventHandler(this.ItmEpisodeMetadataExport_Click);
             // 
@@ -370,7 +370,7 @@ namespace PlexDL.UI
             this.itmContentSearch,
             this.itmContentCast});
             this.cxtMovieOptions.Name = "cxtEpisodeOptions";
-            this.cxtMovieOptions.Size = new System.Drawing.Size(181, 136);
+            this.cxtMovieOptions.Size = new System.Drawing.Size(129, 114);
             this.cxtMovieOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtContentOptions_Opening);
             // 
             // itmContentMetadata
@@ -379,20 +379,20 @@ namespace PlexDL.UI
             this.itmContentMetadataView,
             this.itmContentMetadataExport});
             this.itmContentMetadata.Name = "itmContentMetadata";
-            this.itmContentMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmContentMetadata.Size = new System.Drawing.Size(128, 22);
             this.itmContentMetadata.Text = "Metadata";
             // 
             // itmContentMetadataView
             // 
             this.itmContentMetadataView.Name = "itmContentMetadataView";
-            this.itmContentMetadataView.Size = new System.Drawing.Size(180, 22);
+            this.itmContentMetadataView.Size = new System.Drawing.Size(108, 22);
             this.itmContentMetadataView.Text = "View";
             this.itmContentMetadataView.Click += new System.EventHandler(this.ItmContentMetadataView_Click);
             // 
             // itmContentMetadataExport
             // 
             this.itmContentMetadataExport.Name = "itmContentMetadataExport";
-            this.itmContentMetadataExport.Size = new System.Drawing.Size(180, 22);
+            this.itmContentMetadataExport.Size = new System.Drawing.Size(108, 22);
             this.itmContentMetadataExport.Text = "Export";
             this.itmContentMetadataExport.Click += new System.EventHandler(this.ItmContentMetadataExport_Click);
             // 
@@ -402,7 +402,7 @@ namespace PlexDL.UI
             this.itmDGVDownloadThisMovie,
             this.itmDGVViewMovieDownloadLink});
             this.itmContentDownload.Name = "itmContentDownload";
-            this.itmContentDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmContentDownload.Size = new System.Drawing.Size(128, 22);
             this.itmContentDownload.Text = "Download";
             // 
             // itmDGVDownloadThisMovie
@@ -422,21 +422,21 @@ namespace PlexDL.UI
             // itmContentStream
             // 
             this.itmContentStream.Name = "itmContentStream";
-            this.itmContentStream.Size = new System.Drawing.Size(180, 22);
+            this.itmContentStream.Size = new System.Drawing.Size(128, 22);
             this.itmContentStream.Text = "Stream";
             this.itmContentStream.Click += new System.EventHandler(this.ItmContentStream_Click);
             // 
             // itmContentSearch
             // 
             this.itmContentSearch.Name = "itmContentSearch";
-            this.itmContentSearch.Size = new System.Drawing.Size(180, 22);
+            this.itmContentSearch.Size = new System.Drawing.Size(128, 22);
             this.itmContentSearch.Text = "Search";
             this.itmContentSearch.Click += new System.EventHandler(this.ItmContentSearch_Click);
             // 
             // itmContentCast
             // 
             this.itmContentCast.Name = "itmContentCast";
-            this.itmContentCast.Size = new System.Drawing.Size(180, 22);
+            this.itmContentCast.Size = new System.Drawing.Size(128, 22);
             this.itmContentCast.Text = "Cast";
             this.itmContentCast.Click += new System.EventHandler(this.ItmContentCast_Click);
             // 
@@ -1153,7 +1153,7 @@ namespace PlexDL.UI
             // 
             this.itmLoadProfile.Name = "itmLoadProfile";
             this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmLoadProfile.Size = new System.Drawing.Size(148, 22);
+            this.itmLoadProfile.Size = new System.Drawing.Size(180, 22);
             this.itmLoadProfile.Text = "Load";
             this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
             // 
@@ -1161,7 +1161,7 @@ namespace PlexDL.UI
             // 
             this.itmSaveProfile.Name = "itmSaveProfile";
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(148, 22);
+            this.itmSaveProfile.Size = new System.Drawing.Size(180, 22);
             this.itmSaveProfile.Text = "Save";
             this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
             // 
@@ -1169,14 +1169,14 @@ namespace PlexDL.UI
             // 
             this.itmExportObj.Name = "itmExportObj";
             this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmExportObj.Size = new System.Drawing.Size(148, 22);
+            this.itmExportObj.Size = new System.Drawing.Size(180, 22);
             this.itmExportObj.Text = "Export";
             this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
             // 
             // itmSettings
             // 
             this.itmSettings.Name = "itmSettings";
-            this.itmSettings.Size = new System.Drawing.Size(148, 22);
+            this.itmSettings.Size = new System.Drawing.Size(180, 22);
             this.itmSettings.Text = "Settings";
             this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
             // 

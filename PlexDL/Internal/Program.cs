@@ -5,7 +5,6 @@ using PlexDL.Common.API;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Structures.Plex;
 using PlexDL.UI;
 using System;
 using System.Collections.Generic;
@@ -62,7 +61,7 @@ namespace PlexDL.Internal
                         try
                         {
                             var metadata = ImportExport.MetadataFromFile(firstArg);
-                            RunMetadataWindow(metadata);
+                            UiUtils.RunMetadataWindow(metadata, true);
                         }
                         catch (Exception ex)
                         {
@@ -79,11 +78,11 @@ namespace PlexDL.Internal
                 else
                 {
                     if (arr.Contains("-tw"))
-                        RunTestingWindow();
+                        UiUtils.RunTestingWindow(true);
                     else if (arr.Contains("-t"))
-                        RunTranslator();
+                        UiUtils.RunTranslator(true);
                     else
-                        RunPlexDlHome();
+                        UiUtils.RunPlexDlHome(true);
                 }
             }
             else
@@ -99,39 +98,6 @@ namespace PlexDL.Internal
                 Vars.Protected = LogSecurity.Protected;
             else if (args.Contains("-lpoff"))
                 Vars.Protected = LogSecurity.Unprotected;
-        }
-
-        private static void RunMetadataWindow(PlexObject metadata)
-        {
-            var form = new Metadata();
-            if (metadata != null)
-            {
-                form.StreamingContent = metadata;
-                Application.Run(form);
-            }
-            else
-            {
-                UIMessages.Error(@"Invalid PlexMovie Metadata File; the decoded data was null.",
-                    @"Validation Error");
-            }
-        }
-
-        private static void RunPlexDlHome()
-        {
-            var form = new Home();
-            Application.Run(form);
-        }
-
-        private static void RunTestingWindow()
-        {
-            var form = new TestForm();
-            Application.Run(form);
-        }
-
-        private static void RunTranslator()
-        {
-            var form = new Translator();
-            Application.Run(form);
         }
 
         private static void VisualStyles(ICollection<string> args)

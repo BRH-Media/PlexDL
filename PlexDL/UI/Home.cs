@@ -643,7 +643,44 @@ namespace PlexDL.UI
         {
             if (!Flags.IsConnected)
             {
-                if (ofdLoadProfile.ShowDialog() == DialogResult.OK) DoLoadProfile(ofdLoadProfile.FileName);
+                if (ofdLoadProfile.ShowDialog() == DialogResult.OK)
+                {
+                    //store the file-type of the currently selected file
+                    var actExt = Path.GetExtension(ofdLoadProfile.FileName);
+
+                    //what we're checking for
+                    const string expExt = @".prof";
+                    const string metExp = @".pxz";
+
+                    //execute file-type checks
+                    switch (actExt)
+                    {
+                        //XML settings profile
+                        case expExt:
+                            DoLoadProfile(ofdLoadProfile.FileName);
+                            break;
+
+                        //PXZ metadata archive
+                        case metExp:
+                            try
+                            {
+                                var metadata = ImportExport.MetadataFromFile(ofdLoadProfile.FileName);
+                                UiUtils.RunMetadataWindow(metadata);
+                            }
+                            catch (Exception ex)
+                            {
+                                LoggingHelpers.RecordException(ex.Message, @"StartupLoadPxz");
+                                UIMessages.Error($"Error occurred whilst loading PXZ file:\n\n{ex}");
+                            }
+
+                            break;
+
+                        //anything else can't be handled
+                        default:
+                            UIMessages.Error(@"Unrecognised file-type");
+                            break;
+                    }
+                }
             }
             else
             {
