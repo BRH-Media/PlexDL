@@ -11,7 +11,7 @@ namespace PlexDL.Common.Pxz.Structures
     {
         public PxzIndex FileIndex { get; set; } = new PxzIndex();
 
-        private List<PxzRecord> Records { get; set; } = new List<PxzRecord>();
+        private List<PxzRecord> Records { get; } = new List<PxzRecord>();
         public string Location { get; set; } = @"";
 
         public PxzFile()

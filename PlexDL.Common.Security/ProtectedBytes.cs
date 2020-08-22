@@ -1,28 +1,24 @@
 ﻿using PlexDL.Common.Enums;
 using System;
 
-//using PlexDL.Common.Logging;
-
 namespace PlexDL.Common.Security
 {
-    //This uses the Windows Data Protection API for the Current User to encrypt/decrypt strings.
-    //It's near-impossible to decrypt this information if not logged in as the user that encrypted the original data.
-    public class ProtectedString : ProtectedData
+    public class ProtectedBytes : ProtectedData
     {
-        public string RawValue { get; set; }
+        public byte[] RawValue { get; set; }
         public StringProtectionMode Mode { get; set; }
 
-        public string ProcessedValue => ProcessRawValue();
+        public byte[] ProcessedValue => ProcessRawValue();
 
-        public ProtectedString(string data, StringProtectionMode mode)
+        public ProtectedBytes(byte[] data, StringProtectionMode mode)
         {
             Mode = mode;
             RawValue = data;
         }
 
-        private string ProcessRawValue()
+        private byte[] ProcessRawValue()
         {
-            var value = "";
+            byte[] value = null;
 
             try
             {

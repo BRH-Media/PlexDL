@@ -40,6 +40,8 @@
     <Compile Include="Entropy.cs" />
     <Compile Include="Md5Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtectedBytes.cs" />
+    <Compile Include="ProtectedData.cs" />
     <Compile Include="ProtectedString.cs" />
   </ItemGroup>
   <ItemGroup>

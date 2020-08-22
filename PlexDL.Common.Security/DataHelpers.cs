@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace PlexDL.Common
+namespace PlexDL.Common.Security
 {
     public static class DataHelpers
     {
