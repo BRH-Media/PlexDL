@@ -6,11 +6,11 @@ namespace PlexDL.Common.Security
     public class ProtectedBytes : ProtectedData
     {
         public byte[] RawValue { get; set; }
-        public StringProtectionMode Mode { get; set; }
+        public ProtectionMode Mode { get; set; }
 
         public byte[] ProcessedValue => ProcessRawValue();
 
-        public ProtectedBytes(byte[] data, StringProtectionMode mode)
+        public ProtectedBytes(byte[] data, ProtectionMode mode)
         {
             Mode = mode;
             RawValue = data;
@@ -24,11 +24,11 @@ namespace PlexDL.Common.Security
             {
                 switch (Mode)
                 {
-                    case StringProtectionMode.Decrypt:
+                    case ProtectionMode.Decrypt:
                         value = DecryptData(RawValue);
                         break;
 
-                    case StringProtectionMode.Encrypt:
+                    case ProtectionMode.Encrypt:
                         value = EncryptData(RawValue);
                         break;
 

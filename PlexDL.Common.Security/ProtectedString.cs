@@ -10,11 +10,11 @@ namespace PlexDL.Common.Security
     public class ProtectedString : ProtectedData
     {
         public string RawValue { get; set; }
-        public StringProtectionMode Mode { get; set; }
+        public ProtectionMode Mode { get; set; }
 
         public string ProcessedValue => ProcessRawValue();
 
-        public ProtectedString(string data, StringProtectionMode mode)
+        public ProtectedString(string data, ProtectionMode mode)
         {
             Mode = mode;
             RawValue = data;
@@ -28,11 +28,11 @@ namespace PlexDL.Common.Security
             {
                 switch (Mode)
                 {
-                    case StringProtectionMode.Decrypt:
+                    case ProtectionMode.Decrypt:
                         value = DecryptData(RawValue);
                         break;
 
-                    case StringProtectionMode.Encrypt:
+                    case ProtectionMode.Encrypt:
                         value = EncryptData(RawValue);
                         break;
 

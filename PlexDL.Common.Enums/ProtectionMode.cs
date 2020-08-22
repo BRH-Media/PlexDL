@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.Common.Enums
 {
-    public enum StringProtectionMode
+    public enum ProtectionMode
     {
         Encrypt,
         Decrypt

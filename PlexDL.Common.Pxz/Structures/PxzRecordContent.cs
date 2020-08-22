@@ -89,7 +89,7 @@ namespace PlexDL.Common.Pxz.Structures
 
                 if (Encrypted)
                 {
-                    var provider = new ProtectedString(raw, StringProtectionMode.Decrypt);
+                    var provider = new ProtectedString(raw, ProtectionMode.Decrypt);
                     raw = provider.ProcessedValue;
                 }
 
