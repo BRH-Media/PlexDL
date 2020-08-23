@@ -1,15 +1,29 @@
-﻿using System;
+﻿using PlexDL.Common.Pxz.Structures;
+using System;
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using PlexDL.Common.Pxz.Structures;
 
 namespace PlexDL.Common.Pxz
 {
     public static class Utilities
     {
+        public static string FormatBytes(long bytes, bool includeSpace = false)
+        {
+            string[] suffix =
+            {
+                "B", "KB", "MB", "GB", "TB"
+            };
+            int i;
+            double dblSByte = bytes;
+            for (i = 0; i < suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+                dblSByte = bytes / 1024.0;
+
+            return includeSpace ? $"{dblSByte:0.##} {suffix[i]}" : $"{dblSByte:0.##}{suffix[i]}";
+        }
+
         public static Version GetVersion()
         {
             var assembly = Assembly.GetCallingAssembly();
@@ -42,7 +56,7 @@ namespace PlexDL.Common.Pxz
             }
         }
 
-        public static PxzAuthor FromCurrent()
+        public static PxzAuthor AuthorFromCurrent()
         {
             try
             {

@@ -1,9 +1,15 @@
-﻿namespace PlexDL.Common.Pxz.Structures
+﻿using System;
+using System.Xml.Serialization;
+
+namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordSize
     {
-        public long RawSize { get; set; }
-        public long DecSize { get; set; }
+        public double RawSize { get; set; }
+        public double DecSize { get; set; }
+
+        [XmlIgnore]
+        public double Ratio => Math.Round(RawSize / DecSize * 100, 2);
 
         public PxzRecordSize()
         {

@@ -13,6 +13,12 @@ namespace PlexDL.Common.Pxz.Structures
         [XmlIgnore]
         public bool ProtectedRecord { get; set; }
 
+        [XmlIgnore]
+        public bool ChecksumValid => Content.VerifyChecksum(Header.Checksums);
+
+        public PxzRecordHeader Header { get; set; } = new PxzRecordHeader();
+        public PxzRecordContent Content { get; set; } = new PxzRecordContent();
+
         public PxzRecord()
         {
             //blank initialiser
@@ -129,11 +135,5 @@ namespace PlexDL.Common.Pxz.Structures
         {
             return Serializers.StringToPxzRecord(rawXml);
         }
-
-        public PxzRecordHeader Header { get; set; } = new PxzRecordHeader();
-        public PxzRecordContent Content { get; set; } = new PxzRecordContent();
-
-        [XmlIgnore]
-        public bool ChecksumValid => Content.VerifyChecksum(Header.Checksums);
     }
 }

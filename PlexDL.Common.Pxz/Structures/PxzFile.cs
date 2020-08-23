@@ -1,6 +1,7 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Extensions;
+using PlexDL.Common.Pxz.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,26 @@ namespace PlexDL.Common.Pxz.Structures
             }
         }
 
+        public void ShowInformation()
+        {
+            PxzInformation.ShowPxzInformation(this);
+        }
+
+        public PxzRecord LoadRecord(string recordName)
+        {
+            if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
+
+            foreach (var r in FileIndex.RecordReference)
+            {
+                if (r.RecordName != recordName) continue;
+
+                var i = FileIndex.RecordReference.IndexOf(r);
+                return Records[i];
+            }
+
+            return null;
+        }
+
         public void AddRecord(PxzRecord record)
         {
             Records.Add(record);
@@ -62,6 +83,10 @@ namespace PlexDL.Common.Pxz.Structures
             if (File.Exists(path))
                 File.Delete(path);
 
+            //new index attributes (don't override records though)
+            FileIndex.Author = Utilities.AuthorFromCurrent();
+            FileIndex.FormatVersion = Utilities.GetVersion();
+
             var idxDoc = FileIndex.ToXml();
 
             //deflate the content to save room (poster isn't compressed via Zlib)
@@ -89,21 +114,6 @@ namespace PlexDL.Common.Pxz.Structures
 
             //finalise ZIP file
             archive.Save(path);
-        }
-
-        public PxzRecord LoadRecord(string recordName)
-        {
-            if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
-
-            foreach (var r in FileIndex.RecordReference)
-            {
-                if (r.RecordName != recordName) continue;
-
-                var i = FileIndex.RecordReference.IndexOf(r);
-                return Records[i];
-            }
-
-            return null;
         }
 
         public void Load(string path)
