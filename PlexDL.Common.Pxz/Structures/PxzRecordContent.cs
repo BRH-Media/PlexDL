@@ -10,33 +10,73 @@ namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordContent
     {
-        [XmlIgnore]
-        private bool _encrypted = false;
-
         public PxzRecordContent()
         {
             //blank initialiser
         }
 
-        public PxzRecordContent(XmlNode data)
+        public PxzRecordContent(bool protectedData = false)
         {
-            var value = data.OuterXml;
+            Encrypted = protectedData;
+        }
+
+        public PxzRecordContent(XmlNode data, bool protectedData = false)
+        {
+            Encrypted = protectedData;
+            var value = DataHelpers.StringToBytes(data.OuterXml);
+
+            //we'll need to encrypt everything if it's true
+            if (protectedData)
+            {
+                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
+                value = provider.ProcessedValue;
+            }
+
             RawRecord = GZipCompressor.CompressString(value);
         }
 
-        public PxzRecordContent(byte[] data)
+        public PxzRecordContent(byte[] data, bool protectedData = false)
         {
-            RawRecord = GZipCompressor.CompressString(data);
+            Encrypted = protectedData;
+            var value = data;
+
+            //we'll need to encrypt everything if it's true
+            if (protectedData)
+            {
+                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
+                value = provider.ProcessedValue;
+            }
+
+            RawRecord = GZipCompressor.CompressString(value);
         }
 
-        public PxzRecordContent(string data)
+        public PxzRecordContent(string data, bool protectedData = false)
         {
-            RawRecord = GZipCompressor.CompressString(data);
+            Encrypted = protectedData;
+            var value = DataHelpers.StringToBytes(data);
+
+            //we'll need to encrypt everything if it's true
+            if (protectedData)
+            {
+                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
+                value = provider.ProcessedValue;
+            }
+
+            RawRecord = GZipCompressor.CompressString(value);
         }
 
-        public PxzRecordContent(Image data)
+        public PxzRecordContent(Image data, bool protectedData = false)
         {
+            Encrypted = protectedData;
             var value = Utilities.ImageToByte(data);
+
+            //we'll need to encrypt everything if it's true
+            if (protectedData)
+            {
+                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
+                value = provider.ProcessedValue;
+            }
+
             RawRecord = GZipCompressor.CompressString(value);
         }
 
@@ -60,9 +100,9 @@ namespace PlexDL.Common.Pxz.Structures
         public Image ToImage() => Utilities.ByteToImage(Record);
 
         /// <summary>
-        /// Determines whether the record's contents have been encrypted via DPAPI
+        /// Determines whether the record's contents have been encrypted via WDPAPI
         /// </summary>
-        public bool Encrypted => _encrypted;
+        public bool Encrypted { get; }
 
         /// <summary>
         /// Raw compressed base64-encoded (ASCII/UTF8) Gzipped bytes

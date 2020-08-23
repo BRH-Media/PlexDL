@@ -1,9 +1,12 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -11,7 +14,7 @@ namespace PlexDL.Common.Pxz.Structures
     {
         public PxzIndex FileIndex { get; set; } = new PxzIndex();
 
-        private List<PxzRecord> Records { get; } = new List<PxzRecord>();
+        public List<PxzRecord> Records { get; } = new List<PxzRecord>();
         public string Location { get; set; } = @"";
 
         public PxzFile()
@@ -19,7 +22,7 @@ namespace PlexDL.Common.Pxz.Structures
             //blank initializer
         }
 
-        public PxzFile(ICollection<PxzRecord> records)
+        public PxzFile(IEnumerable<PxzRecord> records)
         {
             FileIndex.RecordReference.Clear();
             Records.Clear();
@@ -46,11 +49,10 @@ namespace PlexDL.Common.Pxz.Structures
         {
             foreach (var r in FileIndex.RecordReference)
             {
-                if (r.RecordName == recordName)
-                {
-                    var i = FileIndex.RecordReference.IndexOf(r);
-                    Records.RemoveAt(i);
-                }
+                if (r.RecordName != recordName) continue;
+
+                var i = FileIndex.RecordReference.IndexOf(r);
+                Records.RemoveAt(i);
             }
         }
 
@@ -68,61 +70,75 @@ namespace PlexDL.Common.Pxz.Structures
             const string idxName = @"index";
             const string recName = @"records";
 
-            using (var archive = new ZipFile(path, Encoding.Default))
+            using var archive = new ZipFile(path, Encoding.Default);
+
+            archive.AddEntry(idxName, idxByte);
+
+            //add records folder
+            archive.AddDirectoryByName(recName);
+
+            //traverse the records list
+            foreach (var r in Records)
             {
-                archive.AddEntry(idxName, idxByte);
+                if (r == null) continue;
 
-                //add records folder
-                archive.AddDirectoryByName(recName);
-
-                //traverse the records list
-                foreach (var r in Records)
-                {
-                    var raw = r.ToRawForm();
-                    var fileName = $"{recName}/{r.Header.Naming.StoredName}";
-                    archive.AddEntry(fileName, raw);
-                }
-
-                //finalise ZIP file
-                archive.Save(path);
+                var raw = r.ToRawForm();
+                var fileName = $"{recName}/{r.Header.Naming.StoredName}";
+                archive.AddEntry(fileName, raw);
             }
+
+            //finalise ZIP file
+            archive.Save(path);
         }
 
         public PxzRecord LoadRecord(string recordName)
         {
-            if (Records.Count > 0 && FileIndex.RecordReference.Count > 0)
-                foreach (var r in FileIndex.RecordReference)
-                {
-                    if (r.RecordName == recordName)
-                    {
-                        var i = FileIndex.RecordReference.IndexOf(r);
-                        return Records[i];
-                    }
-                }
+            if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
+
+            foreach (var r in FileIndex.RecordReference)
+            {
+                if (r.RecordName != recordName) continue;
+
+                var i = FileIndex.RecordReference.IndexOf(r);
+                return Records[i];
+            }
 
             return null;
         }
 
         public void Load(string path)
         {
-            if (!File.Exists(path)) return;
-
-            Location = path;
-            Records.Clear();
-            FileIndex.RecordReference.Clear();
-
-            const string idxName = @"index";
-            const string dirName = @"records";
-
-            using (var zip = ZipFile.Read(path))
+            try
             {
+                if (!File.Exists(path)) return;
+
+                Location = path;
+                Records.Clear();
+                FileIndex.RecordReference.Clear();
+
+                //item names to load
+                const string idxName = @"index";
+                const string dirName = @"records";
+
+                //read the PXZ file into memory
+                using var zip = ZipFile.Read(path);
+
+                //load the raw file index into memory
                 var idxFile = zip[idxName];
+
+                //the index can't be null!
+                if (idxFile == null)
+                {
+                    UIMessages.Error(@"PXZ index couldn't be found or it wasn't valid");
+                    return;
+                }
 
                 string idxString;
 
+                //extract and save the index to a new stream
                 using (var idxStream = new MemoryStream())
                 {
-                    idxFile.Extract(idxStream);
+                    idxFile.Extract(idxStream); //ERROR LINE
                     idxStream.Position = 0;
                     idxString = new StreamReader(idxStream).ReadToEnd();
                 }
@@ -132,25 +148,38 @@ namespace PlexDL.Common.Pxz.Structures
                 var index = Serializers.StringToPxzIndex(idxByte);
 
                 //load all records into memory
-                foreach (var r in index.RecordReference)
+                foreach (var recFile in index.RecordReference.Select(r => $"{dirName}/{r.StoredName}")
+                    .Select(recName => zip[recName]))
                 {
-                    var recName = $"{dirName}/{r.StoredName}";
+                    using var recStream = new MemoryStream();
 
-                    var recFile = zip[recName];
+                    //grab data from the file and store in memory
+                    recFile.Extract(recStream);
+                    recStream.Position = 0;
 
-                    using (var recStream = new MemoryStream())
-                    {
-                        recFile.Extract(recStream);
-                        recStream.Position = 0;
-                        var rec = PxzRecord.FromRawForm(new StreamReader(recStream).ReadToEnd());
+                    //open a new reader for the memory block
+                    using var reader = new StreamReader(recStream);
 
-                        Records.Add(rec);
-                        FileIndex.RecordReference.Add(rec.Header.Naming);
-                    }
+                    //jump through the memory stream and turn it into Base64
+                    var recRaw = reader.ReadToEnd();
+
+                    //serialise rawXml into a usable PxzRecord
+                    var rec = PxzRecord.FromRawForm(recRaw);
+
+                    //sync Encrypted with ProtectedRecord (native object can't do this)
+                    rec.ProtectedRecord = rec.Content.Encrypted;
+
+                    //finally, index and store the record
+                    Records.Add(rec);
+                    FileIndex.RecordReference.Add(rec.Header.Naming);
                 }
 
                 //apply new values
                 FileIndex = index;
+            }
+            catch (Exception ex)
+            {
+                UIMessages.Error(ex.ToString());
             }
         }
     }

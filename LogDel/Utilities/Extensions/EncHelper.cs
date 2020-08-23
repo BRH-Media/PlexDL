@@ -10,7 +10,7 @@ namespace LogDel.Utilities.Extensions
         {
             try
             {
-                var provider = new ProtectedString(cipherText, StringProtectionMode.Decrypt);
+                var provider = new ProtectedString(cipherText, ProtectionMode.Decrypt);
                 return provider.ProcessedValue;
             }
             catch (Exception)
@@ -24,7 +24,7 @@ namespace LogDel.Utilities.Extensions
         {
             try
             {
-                var provider = new ProtectedString(plainText, StringProtectionMode.Encrypt);
+                var provider = new ProtectedString(plainText, ProtectionMode.Encrypt);
                 return provider.ProcessedValue;
             }
             catch (Exception)

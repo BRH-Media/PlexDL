@@ -1,6 +1,6 @@
-﻿using PlexDL.Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PlexDL.Common.Enums;
 
 namespace PlexDL.Common.Pxz.Structures
 {

@@ -1,10 +1,10 @@
-﻿using PlexDL.Common.Pxz.Structures;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using PlexDL.Common.Pxz.Structures;
 
 namespace PlexDL.Common.Pxz
 {

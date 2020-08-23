@@ -2,8 +2,8 @@
 {
     public class PxzRecordSize
     {
-        public long RawSize { get; set; } = 0;
-        public long DecSize { get; set; } = 0;
+        public long RawSize { get; set; }
+        public long DecSize { get; set; }
 
         public PxzRecordSize()
         {

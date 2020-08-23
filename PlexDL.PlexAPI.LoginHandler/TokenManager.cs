@@ -43,7 +43,7 @@ namespace PlexDL.PlexAPI.LoginHandler
             {
                 if (!IsTokenStored || !TokenCachingEnabled) return string.Empty;
 
-                var protectedToken = new ProtectedString(File.ReadAllText(Final), StringProtectionMode.Decrypt);
+                var protectedToken = new ProtectedString(File.ReadAllText(Final), ProtectionMode.Decrypt);
 
                 var t = protectedToken.ProcessedValue; //decrypt via DPAPI
                 return t.Length == 20 && !string.IsNullOrEmpty(t) ? t : string.Empty; //valid Plex tokens are always 20 characters in length.
@@ -61,7 +61,7 @@ namespace PlexDL.PlexAPI.LoginHandler
 
             try
             {
-                var protectedToken = new ProtectedString(token, StringProtectionMode.Encrypt);
+                var protectedToken = new ProtectedString(token, ProtectionMode.Encrypt);
                 if (TokenCachingEnabled)
                     File.WriteAllText(Final, protectedToken.ProcessedValue); //encrypt via DPAPI then write
                 return true;

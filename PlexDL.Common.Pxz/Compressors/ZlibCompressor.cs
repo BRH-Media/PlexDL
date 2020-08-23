@@ -1,6 +1,5 @@
-﻿using Ionic.Zlib;
-using System.IO;
-using CompressionMode = Ionic.Zlib.CompressionMode;
+﻿using System.IO;
+using Ionic.Zlib;
 
 namespace PlexDL.Common.Pxz.Compressors
 {

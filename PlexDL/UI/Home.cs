@@ -643,10 +643,10 @@ namespace PlexDL.UI
         {
             if (!Flags.IsConnected)
             {
-                if (ofdLoadProfile.ShowDialog() == DialogResult.OK)
+                if (ofdLoad.ShowDialog() == DialogResult.OK)
                 {
                     //store the file-type of the currently selected file
-                    var actExt = Path.GetExtension(ofdLoadProfile.FileName);
+                    var actExt = Path.GetExtension(ofdLoad.FileName);
 
                     //what we're checking for
                     const string expExt = @".prof";
@@ -657,14 +657,14 @@ namespace PlexDL.UI
                     {
                         //XML settings profile
                         case expExt:
-                            DoLoadProfile(ofdLoadProfile.FileName);
+                            DoLoadProfile(ofdLoad.FileName);
                             break;
 
                         //PXZ metadata archive
                         case metExp:
                             try
                             {
-                                var metadata = ImportExport.MetadataFromFile(ofdLoadProfile.FileName);
+                                var metadata = ImportExport.MetadataFromFile(ofdLoad.FileName);
                                 UiUtils.RunMetadataWindow(metadata);
                             }
                             catch (Exception ex)
@@ -697,7 +697,7 @@ namespace PlexDL.UI
             }
             else
             {
-                if (sfdSaveProfile.ShowDialog() == DialogResult.OK) DoSaveProfile(sfdSaveProfile.FileName);
+                if (sfdSave.ShowDialog() == DialogResult.OK) DoSaveProfile(sfdSave.FileName);
             }
         }
 
@@ -1649,9 +1649,9 @@ namespace PlexDL.UI
 
         private void SetDownloadDirectory()
         {
-            if (fbdSave.ShowDialog() != DialogResult.OK) return;
+            if (fbdDownloadPath.ShowDialog() != DialogResult.OK) return;
 
-            ObjectProvider.Settings.Generic.DownloadDirectory = fbdSave.SelectedPath;
+            ObjectProvider.Settings.Generic.DownloadDirectory = fbdDownloadPath.SelectedPath;
             UIMessages.Info($"Download directory updated to {ObjectProvider.Settings.Generic.DownloadDirectory}");
             LoggingHelpers.RecordGeneralEntry("Download directory updated to " +
                                               ObjectProvider.Settings.Generic.DownloadDirectory);

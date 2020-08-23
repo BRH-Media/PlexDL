@@ -1,6 +1,4 @@
-﻿using PlexDL.Common.Security;
-
-namespace PlexDL.Common.Pxz.Structures
+﻿namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordNaming
     {

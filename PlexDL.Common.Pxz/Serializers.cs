@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Pxz.Structures;
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -25,7 +26,7 @@ namespace PlexDL.Common.Pxz
 
                 return doc;
             }
-            catch
+            catch (Exception)
             {
                 return null;
             }
@@ -42,7 +43,7 @@ namespace PlexDL.Common.Pxz
                 reader.Close();
                 return subReq;
             }
-            catch
+            catch (Exception)
             {
                 return null;
             }

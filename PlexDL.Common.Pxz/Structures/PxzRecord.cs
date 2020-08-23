@@ -10,15 +10,24 @@ namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecord
     {
+        [XmlIgnore]
+        public bool ProtectedRecord { get; set; }
+
         public PxzRecord()
         {
             //blank initialiser
         }
 
-        public PxzRecord(XmlNode data, string name)
+        public PxzRecord(bool protectedRecord = false)
         {
-            var content = new PxzRecordContent(data);
+            ProtectedRecord = protectedRecord;
+        }
 
+        public PxzRecord(XmlNode data, string name, bool protectedRecord = false)
+        {
+            ProtectedRecord = protectedRecord;
+
+            var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
                 DataType = PxzRecordType.Xml,
@@ -35,10 +44,11 @@ namespace PlexDL.Common.Pxz.Structures
             Content = content;
         }
 
-        public PxzRecord(byte[] data, string name)
+        public PxzRecord(byte[] data, string name, bool protectedRecord = false)
         {
-            var content = new PxzRecordContent(data);
+            ProtectedRecord = protectedRecord;
 
+            var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
                 DataType = PxzRecordType.Byte,
@@ -55,10 +65,11 @@ namespace PlexDL.Common.Pxz.Structures
             Content = content;
         }
 
-        public PxzRecord(string data, string name)
+        public PxzRecord(string data, string name, bool protectedRecord = false)
         {
-            var content = new PxzRecordContent(data);
+            ProtectedRecord = protectedRecord;
 
+            var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
                 DataType = PxzRecordType.Text,
@@ -75,10 +86,11 @@ namespace PlexDL.Common.Pxz.Structures
             Content = content;
         }
 
-        public PxzRecord(Image data, string name)
+        public PxzRecord(Image data, string name, bool protectedRecord = false)
         {
-            var content = new PxzRecordContent(data);
+            ProtectedRecord = protectedRecord;
 
+            var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
                 DataType = PxzRecordType.Bitmap,
@@ -103,7 +115,8 @@ namespace PlexDL.Common.Pxz.Structures
 
         public string ToRawForm()
         {
-            var rawXml = Serializers.PxzRecordToXml(this).OuterXml;
+            var rawDoc = Serializers.PxzRecordToXml(this);
+            var rawXml = rawDoc.OuterXml;
             return GZipCompressor.CompressString(rawXml);
         }
 

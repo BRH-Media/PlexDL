@@ -113,7 +113,9 @@ namespace PlexDL.Common.API
             {
                 var serializer = new XmlSerializer(typeof(PlexObject));
 
-                var reader = new StringReader(file.LoadRecord(@"obj").Content.ToXmlDocument().OuterXml);
+                var rec = file.LoadRecord(@"obj");
+
+                var reader = new StringReader(rec.Content.ToXmlDocument().OuterXml);
                 var subReq = (PlexObject)serializer.Deserialize(reader);
                 reader.Close();
 

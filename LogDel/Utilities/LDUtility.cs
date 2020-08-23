@@ -53,7 +53,7 @@ namespace LogDel.Utilities
                 if (security == LogSecurity.Protected)
                 {
                     //encrypt the log
-                    var provider = new ProtectedString(contentToWrite, StringProtectionMode.Encrypt);
+                    var provider = new ProtectedString(contentToWrite, ProtectionMode.Encrypt);
 
                     //replace the plainText contents with the new encrypted contents
                     contentToWrite = provider.ProcessedValue;
