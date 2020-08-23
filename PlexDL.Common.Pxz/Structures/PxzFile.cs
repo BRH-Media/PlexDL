@@ -147,6 +147,9 @@ namespace PlexDL.Common.Pxz.Structures
                 var idxByte = GZipCompressor.DecompressString(idxString);
                 var index = Serializers.StringToPxzIndex(idxByte);
 
+                //if this gets flipped to true, it's potentially bad news
+                var tamperedWith = false;
+
                 //load all records into memory
                 foreach (var recFile in index.RecordReference.Select(r => $"{dirName}/{r.StoredName}")
                     .Select(recName => zip[recName]))
@@ -169,6 +172,9 @@ namespace PlexDL.Common.Pxz.Structures
                     //sync Encrypted with ProtectedRecord (native object can't do this)
                     rec.ProtectedRecord = rec.Content.Encrypted;
 
+                    //verify checksums on the record to ensure authenticity
+                    tamperedWith = !rec.ChecksumValid;
+
                     //finally, index and store the record
                     Records.Add(rec);
                     FileIndex.RecordReference.Add(rec.Header.Naming);
@@ -176,6 +182,10 @@ namespace PlexDL.Common.Pxz.Structures
 
                 //apply new values
                 FileIndex = index;
+
+                //check authenticity flag, and warn if it's been altered
+                if (tamperedWith)
+                    UIMessages.Warning("Content has been modified\n\nThe MD5 checksums stored do not match the checksums calculated, which is an indication that the contents may have been altered outside of the PXZ handler. The file will continue loading after you close this message.");
             }
             catch (Exception ex)
             {

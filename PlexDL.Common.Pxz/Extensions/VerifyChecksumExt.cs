@@ -6,7 +6,9 @@ namespace PlexDL.Common.Pxz.Extensions
     {
         public static bool VerifyChecksum(this PxzRecordContent retrievedContent, PxzRecordChecksum originalChecksum)
         {
-            return originalChecksum.Equals(new PxzRecordChecksum(retrievedContent));
+            var o = originalChecksum;
+            var c = new PxzRecordChecksum(retrievedContent);
+            return o.DecMd5 == c.DecMd5 && o.RawMd5 == c.RawMd5;
         }
     }
 }
