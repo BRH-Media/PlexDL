@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -127,15 +126,16 @@ namespace PlexDL.Common.Pxz.Structures
             get
             {
                 var raw = RawRecord;
+                var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
 
                 if (Encrypted)
                 {
-                    var provider = new ProtectedString(raw, ProtectionMode.Decrypt);
-                    raw = provider.ProcessedValue;
+                    var provider = new ProtectedBytes(r, ProtectionMode.Decrypt);
+                    r = provider.ProcessedValue;
                 }
 
-                var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
                 TmpRecord = r;
+
                 return r;
             }
         }

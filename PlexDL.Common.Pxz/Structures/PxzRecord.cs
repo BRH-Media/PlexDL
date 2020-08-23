@@ -5,6 +5,7 @@ using PlexDL.Common.Security;
 using System.Drawing;
 using System.Xml;
 using System.Xml.Serialization;
+using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
