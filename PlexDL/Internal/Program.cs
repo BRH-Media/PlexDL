@@ -3,6 +3,7 @@ using LogDel.Enums;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Enums;
+using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -115,13 +116,9 @@ namespace PlexDL.Internal
                 }
                 else
                 {
-                    //if the PlexDL AppData hasn't been made yet, then make it.
-                    if (!Directory.Exists(Strings.PlexDlAppData))
-                        Directory.CreateDirectory(Strings.PlexDlAppData);
-
                     //create the file with no messages
                     if (ObjectProvider.Settings != null)
-                        ProfileImportExport.ProfileToFile(path, ObjectProvider.Settings, true);
+                        ObjectProvider.Settings.SaveToDefault();
                 }
             }
             catch (Exception ex)

@@ -125,8 +125,9 @@
     <Compile Include="Common\CastAPI\PlexMediaData.cs" />
     <Compile Include="Common\CastAPI\QueueResult.cs" />
     <Compile Include="Common\CastAPI\TestClasses.cs" />
-    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Common\Extensions\DeepCloneExt.cs" />
     <Compile Include="Common\DefaultStringVariables.cs" />
+    <Compile Include="Common\Extensions\SaveToDefaultExt.cs" />
     <Compile Include="Common\Flags.cs" />
     <Compile Include="Common\Globals\BuildState.cs" />
     <Compile Include="Common\Globals\Providers\TableProvider.cs" />

@@ -1,10 +1,16 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace PlexDL.Common
+namespace PlexDL.Common.Extensions
 {
-    public static class Extensions
+    public static class DeepCloneExt
     {
+        /// <summary>
+        /// Clone this object's subobjects and their properties
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T DeepClone<T>(this T obj)
         {
             using (var ms = new MemoryStream())

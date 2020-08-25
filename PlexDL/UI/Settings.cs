@@ -3,6 +3,7 @@ using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
+using PlexDL.Common.Extensions;
 
 namespace PlexDL.UI
 {

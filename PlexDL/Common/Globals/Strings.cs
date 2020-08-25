@@ -9,10 +9,12 @@ namespace PlexDL.Common.Globals
         public static string RepoUrl { get; } = "https://github.com/brhsoftco/plexdl";
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(Integers.SessionIdLength);
 
-        public static string UserAppData { get; set; } =
+        public static string UserAppData { get; } =
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        public static string PlexDlAppData { get; set; } = $@"{UserAppData}\.plexdl";
+        public static string PlexDlAppData { get; } = $@"{UserAppData}\.plexdl";
+
+        public static string PlexDlDefault { get; } = $@"{PlexDlAppData}\.default";
 
         public static string GetToken()
         {
