@@ -61,7 +61,7 @@ namespace PlexDL.Common.API
                 //try and obtain a poster
                 var p = ImageHandler.GetPoster(contentToExport);
 
-                var rawMetadata = new PxzRecord(contentToExport.RawMetadata, @"raw");
+                var rawMetadata = new PxzRecord(contentToExport.RawMetadata, @"raw", true);
                 var objMetadata = new PxzRecord(contentToExport.ToXml(), @"obj");
                 var ptrMetadata = new PxzRecord(p, @"poster");
 

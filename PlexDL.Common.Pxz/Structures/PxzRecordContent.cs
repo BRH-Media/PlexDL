@@ -5,104 +5,16 @@ using System.Drawing;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordContent
     {
-        public PxzRecordContent()
-        {
-            //blank initialiser
-        }
-
-        public PxzRecordContent(bool protectedData = false)
-        {
-            Encrypted = protectedData;
-        }
-
-        public PxzRecordContent(XmlNode data, bool protectedData = false)
-        {
-            Encrypted = protectedData;
-            var value = DataHelpers.StringToBytes(data.OuterXml);
-
-            //we'll need to encrypt everything if it's true
-            if (protectedData)
-            {
-                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
-                value = provider.ProcessedValue;
-            }
-
-            RawRecord = GZipCompressor.CompressString(value);
-        }
-
-        public PxzRecordContent(byte[] data, bool protectedData = false)
-        {
-            Encrypted = protectedData;
-            var value = data;
-
-            //we'll need to encrypt everything if it's true
-            if (protectedData)
-            {
-                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
-                value = provider.ProcessedValue;
-            }
-
-            RawRecord = GZipCompressor.CompressString(value);
-        }
-
-        public PxzRecordContent(string data, bool protectedData = false)
-        {
-            Encrypted = protectedData;
-            var value = DataHelpers.StringToBytes(data);
-
-            //we'll need to encrypt everything if it's true
-            if (protectedData)
-            {
-                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
-                value = provider.ProcessedValue;
-            }
-
-            RawRecord = GZipCompressor.CompressString(value);
-        }
-
-        public PxzRecordContent(Image data, bool protectedData = false)
-        {
-            Encrypted = protectedData;
-            var value = Utilities.ImageToByte(data);
-
-            //we'll need to encrypt everything if it's true
-            if (protectedData)
-            {
-                var provider = new ProtectedBytes(value, ProtectionMode.Encrypt);
-                value = provider.ProcessedValue;
-            }
-
-            RawRecord = GZipCompressor.CompressString(value);
-        }
-
-        public byte[] ToBytes() => Record;
-
-        public override string ToString()
-        {
-            return Encoding.ASCII.GetString(Record);
-        }
-
-        public XmlDocument ToXmlDocument()
-        {
-            var rawXml = Encoding.ASCII.GetString(Record);
-
-            var doc = new XmlDocument();
-            doc.LoadXml(rawXml);
-
-            return doc;
-        }
-
-        public Image ToImage() => Utilities.ByteToImage(Record);
-
         /// <summary>
         /// Determines whether the record's contents have been encrypted via WDPAPI
         /// </summary>
-        public bool Encrypted { get; }
+        public bool Encrypted { get; set; }
 
         /// <summary>
         /// Raw compressed base64-encoded (ASCII/UTF8) Gzipped bytes
@@ -139,5 +51,116 @@ namespace PlexDL.Common.Pxz.Structures
                 return r;
             }
         }
+
+        /// <summary>
+        /// rawData should NOT contain encrypted bytes; this is done here if applicable.
+        /// </summary>
+        /// <param name="rawData"></param>
+        /// <param name="protectedData"></param>
+        private void GenericConstructor(byte[] rawData, bool protectedData = false)
+        {
+            Encrypted = protectedData;
+
+            //we'll need to encrypt everything if it's true
+            if (protectedData)
+            {
+                var provider = new ProtectedBytes(rawData, ProtectionMode.Encrypt);
+                rawData = provider.ProcessedValue;
+            }
+
+            RawRecord = GZipCompressor.CompressString(rawData);
+        }
+
+        /// <summary>
+        /// Blank constructor
+        /// </summary>
+        public PxzRecordContent()
+        {
+            //blank initialiser
+        }
+
+        /// <summary>
+        /// Empty constructor with protectedData switch
+        /// </summary>
+        /// <param name="protectedData"></param>
+        public PxzRecordContent(bool protectedData = false)
+        {
+            Encrypted = protectedData;
+        }
+
+        /// <summary>
+        /// Create a Record for an XmlDocument object
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="protectedData"></param>
+        public PxzRecordContent(XmlNode data, bool protectedData = false)
+        {
+            var value = DataHelpers.StringToBytes(data.OuterXml);
+            GenericConstructor(value, protectedData);
+        }
+
+        /// <summary>
+        /// Create a Record for a byte[] array
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="protectedData"></param>
+        public PxzRecordContent(byte[] data, bool protectedData = false)
+        {
+            var value = data;
+            GenericConstructor(value, protectedData);
+        }
+
+        /// <summary>
+        /// Create a Record for a string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="protectedData"></param>
+        public PxzRecordContent(string data, bool protectedData = false)
+        {
+            var value = DataHelpers.StringToBytes(data);
+            GenericConstructor(value, protectedData);
+        }
+
+        /// <summary>
+        /// Create a Record for a Bitmap
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="protectedData"></param>
+        public PxzRecordContent(Image data, bool protectedData = false)
+        {
+            var value = Utilities.ImageToByte(data);
+            GenericConstructor(value, protectedData);
+        }
+
+        /// <summary>
+        /// (Override) This takes bytes from Record and dumps them to an ASCII string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Encoding.ASCII.GetString(Record);
+        }
+
+        /// <summary>
+        /// Re-encodes the raw Record bytes to ASCII, loads them to an XmlDocument then returns this XmlDocument object.
+        /// </summary>
+        /// <returns></returns>
+        public XmlDocument ToXmlDocument()
+        {
+            var rawXml = Encoding.ASCII.GetString(Record);
+            var doc = new XmlDocument();
+
+            UIMessages.Info(rawXml);
+
+            doc.LoadXml(rawXml);
+
+            return doc;
+        }
+
+        /// <summary>
+        /// Takes the Record bytes and dumps them to a Bitmap
+        /// </summary>
+        /// <returns></returns>
+        public Image ToImage() => Utilities.ByteToImage(Record);
     }
 }

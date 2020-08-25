@@ -13,12 +13,10 @@ namespace PlexDL.Common.API
         {
             try
             {
-                ApplicationOptions subReq = null;
-
                 var serializer = new XmlSerializer(typeof(ApplicationOptions));
-
                 var reader = new StreamReader(fileName);
-                subReq = (ApplicationOptions)serializer.Deserialize(reader);
+                var subReq = (ApplicationOptions)serializer.Deserialize(reader);
+
                 reader.Close();
 
                 return subReq;
@@ -37,6 +35,7 @@ namespace PlexDL.Common.API
             try
             {
                 var xsSubmit = new XmlSerializer(typeof(ApplicationOptions));
+
                 using (var sww = new StringWriter())
                 {
                     xsSubmit.Serialize(sww, options);

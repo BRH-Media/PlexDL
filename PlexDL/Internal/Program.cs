@@ -4,6 +4,7 @@ using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.UI;
 using System;
@@ -24,7 +25,11 @@ namespace PlexDL.Internal
         [STAThread]
         private static void Main(string[] args)
         {
+            //store all command-line arguments in a Generic List<T>
             var arr = args.ToList();
+
+            //attempt to load default settings from AppData
+            TryLoadDefaultSettings();
 
             //setup arguments and their associated actions
             VisualStyles(arr);
@@ -88,6 +93,41 @@ namespace PlexDL.Internal
             else
             {
                 Application.Run(new Home());
+            }
+        }
+
+        private static void TryLoadDefaultSettings()
+        {
+            try
+            {
+                //path of the default settings file
+                var path = $@"{Strings.PlexDlAppData}\.default";
+
+                //check if default settings have been created
+                if (File.Exists(path))
+                {
+                    //try and load it with no messages
+                    var defaultProfile = ProfileImportExport.ProfileFromFile(path, true);
+
+                    //if it isn't null, then assign it to the global settings
+                    if (defaultProfile != null)
+                        ObjectProvider.Settings = defaultProfile;
+                }
+                else
+                {
+                    //if the PlexDL AppData hasn't been made yet, then make it.
+                    if (!Directory.Exists(Strings.PlexDlAppData))
+                        Directory.CreateDirectory(Strings.PlexDlAppData);
+
+                    //create the file with no messages
+                    if (ObjectProvider.Settings != null)
+                        ProfileImportExport.ProfileToFile(path, ObjectProvider.Settings, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and ignore the error
+                LoggingHelpers.RecordException(ex.Message, @"LoadDefaultProfileError");
             }
         }
 
