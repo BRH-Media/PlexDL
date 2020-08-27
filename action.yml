@@ -1,2 +1,3 @@
+---
 - name: Code Inspector GitHub action
   uses: codeinspectorio/github-action@v1
