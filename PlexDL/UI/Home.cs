@@ -8,6 +8,7 @@ using PlexDL.Common.API.Objects;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
+using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -219,6 +220,25 @@ namespace PlexDL.UI
         private void ItmSaveProfile_Click(object sender, EventArgs e)
         {
             SaveProfile();
+        }
+
+        private void ItmSaveDefault_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ObjectProvider.Settings != null)
+                {
+                    ObjectProvider.Settings.SaveToDefault();
+                    UIMessages.Info(@"Successfully saved settings");
+                }
+                else
+                    UIMessages.Error(@"Couldn't export settings because they were null");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"SaveDefaultError");
+                UIMessages.Error($"Error exporting to default\n\n{ex}");
+            }
         }
 
         private void ItmExportObj_Click(object sender, EventArgs e)
