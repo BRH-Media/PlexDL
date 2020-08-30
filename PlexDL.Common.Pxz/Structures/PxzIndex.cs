@@ -9,6 +9,7 @@ namespace PlexDL.Common.Pxz.Structures
         public PxzAuthor Author { get; set; } = new PxzAuthor();
         public Version FormatVersion { get; set; } = Utilities.GetVersion();
         public DevStatus BuildState { get; set; } = DevStatus.ProductionReady;
+        public DateTime CreationTime { get; set; } = DateTime.Now;
         public List<PxzRecordNaming> RecordReference { get; set; } = new List<PxzRecordNaming>();
     }
 }
