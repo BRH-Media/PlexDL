@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -149,8 +148,6 @@ namespace PlexDL.Common.Pxz.Structures
         {
             var rawXml = Encoding.ASCII.GetString(Record);
             var doc = new XmlDocument();
-
-            UIMessages.Info(rawXml);
 
             doc.LoadXml(rawXml);
 

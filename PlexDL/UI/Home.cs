@@ -846,13 +846,13 @@ namespace PlexDL.UI
             }
         }
 
-        private void DoStreamExport_Handler(object sender, WaitWindowEventArgs e)
+        private static void DoStreamExport_Handler(object sender, WaitWindowEventArgs e)
         {
             var content = (PlexObject)e.Arguments[0];
             var fileName = (string)e.Arguments[1];
             var poster = e.Arguments.Count > 2 ? (Bitmap)e.Arguments[2] : null;
 
-            ImportExport.MetadataToFile(fileName, content);
+            ImportExport.MetadataToFile(fileName, content, poster);
         }
 
         private void DoStreamExport()

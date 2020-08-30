@@ -3,6 +3,7 @@ using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -54,12 +55,12 @@ namespace PlexDL.Common.API
             }
         }
 
-        public static void MetadataToFile(string fileName, PlexObject contentToExport, bool silent = false)
+        public static void MetadataToFile(string fileName, PlexObject contentToExport, Bitmap poster = null, bool silent = false)
         {
             try
             {
-                //try and obtain a poster
-                var p = ImageHandler.GetPoster(contentToExport);
+                //try and obtain a poster if one wasn't provided
+                var p = poster ?? ImageHandler.GetPoster(contentToExport);
 
                 var rawMetadata = new PxzRecord(contentToExport.RawMetadata, @"raw", true);
                 var objMetadata = new PxzRecord(contentToExport.ToXml(), @"obj");
