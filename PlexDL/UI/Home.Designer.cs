@@ -128,7 +128,6 @@ namespace PlexDL.UI
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmSaveDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.itmData = new System.Windows.Forms.ToolStripMenuItem();
@@ -1162,8 +1161,7 @@ namespace PlexDL.UI
             // itmSave
             // 
             this.itmSave.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmSaveProfile,
-            this.itmSaveDefault});
+            this.itmSaveProfile});
             this.itmSave.Name = "itmSave";
             this.itmSave.Size = new System.Drawing.Size(180, 22);
             this.itmSave.Text = "Save";
@@ -1172,16 +1170,9 @@ namespace PlexDL.UI
             // 
             this.itmSaveProfile.Name = "itmSaveProfile";
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(180, 22);
+            this.itmSaveProfile.Size = new System.Drawing.Size(175, 22);
             this.itmSaveProfile.Text = "New Profile";
             this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
-            // 
-            // itmSaveDefault
-            // 
-            this.itmSaveDefault.Name = "itmSaveDefault";
-            this.itmSaveDefault.Size = new System.Drawing.Size(180, 22);
-            this.itmSaveDefault.Text = "Default";
-            this.itmSaveDefault.Click += new System.EventHandler(this.ItmSaveDefault_Click);
             // 
             // itmExportObj
             // 
@@ -1711,7 +1702,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmEpisodeMetadataView;
         private ToolStripMenuItem itmEpisodeMetadataExport;
         private ToolStripMenuItem itmSaveProfile;
-        private ToolStripMenuItem itmSaveDefault;
     }
 }
 

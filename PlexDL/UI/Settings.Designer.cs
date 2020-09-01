@@ -36,7 +36,11 @@ namespace PlexDL.UI
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.itmCommitToDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmReset = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
+            this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // settingsGrid
@@ -45,7 +49,7 @@ namespace PlexDL.UI
             this.settingsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsGrid.Location = new System.Drawing.Point(3, 3);
             this.settingsGrid.Name = "settingsGrid";
-            this.settingsGrid.Size = new System.Drawing.Size(313, 273);
+            this.settingsGrid.Size = new System.Drawing.Size(313, 249);
             this.settingsGrid.TabIndex = 0;
             // 
             // tlpMain
@@ -57,18 +61,18 @@ namespace PlexDL.UI
             this.tlpMain.Controls.Add(this.settingsGrid, 0, 0);
             this.tlpMain.Controls.Add(this.btnOK, 1, 1);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMain.Location = new System.Drawing.Point(0, 0);
+            this.tlpMain.Location = new System.Drawing.Point(0, 24);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(319, 308);
+            this.tlpMain.Size = new System.Drawing.Size(319, 284);
             this.tlpMain.TabIndex = 1;
             // 
             // btnCancel
             // 
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Location = new System.Drawing.Point(3, 282);
+            this.btnCancel.Location = new System.Drawing.Point(3, 258);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(153, 23);
             this.btnCancel.TabIndex = 2;
@@ -80,12 +84,37 @@ namespace PlexDL.UI
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.Location = new System.Drawing.Point(162, 282);
+            this.btnOK.Location = new System.Drawing.Point(162, 258);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(154, 23);
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCommitToDefault,
+            this.itmReset});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(319, 24);
+            this.menuMain.TabIndex = 2;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // itmCommitToDefault
+            // 
+            this.itmCommitToDefault.Name = "itmCommitToDefault";
+            this.itmCommitToDefault.Size = new System.Drawing.Size(118, 20);
+            this.itmCommitToDefault.Text = "Commit to Default";
+            this.itmCommitToDefault.Click += new System.EventHandler(this.ItmCommitToDefault_Click);
+            // 
+            // itmReset
+            // 
+            this.itmReset.Name = "itmReset";
+            this.itmReset.Size = new System.Drawing.Size(47, 20);
+            this.itmReset.Text = "Reset";
+            this.itmReset.Click += new System.EventHandler(this.ItmReset_Click);
             // 
             // Settings
             // 
@@ -95,8 +124,10 @@ namespace PlexDL.UI
             this.ClientSize = new System.Drawing.Size(319, 308);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMain);
+            this.Controls.Add(this.menuMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuMain;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Settings";
@@ -106,7 +137,10 @@ namespace PlexDL.UI
             this.Text = "PlexDL Settings";
             this.Load += new System.EventHandler(this.Settings_Load);
             this.tlpMain.ResumeLayout(false);
+            this.menuMain.ResumeLayout(false);
+            this.menuMain.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -116,5 +150,8 @@ namespace PlexDL.UI
         private TableLayoutPanel tlpMain;
         private Button btnOK;
         private Button btnCancel;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmCommitToDefault;
+        private ToolStripMenuItem itmReset;
     }
 }

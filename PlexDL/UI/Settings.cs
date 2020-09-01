@@ -1,9 +1,10 @@
-﻿using PlexDL.Common;
+﻿using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals.Providers;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
-using PlexDL.Common.Extensions;
+using UIHelpers;
 
 namespace PlexDL.UI
 {
@@ -32,6 +33,49 @@ namespace PlexDL.UI
             //exit and close with a return of 'Cancel'
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void ItmCommitToDefault_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ObjectProvider.Settings != null)
+                {
+                    ObjectProvider.Settings.SaveToDefault();
+                    UIMessages.Info(@"Successfully saved settings");
+                }
+                else
+                    UIMessages.Error(@"Couldn't export settings because they were null");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"SaveDefaultError");
+                UIMessages.Error($"Error exporting to default\n\n{ex}");
+            }
+        }
+
+        private void ItmReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (UIMessages.Question(@"Are you sure? This will clear all settings in the current session."))
+                {
+                    //do the reset
+                    ObjectProvider.Settings = new ApplicationOptions();
+
+                    //refresh PropertyGrid on this form
+                    settingsGrid.SelectedObject = ObjectProvider.Settings;
+                    settingsGrid.Refresh();
+
+                    //show alert
+                    UIMessages.Info(@"Settings reset");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"ResetSettingsError");
+                UIMessages.Error($"Error while resetting\n\n{ex}");
+            }
         }
     }
 }
