@@ -13,7 +13,7 @@
 
 **In addition, other projects included in the source may need NuGet package restorations.**
 
-The following third-party projects are included in the source:
+### Third Party Projects Included in Source
 - SharpCaster by Tapanila \[`SharpCaster`]
 - AltoHttp (modified) by aalitor \[`PlexDL.AltoHttp`]
 - WinFormAnimation by falahati \[`PlexDL.Animation`]
