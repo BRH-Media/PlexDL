@@ -21,6 +21,10 @@ namespace PlexDL.Common.Extensions
                 if (!Directory.Exists(Strings.PlexDlAppData))
                     Directory.CreateDirectory(Strings.PlexDlAppData);
 
+                //if the file already exists, delete it (otherwise duplication of values could occur)
+                if (File.Exists(Strings.PlexDlDefault))
+                    File.Delete(Strings.PlexDlDefault);
+
                 //export to default settings with no messages
                 ProfileImportExport.ProfileToFile(Strings.PlexDlDefault, options, true);
             }

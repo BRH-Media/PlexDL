@@ -8,7 +8,6 @@ using PlexDL.Common.API.Objects;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
-using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -222,11 +221,6 @@ namespace PlexDL.UI
             SaveProfile();
         }
 
-        private void ItmSaveDefault_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void ItmExportObj_Click(object sender, EventArgs e)
         {
             if (Flags.IsConnected)
@@ -327,9 +321,7 @@ namespace PlexDL.UI
         private void ItmSettings_Click(object sender, EventArgs e)
         {
             using (var frm = new Settings())
-            {
                 frm.ShowDialog();
-            }
         }
 
         private void ItmClearCache_Click(object sender, EventArgs e)

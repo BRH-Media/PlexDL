@@ -126,7 +126,6 @@ namespace PlexDL.UI
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSaveProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExportObj = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -1143,7 +1142,7 @@ namespace PlexDL.UI
             // 
             this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmLoadProfile,
-            this.itmSave,
+            this.itmSaveProfile,
             this.itmExportObj,
             this.itmSettings});
             this.itmFile.Name = "itmFile";
@@ -1158,20 +1157,12 @@ namespace PlexDL.UI
             this.itmLoadProfile.Text = "Load";
             this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
             // 
-            // itmSave
-            // 
-            this.itmSave.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmSaveProfile});
-            this.itmSave.Name = "itmSave";
-            this.itmSave.Size = new System.Drawing.Size(180, 22);
-            this.itmSave.Text = "Save";
-            // 
             // itmSaveProfile
             // 
             this.itmSaveProfile.Name = "itmSaveProfile";
             this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(175, 22);
-            this.itmSaveProfile.Text = "New Profile";
+            this.itmSaveProfile.Size = new System.Drawing.Size(180, 22);
+            this.itmSaveProfile.Text = "Save";
             this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
             // 
             // itmExportObj
@@ -1621,7 +1612,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmExportObj;
         private ToolStripMenuItem itmSetDlDirectory;
         private ToolStripMenuItem itmLoadProfile;
-        private ToolStripMenuItem itmSave;
         private ToolStripMenuItem itmServers;
         private ToolStripMenuItem itmServerManager;
         private ToolStripMenuItem itmContent;
