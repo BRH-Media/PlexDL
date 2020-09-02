@@ -1,8 +1,7 @@
-﻿using Markdig;
-using PlexDL.AltoHTTP.Classes;
+﻿using GitHubUpdater.DownloadManager;
+using Markdig;
 using PlexDL.WaitWindow;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -15,6 +14,8 @@ namespace GitHubUpdater
     public partial class Update : Form
     {
         public Application UpdateData { get; set; }
+
+        public string UpdateDirectory { get; set; } = @"";
 
         public Update()
         {
@@ -33,6 +34,11 @@ namespace GitHubUpdater
             }
             else
             {
+                var dir = $@"{Globals.UpdateRootDir}\{UpdateData.id}";
+
+                //set global
+                UpdateDirectory = dir;
+
                 var title = UpdateData.name;
                 var changes = UpdateData.body;
                 var style = new Stylesheet();
@@ -103,42 +109,77 @@ namespace GitHubUpdater
         {
             try
             {
-                var dir = (string)WaitWindow.Show(DownloadWorker, @"Downloading update file(s)");
-                var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (msg == DialogResult.Yes)
-                    Process.Start(dir);
+                var status = (ReturnStatus)WaitWindow.Show(DownloadWorker, @"Downloading update files");
+
+                switch (status)
+                {
+                    case ReturnStatus.Errored:
+                        MessageBox.Show(@"An unknown error occurred whilst attempting to download one or more update files", @"Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        break;
+
+                    case ReturnStatus.NullJob:
+                        MessageBox.Show(@"One or more download jobs were invalid; valid jobs have been completed.", @"Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        break;
+
+                    default:
+                        var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                        if (msg == DialogResult.Yes)
+                            Process.Start(UpdateDirectory);
+
+                        break;
+                }
+
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($@"Error downloading your update files
-{ex}", @"Error",
+                MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void DownloadWorker(object sender, WaitWindowEventArgs e)
         {
-            var dir = $@"{Globals.UpdateRootDir}\{UpdateData.id}";
-            var dl = new List<HttpDownloader>();
-            foreach (var a in UpdateData.assets)
+            try
             {
-                var dirA = $@"{dir}\{a.id}";
-                if (!Directory.Exists(dirA))
-                    Directory.CreateDirectory(dirA);
-                var uri = a.browser_download_url;
-                var file = $@"{dirA}\{a.name}";
+                //the final status to deliver to the UpdateClient
+                var status = ReturnStatus.Unknown;
 
-                //only download it if the file doesn't already exist
-                if (File.Exists(file)) continue;
+                //loop through each GitHub release asset
+                foreach (var a in UpdateData.assets)
+                {
+                    //location of the unique folder
+                    var dirA = $@"{UpdateDirectory}\{a.id}";
 
-                var engine = new HttpDownloader(uri, file);
-                dl.Add(engine);
-                dl[dl.IndexOf(engine)].StartAsync();
+                    //each asset has a separate directory inside the 'UpdateId' directory
+                    if (!Directory.Exists(dirA))
+                        Directory.CreateDirectory(dirA);
+
+                    //construct download job
+                    var j = new Job
+                    {
+                        DownloadUri = new Uri(a.browser_download_url),
+                        DownloadPath = $@"{dirA}\{a.name}",
+                        DownloadSize = a.size
+                    };
+
+                    //download and flush job to disk
+                    status = Agent.DoDownload(j);
+                }
+
+                //finally, return the final status
+                e.Result = status;
             }
-
-            e.Result = dir;
+            catch
+            {
+                //ignore the error
+            }
         }
     }
 }

@@ -131,7 +131,7 @@ namespace PlexDL.UI
                         var chromecast = Devices[i];
 
                         //attempt the connection
-                        Service.ConnectToChromecast(chromecast);
+                        await Service.ConnectToChromecast(chromecast);
 
                         //give it some time to connect (5 seconds)
                         await Task.Delay(5000);
