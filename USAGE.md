@@ -1,5 +1,8 @@
 # PlexDL Usage Guide
 ### __Basic Usage__
+
+---
+
 1. To get started, first obtain your Plex account token. A guide for this may be found [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). Alternatively, you can just use your Plex.tv account (v1.4.1+) to automatically retrieve your account token.
 2. Select `Servers->Server Manager` from the main panel. This will load the Server Manager.
 3. Select `Authenticate` and choose your preferred method.
@@ -16,6 +19,9 @@
 14. Likewise, to load the profile, simply select `File->Load` (you can also use `Ctrl+O`), then browse to your generated XML *.prof* file.
 
 ### __Content Filtering__
+
+---
+
 * PlexDL natively filters potentially adult-orientated content.
 * It is possible to disable this filter by exporting a profile, then changing "AdultContentProtection" from "true" to "false" inside the resulting _.prof_ file, then reloading that profile back into PlexDL. You can also use `File->Settings` as a marginally faster option.
 * For users' convenience, PlexDL will filter content that matches a genre-based criteria by pixelating posters in the metadata section, and warning users before streaming the content. The plot summary is also replaced with `Plot summary censored`, but genre-based filtering first requires the server to provide the correct criteria information.
@@ -24,6 +30,9 @@
 * PlexDL does not provide populated keyword lists by default; please do not ask for any. Also note that there are many available via a quick Google Search.
 
 ### __Shortcut Keys__
+
+---
+
 #### __Main App__
 * `Control+O` - Load a Profile
 * `Control+S` - Save a Profile
@@ -54,6 +63,9 @@
 * `F` - Toggle Fullscreen Mode
 
 ### Setting up VLC for use with PlexDL
+
+---
+
 Because VLC accepts a vast array of command-line arguments and values, PlexDL only needs to know where the location of `vlc.exe` is. This way, it may execute it on the fly. To point PlexDL to VLC, please follow the following procedure:
 1. Load a server of your choice and populate the gridviews.
 2. `File->Settings`
