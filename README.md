@@ -47,19 +47,19 @@ It should be noted, however, that PlexDL does support various forms of caching. 
     └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
        
 ```
-Using the Settings dialog in `File->Settings`, you can enable/disable the three forms of PlexDL caching:
+Using the Settings dialog in `File->Settings`, you can individually enable/disable the three forms of PlexDL caching:
 - Server List Caching
 - XML API Caching
 - Image Caching
 
-By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as cached data will quickly become outdated.
+By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as the stored data will quickly become outdated (leading to future problems with server connections).
 
 ### How to get started
 #### __1. Building from Source__
 [Follow the Build Guide](./BUILDING.md)
 
 #### __2. Downloading from Releases__
-Alternatively, can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all needed dependencies and the pre-built executable.
+Alternatively, you can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all of the needed dependencies and the binary itself.
 
 ### __Using PlexDL__
 [Read the Usage Guide](./USAGE.md)
