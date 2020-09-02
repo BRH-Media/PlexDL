@@ -1,0 +1,29 @@
+# Building PlexDL from source
+stem.Buffers](https://www.nuget.org/packages/System.Buffers/)
+- [System.Memory](https://www.nuget.org/packages/System.Memory/)
+- [System.Numerics.Vectors](https://www.nuget.org/packages/System.Numerics.Vectors/)
+- [System.Runtime.CompilerServices.Unsafe](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/)
+
+In addition, other projects included in the source may need NuGet package restorations. The following third-party projects are included in the source:
+- SharpCaster by Tapanila \[`SharpCaster`]
+- AltoHttp (modified) by aalitor \[`PlexDL.AltoHttp`]
+- WinFormAnimation by falahati \[`PlexDL.Animation`]
+- PVS.MediaPlayer by Peter Vegter \[`PlexDL.Player`]
+
+Build Prerequisites
+- Visual Studio 2017/2019
+- .NET Framework 4.7.2+
+- C# 8.0 Language Support
+
+Steps for building
+1. `git clone http://github.com/Brhsoftco/PlexDL.git`
+2. Open `PlexDL.sln` in Visual Studio 2017+
+3. Enable restoring NuGet packages via `Tools->Options->NuGet Package Manager->Package Restore->Allow NuGet to download missing packages`
+4. Right click the `PlexDL` Solution in the Solution Explorer
+5. Select `Restore NuGet Packages`
+6. `Build->Build Solution`
+7. Run resulting `PlexDL.exe` in the `~\bin` folder
+
+**PlexDL won't build?**
+The `master` branch should always be able to compile successfully. However, sometimes problems may arise.
+If you have any trouble after following the steps above, please create an issue and tag it as a build problem. We'll get back to you as soon as we can!
