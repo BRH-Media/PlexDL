@@ -30,7 +30,7 @@ PlexDL currently supports the following media types
 - TV - Shows, Seasons and Episodes
 - Movies
 
-More will be on the way, but please note that photos are current very difficult to implement. As such, we can't support this feature until sufficient resources can be devoted to it.
+More will be on the way, but please note that photos are currently very difficult to implement. As such, we can't support this feature until sufficient resources can be devoted to it.
 
 ### Performance?
 PlexDL will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS aren't perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
