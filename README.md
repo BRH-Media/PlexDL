@@ -35,17 +35,24 @@ More will be on the way, but please note that photos are currently very difficul
 ### Performance?
 PlexDL will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS aren't perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
-It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the caching folder is as follows:
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the `.plexdl` folder is as follows:
 ```
-\caching                              -- Root Folder
-└───\%TOKEN_HASH%                     -- MD5 of account token
-    ├──\%SERVER_HASH%                 -- MD5 of server IP
-    │  ├───\thumb                     -- Cached images with *.thumb filename
-    │  │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd.
-    │  └───\xml                       -- Cached XML API data with *.xml filename
-    │      └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd.
-    └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
-       
+\.plexdl                                   -- Root Folder
+├───\caching                               -- Cached information root folder
+│   └───\%TOKEN_HASH%                      -- MD5 of account token
+│       ├───\%SERVER_HASH%                 -- MD5 of server IP
+│       │   ├───\thumb                     -- Cached images with *.thumb filename
+│       │   │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd
+│       │   └───\xml                       -- Cached XML API data with *.xml filename
+│       │       └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd
+│       └───%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
+├───\logs                                  -- *.logdel logging folder ('Log Viewer' search location)   
+│   ├───Caching.logdel                     -- Caching event log (e.g. something is saved, retrieved, etc.)
+|   ├───ExceptionLog.logdel                -- Non-critical exceptions are logged here
+|   └───PlexDL.logdel                      -- Main application log
+├───.default                               -- XML profile that is loaded on each start (default settings)
+├───.entropy                               -- 20-byte pseudorandom entropy data used for WDPAPI
+└───.token                                 -- 20-char Plex.tv token; saved when the user logs in and is encrypted with WDPAPI
 ```
 Using the Settings dialog in `File->Settings`, you can individually enable/disable the three forms of PlexDL caching:
 - Server List Caching
