@@ -75,3 +75,7 @@ Alternatively, you can access the latest official build [here](https://github.co
 
 ### __Looking for Demo Images?__
 [You Can Find Them Here](./demo_images)
+
+### Additional Notes
+- DRM isn't supported in the slightest! Don't even try to play it back.
+- Plex's new free library isn't supported. I really don't want to deal with HLS streams/scheduling data since it's an entirely new API structure.
