@@ -48,9 +48,9 @@ It should be noted, however, that PlexDL does support various forms of caching. 
 │       └───%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
 ├───\logs                                  -- *.logdel logging folder ('Log Viewer' search location)   
 │   ├───Caching.logdel                     -- Caching event log (e.g. something is saved, retrieved, etc.)
-|   ├───ExceptionLog.logdel                -- Non-critical exceptions are logged here
-|   ├───PlexDL.logdel                      -- Main application log
-|   └───TransactionLog.logdel              -- Logs all PMS XML requests/events out of PlexDL
+│   ├───ExceptionLog.logdel                -- Non-critical exceptions are logged here
+│   ├───PlexDL.logdel                      -- Main application log
+│   └───TransactionLog.logdel              -- Logs all PMS XML requests/events out of PlexDL
 ├───.default                               -- XML profile that is loaded on each start (default settings)
 ├───.entropy                               -- 20-byte pseudorandom entropy data used for WDPAPI
 └───.token                                 -- 20-char Plex.tv token; saved when the user logs in and is encrypted with WDPAPI
