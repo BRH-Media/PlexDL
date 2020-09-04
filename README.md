@@ -49,17 +49,19 @@ It should be noted, however, that PlexDL does support various forms of caching. 
 ├───\logs                                  -- *.logdel logging folder ('Log Viewer' search location)   
 │   ├───Caching.logdel                     -- Caching event log (e.g. something is saved, retrieved, etc.)
 |   ├───ExceptionLog.logdel                -- Non-critical exceptions are logged here
-|   └───PlexDL.logdel                      -- Main application log
+|   ├───PlexDL.logdel                      -- Main application log
+|   └───TransactionLog.logdel              -- Logs all PMS XML requests/events out of PlexDL
 ├───.default                               -- XML profile that is loaded on each start (default settings)
 ├───.entropy                               -- 20-byte pseudorandom entropy data used for WDPAPI
 └───.token                                 -- 20-char Plex.tv token; saved when the user logs in and is encrypted with WDPAPI
 ```
+
 Using the Settings dialog in `File->Settings`, you can individually enable/disable the three forms of PlexDL caching:
 - Server List Caching
 - XML API Caching
 - Image Caching
 
-By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as the stored data will quickly become outdated (leading to future problems with server connections).
+By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as the stored data will quickly become outdated. In turn, this leads to future problems with server connections.
 
 ### How to get started
 #### __1. Building from Source__
