@@ -1,7 +1,5 @@
-﻿using PlexDL.Common.Pxz.Structures;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -54,29 +52,6 @@ namespace PlexDL.Common.Pxz
             {
                 return (Bitmap)Image.FromStream(mStream);
             }
-        }
-
-        public static PxzAuthor AuthorFromCurrent()
-        {
-            try
-            {
-                return new PxzAuthor
-                {
-                    MachineName = Environment.MachineName,
-                    UserAccount = Environment.UserName,
-                    DisplayName = CurrentDisplayName()
-                };
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public static string CurrentDisplayName()
-        {
-            var p = UserPrincipal.Current;
-            return p.DisplayName;
         }
     }
 }

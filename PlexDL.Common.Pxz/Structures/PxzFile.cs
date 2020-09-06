@@ -7,16 +7,33 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzFile
     {
+        /// <summary>
+        /// Global PXZ indexing information
+        /// </summary>
         public PxzIndex FileIndex { get; set; } = new PxzIndex();
 
+        /// <summary>
+        /// A list of all records currently in this PXZ file
+        /// </summary>
         public List<PxzRecord> Records { get; } = new List<PxzRecord>();
+
+        /// <summary>
+        /// The location on disk of the current PXZ file (blank if this is new)
+        /// </summary>
         public string Location { get; set; } = @"";
+
+        /// <summary>
+        /// Whether or not to show messages during parse (e.g. error messages/warnings)
+        /// </summary>
+        [XmlIgnore]
+        public bool ParseSilent { get; set; } = false;
 
         public PxzFile()
         {
@@ -35,11 +52,19 @@ namespace PlexDL.Common.Pxz.Structures
             }
         }
 
+        /// <summary>
+        /// Show the PXZ Explorer with the current PXZ file loaded
+        /// </summary>
         public void ShowInformation()
         {
             PxzInformation.ShowPxzInformation(this);
         }
 
+        /// <summary>
+        /// Load a record from the PXZ index
+        /// </summary>
+        /// <param name="recordName">Exact name of the record to load (not stored name)</param>
+        /// <returns></returns>
         public PxzRecord LoadRecord(string recordName)
         {
             if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
@@ -55,17 +80,29 @@ namespace PlexDL.Common.Pxz.Structures
             return null;
         }
 
+        /// <summary>
+        /// Add a new PXZ record to this file
+        /// </summary>
+        /// <param name="record"></param>
         public void AddRecord(PxzRecord record)
         {
             Records.Add(record);
             FileIndex.RecordReference.Add(record.Header.Naming);
         }
 
+        /// <summary>
+        /// Remove a PXZ record object by instance
+        /// </summary>
+        /// <param name="record">Exact instance of the record to delete</param>
         public void RemoveRecord(PxzRecord record)
         {
             if (Records.Contains(record)) Records.Remove(record);
         }
 
+        /// <summary>
+        /// Remove a PXZ record object by name
+        /// </summary>
+        /// <param name="recordName">Exact name of the record to delete (not stored name)</param>
         public void RemoveRecord(string recordName)
         {
             foreach (var r in FileIndex.RecordReference)
@@ -77,6 +114,10 @@ namespace PlexDL.Common.Pxz.Structures
             }
         }
 
+        /// <summary>
+        /// Save this PXZ file to disk
+        /// </summary>
+        /// <param name="path">The file to save to/create</param>
         public void Save(string path)
         {
             //delete the existing file (if it exists)
@@ -84,7 +125,7 @@ namespace PlexDL.Common.Pxz.Structures
                 File.Delete(path);
 
             //new index attributes (don't override records though)
-            FileIndex.Author = Utilities.AuthorFromCurrent();
+            FileIndex.Author = PxzAuthor.FromCurrent();
             FileIndex.FormatVersion = Utilities.GetVersion();
 
             var idxDoc = FileIndex.ToXml();
@@ -116,6 +157,10 @@ namespace PlexDL.Common.Pxz.Structures
             archive.Save(path);
         }
 
+        /// <summary>
+        /// Load an existing PXZ file from disk
+        /// </summary>
+        /// <param name="path">The file to load</param>
         public void Load(string path)
         {
             try
