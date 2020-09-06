@@ -30,29 +30,38 @@ PlexDL currently supports the following media types
 - TV - Shows, Seasons and Episodes
 - Movies
 
-More will be on the way, but please note that photos are current very difficult to implement. As such, we can't support this feature until sufficient resources can be devoted to it.
+More will be on the way, but please note that photos are currently very difficult to implement. As such, we can't support this feature until sufficient resources can be devoted to it.
 
 ### Performance?
 PlexDL will work for almost any PMS out there (provided you have an account key/valid Plex.tv account). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS aren't perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and server reliability, so that is also a factor.
 
-It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the caching folder is as follows:
+It should be noted, however, that PlexDL does support various forms of caching. This will store downloaded information in the  `%APPDATA%\.plexdl\caching` folder. The structure of the `.plexdl` folder is as follows:
 ```
-\caching                              -- Root Folder
-└───\%TOKEN_HASH%                     -- MD5 of account token
-    ├──\%SERVER_HASH%                 -- MD5 of server IP
-    │  ├───\thumb                     -- Cached images with *.thumb filename
-    │  │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd.
-    │  └───\xml                       -- Cached XML API data with *.xml filename
-    │      └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd.
-    └──%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
-       
+\.plexdl                                   -- Root Folder
+├───\caching                               -- Cached information root folder
+│   └───\%TOKEN_HASH%                      -- MD5 of account token
+│       ├───\%SERVER_HASH%                 -- MD5 of server IP
+│       │   ├───\thumb                     -- Cached images with *.thumb filename
+│       │   │   └───%IMAGE_URL_HASH%.thumb -- *.thumb is named as a hashed URL, to be retrieved when a matching request is ID'd
+│       │   └───\xml                       -- Cached XML API data with *.xml filename
+│       │       └───%XML_URL_HASH%.xml     -- *.xml is named as a hashed URL, to be retrieved when a matching request is ID'd
+│       └───%TOKEN_HASH%.slst              -- Cached server details list (cached IP, port, etc.)
+├───\logs                                  -- *.logdel logging folder ('Log Viewer' search location)   
+│   ├───Caching.logdel                     -- Caching event log (e.g. something is saved, retrieved, etc.)
+│   ├───ExceptionLog.logdel                -- Non-critical exceptions are logged here
+│   ├───PlexDL.logdel                      -- Main application log
+│   └───TransactionLog.logdel              -- Logs all PMS XML requests/events out of PlexDL
+├───.default                               -- XML profile that is loaded on each start (default settings)
+├───.entropy                               -- 20-byte pseudorandom entropy data used for WDPAPI
+└───.token                                 -- 20-char Plex.tv token; saved when the user logs in and is encrypted with WDPAPI
 ```
+
 Using the Settings dialog in `File->Settings`, you can individually enable/disable the three forms of PlexDL caching:
 - Server List Caching
 - XML API Caching
 - Image Caching
 
-By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as the stored data will quickly become outdated (leading to future problems with server connections).
+By using caching, you can drastically increase the performance of the application, as PlexDL can skip downloading a new copy of the file each time. However, the obvious downside is remembering to regularly clear the cache, as the stored data will quickly become outdated. In turn, this leads to future problems with server connections.
 
 ### How to get started
 #### __1. Building from Source__
@@ -66,3 +75,7 @@ Alternatively, you can access the latest official build [here](https://github.co
 
 ### __Looking for Demo Images?__
 [You Can Find Them Here](./demo_images)
+
+### Additional Notes
+- DRM isn't supported in the slightest! Don't even try to play it back.
+- Plex's new free library isn't supported. I really don't want to deal with HLS streams/scheduling data since it's an entirely new API structure.
