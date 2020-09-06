@@ -39,7 +39,7 @@ namespace PlexDL.Common.Pxz.Structures
                 var raw = RawRecord;
                 var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
 
-                if (Encrypted)
+                if (Encrypted && r != null)
                 {
                     var provider = new ProtectedBytes(r, ProtectionMode.Decrypt);
                     r = provider.ProcessedValue;

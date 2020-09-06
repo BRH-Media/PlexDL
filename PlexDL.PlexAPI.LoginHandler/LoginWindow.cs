@@ -49,13 +49,7 @@ browser";
             Process.Start(endpoint);
         }
 
-        private void LoginWindow_Load(object sender, EventArgs e)
-        {
-            tmrDotChange.Start();
-            LaunchBrowser();
-        }
-
-        private async void BtnOK_Click(object sender, EventArgs e)
+        private async void LoginAction()
         {
             try
             {
@@ -80,6 +74,17 @@ browser";
             {
                 UIMessages.Error($"An error occured whilst logging into Plex.tv:\n\n{ex}");
             }
+        }
+
+        private void LoginWindow_Load(object sender, EventArgs e)
+        {
+            tmrDotChange.Start();
+            LaunchBrowser();
+        }
+
+        private void BtnOK_Click(object sender, EventArgs e)
+        {
+            LoginAction();
         }
 
         private void LnkRelaunch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

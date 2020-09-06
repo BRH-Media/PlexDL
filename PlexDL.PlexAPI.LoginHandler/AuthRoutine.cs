@@ -23,6 +23,7 @@ namespace PlexDL.PlexAPI.LoginHandler
                 using (var frm = new LoginWindow())
                 {
                     frm.PlexRequestPin = init;
+
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
                         if (frm.Success)
