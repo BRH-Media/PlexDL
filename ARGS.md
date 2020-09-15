@@ -1,5 +1,5 @@
 # Command-Line Arguments in PlexDL
-### PlexDL offers speciality functions only accessible via command-line arguments
+### PlexDL offers specialty functions only accessible via command-line arguments
 
 ```
 -tw     -- Opens the Testing Area
