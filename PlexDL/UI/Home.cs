@@ -644,22 +644,24 @@ namespace PlexDL.UI
                 if (ofdLoad.ShowDialog() == DialogResult.OK)
                 {
                     //store the file-type of the currently selected file
-                    var actExt = Path.GetExtension(ofdLoad.FileName);
+                    var actExt = Path.GetExtension(ofdLoad.FileName).ToLower();
 
                     //what we're checking for
-                    const string expExt = @".prof";
-                    const string metExp = @".pxz";
+                    const string prfExt = @".prof";
+                    const string metExt = @".pxz";
+                    const string xmlExt = @".pmxml";
 
                     //execute file-type checks
                     switch (actExt)
                     {
                         //XML settings profile
-                        case expExt:
+                        case prfExt:
                             DoLoadProfile(ofdLoad.FileName);
                             break;
 
-                        //PXZ metadata archive
-                        case metExp:
+                        //multiple metadata file-types work with the same method
+                        case xmlExt:
+                        case metExt:
                             try
                             {
                                 var metadata = ImportExport.MetadataFromFile(ofdLoad.FileName);

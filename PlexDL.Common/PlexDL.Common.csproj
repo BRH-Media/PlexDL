@@ -93,6 +93,7 @@
     <Compile Include="DefaultStringVariables.cs" />
     <Compile Include="Extensions\DeepCloneExt.cs" />
     <Compile Include="Extensions\SaveToDefaultExt.cs" />
+    <Compile Include="FileAssociationManager.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="Globals\BuildState.cs" />
     <Compile Include="Globals\Integers.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Structures\CachedPlexLogin.cs" />
     <Compile Include="Structures\ConnectionInfo.cs" />
     <Compile Include="Structures\DownloadLayout.cs" />
+    <Compile Include="Structures\FileAssociation.cs" />
     <Compile Include="Structures\LoggingSettings.cs" />
     <Compile Include="Structures\MusicDirectoryLayout.cs" />
     <Compile Include="Structures\Plex\PlexActor.cs" />

@@ -84,7 +84,7 @@ namespace PlexDL.Common.API
             {
                 if (!silent)
                     UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Export Error");
-                LoggingHelpers.RecordException(ex.Message, "XMLMetadataSaveError");
+                LoggingHelpers.RecordException(ex.Message, "XmlMetadataSaveError");
             }
         }
 
@@ -115,7 +115,7 @@ namespace PlexDL.Common.API
                 }
                 catch (Exception ex)
                 {
-                    LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
+                    LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
                     return null;
                 }
             }
@@ -133,7 +133,31 @@ namespace PlexDL.Common.API
 
         public static PlexObject MetadataFromFile(string fileName, bool waitWindow = true, bool silent = false)
         {
-            return MetadataFromFile(LoadMetadataArchive(fileName, waitWindow), waitWindow, silent);
+            try
+            {
+                //there are two file-types: the legacy PMXML format and the new PXZ format
+                var ext = Path.GetExtension(fileName);
+
+                //decide which is which
+                switch (ext)
+                {
+                    case @".pxz": //must be decompressed and processed first
+                        return MetadataFromFile(LoadMetadataArchive(fileName, waitWindow), waitWindow, silent);
+
+                    case @".pmxml": //can be directly loaded and deserialised
+                        var doc = new XmlDocument();
+                        doc.LoadXml(File.ReadAllText(fileName));
+                        return FromXml(doc);
+
+                    default:
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"XmlMetadataLoadError");
+                return null;
+            }
         }
 
         public static PlexObject MetadataFromFile(PxzFile file, bool waitWindow = true, bool silent = false)
@@ -149,26 +173,19 @@ namespace PlexDL.Common.API
                 {
                     try
                     {
-                        var serializer = new XmlSerializer(typeof(PlexObject));
-
                         //load the object record (encoded XML that contains metadata/attributes)
                         var rec = file.LoadRecord(@"obj");
 
                         //it'll be null if the load above failed for whatever reason
                         if (rec != null)
                         {
-                            //parse the XML metadata into a new PlexObject
-                            var reader = new StringReader(rec.Content.ToXmlDocument().OuterXml);
-                            var subReq = (PlexObject)serializer.Deserialize(reader);
-
-                            //get rid of the XML reader to clear memory
-                            reader.Close();
+                            var obj = FromXml(rec.Content.ToXmlDocument());
 
                             //apply raw XML from PXZ file
-                            subReq.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
+                            obj.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
 
                             //return the new PlexObject
-                            return subReq;
+                            return obj;
                         }
                         else
                         {
@@ -180,7 +197,7 @@ namespace PlexDL.Common.API
                     {
                         if (!silent)
                             UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Load Error");
-                        LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
+                        LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
                         return new PlexObject();
                     }
                 }

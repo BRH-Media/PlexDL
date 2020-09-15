@@ -23,19 +23,22 @@ namespace PlexDL.Internal
 
         public static void OpenWith(string file, bool appRun = true)
         {
-            //Windows has passed a file; we need to check if it's a '.pxz' file which we can load
-            //into the Metadata window.
+            //Windows has passed a file; we need to check what type it is
             var ext = Path.GetExtension(file);
-            const string expectedFormat = ".pxz";
+
+            UIMessages.Info(file);
 
             //check if it's a supported file-type
-            if (string.Equals(ext, expectedFormat))
+            if (CheckAgainstSupportedFiles(file))
             {
                 //try the metadata import and then show it if successful
                 try
                 {
                     var metadata = ImportExport.MetadataFromFile(file);
-                    if (metadata != null) UiUtils.RunMetadataWindow(metadata, appRun);
+                    if (metadata != null)
+                        UiUtils.RunMetadataWindow(metadata, appRun);
+                    else
+                        UIMessages.Error(@"Metadata parse failed; null result.");
                 }
                 catch (Exception ex)
                 {
@@ -48,6 +51,18 @@ namespace PlexDL.Internal
                 UIMessages.Error(@"PlexDL doesn't recognise this file-type: '" + ext + @"'",
                     @"Validation Error");
             }
+        }
+
+        public static bool CheckAgainstSupportedFiles(string fileName)
+        {
+            //clean all periods from the extension
+            var ext = Path.GetExtension(fileName).Replace(@".", @"");
+
+            //what file types are valid?
+            var supportedTypes = new[] { @"pxz", @"pmxml", @"prof" };
+
+            //finally, perform the check itself
+            return supportedTypes.Contains(ext.ToLower());
         }
 
         public static void FullArgumentCheck()

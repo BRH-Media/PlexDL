@@ -10,7 +10,7 @@ namespace PlexDL.Internal
         public static void CriticalExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             var obj = (Exception)e.ExceptionObject;
-            CriticalExceptionHandler(obj);
+            CriticalExceptionHandler(obj, true);
         }
 
         public static void CriticalExceptionHandler(object sender, FirstChanceExceptionEventArgs e)

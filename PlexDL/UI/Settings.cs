@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Extensions;
+﻿using PlexDL.Common;
+using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions;
@@ -75,6 +76,24 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordException(ex.Message, @"ResetSettingsError");
                 UIMessages.Error($"Error while resetting\n\n{ex}");
+            }
+        }
+
+        private void ItmCreateAssociations_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (UIMessages.Question(
+                    "You are about to create PlexDL file associations for:\n\n*.pxz\n*.pmxml\n*.prof\n\nProceed?"))
+                {
+                    FileAssociationManager.EnsureAssociationsSet();
+                    UIMessages.Info(@"Done!");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"FileAssociationError");
+                UIMessages.Error($"Error whilst trying to set PlexDL file associations:\n\n{ex}");
             }
         }
     }

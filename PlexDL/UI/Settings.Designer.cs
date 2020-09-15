@@ -37,8 +37,12 @@ namespace PlexDL.UI
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.itmGlobal = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSettingsControl = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCommitToDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.itmReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmFileAssoc = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCreateAssociations = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
@@ -95,27 +99,59 @@ namespace PlexDL.UI
             // menuMain
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmCommitToDefault,
-            this.itmReset});
+            this.itmGlobal});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(319, 24);
             this.menuMain.TabIndex = 2;
             this.menuMain.Text = "menuStrip1";
             // 
+            // itmGlobal
+            // 
+            this.itmGlobal.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmSettingsControl,
+            this.itmFileAssoc});
+            this.itmGlobal.Name = "itmGlobal";
+            this.itmGlobal.Size = new System.Drawing.Size(53, 20);
+            this.itmGlobal.Text = "Global";
+            // 
+            // itmSettingsControl
+            // 
+            this.itmSettingsControl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCommitToDefault,
+            this.itmReset});
+            this.itmSettingsControl.Name = "itmSettingsControl";
+            this.itmSettingsControl.Size = new System.Drawing.Size(180, 22);
+            this.itmSettingsControl.Text = "Settings Control";
+            // 
             // itmCommitToDefault
             // 
             this.itmCommitToDefault.Name = "itmCommitToDefault";
-            this.itmCommitToDefault.Size = new System.Drawing.Size(118, 20);
+            this.itmCommitToDefault.Size = new System.Drawing.Size(180, 22);
             this.itmCommitToDefault.Text = "Commit to Default";
             this.itmCommitToDefault.Click += new System.EventHandler(this.ItmCommitToDefault_Click);
             // 
             // itmReset
             // 
             this.itmReset.Name = "itmReset";
-            this.itmReset.Size = new System.Drawing.Size(47, 20);
+            this.itmReset.Size = new System.Drawing.Size(180, 22);
             this.itmReset.Text = "Reset";
             this.itmReset.Click += new System.EventHandler(this.ItmReset_Click);
+            // 
+            // itmFileAssoc
+            // 
+            this.itmFileAssoc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCreateAssociations});
+            this.itmFileAssoc.Name = "itmFileAssoc";
+            this.itmFileAssoc.Size = new System.Drawing.Size(180, 22);
+            this.itmFileAssoc.Text = "File Associations";
+            // 
+            // itmCreateAssociations
+            // 
+            this.itmCreateAssociations.Name = "itmCreateAssociations";
+            this.itmCreateAssociations.Size = new System.Drawing.Size(180, 22);
+            this.itmCreateAssociations.Text = "Create";
+            this.itmCreateAssociations.Click += new System.EventHandler(this.ItmCreateAssociations_Click);
             // 
             // Settings
             // 
@@ -155,5 +191,9 @@ namespace PlexDL.UI
         private MenuStrip menuMain;
         private ToolStripMenuItem itmCommitToDefault;
         private ToolStripMenuItem itmReset;
+        private ToolStripMenuItem itmGlobal;
+        private ToolStripMenuItem itmFileAssoc;
+        private ToolStripMenuItem itmSettingsControl;
+        private ToolStripMenuItem itmCreateAssociations;
     }
 }
