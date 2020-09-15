@@ -196,6 +196,7 @@
     <Compile Include="Common\UiUtils.cs" />
     <Compile Include="Common\Update\UpdateManager.cs" />
     <Compile Include="Common\WebCheck.cs" />
+    <Compile Include="Internal\ArgHandler.cs" />
     <Compile Include="Internal\UnhandledExceptionHandler.cs" />
     <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,6 +246,12 @@
     </Compile>
     <Compile Include="UI\DirectConnect.Designer.cs">
       <DependentUpon>DirectConnect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DownloadManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DownloadManager.Designer.cs">
+      <DependentUpon>DownloadManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Home.cs">
       <SubType>Form</SubType>
@@ -333,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DownloadManager.resx">
+      <DependentUpon>DownloadManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>

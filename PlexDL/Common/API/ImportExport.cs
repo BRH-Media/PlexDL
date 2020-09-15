@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common.Logging;
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -87,50 +88,105 @@ namespace PlexDL.Common.API
             }
         }
 
-        public static PxzFile LoadMetadataArchive(string fileName)
+        private static void LoadMetadataArchive(object sender, WaitWindowEventArgs e)
         {
-            try
+            if (e.Arguments.Count > 0)
             {
-                var pxz = new PxzFile();
-                pxz.Load(fileName);
-
-                return pxz;
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
-                return null;
+                var fileName = (string)e.Arguments[0];
+                e.Result = LoadMetadataArchive(fileName, false);
             }
         }
 
-        public static PlexObject MetadataFromFile(string fileName, bool silent = false)
+        public static PxzFile LoadMetadataArchive(string fileName, bool waitWindow = true)
         {
-            return MetadataFromFile(LoadMetadataArchive(fileName), silent);
+            if (waitWindow)
+            {
+                var waitArgs = new object[] { fileName };
+                return (PxzFile)WaitWindow.WaitWindow.Show(LoadMetadataArchive, @"Loading PXZ", waitArgs);
+            }
+            else
+            {
+                try
+                {
+                    var pxz = new PxzFile();
+                    pxz.Load(fileName);
+
+                    return pxz;
+                }
+                catch (Exception ex)
+                {
+                    LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
+                    return null;
+                }
+            }
         }
 
-        public static PlexObject MetadataFromFile(PxzFile file, bool silent = false)
+        public static void MetadataFromFile(object sender, WaitWindowEventArgs e)
         {
-            try
+            if (e.Arguments.Count > 1)
             {
-                var serializer = new XmlSerializer(typeof(PlexObject));
-
-                var rec = file.LoadRecord(@"obj");
-
-                var reader = new StringReader(rec.Content.ToXmlDocument().OuterXml);
-                var subReq = (PlexObject)serializer.Deserialize(reader);
-                reader.Close();
-
-                //apply raw XML from PXZ file
-                subReq.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
-
-                return subReq;
+                var file = (PxzFile)e.Arguments[0];
+                var silent = (bool)e.Arguments[1];
+                e.Result = MetadataFromFile(file, false, silent);
             }
-            catch (Exception ex)
+        }
+
+        public static PlexObject MetadataFromFile(string fileName, bool waitWindow = true, bool silent = false)
+        {
+            return MetadataFromFile(LoadMetadataArchive(fileName, waitWindow), waitWindow, silent);
+        }
+
+        public static PlexObject MetadataFromFile(PxzFile file, bool waitWindow = true, bool silent = false)
+        {
+            if (waitWindow)
             {
-                if (!silent)
-                    UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Load Error");
-                LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
-                return new PlexObject();
+                var waitArgs = new object[] { file, silent };
+                return (PlexObject)WaitWindow.WaitWindow.Show(MetadataFromFile, @"Reading data", waitArgs);
+            }
+            else
+            {
+                if (file != null)
+                {
+                    try
+                    {
+                        var serializer = new XmlSerializer(typeof(PlexObject));
+
+                        //load the object record (encoded XML that contains metadata/attributes)
+                        var rec = file.LoadRecord(@"obj");
+
+                        //it'll be null if the load above failed for whatever reason
+                        if (rec != null)
+                        {
+                            //parse the XML metadata into a new PlexObject
+                            var reader = new StringReader(rec.Content.ToXmlDocument().OuterXml);
+                            var subReq = (PlexObject)serializer.Deserialize(reader);
+
+                            //get rid of the XML reader to clear memory
+                            reader.Close();
+
+                            //apply raw XML from PXZ file
+                            subReq.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
+
+                            //return the new PlexObject
+                            return subReq;
+                        }
+                        else
+                        {
+                            //if it was null, we can't parse it. Return null as the PlexObject
+                            return null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!silent)
+                            UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Load Error");
+                        LoggingHelpers.RecordException(ex.Message, "XMLMetadataLoadError");
+                        return new PlexObject();
+                    }
+                }
+                else
+                    //if it was null, we can't parse it. Return null as the PlexObject
+                    return null;
             }
         }
     }

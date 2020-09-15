@@ -43,6 +43,9 @@
     <Compile Include="WaitWindowGUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="WaitWindowGUI.Designer.cs">
+      <DependentUpon>WaitWindowGUI.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogDel\LogDel.csproj">

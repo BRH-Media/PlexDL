@@ -1,20 +1,14 @@
-﻿using LogDel;
-using LogDel.Enums;
-using PlexDL.Common;
+﻿using PlexDL.Common;
 using PlexDL.Common.API;
-using PlexDL.Common.Enums;
 using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
-using PlexDL.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using UIHelpers;
 
 namespace PlexDL.Internal
 {
@@ -26,75 +20,59 @@ namespace PlexDL.Internal
         [STAThread]
         private static void Main(string[] args)
         {
-            //store all command-line arguments in a Generic List<T>
-            var arr = args.ToList();
-
             //attempt to load default settings from AppData
             TryLoadDefaultSettings();
-
-            //setup arguments and their associated actions
-            VisualStyles(arr);
-            CheckDevStatus(arr);
-            CheckDebug(arr);
-            CheckOverrideLogProtection(args);
-
-            //set default values
-            //ObjectProvider.PlexProviderDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
 
             //check if the %APPDATA%\.plexdl folder is present. If it isn't then create it.
             CheckAppDataFolder();
 
+            //setup arguments and their associated actions
+            ArgHandler.FullArgumentCheck();
+
+            //set default values
+            //ObjectProvider.PlexProviderDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
+
+            //global exception handlers
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler.CriticalExceptionHandler;
+            AppDomain.CurrentDomain.FirstChanceException += UnhandledExceptionHandler.CriticalExceptionHandler;
+
+
+            //no legacy
             Application.SetCompatibleTextRenderingDefault(false);
+
             //allow heaps of concurrent connections - this might make a difference for performance?
             //disable if you have any problems by commenting this line
             ServicePointManager.DefaultConnectionLimit = 128;
 
-            if (arr.Count > 0)
+            //have any arguments been passed?
+            if (args.Length > 0)
             {
-                var firstArg = arr[0];
+                //when 'open with...' is used in Windows, the first argument will be the file
+                var firstArg = args[0];
+
                 //Windows will pass "Open With" files as the first argument; checking if the first argument
                 //exists as a file will validate whether this has occurred.
                 if (File.Exists(firstArg))
-                {
-                    //Windows has passed a file; we need to check if it's a '.pmxml' file which we can load
-                    //into the Metadata window.
-                    var ext = Path.GetExtension(firstArg);
-                    const string expectedFormat = ".pxz";
-                    if (string.Equals(ext, expectedFormat))
-                    {
-                        try
-                        {
-                            var metadata = ImportExport.MetadataFromFile(firstArg);
-                            UiUtils.RunMetadataWindow(metadata, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            LoggingHelpers.RecordException(ex.Message, @"StartupLoadPxz");
-                            UIMessages.Error($"Error occurred whilst loading PXZ file:\n\n{ex}");
-                        }
-                    }
-                    else
-                    {
-                        UIMessages.Error(@"PlexDL doesn't recognise this file-type: '" + ext + @"'",
-                            @"Validation Error");
-                    }
-                }
+                    //run the routine to load the PXZ
+                    ArgHandler.OpenWith(firstArg);
                 else
-                {
-                    if (arr.Contains("-tw"))
-                        UiUtils.RunTestingWindow(true);
-                    else if (arr.Contains("-t"))
-                        UiUtils.RunTranslator(true);
-                    else
-                        UiUtils.RunPlexDlHome(true);
-                }
+                    //first argument isn't a file (no 'Open With'); check if it's a form open instruction
+                    FormCheck(args);
             }
             else
-            {
-                Application.Run(new Home());
-            }
+                //no arguments; run as normal.
+                UiUtils.RunPlexDlHome(true);
+        }
+
+        private static void FormCheck(ICollection<string> args)
+        {
+            if (args.Contains("-tw"))
+                UiUtils.RunTestingWindow(true);
+            else if (args.Contains("-t"))
+                UiUtils.RunTranslator(true);
+            else
+                UiUtils.RunPlexDlHome(true);
         }
 
         private static void TryLoadDefaultSettings()
@@ -126,39 +104,6 @@ namespace PlexDL.Internal
                 //log and ignore the error
                 LoggingHelpers.RecordException(ex.Message, @"LoadDefaultProfileError");
             }
-        }
-
-        private static void CheckOverrideLogProtection(ICollection<string> args)
-        {
-            //toggle log file (.logdel) DPAPI protection
-            if (args.Contains("-lpon"))
-                Vars.Protected = LogSecurity.Protected;
-            else if (args.Contains("-lpoff"))
-                Vars.Protected = LogSecurity.Unprotected;
-        }
-
-        private static void VisualStyles(ICollection<string> args)
-        {
-            if (args.Contains("-v1"))
-                Application.EnableVisualStyles();
-            else if (!args.Contains("-v0"))
-                if (!args.Contains("-t"))
-                    Application.EnableVisualStyles();
-        }
-
-        private static void CheckDevStatus(ICollection<string> args)
-        {
-            if (args.Contains("-b"))
-                BuildState.State = DevStatus.InBeta;
-            else if (args.Contains("-p"))
-                BuildState.State = DevStatus.ProductionReady;
-            else if (args.Contains("-d"))
-                BuildState.State = DevStatus.InDevelopment;
-        }
-
-        private static void CheckDebug(ICollection<string> args)
-        {
-            Flags.IsDebug = args.Contains("-debug");
         }
 
         private static void CheckAppDataFolder()

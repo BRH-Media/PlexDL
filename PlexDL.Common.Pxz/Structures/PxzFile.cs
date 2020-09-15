@@ -184,7 +184,7 @@ namespace PlexDL.Common.Pxz.Structures
                 //the index can't be null!
                 if (idxFile == null)
                 {
-                    UIMessages.Error(@"PXZ index couldn't be found or it wasn't valid");
+                    UIMessages.Error(@"PXZ index couldn't be found or it isn't valid");
                     return;
                 }
 

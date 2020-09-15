@@ -60,6 +60,7 @@ namespace PlexDL.UI
             this.gbCachingDir = new System.Windows.Forms.GroupBox();
             this.tlpCachingDir = new System.Windows.Forms.TableLayoutPanel();
             this.lblCachingDir = new System.Windows.Forms.Label();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.gbServerLists.SuspendLayout();
             this.tlpServerLists.SuspendLayout();
             this.gbThumbails.SuspendLayout();
@@ -70,14 +71,17 @@ namespace PlexDL.UI
             this.tlpTotal.SuspendLayout();
             this.gbCachingDir.SuspendLayout();
             this.tlpCachingDir.SuspendLayout();
+            this.tlpMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbServerLists
             // 
+            this.tlpMain.SetColumnSpan(this.gbServerLists, 2);
             this.gbServerLists.Controls.Add(this.tlpServerLists);
-            this.gbServerLists.Location = new System.Drawing.Point(13, 80);
+            this.gbServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbServerLists.Location = new System.Drawing.Point(13, 79);
             this.gbServerLists.Name = "gbServerLists";
-            this.gbServerLists.Size = new System.Drawing.Size(364, 62);
+            this.gbServerLists.Size = new System.Drawing.Size(366, 60);
             this.gbServerLists.TabIndex = 0;
             this.gbServerLists.TabStop = false;
             this.gbServerLists.Text = "Server Lists";
@@ -97,16 +101,16 @@ namespace PlexDL.UI
             this.tlpServerLists.RowCount = 2;
             this.tlpServerLists.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpServerLists.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpServerLists.Size = new System.Drawing.Size(358, 43);
+            this.tlpServerLists.Size = new System.Drawing.Size(360, 41);
             this.tlpServerLists.TabIndex = 1;
             // 
             // lblSizeServerListsValue
             // 
             this.lblSizeServerListsValue.AutoSize = true;
             this.lblSizeServerListsValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeServerListsValue.Location = new System.Drawing.Point(182, 21);
+            this.lblSizeServerListsValue.Location = new System.Drawing.Point(183, 20);
             this.lblSizeServerListsValue.Name = "lblSizeServerListsValue";
-            this.lblSizeServerListsValue.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeServerListsValue.Size = new System.Drawing.Size(174, 21);
             this.lblSizeServerListsValue.TabIndex = 4;
             this.lblSizeServerListsValue.Text = "[SIZE]";
             this.lblSizeServerListsValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -115,9 +119,9 @@ namespace PlexDL.UI
             // 
             this.lblSizeServerLists.AutoSize = true;
             this.lblSizeServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeServerLists.Location = new System.Drawing.Point(3, 21);
+            this.lblSizeServerLists.Location = new System.Drawing.Point(3, 20);
             this.lblSizeServerLists.Name = "lblSizeServerLists";
-            this.lblSizeServerLists.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeServerLists.Size = new System.Drawing.Size(174, 21);
             this.lblSizeServerLists.TabIndex = 3;
             this.lblSizeServerLists.Text = "Size:";
             this.lblSizeServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -126,9 +130,9 @@ namespace PlexDL.UI
             // 
             this.lblNumberServerListsValue.AutoSize = true;
             this.lblNumberServerListsValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNumberServerListsValue.Location = new System.Drawing.Point(182, 0);
+            this.lblNumberServerListsValue.Location = new System.Drawing.Point(183, 0);
             this.lblNumberServerListsValue.Name = "lblNumberServerListsValue";
-            this.lblNumberServerListsValue.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberServerListsValue.Size = new System.Drawing.Size(174, 20);
             this.lblNumberServerListsValue.TabIndex = 2;
             this.lblNumberServerListsValue.Text = "[NUMBER]";
             this.lblNumberServerListsValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -139,17 +143,19 @@ namespace PlexDL.UI
             this.lblNumberServerLists.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNumberServerLists.Location = new System.Drawing.Point(3, 0);
             this.lblNumberServerLists.Name = "lblNumberServerLists";
-            this.lblNumberServerLists.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberServerLists.Size = new System.Drawing.Size(174, 20);
             this.lblNumberServerLists.TabIndex = 1;
             this.lblNumberServerLists.Text = "Amount Cached:";
             this.lblNumberServerLists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // gbThumbails
             // 
+            this.tlpMain.SetColumnSpan(this.gbThumbails, 2);
             this.gbThumbails.Controls.Add(this.tlpImages);
-            this.gbThumbails.Location = new System.Drawing.Point(13, 148);
+            this.gbThumbails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbThumbails.Location = new System.Drawing.Point(13, 145);
             this.gbThumbails.Name = "gbThumbails";
-            this.gbThumbails.Size = new System.Drawing.Size(364, 62);
+            this.gbThumbails.Size = new System.Drawing.Size(366, 60);
             this.gbThumbails.TabIndex = 2;
             this.gbThumbails.TabStop = false;
             this.gbThumbails.Text = "Images";
@@ -169,16 +175,16 @@ namespace PlexDL.UI
             this.tlpImages.RowCount = 2;
             this.tlpImages.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpImages.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpImages.Size = new System.Drawing.Size(358, 43);
+            this.tlpImages.Size = new System.Drawing.Size(360, 41);
             this.tlpImages.TabIndex = 1;
             // 
             // lblSizeThumbsCachedValue
             // 
             this.lblSizeThumbsCachedValue.AutoSize = true;
             this.lblSizeThumbsCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeThumbsCachedValue.Location = new System.Drawing.Point(182, 21);
+            this.lblSizeThumbsCachedValue.Location = new System.Drawing.Point(183, 20);
             this.lblSizeThumbsCachedValue.Name = "lblSizeThumbsCachedValue";
-            this.lblSizeThumbsCachedValue.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeThumbsCachedValue.Size = new System.Drawing.Size(174, 21);
             this.lblSizeThumbsCachedValue.TabIndex = 4;
             this.lblSizeThumbsCachedValue.Text = "[SIZE]";
             this.lblSizeThumbsCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -187,9 +193,9 @@ namespace PlexDL.UI
             // 
             this.lblSizeThumbsCached.AutoSize = true;
             this.lblSizeThumbsCached.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeThumbsCached.Location = new System.Drawing.Point(3, 21);
+            this.lblSizeThumbsCached.Location = new System.Drawing.Point(3, 20);
             this.lblSizeThumbsCached.Name = "lblSizeThumbsCached";
-            this.lblSizeThumbsCached.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeThumbsCached.Size = new System.Drawing.Size(174, 21);
             this.lblSizeThumbsCached.TabIndex = 3;
             this.lblSizeThumbsCached.Text = "Size:";
             this.lblSizeThumbsCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -198,9 +204,9 @@ namespace PlexDL.UI
             // 
             this.lblNumberThumbsCachedValue.AutoSize = true;
             this.lblNumberThumbsCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNumberThumbsCachedValue.Location = new System.Drawing.Point(182, 0);
+            this.lblNumberThumbsCachedValue.Location = new System.Drawing.Point(183, 0);
             this.lblNumberThumbsCachedValue.Name = "lblNumberThumbsCachedValue";
-            this.lblNumberThumbsCachedValue.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberThumbsCachedValue.Size = new System.Drawing.Size(174, 20);
             this.lblNumberThumbsCachedValue.TabIndex = 2;
             this.lblNumberThumbsCachedValue.Text = "[NUMBER]";
             this.lblNumberThumbsCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -211,17 +217,19 @@ namespace PlexDL.UI
             this.lblNumberThumbsCached.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNumberThumbsCached.Location = new System.Drawing.Point(3, 0);
             this.lblNumberThumbsCached.Name = "lblNumberThumbsCached";
-            this.lblNumberThumbsCached.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberThumbsCached.Size = new System.Drawing.Size(174, 20);
             this.lblNumberThumbsCached.TabIndex = 1;
             this.lblNumberThumbsCached.Text = "Amount Cached:";
             this.lblNumberThumbsCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // gbApiXml
             // 
+            this.tlpMain.SetColumnSpan(this.gbApiXml, 2);
             this.gbApiXml.Controls.Add(this.tlpXmlApi);
-            this.gbApiXml.Location = new System.Drawing.Point(13, 216);
+            this.gbApiXml.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbApiXml.Location = new System.Drawing.Point(13, 211);
             this.gbApiXml.Name = "gbApiXml";
-            this.gbApiXml.Size = new System.Drawing.Size(364, 62);
+            this.gbApiXml.Size = new System.Drawing.Size(366, 60);
             this.gbApiXml.TabIndex = 3;
             this.gbApiXml.TabStop = false;
             this.gbApiXml.Text = "XML API Data";
@@ -241,16 +249,16 @@ namespace PlexDL.UI
             this.tlpXmlApi.RowCount = 2;
             this.tlpXmlApi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpXmlApi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpXmlApi.Size = new System.Drawing.Size(358, 43);
+            this.tlpXmlApi.Size = new System.Drawing.Size(360, 41);
             this.tlpXmlApi.TabIndex = 1;
             // 
             // lblSizeXmlCachedValue
             // 
             this.lblSizeXmlCachedValue.AutoSize = true;
             this.lblSizeXmlCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeXmlCachedValue.Location = new System.Drawing.Point(182, 21);
+            this.lblSizeXmlCachedValue.Location = new System.Drawing.Point(183, 20);
             this.lblSizeXmlCachedValue.Name = "lblSizeXmlCachedValue";
-            this.lblSizeXmlCachedValue.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeXmlCachedValue.Size = new System.Drawing.Size(174, 21);
             this.lblSizeXmlCachedValue.TabIndex = 4;
             this.lblSizeXmlCachedValue.Text = "[SIZE]";
             this.lblSizeXmlCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -259,9 +267,9 @@ namespace PlexDL.UI
             // 
             this.lblSizeXmlCached.AutoSize = true;
             this.lblSizeXmlCached.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSizeXmlCached.Location = new System.Drawing.Point(3, 21);
+            this.lblSizeXmlCached.Location = new System.Drawing.Point(3, 20);
             this.lblSizeXmlCached.Name = "lblSizeXmlCached";
-            this.lblSizeXmlCached.Size = new System.Drawing.Size(173, 22);
+            this.lblSizeXmlCached.Size = new System.Drawing.Size(174, 21);
             this.lblSizeXmlCached.TabIndex = 3;
             this.lblSizeXmlCached.Text = "Size:";
             this.lblSizeXmlCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -270,9 +278,9 @@ namespace PlexDL.UI
             // 
             this.lblNumberXmlCachedValue.AutoSize = true;
             this.lblNumberXmlCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNumberXmlCachedValue.Location = new System.Drawing.Point(182, 0);
+            this.lblNumberXmlCachedValue.Location = new System.Drawing.Point(183, 0);
             this.lblNumberXmlCachedValue.Name = "lblNumberXmlCachedValue";
-            this.lblNumberXmlCachedValue.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberXmlCachedValue.Size = new System.Drawing.Size(174, 20);
             this.lblNumberXmlCachedValue.TabIndex = 2;
             this.lblNumberXmlCachedValue.Text = "[NUMBER]";
             this.lblNumberXmlCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -283,17 +291,19 @@ namespace PlexDL.UI
             this.lblNumberXmlCached.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNumberXmlCached.Location = new System.Drawing.Point(3, 0);
             this.lblNumberXmlCached.Name = "lblNumberXmlCached";
-            this.lblNumberXmlCached.Size = new System.Drawing.Size(173, 21);
+            this.lblNumberXmlCached.Size = new System.Drawing.Size(174, 20);
             this.lblNumberXmlCached.TabIndex = 1;
             this.lblNumberXmlCached.Text = "Amount Cached:";
             this.lblNumberXmlCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // gbTotal
             // 
+            this.tlpMain.SetColumnSpan(this.gbTotal, 2);
             this.gbTotal.Controls.Add(this.tlpTotal);
-            this.gbTotal.Location = new System.Drawing.Point(13, 284);
+            this.gbTotal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbTotal.Location = new System.Drawing.Point(13, 277);
             this.gbTotal.Name = "gbTotal";
-            this.gbTotal.Size = new System.Drawing.Size(364, 62);
+            this.gbTotal.Size = new System.Drawing.Size(366, 60);
             this.gbTotal.TabIndex = 4;
             this.gbTotal.TabStop = false;
             this.gbTotal.Text = "Total";
@@ -313,16 +323,16 @@ namespace PlexDL.UI
             this.tlpTotal.RowCount = 2;
             this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTotal.Size = new System.Drawing.Size(358, 43);
+            this.tlpTotal.Size = new System.Drawing.Size(360, 41);
             this.tlpTotal.TabIndex = 1;
             // 
             // lblTotalSizeCachedValue
             // 
             this.lblTotalSizeCachedValue.AutoSize = true;
             this.lblTotalSizeCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTotalSizeCachedValue.Location = new System.Drawing.Point(182, 21);
+            this.lblTotalSizeCachedValue.Location = new System.Drawing.Point(183, 20);
             this.lblTotalSizeCachedValue.Name = "lblTotalSizeCachedValue";
-            this.lblTotalSizeCachedValue.Size = new System.Drawing.Size(173, 22);
+            this.lblTotalSizeCachedValue.Size = new System.Drawing.Size(174, 21);
             this.lblTotalSizeCachedValue.TabIndex = 4;
             this.lblTotalSizeCachedValue.Text = "[SIZE]";
             this.lblTotalSizeCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -331,9 +341,9 @@ namespace PlexDL.UI
             // 
             this.lblTotalSizeCached.AutoSize = true;
             this.lblTotalSizeCached.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTotalSizeCached.Location = new System.Drawing.Point(3, 21);
+            this.lblTotalSizeCached.Location = new System.Drawing.Point(3, 20);
             this.lblTotalSizeCached.Name = "lblTotalSizeCached";
-            this.lblTotalSizeCached.Size = new System.Drawing.Size(173, 22);
+            this.lblTotalSizeCached.Size = new System.Drawing.Size(174, 21);
             this.lblTotalSizeCached.TabIndex = 3;
             this.lblTotalSizeCached.Text = "Total Size:";
             this.lblTotalSizeCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -342,9 +352,9 @@ namespace PlexDL.UI
             // 
             this.lblTotalAmountCachedValue.AutoSize = true;
             this.lblTotalAmountCachedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTotalAmountCachedValue.Location = new System.Drawing.Point(182, 0);
+            this.lblTotalAmountCachedValue.Location = new System.Drawing.Point(183, 0);
             this.lblTotalAmountCachedValue.Name = "lblTotalAmountCachedValue";
-            this.lblTotalAmountCachedValue.Size = new System.Drawing.Size(173, 21);
+            this.lblTotalAmountCachedValue.Size = new System.Drawing.Size(174, 20);
             this.lblTotalAmountCachedValue.TabIndex = 2;
             this.lblTotalAmountCachedValue.Text = "[NUMBER]";
             this.lblTotalAmountCachedValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -355,17 +365,20 @@ namespace PlexDL.UI
             this.lblTotalAmountCached.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalAmountCached.Location = new System.Drawing.Point(3, 0);
             this.lblTotalAmountCached.Name = "lblTotalAmountCached";
-            this.lblTotalAmountCached.Size = new System.Drawing.Size(173, 21);
+            this.lblTotalAmountCached.Size = new System.Drawing.Size(174, 20);
             this.lblTotalAmountCached.TabIndex = 1;
             this.lblTotalAmountCached.Text = "Total Amount Cached:";
             this.lblTotalAmountCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnOK
             // 
+            this.tlpMain.SetColumnSpan(this.btnOK, 2);
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(13, 352);
+            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOK.Location = new System.Drawing.Point(13, 350);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(364, 23);
+            this.btnOK.Size = new System.Drawing.Size(366, 27);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -373,10 +386,12 @@ namespace PlexDL.UI
             // 
             // gbCachingDir
             // 
+            this.tlpMain.SetColumnSpan(this.gbCachingDir, 2);
             this.gbCachingDir.Controls.Add(this.tlpCachingDir);
-            this.gbCachingDir.Location = new System.Drawing.Point(13, 12);
+            this.gbCachingDir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbCachingDir.Location = new System.Drawing.Point(13, 13);
             this.gbCachingDir.Name = "gbCachingDir";
-            this.gbCachingDir.Size = new System.Drawing.Size(364, 62);
+            this.gbCachingDir.Size = new System.Drawing.Size(366, 60);
             this.gbCachingDir.TabIndex = 2;
             this.gbCachingDir.TabStop = false;
             this.gbCachingDir.Text = "Cached Data Location";
@@ -393,7 +408,7 @@ namespace PlexDL.UI
             this.tlpCachingDir.RowCount = 1;
             this.tlpCachingDir.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpCachingDir.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCachingDir.Size = new System.Drawing.Size(358, 43);
+            this.tlpCachingDir.Size = new System.Drawing.Size(360, 41);
             this.tlpCachingDir.TabIndex = 1;
             // 
             // lblCachingDir
@@ -402,28 +417,48 @@ namespace PlexDL.UI
             this.lblCachingDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCachingDir.Location = new System.Drawing.Point(3, 0);
             this.lblCachingDir.Name = "lblCachingDir";
-            this.lblCachingDir.Size = new System.Drawing.Size(352, 43);
+            this.lblCachingDir.Size = new System.Drawing.Size(354, 41);
             this.lblCachingDir.TabIndex = 1;
             this.lblCachingDir.Text = "[DIRECTORY]";
             this.lblCachingDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // CachingMetricsUI
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.Controls.Add(this.gbCachingDir, 0, 0);
+            this.tlpMain.Controls.Add(this.btnOK, 0, 5);
+            this.tlpMain.Controls.Add(this.gbServerLists, 0, 1);
+            this.tlpMain.Controls.Add(this.gbTotal, 0, 4);
+            this.tlpMain.Controls.Add(this.gbThumbails, 0, 2);
+            this.tlpMain.Controls.Add(this.gbApiXml, 0, 3);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(0, 0);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.Padding = new System.Windows.Forms.Padding(10);
+            this.tlpMain.RowCount = 6;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.00001F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMain.Size = new System.Drawing.Size(392, 390);
+            this.tlpMain.TabIndex = 2;
+            // 
+            // CachingMetricsUi
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(392, 390);
-            this.Controls.Add(this.gbCachingDir);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.gbTotal);
-            this.Controls.Add(this.gbApiXml);
-            this.Controls.Add(this.gbThumbails);
-            this.Controls.Add(this.gbServerLists);
+            this.Controls.Add(this.tlpMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CachingMetricsUI";
+            this.Name = "CachingMetricsUi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Caching Metrics";
             this.Load += new System.EventHandler(this.CachingMetricsUI_Load);
@@ -442,6 +477,7 @@ namespace PlexDL.UI
             this.gbCachingDir.ResumeLayout(false);
             this.tlpCachingDir.ResumeLayout(false);
             this.tlpCachingDir.PerformLayout();
+            this.tlpMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -476,5 +512,6 @@ namespace PlexDL.UI
         private GroupBox gbCachingDir;
         private TableLayoutPanel tlpCachingDir;
         private Label lblCachingDir;
+        private TableLayoutPanel tlpMain;
     }
 }
