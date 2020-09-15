@@ -39,7 +39,12 @@ namespace PlexDL.Internal
             // Try to load by filename - split out the filename of the full assembly name
             // and append the base path of the original assembly (ie. look in the same dir)
             var filename = args.Name.Split(',')[0] + ".dll".ToLower();
-            var searchDir = Directory.GetCurrentDirectory();
+
+            // Did the user specify a custom search directory? We need to try and fetch it.
+            var customDir = DifferentAssemblyPath();
+
+            // Top-most directory to search for libraries
+            var searchDir = string.IsNullOrEmpty(customDir) ? Directory.GetCurrentDirectory() : customDir;
 
             try
             {
@@ -48,6 +53,37 @@ namespace PlexDL.Internal
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// If the user wants to locate assemblies elsewhere, the below routine is executed when the correct argument is passed.
+        /// </summary>
+        /// <returns></returns>
+        public static string DifferentAssemblyPath()
+        {
+            try
+            {
+                const string checkFor = @"-libDir=";
+                var sep = checkFor[checkFor.Length - 1];
+
+                foreach (var s in Program.Args)
+                {
+                    if (!s.Contains(checkFor)) continue;
+
+                    var split = s.Split(sep);
+                    if (split.Length != 2) continue;
+
+                    var path = split[1];
+                    if (Directory.Exists(path))
+                        return path;
+                }
+
+                return string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
             }
         }
     }
