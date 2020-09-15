@@ -1,4 +1,5 @@
-﻿using GitHubUpdater.DownloadManager;
+﻿using GitHubUpdater.API;
+using GitHubUpdater.DownloadManager;
 using Markdig;
 using PlexDL.WaitWindow;
 using System;
@@ -7,13 +8,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Application = GitHubUpdater.API.Application;
 
 namespace GitHubUpdater
 {
     public partial class Update : Form
     {
-        public Application UpdateData { get; set; }
+        public UpdateResponse AppUpdate { get; set; } = null;
 
         public string UpdateDirectory { get; set; } = @"";
 
@@ -22,35 +22,45 @@ namespace GitHubUpdater
             InitializeComponent();
         }
 
+        private void NoUpdate()
+        {
+            lblUpdateTitle.Text = @"Update Unavailable";
+            lblYourVersionValue.Text = @"Unknown";
+            Text = @"Error";
+            btnDownloadUpdate.Enabled = false;
+            btnDownloadUpdate.Text = @"Unavailable";
+            browserChanges.DocumentText = @"";
+        }
+
         private void LoadUi()
         {
-            if (UpdateData == null)
+            if (AppUpdate == null)
             {
-                lblUpdateTitle.Text = @"Update Unavailable";
-                Text = @"Error";
-                btnDownloadUpdate.Enabled = false;
-                btnDownloadUpdate.Text = @"Unavailable";
-                browserChanges.DocumentText = @"";
+                NoUpdate();
             }
             else
             {
-                var dir = $@"{Globals.UpdateRootDir}\{UpdateData.id}";
+                if (AppUpdate.CurrentVersion == null || AppUpdate.UpdateData == null)
+                    NoUpdate();
+                else
+                {
+                    var dir = $@"{Globals.UpdateRootDir}\{AppUpdate.UpdateData.id}";
 
-                //set global
-                UpdateDirectory = dir;
+                    //set global
+                    UpdateDirectory = dir;
 
-                var title = UpdateData.name;
-                var changes = UpdateData.body;
-                var style = new Stylesheet();
-                var css = style.CssText;
+                    var title = AppUpdate.UpdateData.name;
+                    var changes = AppUpdate.UpdateData.body;
+                    var style = new Stylesheet();
+                    var css = style.CssText;
 
-                var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
-                lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
+                    var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
+                    lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
 
-                if (!string.IsNullOrEmpty(changes))
-                    changesHtml = Markdown.ToHtml(changes);
+                    if (!string.IsNullOrEmpty(changes))
+                        changesHtml = Markdown.ToHtml(changes);
 
-                var documentHtml = $@"<!DOCTYPE html>
+                    var documentHtml = $@"<!DOCTYPE html>
 <html>
     <head>
         <meta charset=""utf-8"">
@@ -64,11 +74,17 @@ namespace GitHubUpdater
         <p>Downloads: {NumberDownloads()}</p>
     </body>
 </html>";
-                browserChanges.DocumentText = documentHtml;
-            }
 
-            //recenter the title (text has been changed so the size has too)
-            CenterTitle();
+                    //apply decoded markdown-HTML
+                    browserChanges.DocumentText = documentHtml;
+
+                    //set current version
+                    lblYourVersionValue.Text = $"v{AppUpdate.CurrentVersion}";
+                }
+
+                //recenter the title (text has been changed so the size has too)
+                CenterTitle();
+            }
         }
 
         private void Update_Load(object sender, EventArgs e)
@@ -102,7 +118,7 @@ namespace GitHubUpdater
 
         private int NumberDownloads()
         {
-            return UpdateData.assets.Sum(a => a.download_count);
+            return AppUpdate.UpdateData.assets.Sum(a => a.download_count);
         }
 
         private void Download()
@@ -152,7 +168,7 @@ namespace GitHubUpdater
                 var status = ReturnStatus.Unknown;
 
                 //loop through each GitHub release asset
-                foreach (var a in UpdateData.assets)
+                foreach (var a in AppUpdate.UpdateData.assets)
                 {
                     //location of the unique folder
                     var dirA = $@"{UpdateDirectory}\{a.id}";

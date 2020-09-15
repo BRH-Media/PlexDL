@@ -1,0 +1,10 @@
+# Text line endings
+* text=auto
+* text eol=crlf
+* text eol=lf
+
+# Picture files
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.bmp binary

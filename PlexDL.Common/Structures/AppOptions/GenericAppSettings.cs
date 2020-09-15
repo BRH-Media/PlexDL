@@ -19,6 +19,10 @@ namespace PlexDL.Common.Structures.AppOptions
             "grids will resume showing the cell content instead of launching a player.")]
         public bool DoubleClickLaunch { get; set; } = true;
 
+        [DisplayName("Autoupdate")]
+        [Description("When enabled, PlexDL will check for new updates on startup. This requires 'Commit to Default'.")]
+        public bool AutoUpdateEnabled { get; set; } = false;
+
         [ReadOnly(true)]
         [DisplayName("Download Folder")]
         [Description(
@@ -48,7 +52,7 @@ namespace PlexDL.Common.Structures.AppOptions
         [DisplayName("Search Column Priority")]
         [Description(
             "When searching, PlexDL will prioritise what column to autoselect in the Search Form. Matches are performed from index 0 onwards, so " +
-            "the first value in this field to be matched will be selected, and other matches will be aborted.")]
+            "the first value in this field to be matched will be selected, and other matches will be ignored.")]
         public List<string> SearchColumnPriority { get; set; } = new List<string>
         {
             "title",

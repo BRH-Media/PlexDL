@@ -2,9 +2,9 @@
 using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Properties;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Structures.Plex;
-using PlexDL.Properties;
 using PlexDL.WaitWindow;
 using System;
 using System.Drawing;

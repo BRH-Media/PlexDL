@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace PlexDL.Common.Logging
+namespace PlexDL.Common.Structures
 {
     [Serializable]
     public class LoggingSettings

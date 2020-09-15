@@ -2096,7 +2096,7 @@ namespace PlexDL.UI
         {
             try
             {
-                if (Flags.IsAutoUpdateEnabled) UpdateManager.RunUpdateCheck(true);
+                if (ObjectProvider.Settings.Generic.AutoUpdateEnabled) UpdateManager.RunUpdateCheck(true);
 
                 if (Flags.IsDebug)
                 {

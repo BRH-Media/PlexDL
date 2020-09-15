@@ -1,8 +1,8 @@
 ﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Properties;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
-using PlexDL.Properties;
 using System;
 using System.Collections.Generic;
 using System.Data;

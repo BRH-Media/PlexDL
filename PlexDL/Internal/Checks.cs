@@ -1,0 +1,131 @@
+﻿using LogDel;
+using LogDel.Enums;
+using PlexDL.Common;
+using PlexDL.Common.API;
+using PlexDL.Common.Enums;
+using PlexDL.Common.Extensions;
+using PlexDL.Common.Globals;
+using PlexDL.Common.Globals.Providers;
+using PlexDL.Common.Logging;
+using PlexDL.UI;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using UIHelpers;
+
+namespace PlexDL.Internal
+{
+    public static class Checks
+    {
+        private static ICollection<string> Args { get; } = Environment.GetCommandLineArgs().ToList();
+
+        public static void OpenWith(string file, bool appRun = true)
+        {
+            //Windows has passed a file; we need to check if it's a '.pxz' file which we can load
+            //into the Metadata window.
+            var ext = Path.GetExtension(file);
+            const string expectedFormat = ".pxz";
+
+            //check if it's a supported file-type
+            if (string.Equals(ext, expectedFormat))
+            {
+                //try the metadata import and then show it if successful
+                try
+                {
+                    var metadata = ImportExport.MetadataFromFile(file);
+                    if (metadata != null) UiUtils.RunMetadataWindow(metadata, appRun);
+                }
+                catch (Exception ex)
+                {
+                    LoggingHelpers.RecordException(ex.Message, @"StartupLoadPxz");
+                    UIMessages.Error($"Error occurred whilst loading PXZ file:\n\n{ex}");
+                }
+            }
+            else
+            {
+                UIMessages.Error(@"PlexDL doesn't recognise this file-type: '" + ext + @"'",
+                    @"Validation Error");
+            }
+        }
+
+        public static void FullArgumentCheck()
+        {
+            OverrideLogProtection();
+            VisualStyles();
+            _DevStatus();
+            Debug();
+        }
+
+        public static void OverrideLogProtection()
+        {
+            //toggle log file (.logdel) DPAPI protection (REALLLLLY slow; please don't ever enable)
+            if (Args.Contains("-lpon"))
+                Vars.Protected = LogSecurity.Protected;
+            else if (Args.Contains("-lpoff"))
+                Vars.Protected = LogSecurity.Unprotected;
+        }
+
+        public static void VisualStyles()
+        {
+            if (Args.Contains("-v1"))
+                Application.EnableVisualStyles();
+            else if (!Args.Contains("-v0"))
+                if (!Args.Contains("-t"))
+                    Application.EnableVisualStyles();
+        }
+
+        public static void _DevStatus()
+        {
+            if (Args.Contains("-b"))
+                BuildState.State = DevStatus.InBeta;
+            else if (Args.Contains("-p"))
+                BuildState.State = DevStatus.ProductionReady;
+            else if (Args.Contains("-d"))
+                BuildState.State = DevStatus.InDevelopment;
+        }
+
+        public static void Debug()
+        {
+            Flags.IsDebug = Args.Contains("-debug");
+        }
+
+        public static void TryLoadDefaultSettings()
+        {
+            try
+            {
+                //path of the default settings file
+                var path = $@"{Strings.PlexDlAppData}\.default";
+
+                //check if default settings have been created
+                if (File.Exists(path))
+                {
+                    //try and load it with no messages
+                    var defaultProfile = ProfileImportExport.ProfileFromFile(path, true);
+
+                    //if it isn't null, then assign it to the global settings
+                    if (defaultProfile != null)
+                        ObjectProvider.Settings = defaultProfile;
+                }
+                else
+                {
+                    //create the file with no messages
+                    if (ObjectProvider.Settings != null)
+                        ObjectProvider.Settings.SaveToDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                //log and ignore the error
+                LoggingHelpers.RecordException(ex.Message, @"LoadDefaultProfileError");
+            }
+        }
+
+        public static void CheckAppDataFolder()
+        {
+            if (!Directory.Exists(Strings.PlexDlAppData))
+                Directory.CreateDirectory(Strings.PlexDlAppData);
+        }
+    }
+}

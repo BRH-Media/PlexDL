@@ -1,4 +1,5 @@
-﻿using inet;
+﻿using GitHubUpdater.API;
+using inet;
 using Newtonsoft.Json;
 using PlexDL.WaitWindow;
 using RestSharp;
@@ -20,7 +21,14 @@ namespace GitHubUpdater
 
         public void ShowUpdateForm(Application data)
         {
-            var frm = new Update { UpdateData = data };
+            var frm = new Update
+            {
+                AppUpdate = new UpdateResponse
+                {
+                    CurrentVersion = CurrentInstalledVersion,
+                    UpdateData = data
+                }
+            };
             frm.ShowDialog();
         }
 

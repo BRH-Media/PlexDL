@@ -7,7 +7,7 @@ namespace PlexDL.Common.Update
     {
         public static void RunUpdateCheck(bool silentCheck = false)
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            var version = Assembly.GetCallingAssembly().GetName().Version;
             var updater = new UpdateClient
             {
                 Author = "brhsoftco",

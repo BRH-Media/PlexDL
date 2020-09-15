@@ -1,9 +1,8 @@
-﻿using PlexDL.Common.Structures.Plex;
-using PlexDL.UI;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using PlexDL.Common.Structures.Plex;
 using UIHelpers;
 
-namespace PlexDL.Common
+namespace PlexDL.UI
 {
     public static class UiUtils
     {

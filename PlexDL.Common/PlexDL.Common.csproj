@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A464F174-FEDD-45C7-B17A-4FD707867F2B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlexDL.Common</RootNamespace>
+    <AssemblyName>PlexDL.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="libbrhscgui, Version=1.0.7261.35271, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="API\DownloadInfoGatherers.cs" />
+    <Compile Include="API\ImportExport.cs" />
+    <Compile Include="API\KeyGatherers.cs" />
+    <Compile Include="API\Metadata\Handlers\Parsers\XmlMetadataIntegers.cs" />
+    <Compile Include="API\Metadata\Handlers\Parsers\XmlMetadataObjects.cs" />
+    <Compile Include="API\Metadata\Handlers\Parsers\XmlMetadataStrings.cs" />
+    <Compile Include="API\Metadata\Handlers\XmlMetadataContent.cs" />
+    <Compile Include="API\Metadata\Handlers\XmlMetadataHelpers.cs" />
+    <Compile Include="API\Metadata\Handlers\XmlMetadataLists.cs" />
+    <Compile Include="API\Metadata\Objects\XmlMetadata.cs" />
+    <Compile Include="API\Objects\AttributeTables\AttributeGatherers.cs" />
+    <Compile Include="API\Objects\AttributeTables\AttributeGatherers.Movie.cs" />
+    <Compile Include="API\Objects\AttributeTables\AttributeGatherers.Music.cs" />
+    <Compile Include="API\Objects\AttributeTables\AttributeGatherers.Tv.cs" />
+    <Compile Include="API\Objects\AttributeTables\AttributeGatherers.Utility.cs" />
+    <Compile Include="API\Objects\ObjectBuilders.cs" />
+    <Compile Include="API\ProfileImportExport.cs" />
+    <Compile Include="API\Relays.cs" />
+    <Compile Include="API\XmlGet.cs" />
+    <Compile Include="Caching\CachingExpiryHelpers.cs" />
+    <Compile Include="Caching\CachingFileDir.cs" />
+    <Compile Include="Caching\CachingFileExt.cs" />
+    <Compile Include="Caching\CachingMetrics.cs" />
+    <Compile Include="Caching\Handlers\ServerCaching.cs" />
+    <Compile Include="Caching\Handlers\ThumbCaching.cs" />
+    <Compile Include="Caching\Handlers\XMLCaching.cs" />
+    <Compile Include="Caching\Helpers.cs" />
+    <Compile Include="CastAPI\CustomData.cs" />
+    <Compile Include="CastAPI\Extensions.cs" />
+    <Compile Include="CastAPI\PlayQueueHandler.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainer.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideo.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoCountry.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoDirector.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoGenre.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoMedia.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoMediaPart.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoMediaPartStream.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoProducer.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoRole.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoSimilar.cs" />
+    <Compile Include="CastAPI\PlayQueue\MediaContainerVideoWriter.cs" />
+    <Compile Include="CastAPI\PlexMediaData.cs" />
+    <Compile Include="CastAPI\QueueResult.cs" />
+    <Compile Include="DefaultStringVariables.cs" />
+    <Compile Include="Extensions\DeepCloneExt.cs" />
+    <Compile Include="Extensions\SaveToDefaultExt.cs" />
+    <Compile Include="Flags.cs" />
+    <Compile Include="Globals\BuildState.cs" />
+    <Compile Include="Globals\Integers.cs" />
+    <Compile Include="Globals\Providers\ObjectProvider.cs" />
+    <Compile Include="Globals\Providers\TableProvider.cs" />
+    <Compile Include="Globals\Providers\ViewProvider.cs" />
+    <Compile Include="Globals\RowGet.cs" />
+    <Compile Include="Globals\Strings.cs" />
+    <Compile Include="ImageHandler.cs" />
+    <Compile Include="Logging\LoggingHelpers.cs" />
+    <Compile Include="Methods.cs" />
+    <Compile Include="ParseHelpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\DGVRenderers\GenericRenderer.cs" />
+    <Compile Include="Renderers\DGVRenderers\ServerViewRenderer.cs" />
+    <Compile Include="Renderers\ImagePixelation.cs" />
+    <Compile Include="Renderers\RenderStruct.cs" />
+    <Compile Include="StringVariable.cs" />
+    <Compile Include="Structures\AppOptions\ApplicationOptions.cs" />
+    <Compile Include="Structures\AppOptions\Caching\CacheExpiry.cs" />
+    <Compile Include="Structures\AppOptions\Caching\CacheMode.cs" />
+    <Compile Include="Structures\AppOptions\Caching\CachePaths.cs" />
+    <Compile Include="Structures\AppOptions\Caching\CacheSettings.cs" />
+    <Compile Include="Structures\AppOptions\Display\ColumnAdapter.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\Library\LibraryDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\Movies\MoviesDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\Music\AlbumDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\Music\ArtistDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\Music\TrackDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\TV\EpisodesDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\TV\SeriesDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\Grids\TV\TVDisplay.cs" />
+    <Compile Include="Structures\AppOptions\Display\GridViewDisplays.cs" />
+    <Compile Include="Structures\AppOptions\GenericAppSettings.cs" />
+    <Compile Include="Structures\AppOptions\Player\PlaybackMode.cs" />
+    <Compile Include="Structures\AppOptions\Player\PlayerKeyBindings.cs" />
+    <Compile Include="Structures\AppOptions\Player\PlayerSettings.cs" />
+    <Compile Include="Structures\CachedPlexLogin.cs" />
+    <Compile Include="Structures\ConnectionInfo.cs" />
+    <Compile Include="Structures\DownloadLayout.cs" />
+    <Compile Include="Structures\LoggingSettings.cs" />
+    <Compile Include="Structures\MusicDirectoryLayout.cs" />
+    <Compile Include="Structures\Plex\PlexActor.cs" />
+    <Compile Include="Structures\Plex\PlexMovie.cs" />
+    <Compile Include="Structures\Plex\PlexMusic.cs" />
+    <Compile Include="Structures\Plex\PlexObject.cs" />
+    <Compile Include="Structures\Plex\PlexTVShow.cs" />
+    <Compile Include="Structures\Resolution.cs" />
+    <Compile Include="Structures\ResolutionStandards.cs" />
+    <Compile Include="Structures\StreamInfo.cs" />
+    <Compile Include="Structures\StreamLinks.cs" />
+    <Compile Include="Structures\TVShowDirectoryLayout.cs" />
+    <Compile Include="SVarController.cs" />
+    <Compile Include="TypeConverters\StringListTypeConverter.cs" />
+    <Compile Include="Update\UpdateManager.cs" />
+    <Compile Include="WebCheck.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GitHubUpdater\GitHubUpdater.csproj">
+      <Project>{9e90936d-f2b8-4ad6-940a-11178ae67082}</Project>
+      <Name>GitHubUpdater</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogDel\LogDel.csproj">
+      <Project>{f983c455-7c57-469e-9152-9095f114d697}</Project>
+      <Name>LogDel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.AltoHTTP\PlexDL.AltoHTTP.csproj">
+      <Project>{765ccd3e-b3c3-4948-a3c3-824a94f9ade8}</Project>
+      <Name>PlexDL.AltoHTTP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Animation\PlexDL.Animation.csproj">
+      <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
+      <Name>PlexDL.Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Enums\PlexDL.Common.Enums.csproj">
+      <Project>{2c0b4243-5d9e-454a-9a7b-dcac2787b13e}</Project>
+      <Name>PlexDL.Common.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Pxz\PlexDL.Common.Pxz.csproj">
+      <Project>{1764ca80-f851-4e2c-acc8-37696d499d3b}</Project>
+      <Name>PlexDL.Common.Pxz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.PlexAPI.LoginHandler\PlexDL.PlexAPI.LoginHandler.csproj">
+      <Project>{f40a5d3c-078c-44a6-b6cf-53ff7b9c89df}</Project>
+      <Name>PlexDL.PlexAPI.LoginHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.PlexAPI.csproj">
+      <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
+      <Name>PlexDL.PlexAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
+      <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
+      <Name>PlexDL.WaitWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpCaster\SharpCaster.Portable.csproj">
+      <Project>{56d42483-550d-4817-844b-6c27d880130f}</Project>
+      <Name>SharpCaster.Portable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIHelpers\UIHelpers.csproj">
+      <Project>{e3ce262b-b962-44ff-abc0-5ebfb403d51d}</Project>
+      <Name>UIHelpers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

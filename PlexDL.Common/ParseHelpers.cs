@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace PlexDL.Common
 {
-    internal static class ParseHelpers
+    public static class ParseHelpers
     {
         public static Stream ToStream(this string @this)
         {

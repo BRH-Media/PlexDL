@@ -84,121 +84,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\API\DownloadInfoGatherers.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataIntegers.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataStrings.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataContent.cs" />
-    <Compile Include="Common\API\Metadata\Objects\XmlMetadata.cs" />
-    <Compile Include="Common\API\Objects\ObjectBuilders.cs" />
-    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Utility.cs" />
-    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Movie.cs" />
-    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Music.cs" />
-    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.Tv.cs" />
-    <Compile Include="Common\API\Objects\AttributeTables\AttributeGatherers.cs" />
-    <Compile Include="Common\API\ProfileImportExport.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataLists.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\XmlMetadataHelpers.cs" />
-    <Compile Include="Common\API\Metadata\Handlers\Parsers\XmlMetadataObjects.cs" />
-    <Compile Include="Common\Caching\CachingExpiryHelpers.cs" />
-    <Compile Include="Common\Caching\CachingFileDir.cs" />
-    <Compile Include="Common\API\ImportExport.cs" />
-    <Compile Include="Common\API\KeyGatherers.cs" />
-    <Compile Include="Common\API\Relays.cs" />
-    <Compile Include="Common\API\XmlGet.cs" />
-    <Compile Include="Common\Caching\CachingFileExt.cs" />
-    <Compile Include="Common\Caching\CachingMetrics.cs" />
-    <Compile Include="Common\CastAPI\CustomData.cs" />
-    <Compile Include="Common\CastAPI\Extensions.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideo.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoCountry.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoDirector.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoGenre.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoMedia.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoMediaPart.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoMediaPartStream.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoProducer.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoRole.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoSimilar.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainerVideoWriter.cs" />
-    <Compile Include="Common\CastAPI\PlayQueue\MediaContainer.cs" />
-    <Compile Include="Common\CastAPI\PlayQueueHandler.cs" />
-    <Compile Include="Common\CastAPI\PlexMediaData.cs" />
-    <Compile Include="Common\CastAPI\QueueResult.cs" />
-    <Compile Include="Common\CastAPI\TestClasses.cs" />
-    <Compile Include="Common\Extensions\DeepCloneExt.cs" />
-    <Compile Include="Common\DefaultStringVariables.cs" />
-    <Compile Include="Common\Extensions\SaveToDefaultExt.cs" />
-    <Compile Include="Common\Flags.cs" />
-    <Compile Include="Common\Globals\BuildState.cs" />
-    <Compile Include="Common\Globals\Providers\TableProvider.cs" />
-    <Compile Include="Common\Globals\Providers\ViewProvider.cs" />
-    <Compile Include="Common\Globals\Integers.cs" />
-    <Compile Include="Common\Globals\Providers\ObjectProvider.cs" />
-    <Compile Include="Common\Globals\RowGet.cs" />
-    <Compile Include="Common\Globals\Strings.cs" />
-    <Compile Include="Common\ImageHandler.cs" />
-    <Compile Include="Common\ParseHelpers.cs" />
+    <Compile Include="Common\PlayerLaunchers\BrowserLauncher.cs" />
     <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
-    <Compile Include="Common\Renderers\ImagePixelation.cs" />
+    <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
     <Compile Include="Common\SearchFramework\Search.cs" />
     <Compile Include="Common\SearchFramework\SearchData.cs" />
     <Compile Include="Common\SearchFramework\SearchResult.cs" />
     <Compile Include="Common\SearchFramework\Workers.cs" />
-    <Compile Include="Common\StringVariable.cs" />
-    <Compile Include="Common\Structures\AppOptions\Caching\CacheMode.cs" />
-    <Compile Include="Common\Structures\AppOptions\Caching\CachePaths.cs" />
-    <Compile Include="Common\Structures\AppOptions\Caching\CacheExpiry.cs" />
-    <Compile Include="Common\Structures\AppOptions\Caching\CacheSettings.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\ColumnAdapter.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\Music\AlbumDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\Music\ArtistDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\Movies\MoviesDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\TV\EpisodesDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\Library\LibraryDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\TV\SeriesDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\Music\TrackDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\Grids\TV\TVDisplay.cs" />
-    <Compile Include="Common\Structures\AppOptions\Display\GridViewDisplays.cs" />
-    <Compile Include="Common\Logging\LoggingSettings.cs" />
-    <Compile Include="Common\Structures\AppOptions\Player\PlaybackMode.cs" />
-    <Compile Include="Common\Structures\AppOptions\Player\PlayerKeyBindings.cs" />
-    <Compile Include="Common\Structures\AppOptions\Player\PlayerSettings.cs" />
-    <Compile Include="Common\Structures\CachedPlexLogin.cs" />
-    <Compile Include="Common\Structures\ConnectionInfo.cs" />
-    <Compile Include="Common\Structures\AppOptions\ApplicationOptions.cs" />
-    <Compile Include="Common\PlayerLaunchers\BrowserLauncher.cs" />
-    <Compile Include="Common\Caching\Helpers.cs" />
-    <Compile Include="Common\Caching\Handlers\ServerCaching.cs" />
-    <Compile Include="Common\Caching\Handlers\ThumbCaching.cs" />
-    <Compile Include="Common\Caching\Handlers\XmlCaching.cs" />
-    <Compile Include="Common\Logging\LoggingHelpers.cs" />
-    <Compile Include="Common\Methods.cs" />
-    <Compile Include="Common\Renderers\DGVRenderers\ServerViewRenderer.cs" />
-    <Compile Include="Common\Renderers\DGVRenderers\GenericRenderer.cs" />
-    <Compile Include="Common\Renderers\RenderStruct.cs" />
     <Compile Include="Common\SearchFramework\SearchOptions.cs" />
-    <Compile Include="Common\Structures\Plex\PlexMusic.cs" />
-    <Compile Include="Common\Structures\ResolutionStandards.cs" />
-    <Compile Include="Common\Structures\MusicDirectoryLayout.cs" />
-    <Compile Include="Common\Structures\StreamLinks.cs" />
-    <Compile Include="Common\SVarController.cs" />
-    <Compile Include="Common\Structures\StreamInfo.cs" />
-    <Compile Include="Common\Structures\DownloadLayout.cs" />
-    <Compile Include="Common\Structures\AppOptions\GenericAppSettings.cs" />
-    <Compile Include="Common\Structures\Plex\PlexMovie.cs" />
-    <Compile Include="Common\Structures\Plex\PlexObject.cs" />
-    <Compile Include="Common\Structures\Plex\PlexTvShow.cs" />
-    <Compile Include="Common\Structures\Resolution.cs" />
-    <Compile Include="Common\Structures\Plex\PlexActor.cs" />
     <Compile Include="Common\SearchFramework\SearchQuery.cs" />
-    <Compile Include="Common\Structures\TvShowDirectoryLayout.cs" />
-    <Compile Include="Common\TypeConverters\StringListTypeConverter.cs" />
-    <Compile Include="Common\UiUtils.cs" />
-    <Compile Include="Common\Update\UpdateManager.cs" />
-    <Compile Include="Common\WebCheck.cs" />
-    <Compile Include="Internal\ArgHandler.cs" />
+    <Compile Include="Internal\AssemblyResolve.cs" />
+    <Compile Include="Internal\Checks.cs" />
     <Compile Include="Internal\UnhandledExceptionHandler.cs" />
-    <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -314,6 +211,7 @@
     <Compile Include="UI\Translator.Designer.cs">
       <DependentUpon>Translator.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UiUtils.cs" />
     <Compile Include="UI\XmlExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -417,9 +315,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\Security\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -465,6 +361,10 @@
       <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
       <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common\PlexDL.Common.csproj">
+      <Project>{a464f174-fedd-45c7-b17a-4fd707867f2b}</Project>
+      <Name>PlexDL.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Player\PlexDL.Player.csproj">
       <Project>{8d6702f9-0556-405a-b0df-0e0de79e49c7}</Project>
       <Name>PlexDL.Player</Name>
@@ -491,4 +391,20 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF NOT EXIST "$(TargetDir)lib\" mkdir $(TargetDir)lib
+IF NOT EXIST "$(TargetDir)pdb\" mkdir $(TargetDir)pdb
+IF NOT EXIST "$(TargetDir)xml\" mkdir $(TargetDir)xml
+
+copy /y $(TargetDir)*.dll $(TargetDir)lib
+copy /y $(TargetDir)*.pdb $(TargetDir)pdb
+copy /y $(TargetDir)*.xml $(TargetDir)xml
+
+del /f /q *.dll
+del /f /q *.pdb
+del /f /q *.xml
+
+REM config files get restored on run
+del /f /q *.config</PostBuildEvent>
+  </PropertyGroup>
 </Project>
