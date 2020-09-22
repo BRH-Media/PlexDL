@@ -137,36 +137,51 @@ namespace GitHubUpdater
 
                     case ReturnStatus.NullJob:
                         MessageBox.Show(@"One or more download jobs were invalid; valid jobs have been completed.", @"Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                         break;
 
-                    default:
+                    case ReturnStatus.Downloaded:
                         var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                         if (msg == DialogResult.Yes)
                             Process.Start(UpdateDirectory);
 
                         break;
-                }
 
-                Close();
+                    case ReturnStatus.Cancelled:
+                        //don't do anything
+                        break;
+
+                    case ReturnStatus.Unknown:
+                        MessageBox.Show(@"Download worker returned the 'unknown' job status indicator.", @"Warning",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        break;
+
+                    default:
+                        MessageBox.Show(@"Download worker returned an invalid job status indicator.", @"Warning",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            //always close form at the end of the download procedure
+            Close();
         }
 
         private void DownloadWorker(object sender, WaitWindowEventArgs e)
         {
+            //the final status to deliver to the UpdateClient
+            var status = ReturnStatus.Unknown;
+
             try
             {
-                //the final status to deliver to the UpdateClient
-                var status = ReturnStatus.Unknown;
-
                 //loop through each GitHub release asset
                 foreach (var a in AppUpdate.UpdateData.assets)
                 {
@@ -186,16 +201,16 @@ namespace GitHubUpdater
                     };
 
                     //download and flush job to disk
-                    status = Agent.DoDownload(j);
+                    status = Agent.DoDownload(j).Result;
                 }
-
-                //finally, return the final status
-                e.Result = status;
             }
             catch
             {
                 //ignore the error
             }
+
+            //finally, return the final status
+            e.Result = status;
         }
     }
 }

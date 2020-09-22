@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GitHubUpdater.DownloadManager
 {
     public static class Agent
     {
-        public static ReturnStatus DoDownload(Job downloadJob)
+        public static async Task<ReturnStatus> DoDownload(Job downloadJob)
         {
             try
             {
@@ -14,8 +15,8 @@ namespace GitHubUpdater.DownloadManager
                 var handler = new HttpClientHandler();
                 using var httpClient = new HttpClient(handler);
                 using var request = new HttpRequestMessage(new HttpMethod("GET"), downloadJob.DownloadUri);
-                var response = httpClient.SendAsync(request).Result;
-                var responseBody = response.Content.ReadAsByteArrayAsync().Result;
+                var response = await httpClient.SendAsync(request);
+                var responseBody = await response.Content.ReadAsByteArrayAsync();
 
                 //does the file already exist?
                 if (File.Exists(downloadJob.DownloadPath))
