@@ -73,8 +73,8 @@ namespace PlexDL.Common.SearchFramework
 
                 if (!copyToGlobalTables) return true;
 
-                TableProvider.FilteredTable = filteredTable;
-                ViewProvider.FilteredViewTable = filteredView;
+                DataProvider.FilteredProvider.SetRawTable(filteredTable);
+                DataProvider.FilteredProvider.SetViewTable(filteredView);
 
                 return true;
             }

@@ -484,7 +484,7 @@ namespace PlexDL.UI
 
         private void ItmRenderKeyColumn_Click(object sender, EventArgs e)
         {
-            RenderLibraryView(TableProvider.SectionsTable, itmRenderKeyColumn.Checked);
+            RenderLibraryView(DataProvider.SectionsProvider.GetRawTable(), itmRenderKeyColumn.Checked);
         }
 
         private static void ShowLinkViewer(PlexObject media)
@@ -585,7 +585,7 @@ namespace PlexDL.UI
 
             if (dgvMovies.SelectedRows.Count != 1) return obj;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvMovies);
+            var index = TableManager.GetTableIndexFromDgv(dgvMovies);
             obj = ObjectBuilders.GetMovieObjectFromIndex(index);
 
             return obj;
@@ -597,7 +597,7 @@ namespace PlexDL.UI
 
             if (dgvTVShows.SelectedRows.Count != 1 || dgvEpisodes.SelectedRows.Count != 1) return obj;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvEpisodes, TableProvider.EpisodesTable);
+            var index = TableManager.GetTableIndexFromDgv(dgvEpisodes, DataProvider.EpisodesProvider.GetRawTable());
             obj = ObjectBuilders.GetTvObjectFromIndex(index);
 
             return obj;
@@ -609,7 +609,7 @@ namespace PlexDL.UI
 
             if (dgvArtists.SelectedRows.Count != 1 || dgvTracks.SelectedRows.Count != 1) return obj;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvTracks, TableProvider.TracksTable);
+            var index = TableManager.GetTableIndexFromDgv(dgvTracks, DataProvider.TracksProvider.GetRawTable());
             obj = ObjectBuilders.GetMusicObjectFromIndex(index);
 
             return obj;
@@ -783,11 +783,9 @@ namespace PlexDL.UI
                 Flags.IsConnected = false;
                 Flags.IsInitialFill = false;
 
-                //clear all stored table data
-                TableProvider.ClearAllTables();
-
-                //clear all stored view data (simplified table data)
-                ViewProvider.ClearAllViews();
+                //drop all data
+                DataProvider.DropAllData();
+                LoggingHelpers.RecordGeneralEntry(@"All data dropped due to disconnect");
 
                 if (!silent)
                     UIMessages.Info(@"Disconnected from Plex");
@@ -869,7 +867,7 @@ namespace PlexDL.UI
                 sections.ReadXml(new XmlNodeReader(xmlSections));
 
                 var sectionsTable = sections.Tables["Directory"];
-                TableProvider.SectionsTable = sectionsTable;
+                DataProvider.SectionsProvider.SetRawTable(sectionsTable);
 
                 LoggingHelpers.RecordGeneralEntry("Binding to grid");
                 RenderLibraryView(sectionsTable);
@@ -906,38 +904,35 @@ namespace PlexDL.UI
             }
         }
 
-        private void GetTitlesTable(XmlDocument doc, ContentType type)
+        private static void GetTitlesTable(XmlNode doc, ContentType type)
         {
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
             switch (type)
             {
-                case ContentType.TvShows:
-                    TableProvider.TitlesTable = sections.Tables["Directory"];
-                    break;
-
                 case ContentType.Music:
-                    TableProvider.TitlesTable = sections.Tables["Directory"];
+                case ContentType.TvShows:
+                    DataProvider.TitlesProvider.SetRawTable(sections.Tables["Directory"]);
                     break;
 
                 case ContentType.Movies:
-                    TableProvider.TitlesTable = sections.Tables["Video"];
+                    DataProvider.TitlesProvider.SetRawTable(sections.Tables["Video"]);
                     break;
             }
         }
 
-        private void UpdateContentViewWorker(XmlDocument doc, ContentType type)
+        private void UpdateContentViewWorker(XmlNode doc, ContentType type)
         {
             LoggingHelpers.RecordGeneralEntry("Updating library contents");
 
             GetTitlesTable(doc, type);
 
-            if (TableProvider.TitlesTable != null)
+            if (DataProvider.TitlesProvider.GetRawTable() != null)
             {
                 //set this in the toolstrip so the user can see how many items are loaded
                 lblViewingValue.Text =
-                    TableProvider.TitlesTable.Rows.Count + @"/" + TableProvider.TitlesTable.Rows.Count;
+                    DataProvider.TitlesProvider.GetRawTable().Rows.Count + @"/" + DataProvider.TitlesProvider.GetRawTable().Rows.Count;
 
                 ObjectProvider.CurrentContentType = type;
 
@@ -947,17 +942,17 @@ namespace PlexDL.UI
                 {
                     case ContentType.Movies:
                         LoggingHelpers.RecordGeneralEntry("Rendering Movies");
-                        RenderMoviesView(TableProvider.TitlesTable);
+                        RenderMoviesView(DataProvider.TitlesProvider.GetRawTable());
                         break;
 
                     case ContentType.TvShows:
                         LoggingHelpers.RecordGeneralEntry("Rendering TV Shows");
-                        RenderTvView(TableProvider.TitlesTable);
+                        RenderTvView(DataProvider.TitlesProvider.GetRawTable());
                         break;
 
                     case ContentType.Music:
                         LoggingHelpers.RecordGeneralEntry("Rendering Artists");
-                        RenderArtistsView(TableProvider.TitlesTable);
+                        RenderArtistsView(DataProvider.TitlesProvider.GetRawTable());
                         break;
 
                     default:
@@ -981,12 +976,12 @@ namespace PlexDL.UI
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
-            TableProvider.EpisodesTable = sections.Tables["Video"];
+            DataProvider.EpisodesProvider.SetRawTable(sections.Tables["Video"]);
 
             LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderEpisodesView(TableProvider.EpisodesTable);
+            RenderEpisodesView(DataProvider.EpisodesProvider.GetRawTable());
 
             //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -999,12 +994,12 @@ namespace PlexDL.UI
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
-            TableProvider.TracksTable = sections.Tables["Track"];
+            DataProvider.TracksProvider.SetRawTable(sections.Tables["Track"]);
 
             LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderTracksView(TableProvider.TracksTable);
+            RenderTracksView(DataProvider.TracksProvider.GetRawTable());
 
             //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1017,12 +1012,12 @@ namespace PlexDL.UI
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
-            TableProvider.SeasonsTable = sections.Tables["Directory"];
+            DataProvider.SeasonsProvider.SetRawTable(sections.Tables["Directory"]);
 
             LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderSeasonsView(TableProvider.SeasonsTable);
+            RenderSeasonsView(DataProvider.SeasonsProvider.GetRawTable());
 
             //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1035,12 +1030,12 @@ namespace PlexDL.UI
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
-            TableProvider.AlbumsTable = sections.Tables["Directory"];
+            DataProvider.AlbumsProvider.SetRawTable(sections.Tables["Directory"]);
 
             LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
 
             LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderAlbumsView(TableProvider.AlbumsTable);
+            RenderAlbumsView(DataProvider.AlbumsProvider.GetRawTable());
 
             //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
@@ -1051,7 +1046,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordGeneralEntry(@"Worker is to grab metadata for All Episodes");
 
-                var rowCount = TableProvider.EpisodesTable.Rows.Count;
+                var rowCount = DataProvider.EpisodesProvider.GetRawTable().Rows.Count;
 
                 for (var i = 0; i < rowCount; i++)
                 {
@@ -1123,7 +1118,7 @@ namespace PlexDL.UI
             {
                 LoggingHelpers.RecordGeneralEntry(@"Worker is to grab metadata for All Tracks");
 
-                var rowCount = TableProvider.TracksTable.Rows.Count;
+                var rowCount = DataProvider.TracksProvider.GetRawTable().Rows.Count;
 
                 for (var i = 0; i < rowCount; i++)
                 {
@@ -1275,7 +1270,7 @@ namespace PlexDL.UI
                 WantedCaption = wantedCaption
             };
 
-            ViewProvider.MoviesViewTable = GenericRenderer.RenderView(info, dgvMovies);
+            DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvMovies));
 
             SelectMoviesTab();
         }
@@ -1376,7 +1371,7 @@ namespace PlexDL.UI
                 WantedCaption = wantedCaption
             };
 
-            ViewProvider.TvViewTable = GenericRenderer.RenderView(info, dgvTVShows);
+            DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvTVShows));
 
             SelectTvTab();
         }
@@ -1399,7 +1394,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                ViewProvider.ArtistViewTable = GenericRenderer.RenderView(info, dgvArtists);
+                DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvArtists));
 
                 SelectMusicTab();
             }
@@ -1419,7 +1414,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                ViewProvider.SeasonsViewTable = GenericRenderer.RenderView(info, dgvSeasons);
+                DataProvider.SeasonsProvider.SetViewTable(GenericRenderer.RenderView(info, dgvSeasons));
             }
         }
 
@@ -1437,7 +1432,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                ViewProvider.EpisodesViewTable = GenericRenderer.RenderView(info, dgvEpisodes);
+                DataProvider.EpisodesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvEpisodes));
             }
         }
 
@@ -1455,7 +1450,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                ViewProvider.AlbumViewTable = GenericRenderer.RenderView(info, dgvAlbums);
+                DataProvider.AlbumsProvider.SetViewTable(GenericRenderer.RenderView(info, dgvAlbums));
             }
         }
 
@@ -1473,7 +1468,7 @@ namespace PlexDL.UI
                     WantedCaption = wantedCaption
                 };
 
-                ViewProvider.TracksViewTable = GenericRenderer.RenderView(info, dgvTracks);
+                DataProvider.TracksProvider.SetViewTable(GenericRenderer.RenderView(info, dgvTracks));
             }
         }
 
@@ -1768,19 +1763,21 @@ namespace PlexDL.UI
                     switch (ObjectProvider.CurrentContentType)
                     {
                         case ContentType.TvShows:
-                            RenderTvView(TableProvider.TitlesTable);
+                            RenderTvView(DataProvider.TitlesProvider.GetRawTable());
                             break;
 
                         case ContentType.Movies:
-                            RenderMoviesView(TableProvider.TitlesTable);
+                            RenderMoviesView(DataProvider.TitlesProvider.GetRawTable());
                             break;
 
                         case ContentType.Music:
-                            RenderArtistsView(TableProvider.TitlesTable);
+                            RenderArtistsView(DataProvider.TitlesProvider.GetRawTable());
                             break;
                     }
 
-                TableProvider.FilteredTable = null;
+                DataProvider.FilteredProvider.ClearRawTable();
+                DataProvider.FilteredProvider.ClearViewTable();
+
                 Flags.IsFiltered = false;
                 SetStartSearch();
             }
@@ -1802,7 +1799,7 @@ namespace PlexDL.UI
                             dgv = dgvTVShows;
                             info = new RenderStruct
                             {
-                                Data = TableProvider.TitlesTable,
+                                Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.TvView.DisplayCaptions,
                                 WantedColumns = ObjectProvider.Settings.DataDisplay.TvView.DisplayColumns
                             };
@@ -1812,7 +1809,7 @@ namespace PlexDL.UI
                             dgv = dgvMovies;
                             info = new RenderStruct
                             {
-                                Data = TableProvider.TitlesTable,
+                                Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayCaptions,
                                 WantedColumns = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayColumns
                             };
@@ -1822,7 +1819,7 @@ namespace PlexDL.UI
                             dgv = dgvArtists;
                             info = new RenderStruct
                             {
-                                Data = TableProvider.TitlesTable,
+                                Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.ArtistsView.DisplayCaptions,
                                 WantedColumns = ObjectProvider.Settings.DataDisplay.ArtistsView.DisplayColumns
                             };
@@ -1839,8 +1836,8 @@ namespace PlexDL.UI
                     else
                     {
                         Flags.IsFiltered = false;
-                        ViewProvider.FilteredViewTable = null;
-                        TableProvider.FilteredTable = null;
+                        DataProvider.FilteredProvider.ClearRawTable();
+                        DataProvider.FilteredProvider.ClearViewTable();
                         SetStartSearch();
                     }
                 }
@@ -1916,16 +1913,16 @@ namespace PlexDL.UI
         private void SetStartSearch()
         {
             itmStartSearch.Text = @"Start Search";
-            if (TableProvider.TitlesTable != null)
+            if (DataProvider.TitlesProvider.GetRawTable() != null)
                 lblViewingValue.Text =
-                    $@"{TableProvider.TitlesTable.Rows.Count}/{TableProvider.TitlesTable.Rows.Count}";
+                    $@"{DataProvider.TitlesProvider.GetRawTable().Rows.Count}/{DataProvider.TitlesProvider.GetRawTable().Rows.Count}";
         }
 
         private void SetCancelSearch()
         {
-            if (TableProvider.FilteredTable != null && TableProvider.TitlesTable != null)
+            if (DataProvider.FilteredProvider.GetRawTable() != null && DataProvider.TitlesProvider.GetRawTable() != null)
                 lblViewingValue.Text =
-                    $@"{TableProvider.FilteredTable.Rows.Count}/{TableProvider.TitlesTable.Rows.Count}";
+                    $@"{DataProvider.FilteredProvider.GetRawTable().Rows.Count}/{DataProvider.TitlesProvider.GetRawTable().Rows.Count}";
             itmStartSearch.Text = @"Clear Search";
         }
 
@@ -2121,7 +2118,7 @@ namespace PlexDL.UI
             //don't re-render the grids when clearing the search; this would end badly for performance reasons.
             ClearSearch(false);
             LoggingHelpers.RecordGeneralEntry("Cleared possible searches");
-            var index = TableProvider.GetTableIndexFromDgv(dgvSections, TableProvider.SectionsTable);
+            var index = TableManager.GetTableIndexFromDgv(dgvSections, DataProvider.SectionsProvider.GetRawTable());
             var r = RowGet.GetDataRowLibrary(index);
 
             var key = "";
@@ -2154,7 +2151,7 @@ namespace PlexDL.UI
         {
             if (dgvSeasons.SelectedRows.Count != 1) return;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvSeasons, TableProvider.SeasonsTable);
+            var index = TableManager.GetTableIndexFromDgv(dgvSeasons, DataProvider.SeasonsProvider.GetRawTable());
             var episodes = XmlMetadataLists.GetEpisodeListXml(index);
             UpdateEpisodeView(episodes.Xml);
         }
@@ -2163,7 +2160,7 @@ namespace PlexDL.UI
         {
             if (dgvAlbums.SelectedRows.Count != 1) return;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvAlbums, TableProvider.AlbumsTable);
+            var index = TableManager.GetTableIndexFromDgv(dgvAlbums, DataProvider.AlbumsProvider.GetRawTable());
             var tracks = XmlMetadataLists.GetTracksListXml(index);
             UpdateTracksView(tracks.Xml);
         }
@@ -2287,7 +2284,7 @@ namespace PlexDL.UI
         {
             if (dgvTVShows.SelectedRows.Count != 1) return;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvTVShows, TableProvider.ReturnCorrectTable());
+            var index = TableManager.GetTableIndexFromDgv(dgvTVShows, TableManager.ReturnCorrectTable());
 
             //debugging
             //UIMessages.Info(index.ToString());
@@ -2304,7 +2301,7 @@ namespace PlexDL.UI
         {
             if (dgvArtists.SelectedRows.Count != 1) return;
 
-            var index = TableProvider.GetTableIndexFromDgv(dgvArtists, TableProvider.ReturnCorrectTable());
+            var index = TableManager.GetTableIndexFromDgv(dgvArtists, TableManager.ReturnCorrectTable());
 
             //debugging
             //UIMessages.Info(index.ToString());
@@ -2325,7 +2322,7 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordGeneralEntry("Download process is starting");
                 SetProgressLabel("Waiting");
                 Flags.IsDownloadAll = true;
-                DownloadTotal = TableProvider.ReturnCorrectTable(true).Rows.Count;
+                DownloadTotal = TableManager.ReturnCorrectTable(true).Rows.Count;
                 Flags.IsDownloadRunning = true;
                 if (wkrGetMetadata.IsBusy) wkrGetMetadata.Abort();
                 wkrGetMetadata.RunWorkerAsync();

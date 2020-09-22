@@ -274,9 +274,9 @@ namespace PlexDL.UI
 
         private static StreamInfo GetContentDownloadInfo(int index)
         {
-            if (index + 1 <= TableProvider.ReturnCorrectTable().Rows.Count)
+            if (index + 1 <= TableManager.ReturnCorrectTable().Rows.Count)
             {
-                var result = TableProvider.ReturnCorrectTable().Rows[index];
+                var result = TableManager.ReturnCorrectTable().Rows[index];
                 var key = result["key"].ToString();
                 var baseUri = Strings.GetBaseUri(false);
                 key = key.TrimStart('/');
@@ -297,9 +297,9 @@ namespace PlexDL.UI
         {
             //check if the table has been loaded correctly before trying
             //to get data from it.
-            if (!TableProvider.ActiveTableFilled) return;
+            if (!TableManager.ActiveTableFilled) return;
 
-            if (StreamingContent.StreamIndex + 1 < TableProvider.ReturnCorrectTable().Rows.Count)
+            if (StreamingContent.StreamIndex + 1 < TableManager.ReturnCorrectTable().Rows.Count)
             {
                 var next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
                 StreamingContent = next;
@@ -308,7 +308,7 @@ namespace PlexDL.UI
                 Refresh();
                 //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
-            else if (StreamingContent.StreamIndex + 1 == TableProvider.ReturnCorrectTable().Rows.Count)
+            else if (StreamingContent.StreamIndex + 1 == TableManager.ReturnCorrectTable().Rows.Count)
             {
                 var next = GetObjectFromIndex(0);
                 StreamingContent = next;
@@ -323,7 +323,7 @@ namespace PlexDL.UI
         {
             //check if the table has been loaded correctly before trying
             //to get data from it.
-            if (!TableProvider.ActiveTableFilled) return;
+            if (!TableManager.ActiveTableFilled) return;
 
             if (StreamingContent.StreamIndex != 0)
             {
@@ -336,7 +336,7 @@ namespace PlexDL.UI
             }
             else
             {
-                var next = GetObjectFromIndex(TableProvider.ReturnCorrectTable().Rows.Count - 1);
+                var next = GetObjectFromIndex(TableManager.ReturnCorrectTable().Rows.Count - 1);
                 StreamingContent = next;
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
                 Text = formTitle;

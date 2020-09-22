@@ -53,7 +53,7 @@ namespace PlexDL.Common.API.Objects
                         var e = XmlMetadataIntegers.GetIndex(metadata.Xml);
 
                         obj.Season = XmlMetadataStrings.GetParentTitle(metadata.Xml);
-                        obj.EpisodesInSeason = TableProvider.EpisodesTable.Rows.Count;
+                        obj.EpisodesInSeason = DataProvider.EpisodesProvider.GetRawTable().Rows.Count;
                         obj.EpisodeNumber = e > 0 ? e : 1; //episode numbers start at 1, not 0; enforce this.
                         obj.SeasonNumber = s > 0 ? s : 1; //season numbers start at 1, not 0; enforce this.
                         obj.TvShowName = XmlMetadataStrings.GetGrandparentTitle(metadata.Xml);

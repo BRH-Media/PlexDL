@@ -1,24 +1,13 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Logging;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace PlexDL.Common.Globals.Providers
 {
-    public static class TableProvider
+    public static class TableManager
     {
-        public static DataTable TitlesTable { get; set; }
-        public static DataTable FilteredTable { get; set; }
-        public static DataTable SeasonsTable { get; set; }
-        public static DataTable EpisodesTable { get; set; }
-        public static DataTable SectionsTable { get; set; }
-        public static DataTable AlbumsTable { get; set; }
-        public static DataTable TracksTable { get; set; }
-
-        public static bool TitlesTableFilled => TableFilled(TitlesTable);
-        public static bool FilteredTableFilled => TableFilled(FilteredTable);
         public static bool ActiveTableFilled => TableFilled(ReturnCorrectTable());
 
         private static bool TableFilled(DataTable table)
@@ -31,18 +20,6 @@ namespace PlexDL.Common.Globals.Providers
             return table.Rows.Count > 0;
         }
 
-        public static void ClearAllTables()
-        {
-            //WARNING! This may result in errors, use only when data needs to be 100% cleared (like on disconnect).
-            TitlesTable = null;
-            FilteredTable = null;
-            SeasonsTable = null;
-            EpisodesTable = null;
-            SectionsTable = null;
-            AlbumsTable = null;
-            TracksTable = null;
-        }
-
         public static DataTable ReturnCorrectTable(bool directTable = false)
         {
             switch (ObjectProvider.CurrentContentType)
@@ -51,10 +28,10 @@ namespace PlexDL.Common.Globals.Providers
                     return DecideFiltered();
 
                 case ContentType.Music:
-                    return directTable ? TracksTable : DecideFiltered();
+                    return directTable ? DataProvider.TracksProvider.GetRawTable() : DecideFiltered();
 
                 case ContentType.TvShows:
-                    return directTable ? EpisodesTable : DecideFiltered();
+                    return directTable ? DataProvider.EpisodesProvider.GetRawTable() : DecideFiltered();
             }
 
             return null; //fallback
@@ -62,7 +39,7 @@ namespace PlexDL.Common.Globals.Providers
 
         public static DataTable DecideFiltered()
         {
-            return Flags.IsFiltered ? FilteredTable : TitlesTable;
+            return Flags.IsFiltered ? DataProvider.FilteredProvider.GetRawTable() : DataProvider.TitlesProvider.GetRawTable();
         }
 
         public static int GetTableIndexFromDgv(DataGridView dgv, DataTable table = null)
@@ -82,9 +59,6 @@ namespace PlexDL.Common.Globals.Providers
             var selRow = ((DataRowView)dgv.SelectedRows[0].DataBoundItem).Row
                 .ItemArray; //array of cell values from the selected row
             var val = 0; //value to return back to the caller
-
-            //create a new performance counting stopwatch
-            var sw = new Stopwatch();
 
             //go through every row in the TABLE
             foreach (DataRow r in table.Rows)

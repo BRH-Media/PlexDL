@@ -95,9 +95,9 @@
     <Compile Include="Flags.cs" />
     <Compile Include="Globals\BuildState.cs" />
     <Compile Include="Globals\Integers.cs" />
+    <Compile Include="Globals\Providers\DataProvider.cs" />
     <Compile Include="Globals\Providers\ObjectProvider.cs" />
-    <Compile Include="Globals\Providers\TableProvider.cs" />
-    <Compile Include="Globals\Providers\ViewProvider.cs" />
+    <Compile Include="Globals\Providers\TableManager.cs" />
     <Compile Include="Globals\RowGet.cs" />
     <Compile Include="Globals\Strings.cs" />
     <Compile Include="ImageHandler.cs" />

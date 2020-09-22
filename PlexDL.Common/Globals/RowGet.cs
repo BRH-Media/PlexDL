@@ -14,32 +14,32 @@ namespace PlexDL.Common.Globals
 
         public static DataRow GetDataRowContent(int index)
         {
-            return GetDataRowTbl(TableProvider.ReturnCorrectTable(), index);
+            return GetDataRowTbl(TableManager.ReturnCorrectTable(), index);
         }
 
         public static DataRow GetDataRowSeries(int index)
         {
-            return GetDataRowTbl(TableProvider.SeasonsTable, index);
+            return GetDataRowTbl(DataProvider.SeasonsProvider.GetRawTable(), index);
         }
 
         public static DataRow GetDataRowAlbums(int index)
         {
-            return GetDataRowTbl(TableProvider.AlbumsTable, index);
+            return GetDataRowTbl(DataProvider.AlbumsProvider.GetRawTable(), index);
         }
 
         public static DataRow GetDataRowEpisodes(int index)
         {
-            return GetDataRowTbl(TableProvider.EpisodesTable, index);
+            return GetDataRowTbl(DataProvider.EpisodesProvider.GetRawTable(), index);
         }
 
         public static DataRow GetDataRowTracks(int index)
         {
-            return GetDataRowTbl(TableProvider.TracksTable, index);
+            return GetDataRowTbl(DataProvider.TracksProvider.GetRawTable(), index);
         }
 
         public static DataRow GetDataRowLibrary(int index)
         {
-            return GetDataRowTbl(TableProvider.SectionsTable, index);
+            return GetDataRowTbl(DataProvider.SectionsProvider.GetRawTable(), index);
         }
     }
 }

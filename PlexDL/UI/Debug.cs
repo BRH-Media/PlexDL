@@ -19,22 +19,29 @@ namespace PlexDL.UI
             cbxExportFormat.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// How many UI refreshes have happened?
+        /// </summary>
         public int RefreshCount { get; set; }
+
+        /// <summary>
+        /// Is the Refresh timer running?
+        /// </summary>
         public bool TimerRunning { get; set; } = true;
 
         private void ExportSections()
         {
-            ProcessExport(radModeTable.Checked ? TableProvider.SectionsTable : ViewProvider.SectionsViewTable);
+            ProcessExport(radModeTable.Checked ? DataProvider.SectionsProvider.GetRawTable() : DataProvider.SectionsProvider.GetViewTable());
         }
 
         private void ExportMovies()
         {
-            ProcessExport(radModeTable.Checked ? TableProvider.TitlesTable : ViewProvider.MoviesViewTable);
+            ProcessExport(radModeTable.Checked ? DataProvider.TitlesProvider.GetRawTable() : DataProvider.TitlesProvider.GetViewTable());
         }
 
         private void ExportTvTitles()
         {
-            ProcessExport(radModeTable.Checked ? TableProvider.TitlesTable : ViewProvider.TvViewTable);
+            ProcessExport(radModeTable.Checked ? DataProvider.TitlesProvider.GetRawTable() : DataProvider.TitlesProvider.GetViewTable());
         }
 
         private void ExportTitles()
@@ -60,7 +67,7 @@ namespace PlexDL.UI
         private void ExportFiltered()
         {
             if (Flags.IsFiltered)
-                ProcessExport(radModeTable.Checked ? TableProvider.FilteredTable : ViewProvider.FilteredViewTable);
+                ProcessExport(radModeTable.Checked ? DataProvider.FilteredProvider.GetRawTable() : DataProvider.FilteredProvider.GetViewTable());
             else
                 UIMessages.Error("Titles are not currently filtered");
         }
@@ -68,7 +75,7 @@ namespace PlexDL.UI
         private void ExportSeasons()
         {
             if (ObjectProvider.CurrentContentType == ContentType.TvShows)
-                ProcessExport(radModeTable.Checked ? TableProvider.SeasonsTable : ViewProvider.SeasonsViewTable);
+                ProcessExport(radModeTable.Checked ? DataProvider.SeasonsProvider.GetRawTable() : DataProvider.SeasonsProvider.GetViewTable());
             else
                 UIMessages.Error("PlexDL is not in TV Mode");
         }
@@ -76,7 +83,7 @@ namespace PlexDL.UI
         private void ExportEpisodes()
         {
             if (ObjectProvider.CurrentContentType == ContentType.TvShows)
-                ProcessExport(radModeTable.Checked ? TableProvider.EpisodesTable : ViewProvider.EpisodesViewTable);
+                ProcessExport(radModeTable.Checked ? DataProvider.EpisodesProvider.GetRawTable() : DataProvider.EpisodesProvider.GetViewTable());
             else
                 UIMessages.Error("PlexDL is not in TV Mode");
         }
@@ -84,7 +91,7 @@ namespace PlexDL.UI
         private void ExportAlbums()
         {
             if (ObjectProvider.CurrentContentType == ContentType.Music)
-                ProcessExport(radModeTable.Checked ? TableProvider.AlbumsTable : ViewProvider.AlbumViewTable);
+                ProcessExport(radModeTable.Checked ? DataProvider.AlbumsProvider.GetRawTable() : DataProvider.AlbumsProvider.GetViewTable());
             else
                 UIMessages.Error("PlexDL is not in Music Mode");
         }
@@ -92,7 +99,7 @@ namespace PlexDL.UI
         private void ExportTracks()
         {
             if (ObjectProvider.CurrentContentType == ContentType.Music)
-                ProcessExport(radModeTable.Checked ? TableProvider.TracksTable : ViewProvider.TracksViewTable);
+                ProcessExport(radModeTable.Checked ? DataProvider.TracksProvider.GetRawTable() : DataProvider.TracksProvider.GetViewTable());
             else
                 UIMessages.Error("PlexDL is not in Music Mode");
         }
