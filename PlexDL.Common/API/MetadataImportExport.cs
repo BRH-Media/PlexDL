@@ -12,7 +12,7 @@ using UIHelpers;
 
 namespace PlexDL.Common.API
 {
-    public static class ImportExport
+    public static class MetadataImportExport
     {
         public static XmlDocument ToXml(this PlexObject obj)
         {

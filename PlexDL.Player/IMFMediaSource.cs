@@ -37,7 +37,7 @@ namespace PlexDL.Player
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
         );
 
-        #endregion IMFMediaEventGenerator methods
+        #endregion
 
         [PreserveSig]
         HResult GetCharacteristics(

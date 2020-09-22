@@ -1,7 +1,7 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.99.1
-    July 2020, The Netherlands
+    PVS.MediaPlayer - Version 1.0
+    September 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
@@ -9,7 +9,7 @@
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -74,7 +74,7 @@
     Thank you very much, Sean and Deeksha!
 
     Peter Vegter
-    July 2020, The Netherlands
+    September 2020, The Netherlands
 
     ****************************************************************/
 
@@ -88,52 +88,129 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-#endregion Usings
+#endregion
 
-#region Disable Some Warnings
+#region Disable Some Compiler Warnings
 
-// programmer's preference:
 #pragma warning disable IDE0044 // Add readonly modifier
-// the library can be compiled with all versions of c#:
-#pragma warning disable IDE1005 // Delegate invocation can be simplified.
-#pragma warning disable IDE0018 // Inline variable declaration
-#pragma warning disable IDE0017 // Simplify object initialization
 
-#endregion Disable Some Warnings
+#endregion
+
 
 namespace PlexDL.Player
 {
+
     // ******************************** Device Info Class
+
+    #region Device Info Class
+
+    #endregion
+
 
     // ******************************** Video Track Class
 
+    #region Video Track Class
+
+    #endregion
+
+
     // ******************************** Video Stream Struct
+
+    #region Video Stream Struct
+
+    #endregion
+
 
     // ******************************** Video Display Class
 
+    #region Video Display Class
+
+    #endregion
+
+
     // ******************************** Webcam Device Class
+
+    #region Webcam Device Class
+
+    #endregion
+
 
     // ******************************** Webcam Property Info Class
 
+    #region Webcam Property Class
+
+    #endregion
+
+
     // ******************************** Webcam Video Format Class
+
+    #region Webcam Video Format Class
+
+    #endregion
+
 
     // ******************************** Webcam Settings Class
 
+    #region Webcam Settings Class
+
+    #endregion
+
+
     // ******************************** Audio Track Class
+
+    #region Audio Track Class
+
+    #endregion
+
 
     // ******************************** Audio Stream Struct
 
+    #region Audio Stream Struct
+
+    #endregion
+
+
     // ******************************** Audio Device Class
+
+    #region Audio Device Class
+
+    #endregion
+
 
     // ******************************** Audio Input Device Class
 
+    #region Audio Input Device Class
+
+    #endregion
+
+
     // ******************************** Slider Value Class
+
+    #region Slider Value Class
+
+    #endregion
+
 
     // ******************************** Metadata Class
 
+    #region Metadata Class
+
+    #endregion
+
+
     // ******************************** Media Chapter Class
 
+    #region Media Chapter Class
+
+    #endregion
+
+
     // ******************************** Display Clone Properties Class
+
+    #region Display Clone Properties Class
+
+    #endregion
+
 
     // ******************************** Player MF Callback Class
 
@@ -141,13 +218,37 @@ namespace PlexDL.Player
 
     // Media Foundation Callback Class
 
-    #endregion Player MF Callback Class
+    #endregion
+
 
     // ******************************** Hide System Object Members Classes
 
+    #region  Hide System Object Members Classes
+
+    #endregion
+
+
     // ******************************** Player Grouping Classes
 
+    #region Audio Class
 
+    #endregion
+
+    #region Audio Input Class
+
+    #endregion
+
+    #region Video Class
+
+    #endregion
+
+    #region Webcam Class
+
+    #endregion
+
+    #region Display Class
+
+    #endregion
 
     #region CursorHide Class
 
@@ -162,7 +263,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (CursorHide Class)
+        #endregion
 
         internal CursorHide(Player player)
         {
@@ -263,7 +364,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Shows the cursor if it was hidden by the player.
+        /// Shows the cursor if it was hidden by the player. The cursor is also shown again when the mouse device is moved.
         /// </summary>
         public int ShowCursor()
         {
@@ -283,9 +384,11 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion CursorHide Class
+    #endregion
 
+    #region Overlay Class
 
+    #endregion
 
     #region DisplayClones Class
 
@@ -306,7 +409,7 @@ namespace PlexDL.Player
         private Player _base;
         private CloneProperties _defaultProps;
 
-        #endregion Fields (DisplayClones Class)
+        #endregion
 
         internal DisplayClones(Player player)
         {
@@ -442,7 +545,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the player's display clones.
+        /// Returns an array of the player's display clones.
         /// </summary>
         public Control[] GetList()
         {
@@ -549,15 +652,18 @@ namespace PlexDL.Player
             int index = GetCloneIndex(clone);
             if (index != -1)
             {
-                properties = new CloneProperties();
-                properties._dragEnabled = _base.dc_DisplayClones[index].Drag;
-                properties._flip = _base.dc_DisplayClones[index].Flip;
-                properties._layout = _base.dc_DisplayClones[index].Layout;
-                properties._quality = _base.dc_DisplayClones[index].Quality;
+                properties = new CloneProperties
+                {
+                    _dragEnabled    = _base.dc_DisplayClones[index].Drag,
+                    _flip           = _base.dc_DisplayClones[index].Flip,
+                    _layout         = _base.dc_DisplayClones[index].Layout,
+                    _quality        = _base.dc_DisplayClones[index].Quality
+                };
+
                 if (_base.dc_DisplayClones[index].HasShape)
                 {
-                    properties._shape = _base.dc_DisplayClones[index].Shape;
-                    properties._videoShape = _base.dc_DisplayClones[index].HasVideoShape;
+                    properties._shape       = _base.dc_DisplayClones[index].Shape;
+                    properties._videoShape  = _base.dc_DisplayClones[index].HasVideoShape;
                 }
                 _base._lastError = Player.NO_ERROR;
             }
@@ -620,28 +726,28 @@ namespace PlexDL.Player
                 {
                     int newSize;
                     Rectangle sourceRect = _base._videoBoundsClip;
-                    Rectangle destRect = _base.dc_DisplayClones[index].Control.DisplayRectangle;
+                    Rectangle destRect  = _base.dc_DisplayClones[index].Control.DisplayRectangle;
 
-                    double difX = (double)destRect.Width / sourceRect.Width;
-                    double difY = (double)destRect.Height / sourceRect.Height;
+                    double difX         = (double)destRect.Width / sourceRect.Width;
+                    double difY         = (double)destRect.Height / sourceRect.Height;
 
                     if (difX < difY)
                     {
-                        newSize = (int)(sourceRect.Height * difX);
+                        newSize         = (int)(sourceRect.Height * difX);
 
-                        bounds.X = 0;
-                        bounds.Y = (destRect.Height - newSize) / 2;
-                        bounds.Width = (int)(sourceRect.Width * difX);
-                        bounds.Height = newSize;
+                        bounds.X        = 0;
+                        bounds.Y        = (destRect.Height - newSize) / 2;
+                        bounds.Width    = (int)(sourceRect.Width * difX);
+                        bounds.Height   = newSize;
                     }
                     else
                     {
-                        newSize = (int)(sourceRect.Width * difY);
+                        newSize         = (int)(sourceRect.Width * difY);
 
-                        bounds.X = (destRect.Width - newSize) / 2;
-                        bounds.Y = 0;
-                        bounds.Width = newSize;
-                        bounds.Height = (int)(sourceRect.Height * difY);
+                        bounds.X        = (destRect.Width - newSize) / 2;
+                        bounds.Y        = 0;
+                        bounds.Width    = newSize;
+                        bounds.Height   = (int)(sourceRect.Height * difY);
                     }
                 }
             }
@@ -671,6 +777,7 @@ namespace PlexDL.Player
             {
                 SetCloneShape(clone, properties._shape, properties._videoShape);
             }
+
             clone.Refresh = true;
         }
 
@@ -731,11 +838,30 @@ namespace PlexDL.Player
             _base._lastError = index == -1 ? HResult.E_INVALIDARG : Player.NO_ERROR;
             return index;
         }
+
     }
 
-    #endregion DisplayClones Class
+    #endregion
 
+    #region PointTo Class
 
+    #endregion
+
+    #region Copy Class
+
+    #endregion
+
+    #region Sliders Classes
+
+    #endregion
+
+    #region TaskbarProgress Class
+
+    #endregion
+
+    #region SystemPanels Class
+
+    #endregion
 
     #region Subtitles Class
 
@@ -751,7 +877,7 @@ namespace PlexDL.Player
         private const int MAX_DIRECTORY_DEPTH = 3;
         private Player _base;
 
-        #endregion Fields (Subtitles Class)
+        #endregion
 
         internal Subtitles(Player player)
         {
@@ -1065,5 +1191,478 @@ namespace PlexDL.Player
         }
     }
 
-    #endregion Subtitles Class
+    #endregion
+
+    #region Position Class
+
+    #endregion
+
+    #region Media Class
+
+    #endregion
+
+    #region Images Class
+
+    #endregion
+
+    #region Playlist Class
+
+    #endregion
+
+    #region Has Class
+
+    #endregion
+
+    #region Speed Class
+
+    #endregion
+
+    #region Events Class
+
+    #endregion
+
+
+    // ******************************** Video Recorder Class
+
+//    /// <summary>
+//    /// Represents a video recorder that can be used to store video images in a file.
+//    /// </summary>
+//    [CLSCompliant(true)]
+//    [EditorBrowsable(EditorBrowsableState.Never)]
+//    public sealed class VideoRecorder : HideObjectMembers
+//    {
+//        #region Fields (Video Recorder Class)
+
+//        // Constants
+//        private const int       BUSY_TIME_OUT           = 1000;
+//        private const int       DEFAULT_FRAME_RATE      = 15;
+//        private const bool      DEFAULT_SHOW_OVERLAY    = true;
+
+//        // Base Player
+//        private Player          _base;
+//        private bool            _basePaused;
+
+//        // Recorder Type
+//        private bool            _webcam;
+
+//        // Timer
+//        private volatile System.Threading.Timer
+//                                _timer;
+//        private volatile int    _timerInterval;
+//        private volatile bool   _timerRestart;
+//        private volatile bool   _timerBusy;
+
+//        // Buffers
+//        private IMFMediaBuffer  _mediaBuffer;
+//        private Bitmap          _bitmapBuffer;
+
+//        // Sink Writer
+//        private IMFSinkWriter   _sinkwriter;
+
+//        // Recorder Settings
+//        private int             _frameRate              = DEFAULT_FRAME_RATE;
+//        private bool            _showOverlay            = DEFAULT_SHOW_OVERLAY;
+
+//        internal bool           _recording;
+//        private bool            _paused;
+
+//        #endregion
+
+
+//        internal VideoRecorder(Player player, bool webCam)
+//        {
+//            _base = player;
+//            _webcam = webCam;
+//        }
+
+//        public int Start(string fileName)
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        public int Start(string fileName, int frameRate)
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        public int Start(string fileName, bool showOverlay)
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        public int Start(string fileName, int frameRate, bool showOverlay)
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        /// <summary>
+//        /// 
+//        /// </summary>
+//        public int Pause()
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        /// <summary>
+//        /// 
+//        /// </summary>
+//        public int Resume()
+//        {
+//            return (int)_base._lastError;
+//        }
+
+//        /// <summary>
+//        /// 
+//        /// </summary>
+//        public int Stop()
+//        {
+//            if (_recording)
+//            {
+//                _base.Events.MediaPausedChanged -= BasePlayer_MediaPausedChanged;
+//                _base.Events.MediaEndedNotice -= BasePlayer_MediaEndedNotice;
+
+//                // stop timer etc.
+
+//                _recording = false;
+//                _paused = false;
+//            }
+//            return (int)_base._lastError;
+//        }
+
+//        /// <summary>
+//        /// Gets or sets the number of video frames to record per second. Values from 0 to 60 (default: 15).
+//        /// </summary>
+//        public int FrameRate
+//        {
+//            get
+//            {
+//                return _frameRate;
+//            }
+//            set
+//            {
+//            }
+
+//        }
+
+//        /// <summary>
+//        /// Gets or sets a value that indicates whether display overlays (if any) are also recorded (default: true).
+//        /// </summary>
+//        public bool ShowOverlay
+//        {
+//            get
+//            {
+//                return _showOverlay;
+//            }
+//            set
+//            {
+//            }
+//        }
+
+//        // ********
+
+//        private int StartRecording()
+//        {
+//            // create timer etc.
+
+//            _base.Events.MediaPausedChanged += BasePlayer_MediaPausedChanged;
+//            _base.Events.MediaEndedNotice += BasePlayer_MediaEndedNotice;
+
+//            return (int)_base._lastError;
+//        }
+
+//        private void BasePlayer_MediaPausedChanged(object sender, EventArgs e)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        private void BasePlayer_MediaEndedNotice(object sender, EndedEventArgs e)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        private HResult Recorder_Init()
+//        {
+//            if (!_base._hasVideo || (_webcam && !_base._webcamMode)) return HResult.MF_E_NOT_AVAILABLE;
+
+//            HResult result = Player.NO_ERROR;
+
+//            // create even size
+//            int width = _base._videoBoundsClip.Width % 2 == 0 ? _base._videoBoundsClip.Width : _base._videoBoundsClip.Width - 1;
+//            int height = _base._videoBoundsClip.Height % 2 == 0 ? _base._videoBoundsClip.Height : _base._videoBoundsClip.Height - 1;
+//            if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
+//            {
+//                width = _base._display.DisplayRectangle.Width;
+//                height = _base._display.DisplayRectangle.Height;
+//                if (width == height)
+//                {
+//                    if (width != _base._display.DisplayRectangle.Width) width += 2;
+//                    else if (height != _base._display.DisplayRectangle.Height) height += 2;
+//                    else height -= 2;
+//                }
+//            }
+//            else if (width == height)
+//            {
+//                if (width != _base._videoBoundsClip.Width) width += 2;
+//                else if (height != _base._videoBoundsClip.Height) height += 2;
+//                else height -= 2;
+//            }
+
+//            // create buffer
+//            // add pixel depth
+
+//            //result = MFExtern.MFCreateMemoryBuffer(bufferSize, out wr_MediaBuffer);
+//            if (result == Player.NO_ERROR)
+//            {
+//            }
+
+
+//            return result;
+//        }
+
+//        #region Recorder - Timer Start / Stop
+
+//        private void Recorder_StartTimer()
+//        {
+//            if (_timer == null)
+//            {
+//                _timerRestart = true;
+//                _timer = new System.Threading.Timer(Recorder_Callback, null, 0, System.Threading.Timeout.Infinite);
+//            }
+//        }
+
+//        private void Recorder_StopTimer()
+//        {
+//            if (_timer != null)
+//            {
+//                _timerRestart = false;
+//                _timer.Dispose();
+//                _timer = null;
+
+//                int timeOut = BUSY_TIME_OUT;
+//                while (_timerBusy && --timeOut > 0)
+//                {
+//                    System.Threading.Thread.Sleep(1);
+//                    Application.DoEvents();
+//                }
+//            }
+//        }
+
+//        #endregion
+
+//        private IMFSinkWriter CreateSinkWriter(string fileName, int width, int height)
+//        {
+//            const int VIDEO_BIT_RATE = 800000;
+
+//            int streamIndex = 0;
+
+//            HResult result = MFExtern.MFCreateSinkWriterFromURL(fileName, null, null, out IMFSinkWriter sinkWriter);
+//            if (result == Player.NO_ERROR)
+//            {
+//                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeOut);
+//                if (result == Player.NO_ERROR)
+//                {
+//                    result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+//                    if (result == Player.NO_ERROR)
+//                    {
+//                        // if changing the encoder also change the file extension (IMAGES_FILE_EXTENSION)
+//                        result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
+//                        if (result == Player.NO_ERROR)
+//                        {
+//                            result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
+//                            if (result == Player.NO_ERROR)
+//                            {
+//                                result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+//                                if (result == Player.NO_ERROR)
+//                                {
+//                                    result = MFExtern.MFSetAttributeSize(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+//                                    if (result == Player.NO_ERROR)
+//                                    {
+//                                        result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
+//                                        if (result == Player.NO_ERROR)
+//                                        {
+//                                            result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+//                                            if (result == Player.NO_ERROR)
+//                                            {
+//                                                result = sinkWriter.AddStream(mediaTypeOut, out streamIndex);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                if (mediaTypeOut != null) Marshal.ReleaseComObject(mediaTypeOut);
+//            }
+
+//            if (result == Player.NO_ERROR)
+//            {
+//                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeIn);
+//                if (result == Player.NO_ERROR)
+//                {
+//                    result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+//                    if (result == Player.NO_ERROR)
+//                    {
+//                        result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.RGB32);
+//                        if (result == Player.NO_ERROR)
+//                        {
+//                            result = mediaTypeIn.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+//                            if (result == Player.NO_ERROR)
+//                            {
+//                                result = MFExtern.MFSetAttributeSize(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+//                                if (result == Player.NO_ERROR)
+//                                {
+//                                    result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
+//                                    if (result == Player.NO_ERROR)
+//                                    {
+//                                        result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+//                                        if (result == Player.NO_ERROR)
+//                                        {
+//                                            result = sinkWriter.SetInputMediaType(streamIndex, mediaTypeIn, null);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                if (mediaTypeIn != null) Marshal.ReleaseComObject(mediaTypeIn);
+//            }
+
+//            if (result != Player.NO_ERROR && sinkWriter != null)
+//            {
+//                Marshal.ReleaseComObject(sinkWriter);
+//                sinkWriter = null;
+//            }
+
+//            _base._lastError = result;
+//            return sinkWriter;
+//        }
+
+//        private void Recorder_Callback(object state)
+//        {
+//            if (!_timerBusy && _timerRestart)
+//            {
+//                IntPtr destHdc = IntPtr.Zero;
+//                Graphics destGraphics = null;
+//                Rectangle sourceRect = _base._videoBoundsClip;
+
+//                Graphics sourceGraphics = null;
+//                IntPtr sourceHdc = IntPtr.Zero;
+
+//                _timerBusy = true;
+
+//                try
+//                {
+//                    destGraphics = Graphics.FromImage(_bitmapBuffer); destHdc = destGraphics.GetHdc();
+//                    sourceGraphics = _base._display.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
+
+//                    if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
+//                    {
+//                        if (_base._overlayMode == OverlayMode.Display) sourceRect = _base._display.DisplayRectangle; // with overlay - same size as display
+
+//                        // copy display to buffer
+//                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+//                        sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
+
+//                        // copy overlay to buffer - transparent + opacity
+//                        sourceGraphics = _base._overlay.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
+//                        if (_base._overlay.Opacity == 1 || _base._overlayBlend == OverlayBlend.None)
+//                        {
+//                            SafeNativeMethods.TransparentBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, ColorTranslator.ToWin32(_base._overlay.TransparencyKey));
+//                        }
+//                        else
+//                        {
+//                            _base._blendFunction.SourceConstantAlpha = (byte)(_base._overlay.Opacity * 0xFF);
+//                            SafeNativeMethods.AlphaBlend(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, _base._blendFunction);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        // copy display to buffer
+//                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+//                    }
+
+//                    sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
+//                    destGraphics.ReleaseHdc(destHdc); destGraphics.Dispose(); destGraphics = null;
+
+//                    //Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
+//                }
+//                catch
+//                {
+//                    if (sourceGraphics != null)
+//                    {
+//                        if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
+//                        sourceGraphics.Dispose();
+//                    }
+//                    if (destGraphics != null)
+//                    {
+//                        if (destHdc != IntPtr.Zero) destGraphics.ReleaseHdc(destHdc);
+//                        destGraphics.Dispose();
+//                    }
+
+//                }
+//            }
+
+//            if (_timerRestart) _timer.Change(_timerInterval, System.Threading.Timeout.Infinite);
+//            _timerBusy = false;
+//        }
+
+//        internal void Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
+//        {
+//            HResult result = Player.NO_ERROR;
+
+//            System.Drawing.Imaging.BitmapData bmpData = null;
+//            try { bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat); }
+//            catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
+
+//            if (result == Player.NO_ERROR)
+//            {
+//                int cbWidth = _imageBytesPerPixel * image.Width;
+//                int cbBuffer = cbWidth * image.Height;
+//                result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
+
+//                if (result == Player.NO_ERROR)
+//                {
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
+//                    result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
+//                    if (result == Player.NO_ERROR)
+//                    {
+//                        //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
+//                        result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((image.Height - 1) * cbWidth), -cbWidth, cbWidth, image.Height);
+//                        buffer.Unlock();
+
+//                        if (result == Player.NO_ERROR)
+//                        {
+//                            buffer.SetCurrentLength(cbBuffer);
+
+//                            result = MFExtern.MFCreateSample(out IMFSample sample);
+//                            if (result == Player.NO_ERROR)
+//                            {
+//                                result = sample.AddBuffer(buffer);
+//                                if (result == Player.NO_ERROR)
+//                                {
+//                                    result = sample.SetSampleTime(0);
+//                                    if (result == Player.NO_ERROR)
+//                                    {
+//                                        result = sample.SetSampleDuration(_imageDuration);
+//                                        if (result == Player.NO_ERROR)
+//                                        {
+//                                            sinkWriter.WriteSample(0, sample);
+//                                        }
+//                                    }
+//                                }
+//                                Marshal.ReleaseComObject(sample);
+//                            }
+//                        }
+//                    }
+//                    Marshal.ReleaseComObject(buffer);
+//                }
+//                image.UnlockBits(bmpData);
+//            }
+//        }
+//    }
+
 }

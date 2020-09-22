@@ -16,10 +16,9 @@ namespace PlexDL.Player
 
         //private const int       MAX_SCROLL_VALUE = 60000;
         private Player _base;
-
         private PositionSlider _positionSliderClass;
 
-        #endregion Fields (Sliders Class)
+        #endregion
 
         internal Sliders(Player player)
         {
@@ -262,7 +261,7 @@ namespace PlexDL.Player
                     if (_base._brightnessSlider != null)
                     {
                         _base._brightnessSlider.MouseWheel -= _base.BrightnessSlider_MouseWheel;
-                        _base._brightnessSlider.Scroll -= _base.BrightnessSlider_Scroll;
+                        _base._brightnessSlider.Scroll     -= _base.BrightnessSlider_Scroll;
                         _base._brightnessSlider = null;
                     }
 
@@ -270,15 +269,15 @@ namespace PlexDL.Player
                     {
                         _base._brightnessSlider = value;
 
-                        _base._brightnessSlider.Minimum = -100;
-                        _base._brightnessSlider.Maximum = 100;
-                        _base._brightnessSlider.TickFrequency = 10;
-                        _base._brightnessSlider.SmallChange = 1;
-                        _base._brightnessSlider.LargeChange = 10;
+                        _base._brightnessSlider.Minimum         = -100;
+                        _base._brightnessSlider.Maximum         = 100;
+                        _base._brightnessSlider.TickFrequency   = 10;
+                        _base._brightnessSlider.SmallChange     = 1;
+                        _base._brightnessSlider.LargeChange     = 10;
 
                         _base._brightnessSlider.Value = (int)(_base._brightness * 100);
 
-                        _base._brightnessSlider.Scroll += _base.BrightnessSlider_Scroll;
+                        _base._brightnessSlider.Scroll     += _base.BrightnessSlider_Scroll;
                         _base._brightnessSlider.MouseWheel += _base.BrightnessSlider_MouseWheel;
                     }
                 }
@@ -303,7 +302,7 @@ namespace PlexDL.Player
                     if (_base._contrastSlider != null)
                     {
                         _base._contrastSlider.MouseWheel -= _base.ContrastSlider_MouseWheel;
-                        _base._contrastSlider.Scroll -= _base.ContrastSlider_Scroll;
+                        _base._contrastSlider.Scroll     -= _base.ContrastSlider_Scroll;
                         _base._contrastSlider = null;
                     }
 
@@ -311,15 +310,15 @@ namespace PlexDL.Player
                     {
                         _base._contrastSlider = value;
 
-                        _base._contrastSlider.Minimum = -100;
-                        _base._contrastSlider.Maximum = 100;
+                        _base._contrastSlider.Minimum       = -100;
+                        _base._contrastSlider.Maximum       = 100;
                         _base._contrastSlider.TickFrequency = 10;
-                        _base._contrastSlider.SmallChange = 1;
-                        _base._contrastSlider.LargeChange = 10;
+                        _base._contrastSlider.SmallChange   = 1;
+                        _base._contrastSlider.LargeChange   = 10;
 
                         _base._contrastSlider.Value = (int)(_base._contrast * 100);
 
-                        _base._contrastSlider.Scroll += _base.ContrastSlider_Scroll;
+                        _base._contrastSlider.Scroll     += _base.ContrastSlider_Scroll;
                         _base._contrastSlider.MouseWheel += _base.ContrastSlider_MouseWheel;
                     }
                 }
@@ -344,7 +343,7 @@ namespace PlexDL.Player
                     if (_base._hueSlider != null)
                     {
                         _base._hueSlider.MouseWheel -= _base.HueSlider_MouseWheel;
-                        _base._hueSlider.Scroll -= _base.HueSlider_Scroll;
+                        _base._hueSlider.Scroll     -= _base.HueSlider_Scroll;
                         _base._hueSlider = null;
                     }
 
@@ -352,15 +351,15 @@ namespace PlexDL.Player
                     {
                         _base._hueSlider = value;
 
-                        _base._hueSlider.Minimum = -100;
-                        _base._hueSlider.Maximum = 100;
-                        _base._hueSlider.TickFrequency = 10;
-                        _base._hueSlider.SmallChange = 1;
-                        _base._hueSlider.LargeChange = 10;
+                        _base._hueSlider.Minimum        = -100;
+                        _base._hueSlider.Maximum        = 100;
+                        _base._hueSlider.TickFrequency  = 10;
+                        _base._hueSlider.SmallChange    = 1;
+                        _base._hueSlider.LargeChange    = 10;
 
                         _base._hueSlider.Value = (int)(_base._hue * 100);
 
-                        _base._hueSlider.Scroll += _base.HueSlider_Scroll;
+                        _base._hueSlider.Scroll     += _base.HueSlider_Scroll;
                         _base._hueSlider.MouseWheel += _base.HueSlider_MouseWheel;
                     }
                 }
@@ -385,7 +384,7 @@ namespace PlexDL.Player
                     if (_base._saturationSlider != null)
                     {
                         _base._saturationSlider.MouseWheel -= _base.SaturationSlider_MouseWheel;
-                        _base._saturationSlider.Scroll -= _base.SaturationSlider_Scroll;
+                        _base._saturationSlider.Scroll     -= _base.SaturationSlider_Scroll;
                         _base._saturationSlider = null;
                     }
 
@@ -393,15 +392,15 @@ namespace PlexDL.Player
                     {
                         _base._saturationSlider = value;
 
-                        _base._saturationSlider.Minimum = -100;
-                        _base._saturationSlider.Maximum = 100;
-                        _base._saturationSlider.TickFrequency = 10;
-                        _base._saturationSlider.SmallChange = 1;
-                        _base._saturationSlider.LargeChange = 10;
+                        _base._saturationSlider.Minimum         = -100;
+                        _base._saturationSlider.Maximum         = 100;
+                        _base._saturationSlider.TickFrequency   = 10;
+                        _base._saturationSlider.SmallChange     = 1;
+                        _base._saturationSlider.LargeChange     = 10;
 
                         _base._saturationSlider.Value = (int)(_base._saturation * 100);
 
-                        _base._saturationSlider.Scroll += _base.SaturationSlider_Scroll;
+                        _base._saturationSlider.Scroll     += _base.SaturationSlider_Scroll;
                         _base._saturationSlider.MouseWheel += _base.SaturationSlider_MouseWheel;
                     }
                 }

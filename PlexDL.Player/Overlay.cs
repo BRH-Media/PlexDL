@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Overlay Class)
+        #endregion
 
         internal Overlay(Player player)
         {
@@ -33,6 +33,15 @@ namespace PlexDL.Player
                 return _base._overlay;
             }
             set { _base.AV_SetOverlay(value); }
+        }
+
+        /// <summary>
+        /// Sets the specified form as the player's display overlay. Same as Player.Overlay.Window = form.
+        /// </summary>
+        /// <param name="form">The form to be set as the player's display overlay.</param>
+        public void Set(Form form)
+        {
+            _base.AV_SetOverlay(form);
         }
 
         /// <summary>
@@ -64,7 +73,7 @@ namespace PlexDL.Player
                         _base._display.Invalidate();
                         if (_base._hasOverlayClipping) _base.AV_ClipOverlay();
                     }
-                    if (_base._mediaOverlayModeChanged != null) _base._mediaOverlayModeChanged(_base, EventArgs.Empty);
+                    _base._mediaOverlayModeChanged?.Invoke(_base, EventArgs.Empty);
                 }
             }
         }
@@ -101,7 +110,7 @@ namespace PlexDL.Player
                             if (_base.dc_HasDisplayClones && !_base._playing) _base.DisplayClones_Stop(false);
                         }
                     }
-                    if (_base._mediaOverlayHoldChanged != null) _base._mediaOverlayHoldChanged(_base, EventArgs.Empty);
+                    _base._mediaOverlayHoldChanged?.Invoke(_base, EventArgs.Empty);
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Has Class)
+        #endregion
 
         internal Has(Player player)
         {

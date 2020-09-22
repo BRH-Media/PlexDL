@@ -14,12 +14,12 @@ namespace PlexDL.Player
 
         private const int MINIMUM_FRAMERATE = 4;
         private const int MAXIMUM_FRAMERATE = 30;
-        private const int MINIMUM_DURATION = 3;
-        private const int MAXIMUM_DURATION = 60;
+        private const int MINIMUM_DURATION  = 1;
+        private const int MAXIMUM_DURATION  = 60;
 
         private Player _base;
 
-        #endregion Fields (Images Class)
+        #endregion
 
         internal Images(Player player)
         {
@@ -68,7 +68,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the duration of image playback. Values from 3 to 60 seconds (default: 5).
+        /// Gets or sets the duration of image playback. Values from 1 to 60 seconds (default: 5).
         /// </summary>
         public int Duration
         {

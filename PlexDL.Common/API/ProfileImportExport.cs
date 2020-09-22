@@ -13,24 +13,40 @@ namespace PlexDL.Common.API
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(ApplicationOptions));
-                var reader = new StreamReader(fileName);
-                var subReq = (ApplicationOptions)serializer.Deserialize(reader);
-
-                reader.Close();
-
-                return subReq;
+                if (File.Exists(fileName))
+                    return File.ReadAllText(fileName).ProfileFromXml();
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "LoadProfileError");
                 if (!silent)
                     UIMessages.Error(ex.ToString(), @"XML Load Error");
-                return null;
             }
+
+            //default
+            return null;
         }
 
         public static void ProfileToFile(string fileName, ApplicationOptions options, bool silent = false)
+        {
+            try
+            {
+                //delete the existing file if there is one; the user was asked if they wanted to replace it.
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+
+                //write the profile to the XML file
+                File.WriteAllText(fileName, options.ProfileToXml());
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "@SaveProfileError");
+                if (!silent)
+                    UIMessages.Error(ex.ToString(), @"XML Save Error");
+            }
+        }
+
+        public static string ProfileToXml(this ApplicationOptions options)
         {
             try
             {
@@ -40,19 +56,37 @@ namespace PlexDL.Common.API
                 {
                     xsSubmit.Serialize(sww, options);
 
-                    //delete the existing file if there is one; the user was asked if they wanted to replace it.
-                    if (File.Exists(fileName))
-                        File.Delete(fileName);
-
-                    File.WriteAllText(fileName, sww.ToString());
+                    return sww.ToString();
                 }
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordException(ex.Message, "@SaveProfileError");
-                if (!silent)
-                    UIMessages.Error(ex.ToString(), @"XML Save Error");
+                LoggingHelpers.RecordException(ex.Message, @"ProfileToXmlError");
             }
+
+            //default
+            return @"";
+        }
+
+        public static ApplicationOptions ProfileFromXml(this string optionsXml)
+        {
+            try
+            {
+                var serializer = new XmlSerializer(typeof(ApplicationOptions));
+                var reader = new StringReader(optionsXml);
+                var subReq = (ApplicationOptions)serializer.Deserialize(reader);
+
+                reader.Close();
+
+                return subReq;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "ProfileFromXmlError");
+            }
+
+            //default
+            return null;
         }
     }
 }

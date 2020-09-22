@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Events Class)
+        #endregion
 
         internal Events(Player player)
         {

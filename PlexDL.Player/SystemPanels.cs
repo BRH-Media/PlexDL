@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (SystemPanels Class)
+        #endregion
 
         internal SystemPanels(Player player)
         {

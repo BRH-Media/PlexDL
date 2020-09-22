@@ -18,39 +18,39 @@ namespace PlexDL.Player
     {
         #region Fields (Media Class)
 
-        private Player _base;
+        private Player          _base;
 
         // Media album art information
-        private Image _tagImage;
-
-        private DirectoryInfo _directoryInfo;
-        private string[] _searchKeyWords = { "*front*", "*cover*" }; // , "*albumart*large*" };
-        private string[] _searchExtensions = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
+        private Image           _tagImage;
+        private DirectoryInfo   _directoryInfo;
+        private string[]        _searchKeyWords     = { "*front*", "*cover*" }; // , "*albumart*large*" };
+        private string[]        _searchExtensions   = { ".jpg", ".jpeg", ".bmp", ".png", ".gif", ".tiff" };
 
         // Media chapter information
-        private const string ROOT_ATOM_TYPES = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
+        private const string    ROOT_ATOM_TYPES     = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
 
-        private byte[] MOOV_ATOM = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
-        private byte[] TRAK_ATOM = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
-        private byte[] TREF_ATOM = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
-        private byte[] CHAP_ATOM = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
-        private byte[] TKHD_ATOM = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
-        private byte[] MDIA_ATOM = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
-        private byte[] MINF_ATOM = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
-        private byte[] STBL_ATOM = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
-        private byte[] STTS_ATOM = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
-        private byte[] STCO_ATOM = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
-        private byte[] UDTA_ATOM = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
-        private byte[] CHPL_ATOM = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
+        private byte[]          MOOV_ATOM           = { (byte)'m', (byte)'o', (byte)'o', (byte)'v' };
+        private byte[]          TRAK_ATOM           = { (byte)'t', (byte)'r', (byte)'a', (byte)'k' };
+        private byte[]          TREF_ATOM           = { (byte)'t', (byte)'r', (byte)'e', (byte)'f' };
+        private byte[]          CHAP_ATOM           = { (byte)'c', (byte)'h', (byte)'a', (byte)'p' };
+        private byte[]          TKHD_ATOM           = { (byte)'t', (byte)'k', (byte)'h', (byte)'d' };
+        private byte[]          MDIA_ATOM           = { (byte)'m', (byte)'d', (byte)'i', (byte)'a' };
+        private byte[]          MINF_ATOM           = { (byte)'m', (byte)'i', (byte)'n', (byte)'f' };
+        private byte[]          STBL_ATOM           = { (byte)'s', (byte)'t', (byte)'b', (byte)'l' };
+        private byte[]          STTS_ATOM           = { (byte)'s', (byte)'t', (byte)'t', (byte)'s' };
+        private byte[]          STCO_ATOM           = { (byte)'s', (byte)'t', (byte)'c', (byte)'o' };
+        private byte[]          UDTA_ATOM           = { (byte)'u', (byte)'d', (byte)'t', (byte)'a' };
+        private byte[]          CHPL_ATOM           = { (byte)'c', (byte)'h', (byte)'p', (byte)'l' };
 
-        private FileStream _reader;
-        private long _fileLength;
-        private long _atomEnd;
-        private long _moovStart;
-        private long _moovEnd;
-        private byte[] _buffer;
+        private FileStream      _reader;
+        private long            _fileLength;
+        private long            _atomEnd;
+        private long            _moovStart;
+        private long            _moovEnd;
+        private byte[]          _buffer;
 
-        #endregion Fields (Media Class)
+        #endregion
+
 
         internal Media(Player player)
         {
@@ -58,7 +58,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        ///  Gets a value that indicates the source type of the playing media, such as a local file or a webcam.
+        /// Gets a value that indicates the source type of the playing media, such as a local file or a webcam.
         /// </summary>
         public MediaSourceType SourceType
         {
@@ -73,7 +73,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        ///  Gets a value that indicates the source category of the playing media, such as local files or local capture devices.
+        /// Gets a value that indicates the source category of the playing media, such as local files or local capture devices.
         /// </summary>
         public MediaSourceCategory SourceCategory
         {
@@ -148,7 +148,7 @@ namespace PlexDL.Player
                 //case MediaLength.FromBegin:
                 default:
                     return (TimeSpan.FromTicks(_base.PositionX));
-                    //break;
+                //break;
             }
         }
 
@@ -174,19 +174,15 @@ namespace PlexDL.Player
                         case MediaName.FileName:
                             mediaName = Path.GetFileName(_base._fileName);
                             break;
-
                         case MediaName.DirectoryName:
                             mediaName = Path.GetDirectoryName(_base._fileName);
                             break;
-
                         case MediaName.PathRoot:
                             mediaName = Path.GetPathRoot(_base._fileName);
                             break;
-
                         case MediaName.Extension:
                             mediaName = Path.GetExtension(_base._fileName);
                             break;
-
                         case MediaName.FileNameWithoutExtension:
                             mediaName = Path.GetFileNameWithoutExtension(_base._fileName);
                             break;
@@ -214,31 +210,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the audio tracks in the playing media. Returns null if no audio tracks are present. See also: Player.Media.AudioTrackCount.
+        /// Returns a list of the audio tracks in the playing media or null if no audio tracks are present. See also: Player.Media.AudioTrackCount.
         /// </summary>
         public AudioTrack[] GetAudioTracks()
         {
-            _base._lastError = Player.NO_ERROR;
-
-            AudioTrack[] tracks = null;
-            int count = _base._audioTrackCount;
-            if (count > 0)
-            {
-                tracks = new AudioTrack[count];
-                for (int i = 0; i < count; i++)
-                {
-                    AudioTrack track = new AudioTrack();
-                    track._mediaType = _base._audioTracks[i].MediaType;
-                    track._name = _base._audioTracks[i].Name;
-                    track._language = _base._audioTracks[i].Language;
-                    track._channelCount = _base._audioTracks[i].ChannelCount;
-                    track._samplerate = _base._audioTracks[i].Samplerate;
-                    track._bitdepth = _base._audioTracks[i].Bitdepth;
-                    track._bitrate = _base._audioTracks[i].Bitrate;
-                    tracks[i] = track;
-                }
-            }
-            return tracks;
+            return _base.AV_GetAudioTracks();
         }
 
         /// <summary>
@@ -258,30 +234,11 @@ namespace PlexDL.Player
         /// </summary>
         public VideoTrack[] GetVideoTracks()
         {
-            _base._lastError = Player.NO_ERROR;
-
-            VideoTrack[] tracks = null;
-            int count = _base._videoTrackCount;
-            if (count > 0)
-            {
-                tracks = new VideoTrack[count];
-                for (int i = 0; i < count; i++)
-                {
-                    VideoTrack track = new VideoTrack();
-                    track._mediaType = _base._videoTracks[i].MediaType;
-                    track._name = _base._videoTracks[i].Name;
-                    track._language = _base._videoTracks[i].Language;
-                    track._frameRate = _base._videoTracks[i].FrameRate;
-                    track._width = _base._videoTracks[i].SourceWidth;
-                    track._height = _base._videoTracks[i].SourceHeight;
-                    tracks[i] = track;
-                }
-            }
-            return tracks;
+            return _base.AV_GetVideoTracks();
         }
 
         /// <summary>
-        /// Gets the original size of the video image of the playing media.
+        /// Gets the original size (width and height) of the video image of the playing media, in pixels.
         /// </summary>
         public Size VideoSourceSize
         {
@@ -334,7 +291,7 @@ namespace PlexDL.Player
 
                 _base._startTime = newStart;
                 if (newStart > _base.PositionX) _base.PositionX = newStart;
-                if (_base._mediaStartStopTimeChanged != null) _base._mediaStartStopTimeChanged(_base, EventArgs.Empty);
+                _base._mediaStartStopTimeChanged?.Invoke(_base, EventArgs.Empty);
             }
         }
 
@@ -369,12 +326,12 @@ namespace PlexDL.Player
 
                 _base._stopTime = newStop;
                 _base.AV_UpdateTopology();
-                if (_base._mediaStartStopTimeChanged != null) _base._mediaStartStopTimeChanged(_base, EventArgs.Empty);
+                _base._mediaStartStopTimeChanged?.Invoke(_base, EventArgs.Empty);
             }
         }
 
         /// <summary>
-        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
+        /// Returns metadata (media information such as title and artist name) of the playing media.
         /// </summary>
         public Metadata GetMetadata()
         {
@@ -382,9 +339,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
+        /// Returns metadata (media information such as title and artist name) of the playing media.
         /// </summary>
-        /// <param name="imageSource">A value that indicates whether and where an image related to the media should be obtained.</param>
+        /// <param name="imageSource">A value indicating whether and where to obtain an image related to the media.</param>
         public Metadata GetMetadata(ImageSource imageSource)
         {
             if (_base._playing)
@@ -397,13 +354,17 @@ namespace PlexDL.Player
                 {
                     _base._lastError = Player.NO_ERROR;
 
-                    Metadata data = new Metadata();
-                    data._album = GetName(MediaName.FullPath);
-                    data._title = GetName(MediaName.FileNameWithoutExtension);
+                    Metadata data = new Metadata
+                    {
+                        _album = GetName(MediaName.FullPath),
+                        _title = GetName(MediaName.FileNameWithoutExtension)
+                    };
+
                     if (_base._liveStreamMode && !string.IsNullOrWhiteSpace(data._title) && data._title.Length > 1)
                     {
                         data._title = char.ToUpper(data._title[0]) + data._title.Substring(1);
                     }
+
                     return data;
                 }
             }
@@ -415,11 +376,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns metadata (media information such as title and artist name) of the playing media (if available).
+        /// Returns metadata (media information such as title and artist name) of the specified media file.
         /// </summary>
-        /// <param name="fileName">The path and name of the file whose metadata is to be obtained.</param>
-        /// <param name="imageSource">A value that indicates whether and where an image related to the media should be obtained.</param>
-        /// <returns></returns>
+        /// <param name="fileName">The path and name of the media file from which the metadata is to be obtained.</param>
+        /// <param name="imageSource">A value indicating whether and where to obtain an image related to the media file.</param>
         public Metadata GetMetadata(string fileName, ImageSource imageSource)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -454,7 +414,7 @@ namespace PlexDL.Player
             try
             {
                 // Get info from file path
-                if (tagInfo._artist == null || tagInfo._artist.Length == 0) tagInfo._artist = Path.GetFileName(Path.GetDirectoryName(fileName));
+                //if (tagInfo._artist == null || tagInfo._artist.Length == 0) tagInfo._artist = Path.GetFileName(Path.GetDirectoryName(fileName));
                 if (tagInfo._title == null || tagInfo._title.Length == 0) tagInfo._title = Path.GetFileNameWithoutExtension(fileName);
 
                 // Get album art image (with certain values of 'imageSource')
@@ -476,26 +436,21 @@ namespace PlexDL.Player
         private Metadata GetMediaTags(string fileName, ImageSource imageSource)
         {
             Metadata tagInfo = new Metadata();
-            IMFSourceResolver sourceResolver;
             IMFMediaSource mediaSource = null;
             IPropertyStore propStore = null;
             PropVariant propVariant = new PropVariant();
 
-            HResult result = MFExtern.MFCreateSourceResolver(out sourceResolver);
+            HResult result = MFExtern.MFCreateSourceResolver(out IMFSourceResolver sourceResolver);
             if (result == Player.NO_ERROR)
             {
                 try
                 {
-                    MFObjectType objectType;
-                    object source;
-
-                    result = sourceResolver.CreateObjectFromURL(fileName, MFResolution.MediaSource, null, out objectType, out source);
+                    result = sourceResolver.CreateObjectFromURL(fileName, MFResolution.MediaSource, null, out MFObjectType objectType, out object source);
                     if (result == Player.NO_ERROR)
                     {
                         mediaSource = (IMFMediaSource)source;
 
-                        object store;
-                        result = MFExtern.MFGetService(mediaSource, MFServices.MF_PROPERTY_HANDLER_SERVICE, typeof(IPropertyStore).GUID, out store);
+                        result = MFExtern.MFGetService(mediaSource, MFServices.MF_PROPERTY_HANDLER_SERVICE, typeof(IPropertyStore).GUID, out object store);
                         if (result == Player.NO_ERROR)
                         {
                             propStore = (IPropertyStore)store;
@@ -541,8 +496,7 @@ namespace PlexDL.Player
                                 {
                                     IStream stream = (IStream)Marshal.GetObjectForIUnknown(propVariant.ptr);
 
-                                    System.Runtime.InteropServices.ComTypes.STATSTG streamInfo;
-                                    stream.Stat(out streamInfo, STATFLAG.NoName);
+                                    stream.Stat(out System.Runtime.InteropServices.ComTypes.STATSTG streamInfo, STATFLAG.NoName);
 
                                     int streamSize = (int)streamInfo.cbSize;
                                     if (streamSize > 0)
@@ -643,7 +597,7 @@ namespace PlexDL.Player
         */
 
         /// <summary>
-        /// Returns chapter information of the playing media (if available). Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
+        /// Returns chapter information of the playing media. Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
         /// </summary>
         /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
         /// <param name="chapters_II">When this method returns, contains the chapter information of the media stored the Nero (mp4 types) format or null.</param>
@@ -659,16 +613,16 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns chapter information of the specified media file (if available). Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
+        /// Returns chapter information of the specified media file. Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
         /// </summary>
-        /// <param name="fileName">The path and name of the file whose chapter information is to be obtained.</param>
-        /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
-        /// <param name="chapters_II">When this method returns, contains the chapter information of the media stored in the Nero (mp4 types) format or null.</param>
+        /// <param name="fileName">The path and name of the media file whose chapter information is to be obtained.</param>
+        /// <param name="chapters_I">When this method returns, contains the chapter information of the media file stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
+        /// <param name="chapters_II">When this method returns, contains the chapter information of the media file stored in the Nero (mp4 types) format or null.</param>
         public int GetChapters(string fileName, out MediaChapter[] chapters_I, out MediaChapter[] chapters_II)
         {
-            chapters_I = null;
-            chapters_II = null;
-            int fileType = 0;    // 0 = none, 1 = mp4, 2 = mkv
+            chapters_I      = null;
+            chapters_II     = null;
+            int fileType    = 0;    // 0 = none, 1 = mp4, 2 = mkv
 
             if (string.IsNullOrWhiteSpace(fileName)) _base._lastError = HResult.E_INVALIDARG;
             else if (!File.Exists(fileName)) _base._lastError = HResult.ERROR_FILE_NOT_FOUND;
@@ -687,7 +641,7 @@ namespace PlexDL.Player
                             fileType = 1;
                             _base._lastError = Player.NO_ERROR;
                         }
-                        else if (buffer[0] == 0x1A && buffer[1] == 0x45 && buffer[2] == 0xDF && buffer[3] == 0xA3)
+                        else if(buffer[0] == 0x1A && buffer[1] == 0x45 && buffer[2] == 0xDF && buffer[3] == 0xA3)
                         {
                             fileType = 2;
                             _base._lastError = Player.NO_ERROR;
@@ -699,7 +653,7 @@ namespace PlexDL.Player
 
             if (_base._lastError == Player.NO_ERROR)
             {
-                _fileLength = _reader.Length;
+                _fileLength      = _reader.Length;
                 _reader.Position = 0;
 
                 if (fileType == 1)
@@ -853,8 +807,10 @@ namespace PlexDL.Player
                                                     int chapterCount = 1;
                                                     int startTime = 0;
 
-                                                    List<int> startTimes = new List<int>();
-                                                    startTimes.Add(0);
+                                                    List<int> startTimes = new List<int>
+                                                    {
+                                                        0
+                                                    };
                                                     while (startTimeCounter > 1)
                                                     {
                                                         _reader.Read(buffer, 0, 8);
@@ -894,9 +850,11 @@ namespace PlexDL.Player
                                                                 int len = buffer[0] << 8 | buffer[1];
 
                                                                 _reader.Read(buffer, 0, len);
-                                                                chapters[i] = new MediaChapter();
-                                                                chapters[i]._title = new string[] { Encoding.UTF8.GetString(buffer, 0, len) };
-                                                                chapters[i]._startTime = TimeSpan.FromSeconds(startTimes[i]);
+                                                                chapters[i] = new MediaChapter
+                                                                {
+                                                                    _title      = new string[] { Encoding.UTF8.GetString(buffer, 0, len) },
+                                                                    _startTime  = TimeSpan.FromSeconds(startTimes[i])
+                                                                };
 
                                                                 _reader.Position = index;
                                                             }
@@ -954,9 +912,11 @@ namespace PlexDL.Player
                             {
                                 _reader.Read(buffer, 0, 9);
 
-                                chapters[i] = new MediaChapter();
-                                chapters[i]._startTime = TimeSpan.FromTicks(((long)(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]) << 32)
-                                                                            | ((buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) & 0xffffffff));
+                                chapters[i] = new MediaChapter
+                                {
+                                    _startTime = TimeSpan.FromTicks(((long)(buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3]) << 32)
+                                                                    | ((buffer[4] << 24 | buffer[5] << 16 | buffer[6] << 8 | buffer[7]) & 0xffffffff))
+                                };
                                 length = buffer[8];
                                 _reader.Read(buffer, 0, length);
                                 chapters[i]._title = new string[] { Encoding.UTF8.GetString(buffer, 0, length) };
@@ -1167,9 +1127,9 @@ namespace PlexDL.Player
 
         private long GetDataSize()
         {
-            byte mask = 0x7F;
-            int length = _reader.ReadByte();
-            _buffer[0] = (byte)length;
+            byte mask   = 0x7F;
+            int length  = _reader.ReadByte();
+            _buffer[0]  = (byte)length;
 
             // length == 1 less than true length
             for (int i = 0; i < 8; i++)
@@ -1183,7 +1143,7 @@ namespace PlexDL.Player
                 mask >>= 1;
             }
 
-            _buffer[0] &= mask;
+            _buffer[0]  &= mask;
             long result = _buffer[0];
 
             if (length > 0)
@@ -1199,11 +1159,11 @@ namespace PlexDL.Player
 
         private MediaChapter GetChapter(long length)
         {
-            MediaChapter chapter = null;
-            List<string> languages = new List<string>();
-            List<string> titles = new List<string>();
-            long startTime = 0;
-            long endTime = 0;
+            MediaChapter chapter    = null;
+            List<string> languages  = new List<string>();
+            List<string> titles     = new List<string>();
+            long startTime          = 0;
+            long endTime            = 0;
             byte id0, id1;
 
             try
@@ -1258,11 +1218,13 @@ namespace PlexDL.Player
                 }
                 if (titles.Count > 0 && titles.Count == languages.Count)
                 {
-                    chapter = new MediaChapter();
-                    chapter._title = titles.ToArray();
-                    chapter._language = languages.ToArray();
-                    chapter._startTime = TimeSpan.FromTicks(startTime / 100);
-                    chapter._endTime = TimeSpan.FromTicks(endTime / 100);
+                    chapter = new MediaChapter
+                    {
+                        _title      = titles.ToArray(),
+                        _language   = languages.ToArray(),
+                        _startTime  = TimeSpan.FromTicks(startTime / 100),
+                        _endTime    = TimeSpan.FromTicks(endTime / 100)
+                    };
                 }
             }
             catch { chapter = null; }

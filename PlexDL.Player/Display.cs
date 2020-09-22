@@ -24,7 +24,7 @@ namespace PlexDL.Player
         private Form _dragForm;
         private Point _oldLocation;
 
-        #endregion Fields (Display Class)
+        #endregion
 
         internal Display(Player player)
         {
@@ -76,7 +76,7 @@ namespace PlexDL.Player
                     if (_base._hasDisplay) _base._display.Invalidate();
                     if (_base._hasDisplayShape) _base.AV_UpdateDisplayShape();
                     if (_base.dc_DisplayClonesRunning) _base.DisplayClones_Refresh();
-                    if (_base._mediaDisplayModeChanged != null) _base._mediaDisplayModeChanged(_base, EventArgs.Empty);
+                    _base._mediaDisplayModeChanged?.Invoke(_base, EventArgs.Empty);
                 }
             }
         }
@@ -184,9 +184,9 @@ namespace PlexDL.Player
         {
             _base._lastError = Player.NO_ERROR;
 
-            shape = _base._displayShape;
-            videoShape = _base._hasVideoShape;
-            overlayShape = _base._hasOverlayClipping;
+            shape           = _base._displayShape;
+            videoShape      = _base._hasVideoShape;
+            overlayShape    = _base._hasOverlayClipping;
 
             return (int)_base._lastError;
         }
@@ -220,8 +220,8 @@ namespace PlexDL.Player
                 {
                     if (_base._displayShape != shape || videoShape != _base._hasVideoShape || overlayShape != _base._hasOverlayClipping)
                     {
-                        _base._displayShape = shape;
-                        _base._hasVideoShape = videoShape;
+                        _base._displayShape         = shape;
+                        _base._hasVideoShape        = videoShape;
                         _base._displayShapeCallback = _base.AV_GetShapeCallback(shape);
                         _base.AV_SetOverlayClipping(overlayShape);
 
@@ -232,7 +232,7 @@ namespace PlexDL.Player
                         {
                             _base._mediaVideoBoundsChanged += _base.AV_DisplayShapeChanged;
                         }
-                        if (_base._mediaDisplayShapeChanged != null) _base._mediaDisplayShapeChanged(_base, EventArgs.Empty);
+                        _base._mediaDisplayShapeChanged?.Invoke(_base, EventArgs.Empty);
                     }
                 }
                 else
@@ -330,7 +330,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Drags (when enabled) the parent window (form) of the player's display window. Use as the mousedown eventhandler of any control other than the player's display window, for example, a display overlay.
+        /// Drags (when enabled) the parent window (form) of the player's display window. Use as the mousedown eventhandler of any control other than the player's display window, for example, a display overlay. 
         /// </summary>
         public void Drag_MouseDown(object sender, MouseEventArgs e)
         {
@@ -460,5 +460,6 @@ namespace PlexDL.Player
             else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
+
     }
 }

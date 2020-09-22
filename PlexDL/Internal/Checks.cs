@@ -3,7 +3,6 @@ using LogDel.Enums;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Enums;
-using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -34,7 +33,7 @@ namespace PlexDL.Internal
                 //try the metadata import and then show it if successful
                 try
                 {
-                    var metadata = ImportExport.MetadataFromFile(file);
+                    var metadata = MetadataImportExport.MetadataFromFile(file);
                     if (metadata != null)
                         UiUtils.RunMetadataWindow(metadata, appRun);
                     else
@@ -110,14 +109,11 @@ namespace PlexDL.Internal
         {
             try
             {
-                //path of the default settings file
-                var path = $@"{Strings.PlexDlAppData}\.default";
-
                 //check if default settings have been created
-                if (File.Exists(path))
+                if (DefaultSettingsManager.SettingsExist)
                 {
                     //try and load it with no messages
-                    var defaultProfile = ProfileImportExport.ProfileFromFile(path, true);
+                    var defaultProfile = DefaultSettingsManager.LoadDefaultSettings();
 
                     //if it isn't null, then assign it to the global settings
                     if (defaultProfile != null)
@@ -127,7 +123,7 @@ namespace PlexDL.Internal
                 {
                     //create the file with no messages
                     if (ObjectProvider.Settings != null)
-                        ObjectProvider.Settings.SaveToDefault();
+                        ObjectProvider.Settings.CommitDefaultSettings();
                 }
             }
             catch (Exception ex)

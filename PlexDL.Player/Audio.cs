@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Audio Class)
+        #endregion
 
         internal Audio(Player player)
         {
@@ -35,7 +35,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's audio output is enabled (default: true).
+        /// Gets or sets a value that indicates whether the audio output of the player is enabled (default: true).
         /// </summary>
         public bool Enabled
         {
@@ -48,7 +48,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's audio output is muted (default: false).
+        /// Gets or sets a value that indicates whether the audio output from the player is muted.
         /// </summary>
         public bool Mute
         {
@@ -61,7 +61,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the active audio track of the playing media. See also: Player.Media.GetAudioTracks.
+        /// Gets or sets the active audio track of the playing media. See also: Player.Audio.TrackCount and Player.Audio.GetTracks.
         /// </summary>
         public int Track
         {
@@ -74,7 +74,27 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of channels in the active audio track of the playing media. See also: Player.Audio.DeviceChannelCount.
+        /// Gets the number of audio tracks in the playing media. See also: Player.Audio.Track and Player.Audio.GetTracks.
+        /// </summary>
+        public int TrackCount
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._audioTrackCount;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of the audio tracks in the playing media or null if no audio tracks are present. See also: Player.Audio.Track and Player.Audio.TrackCount.
+        /// </summary>
+        public AudioTrack[] GetTracks()
+        {
+            return _base.AV_GetAudioTracks();
+        }
+
+        /// <summary>
+        /// Gets the number of audio channels (eg 2 for stereo) in the active audio track of the playing media. See also: Player.Audio.DeviceChannelCount.
         /// </summary>
         public int ChannelCount
         {
@@ -87,7 +107,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of channels of the player's audio output device. See also: Player.Audio.ChannelCount.
+        /// Gets the number of audio output channels of the player's audio output device. See also: Player.Audio.ChannelCount.
         /// </summary>
         public int DeviceChannelCount
         {
@@ -197,7 +217,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the volume of the player's audio output device, values from 0.0 (mute) to 1.0 (max).
+        /// Gets or sets the volume of the audio output device of the player, values from 0.0 (mute) to 1.0 (max).
         /// </summary>
         public float MasterVolume
         {
@@ -238,15 +258,15 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
-                bool setDevice = false;
+                _base._lastError    = Player.NO_ERROR;
+                bool setDevice      = false;
 
                 if (value == null)
                 {
                     if (_base._audioDevice != null)
                     {
-                        _base._audioDevice = null;
-                        setDevice = true;
+                        _base._audioDevice  = null;
+                        setDevice           = true;
                     }
                 }
                 else if (_base._audioDevice == null || value._id != _base._audioDevice._id)
@@ -256,8 +276,8 @@ namespace PlexDL.Player
                     {
                         if (value._id == devices[i]._id)
                         {
-                            _base._audioDevice = devices[i];
-                            setDevice = true;
+                            _base._audioDevice  = devices[i];
+                            setDevice           = true;
                             break;
                         }
                     }
@@ -283,7 +303,7 @@ namespace PlexDL.Player
                             if (_base._audioDevice == null) _base.StopSystemDevicesChangedHandlerCheck();
                             else _base.StartSystemDevicesChangedHandlerCheck();
                         }
-                        if (_base._mediaAudioDeviceChanged != null) _base._mediaAudioDeviceChanged(_base, EventArgs.Empty);
+                        _base._mediaAudioDeviceChanged?.Invoke(_base, EventArgs.Empty);
                     }
                     else
                     {
@@ -300,11 +320,10 @@ namespace PlexDL.Player
         {
             get
             {
-                IMMDeviceCollection deviceCollection;
                 uint count = 0;
 
                 IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out deviceCollection);
+                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out IMMDeviceCollection deviceCollection);
                 Marshal.ReleaseComObject(deviceEnumerator);
 
                 if (deviceCollection != null)
@@ -323,21 +342,16 @@ namespace PlexDL.Player
         /// </summary>
         public AudioDevice[] GetDevices()
         {
-            IMMDeviceCollection deviceCollection;
-            IMMDevice device;
             AudioDevice[] audioDevices = null;
-
             _base._lastError = HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-            deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out deviceCollection);
+            deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, (uint)DeviceState.Active, out IMMDeviceCollection deviceCollection);
             Marshal.ReleaseComObject(deviceEnumerator);
 
             if (deviceCollection != null)
             {
-                uint count;
-                deviceCollection.GetCount(out count);
-
+                deviceCollection.GetCount(out uint count);
                 if (count > 0)
                 {
                     audioDevices = new AudioDevice[count];
@@ -345,7 +359,7 @@ namespace PlexDL.Player
                     {
                         audioDevices[i] = new AudioDevice();
 
-                        deviceCollection.Item((uint)i, out device);
+                        deviceCollection.Item((uint)i, out IMMDevice device);
                         Player.GetDeviceInfo(device, audioDevices[i]);
 
                         Marshal.ReleaseComObject(device);
@@ -362,11 +376,10 @@ namespace PlexDL.Player
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
-            IMMDevice device;
             AudioDevice audioDevice = null;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-            deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out device);
+            deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out IMMDevice device);
             Marshal.ReleaseComObject(deviceEnumerator);
 
             if (device != null)

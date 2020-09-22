@@ -9,13 +9,10 @@ namespace PlexDL.Player
     {
         [PreserveSig]
         void Activate([In] ref Guid iid, [In] uint dwClsCtx, [In] IntPtr pActivationParams, [MarshalAs(UnmanagedType.IUnknown)] out object ppInterface);
-
         [PreserveSig]
         void OpenPropertyStore([In] uint stgmAccess, [MarshalAs(UnmanagedType.Interface)] out IPropertyStore ppProperties);
-
         [PreserveSig]
         void GetId([MarshalAs(UnmanagedType.LPWStr)] out string ppstrId);
-
         [PreserveSig]
         void GetState(out uint pdwState);
     }

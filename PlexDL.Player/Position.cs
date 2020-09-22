@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Position Class)
+        #endregion
 
         internal Position(Player player)
         {
@@ -22,33 +22,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media. Same as Player.Position.FromBegin.
-        /// </summary>
-        public TimeSpan Current
-        {
-            get
-            {
-                if (_base._playing)
-                {
-                    _base._lastError = Player.NO_ERROR;
-                    if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
-                    else return TimeSpan.FromTicks(_base.PositionX);
-                }
-                else
-                {
-                    _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                    return TimeSpan.Zero;
-                }
-            }
-            set
-            {
-                if (!_base._fileMode || !_base._playing) _base._lastError = HResult.MF_E_NOT_AVAILABLE;
-                else _base.SetPosition(value.Ticks);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media. Same as Player.Position.Current.
+        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media.
         /// </summary>
         public TimeSpan FromBegin
         {
@@ -241,7 +215,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Changes the playback position of the playing media in any direction by the given amount of seconds.
         /// </summary>
-        /// <param name="seconds">The number of seconds to skip (use a negative value to skip backwards).</param>
+        /// <param name="seconds">The number of seconds to skip. Use a negative value to skip backwards.</param>
         public int Skip(int seconds)
         {
             if (!_base._fileMode || !_base._playing) _base._lastError = HResult.MF_E_NOT_AVAILABLE;
@@ -286,5 +260,6 @@ namespace PlexDL.Player
                 }
             }
         }
+
     }
 }

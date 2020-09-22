@@ -1,7 +1,7 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.99.1
-    July 2020, The Netherlands
+    PVS.MediaPlayer - Version 1.0
+    September 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
@@ -9,7 +9,7 @@
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -53,7 +53,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    July 2020, The Netherlands
+    September 2020, The Netherlands
 
     ****************************************************************/
 
@@ -64,14 +64,8 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-#endregion Usings
+#endregion
 
-#region Disable Some Warnings
-
-// the library can be compiled with all versions of c#:
-#pragma warning disable IDE0018 // Inline variable declaration
-
-#endregion Disable Some Warnings
 
 namespace PlexDL.Player
 {
@@ -82,24 +76,24 @@ namespace PlexDL.Player
             Provides SubRip (.srt) subtitles by subscribing to the Player.Events.MediaSubtitleChanged event.
         */
 
+
         // ******************************** Subtitles - Fields
 
         #region Subtitles - Fields
 
         // constants
-        private const int ST_DEFAULT_DIRECTORY_DEPTH = 0;
+        private const int               ST_DEFAULT_DIRECTORY_DEPTH  = 0;
 
         // static regex
-        internal static Regex st_TimeRegex = new Regex("(?<start>[0-9:,]+) --> (?<end>[0-9:,]+)", RegexOptions.Compiled);
-
-        internal static Regex st_TagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
+        internal static Regex           st_TimeRegex = new Regex("(?<start>[0-9:,]+) --> (?<end>[0-9:,]+)", RegexOptions.Compiled);
+        internal static Regex           st_TagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
         // classes
         private sealed class SubtitlesSearchData
         {
-            internal bool Found;
-            internal string FileName;
-            internal StringBuilder FilePath = new StringBuilder(260);
+            internal bool               Found;
+            internal string             FileName;
+            internal StringBuilder      FilePath = new StringBuilder(260);
 
             internal SubtitlesSearchData(string fileName)
             {
@@ -109,14 +103,14 @@ namespace PlexDL.Player
 
         internal sealed class SubtitleItem
         {
-            internal long StartTime;
-            internal long EndTime;
+            internal long   StartTime;
+            internal long   EndTime;
             internal string Text;
 
             internal SubtitleItem(long startTime, long endTime, string text)
             {
-                StartTime = startTime;
-                EndTime = endTime;
+                StartTime   = startTime;
+                EndTime     = endTime;
 
                 // remove last return and/or linefeed chars
                 Text = text.TrimEnd('\r', '\n');
@@ -124,53 +118,33 @@ namespace PlexDL.Player
         }
 
         // event args
-        internal SubtitleEventArgs st_SubtitleChangedArgs;
+        internal SubtitleEventArgs      st_SubtitleChangedArgs;
 
         // general
-        internal bool st_SubtitlesEnabled;
-
-        internal bool st_HasSubtitles;
-        internal string st_SubtitlesName;   // filename of subtitles being used
-        internal SubtitleItem[] st_SubtitleItems;
-        internal int st_SubTitleCount;
-        private bool st_SubtitlesBusy;
+        internal bool                   st_SubtitlesEnabled;
+        internal bool                   st_HasSubtitles;
+        internal string                 st_SubtitlesName;   // filename of subtitles being used
+        internal SubtitleItem[]         st_SubtitleItems;
+        internal int                    st_SubTitleCount;
+        private bool                    st_SubtitlesBusy;
 
         // find and decode subtitles file
-        internal string st_FileName;        // set by user
-
-        internal string st_Directory;       // set by user
-        internal int st_DirectoryDepth = ST_DEFAULT_DIRECTORY_DEPTH;
-        internal Encoding st_Encoding = Encoding.Default;
-        internal long st_TimeShift;
-        internal bool st_RemoveHTMLTags = true;
-        internal bool st_AudioOnlyEnabled;
+        internal string                 st_FileName;        // set by user
+        internal string                 st_Directory;       // set by user
+        internal int                    st_DirectoryDepth   = ST_DEFAULT_DIRECTORY_DEPTH;
+        internal Encoding               st_Encoding         = Encoding.Default;
+        internal long                   st_TimeShift;
+        internal bool                   st_RemoveHTMLTags   = true;
+        internal bool                   st_AudioOnlyEnabled;
 
         // used with get current subtitle
-        internal bool st_SubtitleOn;
+        internal bool                   st_SubtitleOn;
+        internal int                    st_CurrentIndex     = -1;
+        private long                    st_CurrentStart;
+        private long                    st_CurrentEnd;
 
-        internal int st_CurrentIndex = -1;
-        private long st_CurrentStart;
-        private long st_CurrentEnd;
+        #endregion
 
-        #endregion Subtitles - Fields
-
-        // ******************************** Subtitles - Main
-
-        #region Subtitles - Main
-
-        /// <summary>
-        /// Provides access to the subtitles settings of the player (for example, Player.Subtitles.Enabled).
-        /// </summary>
-        public Subtitles Subtitles
-        {
-            get
-            {
-                if (_subtitlesClass == null) _subtitlesClass = new Subtitles(this);
-                return _subtitlesClass;
-            }
-        }
-
-        #endregion Subtitles - Main
 
         // ******************************** Subtitles - Start / Exists / Stop / Eventhandler / Find
 
@@ -226,23 +200,23 @@ namespace PlexDL.Player
 
                 if (st_SubtitleOn)
                 {
-                    st_SubtitleChangedArgs._index = -1;
+                    st_SubtitleChangedArgs._index    = -1;
                     st_SubtitleChangedArgs._subtitle = string.Empty;
                     _mediaSubtitleChanged(this, st_SubtitleChangedArgs);
 
-                    st_SubtitleOn = false;
+                    st_SubtitleOn   = false;
                 }
 
-                st_HasSubtitles = false;
-                st_SubtitlesName = string.Empty;
+                st_HasSubtitles     = false;
+                st_SubtitlesName    = string.Empty;
 
                 //st_LastPosition     = 0;
-                st_CurrentIndex = -1;
-                st_CurrentStart = 0;
-                st_CurrentEnd = 0;
+                st_CurrentIndex     = -1;
+                st_CurrentStart     = 0;
+                st_CurrentEnd       = 0;
 
-                st_FileName = string.Empty;
-                st_TimeShift = 0;
+                st_FileName         = string.Empty;
+                st_TimeShift        = 0;
 
                 Subtitles_Dispose();
             }
@@ -263,8 +237,7 @@ namespace PlexDL.Player
                 {
                     bool backwards = position < st_CurrentStart;
 
-                    int index;// = 0;
-                    if (Subtitle_Find(position, st_CurrentIndex, backwards, out index))
+                    if (Subtitle_Find(position, st_CurrentIndex, backwards, out int index))
                     {
                         if (!st_SubtitleOn || index != st_CurrentIndex)
                         {
@@ -358,7 +331,8 @@ namespace PlexDL.Player
             return found;
         }
 
-        #endregion Subtitles - Start / Exists / Stop / Position Eventhandler / Find
+        #endregion
+
 
         // ******************************** Subtitles - Find File / Search File
 
@@ -397,7 +371,8 @@ namespace PlexDL.Player
             catch { /* ignore */ }
         }
 
-        #endregion Subtitles - Find File / Search File
+        #endregion
+
 
         // ******************************** Subtitles - Get From File / Count / Dispose
 
@@ -414,17 +389,17 @@ namespace PlexDL.Player
                 int count = Subtitles_Count(reader);
                 if (count > 0)
                 {
-                    bool error = false;
-                    int readStep = 0;
-                    Match m;
-                    string line;
+                    bool    error       = false;
+                    int     readStep    = 0;
+                    Match   m;
+                    string  line;
 
-                    TimeSpan startTime = TimeSpan.Zero;
-                    TimeSpan endTime = TimeSpan.Zero;
-                    string text = "";
+                    TimeSpan startTime  = TimeSpan.Zero;
+                    TimeSpan endTime    = TimeSpan.Zero;
+                    string  text        = "";
 
-                    int index = 0;
-                    st_SubtitleItems = new SubtitleItem[count];
+                    int index           = 0;
+                    st_SubtitleItems    = new SubtitleItem[count];
 
                     while ((line = (reader.ReadLine())) != null && !error)
                     {
@@ -437,12 +412,10 @@ namespace PlexDL.Player
                             case 0: // Id
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                                 if (int.TryParse(line, out testId))
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
                                 {
                                     readStep = 1;
                                 }
                                 break;
-
                             case 1: // Time
                                 m = st_TimeRegex.Match(line);
                                 if (m.Success)
@@ -453,9 +426,7 @@ namespace PlexDL.Player
                                 else error = true;
                                 readStep = 2;
                                 break;
-
                             case 2: // Text
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
                                 if (int.TryParse(line, out testId)) // if not id (subtitle number)
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
                                 {
@@ -464,7 +435,6 @@ namespace PlexDL.Player
                                     text = "";
                                     readStep = 1;
                                 }
-                                //else text += line + '\r';
                                 else text += line + "\r\n";
                                 break;
                         }
@@ -499,12 +469,10 @@ namespace PlexDL.Player
         // ... also for dimensioning the subtitles array
         private int Subtitles_Count(StreamReader reader)
         {
-            bool error = false;
+            bool error          = false;
             string line;
-            int readStep = 0;
-            int count = 0;
-            TimeSpan startTime;  //= TimeSpan.Zero;
-            TimeSpan endTime;    //= TimeSpan.Zero;
+            int readStep        = 0;
+            int count           = 0;
 
             while ((line = (reader.ReadLine())) != null && !error)
             {
@@ -517,27 +485,19 @@ namespace PlexDL.Player
                     case 0: // Id
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                         if (int.TryParse(line, out testId)) readStep = 1;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
                         break;
-
                     case 1: // Time
                         Match m = st_TimeRegex.Match(line);
                         if (m.Success)
                         {
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                            if (!TimeSpan.TryParse(m.Groups["start"].Value.Replace(",", "."), out startTime)) error = true;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                            if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out endTime)) error = true;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                            if (!TimeSpan.TryParse(m.Groups["start"].Value.Replace(",", "."), out TimeSpan startTime)) error = true;
+                            if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out TimeSpan endTime)) error = true;
                             ++count;
                         }
                         else error = true;
                         readStep = 2;
                         break;
-
                     case 2: // Text
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
                         if (int.TryParse(line, out testId))
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
                         {
@@ -566,6 +526,6 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Subtitles - Get From File / Count / Dispose
+        #endregion
     }
 }

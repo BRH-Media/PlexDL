@@ -5,7 +5,6 @@
     {
         MEUnknown = 0,
         MEError = 1,
-
         //MEExtendedType = 2,
         //MENonFatalError = 3,
         //MEGenericV1Anchor = MENonFatalError,
@@ -16,8 +15,7 @@
         //MESessionPaused = 104,
         //MESessionStopped = 105,
         MESessionClosed = 106,
-
-        //MESessionEnded = 107,
+        MESessionEnded = 107,
         //MESessionRateChanged = 108,
         //MESessionScrubSampleComplete = 109,
         //MESessionCapabilitiesChanged = 110,
@@ -52,8 +50,7 @@
         //MEStreamStopped = 208,
         //MESourcePaused = 209,
         //MEStreamPaused = 210,
-        MEEndOfPresentation = 211,
-
+        //MEEndOfPresentation = 211,
         //MEEndOfStream = 212,
         //MEMediaSample = 213,
         //MEStreamTick = 214,
@@ -93,7 +90,6 @@
 
         //MECaptureAudioSessionVolumeChanged = 322,
         MECaptureAudioSessionDeviceRemoved = 323,
-
         //MECaptureAudioSessionFormatChanged = 324,
         //MECaptureAudioSessionDisconnected = 325,
         //MECaptureAudioSessionExclusiveModeOverride = 326,
@@ -126,7 +122,6 @@
         //METransformInputStreamStateChanged,
         //MEByteStreamCharacteristicsChanged = 700,
         MEVideoCaptureDeviceRemoved = 800,
-
         //MEVideoCaptureDevicePreempted = 801,
         //MEStreamSinkFormatInvalidated = 802,
         //MEEncodingParameters = 803,

@@ -8,13 +8,10 @@ namespace PlexDL.Player
     {
         [PreserveSig]
         int GetPeakValue(out float pfPeak);
-
         [PreserveSig]
         int GetMeteringChannelCount(out int pnChannelCount);
-
         [PreserveSig]
         int GetChannelsPeakValues(int u32ChannelCount, [In] IntPtr afPeakValues);
-
         [PreserveSig]
         int QueryHardwareSupport(out int pdwHardwareSupportMask);
     };

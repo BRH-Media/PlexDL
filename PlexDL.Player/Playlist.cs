@@ -18,7 +18,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Playlist Class)
+        #endregion
 
         internal Playlist(Player player)
         {
@@ -26,7 +26,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the contents of the specified playlist file as a list of file names. Returns null if no or empty playlist is found.
+        /// Returns the contents (file names only) of the specified m3u type playlist file as a list of file names. Returns null if no or empty playlist is found.
         /// </summary>
         /// <param name="playlist">The path and file name of the playlist file. Supported file types are .m3u and .m3u8.</param>
         public string[] Open(string playlist)
@@ -99,7 +99,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves the specified list of file names as a playlist file. If the playlist file already exists, it is overwritten.
+        /// Saves the specified file name list as an m3u type playlist file. If the playlist file already exists, it is overwritten.
         /// </summary>
         /// <param name="playlist">The path and file name of the playlist. Supported file types are .m3u and .m3u8.</param>
         /// <param name="fileNames">The list of media file names to save to the specified playlist file.</param>
@@ -183,70 +183,5 @@ namespace PlexDL.Player
             return relativePath;
         }
 
-        ///// <summary>
-        ///// Returns a shuffled playlist from the specified playlist (shallow copy using the Fisher/Yates/Durstenfeld shuffle algorithm).
-        ///// </summary>
-        ///// <param name="playlist">The playlist (media file names) to shuffle.</param>
-        //public string[] Shuffle(string[] playlist)
-        //{
-        //    _base._lastError = Player.NO_ERROR;
-
-        //    if (playlist == null || playlist.Length < 2) return playlist;
-
-        //    Random rnd              = new Random();
-        //    int n                   = playlist.Length;
-        //    string[] shuffleList    = new string[n];
-        //    Array.Copy(playlist, shuffleList, n);
-
-        //    while (n > 0)
-        //    {
-        //        int k           = rnd.Next(n--);
-        //        string temp     = shuffleList[k];
-        //        shuffleList[k]  = shuffleList[n];
-        //        shuffleList[n]  = temp;
-        //    }
-        //    return shuffleList;
-        //}
-
-        ///// <summary>
-        ///// Returns a list of shuffled indexes from the specified playlist (using the Fisher/Yates/Durstenfeld shuffle algorithm).
-        ///// </summary>
-        ///// <param name="playlist">The playlist (media file names) whose indexes are to be shuffled.</param>
-        //public int[] ShuffleIndex(string[] playlist)
-        //{
-        //    _base._lastError = Player.NO_ERROR;
-
-        //    if (playlist == null || playlist.Length < 2) return new int[1];
-        //    return GetShuffleIndexes(playlist.Length);
-        //}
-
-        ///// <summary>
-        ///// Returns a list of shuffled indexes from the specified playlist (using the Fisher/Yates/Durstenfeld shuffle algorithm).
-        ///// </summary>
-        ///// <param name="playlist">The playlist (media file names) whose indexes are to be shuffled.</param>
-        //public int[] ShuffleIndex(List<string> playlist)
-        //{
-        //    _base._lastError = Player.NO_ERROR;
-
-        //    if (playlist == null || playlist.Count < 2) return new int[1];
-        //    return GetShuffleIndexes(playlist.Count);
-        //}
-
-        //private int[] GetShuffleIndexes(int count)
-        //{
-        //    Random rnd = new Random();
-        //    int n = count;
-        //    int[] indexes = new int[n];
-        //    for (int i = 0; i < n; i++) indexes[i] = i;
-
-        //    while (n > 0)
-        //    {
-        //        int k = rnd.Next(n--);
-        //        int temp = indexes[k];
-        //        indexes[k] = indexes[n];
-        //        indexes[n] = temp;
-        //    }
-        //    return indexes;
-        //}
     }
 }

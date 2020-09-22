@@ -10,7 +10,7 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class SubtitleEventArgs : HideObjectEventArgs
     {
-        internal int _index;
+        internal int    _index;
         internal string _subtitle;
 
         /// <summary>

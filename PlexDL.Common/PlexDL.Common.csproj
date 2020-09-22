@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\DownloadInfoGatherers.cs" />
-    <Compile Include="API\ImportExport.cs" />
+    <Compile Include="API\MetadataImportExport.cs" />
     <Compile Include="API\KeyGatherers.cs" />
     <Compile Include="API\Metadata\Handlers\Parsers\XmlMetadataIntegers.cs" />
     <Compile Include="API\Metadata\Handlers\Parsers\XmlMetadataObjects.cs" />
@@ -88,9 +88,9 @@
     <Compile Include="CastAPI\PlayQueue\MediaContainerVideoWriter.cs" />
     <Compile Include="CastAPI\PlexMediaData.cs" />
     <Compile Include="CastAPI\QueueResult.cs" />
+    <Compile Include="DefaultSettingsManager.cs" />
     <Compile Include="DefaultStringVariables.cs" />
     <Compile Include="Extensions\DeepCloneExt.cs" />
-    <Compile Include="Extensions\SaveToDefaultExt.cs" />
     <Compile Include="FileAssociationManager.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="Globals\BuildState.cs" />

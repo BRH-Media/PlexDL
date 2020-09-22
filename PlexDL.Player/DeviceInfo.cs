@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// A class that is used as a base class for device information classes.
+    /// A class that is used as a base class for the device information classes.
     /// </summary>
     [CLSCompliant(true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -16,7 +16,7 @@ namespace PlexDL.Player
         internal string _name;
         internal string _adapter;
 
-        #endregion Fields (Device Info Class)
+        #endregion
 
         /// <summary>
         /// Gets the identifier of the device.

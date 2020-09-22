@@ -14,7 +14,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Speed Class)
+        #endregion
 
         internal Speed(Player player)
         {
@@ -42,7 +42,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether stream thinning (displaying fewer video frames) should be used when playing media. This option can be used to increase the maximum playback speed of media (default: false).
+        /// Gets or sets a value that indicates whether stream thinning (displaying fewer video frames) should be used when playing media. This option can be used to increase the maximum playback speed of media (use together with Player.Audio.Cut for very fast playback speeds) (default: false).
         /// </summary>
         public bool Boost
         {
@@ -65,14 +65,13 @@ namespace PlexDL.Player
 
                         if (_base._speed != Player.DEFAULT_SPEED)
                         {
-                            float trueSpeed;
-                            _base.mf_RateControl.GetRate(_base._speedBoost, out trueSpeed);
+                            _base.mf_RateControl.GetRate(_base._speedBoost, out float trueSpeed);
                             if (_base._speed != trueSpeed)
                             {
                                 _base._speed = trueSpeed == 0 ? 1 : trueSpeed;
                                 _base.mf_Speed = _base._speed;
                                 if (_base._speedSlider != null) _base.SpeedSlider_ValueToSlider(_base._speed);
-                                if (_base._mediaSpeedChanged != null) _base._mediaSpeedChanged(this, EventArgs.Empty);
+                                _base._mediaSpeedChanged?.Invoke(this, EventArgs.Empty);
                             }
                         }
                     }

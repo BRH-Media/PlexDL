@@ -23,13 +23,22 @@ namespace PlexDL.UI
         public bool IsWmp = false;
 
         public Timer T1 = new Timer();
+        public PlexObject StreamingContent { get; set; }
 
         public Player()
         {
             InitializeComponent();
         }
 
-        public PlexObject StreamingContent { get; set; }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
 
         private void FrmPlayer_Load(object sender, EventArgs e)
         {

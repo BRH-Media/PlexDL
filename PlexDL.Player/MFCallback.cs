@@ -5,22 +5,20 @@ namespace PlexDL.Player
 {
     internal sealed class MFCallback : IMFAsyncCallback
     {
-        private Player _basePlayer;
-
-        private delegate void EndOfMediaDelegate();
-
-        private EndOfMediaDelegate CallEndOfMedia;
+        private Player              _basePlayer;
+        private delegate void       EndOfMediaDelegate();
+        private EndOfMediaDelegate  CallEndOfMedia;
 
         public MFCallback(Player player)
         {
-            _basePlayer = player;
-            CallEndOfMedia = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
+            _basePlayer     = player;
+            CallEndOfMedia  = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
         }
 
         public void Dispose()
         {
-            _basePlayer = null;
-            CallEndOfMedia = null;
+            _basePlayer     = null;
+            CallEndOfMedia  = null;
         }
 
         public HResult GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
@@ -32,23 +30,22 @@ namespace PlexDL.Player
 
         public HResult Invoke(IMFAsyncResult result)
         {
-            IMFMediaEvent mediaEvent = null;
-            MediaEventType mediaEventType = MediaEventType.MEUnknown;
-            HResult errorCode;
+            IMFMediaEvent   mediaEvent      = null;
+            MediaEventType  mediaEventType  = MediaEventType.MEUnknown;
             bool getNext = true;
 
             try
             {
                 _basePlayer.mf_MediaSession.EndGetEvent(result, out mediaEvent);
                 mediaEvent.GetType(out mediaEventType);
-                mediaEvent.GetStatus(out errorCode);
+                mediaEvent.GetStatus(out HResult errorCode);
 
                 if (_basePlayer._playing)
                 {
                     if (mediaEventType == MediaEventType.MEError
                         || (_basePlayer._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
                         || (_basePlayer._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
-                    //if (errorCode < 0)
+                        //if (errorCode < 0)
                     {
                         _basePlayer._lastError = errorCode;
                         errorCode = Player.NO_ERROR;
@@ -57,7 +54,7 @@ namespace PlexDL.Player
 
                     if (errorCode >= 0)
                     {
-                        if (!getNext || mediaEventType == MediaEventType.MEEndOfPresentation)
+                        if (!getNext || mediaEventType == MediaEventType.MESessionEnded)
                         {
                             if (getNext)
                             {

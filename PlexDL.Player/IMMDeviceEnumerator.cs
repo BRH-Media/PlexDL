@@ -7,18 +7,14 @@ namespace PlexDL.Player
     internal interface IMMDeviceEnumerator
     {
         [PreserveSig]
-        void EnumAudioEndpoints([ComAliasName("MMDevAPI.Interop.EDataFlow")][In] EDataFlow dataFlow, [In] uint dwStateMask, [MarshalAs(UnmanagedType.Interface)] out IMMDeviceCollection ppDevices);
-
+        void EnumAudioEndpoints([ComAliasName("MMDevAPI.Interop.EDataFlow")] [In] EDataFlow dataFlow, [In] uint dwStateMask, [MarshalAs(UnmanagedType.Interface)] out IMMDeviceCollection ppDevices);
         [PreserveSig]
-        void GetDefaultAudioEndpoint([ComAliasName("MMDevAPI.Interop.EDataFlow")][In] EDataFlow dataFlow, [ComAliasName("MMDevAPI.Interop.ERole")][In] ERole role, [MarshalAs(UnmanagedType.Interface)] out IMMDevice ppEndpoint);
-
+        void GetDefaultAudioEndpoint([ComAliasName("MMDevAPI.Interop.EDataFlow")] [In] EDataFlow dataFlow, [ComAliasName("MMDevAPI.Interop.ERole")] [In] ERole role, [MarshalAs(UnmanagedType.Interface)] out IMMDevice ppEndpoint);
         [PreserveSig]
-        void GetDevice([MarshalAs(UnmanagedType.LPWStr)][In] string pwstrId, [MarshalAs(UnmanagedType.Interface)] out IMMDevice ppDevice);
-
+        void GetDevice([MarshalAs(UnmanagedType.LPWStr)] [In] string pwstrId, [MarshalAs(UnmanagedType.Interface)] out IMMDevice ppDevice);
         [PreserveSig]
-        void RegisterEndpointNotificationCallback([MarshalAs(UnmanagedType.Interface)][In] IMMNotificationClient pClient);
-
+        void RegisterEndpointNotificationCallback([MarshalAs(UnmanagedType.Interface)] [In] IMMNotificationClient pClient);
         [PreserveSig]
-        void UnregisterEndpointNotificationCallback([MarshalAs(UnmanagedType.Interface)][In] IMMNotificationClient pClient);
+        void UnregisterEndpointNotificationCallback([MarshalAs(UnmanagedType.Interface)] [In] IMMNotificationClient pClient);
     }
 }

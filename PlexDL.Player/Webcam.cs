@@ -14,9 +14,11 @@ namespace PlexDL.Player
     {
         #region Fields (Webcam Class)
 
-        private Player _base;
+        private Player          _base;
+        //private VideoRecorder   _recorderClass;
 
-        #endregion Fields (Webcam Class)
+        #endregion
+
 
         #region Main / Playing / Device / AudioInput / Format / GetDevices / Update
 
@@ -75,7 +77,7 @@ namespace PlexDL.Player
                     {
                         _base._micDevice = value;
                         _base.AV_UpdateTopology();
-                        if (_base._mediaAudioInputDeviceChanged != null) _base._mediaAudioInputDeviceChanged(_base, EventArgs.Empty);
+                        _base._mediaAudioInputDeviceChanged?.Invoke(_base, EventArgs.Empty);
                     }
                 }
                 else _base._lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
@@ -112,7 +114,7 @@ namespace PlexDL.Player
                                 _base._hasVideoBounds = false;
                                 _base._display.Invalidate();
                             }
-                            if (_base._mediaWebcamFormatChanged != null) _base._mediaWebcamFormatChanged(_base, EventArgs.Empty);
+                            _base._mediaWebcamFormatChanged?.Invoke(_base, EventArgs.Empty);
                         }
                     }
                     else _base._lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
@@ -127,19 +129,12 @@ namespace PlexDL.Player
         {
             get
             {
-                IMFAttributes attributes;
-                IMFActivate[] webcams;
-                int webcamCount;
                 HResult result;
 
-                MFExtern.MFCreateAttributes(out attributes, 1);
+                MFExtern.MFCreateAttributes(out IMFAttributes attributes, 1);
                 attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
-                if (Environment.Version.Major < 4) // fix for NET 2.0 and 3.5 - only 1 device (? SizeParamIndex error)
-                {
-                    result = MFExtern.MFEnumDeviceSourcesEx(attributes, out webcams, out webcamCount);
-                    if (webcams != null) webcamCount = webcams.Length;
-                }
-                else result = MFExtern.MFEnumDeviceSources(attributes, out webcams, out webcamCount);
+
+                result = MFExtern.MFEnumDeviceSources(attributes, out IMFActivate[] webcams, out int webcamCount);
                 Marshal.ReleaseComObject(attributes);
 
                 if (result == Player.NO_ERROR && webcams != null)
@@ -156,36 +151,25 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the system's enabled webcam devices. Returns null if no enabled webcam devices are present. See also: Player.Webcam.DeviceCount.
+        /// Returns a list of the enabled webcam devices of the system. Returns null if no enabled webcam devices are present. See also: Player.Webcam.DeviceCount.
         /// </summary>
         public WebcamDevice[] GetDevices()
         {
             WebcamDevice[] devices = null;
-            IMFAttributes attributes;
-            IMFActivate[] webcams;
-            int webcamCount;
-            int length;
             HResult result;
 
-            MFExtern.MFCreateAttributes(out attributes, 1);
+            MFExtern.MFCreateAttributes(out IMFAttributes attributes, 1);
             attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
-            if (Environment.Version.Major < 4) // fix for NET 2.0 and 3.5 - only 1 device (? SizeParamIndex error)
-            {
-                result = MFExtern.MFEnumDeviceSourcesEx(attributes, out webcams, out webcamCount);
-                if (webcams != null) webcamCount = webcams.Length;
-            }
-            else result = MFExtern.MFEnumDeviceSources(attributes, out webcams, out webcamCount);
 
+            result = MFExtern.MFEnumDeviceSources(attributes, out IMFActivate[] webcams, out int webcamCount);
             if (result == Player.NO_ERROR && webcams != null)
             {
                 devices = new WebcamDevice[webcamCount];
-
                 for (int i = 0; i < webcamCount; i++)
                 {
                     devices[i] = new WebcamDevice();
-
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
-                    webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_FRIENDLY_NAME, _base._textBuffer1, _base._textBuffer1.Capacity, out length);
+                    webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_FRIENDLY_NAME, _base._textBuffer1, _base._textBuffer1.Capacity, out int length);
                     devices[i]._name = _base._textBuffer1.ToString();
                     webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK, _base._textBuffer1, _base._textBuffer1.Capacity, out length);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
@@ -207,17 +191,15 @@ namespace PlexDL.Player
         {
             if (_base._webcamMode)
             {
-                //_base._lastError = Player.NO_ERROR;
                 _base.AV_UpdateTopology();
                 if (_base._hasOverlay) _base.AV_ShowOverlay();
-                //if (_base._hasOverlay && etc...) SafeNativeMethods.ShowWindow(_base._overlay.Handle, 8);
                 _base._lastError = Player.NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
             return (int)_base._lastError;
         }
 
-        #endregion Main / Playing / Device / AudioInput / Format / GetDevices / Update
+        #endregion
 
         #region Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
 
@@ -319,9 +301,11 @@ namespace PlexDL.Player
                 WebcamSettings settings = null;
                 if (_base._webcamMode)
                 {
-                    settings = new WebcamSettings();
-                    settings._webcamName = _base._webcamDevice.Name;
-                    settings._format = _base._webcamFormat;
+                    settings = new WebcamSettings
+                    {
+                        _webcamName = _base._webcamDevice.Name,
+                        _format     = _base._webcamFormat
+                    };
 
                     WebcamProperty props = GetProcAmpProperties(VideoProcAmpProperty.BacklightCompensation);
                     settings._backlight = props._value;
@@ -367,6 +351,7 @@ namespace PlexDL.Player
                     settings._whiteBalance = props._value;
                     settings._autoWhiteBalance = props._auto;
 
+
                     props = GetControlProperties(CameraControlProperty.Exposure);
                     settings._exposure = props._value;
                     settings._autoExposure = props._auto;
@@ -411,7 +396,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Applies previously obtained webcam settings selectively to the playing webcam. See also: Player.Webcam.Settings.
+        /// Applies previously obtained (saved) webcam settings selectively to the playing webcam. See also: Player.Webcam.Settings.
         /// </summary>
         /// <param name="settings">The settings to be applied to the playing webcam. The settings must have been obtained earlier from the webcam, settings from other webcams cannot be used.</param>
         /// <param name="format">A value that indicates whether to apply the webcam video output format (size and fps).</param>
@@ -500,7 +485,8 @@ namespace PlexDL.Player
             return (int)_base._lastError;
         }
 
-        #endregion Public - SetProperty / UpdateProperty / ResetProperty / Settings / SetSettings
+        #endregion
+
 
         #region Private - Get/Set Video Control Properties / ProcAmp Properties
 
@@ -508,16 +494,16 @@ namespace PlexDL.Player
         {
             HResult result = HResult.ERROR_NOT_READY;
 
-            WebcamProperty settings = new WebcamProperty();
-            settings._name = property.ToString();
-            settings._controlProp = property;
+            WebcamProperty settings = new WebcamProperty
+            {
+                _name        = property.ToString(),
+                _controlProp = property
+            };
 
             if (_base._webcamMode)
             {
-                CameraControlFlags flags;
-
                 IAMCameraControl control = _base.mf_MediaSource as IAMCameraControl;
-                result = control.GetRange(property, out settings._min, out settings._max, out settings._step, out settings._default, out flags);
+                result = control.GetRange(property, out settings._min, out settings._max, out settings._step, out settings._default, out CameraControlFlags flags);
 
                 if (result == Player.NO_ERROR)
                 {
@@ -565,17 +551,17 @@ namespace PlexDL.Player
         {
             HResult result = HResult.ERROR_NOT_READY;
 
-            WebcamProperty settings = new WebcamProperty();
-            settings._name = property.ToString();
-            settings._procAmpProp = property;
-            settings._isProcAmp = true;
+            WebcamProperty settings = new WebcamProperty
+            {
+                _name        = property.ToString(),
+                _procAmpProp = property,
+                _isProcAmp   = true
+            };
 
             if (_base._webcamMode)
             {
-                VideoProcAmpFlags flags;
-
                 IAMVideoProcAmp control = _base.mf_MediaSource as IAMVideoProcAmp;
-                result = control.GetRange(property, out settings._min, out settings._max, out settings._step, out settings._default, out flags);
+                result = control.GetRange(property, out settings._min, out settings._max, out settings._step, out settings._default, out VideoProcAmpFlags flags);
 
                 if (result == Player.NO_ERROR)
                 {
@@ -619,7 +605,7 @@ namespace PlexDL.Player
             _base._lastError = result;
         }
 
-        #endregion Private - Get/Set Video Control Properties / ProcAmp Properties
+        #endregion
 
         #region Public - Get/Set Video Control Properties
 
@@ -695,7 +681,7 @@ namespace PlexDL.Player
             set { SetControlProperties(CameraControlProperty.Zoom, value); }
         }
 
-        #endregion Public - Get/Set Video Control Properties
+        #endregion
 
         #region Public - Get/SetVideo ProcAmp Properties
 
@@ -798,31 +784,26 @@ namespace PlexDL.Player
             set { SetProcAmpProperties(VideoProcAmpProperty.WhiteBalance, value); }
         }
 
-        #endregion Public - Get/SetVideo ProcAmp Properties
+        #endregion
+
 
         #region Private - Get Video Output Format
 
         private WebcamFormat[] GetWebcamFormats(string webcamId, bool filter, bool exact, int minWidth, int minHeight, float minFrameRate)
         {
-            IMFMediaSource source;
             List<WebcamFormat> list = null;
 
-            HResult result = GetMediaSource(webcamId, out source);
+            HResult result = GetMediaSource(webcamId, out IMFMediaSource source);
             if (result == Player.NO_ERROR)
             {
-                IMFSourceReader reader;
-
-                result = MFExtern.MFCreateSourceReaderFromMediaSource(source, null, out reader);
+                result = MFExtern.MFCreateSourceReaderFromMediaSource(source, null, out IMFSourceReader reader);
                 if (result == Player.NO_ERROR)
                 {
                     HResult readResult = Player.NO_ERROR;
-                    IMFMediaType type;
 
                     int streamIndex = 0;
                     int typeIndex = 0;
 
-                    int num, denum;
-                    int width, height;
                     float frameRate = 0;
                     bool match;
 
@@ -830,12 +811,12 @@ namespace PlexDL.Player
 
                     while (readResult == Player.NO_ERROR)
                     {
-                        readResult = reader.GetNativeMediaType(streamIndex, typeIndex, out type);
+                        readResult = reader.GetNativeMediaType(streamIndex, typeIndex, out IMFMediaType type);
                         if (readResult == Player.NO_ERROR)
                         {
-                            MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_RATE, out num, out denum);
+                            MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_RATE, out int num, out int denum);
                             if (denum > 0) frameRate = (float)num / denum;
-                            MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_SIZE, out width, out height);
+                            MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_SIZE, out int width, out int height);
 
                             match = true;
                             if (filter)
@@ -890,9 +871,7 @@ namespace PlexDL.Player
 
         private HResult GetMediaSource(string webcamId, out IMFMediaSource source)
         {
-            IMFAttributes attributes;
-
-            MFExtern.MFCreateAttributes(out attributes, 2);
+            MFExtern.MFCreateAttributes(out IMFAttributes attributes, 2);
             attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
             attributes.SetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK, webcamId);
 
@@ -956,7 +935,7 @@ namespace PlexDL.Player
             return format;
         }
 
-        #endregion Private - Get Video Output Format
+        #endregion
 
         #region Public - Get Video Output Formats
 
@@ -1012,6 +991,24 @@ namespace PlexDL.Player
             return GetWebcamFormats(webcam._id, true, exact, width, height, frameRate);
         }
 
-        #endregion Public - Get Video Output Formats
+        #endregion
+
+
+        //#region Public - Video Recorder
+
+        ///// <summary>
+        ///// Provides access to the webcam video recorder settings of the player (for example, Player.Webcam.Recorder.Start).
+        ///// </summary>
+        //public VideoRecorder Recorder
+        //{
+        //    get
+        //    {
+        //        if (_base._webcamRecorderClass == null) _base._webcamRecorderClass = new VideoRecorder(_base, true);
+        //        return _base._webcamRecorderClass;
+        //    }
+        //}
+
+        //#endregion
+
     }
 }

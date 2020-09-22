@@ -10,8 +10,8 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class SystemAudioDevicesEventArgs : HideObjectEventArgs
     {
-        internal string _deviceId;
-        internal bool _inputDevice;
+        internal string                         _deviceId;
+        internal bool                           _inputDevice;
         internal SystemAudioDevicesNotification _notification;
 
         /// <summary>

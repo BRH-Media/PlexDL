@@ -16,7 +16,7 @@ namespace PlexDL.Player
         private const int MAX_SCROLL_VALUE = 60000;
         private Player _base;
 
-        #endregion Fields (PositionSlider Class)
+        #endregion
 
         internal PositionSlider(Player player)
         {
@@ -83,8 +83,10 @@ namespace PlexDL.Player
 
                         if (!_base._playing) _base._positionSlider.Enabled = false;
 
-                        _base._psTimer = new Timer();
-                        _base._psTimer.Interval = 100;
+                        _base._psTimer = new Timer
+                        {
+                            Interval = 100
+                        };
                         _base._psTimer.Tick += _base.PositionSlider_TimerTick;
                     }
                     _base.StartMainTimerCheck();

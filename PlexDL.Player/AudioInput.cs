@@ -15,7 +15,7 @@ namespace PlexDL.Player
 
         private Player _base;
 
-        #endregion Fields (Audio Input Class)
+        #endregion
 
         internal AudioInput(Player player)
         {
@@ -29,11 +29,10 @@ namespace PlexDL.Player
         {
             get
             {
-                IMMDeviceCollection deviceCollection;
                 uint count = 0;
 
                 IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eCapture, (uint)DeviceState.Active, out deviceCollection);
+                deviceEnumerator.EnumAudioEndpoints(EDataFlow.eCapture, (uint)DeviceState.Active, out IMMDeviceCollection deviceCollection);
                 Marshal.ReleaseComObject(deviceEnumerator);
 
                 if (deviceCollection != null)
@@ -52,21 +51,16 @@ namespace PlexDL.Player
         /// </summary>
         public AudioInputDevice[] GetDevices()
         {
-            IMMDeviceCollection deviceCollection;
-            IMMDevice device;
             AudioInputDevice[] audioDevices = null;
-
             _base._lastError = HResult.MF_E_NO_AUDIO_RECORDING_DEVICE;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-            deviceEnumerator.EnumAudioEndpoints(EDataFlow.eCapture, (uint)DeviceState.Active, out deviceCollection);
+            deviceEnumerator.EnumAudioEndpoints(EDataFlow.eCapture, (uint)DeviceState.Active, out IMMDeviceCollection deviceCollection);
             Marshal.ReleaseComObject(deviceEnumerator);
 
             if (deviceCollection != null)
             {
-                uint count;
-                deviceCollection.GetCount(out count);
-
+                deviceCollection.GetCount(out uint count);
                 if (count > 0)
                 {
                     audioDevices = new AudioInputDevice[count];
@@ -74,7 +68,7 @@ namespace PlexDL.Player
                     {
                         audioDevices[i] = new AudioInputDevice();
 
-                        deviceCollection.Item((uint)i, out device);
+                        deviceCollection.Item((uint)i, out IMMDevice device);
                         Player.GetDeviceInfo(device, audioDevices[i]);
 
                         Marshal.ReleaseComObject(device);
@@ -91,11 +85,10 @@ namespace PlexDL.Player
         /// </summary>
         public AudioInputDevice GetDefaultDevice()
         {
-            IMMDevice device;
             AudioInputDevice audioDevice = null;
 
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-            deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out device);
+            deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out IMMDevice device);
             Marshal.ReleaseComObject(deviceEnumerator);
 
             if (device != null)
@@ -115,7 +108,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether an audio input device is playing (on its own or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
+        /// Gets a value indicating whether an audio input device is playing (alone or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
         /// </summary>
         public bool Playing
         {
@@ -128,7 +121,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets (changes) the audio input device that is playing (on its own or with a webcam device). Use the Player.Play method to play an audio input device. See also: Player.AudioInput.GetDevices.
+        /// Gets or sets (changes) the audio input device being played (alone or with a webcam device). Use the Player.Play method to play an audio input device. See also: Player.AudioInput.GetDevices.
         /// </summary>
         public AudioInputDevice Device
         {
@@ -149,7 +142,7 @@ namespace PlexDL.Player
                     {
                         _base._micDevice = value;
                         _base.AV_UpdateTopology();
-                        if (_base._mediaAudioInputDeviceChanged != null) _base._mediaAudioInputDeviceChanged(_base, EventArgs.Empty);
+                        _base._mediaAudioInputDeviceChanged?.Invoke(_base, EventArgs.Empty);
                     }
                 }
             }

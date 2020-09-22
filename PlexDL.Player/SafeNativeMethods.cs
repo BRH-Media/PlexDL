@@ -1,7 +1,7 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 0.99.1
-    July 2020, The Netherlands
+    PVS.MediaPlayer - Version 1.0
+    September 2020, The Netherlands
     © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
@@ -9,7 +9,7 @@
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 2.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -23,7 +23,7 @@
     2. SubClasses.cs    - various grouping and information classes
     3. Interop.cs       - unmanaged Win32 functions
     4. AudioDevices.cs  - audio devices and peak meters
-    5. DisplayClones.cs - multiple video displays
+    5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
     8. Infolabel.cs     - custom ToolTip
@@ -55,7 +55,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    July 2020, The Netherlands
+    September 2020, The Netherlands
 
     ****************************************************************/
 
@@ -66,21 +66,22 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-#endregion Usings
+#endregion
 
-#region Disable Some Warnings
+#region Disable Some Compiler Warnings
 
-// programmer's preference:
 #pragma warning disable IDE0044 // Add readonly modifier
-// the library can be compiled with all versions of c#:
 #pragma warning disable IDE0018 // Inline variable declaration
 #pragma warning disable IDE0017 // Simplify object initialization
 #pragma warning disable IDE0041 // Use 'is null' check
+#pragma warning disable IDE0038 // Use pattern matching
 
-#endregion Disable Some Warnings
+#endregion
+
 
 namespace PlexDL.Player
 {
+
     // ******************************** Native Methods - DLL Import
 
     #region Native Methods
@@ -122,7 +123,7 @@ namespace PlexDL.Player
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
 
-        #endregion Win32 Windows
+        #endregion
 
         // ******************************** BitBlt (VideoCopy)
 
@@ -199,13 +200,13 @@ namespace PlexDL.Player
         [StructLayout(LayoutKind.Sequential)]
         internal struct BLENDFUNCTION
         {
-            private byte BlendOp;
-            private byte BlendFlags;
+            byte BlendOp;
+            byte BlendFlags;
             internal byte SourceConstantAlpha;
             internal byte AlphaFormat;
         }
 
-        #endregion BitBlt
+        #endregion
 
         // ******************************** Center System Dialogs
 
@@ -264,7 +265,7 @@ namespace PlexDL.Player
             return result;
         }
 
-        #endregion Center System Dialogs
+        #endregion
 
         // ******************************** Change System Sleep Mode
 
@@ -297,7 +298,8 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Change System Sleep Mode
+        #endregion
+
 
         // ******************************** Rounded Rectangle
 
@@ -317,10 +319,11 @@ namespace PlexDL.Player
         [DllImport("gdi32.dll")]
         internal static extern bool DeleteObject(IntPtr hObject);
 
-        #endregion Rounded Rectangle (used with InfoLabel + Preset Display Clip)
+        #endregion
     }
 
-    #endregion Native Methods
+    #endregion
+
 
     // ******************************** Taskbar Indicator - Com Import
 
@@ -329,7 +332,8 @@ namespace PlexDL.Player
     // TaskbarProgress class based on code by WhoIsRich at:
     // stackoverflow.com/questions/1295890/windows-7-progress-bar-in-taskbar-in-c
 
-    #endregion Taskbar Indicator
+    #endregion
+
 
     // ******************************** Media Foundation - Com Import
 
@@ -370,6 +374,23 @@ namespace PlexDL.Player
     //    DoesNotUseNetwork = 0x00000800,
     //}
 
+    //[Flags, UnmanagedName("MFT_ENUM_FLAG")]
+    //internal enum MFT_EnumFlag
+    //{
+    //    None = 0x00000000,
+    //    SyncMFT = 0x00000001,   // Enumerates V1 MFTs. This is default.
+    //    AsyncMFT = 0x00000002,   // Enumerates only software async MFTs also known as V2 MFTs
+    //    Hardware = 0x00000004,   // Enumerates V2 hardware async MFTs
+    //    FieldOfUse = 0x00000008,   // Enumerates MFTs that require unlocking
+    //    LocalMFT = 0x00000010,   // Enumerates Locally (in-process) registered MFTs
+    //    TranscodeOnly = 0x00000020,   // Enumerates decoder MFTs used by transcode only
+    //    SortAndFilter = 0x00000040,   // Apply system local, do not use and preferred sorting and filtering
+    //    SortAndFilterApprovedOnly = 0x000000C0,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_APPROVED_PLUGINS
+    //    SortAndFilterWebOnly = 0x00000140,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_WEB_PLUGINS
+    //    SortAndFilterWebOnlyEdgemode = 0x00000240,
+    //    All = 0x0000003F    // Enumerates all MFTs including SW and HW MFTs and applies filtering
+    //}
+
     //[UnmanagedName("MF_VIDEO_PROCESSOR_MIRROR")]
     //internal enum MF_VIDEO_PROCESSOR_MIRROR
     //{
@@ -392,7 +413,7 @@ namespace PlexDL.Player
     //    Unknown = 0
     //}
 
-    #endregion Enums
+    #endregion
 
     #region Structs
 
@@ -407,7 +428,7 @@ namespace PlexDL.Player
     //    public int dwClockJitter;
     //}
 
-    #endregion Structs
+    #endregion
 
     //#region Abstract Classes
 
@@ -450,7 +471,9 @@ namespace PlexDL.Player
 
     //#endregion
 
+    #region Static Classes
 
+    #endregion
 
     #region Classes
 
@@ -604,7 +627,7 @@ namespace PlexDL.Player
     //}
 
     // Class to handle BITMAPINFO.  Only used by MFCalculateBitmapImageSize &
-    // MFCreateVideoMediaTypeFromBitMapInfoHeader (as [In]) and
+    // MFCreateVideoMediaTypeFromBitMapInfoHeader (as [In]) and 
     // IMFVideoDisplayControl::GetCurrentImage ([In, Out]).  Since
     // IMFVideoDisplayControl can be implemented on a managed class, we must
     // support nesting.
@@ -844,6 +867,7 @@ namespace PlexDL.Player
     //    return new BMMarshaler();
     //}
 
+
     // PVMarshaler - Class to marshal PropVariants on parameters that
     // *output* PropVariants.
 
@@ -853,8 +877,8 @@ namespace PlexDL.Player
     // the order they are called depends on exactly what's happening,
     // m_InProcess lets us know which way things are being called.
     //
-    // Managed calling unmanaged:
-    // In this case, MarshalManagedToNative is called first with m_InProcess
+    // Managed calling unmanaged: 
+    // In this case, MarshalManagedToNative is called first with m_InProcess 
     // == 0.  When MarshalManagedToNative is called, we store the managed
     // object (so we know where to copy it back to), then we clear the variant,
     // allocate some COM memory and pass a pointer to the COM memory to the
@@ -926,6 +950,13 @@ namespace PlexDL.Player
     // and uses 2 different methods to check for recursion (which in theory
     // could be nested quite deeply).
 
+    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTER_TYPE_INFO")]
+    //internal class MFTRegisterTypeInfo
+    //{
+    //    public Guid guidMajorType;
+    //    public Guid guidSubtype;
+    //}
+
     //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
     //internal class MFNetCredentialManagerGetParam
     //{
@@ -945,7 +976,7 @@ namespace PlexDL.Player
     //    public int nRetries;
     //}
 
-    #endregion Classes
+    #endregion
 
     #region Interfaces
 
@@ -1149,6 +1180,50 @@ namespace PlexDL.Player
     // This is the ASync version of IMFSourceReader.  The only difference is the ReadSample method, which must allow
     // the final 4 params to be null.
 
+    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    //Guid("7DC9D5F9-9ED9-44EC-9BBF-0600BB589FBB"),
+    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    //internal interface IMF2DBuffer
+    //{
+    //    [PreserveSig]
+    //    HResult Lock2D(
+    //        [Out] out IntPtr pbScanline0,
+    //        out int plPitch
+    //        );
+
+    //    [PreserveSig]
+    //    HResult Unlock2D();
+
+    //    [PreserveSig]
+    //    HResult GetScanline0AndPitch(
+    //        out IntPtr pbScanline0,
+    //        out int plPitch
+    //        );
+
+    //    [PreserveSig]
+    //    HResult IsContiguousFormat(
+    //        [MarshalAs(UnmanagedType.Bool)] out bool pfIsContiguous
+    //        );
+
+    //    [PreserveSig]
+    //    HResult GetContiguousLength(
+    //        out int pcbLength
+    //        );
+
+    //    [PreserveSig]
+    //    HResult ContiguousCopyTo(
+    //        IntPtr pbDestBuffer,
+    //        [In] int cbDestBuffer
+    //        );
+
+    //    [PreserveSig]
+    //    HResult ContiguousCopyFrom(
+    //        [In] IntPtr pbSrcBuffer,
+    //        [In] int cbSrcBuffer
+    //        );
+    //}
+
+
     // Authentication - not yet
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
@@ -1214,9 +1289,15 @@ namespace PlexDL.Player
     //        );
     //}
 
-    #endregion Interfaces
+    #endregion
 
-    #endregion Media Foundation
+    #endregion
+
 
     // ******************************** Windows Core Audio API - Com Import
+
+    #region Windows Core Audio API
+
+    #endregion
+
 }

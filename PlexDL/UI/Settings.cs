@@ -42,7 +42,7 @@ namespace PlexDL.UI
             {
                 if (ObjectProvider.Settings != null)
                 {
-                    ObjectProvider.Settings.SaveToDefault();
+                    ObjectProvider.Settings.CommitDefaultSettings();
                     UIMessages.Info(@"Successfully saved settings");
                 }
                 else

@@ -113,21 +113,22 @@ namespace PlexDL.Player
         //[DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         //public static extern HResult MFTEnumEx(
         //    [In] Guid MFTransformCategory,
-        //    MFT_EnumFlag Flags,
+        //    //MFT_EnumFlag Flags,
+        //    int Flags,
         //    [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
         //    [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
-        //    //[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
-        //    [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] out IMFActivate[] pppMFTActivate,
+        //    [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
+        //    //[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] out IMFActivate[] pppMFTActivate,
         //    out int pnumMFTActivate
         //);
 
-        // use with NET 2.0, 3.0 and  3.5 (returns only 1 device) (because of SizeParamIndex)
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
-        [DllImport("mf.dll", ExactSpelling = true, EntryPoint = "MFEnumDeviceSources"), SuppressUnmanagedCodeSecurity]
-        public static extern HResult MFEnumDeviceSourcesEx(
-            IMFAttributes pAttributes,
-            [MarshalAs(UnmanagedType.LPArray)] out IMFActivate[] pppSourceActivate,
-            out int pcSourceActivate);
+        //// use with NET 2.0, 3.0 and  3.5 (returns only 1 device) (because of SizeParamIndex)
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        //[DllImport("mf.dll", ExactSpelling = true, EntryPoint = "MFEnumDeviceSources"), SuppressUnmanagedCodeSecurity]
+        //public static extern HResult MFEnumDeviceSourcesEx(
+        //IMFAttributes pAttributes,
+        //[MarshalAs(UnmanagedType.LPArray)] out IMFActivate[] pppSourceActivate,
+        //out int pcSourceActivate);
 
         // Works only with .NET Framework version 4.0 or higher (because of SizeParamIndex)
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]

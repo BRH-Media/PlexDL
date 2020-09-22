@@ -14,12 +14,12 @@ namespace PlexDL.Player
     {
         #region Fields (TaskbarProgress Class)
 
-        private Player _base;
-        private List<Form> _taskbarItems;
-        internal TaskbarProgressMode _progressMode;
-        private TaskbarProgressState _taskbarState = TaskbarProgressState.NoProgress;
+        private Player                  _base;
+        private List<Form>              _taskbarItems;
+        internal TaskbarProgressMode    _progressMode;
+        private TaskbarProgressState            _taskbarState = TaskbarProgressState.NoProgress;
 
-        #endregion Fields (TaskbarProgress Class)
+        #endregion
 
         internal TaskbarProgress(Player player)
         {
@@ -237,7 +237,7 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Public - Taskbar Progress methods and properties
+        #endregion
 
         #region Private - SetValue / SetState
 
@@ -250,8 +250,8 @@ namespace PlexDL.Player
 
             if (!_base._fileMode || _base._liveStreamMode)
             {
-                pos = 1;
-                total = 1;
+                pos     = 1;
+                total   = 1;
             }
             else
             {
@@ -304,6 +304,6 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion Private - SetValue / SetState
+        #endregion
     }
 }

@@ -192,7 +192,7 @@ namespace PlexDL.Player
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
         );
 
-        #endregion IMFAttributes methods
+        #endregion
 
         [PreserveSig]
         HResult GetTopologyID(

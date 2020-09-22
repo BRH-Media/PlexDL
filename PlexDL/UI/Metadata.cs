@@ -224,7 +224,7 @@ namespace PlexDL.UI
 
         private void DoExport_Callback(object sender, WaitWindowEventArgs e)
         {
-            ImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
+            MetadataImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
 
         private void DoImport()
@@ -233,11 +233,11 @@ namespace PlexDL.UI
             {
                 if (ofdImport.ShowDialog() != DialogResult.OK) return;
 
-                var pxz = ImportExport.LoadMetadataArchive(ofdImport.FileName);
+                var pxz = MetadataImportExport.LoadMetadataArchive(ofdImport.FileName);
 
                 if (pxz != null)
                 {
-                    StreamingContent = ImportExport.MetadataFromFile(pxz);
+                    StreamingContent = MetadataImportExport.MetadataFromFile(pxz);
 
                     var profilePoster = (Bitmap)pxz.LoadRecord(@"poster").Content.ToImage();
 

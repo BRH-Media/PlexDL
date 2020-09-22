@@ -26,7 +26,7 @@ namespace PlexDL.Player
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarSource
         );
 
-        #endregion Declarations
+        #endregion
 
         public enum VariantType : short
         {
@@ -113,7 +113,7 @@ namespace PlexDL.Player
         [FieldOffset(8)]
         protected CALPWstr calpwstrVal;
 
-        #endregion Member variables
+        #endregion
 
         public ConstPropVariant()
             : this(VariantType.None)
@@ -212,14 +212,14 @@ namespace PlexDL.Player
                 case VariantType.String:
                 case VariantType.Blob:
                 case VariantType.IUnknown:
-                    {
-                        return (MFAttributeType)type;
-                    }
+                {
+                    return (MFAttributeType)type;
+                }
                 default:
-                    {
-                        //throw new Exception("Type is not a MFAttributeType");
-                        return MFAttributeType.None;
-                    }
+                {
+                    //throw new Exception("Type is not a MFAttributeType");
+                    return MFAttributeType.None;
+                }
             }
         }
 
@@ -898,6 +898,6 @@ namespace PlexDL.Player
 #endif
         }
 
-        #endregion IDisposable Members
+        #endregion
     }
 }

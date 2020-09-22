@@ -643,7 +643,7 @@ namespace PlexDL.UI
                         case metExt:
                             try
                             {
-                                var metadata = ImportExport.MetadataFromFile(ofdLoad.FileName);
+                                var metadata = MetadataImportExport.MetadataFromFile(ofdLoad.FileName);
                                 UiUtils.RunMetadataWindow(metadata);
                             }
                             catch (Exception ex)
@@ -805,7 +805,7 @@ namespace PlexDL.UI
             var fileName = (string)e.Arguments[1];
             var poster = e.Arguments.Count > 2 ? (Bitmap)e.Arguments[2] : null;
 
-            ImportExport.MetadataToFile(fileName, content, poster);
+            MetadataImportExport.MetadataToFile(fileName, content, poster);
         }
 
         private void DoStreamExport()

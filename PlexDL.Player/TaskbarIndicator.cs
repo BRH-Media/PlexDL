@@ -12,13 +12,9 @@ namespace PlexDL.Player
         {
             // ITaskbarList
             void HrInit();
-
             void AddTab(IntPtr hwnd);
-
             void DeleteTab(IntPtr hwnd);
-
             void ActivateTab(IntPtr hwnd);
-
             void SetActiveAlt(IntPtr hwnd);
 
             // ITaskbarList2
@@ -26,7 +22,6 @@ namespace PlexDL.Player
 
             // ITaskbarList3
             void SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
-
             void SetProgressState(IntPtr hwnd, TaskbarProgressState state);
         }
 
