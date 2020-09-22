@@ -135,7 +135,7 @@
     <Compile Include="Structures\AppOptions\Player\PlayerKeyBindings.cs" />
     <Compile Include="Structures\AppOptions\Player\PlayerSettings.cs" />
     <Compile Include="Structures\CachedPlexLogin.cs" />
-    <Compile Include="Structures\ConnectionInfo.cs" />
+    <Compile Include="Structures\AppOptions\ConnectionInfo.cs" />
     <Compile Include="Structures\DownloadLayout.cs" />
     <Compile Include="Structures\FileAssociation.cs" />
     <Compile Include="Structures\LoggingSettings.cs" />

@@ -23,6 +23,11 @@ namespace PlexDL.Common.Structures.AppOptions
         [Description("When enabled, PlexDL will check for new updates on startup. This requires 'Commit to Default'.")]
         public bool AutoUpdateEnabled { get; set; } = false;
 
+        [DisplayName("Speed Throttle (Mbps)")]
+        [Description(
+            "PlexDL can throttle your downloads to a specified limit. When set to 0, the limit is removed, otherwise download speeds should not exceed the defined value.")]
+        public decimal DownloadSpeedLimit { get; set; } = 0;
+
         [ReadOnly(true)]
         [DisplayName("Download Folder")]
         [Description(

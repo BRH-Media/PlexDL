@@ -12,8 +12,6 @@ namespace PlexDL.AltoHTTP.Classes
     /// </summary>
     public class DownloadQueue : IQueue, IDisposable
     {
-        #region Variables
-
         private HttpDownloader _downloader;
         private readonly List<QueueElement> _elements;
         private QueueElement _currentElement;
@@ -40,10 +38,6 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public event EventHandler QueueElementStartedDownloading;
 
-        #endregion Variables
-
-        #region Constructor + Destructor
-
         /// <summary>
         ///     Creates a queue and initializes resources
         /// </summary>
@@ -62,10 +56,6 @@ namespace PlexDL.AltoHTTP.Classes
         {
             Cancel();
         }
-
-        #endregion Constructor + Destructor
-
-        #region Events
 
         private void Downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -125,10 +115,6 @@ namespace PlexDL.AltoHTTP.Classes
             QueueCompleted?.Invoke(this, new EventArgs());
         }
 
-        #endregion Events
-
-        #region Properties
-
         /// <summary>
         ///     Gets the number of elements in the queue
         /// </summary>
@@ -181,6 +167,12 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
+        ///     Gets/sets the download speed of the queue
+        ///     <br></br>WARNING: Set this once and do not change during the process
+        /// </summary>
+        public long MaxSpeedInBytes { get; set; } = 0;
+
+        /// <summary>
         ///     Gets the download speed of the current download progress
         /// </summary>
         public double CurrentDownloadSpeed { get; private set; }
@@ -194,10 +186,6 @@ namespace PlexDL.AltoHTTP.Classes
         ///     Gets the State of the current download
         /// </summary>
         public DownloadState State => _downloader.State;
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         ///     Adds new download elements into the queue
@@ -293,15 +281,11 @@ namespace PlexDL.AltoHTTP.Classes
             Cancel();
         }
 
-        #endregion Methods
-
-        #region Helper Methods
-
         private void CreateNextDownload()
         {
             var elt = FirstNotCompletedElement;
             if (string.IsNullOrEmpty(elt.Url)) return;
-            _downloader = new HttpDownloader(elt.Url, elt.Destination);
+            _downloader = new HttpDownloader(elt.Url, elt.Destination, MaxSpeedInBytes);
             _downloader.DownloadCompleted += Downloader_DownloadCompleted;
             _downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
             _downloader.DownloadError += Downloader_DownloadError;
@@ -326,7 +310,5 @@ namespace PlexDL.AltoHTTP.Classes
                 return new QueueElement();
             }
         }
-
-        #endregion Helper Methods
     }
 }

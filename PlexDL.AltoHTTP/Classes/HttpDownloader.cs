@@ -67,6 +67,11 @@ namespace PlexDL.AltoHTTP.Classes
         public long SpeedInBytes { get; private set; }
 
         /// <summary>
+        ///     Gets or sets the maximum download speed in bytes/s
+        /// </summary>
+        public long MaxSpeedInBytes { get; }
+
+        /// <summary>
         ///     Gets the current download progress over 100
         /// </summary>
         public double Progress
@@ -106,21 +111,29 @@ namespace PlexDL.AltoHTTP.Classes
             private set
             {
                 _state = value;
-                if (_state == DownloadState.Completed && DownloadCompleted != null)
-                    _oprtor.Post(delegate
-                    {
-                        DownloadCompleted?.Invoke(this, EventArgs.Empty);
-                    }, null);
-                else if (_state == DownloadState.Cancelled && DownloadCancelled != null)
-                    _oprtor.Post(delegate
-                    {
-                        DownloadCancelled?.Invoke(this, EventArgs.Empty);
-                    }, null);
-                else if (_state == DownloadState.ErrorOccured && DownloadError != null)
-                    _oprtor.Post(delegate
-                    {
-                        DownloadError?.Invoke(this, EventArgs.Empty);
-                    }, null);
+                switch (_state)
+                {
+                    case DownloadState.Completed when DownloadCompleted != null:
+                        _oprtor.Post(delegate
+                        {
+                            DownloadCompleted?.Invoke(this, EventArgs.Empty);
+                        }, null);
+                        break;
+
+                    case DownloadState.Cancelled when DownloadCancelled != null:
+                        _oprtor.Post(delegate
+                        {
+                            DownloadCancelled?.Invoke(this, EventArgs.Empty);
+                        }, null);
+                        break;
+
+                    case DownloadState.ErrorOccured when DownloadError != null:
+                        _oprtor.Post(delegate
+                        {
+                            DownloadError?.Invoke(this, EventArgs.Empty);
+                        }, null);
+                        break;
+                }
             }
         }
 
@@ -129,11 +142,13 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         /// <param name="url">Url source string</param>
         /// <param name="destPath">Target file path</param>
-        public HttpDownloader(string url, string destPath)
+        /// <param name="maxSpeed">Maximum speed throttle (bytes/s; 0 means no throttle)</param>
+        public HttpDownloader(string url, string destPath, long maxSpeed = 0)
         {
             Reset();
             FileUrl = url;
             DestPath = destPath;
+            MaxSpeedInBytes = maxSpeed;
             _oprtor = AsyncOperationManager.CreateOperation(null);
         }
 
@@ -160,7 +175,7 @@ namespace PlexDL.AltoHTTP.Classes
                     _resp = _req.GetResponse() as HttpWebResponse;
                 }
 
-                _str = _resp?.GetResponseStream();
+                _str = MaxSpeedInBytes > 0 ? new ThrottledStream(_resp?.GetResponseStream(), MaxSpeedInBytes) : _resp?.GetResponseStream();
                 if (!overWriteFile)
                 {
                     if (_resp != null)
@@ -203,6 +218,7 @@ namespace PlexDL.AltoHTTP.Classes
                 _file.Flush();
                 BytesReceived += bytesRead;
                 _speedBytes += bytesRead;
+
                 //CALCULATIONS FOR DOWNLOAD PROGRESS
                 Progress = _progress = ((double)BytesReceived / ContentSize) * 100;
                 SpeedInBytes = (long)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);

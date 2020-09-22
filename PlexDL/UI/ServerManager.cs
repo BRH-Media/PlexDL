@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using PlexDL.Common.Structures.AppOptions;
 using UIHelpers;
 
 namespace PlexDL.UI

@@ -3,6 +3,7 @@ using PlexDL.Common.Structures;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Common.Structures.AppOptions;
 using UIHelpers;
 
 namespace PlexDL.UI

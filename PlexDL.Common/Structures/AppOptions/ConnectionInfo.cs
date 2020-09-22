@@ -1,12 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
-namespace PlexDL.Common.Structures
+namespace PlexDL.Common.Structures.AppOptions
 {
     [Serializable]
     public class ConnectionInfo
     {
-        [NonSerialized] public bool RelaysOnly = false;
+        [NonSerialized]
+        [XmlIgnore]
+        public bool RelaysOnly = false;
 
         [DisplayName("Port")]
         [Description("The port of the Plex server")]

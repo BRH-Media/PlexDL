@@ -34,6 +34,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Structures.AppOptions;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
@@ -1163,10 +1164,30 @@ namespace PlexDL.UI
 
         private void WkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
+            GetMetadata();
+        }
+
+        private void GetMetadata()
+        {
             try
             {
                 //set needed globals
                 ObjectProvider.Engine = new DownloadQueue();
+
+                //calculations for bytes per second (global is in Mbps NOT MBps)
+                var gSpeed = ObjectProvider.Settings.Generic.DownloadSpeedLimit;
+
+                //convert megabits per second to bytes per second
+                var speed = gSpeed > 0
+                    ? (long)Math.Round(ObjectProvider.Settings.Generic.DownloadSpeedLimit / (decimal)0.000008)
+                    : 0;
+
+                //UIMessages.Info(speed.ToString());
+
+                //apply queue download speed limit
+                ObjectProvider.Engine.MaxSpeedInBytes = speed;
+
+                //clear and reset the global download queue
                 ObjectProvider.Queue = new List<StreamInfo>();
 
                 LoggingHelpers.RecordGeneralEntry(@"Metadata worker started");
@@ -1199,10 +1220,10 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordGeneralEntry("Worker is to invoke downloader thread");
 
                 BeginInvoke((MethodInvoker)delegate
-               {
-                   StartDownload(ObjectProvider.Queue);
-                   LoggingHelpers.RecordGeneralEntry("Worker has started the download process");
-               });
+                {
+                    StartDownload(ObjectProvider.Queue);
+                    LoggingHelpers.RecordGeneralEntry("Worker has started the download process");
+                });
             }
             catch (ThreadAbortException)
             {

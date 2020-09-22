@@ -11,7 +11,7 @@ namespace PlexDL.Common.Structures.AppOptions
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Connection Settings")]
-        [Description("View Plex connection settings. You can't change these values.")]
+        [Description("View Plex connection settings. You can't directly change these values.")]
         public ConnectionInfo ConnectionInfo { get; set; } = new ConnectionInfo();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
