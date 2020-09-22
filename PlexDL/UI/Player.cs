@@ -63,6 +63,7 @@ namespace PlexDL.UI
             else if (_isWmp)
             {
                 wmpMain.URL = StreamingContent.StreamInformation.Links.View;
+                //wmpMain.fullScreen = true;
             }
         }
 
