@@ -11,6 +11,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using UIHelpers;
 
+#pragma warning disable 1591
+
 namespace PlexDL.UI
 {
     public partial class Metadata : Form
@@ -21,7 +23,7 @@ namespace PlexDL.UI
         }
 
         public PlexObject StreamingContent { get; set; } = new PlexObject();
-        public Bitmap Poster { get; set; } = null;
+        public Bitmap Poster { get; set; }
         public bool StationaryMode { get; set; }
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
@@ -64,6 +66,29 @@ namespace PlexDL.UI
                         : @"Plot synopsis for this title is unavailable due to adult content protection";
             }
 
+            //apply content title and enable VLC streaming
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate
+               {
+                   itmStream.Enabled = true;
+                   Text = StreamingContent.StreamInformation.ContentTitle;
+                   Refresh();
+               });
+            }
+            else
+            {
+                itmStream.Enabled = true;
+                Text = StreamingContent.StreamInformation.ContentTitle;
+                Refresh();
+            }
+
+            //there's content now; so the window isn't stationary anymore.
+            StationaryMode = false;
+        }
+
+        private void ActorsWorker(object sender, WaitWindowEventArgs e)
+        {
             //Clear all previous actors (maybe there's a dud panel in place?)
             if (flpActors.Controls.Count > 0)
             {
@@ -126,26 +151,6 @@ namespace PlexDL.UI
                 else
                     flpActors.Controls.Add(NoActorsFound());
             }
-
-            //apply content title and enable VLC streaming
-            if (InvokeRequired)
-            {
-                BeginInvoke((MethodInvoker)delegate
-               {
-                   itmStream.Enabled = true;
-                   Text = StreamingContent.StreamInformation.ContentTitle;
-                   Refresh();
-               });
-            }
-            else
-            {
-                itmStream.Enabled = true;
-                Text = StreamingContent.StreamInformation.ContentTitle;
-                Refresh();
-            }
-
-            //there's content now; so the window isn't stationary anymore.
-            StationaryMode = false;
         }
 
         private static Panel NoActorsFound()
@@ -192,7 +197,7 @@ namespace PlexDL.UI
             if (!StationaryMode)
             {
                 WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
-                //UIMessages.Info(StreamingContent.StreamResolution.Framerate);
+                WaitWindow.WaitWindow.Show(ActorsWorker, @"Downloading cast info");
             }
             else
             {
