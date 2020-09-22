@@ -52,7 +52,7 @@ namespace PlexDL.Internal
                 //when 'open with...' is used in Windows, the first argument will be the file
                 var firstArg = Args[0];
 
-                //UIMessages.Info(firstArg);
+                //MessageBox.Show(firstArg);
 
                 //Windows will pass "Open With" files as the first argument; checking if the first argument
                 //exists as a file will validate whether this has occurred.

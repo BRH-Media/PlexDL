@@ -2,6 +2,8 @@
 using PlexDL.Common.Structures;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace PlexDL.Common
@@ -21,7 +23,10 @@ namespace PlexDL.Common
         public static void EnsureAssociationsSet()
         {
             //PlexDL exe
-            var filePath = Process.GetCurrentProcess().MainModule?.FileName;
+            var filePath = Path.GetFullPath(Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty);
+
+            //validation
+            if (string.IsNullOrEmpty(filePath)) return;
 
             //PXZ
             var pxzMetadata = new FileAssociation
@@ -51,28 +56,16 @@ namespace PlexDL.Common
             };
 
             //add associations
-            EnsureAssociationsSet(pxzMetadata);
-            EnsureAssociationsSet(xmlMetadata);
-            EnsureAssociationsSet(xmlProfile);
+            EnsureAssociationsSet(pxzMetadata, xmlMetadata, xmlProfile);
         }
 
         public static void EnsureAssociationsSet(params FileAssociation[] associations)
         {
-            var madeChanges = false;
-
-            foreach (var association in associations)
-            {
-                madeChanges |= SetAssociation(
-                    association.Extension,
-                    association.ProgId,
-                    association.FileTypeDescription,
-                    association.ExecutableFilePath);
-            }
+            var madeChanges = associations.Aggregate(false, (current, association)
+                => current | SetAssociation(association.Extension, association.ProgId, association.FileTypeDescription, association.ExecutableFilePath));
 
             if (madeChanges)
-            {
                 SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSH, IntPtr.Zero, IntPtr.Zero);
-            }
         }
 
         public static bool SetAssociation(string extension, string progId, string fileTypeDescription, string applicationFilePath)

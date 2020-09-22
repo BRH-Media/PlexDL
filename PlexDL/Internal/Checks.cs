@@ -26,7 +26,7 @@ namespace PlexDL.Internal
             //Windows has passed a file; we need to check what type it is
             var ext = Path.GetExtension(file);
 
-            UIMessages.Info(file);
+            //UIMessages.Info(file);
 
             //check if it's a supported file-type
             if (CheckAgainstSupportedFiles(file))

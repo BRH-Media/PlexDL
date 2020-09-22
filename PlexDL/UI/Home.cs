@@ -43,19 +43,11 @@ namespace PlexDL.UI
 {
     public partial class Home : Form
     {
-        #region Form
-
-        #region FormInitialiser
-
         public Home()
         {
             InitializeComponent();
             tabMain.SelectedIndex = 0;
         }
-
-        #endregion FormInitialiser
-
-        #endregion Form
 
         private void ManualSectionLoad()
         {
@@ -583,17 +575,9 @@ namespace PlexDL.UI
             StartStreaming();
         }
 
-        #region GlobalIntVariables
-
         public int DownloadIndex;
         public int DownloadTotal;
         public int DownloadsSoFar;
-
-        #endregion GlobalIntVariables
-
-        #region XML/Metadata
-
-        #region PlexMovieBuilders
 
         private PlexMovie GetMovieObjectFromSelection()
         {
@@ -630,12 +614,6 @@ namespace PlexDL.UI
 
             return obj;
         }
-
-        #endregion PlexMovieBuilders
-
-        #endregion XML/Metadata
-
-        #region ProfileHelpers
 
         public void LoadProfile()
         {
@@ -788,10 +766,6 @@ namespace PlexDL.UI
             }
         }
 
-        #endregion ProfileHelpers
-
-        #region ConnectionHelpers
-
         private void Disconnect(bool silent = false)
         {
             try
@@ -873,12 +847,6 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, "StreamExportError");
             }
         }
-
-        #endregion ConnectionHelpers
-
-        #region Workers
-
-        #region UpdateWorkers
 
         private void PopulateLibraryWorker(XmlDocument doc)
         {
@@ -1077,10 +1045,6 @@ namespace PlexDL.UI
             //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
         }
 
-        #endregion UpdateWorkers
-
-        #region BackgroundWorkers
-
         private void WkrGrabTv()
         {
             if (Flags.IsDownloadAll)
@@ -1257,10 +1221,6 @@ namespace PlexDL.UI
             }
         }
 
-        #endregion BackgroundWorkers
-
-        #region UpdateCallbackWorkers
-
         private void WorkerUpdateContentView(object sender, WaitWindowEventArgs e)
         {
             var doc = (XmlDocument)e.Arguments[0];
@@ -1296,10 +1256,6 @@ namespace PlexDL.UI
             var doc = (XmlDocument)e.Arguments[0];
             UpdateAlbumsViewWorker(doc);
         }
-
-        #endregion UpdateCallbackWorkers
-
-        #region ContentRenderers
 
         private void RenderMoviesView(DataTable content)
         {
@@ -1544,10 +1500,6 @@ namespace PlexDL.UI
             GenericRenderer.RenderView(info, dgvSections);
         }
 
-        #endregion ContentRenderers
-
-        #region UpdateWaitWorkers
-
         private void UpdateContentView(XmlDocument content, ContentType type)
         {
             WaitWindow.WaitWindow.Show(WorkerUpdateContentView, "Updating Content", content, type);
@@ -1577,14 +1529,6 @@ namespace PlexDL.UI
         {
             WaitWindow.WaitWindow.Show(WorkerUpdateLibraryView, "Updating Library", content);
         }
-
-        #endregion UpdateWaitWorkers
-
-        #endregion Workers
-
-        #region Download
-
-        #region DownloadMethods
 
         private void CancelDownload(bool silent = false, string msg = "Download Cancelled")
         {
@@ -1723,10 +1667,6 @@ namespace PlexDL.UI
             StartDownloadEngine();
         }
 
-        #endregion DownloadMethods
-
-        #region DownloadEngineMethods
-
         private void ShowBalloon(string msg, string title, bool error = false, int timeout = 2000)
         {
             if (!InvokeRequired)
@@ -1819,12 +1759,6 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, "DLProgressError");
             }
         }
-
-        #endregion DownloadEngineMethods
-
-        #endregion Download
-
-        #region Search
 
         private void ClearSearch(bool renderTables = true)
         {
@@ -1922,10 +1856,6 @@ namespace PlexDL.UI
             }
         }
 
-        #endregion Search
-
-        #region UIMethods
-
         /// <summary>
         ///     Thread-safe way of changing the progress label
         /// </summary>
@@ -2009,10 +1939,6 @@ namespace PlexDL.UI
         {
             itmDisconnect.Enabled = true;
         }
-
-        #endregion UIMethods
-
-        #region FormEvents
 
         private void LoadDevStatus()
         {
@@ -2181,10 +2107,6 @@ namespace PlexDL.UI
         {
             if (dgvSections.Rows.Count == 0) e.Cancel = true;
         }
-
-        #endregion FormEvents
-
-        #region DGVRowChanges
 
         private void DgvLibrary_OnRowChange(object sender, EventArgs e)
         {
@@ -2394,10 +2316,6 @@ namespace PlexDL.UI
             //XmlMessageBox(series);
             UpdateAlbumsView(albums.Xml);
         }
-
-        #endregion DGVRowChanges
-
-        #region ButtonClicks
 
         private void DoDownloadAll()
         {
@@ -2611,8 +2529,6 @@ namespace PlexDL.UI
                 frm.ShowDialog();
             }
         }
-
-        #endregion ButtonClicks
 
         private void ItmTrackSearch_Click(object sender, EventArgs e)
         {

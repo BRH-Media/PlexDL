@@ -1,7 +1,6 @@
 # Text line endings
 * text=auto
 * text eol=crlf
-* text eol=lf
 
 # Picture files
 *.jpg binary
