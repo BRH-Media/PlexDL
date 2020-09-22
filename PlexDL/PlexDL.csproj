@@ -75,7 +75,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -317,7 +316,16 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
@@ -331,10 +339,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitHubUpdater\GitHubUpdater.csproj">
-      <Project>{9e90936d-f2b8-4ad6-940a-11178ae67082}</Project>
-      <Name>GitHubUpdater</Name>
-    </ProjectReference>
     <ProjectReference Include="..\inet\inet.csproj">
       <Project>{6423075d-fb6a-4a21-b8c3-2bdb02d3e744}</Project>
       <Name>inet</Name>
@@ -358,10 +362,6 @@
     <ProjectReference Include="..\PlexDL.Common.Pxz\PlexDL.Common.Pxz.csproj">
       <Project>{1764ca80-f851-4e2c-acc8-37696d499d3b}</Project>
       <Name>PlexDL.Common.Pxz</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
-      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
-      <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.Common\PlexDL.Common.csproj">
       <Project>{a464f174-fedd-45c7-b17a-4fd707867f2b}</Project>

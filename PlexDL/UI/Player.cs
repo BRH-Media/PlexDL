@@ -13,16 +13,16 @@ using System;
 using System.Windows.Forms;
 using UIHelpers;
 
+#pragma warning disable 1591
+
 namespace PlexDL.UI
 {
     public partial class Player : Form
     {
         private PlexDL.Player.Player _mPlayer;
-        public bool CanFadeOut = true;
 
-        public bool IsWmp = false;
+        private bool _isWmp = ObjectProvider.Settings.Player.ForceWmpMode;
 
-        public Timer T1 = new Timer();
         public PlexObject StreamingContent { get; set; }
 
         public Player()
@@ -30,13 +30,39 @@ namespace PlexDL.UI
             InitializeComponent();
         }
 
+        //double-buffering override for the entire form
         protected override CreateParams CreateParams
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= 0x02000000;
                 return cp;
+            }
+        }
+
+        private void SwitchWmp(bool pvsSetup = true)
+        {
+            //PVS
+            tlpMaster.Enabled = !_isWmp;
+            tlpMaster.Visible = !_isWmp;
+
+            //WMP COM
+            wmpMain.Enabled = _isWmp;
+            wmpMain.Visible = _isWmp;
+
+            //PVS setup
+            if (!_isWmp && pvsSetup)
+            {
+                _mPlayer = new PlexDL.Player.Player(pnlPlayer);
+                _mPlayer.Sliders.Position.TrackBar = trkDuration;
+                _mPlayer.Events.MediaPositionChanged += MPlayer_MediaPositionChanged;
+                _mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
+                _mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
+            }
+            else if (_isWmp)
+            {
+                wmpMain.URL = StreamingContent.StreamInformation.Links.View;
             }
         }
 
@@ -49,15 +75,13 @@ namespace PlexDL.UI
             if (!PlexDL.Player.Player.MFPresent)
             {
                 UIMessages.Error(
-                    @"MediaFoundation is not installed. The player will not be able to stream the selected content :(",
+                    @"MediaFoundation is not installed. The player will not be able to stream the selected content; reverting to WMP mode.",
                     @"Playback Error");
-                CanFadeOut = false;
-                Close();
+                _isWmp = true;
             }
 
             if (StreamingContent.StreamInformation.Container == "mkv")
             {
-                CanFadeOut = false;
                 var msg =
                     UIMessages.Question(
                         @"PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed");
@@ -79,11 +103,8 @@ namespace PlexDL.UI
                     Close();
             }
 
-            _mPlayer = new PlexDL.Player.Player(pnlPlayer);
-            _mPlayer.Sliders.Position.TrackBar = trkDuration;
-            _mPlayer.Events.MediaPositionChanged += MPlayer_MediaPositionChanged;
-            _mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
-            _mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
+            //decide appropriate player
+            SwitchWmp();
 
             //UIMessages.Info(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
             //UIMessages.Info("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
@@ -100,7 +121,8 @@ namespace PlexDL.UI
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (IsWmp) return base.ProcessCmdKey(ref msg, keyData);
+            //hotkeys are disabled during Windows Media Player mode
+            if (_isWmp) return base.ProcessCmdKey(ref msg, keyData);
 
             if (keyData == ObjectProvider.Settings.Player.KeyBindings.PlayPause)
             {
@@ -143,12 +165,9 @@ namespace PlexDL.UI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void FrmPlayer_Resize(object sender, EventArgs e)
-        {
-        }
-
         private void FrmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            wmpMain?.Dispose();
             _mPlayer?.Dispose();
         }
 

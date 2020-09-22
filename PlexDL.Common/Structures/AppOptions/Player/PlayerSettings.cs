@@ -41,6 +41,10 @@ namespace PlexDL.Common.Structures.AppOptions.Player
                      "[3] - MenuSelector")]
         public PlaybackMode PlaybackEngine { get; set; } = PlaybackMode.MenuSelector;
 
+        [DisplayName("Force Windows Media Player Mode")]
+        [Description("If you're having trouble with PVS, you can force PlexDL to use the native Windows Media Player COM library (wmp.dll)")]
+        public bool ForceWmpMode { get; set; } = false;
+
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()
         {

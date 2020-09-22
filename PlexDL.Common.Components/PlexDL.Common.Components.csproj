@@ -40,6 +40,9 @@
     <Compile Include="CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DXPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>

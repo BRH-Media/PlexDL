@@ -33,7 +33,6 @@ namespace PlexDL.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
-            this.pnlPlayer = new System.Windows.Forms.Panel();
             this.tmrCopied = new System.Windows.Forms.Timer(this.components);
             this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
             this.btnSkipBack = new System.Windows.Forms.Button();
@@ -47,22 +46,15 @@ namespace PlexDL.UI
             this.btnPlayPause = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.tlpPlayerControls = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpMaster = new System.Windows.Forms.TableLayoutPanel();
             this.btnFullScreen = new System.Windows.Forms.Button();
+            this.tlpMaster = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlPlayer = new System.Windows.Forms.Panel();
+            this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             this.tlpPlayerControls.SuspendLayout();
             this.tlpMaster.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pnlPlayer
-            // 
-            this.pnlPlayer.BackColor = System.Drawing.Color.Black;
-            this.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPlayer.Location = new System.Drawing.Point(0, 0);
-            this.pnlPlayer.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPlayer.Name = "pnlPlayer";
-            this.pnlPlayer.Size = new System.Drawing.Size(1280, 726);
-            this.pnlPlayer.TabIndex = 0;
             // 
             // tmrCopied
             // 
@@ -239,22 +231,6 @@ namespace PlexDL.UI
             this.tlpPlayerControls.Size = new System.Drawing.Size(1280, 45);
             this.tlpPlayerControls.TabIndex = 11;
             // 
-            // tlpMaster
-            // 
-            this.tlpMaster.ColumnCount = 1;
-            this.tlpMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMaster.Controls.Add(this.tlpPlayerControls, 0, 1);
-            this.tlpMaster.Controls.Add(this.pnlPlayer, 0, 0);
-            this.tlpMaster.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMaster.Location = new System.Drawing.Point(0, 0);
-            this.tlpMaster.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpMaster.Name = "tlpMaster";
-            this.tlpMaster.RowCount = 2;
-            this.tlpMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMaster.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMaster.Size = new System.Drawing.Size(1280, 771);
-            this.tlpMaster.TabIndex = 12;
-            // 
             // btnFullScreen
             // 
             this.btnFullScreen.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -269,11 +245,49 @@ namespace PlexDL.UI
             this.btnFullScreen.UseVisualStyleBackColor = true;
             this.btnFullScreen.Click += new System.EventHandler(this.BtnFullScreen_Click);
             // 
+            // tlpMaster
+            // 
+            this.tlpMaster.ColumnCount = 1;
+            this.tlpMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMaster.Controls.Add(this.pnlPlayer, 0, 0);
+            this.tlpMaster.Controls.Add(this.tlpPlayerControls, 0, 1);
+            this.tlpMaster.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMaster.Location = new System.Drawing.Point(0, 0);
+            this.tlpMaster.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpMaster.Name = "tlpMaster";
+            this.tlpMaster.RowCount = 2;
+            this.tlpMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMaster.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMaster.Size = new System.Drawing.Size(1280, 771);
+            this.tlpMaster.TabIndex = 12;
+            // 
+            // pnlPlayer
+            // 
+            this.pnlPlayer.BackColor = System.Drawing.Color.Black;
+            this.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPlayer.Location = new System.Drawing.Point(0, 0);
+            this.pnlPlayer.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPlayer.Name = "pnlPlayer";
+            this.pnlPlayer.Size = new System.Drawing.Size(1280, 726);
+            this.pnlPlayer.TabIndex = 12;
+            // 
+            // wmpMain
+            // 
+            this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wmpMain.Enabled = true;
+            this.wmpMain.Location = new System.Drawing.Point(0, 0);
+            this.wmpMain.Name = "wmpMain";
+            this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
+            this.wmpMain.Size = new System.Drawing.Size(1280, 771);
+            this.wmpMain.TabIndex = 0;
+            // 
             // Player
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1280, 771);
             this.Controls.Add(this.tlpMaster);
+            this.Controls.Add(this.wmpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Player";
             this.ShowInTaskbar = false;
@@ -281,19 +295,17 @@ namespace PlexDL.UI
             this.Text = "Unknown Title";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPlayer_FormClosing);
             this.Load += new System.EventHandler(this.FrmPlayer_Load);
-            this.Resize += new System.EventHandler(this.FrmPlayer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
             this.tlpPlayerControls.ResumeLayout(false);
             this.tlpPlayerControls.PerformLayout();
             this.tlpMaster.ResumeLayout(false);
             this.tlpMaster.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private Panel pnlPlayer;
         private Timer tmrCopied;
         private Timer tmrRefreshUI;
         private Button btnSkipBack;
@@ -309,5 +321,7 @@ namespace PlexDL.UI
         private Label lblTotalDuration;
         private TableLayoutPanel tlpMaster;
         private Button btnFullScreen;
+        private AxWMPLib.AxWindowsMediaPlayer wmpMain;
+        private Panel pnlPlayer;
     }
 }
