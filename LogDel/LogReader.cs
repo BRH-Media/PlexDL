@@ -15,6 +15,7 @@ namespace LogDel
         {
             //the table that we're creating from the .logdel file
             DataTable table = null;
+
             try
             {
                 //check if specified file exists
@@ -148,6 +149,9 @@ namespace LogDel
                         //value row and we can process it as LogDel.
                         else if (line.Contains("!"))
                         {
+                            //headers cannot be applied outside of row 1
+                            if (line.StartsWith(@"###")) continue;
+
                             //split the line into cells via the '!' delimiter.
                             var strSplit = line.Split('!');
 
