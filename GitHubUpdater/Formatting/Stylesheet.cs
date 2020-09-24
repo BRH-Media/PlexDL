@@ -1,7 +1,7 @@
-﻿using GitHubUpdater.Properties;
-using System.IO;
+﻿using System.IO;
+using GitHubUpdater.Properties;
 
-namespace GitHubUpdater
+namespace GitHubUpdater.Formatting
 {
     public class Stylesheet
     {

@@ -1,4 +1,5 @@
 ﻿using GitHubUpdater.API;
+using GitHubUpdater.UI;
 using inet;
 using Newtonsoft.Json;
 using PlexDL.WaitWindow;

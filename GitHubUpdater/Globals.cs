@@ -13,8 +13,8 @@ namespace GitHubUpdater
         {
             get
             {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
+                var codeBase = Assembly.GetEntryAssembly()?.CodeBase;
+                var uri = new UriBuilder(codeBase ?? string.Empty);
                 var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }

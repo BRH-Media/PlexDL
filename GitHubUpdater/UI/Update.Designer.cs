@@ -1,4 +1,4 @@
-﻿namespace GitHubUpdater
+﻿namespace GitHubUpdater.UI
 {
     partial class Update
     {

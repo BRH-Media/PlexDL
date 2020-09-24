@@ -73,16 +73,17 @@
     <Compile Include="DownloadManager\Job.cs" />
     <Compile Include="DownloadManager\ReturnStatus.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Formatting\Html.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Stylesheet.cs" />
-    <Compile Include="Update.cs">
+    <Compile Include="Formatting\Stylesheet.cs" />
+    <Compile Include="UI\Update.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Update.Designer.cs">
+    <Compile Include="UI\Update.Designer.cs">
       <DependentUpon>Update.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdateClient.cs" />
@@ -93,7 +94,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Update.resx">
+    <EmbeddedResource Include="UI\Update.resx">
       <DependentUpon>Update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -106,10 +107,15 @@
       <Project>{6423075d-fb6a-4a21-b8c3-2bdb02d3e744}</Project>
       <Name>inet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
       <Name>PlexDL.WaitWindow</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

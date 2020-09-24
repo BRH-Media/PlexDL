@@ -53,7 +53,7 @@ namespace PlexDL.WaitWindow
         {
         }
 
-        private WaitWindowGUI _GUI;
+        private WaitWindowGui _GUI;
 
         internal delegate void MethodInvoker<T>(T parameter1);
 
@@ -89,16 +89,16 @@ namespace PlexDL.WaitWindow
                 message = "Please wait...";
 
             //	Set up the window
-            _GUI = new WaitWindowGUI(this);
+            _GUI = new WaitWindowGui(this);
             _GUI.SetMessage(message);
 
             //	Call it
             _GUI.ShowDialog();
 
-            var result = _GUI._Result;
+            var result = _GUI.Result;
 
             //	clean up
-            var _Error = _GUI._Error;
+            var _Error = _GUI.Error;
             _GUI.Dispose();
 
             //	Return result or throw and exception

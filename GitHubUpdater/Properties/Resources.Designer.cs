@@ -61,6 +61,29 @@ namespace GitHubUpdater.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///    &lt;head&gt;
+        ///        &lt;meta charset=&quot;utf-8&quot;&gt;
+        ///        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=10&quot; /&gt;
+        ///		&lt;title&gt;Update Available&lt;/title&gt;
+        ///        &lt;style&gt;
+        ///            {0}
+        ///        &lt;/style&gt;
+        ///    &lt;/head&gt;
+        ///    &lt;body&gt;
+        ///        {1}
+        ///        &lt;p&gt;Downloads: {2}&lt;/p&gt;
+        ///    &lt;/body&gt;
+        ///&lt;/html&gt;.
+        /// </summary>
+        internal static string updateFormHtmlDocument {
+            get {
+                return ResourceManager.GetString("updateFormHtmlDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to body { font-family: arial; color: #3e3e3e; } li { padding: 6px; margin: 5px; background-color: #d8d8d8; border-radius: 5px;}.
         /// </summary>
         internal static string updateFormHtmlStyle {

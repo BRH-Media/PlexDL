@@ -1,15 +1,19 @@
 ﻿using GitHubUpdater.API;
 using GitHubUpdater.DownloadManager;
+using GitHubUpdater.Formatting;
 using Markdig;
+using PlexDL.Common.Security;
 using PlexDL.WaitWindow;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Html = GitHubUpdater.Formatting.Html;
 
-namespace GitHubUpdater
+namespace GitHubUpdater.UI
 {
     public partial class Update : Form
     {
@@ -44,6 +48,7 @@ namespace GitHubUpdater
                     NoUpdate();
                 else
                 {
+                    //Release ID is the update download folder
                     var dir = $@"{Globals.UpdateRootDir}\{AppUpdate.UpdateData.id}";
 
                     //set global
@@ -51,8 +56,7 @@ namespace GitHubUpdater
 
                     var title = AppUpdate.UpdateData.name;
                     var changes = AppUpdate.UpdateData.body;
-                    var style = new Stylesheet();
-                    var css = style.CssText;
+                    var css = new Stylesheet().CssText;
 
                     var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
                     lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
@@ -60,20 +64,7 @@ namespace GitHubUpdater
                     if (!string.IsNullOrEmpty(changes))
                         changesHtml = Markdown.ToHtml(changes);
 
-                    var documentHtml = $@"<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset=""utf-8"">
-        <meta http-equiv=""X-UA-Compatible"" content=""IE=10"" />
-        <style>
-            {css}
-        </style>
-    </head>
-    <body>
-        {changesHtml}
-        <p>Downloads: {NumberDownloads()}</p>
-    </body>
-</html>";
+                    var documentHtml = string.Format(new Html().HtmlText, css, changesHtml, NumberDownloads());
 
                     //apply decoded markdown-HTML
                     browserChanges.DocumentText = documentHtml;
@@ -113,7 +104,10 @@ namespace GitHubUpdater
 
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
         {
-            Download();
+            BeginInvoke((MethodInvoker)delegate
+           {
+               Download();
+           });
         }
 
         private int NumberDownloads()
@@ -121,11 +115,15 @@ namespace GitHubUpdater
             return AppUpdate.UpdateData.assets.Sum(a => a.download_count);
         }
 
-        private void Download()
+        private void Download(bool waitWindow = true)
         {
             try
             {
-                var status = (ReturnStatus)WaitWindow.Show(DownloadWorker, @"Downloading update files");
+                //offload? Depends on a flag
+                var status =
+                    waitWindow
+                    ? (ReturnStatus)WaitWindow.Show(Download, @"Downloading update files")
+                    : ExecuteDownload();
 
                 switch (status)
                 {
@@ -167,6 +165,7 @@ namespace GitHubUpdater
             }
             catch (Exception ex)
             {
+                ExportError(ex);
                 MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -175,7 +174,7 @@ namespace GitHubUpdater
             Close();
         }
 
-        private void DownloadWorker(object sender, WaitWindowEventArgs e)
+        private ReturnStatus ExecuteDownload()
         {
             //the final status to deliver to the UpdateClient
             var status = ReturnStatus.Unknown;
@@ -191,6 +190,11 @@ namespace GitHubUpdater
                     //each asset has a separate directory inside the 'UpdateId' directory
                     if (!Directory.Exists(dirA))
                         Directory.CreateDirectory(dirA);
+                    else
+                    {
+                        Directory.Delete(dirA);
+                        Directory.CreateDirectory(dirA);
+                    }
 
                     //construct download job
                     var j = new Job
@@ -204,13 +208,44 @@ namespace GitHubUpdater
                     status = Agent.DoDownload(j).Result;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                //ignore the error
+                ExportError(ex);
             }
 
             //finally, return the final status
-            e.Result = status;
+            return status;
+        }
+
+        private void Download(object sender, WaitWindowEventArgs e)
+        {
+            e.Result = ExecuteDownload();
+        }
+
+        private void ExportError(Exception ex)
+        {
+            try
+            {
+                //file name is MD5-hashed current date and time (for uniqueness)
+                var fileName = $"{Md5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
+
+                //store all errors in the UpdateDirectory
+                var errorsPath = $@"{UpdateDirectory}\errors";
+
+                //ensure the 'errors' folder exists
+                if (!Directory.Exists(errorsPath))
+                    Directory.CreateDirectory(errorsPath);
+
+                //full path
+                var filePath = $@"{errorsPath}\{fileName}";
+
+                //export error to log
+                File.WriteAllText(filePath, ex.ToString());
+            }
+            catch
+            {
+                //ignore
+            }
         }
     }
 }
