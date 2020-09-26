@@ -52,9 +52,13 @@ namespace GitHubUpdater.API
             var updated = UpdatedVersion;
             var status = VersionStatus.Undetermined;
 
+            //add a revision of '0' if one isn't defined, by creating a new temporary version for comparison
+            if (updated.Revision == -1)
+                updated = new Version($"{UpdateData.tag_name.TrimStart('v')}.0");
+
             try
             {
-                if (CurrentVersion != null && updated != null)
+                if (Valid)
                 {
                     var comparison = CurrentVersion.CompareTo(updated);
 

@@ -77,18 +77,25 @@ namespace GitHubUpdater
                         //so as to not show anything
                         var data = GetUpdateData(!silentCheck);
 
-                        //debug mode shows the form regardless of the current version
-                        if (!data.UpToDate || DebugMode)
-                        {
-                            ShowUpdateForm(data);
-                        }
+                        //did the request succeed and give us good data?
+                        if (data.Valid)
+
+                            //debug mode shows the form regardless of the current version
+                            if (!data.UpToDate || DebugMode)
+                            {
+                                ShowUpdateForm(data);
+                            }
+                            else
+                            {
+                                if (!silentCheck)
+                                    MessageBox.Show(
+                                        $"You're running the latest version!\n\nYour version: {data.CurrentVersion}" +
+                                        $"\nLatest release: {data.UpdatedVersion}", @"Message",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                         else
-                        {
-                            if (!silentCheck)
-                                MessageBox.Show($"You're running the latest version!\n\nYour version: {data.CurrentVersion}" +
-                                                $"\nLatest release: {data.UpdatedVersion}", @"Message",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
+                            MessageBox.Show(@"Update data was invalid; cannot process update information.",
+                                @"Update Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
                 else
