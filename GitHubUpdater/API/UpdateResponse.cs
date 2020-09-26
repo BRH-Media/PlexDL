@@ -52,14 +52,20 @@ namespace GitHubUpdater.API
             var updated = UpdatedVersion;
             var status = VersionStatus.Undetermined;
 
-            //add a revision of '0' if one isn't defined, by creating a new temporary version for comparison
+            //add a build and revision of '0' (v[M].[m].[0.0]) if one isn't defined, by creating a new temporary version object
+            if (updated.Build == -1)
+                updated = new Version($"{UpdateData.tag_name.TrimStart('v')}.0.0");
+
+            //add a revision of '0' if one isn't defined, by creating a new temporary version object
             if (updated.Revision == -1)
                 updated = new Version($"{UpdateData.tag_name.TrimStart('v')}.0");
 
             try
             {
+                //null-checks
                 if (Valid)
                 {
+                    //execute version check
                     var comparison = CurrentVersion.CompareTo(updated);
 
                     //outdated
@@ -78,6 +84,7 @@ namespace GitHubUpdater.API
                 //ignore
             }
 
+            //finalise and return the result
             return status;
         }
     }
