@@ -39,6 +39,7 @@
             this.tlpYourVersion = new System.Windows.Forms.TableLayoutPanel();
             this.lblYourVersion = new System.Windows.Forms.Label();
             this.lblYourVersionValue = new System.Windows.Forms.Label();
+            this.lblVersionStatus = new System.Windows.Forms.Label();
             this.gbUpdateChanges.SuspendLayout();
             this.tlpControls.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -147,11 +148,13 @@
             // 
             // tlpYourVersion
             // 
-            this.tlpYourVersion.ColumnCount = 2;
+            this.tlpYourVersion.ColumnCount = 3;
+            this.tlpYourVersion.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpYourVersion.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpYourVersion.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpYourVersion.Controls.Add(this.lblYourVersion, 0, 0);
             this.tlpYourVersion.Controls.Add(this.lblYourVersionValue, 1, 0);
+            this.tlpYourVersion.Controls.Add(this.lblVersionStatus, 2, 0);
             this.tlpYourVersion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpYourVersion.Location = new System.Drawing.Point(0, 335);
             this.tlpYourVersion.Margin = new System.Windows.Forms.Padding(0);
@@ -180,10 +183,23 @@
             this.lblYourVersionValue.Location = new System.Drawing.Point(83, 3);
             this.lblYourVersionValue.Margin = new System.Windows.Forms.Padding(0, 3, 3, 6);
             this.lblYourVersionValue.Name = "lblYourVersionValue";
-            this.lblYourVersionValue.Size = new System.Drawing.Size(314, 33);
+            this.lblYourVersionValue.Size = new System.Drawing.Size(61, 33);
             this.lblYourVersionValue.TabIndex = 1;
             this.lblYourVersionValue.Text = "[VERSION]";
             this.lblYourVersionValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblVersionStatus
+            // 
+            this.lblVersionStatus.AutoSize = true;
+            this.lblVersionStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblVersionStatus.ForeColor = System.Drawing.Color.Chocolate;
+            this.lblVersionStatus.Location = new System.Drawing.Point(147, 3);
+            this.lblVersionStatus.Margin = new System.Windows.Forms.Padding(0, 3, 3, 6);
+            this.lblVersionStatus.Name = "lblVersionStatus";
+            this.lblVersionStatus.Size = new System.Drawing.Size(250, 33);
+            this.lblVersionStatus.TabIndex = 2;
+            this.lblVersionStatus.Text = "[STATUS]";
+            this.lblVersionStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Update
             // 
@@ -223,5 +239,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpYourVersion;
         private System.Windows.Forms.Label lblYourVersion;
         private System.Windows.Forms.Label lblYourVersionValue;
+        private System.Windows.Forms.Label lblVersionStatus;
     }
 }

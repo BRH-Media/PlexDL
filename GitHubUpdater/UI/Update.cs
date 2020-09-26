@@ -83,6 +83,12 @@ namespace GitHubUpdater.UI
             LoadUi();
         }
 
+        private void VersionStatusUpdate(string text = @"Outdated", KnownColor foreColor = KnownColor.DarkRed)
+        {
+            lblVersionStatus.Text = text;
+            lblVersionStatus.ForeColor = Color.FromKnownColor(foreColor);
+        }
+
         private void CenterTitle()
         {
             //calculate appropriate x-axis position

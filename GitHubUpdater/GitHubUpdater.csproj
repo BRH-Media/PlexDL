@@ -54,7 +54,6 @@
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
@@ -69,6 +68,7 @@
     <Compile Include="API\Application.cs" />
     <Compile Include="API\UpdateResponse.cs" />
     <Compile Include="API\Uploader.cs" />
+    <Compile Include="API\VersionStatus.cs" />
     <Compile Include="DownloadManager\Agent.cs" />
     <Compile Include="DownloadManager\Job.cs" />
     <Compile Include="DownloadManager\ReturnStatus.cs" />

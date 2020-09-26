@@ -20,16 +20,13 @@ namespace GitHubUpdater
         public bool DebugMode { get; set; } = false;
         public Version CurrentInstalledVersion { get; set; }
 
-        public void ShowUpdateForm(Application data)
+        public void ShowUpdateForm(UpdateResponse data)
         {
             var frm = new Update
             {
-                AppUpdate = new UpdateResponse
-                {
-                    CurrentVersion = CurrentInstalledVersion,
-                    UpdateData = data
-                }
+                AppUpdate = data
             };
+
             frm.ShowDialog();
         }
 
@@ -37,6 +34,25 @@ namespace GitHubUpdater
         {
             if (!Directory.Exists(Globals.UpdateRootDir))
                 Directory.CreateDirectory(Globals.UpdateRootDir);
+        }
+
+        public UpdateResponse GetUpdateData(bool waitWindow = true)
+        {
+            //default is a blank response template
+            var data = new UpdateResponse();
+
+            try
+            {
+                //fetch the data itself and apply it
+                data.CurrentVersion = CurrentInstalledVersion;
+                data.UpdateData = GetLatestRelease(waitWindow);
+            }
+            catch
+            {
+                //ignore
+            }
+
+            return data;
         }
 
         public void CheckIfLatest(bool silentCheck = false)
@@ -57,19 +73,20 @@ namespace GitHubUpdater
                     }
                     else
                     {
-                        var data = GetLatestRelease(!silentCheck);
-                        var vNow = CurrentInstalledVersion;
-                        var vNew = new Version(data.tag_name.TrimStart('v'));
-                        var vCompare = vNow.CompareTo(vNew);
-                        if (vCompare < 0 || DebugMode)
+                        //wait window isn't silent (it's a window after all), so it needs to be accounted for here
+                        //so as to not show anything
+                        var data = GetUpdateData(!silentCheck);
+
+                        //debug mode shows the form regardless of the current version
+                        if (!data.UpToDate || DebugMode)
                         {
                             ShowUpdateForm(data);
                         }
                         else
                         {
                             if (!silentCheck)
-                                MessageBox.Show($"You're running the latest version!\n\nYour version: {vNow}" +
-                                                $"\nLatest release: {vNew}", @"Message",
+                                MessageBox.Show($"You're running the latest version!\n\nYour version: {data.CurrentVersion}" +
+                                                $"\nLatest release: {data.UpdatedVersion}", @"Message",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
@@ -82,9 +99,7 @@ namespace GitHubUpdater
             catch (Exception ex)
             {
                 if (!silentCheck)
-                    MessageBox.Show($@"Error whilst checking for the latest version:
-
-{ex}");
+                    MessageBox.Show($"Error whilst checking for the latest version:\n\n{ex}");
             }
         }
 
