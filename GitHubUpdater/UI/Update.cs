@@ -13,6 +13,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Html = GitHubUpdater.Formatting.Html;
 
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+
 namespace GitHubUpdater.UI
 {
     public partial class Update : Form
@@ -39,9 +41,7 @@ namespace GitHubUpdater.UI
         private void LoadUi()
         {
             if (AppUpdate == null)
-            {
                 NoUpdate();
-            }
             else
             {
                 if (AppUpdate.CurrentVersion == null || AppUpdate.UpdateData == null)
@@ -72,19 +72,49 @@ namespace GitHubUpdater.UI
                     //set current version
                     lblYourVersionValue.Text = $"v{AppUpdate.CurrentVersion}";
                 }
-
-                //recenter the title (text has been changed so the size has too)
-                CenterTitle();
             }
+
+            //recenter the title (text has been changed so the size has too)
+            CenterTitle();
+
+            //load versioning status
+            VersionStatusUpdate();
         }
 
         private void Update_Load(object sender, EventArgs e)
         {
+            //reposition elements and load all update information
             LoadUi();
         }
 
-        private void VersionStatusUpdate(string text = @"Outdated", KnownColor foreColor = KnownColor.DarkRed)
+        private void VersionStatusUpdate()
         {
+            var text = @"";
+            var foreColor = KnownColor.Chocolate;
+
+            switch (AppUpdate.RunVersionCheck())
+            {
+                case VersionStatus.Outdated:
+                    text = @"Outdated";
+                    foreColor = KnownColor.DarkRed;
+                    break;
+
+                case VersionStatus.UpToDate:
+                    text = @"Up-to-date";
+                    foreColor = KnownColor.DarkGreen;
+                    break;
+
+                case VersionStatus.Bumped:
+                    text = @"Bumped";
+                    foreColor = KnownColor.DarkGreen;
+                    break;
+
+                case VersionStatus.Undetermined:
+                    text = @"Undetermined";
+                    foreColor = KnownColor.Chocolate;
+                    break;
+            }
+
             lblVersionStatus.Text = text;
             lblVersionStatus.ForeColor = Color.FromKnownColor(foreColor);
         }
