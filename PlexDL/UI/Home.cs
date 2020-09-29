@@ -21,7 +21,7 @@ using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
-using PlexDL.PlexAPI;
+using PlexDL.MyPlex;
 using PlexDL.PlexAPI.LoginHandler;
 using PlexDL.WaitWindow;
 using System;
@@ -36,9 +36,10 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.MyPlex;
 using UIHelpers;
 using Directory = System.IO.Directory;
+
+#pragma warning disable 1591
 
 //using System.Threading.Tasks;
 
@@ -50,6 +51,20 @@ namespace PlexDL.UI
         {
             InitializeComponent();
             tabMain.SelectedIndex = 0;
+        }
+
+        private void BringToTop()
+        {
+            //send this form to the front of the screen
+            TopMost = true;
+            TopMost = false;
+
+            //debug mode? If so, send the debug form to the top too
+            if (Flags.IsDebug && ObjectProvider.DebugForm != null)
+            {
+                ObjectProvider.DebugForm.TopMost = true;
+                ObjectProvider.DebugForm.TopMost = false;
+            }
         }
 
         private void ManualSectionLoad()
@@ -129,9 +144,7 @@ namespace PlexDL.UI
 
         private void NfyMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            //send this form to the front of the screen
-            TopMost = true;
-            TopMost = false;
+            BringToTop();
         }
 
         private void ItmStreamInPVS_Click(object sender, EventArgs e)
