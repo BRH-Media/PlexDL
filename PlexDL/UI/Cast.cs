@@ -35,6 +35,10 @@ namespace PlexDL.UI
 
         public bool PlayState { get; set; }
 
+        /// <summary>
+        /// Try and launch the cast window with the specified content
+        /// </summary>
+        /// <param name="content">The PlexObject to cast</param>
         public static void TryCast(PlexObject content)
         {
             using (var frm = new Cast { StreamingContent = content })
@@ -43,13 +47,23 @@ namespace PlexDL.UI
             }
         }
 
-        public static string GetLocalIpAddress()
+        /// <summary>
+        /// Returns the first local IPv4 address on the current computer (attempts to avoid virtualised adapters)
+        /// </summary>
+        /// <returns></returns>
+        private static string GetLocalIpAddress()
         {
+            //current DNS Host (this PC)
             var host = Dns.GetHostEntry(Dns.GetHostName());
+
+            //go through each address on the current machine
             foreach (var ip in host.AddressList)
+                //check if it's IPv4 and if it's a private address (e.g. 10.* and 192.168.*)
                 if (ip.AddressFamily == AddressFamily.InterNetwork && Methods.IsPrivateIp(ip.ToString()))
+                    //first match is returned
                     return ip.ToString();
 
+            //return blank for no matches
             return @"";
         }
 
@@ -122,99 +136,104 @@ namespace PlexDL.UI
                 {
                     if (lstDevices.SelectedItem != null && Devices.Count > 0)
                     {
-                        //set UI
-                        btnCast.Enabled = false;
-                        btnCast.Text = @"Connecting";
-
-                        //match list index to an actual stored chromecast
-                        var i = lstDevices.SelectedIndex;
-                        var chromecast = Devices[i];
-
-                        //attempt the connection
-                        await Service.ConnectToChromecast(chromecast);
-
-                        //give it some time to connect (5 seconds)
-                        await Task.Delay(5000);
-
-                        //check if the client actually did connect
-                        if (Service.ConnectedChromecast != null && Service.ChromeCastClient != null)
+                        //Index check. Makes sure that the index does exist within the array before
+                        //trying to access it.
+                        if (Devices.Count >= lstDevices.SelectedIndex + 1)
                         {
-                            btnCast.Text = @"Launching";
-
-                            //set the client to the current service client
-                            Client = Service.ChromeCastClient;
-
-                            //try and launch Plex on the Chromecast device
-                            Controller = await Client.LaunchPlex();
-
-                            //give it some time to launch Plex (4 seconds)
-                            await Task.Delay(4000);
-
-                            //if it's still null, wait it out until it isn't anymore.
-                            while (Controller == null)
-                                await Task.Delay(500);
-
                             //set UI
-                            btnCast.Text = @"Queueing";
+                            btnCast.Enabled = false;
+                            btnCast.Text = @"Connecting";
 
-                            //try and load the media
-                            //controller and the content.
-                            var content = PlexMediaData.DataFromContent(StreamingContent);
-                            var data = (CustomData)content.CustomData;
+                            //match list index to an actual stored chromecast
+                            var i = lstDevices.SelectedIndex;
+                            var chromecast = Devices[i];
 
-                            //try and create a new playQueue
-                            var queue = PlayQueueHandler.NewQueue(StreamingContent, ObjectProvider.Svr);
-                            if (!queue.QueueSuccess || string.IsNullOrEmpty(queue.QueueId))
+                            //attempt the connection
+                            await Service.ConnectToChromecast(chromecast);
+
+                            //give it some time to connect (5 seconds)
+                            await Task.Delay(5000);
+
+                            //check if the client actually did connect
+                            if (Service.ConnectedChromecast != null && Service.ChromeCastClient != null)
                             {
-                                UIMessages.Warning(
-                                    $"Couldn't create a new playQueue with media:\n\nTitle: {StreamingContent.StreamInformation.ContentTitle}\nURI: {StreamingContent.ApiUri}");
+                                btnCast.Text = @"Launching";
 
-                                //stop the application
-                                StopApplication();
+                                //set the client to the current service client
+                                Client = Service.ChromeCastClient;
 
-                                //exit function
-                                return;
+                                //try and launch Plex on the Chromecast device
+                                Controller = await Client.LaunchPlex();
+
+                                //give it some time to launch Plex (4 seconds)
+                                await Task.Delay(4000);
+
+                                //if it's still null, wait it out until it isn't anymore.
+                                while (Controller == null)
+                                    await Task.Delay(500);
+
+                                //set UI
+                                btnCast.Text = @"Queueing";
+
+                                //try and load the media
+                                //controller and the content.
+                                var content = PlexMediaData.DataFromContent(StreamingContent);
+                                var data = (CustomData)content.CustomData;
+
+                                //try and create a new playQueue
+                                var queue = PlayQueueHandler.NewQueue(StreamingContent, ObjectProvider.Svr);
+                                if (!queue.QueueSuccess || string.IsNullOrEmpty(queue.QueueId))
+                                {
+                                    UIMessages.Warning(
+                                        $"Couldn't create a new playQueue with media:\n\nTitle: {StreamingContent.StreamInformation.ContentTitle}\nURI: {StreamingContent.ApiUri}");
+
+                                    //stop the application
+                                    await StopApplication();
+
+                                    //exit function
+                                    return;
+                                }
+
+                                //apply new playQueue URI to the container
+                                data.containerKey = queue.QueueUri;
+
+                                //UIMessages.Info(JsonConvert.SerializeObject(data, Formatting.Indented));
+
+                                await Controller.LoadMedia(content.Url, content.ContentType, null, content.StreamType,
+                                    0D,
+                                    content.CustomData);
+
+                                //set UI
+                                btnCast.Enabled = true;
+                                btnCast.Text = @"Stop";
+                                btnDiscover.Enabled = false;
+                                btnPlayPause.Enabled = true;
+                                btnPlayPause.Text = @"Play";
+
+                                //set global flags
+                                ConnectState = true;
+                                PlayState = false;
                             }
+                            else
+                            {
+                                //alert the user; client is null which means it failed.
+                                UIMessages.Warning(@"Failed to connect; null connection providers.");
 
-                            //apply new playQueue URI to the container
-                            data.containerKey = queue.QueueUri;
-
-                            //UIMessages.Info(JsonConvert.SerializeObject(data, Formatting.Indented));
-
-                            await Controller.LoadMedia(content.Url, content.ContentType, null, content.StreamType, 0D,
-                                content.CustomData);
-
-                            //set UI
-                            btnCast.Enabled = true;
-                            btnCast.Text = @"Stop";
-                            btnDiscover.Enabled = false;
-                            btnPlayPause.Enabled = true;
-                            btnPlayPause.Text = @"Play";
-
-                            //set global flags
-                            ConnectState = true;
-                            PlayState = false;
+                                //set UI
+                                btnCast.Enabled = true;
+                                btnCast.Text = @"Cast";
+                            }
                         }
                         else
-                        {
-                            //alert the user; client is null which means it failed.
-                            UIMessages.Warning(@"Failed to connect; null connection providers.");
-
-                            //set UI
-                            btnCast.Enabled = true;
-                            btnCast.Text = @"Cast";
-                        }
+                            UIMessages.Error(
+                                @"Indexing error: the selected index does not align with the current device list.", @"Validation Error");
                     }
                     else
-                    {
                         UIMessages.Warning(
                             @"Please select a device from the list. To populate the device list, please press 'Discover'.");
-                    }
                 }
                 else
-                {
-                    StopApplication();
-                }
+                    await StopApplication();
             }
             catch (Exception ex)
             {
@@ -222,11 +241,11 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, @"CastInitError");
 
                 //stop the application
-                StopApplication();
+                await StopApplication();
             }
         }
 
-        private async void StopApplication()
+        private async Task StopApplication()
         {
             try
             {
@@ -239,6 +258,10 @@ namespace PlexDL.UI
 
                 //kill the application
                 await Controller.StopApplication();
+
+                //disconnect
+                if (Service.ConnectedChromecast != null)
+                    await Client.DisconnectChromecast();
 
                 //restore UI
                 btnCast.Enabled = true;
@@ -304,6 +327,27 @@ namespace PlexDL.UI
         private void LstDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstDevices.SelectedItem != null) btnCast.Enabled = true;
+        }
+
+        private async void BtnExit_Click(object sender, EventArgs e)
+        {
+            if (Devices != null)
+            {
+                if (Devices.Count > 0)
+                    if (Service.ConnectedChromecast != null)
+                    {
+                        btnDiscover.Enabled = false;
+                        btnCast.Enabled = false;
+                        btnPlayPause.Enabled = false;
+                        btnExit.Enabled = false;
+                        btnExit.Text = @"Disconnecting";
+                        await StopApplication();
+                    }
+
+                Devices = null;
+            }
+
+            Close();
         }
     }
 }

@@ -40,9 +40,10 @@
     <Compile Include="Entropy.cs" />
     <Compile Include="Md5Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtectedBytes.cs" />
-    <Compile Include="ProtectedData.cs" />
-    <Compile Include="ProtectedString.cs" />
+    <Compile Include="Protection\ProtectedBytes.cs" />
+    <Compile Include="Protection\ProtectedData.cs" />
+    <Compile Include="Protection\ProtectedFile.cs" />
+    <Compile Include="Protection\ProtectedString.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlexDL.Common.Enums\PlexDL.Common.Enums.csproj">
@@ -50,5 +51,6 @@
       <Name>PlexDL.Common.Enums</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

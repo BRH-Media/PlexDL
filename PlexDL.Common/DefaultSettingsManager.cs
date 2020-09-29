@@ -1,9 +1,9 @@
-﻿using PlexDL.Common.API;
-using PlexDL.Common.Enums;
+﻿using PlexDL.Common.API.IO;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Security;
+using PlexDL.Common.Security.Protection;
 using PlexDL.Common.Structures.AppOptions;
+using PlexDL.WaitWindow;
 using System;
 using System.IO;
 
@@ -43,49 +43,45 @@ namespace PlexDL.Common
             return new ApplicationOptions();
         }
 
-        public static void CommitDefaultSettings(this ApplicationOptions settings)
+        private static void CommitDefaultSettings(object sender, WaitWindowEventArgs e)
+        {
+            if (e.Arguments.Count == 1)
+            {
+                var settings = (ApplicationOptions)e.Arguments[0];
+                e.Result = settings.CommitDefaultSettings(false);
+            }
+        }
+
+        public static bool CommitDefaultSettings(this ApplicationOptions settings, bool waitWindow = true)
         {
             try
             {
-                //delete existing settings
-                if (SettingsExist)
-                    File.Delete(SettingsFile);
+                if (waitWindow)
+                    return (bool)WaitWindow.WaitWindow.Show(CommitDefaultSettings, @"Saving settings", settings);
+                else
+                {
+                    //write all new settings
+                    var protectedFile = new ProtectedFile(SettingsFile);
+                    protectedFile.WriteAllText(settings.ProfileToXml(), ProtectedSettings);
 
-                //write all new settings
-                File.WriteAllText(SettingsFile, ProtectedSettings
-                    ? settings.EncryptSettings()
-                    : settings.ProfileToXml());
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"CommitToDefaultError");
             }
-        }
-
-        public static string EncryptSettings(this ApplicationOptions settings)
-        {
-            try
-            {
-                var settingsRaw = settings.ProfileToXml();
-                var handler = new ProtectedString(settingsRaw, ProtectionMode.Encrypt);
-                return $"{SettingsProtectionDelimiter}{handler.ProcessedValue}";
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, @"SettingsEncryptionError");
-            }
 
             //default
-            return @"";
+            return false;
         }
 
         public static string DecryptSettings()
         {
             try
             {
-                var settingsRaw = SettingsContent.Remove(0, SettingsProtectionDelimiter.Length);
-                var handler = new ProtectedString(settingsRaw, ProtectionMode.Decrypt);
-                return handler.ProcessedValue;
+                var protectedFile = new ProtectedFile(SettingsFile);
+                return protectedFile.ReadAllText();
             }
             catch (Exception ex)
             {

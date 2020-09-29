@@ -71,10 +71,24 @@
       <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="Rssdp, Version=4.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rssdp.4.0.3\lib\net45\Rssdp.dll</HintPath>
+    </Reference>
+    <Reference Include="Sockets.Plugin, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sharpcaster.SocketsForPCL.2.0.4\lib\net45\Sockets.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Sockets.Plugin.Abstractions, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sharpcaster.SocketsForPCL.2.0.4\lib\net45\Sockets.Plugin.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -86,8 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PlayerLaunchers\BrowserLauncher.cs" />
-    <Compile Include="Common\PlayerLaunchers\PVSLauncher.cs" />
-    <Compile Include="Common\PlayerLaunchers\VLCLauncher.cs" />
+    <Compile Include="Common\PlayerLaunchers\PvsLauncher.cs" />
+    <Compile Include="Common\PlayerLaunchers\VlcLauncher.cs" />
     <Compile Include="Common\SearchFramework\Search.cs" />
     <Compile Include="Common\SearchFramework\SearchData.cs" />
     <Compile Include="Common\SearchFramework\SearchResult.cs" />
@@ -375,9 +389,9 @@
       <Project>{f40a5d3c-078c-44a6-b6cf-53ff7b9c89df}</Project>
       <Name>PlexDL.PlexAPI.LoginHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.PlexAPI.csproj">
+    <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.MyPlex.csproj">
       <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
-      <Name>PlexDL.PlexAPI</Name>
+      <Name>PlexDL.MyPlex</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>

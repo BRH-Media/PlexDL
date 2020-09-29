@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using PlexDL.Common.API.IO;
 using UIHelpers;
 
 namespace PlexDL.UI
@@ -157,7 +158,7 @@ namespace PlexDL.UI
 
                 var options = ProfileFromToken(token);
 
-                ProfileImportExport.ProfileToFile(fqPath, options);
+                ProfileIO.ProfileToFile(fqPath, options);
             }
             catch (Exception ex)
             {

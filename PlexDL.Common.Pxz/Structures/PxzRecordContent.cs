@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using PlexDL.Common.Security.Protection;
 
 namespace PlexDL.Common.Pxz.Structures
 {

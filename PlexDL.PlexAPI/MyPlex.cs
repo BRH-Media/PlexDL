@@ -3,26 +3,17 @@
 using RestSharp;
 using System.Collections.Generic;
 
-namespace PlexDL.PlexAPI
+namespace PlexDL.MyPlex
 {
     public class MyPlex : PlexRest
     {
-        public User Authenticate(string username, string password)
-        {
-            var request = new RestRequest(Method.POST);
-            request.Resource = "users/sign_in.xml";
-
-            return Execute<User>(request, username, password);
-        }
-
         public List<Server> GetServers(User user)
         {
-            var request = new RestRequest(Method.GET);
-            request.Resource = "pms/servers";
-
+            var request = new RestRequest(Method.GET) { Resource = "pms/servers" };
             var servers = Execute<List<Server>>(request, user);
-            for (var i = 0; i < servers.Count; i++)
-                servers[i].user = user;
+
+            foreach (var t in servers)
+                t.user = user;
 
             return servers;
         }

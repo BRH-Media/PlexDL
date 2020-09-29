@@ -6,7 +6,7 @@ namespace PlexDL.Common.CastAPI
 {
     public static class PlexMediaData
     {
-        public static MediaData DataFromContent(PlexObject content, PlexAPI.Server server)
+        public static MediaData DataFromContent(PlexObject content, MyPlex.Server server)
         {
             var contentId = content.ApiUri;
             var customData = CustomData.FillFromApiServer(server);

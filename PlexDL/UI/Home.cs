@@ -3,6 +3,7 @@ using LogDel;
 using PlexDL.AltoHTTP.Classes;
 using PlexDL.Common;
 using PlexDL.Common.API;
+using PlexDL.Common.API.IO;
 using PlexDL.Common.API.Metadata.Handlers;
 using PlexDL.Common.API.Objects;
 using PlexDL.Common.Caching;
@@ -16,6 +17,7 @@ using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.SearchFramework;
 using PlexDL.Common.Structures;
+using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
@@ -34,7 +36,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.Common.Structures.AppOptions;
+using PlexDL.MyPlex;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
@@ -429,7 +431,18 @@ namespace PlexDL.UI
             DoCleanup();
         }
 
-        private static void DoCleanup()
+        private static void DoCleanup(object sender, WaitWindowEventArgs e)
+        {
+            if (e.Arguments.Count == 1)
+            {
+                //Try and delete the .plexdl AppData folder and all its subfolders and files.
+                //This process will be recursive to deeper than level 1.
+                var dir = (string)e.Arguments[0];
+                Directory.Delete(dir, true);
+            }
+        }
+
+        private static void DoCleanup(bool waitWindow = true)
         {
             //check if the AppData .plexdl folder actually exists
             if (Directory.Exists(Strings.PlexDlAppData))
@@ -439,28 +452,35 @@ namespace PlexDL.UI
                     @"Cleanup Confirmation");
 
                 //if they clicked anything other than 'Yes' on the message above, then exit the method.
+                //Only 'Yes' produces 'true' as a result.
                 if (!ask) return;
 
                 try
                 {
-                    //Try and delete the .plexdl AppData folder and all its subfolders and files
-                    Directory.Delete(Strings.PlexDlAppData, true);
+                    //should there be a waitwindow for multi-threading?
+                    if (waitWindow)
+                        //yes, offload to the WaitWindow handler
+                        WaitWindow.WaitWindow.Show(DoCleanup, @"Cleaning", Strings.PlexDlAppData);
+                    else
+                        //no, execute on the GUI thread (inefficient, don't do this)
+                        Directory.Delete(Strings.PlexDlAppData, true);
 
                     //alert user of the success
                     UIMessages.Info(
-                        "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also.\n\nNote: This event has not been logged.",
+                        "Successfully removed all PlexDL files in the AppData folder. This means all logging, caching and secure data has been deleted also." +
+                        "\n\nNote: This event has not been logged.",
                         @"Cleanup Completed");
                 }
                 catch (Exception ex)
                 {
                     UIMessages.Error(
-                        "Cleanup error occurred:\n\n" + ex + "\n\nNote: This exception has not been logged",
+                        $"Cleanup error occurred:\n\n{ex}\n\nNote: This exception has not been logged",
                         @"Cleanup Failed");
                 }
             }
             else
             {
-                UIMessages.Error(@"There's no data to cleanup; your .plexdl AppData folder does not exist.",
+                UIMessages.Error(@"There's no data to cleanup; the data folder doesn't exist yet.",
                     @"Cleanup Failed");
             }
         }
@@ -643,7 +663,7 @@ namespace PlexDL.UI
                         case metExt:
                             try
                             {
-                                var metadata = MetadataImportExport.MetadataFromFile(ofdLoad.FileName);
+                                var metadata = MetadataIO.MetadataFromFile(ofdLoad.FileName);
                                 UiUtils.RunMetadataWindow(metadata);
                             }
                             catch (Exception ex)
@@ -684,7 +704,7 @@ namespace PlexDL.UI
         {
             try
             {
-                ProfileImportExport.ProfileToFile(fileName, ObjectProvider.Settings, silent);
+                ProfileIO.ProfileToFile(fileName, ObjectProvider.Settings, silent);
 
                 if (!silent)
                     UIMessages.Info(@"Successfully saved profile!");
@@ -703,7 +723,7 @@ namespace PlexDL.UI
         {
             try
             {
-                var subReq = ProfileImportExport.ProfileFromFile(fileName, silent);
+                var subReq = ProfileIO.ProfileFromFile(fileName, silent);
 
                 try
                 {
@@ -805,7 +825,7 @@ namespace PlexDL.UI
             var fileName = (string)e.Arguments[1];
             var poster = e.Arguments.Count > 2 ? (Bitmap)e.Arguments[2] : null;
 
-            MetadataImportExport.MetadataToFile(fileName, content, poster);
+            MetadataIO.MetadataToFile(fileName, content, poster);
         }
 
         private void DoStreamExport()

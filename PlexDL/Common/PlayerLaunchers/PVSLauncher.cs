@@ -3,6 +3,8 @@ using PlexDL.Common.Structures.Plex;
 using System;
 using UIHelpers;
 
+#pragma warning disable 1591
+
 namespace PlexDL.Common.PlayerLaunchers
 {
     public static class PvsLauncher

@@ -7,6 +7,7 @@ using PlexDL.Common.Structures.Plex;
 using PlexDL.PlexAPI;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using PlexDL.MyPlex;
 
 namespace PlexDL.Common.Globals.Providers
 {
@@ -16,7 +17,7 @@ namespace PlexDL.Common.Globals.Providers
         public static DownloadQueue Engine { get; set; } = new DownloadQueue();
         public static List<StreamInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();
-        public static MyPlex PlexProvider { get; set; } = new MyPlex();
+        public static MyPlex.MyPlex PlexProvider { get; set; } = new MyPlex.MyPlex();
         public static UserInteraction LibUi { get; set; } = new UserInteraction();
         public static User User { get; set; } = new User();
         public static Server Svr { get; set; }

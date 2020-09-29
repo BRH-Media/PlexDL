@@ -1,7 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 
-namespace PlexDL.PlexAPI
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
+namespace PlexDL.MyPlex
 {
     public class Server : PlexRest
     {
@@ -18,13 +21,13 @@ namespace PlexDL.PlexAPI
 
         public string createdAt
         {
-            get => createDate.ToString();
+            get => createDate.ToString(CultureInfo.CurrentCulture);
             set => createDate = Utils.GetDateTimeFromTimestamp(value);
         }
 
         public string updatedAt
         {
-            get => lastUpdated.ToString();
+            get => lastUpdated.ToString(CultureInfo.CurrentCulture);
             set => lastUpdated = Utils.GetDateTimeFromTimestamp(value);
         }
 
@@ -34,19 +37,6 @@ namespace PlexDL.PlexAPI
         protected override string GetBaseUrl()
         {
             return "http://" + address + ":" + port;
-        }
-
-        public List<Directory> GetLibrarySections()
-        {
-            var m = new MediaContainer(user, this, "/library/sections");
-            return m.directories;
-        }
-
-        public List<Directory> Test()
-        {
-            var d = new Directory(user, this, "/library/sections");
-            var dl = d.GetChildren<Directory>();
-            return dl;
         }
     }
 }

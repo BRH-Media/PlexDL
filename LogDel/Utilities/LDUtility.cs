@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.IO;
 using LogDel.Enums;
+using PlexDL.Common.Security.Protection;
 
 namespace LogDel.Utilities
 {

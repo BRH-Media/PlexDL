@@ -10,9 +10,11 @@ using System.Xml;
 using System.Xml.Serialization;
 using UIHelpers;
 
-namespace PlexDL.Common.API
+// ReSharper disable InconsistentNaming
+
+namespace PlexDL.Common.API.IO
 {
-    public static class MetadataImportExport
+    public static class MetadataIO
     {
         public static XmlDocument ToXml(this PlexObject obj)
         {

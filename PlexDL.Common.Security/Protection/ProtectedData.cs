@@ -1,10 +1,25 @@
-﻿using System;
+﻿using PlexDL.Common.Enums;
+using System;
 using System.Security.Cryptography;
 
-namespace PlexDL.Common.Security
+namespace PlexDL.Common.Security.Protection
 {
     public class ProtectedData
     {
+        public byte[] RawValue { get; set; }
+        public ProtectionMode Mode { get; set; } = ProtectionMode.Encrypt;
+
+        public ProtectedData(byte[] data, ProtectionMode mode = ProtectionMode.Encrypt)
+        {
+            RawValue = data;
+            Mode = mode;
+        }
+
+        public ProtectedData()
+        {
+            //blank initialiser
+        }
+
         public string EncryptData(string plainText)
         {
             var plainBytes = DataHelpers.StringToBytes(plainText);

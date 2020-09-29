@@ -4,6 +4,8 @@ using System;
 using System.Diagnostics;
 using UIHelpers;
 
+#pragma warning disable 1591
+
 namespace PlexDL.Common.PlayerLaunchers
 {
     public static class BrowserLauncher

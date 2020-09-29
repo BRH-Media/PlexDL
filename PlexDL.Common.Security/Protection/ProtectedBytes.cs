@@ -1,13 +1,10 @@
 ﻿using PlexDL.Common.Enums;
 using System;
 
-namespace PlexDL.Common.Security
+namespace PlexDL.Common.Security.Protection
 {
     public class ProtectedBytes : ProtectedData
     {
-        public byte[] RawValue { get; set; }
-        public ProtectionMode Mode { get; set; }
-
         public byte[] ProcessedValue => ProcessRawValue();
 
         public ProtectedBytes(byte[] data, ProtectionMode mode)

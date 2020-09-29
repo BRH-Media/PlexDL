@@ -1,6 +1,9 @@
 using System;
 
-namespace PlexDL.PlexAPI
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
+namespace PlexDL.MyPlex
 {
     public class User
     {

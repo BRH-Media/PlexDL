@@ -1,11 +1,11 @@
 ﻿using LogDel;
 using LogDel.Enums;
 using PlexDL.Common;
-using PlexDL.Common.API;
-using PlexDL.Common.Enums;
+using PlexDL.Common.API.IO;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Structures.AppOptions;
 using PlexDL.UI;
 using System;
 using System.Collections.Generic;
@@ -16,10 +16,18 @@ using UIHelpers;
 
 namespace PlexDL.Internal
 {
+    /// <summary>
+    /// PlexDL command-line argument checks
+    /// </summary>
     public static class Checks
     {
         private static ICollection<string> Args { get; } = Environment.GetCommandLineArgs().ToList();
 
+        /// <summary>
+        /// Attempts to run PlexDL in 'Open With' mode
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="appRun"></param>
         public static void OpenWith(string file, bool appRun = true)
         {
             //Windows has passed a file; we need to check what type it is
@@ -33,7 +41,7 @@ namespace PlexDL.Internal
                 //try the metadata import and then show it if successful
                 try
                 {
-                    var metadata = MetadataImportExport.MetadataFromFile(file);
+                    var metadata = MetadataIO.MetadataFromFile(file);
                     if (metadata != null)
                         UiUtils.RunMetadataWindow(metadata, appRun);
                     else
@@ -52,6 +60,11 @@ namespace PlexDL.Internal
             }
         }
 
+        /// <summary>
+        /// Determines whether the file specified is supported by PlexDL
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public static bool CheckAgainstSupportedFiles(string fileName)
         {
             //clean all periods from the extension
@@ -64,14 +77,20 @@ namespace PlexDL.Internal
             return supportedTypes.Contains(ext.ToLower());
         }
 
+        /// <summary>
+        /// Execute all command-line argument checks
+        /// </summary>
         public static void FullArgumentCheck()
         {
             OverrideLogProtection();
             VisualStyles();
-            _DevStatus();
+            DevStatus();
             Debug();
         }
 
+        /// <summary>
+        /// Enables/disables WDPAPI in *.logdel files based on a command-line argument
+        /// </summary>
         public static void OverrideLogProtection()
         {
             //toggle log file (.logdel) DPAPI protection (REALLLLLY slow; please don't ever enable)
@@ -81,6 +100,9 @@ namespace PlexDL.Internal
                 Vars.Protected = LogSecurity.Unprotected;
         }
 
+        /// <summary>
+        /// Enables/disables visual styles based on a command-line argument
+        /// </summary>
         public static void VisualStyles()
         {
             if (Args.Contains("-v1"))
@@ -90,21 +112,30 @@ namespace PlexDL.Internal
                     Application.EnableVisualStyles();
         }
 
-        public static void _DevStatus()
+        /// <summary>
+        /// Sets the UI Development Status indicator based on a command-line argument
+        /// </summary>
+        public static void DevStatus()
         {
             if (Args.Contains("-b"))
-                BuildState.State = DevStatus.InBeta;
+                BuildState.State = Common.Enums.DevStatus.InBeta;
             else if (Args.Contains("-p"))
-                BuildState.State = DevStatus.ProductionReady;
+                BuildState.State = Common.Enums.DevStatus.ProductionReady;
             else if (Args.Contains("-d"))
-                BuildState.State = DevStatus.InDevelopment;
+                BuildState.State = Common.Enums.DevStatus.InDevelopment;
         }
 
+        /// <summary>
+        /// Sets the IsDebug flag based on a command-line argument
+        /// </summary>
         public static void Debug()
         {
             Flags.IsDebug = Args.Contains("-debug");
         }
 
+        /// <summary>
+        /// Attempts to load PlexDL's '.default' file and apply the settings contained within
+        /// </summary>
         public static void TryLoadDefaultSettings()
         {
             try
@@ -120,11 +151,8 @@ namespace PlexDL.Internal
                         ObjectProvider.Settings = defaultProfile;
                 }
                 else
-                {
                     //create the file with no messages
-                    if (ObjectProvider.Settings != null)
-                        ObjectProvider.Settings.CommitDefaultSettings();
-                }
+                    new ApplicationOptions().CommitDefaultSettings();
             }
             catch (Exception ex)
             {
@@ -133,6 +161,9 @@ namespace PlexDL.Internal
             }
         }
 
+        /// <summary>
+        /// If the PlexDL AppData folder doesn't exist, this will create it.
+        /// </summary>
         public static void CheckAppDataFolder()
         {
             if (!Directory.Exists(Strings.PlexDlAppData))

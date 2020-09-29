@@ -42,8 +42,10 @@ namespace PlexDL.UI
             {
                 if (ObjectProvider.Settings != null)
                 {
-                    ObjectProvider.Settings.CommitDefaultSettings();
-                    UIMessages.Info(@"Successfully saved settings");
+                    if (ObjectProvider.Settings.CommitDefaultSettings())
+                        UIMessages.Info(@"Successfully saved settings");
+                    else
+                        UIMessages.Error(@"An unknown error occurred whilst saving settings");
                 }
                 else
                     UIMessages.Error(@"Couldn't export settings because they were null");

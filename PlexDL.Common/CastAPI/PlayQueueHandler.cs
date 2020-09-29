@@ -8,7 +8,7 @@ namespace PlexDL.Common.CastAPI
 {
     public static class PlayQueueHandler
     {
-        public static QueueResult NewQueue(PlexObject content, PlexAPI.Server server)
+        public static QueueResult NewQueue(PlexObject content, MyPlex.Server server)
         {
             var q = new QueueResult();
 

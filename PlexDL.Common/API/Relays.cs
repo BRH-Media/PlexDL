@@ -3,6 +3,7 @@ using PlexDL.PlexAPI;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using PlexDL.MyPlex;
 using UIHelpers;
 
 namespace PlexDL.Common.API

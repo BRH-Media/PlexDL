@@ -9,6 +9,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.Common.API.IO;
 using UIHelpers;
 
 #pragma warning disable 1591
@@ -224,7 +225,7 @@ namespace PlexDL.UI
 
         private void DoExport_Callback(object sender, WaitWindowEventArgs e)
         {
-            MetadataImportExport.MetadataToFile(sfdExport.FileName, StreamingContent);
+            MetadataIO.MetadataToFile(sfdExport.FileName, StreamingContent);
         }
 
         private void DoImport()
@@ -233,11 +234,11 @@ namespace PlexDL.UI
             {
                 if (ofdImport.ShowDialog() != DialogResult.OK) return;
 
-                var pxz = MetadataImportExport.LoadMetadataArchive(ofdImport.FileName);
+                var pxz = MetadataIO.LoadMetadataArchive(ofdImport.FileName);
 
                 if (pxz != null)
                 {
-                    StreamingContent = MetadataImportExport.MetadataFromFile(pxz);
+                    StreamingContent = MetadataIO.MetadataFromFile(pxz);
 
                     var profilePoster = (Bitmap)pxz.LoadRecord(@"poster").Content.ToImage();
 

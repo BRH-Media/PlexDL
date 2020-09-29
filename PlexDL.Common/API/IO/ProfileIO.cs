@@ -5,9 +5,11 @@ using System.IO;
 using System.Xml.Serialization;
 using UIHelpers;
 
-namespace PlexDL.Common.API
+// ReSharper disable InconsistentNaming
+
+namespace PlexDL.Common.API.IO
 {
-    public static class ProfileImportExport
+    public static class ProfileIO
     {
         public static ApplicationOptions ProfileFromFile(string fileName, bool silent = false)
         {

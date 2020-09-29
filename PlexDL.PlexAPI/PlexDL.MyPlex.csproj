@@ -7,8 +7,8 @@
     <ProjectGuid>{94E9EAEA-BB7A-4834-B2AE-98AFCD68C8DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlexDL.PlexAPI</RootNamespace>
-    <AssemblyName>PlexDL.PlexAPI</AssemblyName>
+    <RootNamespace>PlexDL.MyPlex</RootNamespace>
+    <AssemblyName>PlexDL.MyPlex</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -38,27 +38,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Country.cs" />
-    <Compile Include="Director.cs" />
-    <Compile Include="Directory.cs" />
-    <Compile Include="DirectoryTypes\Show.cs" />
-    <Compile Include="Genre.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="Media.cs" />
-    <Compile Include="MediaContainer.cs" />
     <Compile Include="MyPlex.cs" />
-    <Compile Include="Part.cs" />
-    <Compile Include="Photo.cs" />
-    <Compile Include="PlexItem.cs" />
     <Compile Include="PlexRest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role.cs" />
     <Compile Include="Server.cs" />
-    <Compile Include="Track.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Video.cs" />
-    <Compile Include="Writer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

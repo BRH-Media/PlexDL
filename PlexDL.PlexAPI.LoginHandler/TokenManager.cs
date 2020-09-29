@@ -1,5 +1,4 @@
-﻿using PlexDL.Common.Enums;
-using PlexDL.Common.Security;
+﻿using PlexDL.Common.Security.Protection;
 using System;
 using System.IO;
 using UIHelpers;
@@ -30,7 +29,7 @@ namespace PlexDL.PlexAPI.LoginHandler
                         @"Successfully cleared your Plex.tv token. It will be reinstated once you login via the Server Manager.");
                 else
                     UIMessages.Error(
-                        @"Couldn't clear your token, because an unknown error occured. Please delete it manually, and report this issue via GitHub.");
+                        @"Couldn't clear your token, because an unknown error occurred. Please delete it manually, and report this issue via GitHub.");
             }
             else
                 UIMessages.Error(
@@ -43,16 +42,17 @@ namespace PlexDL.PlexAPI.LoginHandler
             {
                 if (!IsTokenStored || !TokenCachingEnabled) return string.Empty;
 
-                var protectedToken = new ProtectedString(File.ReadAllText(Final), ProtectionMode.Decrypt);
-
-                var t = protectedToken.ProcessedValue; //decrypt via DPAPI
+                var protectedToken = new ProtectedFile(Final);
+                var t = protectedToken.ReadAllText();
                 return t.Length == 20 && !string.IsNullOrEmpty(t) ? t : string.Empty; //valid Plex tokens are always 20 characters in length.
             }
             catch (Exception)
             {
                 //ignore any errors
-                return string.Empty;
             }
+
+            //default
+            return string.Empty;
         }
 
         public static bool SaveToken(string token, bool deleteIfPresent = true)
@@ -61,16 +61,18 @@ namespace PlexDL.PlexAPI.LoginHandler
 
             try
             {
-                var protectedToken = new ProtectedString(token, ProtectionMode.Encrypt);
+                var protectedToken = new ProtectedFile(Final);
                 if (TokenCachingEnabled)
-                    File.WriteAllText(Final, protectedToken.ProcessedValue); //encrypt via DPAPI then write
+                    protectedToken.WriteAllText(token);
                 return true;
             }
             catch (Exception)
             {
                 //ignore any errors
-                return false;
             }
+
+            //default
+            return false;
         }
 
         public static bool ClearStored()
@@ -85,8 +87,10 @@ namespace PlexDL.PlexAPI.LoginHandler
             catch (Exception)
             {
                 //ignore any errors
-                return false;
             }
+
+            //default
+            return false;
         }
     }
 }

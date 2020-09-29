@@ -1,11 +1,11 @@
 using RestSharp;
-using RestSharp.Authenticators;
 using System;
 
-namespace PlexDL.PlexAPI
+namespace PlexDL.MyPlex
 {
     public abstract class PlexRest
     {
+        //Plex official API (not tied to a PMS)
         private const string BASE_URL = "https://my.plexapp.com";
 
         protected RestClient GetRestClient()
@@ -52,49 +52,6 @@ namespace PlexDL.PlexAPI
             request.AddParameter("X-Plex-Token", user.authenticationToken);
 
             return Execute<T>(request, client);
-        }
-
-        public T Execute<T>(RestRequest request, string username, string password) where T : new()
-        {
-            var client = GetRestClient();
-
-            request = AddPlexHeaders(request);
-
-            client.Authenticator = new HttpBasicAuthenticator(username, password);
-
-            return Execute<T>(request, client);
-        }
-
-        public string Execute(RestRequest request, RestClient client)
-        {
-            var response = client.Execute(request);
-
-            if (response.ErrorException != null)
-                throw response.ErrorException;
-
-            return response.Content;
-        }
-
-        public string Execute(RestRequest request, User user)
-        {
-            var client = GetRestClient();
-
-            request = AddPlexHeaders(request);
-
-            request.AddParameter("X-Plex-Token", user.authenticationToken);
-
-            return Execute(request, client);
-        }
-
-        public string Execute(RestRequest request, string username, string password)
-        {
-            var client = GetRestClient();
-
-            request = AddPlexHeaders(request);
-
-            client.Authenticator = new HttpBasicAuthenticator(username, password);
-
-            return Execute(request, client);
         }
     }
 }

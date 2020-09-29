@@ -11,7 +11,7 @@
         public User user { get; set; }
         public string containerKey { get; set; }
 
-        public static CustomData FillFromApiServer(PlexAPI.Server svr, bool transcode = false)
+        public static CustomData FillFromApiServer(MyPlex.Server svr, bool transcode = false)
         {
             var data = new CustomData();
             var user = svr.user;

@@ -12,14 +12,28 @@ namespace PlexDL.Common.Security
 
         public static byte[] GetEntropyBytes(bool forceNew = false)
         {
+            //final return value
             byte[] value;
 
             if (!forceNew && File.Exists(EntropyFileLocation))
             {
-                var read = File.ReadAllBytes(EntropyFileLocation);
-                value = read.Length == EntropyByteLength ? read : NewEntropy();
+                var read = StoredEntropy();
+
+                //final return value must run verification checks
+                value =
+                    //returned bytes null?
+                    read != null
+                        //is the entropy length correct? Default: 20-bytes
+                        ? read.Length == EntropyByteLength
+                            //all checks succeeded (length correct; not null) - use the stored entropy data
+                            ? read
+                            //length is incorrect, replace the file with new 20-byte entropy data and return the result
+                            : NewEntropy()
+                        //if null, replace the file with new 20-byte entropy data and return the result
+                        : NewEntropy();
             }
             else
+                //replace the file with new 20-byte entropy data and return the result
                 value = NewEntropy();
 
             return value;
