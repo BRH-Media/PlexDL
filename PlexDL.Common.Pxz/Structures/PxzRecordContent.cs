@@ -1,11 +1,11 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Security;
+using PlexDL.Common.Security.Protection;
 using System.Drawing;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using PlexDL.Common.Security.Protection;
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -22,15 +22,27 @@ namespace PlexDL.Common.Pxz.Structures
         public string RawRecord { get; set; } = @"";
 
         /// <summary>
+        /// The original file name of the record (e.g. background.jpeg)
+        /// </summary>
+        public string FileName { get; set; } = @"";
+
+        /// <summary>
         /// Updated automatically with decompressed data when you use Record
         /// </summary>
         [XmlIgnore]
         public byte[] TmpRecord { get; set; }
 
         /// <summary>
-        /// Process the raw record by decompressing it into a byte array OTF
+        /// Checks if TmpRecord is loaded, and if it is it returns TmpRecord, otherwise it executes and returns Record.<br />
+        /// Note: This is the recommended way to access processed contents, as it conserves memory for you.
+        /// </summary>
+        [XmlIgnore]
+        public byte[] AutoRecord => TmpRecord ?? Record;
+
+        /// <summary>
+        /// Process the raw record by decompressing it into a byte array OTF<br />
         /// Note: This is done on request, and is redone every time the value is requested. If you need to do this without recalculation,
-        /// you can use TmpRecord after running this once.
+        /// you can use TmpRecord after running this once or use AutoRecord instead.
         /// </summary>
         [XmlIgnore]
         public byte[] Record
@@ -138,7 +150,7 @@ namespace PlexDL.Common.Pxz.Structures
         /// <returns></returns>
         public override string ToString()
         {
-            return Encoding.ASCII.GetString(Record);
+            return Encoding.ASCII.GetString(AutoRecord);
         }
 
         /// <summary>
@@ -147,7 +159,7 @@ namespace PlexDL.Common.Pxz.Structures
         /// <returns></returns>
         public XmlDocument ToXmlDocument()
         {
-            var rawXml = Encoding.ASCII.GetString(Record);
+            var rawXml = Encoding.ASCII.GetString(AutoRecord);
             var doc = new XmlDocument();
 
             doc.LoadXml(rawXml);
@@ -159,6 +171,6 @@ namespace PlexDL.Common.Pxz.Structures
         /// Takes the Record bytes and dumps them to a Bitmap
         /// </summary>
         /// <returns></returns>
-        public Image ToImage() => Utilities.ByteToImage(Record);
+        public Image ToImage() => Utilities.ByteToImage(AutoRecord);
     }
 }

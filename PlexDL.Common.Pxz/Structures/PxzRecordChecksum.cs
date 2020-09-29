@@ -15,9 +15,9 @@ namespace PlexDL.Common.Pxz.Structures
         public PxzRecordChecksum(PxzRecordContent content)
         {
             if (content.RawRecord.Length == 0) return;
-            if (content.Record.Length == 0) return;
+            if (content.AutoRecord.Length == 0) return;
 
-            var dec = Md5Helper.CalculateMd5Hash(content.Record);
+            var dec = Md5Helper.CalculateMd5Hash(content.AutoRecord);
             if (dec == null) return;
 
             RawMd5 = Md5Helper.CalculateMd5Hash(content.RawRecord);

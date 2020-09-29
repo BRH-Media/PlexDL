@@ -3,8 +3,11 @@ using PlexDL.Common.Pxz.Enum;
 using PlexDL.Common.Pxz.Extensions;
 using PlexDL.Common.Security;
 using System.Drawing;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+
+// ReSharper disable UnusedMember.Global
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -138,7 +141,7 @@ namespace PlexDL.Common.Pxz.Structures
         }
 
         /// <summary>
-        /// Convert the current record to a GZIpped Base64 string
+        /// Convert the current record to a GZipped Base64 string
         /// </summary>
         /// <returns></returns>
         public string ToRawForm()
@@ -165,6 +168,26 @@ namespace PlexDL.Common.Pxz.Structures
         public static PxzRecord FromXmlForm(string rawXml)
         {
             return Serializers.StringToPxzRecord(rawXml);
+        }
+
+        public void ExtractRecord(string filePath)
+        {
+            try
+            {
+                //delete it if it already exists
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+
+                //processes and stores the record's contents
+                var content = Content.AutoRecord;
+
+                //flush bytes to disk
+                File.WriteAllBytes(filePath, content);
+            }
+            catch
+            {
+                //ignore all errors
+            }
         }
     }
 }

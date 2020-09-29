@@ -30,46 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginWindow));
-            this.pbMain = new PlexDL.Common.Components.CircularProgressBar();
             this.lblInstructions = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.tmrDotChange = new System.Windows.Forms.Timer(this.components);
             this.lnkRelaunch = new System.Windows.Forms.LinkLabel();
+            this.pbMain = new PlexDL.Common.Components.CircularProgressBar();
+            this.tmrLoginDetection = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
-            // 
-            // pbMain
-            // 
-            this.pbMain.AnimationFunction = PlexDL.Animation.WinFormAnimation.KnownAnimationFunctions.Liner;
-            this.pbMain.AnimationSpeed = 500;
-            this.pbMain.BackColor = System.Drawing.Color.Transparent;
-            this.pbMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pbMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pbMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pbMain.InnerMargin = 2;
-            this.pbMain.InnerWidth = -1;
-            this.pbMain.Location = new System.Drawing.Point(12, 12);
-            this.pbMain.MarqueeAnimationSpeed = 2000;
-            this.pbMain.Minimum = 1;
-            this.pbMain.Name = "pbMain";
-            this.pbMain.OuterColor = System.Drawing.Color.Gray;
-            this.pbMain.OuterMargin = -25;
-            this.pbMain.OuterWidth = 26;
-            this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pbMain.ProgressWidth = 18;
-            this.pbMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.pbMain.Size = new System.Drawing.Size(131, 131);
-            this.pbMain.StartAngle = 270;
-            this.pbMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pbMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.pbMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.pbMain.SubscriptText = "";
-            this.pbMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.pbMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            this.pbMain.SuperscriptText = "";
-            this.pbMain.TabIndex = 0;
-            this.pbMain.Text = "●●●";
-            this.pbMain.TextMargin = new System.Windows.Forms.Padding(0, 8, 0, 8);
-            this.pbMain.Value = 68;
             // 
             // lblInstructions
             // 
@@ -117,6 +84,45 @@
             this.lnkRelaunch.VisitedLinkColor = System.Drawing.Color.Black;
             this.lnkRelaunch.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkRelaunch_LinkClicked);
             // 
+            // pbMain
+            // 
+            this.pbMain.AnimationFunction = PlexDL.Animation.WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.pbMain.AnimationSpeed = 500;
+            this.pbMain.BackColor = System.Drawing.Color.Transparent;
+            this.pbMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pbMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pbMain.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pbMain.InnerMargin = 2;
+            this.pbMain.InnerWidth = -1;
+            this.pbMain.Location = new System.Drawing.Point(12, 12);
+            this.pbMain.MarqueeAnimationSpeed = 2000;
+            this.pbMain.Minimum = 1;
+            this.pbMain.Name = "pbMain";
+            this.pbMain.OuterColor = System.Drawing.Color.Gray;
+            this.pbMain.OuterMargin = -25;
+            this.pbMain.OuterWidth = 26;
+            this.pbMain.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pbMain.ProgressWidth = 18;
+            this.pbMain.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.pbMain.Size = new System.Drawing.Size(131, 131);
+            this.pbMain.StartAngle = 270;
+            this.pbMain.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbMain.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.pbMain.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.pbMain.SubscriptText = "";
+            this.pbMain.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.pbMain.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.pbMain.SuperscriptText = "";
+            this.pbMain.TabIndex = 0;
+            this.pbMain.Text = "●●●";
+            this.pbMain.TextMargin = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            this.pbMain.Value = 68;
+            // 
+            // tmrLoginDetection
+            // 
+            this.tmrLoginDetection.Interval = 1500;
+            this.tmrLoginDetection.Tick += new System.EventHandler(this.TmrLoginDetection_Tick);
+            // 
             // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -147,5 +153,6 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Timer tmrDotChange;
         private System.Windows.Forms.LinkLabel lnkRelaunch;
+        private System.Windows.Forms.Timer tmrLoginDetection;
     }
 }

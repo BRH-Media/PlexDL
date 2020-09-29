@@ -165,8 +165,10 @@ namespace PlexDL.Common.Pxz.Structures
         {
             try
             {
+                //can't load a non-existent file
                 if (!File.Exists(path)) return;
 
+                //clear all lists and assign the new location
                 Location = path;
                 Records.Clear();
                 FileIndex.RecordReference.Clear();

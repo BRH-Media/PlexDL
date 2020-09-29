@@ -7,3 +7,10 @@
 *.jpeg binary
 *.png binary
 *.bmp binary
+*.gif binary
+*.giff binary
+*.jif binary
+*.jiff binary
+*.tif binary
+*.tiff binary
+*.ico binary

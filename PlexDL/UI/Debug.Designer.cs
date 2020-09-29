@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debug));
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
             this.tlpDebug = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -48,6 +49,7 @@
             this.btnExportTitles = new System.Windows.Forms.Button();
             this.btnExportSeasons = new System.Windows.Forms.Button();
             this.gbGlobalFlags = new System.Windows.Forms.GroupBox();
+            this.dgvGlobalFlags = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpControls = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPollRate = new System.Windows.Forms.TableLayoutPanel();
             this.lblPollRate = new System.Windows.Forms.Label();
@@ -60,7 +62,6 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
-            this.dgvGlobalFlags = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpDebug.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbExportFormat.SuspendLayout();
@@ -68,11 +69,11 @@
             this.pnlExportMode.SuspendLayout();
             this.gbDataExport.SuspendLayout();
             this.gbGlobalFlags.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).BeginInit();
             this.tlpControls.SuspendLayout();
             this.tlpPollRate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPollRateValue)).BeginInit();
             this.tlpRefreshCount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrAutoRefresh
@@ -283,6 +284,38 @@
             this.gbGlobalFlags.TabStop = false;
             this.gbGlobalFlags.Text = "Global Flags";
             // 
+            // dgvGlobalFlags
+            // 
+            this.dgvGlobalFlags.AllowUserToAddRows = false;
+            this.dgvGlobalFlags.AllowUserToDeleteRows = false;
+            this.dgvGlobalFlags.AllowUserToOrderColumns = true;
+            this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvGlobalFlags.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvGlobalFlags.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvGlobalFlags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvGlobalFlags.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvGlobalFlags.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvGlobalFlags.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvGlobalFlags.IsContentTable = false;
+            this.dgvGlobalFlags.Location = new System.Drawing.Point(3, 16);
+            this.dgvGlobalFlags.MultiSelect = false;
+            this.dgvGlobalFlags.Name = "dgvGlobalFlags";
+            this.dgvGlobalFlags.RowHeadersVisible = false;
+            this.dgvGlobalFlags.RowsEmptyText = "No Flags";
+            this.dgvGlobalFlags.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvGlobalFlags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvGlobalFlags.Size = new System.Drawing.Size(213, 403);
+            this.dgvGlobalFlags.TabIndex = 0;
+            // 
             // tlpControls
             // 
             this.tlpControls.ColumnCount = 4;
@@ -445,38 +478,6 @@
             // 
             this.sfdExport.Title = "Export";
             // 
-            // dgvGlobalFlags
-            // 
-            this.dgvGlobalFlags.AllowUserToAddRows = false;
-            this.dgvGlobalFlags.AllowUserToDeleteRows = false;
-            this.dgvGlobalFlags.AllowUserToOrderColumns = true;
-            this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvGlobalFlags.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvGlobalFlags.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvGlobalFlags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvGlobalFlags.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvGlobalFlags.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvGlobalFlags.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvGlobalFlags.IsContentTable = false;
-            this.dgvGlobalFlags.Location = new System.Drawing.Point(3, 16);
-            this.dgvGlobalFlags.MultiSelect = false;
-            this.dgvGlobalFlags.Name = "dgvGlobalFlags";
-            this.dgvGlobalFlags.RowHeadersVisible = false;
-            this.dgvGlobalFlags.RowsEmptyText = "No Flags";
-            this.dgvGlobalFlags.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvGlobalFlags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGlobalFlags.Size = new System.Drawing.Size(213, 403);
-            this.dgvGlobalFlags.TabIndex = 0;
-            // 
             // Debug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -485,9 +486,11 @@
             this.ControlBox = false;
             this.Controls.Add(this.tlpDebug);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Debug";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Debug";
             this.Load += new System.EventHandler(this.Debug_Load);
@@ -499,11 +502,11 @@
             this.pnlExportMode.PerformLayout();
             this.gbDataExport.ResumeLayout(false);
             this.gbGlobalFlags.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).EndInit();
             this.tlpControls.ResumeLayout(false);
             this.tlpPollRate.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numPollRateValue)).EndInit();
             this.tlpRefreshCount.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

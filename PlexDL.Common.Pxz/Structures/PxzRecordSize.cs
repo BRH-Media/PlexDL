@@ -19,7 +19,7 @@ namespace PlexDL.Common.Pxz.Structures
         public PxzRecordSize(PxzRecordContent content)
         {
             RawSize = content.RawRecord.Length;
-            DecSize = RawSize > 0 ? content.Record.Length : 0;
+            DecSize = RawSize > 0 ? content.AutoRecord.Length : 0;
         }
     }
 }
