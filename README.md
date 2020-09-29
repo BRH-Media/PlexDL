@@ -1,14 +1,14 @@
 # PlexDL
 ### Plex Downloader/Streamer written in C#
 
-* Utilises modified csharp-plex-api by ammmze for server detection - [GitHub Repo](https://github.com/ammmze/csharp-plex-api)
-* Utilises Google's Material Design Icons - [Official Site](https://material.io/icons)
-* Utilises Newtonsoft.Json by JamesNK - [GitHub Repo](https://github.com/JamesNK/Newtonsoft.Json)
-* Utilises AltoHttp by aalitor for Web Downloads - [GitHub Repo](https://github.com/aalitor/AltoHttp)
-* Utilises PVS.MediaPlayer by Peter Vegter - [CodeProject Article](https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library)
-* Utilises WinFormAnimation by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
-* Utilises CircularProgressBar by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
-* Utilises SharpCaster by Tapanila - [GitHub Repo](https://github.com/Tapanila/SharpCaster)
+- Utilises modified `csharp-plex-api` by ammmze for server detection - [GitHub Repo](https://github.com/ammmze/csharp-plex-api)
+- Utilises Google's Material Design Icons - [Official Site](https://material.io/icons)
+- Utilises `Newtonsoft.Json` by JamesNK - [GitHub Repo](https://github.com/JamesNK/Newtonsoft.Json)
+- Utilises `AltoHttp` by aalitor for Web Downloads - [GitHub Repo](https://github.com/aalitor/AltoHttp)
+- Utilises `PVS.MediaPlayer` by Peter Vegter - [CodeProject Article](https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library)
+- Utilises `WinFormAnimation` by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
+- Utilises `CircularProgressBar` by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
+- Utilises `SharpCaster` by Tapanila - [GitHub Repo](https://github.com/Tapanila/SharpCaster)
 
 ### What does PlexDL do?
 Many different things!
@@ -21,7 +21,7 @@ PlexDL uses a Plex Media Server's ability to serve XML API requests, and from th
 
 **Important Notes**
 
-- PVS.MediaPlayer can play some codecs (any that are native to WMF), but the diversity of the container specification makes it unsafe (code-wise) to implement it at this point. Hence, PlexDL will not allow its default player to accept \*.mkv files.
+- PVS.MediaPlayer can play ***some*** codecs (any that are native to WMF), but due to the wide variations in the Matroska specification, it remains unsafe (code-wise) to implement at this point. Hence, PlexDL will not allow its default player to accept `*.mkv` files.
 - If you're using VLC, make sure you follow the guide below about setting it up with PlexDL.
 
 ### Supported Media

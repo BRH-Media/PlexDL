@@ -18,6 +18,7 @@
 - AltoHttp (modified) by aalitor \[`PlexDL.AltoHttp`]
 - WinFormAnimation by falahati \[`PlexDL.Animation`]
 - PVS.MediaPlayer by Peter Vegter \[`PlexDL.Player`]
+- csharp-plex-api by ammmze \[`PlexDL.MyPlex`]
 
 ### Build Prerequisites
 - Visual Studio 2017/2019
@@ -25,7 +26,7 @@
 - C# 8.0 Language Support
 
 ### Steps for building
-1. `git clone http://github.com/Brhsoftco/PlexDL.git`
+1. `git clone http://github.com/BRH-Media/PlexDL.git`
 2. Open `PlexDL.sln` in Visual Studio 2017+
 3. Enable restoring NuGet packages via `Tools->Options->NuGet Package Manager->Package Restore->Allow NuGet to download missing packages`
 4. Right click the `PlexDL` Solution in the Solution Explorer
