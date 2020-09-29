@@ -1,13 +1,13 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Extensions;
-using PlexDL.Common.Pxz.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using PlexDL.Common.Pxz.UI;
 using UIHelpers;
 
 namespace PlexDL.Common.Pxz.Structures

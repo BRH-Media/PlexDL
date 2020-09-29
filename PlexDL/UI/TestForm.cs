@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+#pragma warning disable 1591
+
 namespace PlexDL.UI
 {
     public partial class TestForm : Form
@@ -16,6 +18,9 @@ namespace PlexDL.UI
             CenterInfoPanel();
         }
 
+        /// <summary>
+        /// Puts the test form description in the middle of the form
+        /// </summary>
         private void CenterInfoPanel()
         {
             // Half the Testing Area either way to get the absolute middle-point.

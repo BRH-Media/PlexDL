@@ -4,7 +4,7 @@ using System.Data;
 using System.Windows.Forms;
 using UIHelpers;
 
-namespace PlexDL.Common.Pxz.Forms
+namespace PlexDL.Common.Pxz.UI
 {
     public partial class PxzInformation : Form
     {
@@ -113,8 +113,35 @@ namespace PlexDL.Common.Pxz.Forms
 
         public static void ShowPxzInformation(PxzFile file)
         {
-            var frm = new PxzInformation { Pxz = file };
+            var frm = new PxzInformation
+            {
+                Pxz = file
+            };
             frm.ShowDialog();
+        }
+
+        private void ItmExtractRecord_Click(object sender, EventArgs e)
+        {
+            if (dgvRecords.SelectedRows.Count == 1)
+            {
+                var recordName = dgvRecords.SelectedRows[0].Cells[0].Value.ToString();
+                var record = Pxz.LoadRecord(recordName);
+
+                if (sfdExtract.ShowDialog() == DialogResult.OK)
+                {
+                    if (record.ExtractRecord(sfdExtract.FileName))
+                        UIMessages.Info($"Successfully extracted '{recordName}'");
+                    else
+                        UIMessages.Error(@"Extraction failed; an unknown error occurred.");
+                }
+            }
+        }
+
+        private void CxtExtract_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //there needs to be a row selected to allow extraction
+            if (dgvRecords.SelectedRows.Count == 0)
+                e.Cancel = true;
         }
     }
 }

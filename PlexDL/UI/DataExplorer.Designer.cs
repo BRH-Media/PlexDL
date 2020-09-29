@@ -146,12 +146,12 @@
             this.cxtMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmRawXml});
             this.cxtMain.Name = "cxtMain";
-            this.cxtMain.Size = new System.Drawing.Size(124, 26);
+            this.cxtMain.Size = new System.Drawing.Size(181, 48);
             // 
             // itmRawXml
             // 
             this.itmRawXml.Name = "itmRawXml";
-            this.itmRawXml.Size = new System.Drawing.Size(123, 22);
+            this.itmRawXml.Size = new System.Drawing.Size(180, 22);
             this.itmRawXml.Text = "Raw XML";
             this.itmRawXml.Click += new System.EventHandler(this.ItmRawXml_Click);
             // 

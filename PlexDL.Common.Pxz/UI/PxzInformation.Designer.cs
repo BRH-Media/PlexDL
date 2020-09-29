@@ -1,4 +1,4 @@
-﻿namespace PlexDL.Common.Pxz.Forms
+﻿namespace PlexDL.Common.Pxz.UI
 {
     partial class PxzInformation
     {
@@ -28,15 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PxzInformation));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.dgvRecords = new PlexDL.Common.Components.FlatDataGridView();
+            this.cxtExtract = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itmExtractRecord = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
             this.btnOK = new System.Windows.Forms.Button();
+            this.sfdExtract = new System.Windows.Forms.SaveFileDialog();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).BeginInit();
+            this.cxtExtract.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,14 +72,15 @@
             this.dgvRecords.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRecords.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvRecords.ContextMenuStrip = this.cxtExtract;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecords.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvRecords.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecords.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvRecords.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -89,6 +95,21 @@
             this.dgvRecords.Size = new System.Drawing.Size(394, 415);
             this.dgvRecords.TabIndex = 0;
             // 
+            // cxtExtract
+            // 
+            this.cxtExtract.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmExtractRecord});
+            this.cxtExtract.Name = "cxtExtract";
+            this.cxtExtract.Size = new System.Drawing.Size(151, 26);
+            this.cxtExtract.Opening += new System.ComponentModel.CancelEventHandler(this.CxtExtract_Opening);
+            // 
+            // itmExtractRecord
+            // 
+            this.itmExtractRecord.Name = "itmExtractRecord";
+            this.itmExtractRecord.Size = new System.Drawing.Size(150, 22);
+            this.itmExtractRecord.Text = "Extract Record";
+            this.itmExtractRecord.Click += new System.EventHandler(this.ItmExtractRecord_Click);
+            // 
             // dgvAttributes
             // 
             this.dgvAttributes.AllowUserToAddRows = false;
@@ -99,14 +120,14 @@
             this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -134,6 +155,12 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.BtnOK_Click);
             // 
+            // sfdExtract
+            // 
+            this.sfdExtract.AddExtension = false;
+            this.sfdExtract.Filter = "All files|*.*";
+            this.sfdExtract.Title = "Extract Record";
+            // 
             // PxzInformation
             // 
             this.AcceptButton = this.btnOK;
@@ -149,6 +176,7 @@
             this.Load += new System.EventHandler(this.PxzInformation_Load);
             this.tlpMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).EndInit();
+            this.cxtExtract.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttributes)).EndInit();
             this.ResumeLayout(false);
 
@@ -160,5 +188,8 @@
         private Components.FlatDataGridView dgvRecords;
         private Components.FlatDataGridView dgvAttributes;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.ContextMenuStrip cxtExtract;
+        private System.Windows.Forms.ToolStripMenuItem itmExtractRecord;
+        private System.Windows.Forms.SaveFileDialog sfdExtract;
     }
 }

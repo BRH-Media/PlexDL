@@ -69,7 +69,7 @@ namespace PlexDL.Common.API.IO
                 var objMetadata = new PxzRecord(contentToExport.ToXml(), @"obj");
                 var ptrMetadata = new PxzRecord(p, @"poster");
 
-                var data = new List<PxzRecord>()
+                var data = new List<PxzRecord>
                 {
                     rawMetadata,
                     objMetadata,
@@ -106,20 +106,18 @@ namespace PlexDL.Common.API.IO
                 var waitArgs = new object[] { fileName };
                 return (PxzFile)WaitWindow.WaitWindow.Show(LoadMetadataArchive, @"Loading PXZ", waitArgs);
             }
-            else
-            {
-                try
-                {
-                    var pxz = new PxzFile();
-                    pxz.Load(fileName);
 
-                    return pxz;
-                }
-                catch (Exception ex)
-                {
-                    LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
-                    return null;
-                }
+            try
+            {
+                var pxz = new PxzFile();
+                pxz.Load(fileName);
+
+                return pxz;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
+                return null;
             }
         }
 
@@ -158,8 +156,10 @@ namespace PlexDL.Common.API.IO
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"XmlMetadataLoadError");
-                return null;
             }
+
+            //default
+            return null;
         }
 
         public static PlexObject MetadataFromFile(PxzFile file, bool waitWindow = true, bool silent = false)
@@ -169,44 +169,36 @@ namespace PlexDL.Common.API.IO
                 var waitArgs = new object[] { file, silent };
                 return (PlexObject)WaitWindow.WaitWindow.Show(MetadataFromFile, @"Reading data", waitArgs);
             }
-            else
+
+            if (file != null)
             {
-                if (file != null)
+                try
                 {
-                    try
+                    //load the object record (encoded XML that contains metadata/attributes)
+                    var rec = file.LoadRecord(@"obj");
+
+                    //it'll be null if the load above failed for whatever reason
+                    if (rec != null)
                     {
-                        //load the object record (encoded XML that contains metadata/attributes)
-                        var rec = file.LoadRecord(@"obj");
+                        var obj = FromXml(rec.Content.ToXmlDocument());
 
-                        //it'll be null if the load above failed for whatever reason
-                        if (rec != null)
-                        {
-                            var obj = FromXml(rec.Content.ToXmlDocument());
+                        //apply raw XML from PXZ file
+                        obj.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
 
-                            //apply raw XML from PXZ file
-                            obj.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
-
-                            //return the new PlexObject
-                            return obj;
-                        }
-                        else
-                        {
-                            //if it was null, we can't parse it. Return null as the PlexObject
-                            return null;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        if (!silent)
-                            UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Load Error");
-                        LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
-                        return new PlexObject();
+                        //return the new PlexObject
+                        return obj;
                     }
                 }
-                else
-                    //if it was null, we can't parse it. Return null as the PlexObject
-                    return null;
+                catch (Exception ex)
+                {
+                    if (!silent)
+                        UIMessages.Error("An error occurred\n\n" + ex, @"Metadata Load Error");
+                    LoggingHelpers.RecordException(ex.Message, "XmlMetadataLoadError");
+                }
             }
+
+            //default
+            return null;
         }
     }
 }

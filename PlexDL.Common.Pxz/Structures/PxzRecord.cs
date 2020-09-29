@@ -170,7 +170,12 @@ namespace PlexDL.Common.Pxz.Structures
             return Serializers.StringToPxzRecord(rawXml);
         }
 
-        public void ExtractRecord(string filePath)
+        /// <summary>
+        /// Decompresses, decrypts if necessary and extracts the record to a file
+        /// </summary>
+        /// <param name="filePath">The file to save to</param>
+        /// <returns></returns>
+        public bool ExtractRecord(string filePath)
         {
             try
             {
@@ -183,11 +188,17 @@ namespace PlexDL.Common.Pxz.Structures
 
                 //flush bytes to disk
                 File.WriteAllBytes(filePath, content);
+
+                //success
+                return true;
             }
             catch
             {
                 //ignore all errors
             }
+
+            //default
+            return false;
         }
     }
 }

@@ -49,10 +49,10 @@
     <Compile Include="Enum\PxzRecordType.cs" />
     <Compile Include="Extensions\VerifyChecksumExt.cs" />
     <Compile Include="Extensions\ToXmlExt.cs" />
-    <Compile Include="Forms\PxzInformation.cs">
+    <Compile Include="UI\PxzInformation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PxzInformation.Designer.cs">
+    <Compile Include="UI\PxzInformation.Designer.cs">
       <DependentUpon>PxzInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="Serializers.cs" />
@@ -90,7 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\PxzInformation.resx">
+    <EmbeddedResource Include="UI\PxzInformation.resx">
       <DependentUpon>PxzInformation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
