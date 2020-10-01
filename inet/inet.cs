@@ -4,6 +4,12 @@ namespace inet
 {
     public static class ConnectionChecker
     {
+        /// <summary>
+        /// Win32 API hook
+        /// </summary>
+        /// <param name="description"></param>
+        /// <param name="reservedValue"></param>
+        /// <returns></returns>
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int description, int reservedValue);
 
