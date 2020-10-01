@@ -17,6 +17,11 @@ namespace GitHubUpdater.API
                && UpdateData != null;
 
         /// <summary>
+        /// The update channel that this request was issued on (e.g. Development/Stable)
+        /// </summary>
+        public UpdateChannel Channel { get; set; } = UpdateChannel.Unknown;
+
+        /// <summary>
         /// Current version of the application
         /// </summary>
         public Version CurrentVersion { get; set; } = null;
@@ -26,7 +31,7 @@ namespace GitHubUpdater.API
         /// </summary>
         public Version UpdatedVersion =>
             UpdateData != null
-            ? new Version(UpdateData.tag_name.TrimStart('v'))
+            ? new Version(UpdateData.tag_name.TrimStart('v').ToValidVersionString())
             : null;
 
         /// <summary>

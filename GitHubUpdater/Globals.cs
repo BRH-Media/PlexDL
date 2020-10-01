@@ -6,9 +6,15 @@ namespace GitHubUpdater
 {
     public static class Globals
     {
+        /// <summary>
+        /// The folder where update files are downloaded/saved to
+        /// </summary>
         public static string UpdateRootDir { get; set; } = $@"{AssemblyDirectory}\update_files";
 
         //Credit: https://stackoverflow.com/questions/52797/how-do-i-get-the-path-of-the-assembly-the-code-is-in
+        /// <summary>
+        /// Gets the folder of the current executable without the executable's file name
+        /// </summary>
         public static string AssemblyDirectory
         {
             get

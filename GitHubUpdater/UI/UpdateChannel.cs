@@ -31,6 +31,8 @@ namespace GitHubUpdater.UI
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void TlpMain_Paint(object sender, PaintEventArgs e)

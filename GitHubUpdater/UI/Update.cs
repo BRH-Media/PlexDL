@@ -69,9 +69,6 @@ namespace GitHubUpdater.UI
 
                     //apply decoded markdown-HTML
                     browserChanges.DocumentText = documentHtml;
-
-                    //set current version
-                    lblYourVersionValue.Text = $"v{AppUpdate.CurrentVersion}";
                 }
             }
 
@@ -79,7 +76,8 @@ namespace GitHubUpdater.UI
             CenterTitle();
 
             //load versioning status
-            VersionStatusUpdate();
+            YourVersionStatusUpdate();
+            UpdatedVersionStatusUpdate();
         }
 
         private void Update_Load(object sender, EventArgs e)
@@ -88,8 +86,12 @@ namespace GitHubUpdater.UI
             LoadUi();
         }
 
-        private void VersionStatusUpdate()
+        private void YourVersionStatusUpdate()
         {
+            //set current version
+            lblYourVersionValue.Text = $"v{AppUpdate.CurrentVersion}";
+
+            //label style
             var text = @"";
             var foreColor = KnownColor.Chocolate;
 
@@ -116,8 +118,39 @@ namespace GitHubUpdater.UI
                     break;
             }
 
-            lblVersionStatus.Text = text;
-            lblVersionStatus.ForeColor = Color.FromKnownColor(foreColor);
+            lblYourlVersionStatus.Text = text;
+            lblYourlVersionStatus.ForeColor = Color.FromKnownColor(foreColor);
+        }
+
+        private void UpdatedVersionStatusUpdate()
+        {
+            //set updated version
+            lblUpdatedVersionValue.Text = AppUpdate.UpdateData.tag_name;
+
+            //label style
+            var text = @"";
+            var foreColor = KnownColor.Chocolate;
+
+            switch (AppUpdate.Channel)
+            {
+                case Enums.UpdateChannel.Stable:
+                    text = @"Stable Release";
+                    foreColor = KnownColor.DarkGreen;
+                    break;
+
+                case Enums.UpdateChannel.Development:
+                    text = @"Development Release";
+                    foreColor = KnownColor.Chocolate;
+                    break;
+
+                case Enums.UpdateChannel.Unknown:
+                    text = @"Undetermined";
+                    foreColor = KnownColor.DarkRed;
+                    break;
+            }
+
+            lblUpdatedVersionStatus.Text = text;
+            lblUpdatedVersionStatus.ForeColor = Color.FromKnownColor(foreColor);
         }
 
         private void CenterTitle()
