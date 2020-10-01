@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PlexDL.Common.Pxz.Structures;
+using PlexDL.Common.Pxz.UI;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -43,6 +45,23 @@ namespace PlexDL.UI
 
             // And finally, apply the re-centering to the object.
             pnlNothingInteresting.Location = newLocation;
+        }
+
+        private void BtnOpenPxzExplorer_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog
+            {
+                Title = @"Open PXZ File",
+                Filter = @"PXZ Files|*.pxz"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var pxz = new PxzFile();
+                pxz.Load(ofd.FileName);
+
+                PxzInformation.ShowPxzInformation(pxz);
+            }
         }
     }
 }

@@ -377,6 +377,10 @@
       <Project>{1764ca80-f851-4e2c-acc8-37696d499d3b}</Project>
       <Name>PlexDL.Common.Pxz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Common\PlexDL.Common.csproj">
       <Project>{a464f174-fedd-45c7-b17a-4fd707867f2b}</Project>
       <Name>PlexDL.Common</Name>

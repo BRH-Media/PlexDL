@@ -1,10 +1,13 @@
 ﻿using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
+using PlexDL.Common.Security;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace PlexDL.UI
 {
@@ -16,11 +19,12 @@ namespace PlexDL.UI
 
             var title = $"About {AssemblyTitle}";
 
-            labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = $@"Version {AssemblyVersion}";
-            labelCopyright.Text = AssemblyCopyright;
-            labelCompanyName.Text = AssemblyCompany;
-            textBoxDescription.Text = AssemblyDescription;
+            lblProductName.Text = AssemblyProduct;
+            lblVersion.Text = $@"Version {AssemblyVersion}";
+            lblCopyright.Text = AssemblyCopyright;
+            lblCompanyName.Text = AssemblyCompany;
+            lblGlobalGuid.Text = $"GUID: {GlobalGuid}";
+            txtDescription.Text = AssemblyDescription;
 
             switch (BuildState.State)
             {
@@ -35,9 +39,6 @@ namespace PlexDL.UI
                 case DevStatus.ProductionReady:
                     Text = title;
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -47,8 +48,6 @@ namespace PlexDL.UI
             get => base.Text;
             set => base.Text = value;
         }
-
-        #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
@@ -110,6 +109,10 @@ namespace PlexDL.UI
             }
         }
 
-        #endregion Assembly Attribute Accessors
+        public string GlobalGuid => GuidHandler.GetGlobalGuid().ToString();
+
+        private void About_Load(object sender, EventArgs e)
+        {
+        }
     }
 }

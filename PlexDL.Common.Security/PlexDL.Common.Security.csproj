@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="DataHelpers.cs" />
     <Compile Include="Entropy.cs" />
+    <Compile Include="GuidHandler.cs" />
     <Compile Include="Md5Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protection\ProtectedBytes.cs" />

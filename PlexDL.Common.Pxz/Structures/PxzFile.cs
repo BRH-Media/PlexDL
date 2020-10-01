@@ -1,14 +1,17 @@
 ﻿using Ionic.Zip;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Extensions;
+using PlexDL.Common.Pxz.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using PlexDL.Common.Pxz.UI;
 using UIHelpers;
+
+// ReSharper disable InvertIf
 
 namespace PlexDL.Common.Pxz.Structures
 {
@@ -37,14 +40,44 @@ namespace PlexDL.Common.Pxz.Structures
 
         public PxzFile()
         {
-            //blank initializer
+            //blank initialiser
         }
 
-        public PxzFile(IEnumerable<PxzRecord> records)
+        public PxzFile(DevStatus status)
         {
+            //apply the build state
+            FileIndex.BuildState = status;
+        }
+
+        public PxzFile(Version systemVersion, DevStatus status)
+        {
+            //apply the build state
+            FileIndex.BuildState = status;
+
+            //apply the PlexDL version
+            FileIndex.FormatVersion = systemVersion;
+        }
+
+        public PxzFile(IEnumerable<PxzRecord> records, DevStatus status) : this(records,
+            new Version(0, 0, 0, 0), status)
+        {
+            //proxied call; does not contain code.
+        }
+
+        public PxzFile(IEnumerable<PxzRecord> records, Version systemVersion,
+            DevStatus status)
+        {
+            //apply the build state
+            FileIndex.BuildState = status;
+
+            //apply the PlexDL version
+            FileIndex.FormatVersion = systemVersion;
+
+            //clear all indexing information
             FileIndex.RecordReference.Clear();
             Records.Clear();
 
+            //re-add the indexing information with the new values
             foreach (var r in records)
             {
                 FileIndex.RecordReference.Add(r.Header.Naming);
@@ -126,18 +159,20 @@ namespace PlexDL.Common.Pxz.Structures
 
             //new index attributes (don't override records though)
             FileIndex.Author = PxzAuthor.FromCurrent();
-            FileIndex.FormatVersion = Utilities.GetVersion();
 
             var idxDoc = FileIndex.ToXml();
 
             //deflate the content to save room (poster isn't compressed via Zlib)
             var idxByte = GZipCompressor.CompressString(idxDoc.OuterXml);
 
+            //names of root format items
             const string idxName = @"index";
             const string recName = @"records";
 
+            //create a new temporary Zip file (in memory, not on disk)
             using var archive = new ZipFile(path, Encoding.Default);
 
+            //add the indexing information to the PXZ
             archive.AddEntry(idxName, idxByte);
 
             //add records folder
@@ -155,6 +190,9 @@ namespace PlexDL.Common.Pxz.Structures
 
             //finalise ZIP file
             archive.Save(path);
+
+            //cull the residual archive from memory
+            archive.Dispose();
         }
 
         /// <summary>
@@ -186,10 +224,12 @@ namespace PlexDL.Common.Pxz.Structures
                 //the index can't be null!
                 if (idxFile == null)
                 {
-                    UIMessages.Error(@"PXZ index couldn't be found or it isn't valid");
+                    if (!ParseSilent)
+                        UIMessages.Error(@"PXZ index couldn't be found or it isn't valid");
                     return;
                 }
 
+                //raw gzip index string (base64)
                 string idxString;
 
                 //extract and save the index to a new stream
@@ -240,13 +280,17 @@ namespace PlexDL.Common.Pxz.Structures
                 //apply new values
                 FileIndex = index;
 
+                UIMessages.Info(index.FormatVersion.ToString());
+
                 //check authenticity flag, and warn if it's been altered
                 if (tamperedWith)
-                    UIMessages.Warning("Content has been modified\n\nThe MD5 checksums stored do not match the checksums calculated, which is an indication that the contents may have been altered outside of the PXZ handler. The file will continue loading after you close this message.");
+                    if (!ParseSilent)
+                        UIMessages.Warning("Content has been modified\n\nThe MD5 checksums stored do not match the checksums calculated, which is an indication that the contents may have been altered outside of the PXZ handler. The file will continue loading after you close this message.");
             }
             catch (Exception ex)
             {
-                UIMessages.Error(ex.ToString());
+                if (!ParseSilent)
+                    UIMessages.Error(ex.ToString());
             }
         }
     }

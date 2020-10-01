@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Globals;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.WaitWindow;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using UIHelpers;
@@ -65,10 +67,12 @@ namespace PlexDL.Common.API.IO
                 //try and obtain a poster if one wasn't provided
                 var p = poster ?? ImageHandler.GetPoster(contentToExport);
 
+                //create each new PXZ record in memory
                 var rawMetadata = new PxzRecord(contentToExport.RawMetadata, @"raw");
                 var objMetadata = new PxzRecord(contentToExport.ToXml(), @"obj");
                 var ptrMetadata = new PxzRecord(p, @"poster");
 
+                //the records to save to the PXZ file are contained in a list
                 var data = new List<PxzRecord>
                 {
                     rawMetadata,
@@ -76,9 +80,14 @@ namespace PlexDL.Common.API.IO
                     ptrMetadata
                 };
 
-                var pxz = new PxzFile(data);
+                //embedded in PXZ indexing information
+                var plexdlVersion = Assembly.GetEntryAssembly()?.GetName().Version;
+
+                //initialise the PXZ file and flush it to disk
+                var pxz = new PxzFile(data, plexdlVersion, BuildState.State);
                 pxz.Save(fileName);
 
+                //show a message indicating success if allowed
                 if (!silent)
                     UIMessages.Info(@"Successfully exported metadata!");
             }

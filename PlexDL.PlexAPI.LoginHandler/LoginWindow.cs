@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable InvertIf
+
 namespace PlexDL.PlexAPI.LoginHandler
 {
     public partial class LoginWindow : Form
@@ -24,7 +26,22 @@ namespace PlexDL.PlexAPI.LoginHandler
             InitializeComponent();
         }
 
-        private void TmrDotChange_Tick(object sender, EventArgs e)
+        private void LoginWindow_Load(object sender, EventArgs e)
+        {
+            //default instruction
+            lblInstructions.Text = ChangeToBrowser;
+
+            //cycling dots animation
+            tmrDotChange.Start();
+
+            //auto-checking cycle (checks every 1.5s)
+            tmrLoginDetection.Start();
+
+            //start browser with the login page
+            LaunchBrowser();
+        }
+
+        private void DotUpdate()
         {
             var dots = pbMain.Text;
             var len = dots.Length;
@@ -40,12 +57,18 @@ namespace PlexDL.PlexAPI.LoginHandler
             pbMain.Text = dots;
         }
 
+        private void TmrDotChange_Tick(object sender, EventArgs e)
+        {
+            DotUpdate();
+        }
+
         private async void TmrLoginDetection_Tick(object sender, EventArgs e)
         {
             try
             {
-                //try and grab the new token
-                var newPin = await Task.Run(() => PlexRequestPin?.FromPinEndpoint()); //run this on a background thread (avoids UI lockup)
+                //Try and grab the new token.
+                //~Run this on a background thread (avoids UI lockup)
+                var newPin = await Task.Run(() => PlexRequestPin?.FromPinEndpoint());
 
                 //it's only successful if a token was actually provided
                 if (newPin != null)
@@ -111,21 +134,6 @@ namespace PlexDL.PlexAPI.LoginHandler
             {
                 UIMessages.Error($"An error occurred whilst logging into Plex.tv:\n\n{ex}");
             }
-        }
-
-        private void LoginWindow_Load(object sender, EventArgs e)
-        {
-            //default instruction
-            lblInstructions.Text = ChangeToBrowser;
-
-            //cycling dots animation
-            tmrDotChange.Start();
-
-            //auto-checking cycle (checks every 1.5s)
-            tmrLoginDetection.Start();
-
-            //start browser with the login page
-            LaunchBrowser();
         }
 
         private void BtnOK_Click(object sender, EventArgs e)
