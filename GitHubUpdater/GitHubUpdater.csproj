@@ -48,6 +48,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
@@ -61,6 +62,7 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Assets.cs" />
@@ -68,10 +70,11 @@
     <Compile Include="API\Application.cs" />
     <Compile Include="API\UpdateResponse.cs" />
     <Compile Include="API\Uploader.cs" />
-    <Compile Include="API\VersionStatus.cs" />
+    <Compile Include="Enums\UpdateChannel.cs" />
+    <Compile Include="Enums\VersionStatus.cs" />
     <Compile Include="DownloadManager\Agent.cs" />
     <Compile Include="DownloadManager\Job.cs" />
-    <Compile Include="DownloadManager\ReturnStatus.cs" />
+    <Compile Include="Enums\ReturnStatus.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Formatting\Html.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -86,6 +89,12 @@
     <Compile Include="UI\Update.Designer.cs">
       <DependentUpon>Update.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UpdateChannel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UpdateChannel.Designer.cs">
+      <DependentUpon>UpdateChannel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UpdateClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Update.resx">
       <DependentUpon>Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UpdateChannel.resx">
+      <DependentUpon>UpdateChannel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

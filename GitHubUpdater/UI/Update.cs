@@ -1,5 +1,6 @@
 ﻿using GitHubUpdater.API;
 using GitHubUpdater.DownloadManager;
+using GitHubUpdater.Enums;
 using GitHubUpdater.Formatting;
 using Markdig;
 using PlexDL.Common.Security;

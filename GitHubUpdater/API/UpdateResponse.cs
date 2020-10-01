@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GitHubUpdater.Enums;
+using System;
 
 namespace GitHubUpdater.API
 {

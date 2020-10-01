@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using GitHubUpdater.Enums;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace GitHubUpdater.DownloadManager
 {
     public static class Agent
     {
-        public static async Task<ReturnStatus> DoDownload(Job downloadJob)
+        public static async Task<ReturnStatus> DoDownload(this Job downloadJob)
         {
             try
             {

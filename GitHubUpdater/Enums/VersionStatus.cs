@@ -1,4 +1,4 @@
-﻿namespace GitHubUpdater.API
+﻿namespace GitHubUpdater.Enums
 {
     public enum VersionStatus
     {

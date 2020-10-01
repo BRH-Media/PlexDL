@@ -1,5 +1,5 @@
-﻿using System.IO;
-using GitHubUpdater.Properties;
+﻿using GitHubUpdater.Properties;
+using System.IO;
 
 namespace GitHubUpdater.Formatting
 {
