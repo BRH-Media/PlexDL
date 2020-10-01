@@ -114,7 +114,7 @@ namespace GitHubUpdater
                                 if (!silentCheck)
                                     MessageBox.Show(
                                         $"You're running the latest version!\n\nYour version: {data.CurrentVersion}" +
-                                        $"\nLatest release: {data.UpdatedVersion}", @"Message",
+                                        $"\nLatest release: {data.UpdatedVersion} ({data.Channel} Channel)", @"Message",
                                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         else
