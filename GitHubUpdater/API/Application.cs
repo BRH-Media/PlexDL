@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+
 namespace GitHubUpdater.API
 {
     public class Application
@@ -15,7 +18,7 @@ namespace GitHubUpdater.API
         public string target_commitish { get; set; }
         public string name { get; set; }
         public bool draft { get; set; }
-        public Author author { get; set; }
+        public User author { get; set; }
         public bool prerelease { get; set; }
         public DateTime created_at { get; set; }
         public DateTime published_at { get; set; }

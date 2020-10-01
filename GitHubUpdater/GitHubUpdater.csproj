@@ -66,10 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Assets.cs" />
-    <Compile Include="API\Author.cs" />
+    <Compile Include="API\User.cs" />
     <Compile Include="API\Application.cs" />
     <Compile Include="API\UpdateResponse.cs" />
-    <Compile Include="API\Uploader.cs" />
     <Compile Include="Enums\UpdateChannel.cs" />
     <Compile Include="Enums\VersionStatus.cs" />
     <Compile Include="DownloadManager\Agent.cs" />

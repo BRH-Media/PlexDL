@@ -1,6 +1,8 @@
-﻿namespace GitHubUpdater.API
+﻿// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+namespace GitHubUpdater.API
 {
-    public class Author
+    public class User
     {
         public string login { get; set; }
         public int id { get; set; }

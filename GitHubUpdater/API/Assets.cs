@@ -1,5 +1,8 @@
 ﻿using System;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+
 namespace GitHubUpdater.API
 {
     public class Assets
@@ -9,7 +12,7 @@ namespace GitHubUpdater.API
         public string node_id { get; set; }
         public string name { get; set; }
         public string label { get; set; }
-        public Uploader uploader { get; set; }
+        public User uploader { get; set; }
         public string content_type { get; set; }
         public string state { get; set; }
         public int size { get; set; }
