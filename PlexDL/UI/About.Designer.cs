@@ -32,6 +32,7 @@ namespace PlexDL.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.lblGlobalGuid = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblProductName = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -39,7 +40,6 @@ namespace PlexDL.UI
             this.lblCompanyName = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
-            this.lblGlobalGuid = new System.Windows.Forms.Label();
             this.tlpMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
@@ -71,6 +71,18 @@ namespace PlexDL.UI
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMain.Size = new System.Drawing.Size(417, 265);
             this.tlpMain.TabIndex = 0;
+            // 
+            // lblGlobalGuid
+            // 
+            this.lblGlobalGuid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblGlobalGuid.Location = new System.Drawing.Point(143, 116);
+            this.lblGlobalGuid.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblGlobalGuid.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblGlobalGuid.Name = "lblGlobalGuid";
+            this.lblGlobalGuid.Size = new System.Drawing.Size(271, 17);
+            this.lblGlobalGuid.TabIndex = 25;
+            this.lblGlobalGuid.Text = "Global GUID";
+            this.lblGlobalGuid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // picLogo
             // 
@@ -156,18 +168,6 @@ namespace PlexDL.UI
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 24;
             this.btnOK.Text = "&OK";
-            // 
-            // lblGlobalGuid
-            // 
-            this.lblGlobalGuid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGlobalGuid.Location = new System.Drawing.Point(143, 116);
-            this.lblGlobalGuid.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.lblGlobalGuid.MaximumSize = new System.Drawing.Size(0, 17);
-            this.lblGlobalGuid.Name = "lblGlobalGuid";
-            this.lblGlobalGuid.Size = new System.Drawing.Size(271, 17);
-            this.lblGlobalGuid.TabIndex = 25;
-            this.lblGlobalGuid.Text = "Global GUID";
-            this.lblGlobalGuid.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // About
             // 

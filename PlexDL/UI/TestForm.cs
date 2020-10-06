@@ -34,9 +34,9 @@ namespace PlexDL.UI
             var middlePanelY = pnlNothingInteresting.Height / 2;
 
             // Positioning directly at middleHorizontalX and middleHorizontalY would offset
-            // the object, due to how C# origins work (0,0 is top-right).
+            // the object, due to how C# origins work (0,0 is top-left).
             // To correct this, we can offset it by half its Height and Width to effectively
-            // make the origin in the center, rather than the top-right corner.
+            // make the origin in the center, rather than the top-left corner.
             var x = middleHorizontalX - middlePanelX;
             var y = middleVerticalY - middlePanelY;
 

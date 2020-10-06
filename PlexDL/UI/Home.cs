@@ -1999,18 +1999,18 @@ namespace PlexDL.UI
             switch (BuildState.State)
             {
                 case DevStatus.InDevelopment:
-                    lblBeta.ForeColor = choc;
-                    lblBeta.Text = @"Developer Build";
+                    lblDevStatus.ForeColor = choc;
+                    lblDevStatus.Text = @"Developer Build";
                     break;
 
                 case DevStatus.InBeta:
-                    lblBeta.ForeColor = red;
-                    lblBeta.Text = @"Beta Testing Build";
+                    lblDevStatus.ForeColor = red;
+                    lblDevStatus.Text = @"Beta Testing Build";
                     break;
 
                 case DevStatus.ProductionReady:
-                    lblBeta.ForeColor = green;
-                    lblBeta.Text = @"Production Build";
+                    lblDevStatus.ForeColor = green;
+                    lblDevStatus.Text = @"Production Build";
                     break;
             }
         }

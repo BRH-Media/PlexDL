@@ -93,15 +93,10 @@ namespace PlexDL.UI
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabMovies = new System.Windows.Forms.TabPage();
             this.tlpMovies = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
             this.tabTV = new System.Windows.Forms.TabPage();
             this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
             this.tabMusic = new System.Windows.Forms.TabPage();
             this.tlpMusic = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackMetadataView = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,15 +108,11 @@ namespace PlexDL.UI
             this.itmTrackStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackCast = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpContentOptions = new System.Windows.Forms.TableLayoutPanel();
             this.pbMain = new System.Windows.Forms.ProgressBar();
-            this.dgvSections = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
@@ -135,6 +126,7 @@ namespace PlexDL.UI
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearMyToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContinueWatching = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContent = new System.Windows.Forms.ToolStripMenuItem();
             this.itmMetadata = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,7 +155,7 @@ namespace PlexDL.UI
             this.lblEtaValue = new System.Windows.Forms.ToolStripLabel();
             this.sepEta = new System.Windows.Forms.ToolStripSeparator();
             this.lblProgress = new System.Windows.Forms.ToolStripLabel();
-            this.lblBeta = new System.Windows.Forms.ToolStripLabel();
+            this.lblDevStatus = new System.Windows.Forms.ToolStripLabel();
             this.sepBeta = new System.Windows.Forms.ToolStripSeparator();
             this.lblSidValue = new System.Windows.Forms.ToolStripLabel();
             this.lblSid = new System.Windows.Forms.ToolStripLabel();
@@ -172,6 +164,15 @@ namespace PlexDL.UI
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
+            this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSections = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -182,27 +183,27 @@ namespace PlexDL.UI
             this.tabMain.SuspendLayout();
             this.tabMovies.SuspendLayout();
             this.tlpMovies.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).BeginInit();
             this.tabTV.SuspendLayout();
             this.tlpTV.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
             this.tabMusic.SuspendLayout();
             this.tlpMusic.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).BeginInit();
             this.cxtTrackOptions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).BeginInit();
             this.tabLog.SuspendLayout();
             this.tlpLog.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.tlpContentOptions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).BeginInit();
             this.menuMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.cxtTracks.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).BeginInit();
             this.SuspendLayout();
             // 
             // sfdSave
@@ -589,6 +590,619 @@ namespace PlexDL.UI
             this.tlpMovies.Size = new System.Drawing.Size(648, 338);
             this.tlpMovies.TabIndex = 19;
             // 
+            // tabTV
+            // 
+            this.tabTV.Controls.Add(this.tlpTV);
+            this.tabTV.Location = new System.Drawing.Point(4, 22);
+            this.tabTV.Name = "tabTV";
+            this.tabTV.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTV.Size = new System.Drawing.Size(654, 344);
+            this.tabTV.TabIndex = 1;
+            this.tabTV.Text = "TV";
+            this.tabTV.UseVisualStyleBackColor = true;
+            // 
+            // tlpTV
+            // 
+            this.tlpTV.BackColor = System.Drawing.Color.White;
+            this.tlpTV.ColumnCount = 2;
+            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.Controls.Add(this.dgvTVShows, 0, 0);
+            this.tlpTV.Controls.Add(this.dgvSeasons, 1, 0);
+            this.tlpTV.Controls.Add(this.dgvEpisodes, 1, 1);
+            this.tlpTV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTV.Location = new System.Drawing.Point(3, 3);
+            this.tlpTV.Margin = new System.Windows.Forms.Padding(2);
+            this.tlpTV.Name = "tlpTV";
+            this.tlpTV.RowCount = 2;
+            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTV.Size = new System.Drawing.Size(648, 338);
+            this.tlpTV.TabIndex = 0;
+            // 
+            // tabMusic
+            // 
+            this.tabMusic.Controls.Add(this.tlpMusic);
+            this.tabMusic.Location = new System.Drawing.Point(4, 22);
+            this.tabMusic.Name = "tabMusic";
+            this.tabMusic.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMusic.Size = new System.Drawing.Size(654, 344);
+            this.tabMusic.TabIndex = 3;
+            this.tabMusic.Text = "Music";
+            this.tabMusic.UseVisualStyleBackColor = true;
+            // 
+            // tlpMusic
+            // 
+            this.tlpMusic.BackColor = System.Drawing.Color.White;
+            this.tlpMusic.ColumnCount = 2;
+            this.tlpMusic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMusic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMusic.Controls.Add(this.dgvArtists, 0, 0);
+            this.tlpMusic.Controls.Add(this.dgvAlbums, 1, 0);
+            this.tlpMusic.Controls.Add(this.dgvTracks, 1, 1);
+            this.tlpMusic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMusic.Location = new System.Drawing.Point(3, 3);
+            this.tlpMusic.Margin = new System.Windows.Forms.Padding(2);
+            this.tlpMusic.Name = "tlpMusic";
+            this.tlpMusic.RowCount = 2;
+            this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMusic.Size = new System.Drawing.Size(648, 338);
+            this.tlpMusic.TabIndex = 1;
+            // 
+            // cxtTrackOptions
+            // 
+            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmTrackMetadata,
+            this.itmTrackDownload,
+            this.itmTrackStream,
+            this.itmTrackSearch,
+            this.itmTrackCast});
+            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
+            this.cxtTrackOptions.Size = new System.Drawing.Size(129, 114);
+            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtTrackOptions_Opening);
+            // 
+            // itmTrackMetadata
+            // 
+            this.itmTrackMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmTrackMetadataView,
+            this.itmTrackMetadataExport});
+            this.itmTrackMetadata.Name = "itmTrackMetadata";
+            this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackMetadata.Text = "Metadata";
+            // 
+            // itmTrackMetadataView
+            // 
+            this.itmTrackMetadataView.Name = "itmTrackMetadataView";
+            this.itmTrackMetadataView.Size = new System.Drawing.Size(108, 22);
+            this.itmTrackMetadataView.Text = "View";
+            this.itmTrackMetadataView.Click += new System.EventHandler(this.ItmTrackMetadataView_Click);
+            // 
+            // itmTrackMetadataExport
+            // 
+            this.itmTrackMetadataExport.Name = "itmTrackMetadataExport";
+            this.itmTrackMetadataExport.Size = new System.Drawing.Size(108, 22);
+            this.itmTrackMetadataExport.Text = "Export";
+            this.itmTrackMetadataExport.Click += new System.EventHandler(this.ItmTrackMetadataExport_Click);
+            // 
+            // itmTrackDownload
+            // 
+            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVDownloadThisTrack,
+            this.itmDGVDownloadThisAlbum,
+            this.itmDGVViewTrackDownloadLink});
+            this.itmTrackDownload.Name = "itmTrackDownload";
+            this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackDownload.Text = "Download";
+            // 
+            // itmDGVDownloadThisTrack
+            // 
+            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
+            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisTrack.Text = "Download Track";
+            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
+            // 
+            // itmDGVDownloadThisAlbum
+            // 
+            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
+            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisAlbum.Text = "Download Album";
+            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
+            // 
+            // itmDGVViewTrackDownloadLink
+            // 
+            this.itmDGVViewTrackDownloadLink.Name = "itmDGVViewTrackDownloadLink";
+            this.itmDGVViewTrackDownloadLink.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVViewTrackDownloadLink.Text = "View Link";
+            this.itmDGVViewTrackDownloadLink.Click += new System.EventHandler(this.ItmDGVViewTrackDownloadLink_Click);
+            // 
+            // itmTrackStream
+            // 
+            this.itmTrackStream.Name = "itmTrackStream";
+            this.itmTrackStream.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackStream.Text = "Stream";
+            this.itmTrackStream.Click += new System.EventHandler(this.ItmTrackStream_Click);
+            // 
+            // itmTrackSearch
+            // 
+            this.itmTrackSearch.Name = "itmTrackSearch";
+            this.itmTrackSearch.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackSearch.Text = "Search";
+            this.itmTrackSearch.Click += new System.EventHandler(this.ItmTrackSearch_Click);
+            // 
+            // itmTrackCast
+            // 
+            this.itmTrackCast.Name = "itmTrackCast";
+            this.itmTrackCast.Size = new System.Drawing.Size(128, 22);
+            this.itmTrackCast.Text = "Cast";
+            this.itmTrackCast.Click += new System.EventHandler(this.ItmTrackCast_Click);
+            // 
+            // tabLog
+            // 
+            this.tabLog.Controls.Add(this.tlpLog);
+            this.tabLog.Location = new System.Drawing.Point(4, 22);
+            this.tabLog.Name = "tabLog";
+            this.tabLog.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLog.Size = new System.Drawing.Size(654, 344);
+            this.tabLog.TabIndex = 2;
+            this.tabLog.Text = "Log";
+            this.tabLog.UseVisualStyleBackColor = true;
+            // 
+            // tlpLog
+            // 
+            this.tlpLog.ColumnCount = 1;
+            this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLog.Controls.Add(this.dgvLog, 0, 0);
+            this.tlpLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpLog.Location = new System.Drawing.Point(3, 3);
+            this.tlpLog.Name = "tlpLog";
+            this.tlpLog.RowCount = 1;
+            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 338F));
+            this.tlpLog.Size = new System.Drawing.Size(648, 338);
+            this.tlpLog.TabIndex = 1;
+            // 
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.60251F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.39749F));
+            this.tlpMain.Controls.Add(this.tlpContentOptions, 0, 0);
+            this.tlpMain.Controls.Add(this.tabMain, 1, 0);
+            this.tlpMain.Controls.Add(this.dgvSections, 0, 1);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(0, 24);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.Padding = new System.Windows.Forms.Padding(4);
+            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpMain.Size = new System.Drawing.Size(956, 384);
+            this.tlpMain.TabIndex = 29;
+            // 
+            // tlpContentOptions
+            // 
+            this.tlpContentOptions.ColumnCount = 2;
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpContentOptions.Controls.Add(this.gbStreamControl, 0, 0);
+            this.tlpContentOptions.Controls.Add(this.pbMain, 0, 1);
+            this.tlpContentOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpContentOptions.Location = new System.Drawing.Point(7, 7);
+            this.tlpContentOptions.Name = "tlpContentOptions";
+            this.tlpContentOptions.RowCount = 2;
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlpContentOptions.Size = new System.Drawing.Size(274, 88);
+            this.tlpContentOptions.TabIndex = 31;
+            // 
+            // pbMain
+            // 
+            this.tlpContentOptions.SetColumnSpan(this.pbMain, 2);
+            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbMain.Location = new System.Drawing.Point(3, 64);
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(268, 21);
+            this.pbMain.TabIndex = 34;
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmFile,
+            this.itmData,
+            this.itmServers,
+            this.itmContent,
+            this.itmLogging,
+            this.itmCaching,
+            this.itmHelp});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(956, 24);
+            this.menuMain.TabIndex = 30;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // itmFile
+            // 
+            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLoadProfile,
+            this.itmSaveProfile,
+            this.itmExportObj,
+            this.itmSettings});
+            this.itmFile.Name = "itmFile";
+            this.itmFile.Size = new System.Drawing.Size(37, 20);
+            this.itmFile.Text = "File";
+            // 
+            // itmLoadProfile
+            // 
+            this.itmLoadProfile.Name = "itmLoadProfile";
+            this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.itmLoadProfile.Size = new System.Drawing.Size(148, 22);
+            this.itmLoadProfile.Text = "Load";
+            this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
+            // 
+            // itmSaveProfile
+            // 
+            this.itmSaveProfile.Name = "itmSaveProfile";
+            this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.itmSaveProfile.Size = new System.Drawing.Size(148, 22);
+            this.itmSaveProfile.Text = "Save";
+            this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
+            // 
+            // itmExportObj
+            // 
+            this.itmExportObj.Name = "itmExportObj";
+            this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.itmExportObj.Size = new System.Drawing.Size(148, 22);
+            this.itmExportObj.Text = "Export";
+            this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
+            // 
+            // itmSettings
+            // 
+            this.itmSettings.Name = "itmSettings";
+            this.itmSettings.Size = new System.Drawing.Size(148, 22);
+            this.itmSettings.Text = "Settings";
+            this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
+            // 
+            // itmData
+            // 
+            this.itmData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmSetDlDirectory,
+            this.itmOpenDataFolder,
+            this.itmCleanupAllData});
+            this.itmData.Name = "itmData";
+            this.itmData.Size = new System.Drawing.Size(43, 20);
+            this.itmData.Text = "Data";
+            // 
+            // itmSetDlDirectory
+            // 
+            this.itmSetDlDirectory.Name = "itmSetDlDirectory";
+            this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
+            this.itmSetDlDirectory.Text = "Set Download Directory";
+            this.itmSetDlDirectory.Click += new System.EventHandler(this.ItmSetDlDirectory_Click);
+            // 
+            // itmOpenDataFolder
+            // 
+            this.itmOpenDataFolder.Name = "itmOpenDataFolder";
+            this.itmOpenDataFolder.Size = new System.Drawing.Size(198, 22);
+            this.itmOpenDataFolder.Text = "Open Data Folder";
+            this.itmOpenDataFolder.Click += new System.EventHandler(this.ItmOpenDataFolder_Click);
+            // 
+            // itmCleanupAllData
+            // 
+            this.itmCleanupAllData.Name = "itmCleanupAllData";
+            this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
+            this.itmCleanupAllData.Text = "Cleanup All Data";
+            this.itmCleanupAllData.Click += new System.EventHandler(this.ItmCleanupAllData_Click);
+            // 
+            // itmServers
+            // 
+            this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmServerManager,
+            this.itmClearMyToken,
+            this.itmContinueWatching,
+            this.itmDisconnect});
+            this.itmServers.Name = "itmServers";
+            this.itmServers.Size = new System.Drawing.Size(56, 20);
+            this.itmServers.Text = "Servers";
+            // 
+            // itmServerManager
+            // 
+            this.itmServerManager.Name = "itmServerManager";
+            this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.itmServerManager.Size = new System.Drawing.Size(198, 22);
+            this.itmServerManager.Text = "Server Manager";
+            this.itmServerManager.Click += new System.EventHandler(this.ItmServerManager_Click);
+            // 
+            // itmClearMyToken
+            // 
+            this.itmClearMyToken.Name = "itmClearMyToken";
+            this.itmClearMyToken.Size = new System.Drawing.Size(198, 22);
+            this.itmClearMyToken.Text = "Clear My Token";
+            this.itmClearMyToken.Click += new System.EventHandler(this.ItmClearMyToken_Click);
+            // 
+            // itmContinueWatching
+            // 
+            this.itmContinueWatching.Name = "itmContinueWatching";
+            this.itmContinueWatching.Size = new System.Drawing.Size(198, 22);
+            this.itmContinueWatching.Text = "Continue Watching";
+            // 
+            // itmDisconnect
+            // 
+            this.itmDisconnect.Enabled = false;
+            this.itmDisconnect.Name = "itmDisconnect";
+            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
+            this.itmDisconnect.Text = "Disconnect";
+            this.itmDisconnect.Click += new System.EventHandler(this.ItmDisconnect_Click);
+            // 
+            // itmContent
+            // 
+            this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmMetadata,
+            this.itmStartSearch,
+            this.itmCast});
+            this.itmContent.Name = "itmContent";
+            this.itmContent.Size = new System.Drawing.Size(62, 20);
+            this.itmContent.Text = "Content";
+            // 
+            // itmMetadata
+            // 
+            this.itmMetadata.Name = "itmMetadata";
+            this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.itmMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmMetadata.Text = "Metadata";
+            this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
+            // 
+            // itmStartSearch
+            // 
+            this.itmStartSearch.Name = "itmStartSearch";
+            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.itmStartSearch.Size = new System.Drawing.Size(180, 22);
+            this.itmStartSearch.Text = "Start Search";
+            this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
+            // 
+            // itmCast
+            // 
+            this.itmCast.Name = "itmCast";
+            this.itmCast.Size = new System.Drawing.Size(180, 22);
+            this.itmCast.Text = "Cast";
+            this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
+            // 
+            // itmLogging
+            // 
+            this.itmLogging.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLogViewer});
+            this.itmLogging.Name = "itmLogging";
+            this.itmLogging.Size = new System.Drawing.Size(63, 20);
+            this.itmLogging.Text = "Logging";
+            // 
+            // itmLogViewer
+            // 
+            this.itmLogViewer.Name = "itmLogViewer";
+            this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
+            this.itmLogViewer.Text = "Log Viewer";
+            this.itmLogViewer.Click += new System.EventHandler(this.ItmLogViewer_Click);
+            // 
+            // itmCaching
+            // 
+            this.itmCaching.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCacheMetrics,
+            this.itmClearCache});
+            this.itmCaching.Name = "itmCaching";
+            this.itmCaching.Size = new System.Drawing.Size(63, 20);
+            this.itmCaching.Text = "Caching";
+            // 
+            // itmCacheMetrics
+            // 
+            this.itmCacheMetrics.Name = "itmCacheMetrics";
+            this.itmCacheMetrics.Size = new System.Drawing.Size(137, 22);
+            this.itmCacheMetrics.Text = "Metrics";
+            this.itmCacheMetrics.Click += new System.EventHandler(this.ItmCacheMetrics_Click);
+            // 
+            // itmClearCache
+            // 
+            this.itmClearCache.Name = "itmClearCache";
+            this.itmClearCache.Size = new System.Drawing.Size(137, 22);
+            this.itmClearCache.Text = "Clear Cache";
+            this.itmClearCache.Click += new System.EventHandler(this.ItmClearCache_Click);
+            // 
+            // itmHelp
+            // 
+            this.itmHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCheckForUpdates,
+            this.itmRepo,
+            this.itmAbout});
+            this.itmHelp.Name = "itmHelp";
+            this.itmHelp.Size = new System.Drawing.Size(44, 20);
+            this.itmHelp.Text = "Help";
+            // 
+            // itmCheckForUpdates
+            // 
+            this.itmCheckForUpdates.Name = "itmCheckForUpdates";
+            this.itmCheckForUpdates.Size = new System.Drawing.Size(171, 22);
+            this.itmCheckForUpdates.Text = "Check for Updates";
+            this.itmCheckForUpdates.Click += new System.EventHandler(this.ItmCheckForUpdates_Click);
+            // 
+            // itmRepo
+            // 
+            this.itmRepo.Name = "itmRepo";
+            this.itmRepo.Size = new System.Drawing.Size(171, 22);
+            this.itmRepo.Text = "Repo";
+            this.itmRepo.Click += new System.EventHandler(this.ItmRepo_Click);
+            // 
+            // itmAbout
+            // 
+            this.itmAbout.Name = "itmAbout";
+            this.itmAbout.Size = new System.Drawing.Size(171, 22);
+            this.itmAbout.Text = "About";
+            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
+            // 
+            // tsMain
+            // 
+            this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblViewing,
+            this.lblViewingValue,
+            this.sepViewing,
+            this.lblDownloading,
+            this.lblDownloadingValue,
+            this.sepDownloading,
+            this.lblSpeed,
+            this.lblSpeedValue,
+            this.sepSpeed,
+            this.lblEta,
+            this.lblEtaValue,
+            this.sepEta,
+            this.lblProgress,
+            this.lblDevStatus,
+            this.sepBeta,
+            this.lblSidValue,
+            this.lblSid});
+            this.tsMain.Location = new System.Drawing.Point(0, 408);
+            this.tsMain.Name = "tsMain";
+            this.tsMain.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.tsMain.Size = new System.Drawing.Size(956, 25);
+            this.tsMain.TabIndex = 31;
+            this.tsMain.Text = "toolStrip1";
+            // 
+            // lblViewing
+            // 
+            this.lblViewing.Name = "lblViewing";
+            this.lblViewing.Size = new System.Drawing.Size(52, 20);
+            this.lblViewing.Text = "Viewing:";
+            // 
+            // lblViewingValue
+            // 
+            this.lblViewingValue.Name = "lblViewingValue";
+            this.lblViewingValue.Size = new System.Drawing.Size(24, 20);
+            this.lblViewingValue.Text = "0/0";
+            // 
+            // sepViewing
+            // 
+            this.sepViewing.Name = "sepViewing";
+            this.sepViewing.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblDownloading
+            // 
+            this.lblDownloading.Name = "lblDownloading";
+            this.lblDownloading.Size = new System.Drawing.Size(81, 20);
+            this.lblDownloading.Text = "Downloading:";
+            // 
+            // lblDownloadingValue
+            // 
+            this.lblDownloadingValue.Name = "lblDownloadingValue";
+            this.lblDownloadingValue.Size = new System.Drawing.Size(15, 20);
+            this.lblDownloadingValue.Text = "~";
+            // 
+            // sepDownloading
+            // 
+            this.sepDownloading.Name = "sepDownloading";
+            this.sepDownloading.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblSpeed
+            // 
+            this.lblSpeed.Name = "lblSpeed";
+            this.lblSpeed.Size = new System.Drawing.Size(42, 20);
+            this.lblSpeed.Text = "Speed:";
+            // 
+            // lblSpeedValue
+            // 
+            this.lblSpeedValue.Name = "lblSpeedValue";
+            this.lblSpeedValue.Size = new System.Drawing.Size(15, 20);
+            this.lblSpeedValue.Text = "~";
+            // 
+            // sepSpeed
+            // 
+            this.sepSpeed.Name = "sepSpeed";
+            this.sepSpeed.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblEta
+            // 
+            this.lblEta.Name = "lblEta";
+            this.lblEta.Size = new System.Drawing.Size(29, 20);
+            this.lblEta.Text = "ETA:";
+            // 
+            // lblEtaValue
+            // 
+            this.lblEtaValue.Name = "lblEtaValue";
+            this.lblEtaValue.Size = new System.Drawing.Size(15, 20);
+            this.lblEtaValue.Text = "~";
+            // 
+            // sepEta
+            // 
+            this.sepEta.Name = "sepEta";
+            this.sepEta.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(26, 20);
+            this.lblProgress.Text = "Idle";
+            // 
+            // lblDevStatus
+            // 
+            this.lblDevStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lblDevStatus.ForeColor = System.Drawing.Color.Chocolate;
+            this.lblDevStatus.Name = "lblDevStatus";
+            this.lblDevStatus.Size = new System.Drawing.Size(91, 20);
+            this.lblDevStatus.Text = "In Development";
+            // 
+            // sepBeta
+            // 
+            this.sepBeta.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.sepBeta.Name = "sepBeta";
+            this.sepBeta.Size = new System.Drawing.Size(6, 23);
+            // 
+            // lblSidValue
+            // 
+            this.lblSidValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lblSidValue.Name = "lblSidValue";
+            this.lblSidValue.Size = new System.Drawing.Size(71, 20);
+            this.lblSidValue.Text = "[SID_VALUE]";
+            // 
+            // lblSid
+            // 
+            this.lblSid.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lblSid.Name = "lblSid";
+            this.lblSid.Size = new System.Drawing.Size(27, 20);
+            this.lblSid.Text = "SID:";
+            // 
+            // tmrWorkerTimeout
+            // 
+            this.tmrWorkerTimeout.Interval = 3000;
+            this.tmrWorkerTimeout.Tick += new System.EventHandler(this.TmrWorkerTimeout_Tick);
+            // 
+            // cxtTracks
+            // 
+            this.cxtTracks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtTracks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDownloadThisTrack,
+            this.itmDownloadThisAlbum});
+            this.cxtTracks.Name = "cxtEpisodes";
+            this.cxtTracks.Size = new System.Drawing.Size(192, 48);
+            // 
+            // itmDownloadThisTrack
+            // 
+            this.itmDownloadThisTrack.Name = "itmDownloadThisTrack";
+            this.itmDownloadThisTrack.Size = new System.Drawing.Size(191, 22);
+            this.itmDownloadThisTrack.Text = "Download This Track";
+            this.itmDownloadThisTrack.Click += new System.EventHandler(this.ItmDownloadThisTrack_Click);
+            // 
+            // itmDownloadThisAlbum
+            // 
+            this.itmDownloadThisAlbum.Name = "itmDownloadThisAlbum";
+            this.itmDownloadThisAlbum.Size = new System.Drawing.Size(191, 22);
+            this.itmDownloadThisAlbum.Text = "Download This Album";
+            this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
+            // 
+            // wkrGetMetadata
+            // 
+            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
+            // 
             // dgvMovies
             // 
             this.dgvMovies.AllowUserToAddRows = false;
@@ -623,36 +1237,6 @@ namespace PlexDL.UI
             this.dgvMovies.TabIndex = 18;
             this.dgvMovies.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
             this.dgvMovies.SelectionChanged += new System.EventHandler(this.dgvMovies_OnRowChange);
-            // 
-            // tabTV
-            // 
-            this.tabTV.Controls.Add(this.tlpTV);
-            this.tabTV.Location = new System.Drawing.Point(4, 22);
-            this.tabTV.Name = "tabTV";
-            this.tabTV.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTV.Size = new System.Drawing.Size(654, 344);
-            this.tabTV.TabIndex = 1;
-            this.tabTV.Text = "TV";
-            this.tabTV.UseVisualStyleBackColor = true;
-            // 
-            // tlpTV
-            // 
-            this.tlpTV.BackColor = System.Drawing.Color.White;
-            this.tlpTV.ColumnCount = 2;
-            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.Controls.Add(this.dgvTVShows, 0, 0);
-            this.tlpTV.Controls.Add(this.dgvSeasons, 1, 0);
-            this.tlpTV.Controls.Add(this.dgvEpisodes, 1, 1);
-            this.tlpTV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTV.Location = new System.Drawing.Point(3, 3);
-            this.tlpTV.Margin = new System.Windows.Forms.Padding(2);
-            this.tlpTV.Name = "tlpTV";
-            this.tlpTV.RowCount = 2;
-            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTV.Size = new System.Drawing.Size(648, 338);
-            this.tlpTV.TabIndex = 0;
             // 
             // dgvTVShows
             // 
@@ -759,36 +1343,6 @@ namespace PlexDL.UI
             this.dgvEpisodes.TabIndex = 21;
             this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
             // 
-            // tabMusic
-            // 
-            this.tabMusic.Controls.Add(this.tlpMusic);
-            this.tabMusic.Location = new System.Drawing.Point(4, 22);
-            this.tabMusic.Name = "tabMusic";
-            this.tabMusic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMusic.Size = new System.Drawing.Size(654, 344);
-            this.tabMusic.TabIndex = 3;
-            this.tabMusic.Text = "Music";
-            this.tabMusic.UseVisualStyleBackColor = true;
-            // 
-            // tlpMusic
-            // 
-            this.tlpMusic.BackColor = System.Drawing.Color.White;
-            this.tlpMusic.ColumnCount = 2;
-            this.tlpMusic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMusic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMusic.Controls.Add(this.dgvArtists, 0, 0);
-            this.tlpMusic.Controls.Add(this.dgvAlbums, 1, 0);
-            this.tlpMusic.Controls.Add(this.dgvTracks, 1, 1);
-            this.tlpMusic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMusic.Location = new System.Drawing.Point(3, 3);
-            this.tlpMusic.Margin = new System.Windows.Forms.Padding(2);
-            this.tlpMusic.Name = "tlpMusic";
-            this.tlpMusic.RowCount = 2;
-            this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMusic.Size = new System.Drawing.Size(648, 338);
-            this.tlpMusic.TabIndex = 1;
-            // 
             // dgvArtists
             // 
             this.dgvArtists.AllowUserToAddRows = false;
@@ -824,94 +1378,6 @@ namespace PlexDL.UI
             this.dgvArtists.TabIndex = 27;
             this.dgvArtists.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
             this.dgvArtists.SelectionChanged += new System.EventHandler(this.DgvArtists_OnRowChange);
-            // 
-            // cxtTrackOptions
-            // 
-            this.cxtTrackOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtTrackOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmTrackMetadata,
-            this.itmTrackDownload,
-            this.itmTrackStream,
-            this.itmTrackSearch,
-            this.itmTrackCast});
-            this.cxtTrackOptions.Name = "cxtEpisodeOptions";
-            this.cxtTrackOptions.Size = new System.Drawing.Size(129, 114);
-            this.cxtTrackOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtTrackOptions_Opening);
-            // 
-            // itmTrackMetadata
-            // 
-            this.itmTrackMetadata.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmTrackMetadataView,
-            this.itmTrackMetadataExport});
-            this.itmTrackMetadata.Name = "itmTrackMetadata";
-            this.itmTrackMetadata.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackMetadata.Text = "Metadata";
-            // 
-            // itmTrackMetadataView
-            // 
-            this.itmTrackMetadataView.Name = "itmTrackMetadataView";
-            this.itmTrackMetadataView.Size = new System.Drawing.Size(108, 22);
-            this.itmTrackMetadataView.Text = "View";
-            this.itmTrackMetadataView.Click += new System.EventHandler(this.ItmTrackMetadataView_Click);
-            // 
-            // itmTrackMetadataExport
-            // 
-            this.itmTrackMetadataExport.Name = "itmTrackMetadataExport";
-            this.itmTrackMetadataExport.Size = new System.Drawing.Size(108, 22);
-            this.itmTrackMetadataExport.Text = "Export";
-            this.itmTrackMetadataExport.Click += new System.EventHandler(this.ItmTrackMetadataExport_Click);
-            // 
-            // itmTrackDownload
-            // 
-            this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmDGVDownloadThisTrack,
-            this.itmDGVDownloadThisAlbum,
-            this.itmDGVViewTrackDownloadLink});
-            this.itmTrackDownload.Name = "itmTrackDownload";
-            this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackDownload.Text = "Download";
-            // 
-            // itmDGVDownloadThisTrack
-            // 
-            this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
-            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVDownloadThisTrack.Text = "Download Track";
-            this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
-            // 
-            // itmDGVDownloadThisAlbum
-            // 
-            this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
-            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVDownloadThisAlbum.Text = "Download Album";
-            this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
-            // 
-            // itmDGVViewTrackDownloadLink
-            // 
-            this.itmDGVViewTrackDownloadLink.Name = "itmDGVViewTrackDownloadLink";
-            this.itmDGVViewTrackDownloadLink.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVViewTrackDownloadLink.Text = "View Link";
-            this.itmDGVViewTrackDownloadLink.Click += new System.EventHandler(this.ItmDGVViewTrackDownloadLink_Click);
-            // 
-            // itmTrackStream
-            // 
-            this.itmTrackStream.Name = "itmTrackStream";
-            this.itmTrackStream.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackStream.Text = "Stream";
-            this.itmTrackStream.Click += new System.EventHandler(this.ItmTrackStream_Click);
-            // 
-            // itmTrackSearch
-            // 
-            this.itmTrackSearch.Name = "itmTrackSearch";
-            this.itmTrackSearch.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackSearch.Text = "Search";
-            this.itmTrackSearch.Click += new System.EventHandler(this.ItmTrackSearch_Click);
-            // 
-            // itmTrackCast
-            // 
-            this.itmTrackCast.Name = "itmTrackCast";
-            this.itmTrackCast.Size = new System.Drawing.Size(128, 22);
-            this.itmTrackCast.Text = "Cast";
-            this.itmTrackCast.Click += new System.EventHandler(this.ItmTrackCast_Click);
             // 
             // dgvAlbums
             // 
@@ -982,31 +1448,6 @@ namespace PlexDL.UI
             this.dgvTracks.TabIndex = 21;
             this.dgvTracks.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
             // 
-            // tabLog
-            // 
-            this.tabLog.Controls.Add(this.tlpLog);
-            this.tabLog.Location = new System.Drawing.Point(4, 22);
-            this.tabLog.Name = "tabLog";
-            this.tabLog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLog.Size = new System.Drawing.Size(654, 344);
-            this.tabLog.TabIndex = 2;
-            this.tabLog.Text = "Log";
-            this.tabLog.UseVisualStyleBackColor = true;
-            // 
-            // tlpLog
-            // 
-            this.tlpLog.ColumnCount = 1;
-            this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLog.Controls.Add(this.dgvLog, 0, 0);
-            this.tlpLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLog.Location = new System.Drawing.Point(3, 3);
-            this.tlpLog.Name = "tlpLog";
-            this.tlpLog.RowCount = 1;
-            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 338F));
-            this.tlpLog.Size = new System.Drawing.Size(648, 338);
-            this.tlpLog.TabIndex = 1;
-            // 
             // dgvLog
             // 
             this.dgvLog.AllowUserToAddRows = false;
@@ -1029,60 +1470,16 @@ namespace PlexDL.UI
             this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvLog.IsContentTable = false;
-            this.dgvLog.Location = new System.Drawing.Point(3, 3);
+            this.dgvLog.Location = new System.Drawing.Point(2, 2);
+            this.dgvLog.Margin = new System.Windows.Forms.Padding(2);
             this.dgvLog.MultiSelect = false;
             this.dgvLog.Name = "dgvLog";
             this.dgvLog.RowHeadersVisible = false;
             this.dgvLog.RowsEmptyText = "No Log Data";
             this.dgvLog.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLog.Size = new System.Drawing.Size(642, 332);
+            this.dgvLog.Size = new System.Drawing.Size(644, 334);
             this.dgvLog.TabIndex = 0;
-            // 
-            // tlpMain
-            // 
-            this.tlpMain.ColumnCount = 2;
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.60251F));
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.39749F));
-            this.tlpMain.Controls.Add(this.tlpContentOptions, 0, 0);
-            this.tlpMain.Controls.Add(this.tabMain, 1, 0);
-            this.tlpMain.Controls.Add(this.dgvSections, 0, 1);
-            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMain.Location = new System.Drawing.Point(0, 24);
-            this.tlpMain.Name = "tlpMain";
-            this.tlpMain.Padding = new System.Windows.Forms.Padding(4);
-            this.tlpMain.RowCount = 4;
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpMain.Size = new System.Drawing.Size(956, 384);
-            this.tlpMain.TabIndex = 29;
-            // 
-            // tlpContentOptions
-            // 
-            this.tlpContentOptions.ColumnCount = 2;
-            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContentOptions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpContentOptions.Controls.Add(this.gbStreamControl, 0, 0);
-            this.tlpContentOptions.Controls.Add(this.pbMain, 0, 1);
-            this.tlpContentOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpContentOptions.Location = new System.Drawing.Point(7, 7);
-            this.tlpContentOptions.Name = "tlpContentOptions";
-            this.tlpContentOptions.RowCount = 2;
-            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tlpContentOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlpContentOptions.Size = new System.Drawing.Size(274, 88);
-            this.tlpContentOptions.TabIndex = 31;
-            // 
-            // pbMain
-            // 
-            this.tlpContentOptions.SetColumnSpan(this.pbMain, 2);
-            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbMain.Location = new System.Drawing.Point(3, 64);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(268, 21);
-            this.pbMain.TabIndex = 34;
             // 
             // dgvSections
             // 
@@ -1119,394 +1516,6 @@ namespace PlexDL.UI
             this.dgvSections.TabIndex = 16;
             this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
             // 
-            // menuMain
-            // 
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmFile,
-            this.itmData,
-            this.itmServers,
-            this.itmContent,
-            this.itmLogging,
-            this.itmCaching,
-            this.itmHelp});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(956, 24);
-            this.menuMain.TabIndex = 30;
-            this.menuMain.Text = "menuStrip1";
-            // 
-            // itmFile
-            // 
-            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmLoadProfile,
-            this.itmSaveProfile,
-            this.itmExportObj,
-            this.itmSettings});
-            this.itmFile.Name = "itmFile";
-            this.itmFile.Size = new System.Drawing.Size(37, 20);
-            this.itmFile.Text = "File";
-            // 
-            // itmLoadProfile
-            // 
-            this.itmLoadProfile.Name = "itmLoadProfile";
-            this.itmLoadProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmLoadProfile.Size = new System.Drawing.Size(148, 22);
-            this.itmLoadProfile.Text = "Load";
-            this.itmLoadProfile.Click += new System.EventHandler(this.ItmLoadProfile_Click);
-            // 
-            // itmSaveProfile
-            // 
-            this.itmSaveProfile.Name = "itmSaveProfile";
-            this.itmSaveProfile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmSaveProfile.Size = new System.Drawing.Size(148, 22);
-            this.itmSaveProfile.Text = "Save";
-            this.itmSaveProfile.Click += new System.EventHandler(this.ItmSaveProfile_Click);
-            // 
-            // itmExportObj
-            // 
-            this.itmExportObj.Name = "itmExportObj";
-            this.itmExportObj.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.itmExportObj.Size = new System.Drawing.Size(148, 22);
-            this.itmExportObj.Text = "Export";
-            this.itmExportObj.Click += new System.EventHandler(this.ItmExportObj_Click);
-            // 
-            // itmSettings
-            // 
-            this.itmSettings.Name = "itmSettings";
-            this.itmSettings.Size = new System.Drawing.Size(148, 22);
-            this.itmSettings.Text = "Settings";
-            this.itmSettings.Click += new System.EventHandler(this.ItmSettings_Click);
-            // 
-            // itmData
-            // 
-            this.itmData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmSetDlDirectory,
-            this.itmOpenDataFolder,
-            this.itmCleanupAllData});
-            this.itmData.Name = "itmData";
-            this.itmData.Size = new System.Drawing.Size(43, 20);
-            this.itmData.Text = "Data";
-            // 
-            // itmSetDlDirectory
-            // 
-            this.itmSetDlDirectory.Name = "itmSetDlDirectory";
-            this.itmSetDlDirectory.Size = new System.Drawing.Size(198, 22);
-            this.itmSetDlDirectory.Text = "Set Download Directory";
-            this.itmSetDlDirectory.Click += new System.EventHandler(this.ItmSetDlDirectory_Click);
-            // 
-            // itmOpenDataFolder
-            // 
-            this.itmOpenDataFolder.Name = "itmOpenDataFolder";
-            this.itmOpenDataFolder.Size = new System.Drawing.Size(198, 22);
-            this.itmOpenDataFolder.Text = "Open Data Folder";
-            this.itmOpenDataFolder.Click += new System.EventHandler(this.ItmOpenDataFolder_Click);
-            // 
-            // itmCleanupAllData
-            // 
-            this.itmCleanupAllData.Name = "itmCleanupAllData";
-            this.itmCleanupAllData.Size = new System.Drawing.Size(198, 22);
-            this.itmCleanupAllData.Text = "Cleanup All Data";
-            this.itmCleanupAllData.Click += new System.EventHandler(this.ItmCleanupAllData_Click);
-            // 
-            // itmServers
-            // 
-            this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmServerManager,
-            this.itmClearMyToken,
-            this.itmDisconnect});
-            this.itmServers.Name = "itmServers";
-            this.itmServers.Size = new System.Drawing.Size(56, 20);
-            this.itmServers.Text = "Servers";
-            // 
-            // itmServerManager
-            // 
-            this.itmServerManager.Name = "itmServerManager";
-            this.itmServerManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.itmServerManager.Size = new System.Drawing.Size(198, 22);
-            this.itmServerManager.Text = "Server Manager";
-            this.itmServerManager.Click += new System.EventHandler(this.ItmServerManager_Click);
-            // 
-            // itmClearMyToken
-            // 
-            this.itmClearMyToken.Name = "itmClearMyToken";
-            this.itmClearMyToken.Size = new System.Drawing.Size(198, 22);
-            this.itmClearMyToken.Text = "Clear My Token";
-            this.itmClearMyToken.Click += new System.EventHandler(this.ItmClearMyToken_Click);
-            // 
-            // itmDisconnect
-            // 
-            this.itmDisconnect.Enabled = false;
-            this.itmDisconnect.Name = "itmDisconnect";
-            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
-            this.itmDisconnect.Text = "Disconnect";
-            this.itmDisconnect.Click += new System.EventHandler(this.ItmDisconnect_Click);
-            // 
-            // itmContent
-            // 
-            this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmMetadata,
-            this.itmStartSearch,
-            this.itmCast});
-            this.itmContent.Name = "itmContent";
-            this.itmContent.Size = new System.Drawing.Size(62, 20);
-            this.itmContent.Text = "Content";
-            // 
-            // itmMetadata
-            // 
-            this.itmMetadata.Name = "itmMetadata";
-            this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
-            this.itmMetadata.Text = "Metadata";
-            this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
-            // 
-            // itmStartSearch
-            // 
-            this.itmStartSearch.Name = "itmStartSearch";
-            this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
-            this.itmStartSearch.Text = "Start Search";
-            this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
-            // 
-            // itmCast
-            // 
-            this.itmCast.Name = "itmCast";
-            this.itmCast.Size = new System.Drawing.Size(176, 22);
-            this.itmCast.Text = "Cast";
-            this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
-            // 
-            // itmLogging
-            // 
-            this.itmLogging.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmLogViewer});
-            this.itmLogging.Name = "itmLogging";
-            this.itmLogging.Size = new System.Drawing.Size(63, 20);
-            this.itmLogging.Text = "Logging";
-            // 
-            // itmLogViewer
-            // 
-            this.itmLogViewer.Name = "itmLogViewer";
-            this.itmLogViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.itmLogViewer.Size = new System.Drawing.Size(172, 22);
-            this.itmLogViewer.Text = "Log Viewer";
-            this.itmLogViewer.Click += new System.EventHandler(this.ItmLogViewer_Click);
-            // 
-            // itmCaching
-            // 
-            this.itmCaching.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmCacheMetrics,
-            this.itmClearCache});
-            this.itmCaching.Name = "itmCaching";
-            this.itmCaching.Size = new System.Drawing.Size(63, 20);
-            this.itmCaching.Text = "Caching";
-            // 
-            // itmCacheMetrics
-            // 
-            this.itmCacheMetrics.Name = "itmCacheMetrics";
-            this.itmCacheMetrics.Size = new System.Drawing.Size(137, 22);
-            this.itmCacheMetrics.Text = "Metrics";
-            this.itmCacheMetrics.Click += new System.EventHandler(this.ItmCacheMetrics_Click);
-            // 
-            // itmClearCache
-            // 
-            this.itmClearCache.Name = "itmClearCache";
-            this.itmClearCache.Size = new System.Drawing.Size(137, 22);
-            this.itmClearCache.Text = "Clear Cache";
-            this.itmClearCache.Click += new System.EventHandler(this.ItmClearCache_Click);
-            // 
-            // itmHelp
-            // 
-            this.itmHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmCheckForUpdates,
-            this.itmRepo,
-            this.itmAbout});
-            this.itmHelp.Name = "itmHelp";
-            this.itmHelp.Size = new System.Drawing.Size(44, 20);
-            this.itmHelp.Text = "Help";
-            // 
-            // itmCheckForUpdates
-            // 
-            this.itmCheckForUpdates.Name = "itmCheckForUpdates";
-            this.itmCheckForUpdates.Size = new System.Drawing.Size(171, 22);
-            this.itmCheckForUpdates.Text = "Check for Updates";
-            this.itmCheckForUpdates.Click += new System.EventHandler(this.ItmCheckForUpdates_Click);
-            // 
-            // itmRepo
-            // 
-            this.itmRepo.Name = "itmRepo";
-            this.itmRepo.Size = new System.Drawing.Size(171, 22);
-            this.itmRepo.Text = "Repo";
-            this.itmRepo.Click += new System.EventHandler(this.ItmRepo_Click);
-            // 
-            // itmAbout
-            // 
-            this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(171, 22);
-            this.itmAbout.Text = "About";
-            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
-            // 
-            // tsMain
-            // 
-            this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblViewing,
-            this.lblViewingValue,
-            this.sepViewing,
-            this.lblDownloading,
-            this.lblDownloadingValue,
-            this.sepDownloading,
-            this.lblSpeed,
-            this.lblSpeedValue,
-            this.sepSpeed,
-            this.lblEta,
-            this.lblEtaValue,
-            this.sepEta,
-            this.lblProgress,
-            this.lblBeta,
-            this.sepBeta,
-            this.lblSidValue,
-            this.lblSid});
-            this.tsMain.Location = new System.Drawing.Point(0, 408);
-            this.tsMain.Name = "tsMain";
-            this.tsMain.Padding = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.tsMain.Size = new System.Drawing.Size(956, 25);
-            this.tsMain.TabIndex = 31;
-            this.tsMain.Text = "toolStrip1";
-            // 
-            // lblViewing
-            // 
-            this.lblViewing.Name = "lblViewing";
-            this.lblViewing.Size = new System.Drawing.Size(52, 20);
-            this.lblViewing.Text = "Viewing:";
-            // 
-            // lblViewingValue
-            // 
-            this.lblViewingValue.Name = "lblViewingValue";
-            this.lblViewingValue.Size = new System.Drawing.Size(24, 20);
-            this.lblViewingValue.Text = "0/0";
-            // 
-            // sepViewing
-            // 
-            this.sepViewing.Name = "sepViewing";
-            this.sepViewing.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblDownloading
-            // 
-            this.lblDownloading.Name = "lblDownloading";
-            this.lblDownloading.Size = new System.Drawing.Size(81, 20);
-            this.lblDownloading.Text = "Downloading:";
-            // 
-            // lblDownloadingValue
-            // 
-            this.lblDownloadingValue.Name = "lblDownloadingValue";
-            this.lblDownloadingValue.Size = new System.Drawing.Size(15, 20);
-            this.lblDownloadingValue.Text = "~";
-            // 
-            // sepDownloading
-            // 
-            this.sepDownloading.Name = "sepDownloading";
-            this.sepDownloading.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblSpeed
-            // 
-            this.lblSpeed.Name = "lblSpeed";
-            this.lblSpeed.Size = new System.Drawing.Size(42, 20);
-            this.lblSpeed.Text = "Speed:";
-            // 
-            // lblSpeedValue
-            // 
-            this.lblSpeedValue.Name = "lblSpeedValue";
-            this.lblSpeedValue.Size = new System.Drawing.Size(15, 20);
-            this.lblSpeedValue.Text = "~";
-            // 
-            // sepSpeed
-            // 
-            this.sepSpeed.Name = "sepSpeed";
-            this.sepSpeed.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblEta
-            // 
-            this.lblEta.Name = "lblEta";
-            this.lblEta.Size = new System.Drawing.Size(29, 20);
-            this.lblEta.Text = "ETA:";
-            // 
-            // lblEtaValue
-            // 
-            this.lblEtaValue.Name = "lblEtaValue";
-            this.lblEtaValue.Size = new System.Drawing.Size(15, 20);
-            this.lblEtaValue.Text = "~";
-            // 
-            // sepEta
-            // 
-            this.sepEta.Name = "sepEta";
-            this.sepEta.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(26, 20);
-            this.lblProgress.Text = "Idle";
-            // 
-            // lblBeta
-            // 
-            this.lblBeta.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lblBeta.ForeColor = System.Drawing.Color.Chocolate;
-            this.lblBeta.Name = "lblBeta";
-            this.lblBeta.Size = new System.Drawing.Size(91, 20);
-            this.lblBeta.Text = "In Development";
-            // 
-            // sepBeta
-            // 
-            this.sepBeta.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.sepBeta.Name = "sepBeta";
-            this.sepBeta.Size = new System.Drawing.Size(6, 23);
-            // 
-            // lblSidValue
-            // 
-            this.lblSidValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lblSidValue.Name = "lblSidValue";
-            this.lblSidValue.Size = new System.Drawing.Size(71, 20);
-            this.lblSidValue.Text = "[SID_VALUE]";
-            // 
-            // lblSid
-            // 
-            this.lblSid.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lblSid.Name = "lblSid";
-            this.lblSid.Size = new System.Drawing.Size(27, 20);
-            this.lblSid.Text = "SID:";
-            // 
-            // tmrWorkerTimeout
-            // 
-            this.tmrWorkerTimeout.Interval = 3000;
-            this.tmrWorkerTimeout.Tick += new System.EventHandler(this.TmrWorkerTimeout_Tick);
-            // 
-            // cxtTracks
-            // 
-            this.cxtTracks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtTracks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmDownloadThisTrack,
-            this.itmDownloadThisAlbum});
-            this.cxtTracks.Name = "cxtEpisodes";
-            this.cxtTracks.Size = new System.Drawing.Size(192, 48);
-            // 
-            // itmDownloadThisTrack
-            // 
-            this.itmDownloadThisTrack.Name = "itmDownloadThisTrack";
-            this.itmDownloadThisTrack.Size = new System.Drawing.Size(191, 22);
-            this.itmDownloadThisTrack.Text = "Download This Track";
-            this.itmDownloadThisTrack.Click += new System.EventHandler(this.ItmDownloadThisTrack_Click);
-            // 
-            // itmDownloadThisAlbum
-            // 
-            this.itmDownloadThisAlbum.Name = "itmDownloadThisAlbum";
-            this.itmDownloadThisAlbum.Size = new System.Drawing.Size(191, 22);
-            this.itmDownloadThisAlbum.Text = "Download This Album";
-            this.itmDownloadThisAlbum.Click += new System.EventHandler(this.ItmDownloadThisAlbum_Click);
-            // 
-            // wkrGetMetadata
-            // 
-            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
-            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1537,29 +1546,29 @@ namespace PlexDL.UI
             this.tabMain.ResumeLayout(false);
             this.tabMovies.ResumeLayout(false);
             this.tlpMovies.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).EndInit();
             this.tabTV.ResumeLayout(false);
             this.tlpTV.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             this.tabMusic.ResumeLayout(false);
             this.tlpMusic.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).EndInit();
             this.cxtTrackOptions.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).EndInit();
             this.tabLog.ResumeLayout(false);
             this.tlpLog.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.tlpMain.ResumeLayout(false);
             this.tlpContentOptions.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).EndInit();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.cxtTracks.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1646,7 +1655,7 @@ namespace PlexDL.UI
         private ToolStripLabel lblEta;
         private ToolStripSeparator sepEta;
         private ToolStripLabel lblEtaValue;
-        private ToolStripLabel lblBeta;
+        private ToolStripLabel lblDevStatus;
         private ToolStripSeparator sepBeta;
         private ToolStripLabel lblSidValue;
         private ToolStripLabel lblSid;
@@ -1693,6 +1702,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmEpisodeMetadataExport;
         private ToolStripMenuItem itmSaveProfile;
         private AbortableBackgroundWorker wkrGetMetadata;
+        private ToolStripMenuItem itmContinueWatching;
     }
 }
 

@@ -35,8 +35,8 @@ namespace PlexDL.UI
             this.lblNewFunctionality = new System.Windows.Forms.Label();
             this.lblNothingInteresting = new System.Windows.Forms.Label();
             this.pnlTestingArea = new System.Windows.Forms.Panel();
-            this.pnlNothingInteresting = new System.Windows.Forms.Panel();
             this.btnOpenPxzExplorer = new System.Windows.Forms.Button();
+            this.pnlNothingInteresting = new System.Windows.Forms.Panel();
             this.pnlTestingArea.SuspendLayout();
             this.pnlNothingInteresting.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +69,16 @@ namespace PlexDL.UI
             this.pnlTestingArea.Size = new System.Drawing.Size(800, 450);
             this.pnlTestingArea.TabIndex = 2;
             // 
+            // btnOpenPxzExplorer
+            // 
+            this.btnOpenPxzExplorer.Location = new System.Drawing.Point(638, 415);
+            this.btnOpenPxzExplorer.Name = "btnOpenPxzExplorer";
+            this.btnOpenPxzExplorer.Size = new System.Drawing.Size(150, 23);
+            this.btnOpenPxzExplorer.TabIndex = 3;
+            this.btnOpenPxzExplorer.Text = "Open PXZ Explorer";
+            this.btnOpenPxzExplorer.UseVisualStyleBackColor = true;
+            this.btnOpenPxzExplorer.Click += new System.EventHandler(this.BtnOpenPxzExplorer_Click);
+            // 
             // pnlNothingInteresting
             // 
             this.pnlNothingInteresting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -78,16 +88,6 @@ namespace PlexDL.UI
             this.pnlNothingInteresting.Name = "pnlNothingInteresting";
             this.pnlNothingInteresting.Size = new System.Drawing.Size(264, 30);
             this.pnlNothingInteresting.TabIndex = 2;
-            // 
-            // btnOpenPxzExplorer
-            // 
-            this.btnOpenPxzExplorer.Location = new System.Drawing.Point(330, 55);
-            this.btnOpenPxzExplorer.Name = "btnOpenPxzExplorer";
-            this.btnOpenPxzExplorer.Size = new System.Drawing.Size(150, 23);
-            this.btnOpenPxzExplorer.TabIndex = 3;
-            this.btnOpenPxzExplorer.Text = "Open PXZ Explorer";
-            this.btnOpenPxzExplorer.UseVisualStyleBackColor = true;
-            this.btnOpenPxzExplorer.Click += new System.EventHandler(this.BtnOpenPxzExplorer_Click);
             // 
             // TestForm
             // 
