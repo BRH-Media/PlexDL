@@ -148,7 +148,7 @@ namespace PlexDL.Internal
         }
 
         /// <summary>
-        /// Logs assembly events
+        /// Logs assembly events (only in debug mode!)
         /// </summary>
         /// <param name="fileName">The DLL trying to be loaded</param>
         /// <param name="occurrence">Whatever happened to trigger the event</param>
@@ -156,6 +156,8 @@ namespace PlexDL.Internal
         {
             try
             {
+                if (!Checks.Args.Contains("-debug")) return;
+
                 const string logFileName = @"assemblyResolver.log";
 
                 var already =
