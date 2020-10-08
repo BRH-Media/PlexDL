@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
+      <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
+      <Name>PlexDL.Common.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
