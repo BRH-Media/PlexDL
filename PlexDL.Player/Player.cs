@@ -85,6 +85,605 @@ namespace PlexDL.Player
 
     #region Player - Enumerations
 
+    /// <summary>
+    /// Specifies the size and location of the video image on the player's display window.
+    /// </summary>
+    public enum DisplayMode
+    {
+        /// <summary>
+        /// Size: original size.
+        /// Location: topleft of the player's display window.
+        /// Display resize: shrink: no, grow: no.
+        /// </summary>
+        Normal,
+        /// <summary>
+        /// Size: original size.
+        /// Location: center of the player's display window.
+        /// Display resize: shrink: no, grow: no.
+        /// </summary>
+        Center,
+        /// <summary>
+        /// Size: same size as the player's display window.
+        /// Location: topleft of the player's display window.
+        /// Display resize: shrink: yes, grow: yes.
+        /// </summary>
+        Stretch,
+        /// <summary>
+        /// Size: the largest possible size on the player's display window while maintaining the aspect ratio.
+        /// Location: topleft of the player's display window.
+        /// Display resize: shrink: yes, grow: yes.
+        /// </summary>
+        Zoom,
+        /// <summary>
+        /// Size: the largest possible size on player's display window while maintaining the aspect ratio.
+        /// Location: center of the player's display window.
+        /// Display resize: shrink: yes, grow: yes.
+        /// </summary>
+        ZoomCenter,
+        /// <summary>
+        /// Size: same size as the player's display window while maintaining the aspect ratio, but possibly with horizontal or vertical image cropping.
+        /// Location: center of the player's display window.
+        /// Display resize: shrink: yes, grow: yes.
+        /// </summary>
+        CoverCenter,
+        /// <summary>
+        /// Size: original size or the largest possible size on player's display window while maintaining the aspect ratio.
+        /// Location: topleft of the player's display window.
+        /// Display resize: shrink: yes, grow: if smaller than original size.
+        /// </summary>
+        SizeToFit,
+        /// <summary>
+        /// Size: original size or the largest possible size on the player's display window while maintaining the aspect ratio.
+        /// Location: center of the player's display window.
+        /// Display resize: shrink: yes, grow: if smaller than original size.
+        /// </summary>
+        SizeToFitCenter,
+        /// <summary>
+        /// Size: set manually.
+        /// Location: set manually.
+        /// Display resize: shrink: no, grow: no.
+        /// </summary>
+        Manual
+    }
+
+    /// <summary>
+    /// Specifies the player's full screen mode.
+    /// </summary>
+    public enum FullScreenMode
+    {
+        // the order of these items should not be changed.
+
+        /// <summary>
+        /// The player's display window is shown full screen on the screen containing the display.
+        /// </summary>
+        Display,
+        /// <summary>
+        /// The (parent) control that contains the player's display window is shown full screen on the screen containing the parent control.
+        /// </summary>
+        Parent,
+        /// <summary>
+        /// The form that contains the player's display window is shown full screen on the screen containing the (largest part of) the form.
+        /// </summary>
+        Form,
+        /// <summary>
+        /// The player's display window is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Display_AllScreens,
+        /// <summary>
+        /// The (parent) control that contains the player's display window is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Parent_AllScreens,
+        /// <summary>
+        /// The form containing the player's display window is shown full screen on the system's virtual screen (all screens).
+        /// </summary>
+        Form_AllScreens
+    }
+
+    /// <summary>
+    /// Specifies the size mode of the player's display overlay.
+    /// </summary>
+    public enum OverlayMode
+    {
+        /// <summary>
+        /// The overlay has the same size and position as the player's display window.
+        /// </summary>
+        Display,
+        /// <summary>
+        /// The overlay has the same size and position as the visible part of the video image on the player's display window.
+        /// </summary>
+        Video
+    }
+
+    /// <summary>
+    /// Specifies the part of the playing media whose duration is to be obtained.
+    /// </summary>
+    public enum MediaPart
+    {
+        /// <summary>
+        /// The total duration of the playing media.
+        /// </summary>
+        BeginToEnd,
+        /// <summary>
+        /// The duration of the playing media from its natural beginning to the current position.
+        /// </summary>
+        FromBegin,
+        /// <summary>
+        /// The duration of the playing media from its start time to the current position.
+        /// </summary>
+        FromStart,
+        /// <summary>
+        /// The duration of the playing media from the current position to its natural end time.
+        /// </summary>
+        ToEnd,
+        /// <summary>
+        /// The duration of the playing media from the current position to its stop time.
+        /// </summary>
+        ToStop,
+        /// <summary>
+        /// The duration of the playing media from its start time to its stop time.
+        /// </summary>
+        StartToStop,
+    }
+
+    /// <summary>
+    /// Specifies the part of the file name of the playing media to be obtained.
+    /// </summary>
+    public enum MediaName
+    {
+        /// <summary>
+        /// The file name without path and extension of the playing media.
+        /// </summary>
+        FileNameWithoutExtension,
+        /// <summary>
+        /// The file name and extension without path of the playing media.
+        /// </summary>
+        FileName,
+        /// <summary>
+        /// The file name with path and extension of the playing media.
+        /// </summary>
+        FullPath,
+        /// <summary>
+        /// The extension of the file name of the playing media.
+        /// </summary>
+        Extension,
+        /// <summary>
+        /// The path (directory) of the file name of the playing media.
+        /// </summary>
+        DirectoryName,
+        /// <summary>
+        /// The root path (root directory) of the file name of the playing media.
+        /// </summary>
+        PathRoot
+    }
+
+    /// <summary>
+    /// Specifies the area of the screen to copy.
+    /// </summary>
+    public enum CopyMode
+    {
+        /// <summary>
+        /// The (visible part of the) video on the player's display window.
+        /// </summary>
+        Video,
+        /// <summary>
+        /// The player's display window.
+        /// </summary>
+        Display,
+        /// <summary>
+        /// The (parent) control that contains the player's display window.
+        /// </summary>
+        Parent,
+        /// <summary>
+        /// The form that contains the player's display window.
+        /// </summary>
+        Form,
+        /// <summary>
+        /// The (entire) screen that contains the player's display window.
+        /// </summary>
+        Screen
+    }
+
+    /// <summary>
+    /// Specifies the display mode of the positionslider controlled by the player.
+    /// </summary>
+    public enum PositionSliderMode
+    {
+        /// <summary>
+        /// The positionslider shows the playback position of the playing media from Player.Media.StartTime to Player.Media.StopTime.
+        /// </summary>
+        Progress,
+        /// <summary>
+        /// The positionslider shows the playback position from the natural beginning of the media to the natural end of the media.
+        /// </summary>
+        Track
+    }
+
+    /// <summary>
+    /// Specifies the display mode of the taskbar progress indicator.
+    /// </summary>
+    public enum TaskbarProgressMode
+    {
+        /// <summary>
+        /// The taskbar progress indicator shows the progress of the playing media from Player.Media.StartTime to Player.Media.StopTime.
+        /// </summary>
+        Progress,
+        /// <summary>
+        /// The taskbar progress indicator shows the progress of the playing media from the natural beginning of the media to the natural end of the media.
+        /// </summary>
+        Track
+    }
+
+    /// <summary>
+    /// Specifies the state of the progress indicator in the Windows taskbar.
+    /// </summary>
+    public enum TaskbarProgressState
+    {
+        /// <summary>
+        /// No progress indicator is displayed in the taskbar button.
+        /// </summary>
+        NoProgress = 0,
+        /// <summary>
+        /// A pulsing green indicator is displayed in the taskbar button.
+        /// </summary>
+        Indeterminate = 0x1,
+        /// <summary>
+        /// A green progress indicator is displayed in the taskbar button.
+        /// </summary>
+        Normal = 0x2,
+        /// <summary>
+        /// A red progress indicator is displayed in the taskbar button.
+        /// </summary>
+        Error = 0x4,
+        /// <summary>
+        /// A yellow progress indicator is displayed in the taskbar button.
+        /// </summary>
+        Paused = 0x8
+    }
+
+    /// <summary>
+    /// Specifies where to retrieve a media-related image.
+    /// </summary>
+    public enum ImageSource
+    {
+        /// <summary>
+        /// No media-related image is retrieved.
+        /// </summary>
+        None,
+        /// <summary>
+        /// The media-related image is retrieved from the media file.
+        /// </summary>
+        MediaOnly,
+        /// <summary>
+        /// The media-related image is retrieved from the media file or, if not found, from the folder of the media file.
+        /// </summary>
+        MediaOrFolder,
+        /// <summary>
+        /// The media-related image is retrieved from the folder of the media file or, if not found, from the media file.
+        /// </summary>
+        FolderOrMedia,
+        /// <summary>
+        /// The media-related image is retrieved from the folder of the media file.
+        /// </summary>
+        FolderOnly
+    }
+
+    /// <summary>
+    /// Specifies the reason that media has stopped playing.
+    /// </summary>
+    public enum StopReason
+    {
+        /// <summary>
+        /// The media has stopped because it has reached its natural end or stop position.
+        /// </summary>
+        Finished,
+        /// <summary>
+        /// The media has been stopped by the player to play other media.
+        /// </summary>
+        AutoStop,
+        /// <summary>
+        /// The media has been stopped using the player's stop method.
+        /// </summary>
+        UserStop,
+        /// <summary>
+        /// The media has stopped because an error has occurred.
+        /// </summary>
+        Error
+    }
+
+    /// <summary>
+    /// Specifies the shape of a display window or video image.
+    /// </summary>
+    public enum DisplayShape
+    {
+        /// <summary>
+        /// Represents the normal shape of the display.
+        /// </summary>
+        Normal,
+        /// <summary>
+        /// Represents an arrow pointing down.
+        /// </summary>
+        ArrowDown,
+        /// <summary>
+        /// Represents an arrow pointing left.
+        /// </summary>
+        ArrowLeft,
+        /// <summary>
+        /// Represents an arrow pointing right.
+        /// </summary>
+        ArrowRight,
+        /// <summary>
+        /// Represents an arrow pointing up.
+        /// </summary>
+        ArrowUp,
+        /// <summary>
+        /// Represents 5 vertical bars.
+        /// </summary>
+        Bars,
+        /// <summary>
+        /// Represents 5 horizontal bars.
+        /// </summary>
+        Beams,
+        /// <summary>
+        /// Represents a circular shape.
+        /// </summary>
+        Circle,
+        /// <summary>
+        /// Represents a cross shape.
+        /// </summary>
+        Cross,
+        /// <summary>
+        /// Represents a custom shape. The custom shape is defined with Player.Display.CustomShape.
+        /// </summary>
+        Custom,
+        /// <summary>
+        /// Represents a diamond shape.
+        /// </summary>
+        Diamond,
+        /// <summary>
+        /// Represents a frame shape.
+        /// </summary>
+        Frame,
+        /// <summary>
+        /// Represents a heart shape.
+        /// </summary>
+        Heart,
+        /// <summary>
+        /// Represents a hexagonal shape.
+        /// </summary>
+        Hexagon,
+        /// <summary>
+        /// Represents an oval shape.
+        /// </summary>
+        Oval,
+        /// <summary>
+        /// Represents a rectangular shape.
+        /// </summary>
+        Rectangle,
+        /// <summary>
+        /// Represents a ring shape.
+        /// </summary>
+        Ring,
+        /// <summary>
+        /// Represents a rounded rectangular shape.
+        /// </summary>
+        Rounded,
+        /// <summary>
+        /// Represents a square shape.
+        /// </summary>
+        Square,
+        /// <summary>
+        /// Represents an 8-pointed star.
+        /// </summary>
+        Star,
+        /// <summary>
+        /// Represents a 3 by 3 tiles shape.
+        /// </summary>
+        Tiles,
+        /// <summary>
+        /// Represents a triangular shape pointing down.
+        /// </summary>
+        TriangleDown,
+        /// <summary>
+        /// Represents a triangular shape pointing left.
+        /// </summary>
+        TriangleLeft,
+        /// <summary>
+        /// Represents a triangular shape pointing right.
+        /// </summary>
+        TriangleRight,
+        /// <summary>
+        /// Represents a triangular shape pointing up.
+        /// </summary>
+        TriangleUp
+    }
+
+    /// <summary>
+    /// Specifies the amount of noise reduction during seeking with the player's position slider. 
+    /// </summary>
+    public enum SilentSeek
+    {
+        /// <summary>
+        /// The audio output is not muted during seeking.
+        /// </summary>
+        Never,
+        /// <summary>
+        /// The audio output is only muted during seeking when the slider is moved.
+        /// </summary>
+        OnMoving,
+        /// <summary>
+        /// The audio output is always muted during seeking.
+        /// </summary>
+        Always
+    }
+
+    /// <summary>
+    /// Specifies the changes that have occured in the system's audio devices.
+    /// </summary>
+    public enum SystemAudioDevicesNotification
+    {
+        /// <summary>
+        /// The default audio device has changed.
+        /// </summary>
+        DefaultChanged,
+        /// <summary>
+        /// A new audio device has been added.
+        /// </summary>
+        Added,
+        /// <summary>
+        /// An audio device has been removed.
+        /// </summary>
+        Removed,
+        /// <summary>
+        /// An audio device has been disabled.
+        /// </summary>
+        Disabled,
+        /// <summary>
+        /// An audio device has been activated.
+        /// </summary>
+        Activated,
+        /// <summary>
+        /// The description (for example "Speakers") of an audio device has changed.
+        /// </summary>
+        DescriptionChanged
+    }
+
+    /// <summary>
+    /// Specifies the video image color attributes. 
+    /// </summary>
+    public enum VideoColorAttribute
+    {
+        /// <summary>
+        /// The video image brightness attribute.
+        /// </summary>
+        Brightness,
+        /// <summary>
+        /// The video image contrast attribute.
+        /// </summary>
+        Contrast,
+        /// <summary>
+        /// The video image hue attribute.
+        /// </summary>
+        Hue,
+        /// <summary>
+        /// The video image saturation attribute.
+        /// </summary>
+        Saturation
+    }
+
+    /// <summary>
+    /// Specifies the blending (opacity) of display overlays on display clones or screen copies.
+    /// </summary>
+    public enum OverlayBlend
+    {
+        /// <summary>
+        /// The display overlays are not blended.
+        /// </summary>
+        None,
+        /// <summary>
+        /// The display overlays are blended opaque.
+        /// </summary>
+        Opaque,
+        /// <summary>
+        /// The display overlays are blended transparent.
+        /// </summary>
+        Transparent
+    }
+
+    /// <summary>
+    /// Specifies the video output quality of webcams.
+    /// </summary>
+    public enum WebcamQuality
+    {
+        /// <summary>
+        /// Represents the webcam's default video output format.
+        /// </summary>
+        Default,
+        /// <summary>
+        /// Represents a video output format with the highest possible resolution at a minimum frame rate of 15 fps.
+        /// </summary>
+        High,
+        /// <summary>
+        /// Represents a video output format with the lowest possible resolution with a minimum height of 100 pixels at a minimum frame rate of 15 fps.
+        /// </summary>
+        Low,
+        /// <summary>
+        /// Represents a video output format with the highest possible resolution regardless of the frame rate.
+        /// </summary>
+        Photo
+    }
+
+    /// <summary>
+    /// Specifies the media source type.
+    /// </summary>
+    public enum MediaSourceType
+    {
+        /// <summary>
+        /// Represents no media.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Represents a local media file.
+        /// </summary>
+        File,
+        /// <summary>
+        /// Represents a memory byte stream.
+        /// </summary>
+        ByteArray,
+        /// <summary>
+        /// Represents a local image file.
+        /// </summary>
+        Image,
+        /// <summary>
+        /// Represents an online media file.
+        /// </summary>
+        FileStream,
+        /// <summary>
+        /// Represents an online live stream.
+        /// </summary>
+        LiveStream,
+        /// <summary>
+        /// Represents a webcam device.
+        /// </summary>
+        Webcam,
+        /// <summary>
+        /// Represents a webcam device with audio input.
+        /// </summary>
+        WebcamWithAudio,
+        /// <summary>
+        /// Represents an audio input device.
+        /// </summary>
+        AudioInput,
+    }
+
+    /// <summary>
+    /// Specifies the media source category.
+    /// </summary>
+    public enum MediaSourceCategory
+    {
+        // the order of these items should not be changed.
+
+        /// <summary>
+        /// Represents no category.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Represents local media files (including byte arrays and images).
+        /// </summary>
+        LocalFile,
+        /// <summary>
+        /// Represents online (internet) media files (including file streams and live streams).
+        /// </summary>
+        OnlineFile,
+        /// <summary>
+        /// Represents local capture devices (including webcams and audio input devices).
+        /// </summary>
+        LocalCapture,
+        /// <summary>
+        /// Represents online (internet) capture devices.
+        /// </summary>
+        OnlineCapture
+    }
+
     #endregion
 
 
@@ -92,25 +691,253 @@ namespace PlexDL.Player
 
     #region Player - PositionEventArgs
 
+    /// <summary>
+    /// Provides data for the Player.Events.MediaPositionChanged event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class PositionEventArgs : HideObjectEventArgs
+    {
+        // ******************************** Fields (PositionEventArgs)
+
+        #region Fields (PositionEventArgs)
+
+        internal long _fromBegin;
+        internal long _toEnd;
+        internal long _fromStart;
+        internal long _toStop;
+
+        #endregion
+
+        /// <summary>
+        /// Gets the playback position of the playing media, measured from the (natural) beginning of the media. Values in ticks (for example, use TimeSpan.FromTicks).
+        /// </summary>
+        public long FromBegin
+        {
+            get { return _fromBegin; }
+        }
+
+        /// <summary>
+        /// Gets the playback position of the playing media, measured from the (natural) end of the media. Values in ticks (for example, use TimeSpan.FromTicks).
+        /// </summary>
+        public long ToEnd
+        {
+            get { return _toEnd; }
+        }
+
+        /// <summary>
+        /// Gets the playback position of the playing media, measured from its (adjustable) start time. Values in ticks (for example, use TimeSpan.FromTicks).
+        /// </summary>
+        public long FromStart
+        {
+            get { return _fromStart; }
+        }
+
+        /// <summary>
+        /// Gets the playback position of the playing media, measured from its (adjustable) stop time. Values in ticks (for example, use TimeSpan.FromTicks).
+        /// </summary>
+        public long ToStop
+        {
+            get { return _toStop; }
+        }
+    }
+
     #endregion
 
     #region Player - EndedEventArgs
+
+    /// <summary>
+    /// Provides data for the Player.Events.MediaEnded event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class EndedEventArgs : HideObjectEventArgs
+    {
+        internal StopReason         _reason;
+        internal int                _error;
+        internal string             _mediaName;
+        internal MediaSourceType    _sourceType;
+
+        /// <summary>
+        /// Gets a value that indicates the reason why the media has stopped playing.
+        /// </summary>
+        public StopReason StopReason
+        {
+            get { return _reason; }
+        }
+
+        /// <summary>
+        /// Gets the error code that indicates why the media has stopped playing (for a (localized) description of the error use Player.GetErrorString(e.ErrorCode)).
+        /// </summary>
+        public int ErrorCode
+        {
+            get { return _error; }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates the source type of the media that has stopped playing.
+        /// </summary>
+        public MediaSourceType MediaSourceType
+        {
+            get { return _sourceType; }
+        }
+
+        /// <summary>
+        /// Gets the name of the media that has stopped playing.
+        /// </summary>
+        public string MediaName
+        {
+            get { return _mediaName; }
+        }
+    }
 
     #endregion
 
     #region Player - PeakLevelEventArgs
 
+    /// <summary>
+    /// Provides data for the Player.Events.MediaPeakLevelChanged event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class PeakLevelEventArgs : HideObjectEventArgs
+    {
+        internal int        _channelCount;
+        internal float      _masterPeakValue;
+        internal float[]    _channelsValues;
+
+        /// <summary>
+        /// Gets the number of audio output channels (and number of peak values) returned by the ChannelsValues property (usually 2 for stereo devices).
+        /// </summary>
+        public int ChannelCount
+        {
+            get { return _channelCount; }
+        }
+
+        /// <summary>
+        /// Gets the highest peak value of the audio output channels (ChannelsValues). Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused or stopped.
+        /// </summary>
+        public float MasterPeakValue
+        {
+            get { return _masterPeakValue; }
+        }
+
+        /// <summary>
+        /// Gets the peak values of the audio output channels: ChannelsValues[0] contains the value of the left audio output channel and ChannelsValues[1] of the right channel. More channels can be present with, for example, surround sound systems. Values are from 0.0 to 1.0 (inclusive) or -1 if media playback is paused or stopped.
+        /// </summary>
+        public float[] ChannelsValues
+        {
+            get { return _channelsValues; }
+        }
+    }
+
     #endregion
 
     #region Player - SubtitleEventArgs
+
+    /// <summary>
+    /// Provides data for the Player.Events.MediaSubtitleChanged event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class SubtitleEventArgs : HideObjectEventArgs
+    {
+        internal int    _index;
+        internal string _subtitle;
+
+        /// <summary>
+        /// Gets the index of the current subtitle in the list of the player's active subtitles.
+        /// </summary>
+        public int Index
+        {
+            get { return _index; }
+        }
+
+        /// <summary>
+        /// Gets the text of the player's current subtitle (or string.Empty).
+        /// </summary>
+        public string Subtitle
+        {
+            get { return _subtitle; }
+        }
+    }
 
     #endregion
 
     #region Player - SystemAudioDevicesEventArgs
 
+    /// <summary>
+    /// Provides data for the Player.Events.MediaSystemAudioDevicesChanged event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class SystemAudioDevicesEventArgs : HideObjectEventArgs
+    {
+        internal string                         _deviceId;
+        internal bool                           _inputDevice;
+        internal SystemAudioDevicesNotification _notification;
+
+        /// <summary>
+        /// Gets the identification of the audio device that is the subject of this notification.
+        /// </summary>
+        public string DeviceId
+        {
+            get { return _deviceId; }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the audio device that is the subject of this notification is an audio intput device (or audio output device).
+        /// </summary>
+        public bool IsInputDevice
+        {
+            get { return _inputDevice; }
+        }
+
+        /// <summary>
+        /// Gets the reason for this notification.
+        /// </summary>
+        public SystemAudioDevicesNotification Notification
+        {
+            get { return _notification; }
+        }
+    }
+
     #endregion
 
     #region Player - VideoColorEventArgs
+
+    /// <summary>
+    /// Provides data for the Player.Events.MediaVideoColorChanged event.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class VideoColorEventArgs : HideObjectEventArgs
+    {
+        internal VideoColorAttribute _colorAttribute;
+        internal double              _colorValue;
+
+        internal VideoColorEventArgs(VideoColorAttribute attribute, double value)
+        {
+            _colorAttribute = attribute;
+            _colorValue = value;
+        }
+
+        /// <summary>
+        /// Gets the video image color attribute that has changed (for example, VideoColorAttribute.Brightness).
+        /// </summary>
+        public VideoColorAttribute ColorAttribute
+        {
+            get { return _colorAttribute; }
+        }
+
+        /// <summary>
+        /// Gets the value of the changed video image color attribute. Values from -1.0 to 1.0.
+        /// </summary>
+        public double ColorValue
+        {
+            get { return _colorValue; }
+        }
+    }
 
     #endregion
 
@@ -118,6 +945,8 @@ namespace PlexDL.Player
     // ******************************** Player - Delegates (Callbacks)
 
     #region Player - Delegates (Callbacks)
+
+    internal delegate Region ShapeCallback(Rectangle shapeBounds);
 
     #endregion
 
