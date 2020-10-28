@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using PlexDL.Common.Components;
 
 namespace PlexDL.UI
 {
@@ -33,7 +34,6 @@ namespace PlexDL.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
-            this.tmrCopied = new System.Windows.Forms.Timer(this.components);
             this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
             this.btnSkipBack = new System.Windows.Forms.Button();
             this.btnPrevTitle = new System.Windows.Forms.Button();
@@ -46,20 +46,19 @@ namespace PlexDL.UI
             this.btnPlayPause = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.tlpPlayerControls = new System.Windows.Forms.TableLayoutPanel();
+            this.lblVolume = new System.Windows.Forms.Label();
             this.btnFullScreen = new System.Windows.Forms.Button();
+            this.trkVolume = new System.Windows.Forms.TrackBar();
             this.tlpMaster = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlPlayer = new System.Windows.Forms.Panel();
             this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
+            this.tipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.pnlPlayer = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             this.tlpPlayerControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trkVolume)).BeginInit();
             this.tlpMaster.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tmrCopied
-            // 
-            this.tmrCopied.Interval = 1500;
-            this.tmrCopied.Tick += new System.EventHandler(this.TmrCopied_Tick);
             // 
             // btnSkipBack
             // 
@@ -67,11 +66,12 @@ namespace PlexDL.UI
             this.btnSkipBack.AutoSize = true;
             this.btnSkipBack.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp;
             this.btnSkipBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnSkipBack.Location = new System.Drawing.Point(117, 6);
+            this.btnSkipBack.Location = new System.Drawing.Point(117, 9);
             this.btnSkipBack.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnSkipBack.Name = "btnSkipBack";
             this.btnSkipBack.Size = new System.Drawing.Size(32, 32);
-            this.btnSkipBack.TabIndex = 13;
+            this.btnSkipBack.TabIndex = 3;
+            this.tipMain.SetToolTip(this.btnSkipBack, "Step Backwards");
             this.btnSkipBack.UseVisualStyleBackColor = true;
             this.btnSkipBack.Click += new System.EventHandler(this.BtnSkipBack_Click);
             // 
@@ -81,11 +81,12 @@ namespace PlexDL.UI
             this.btnPrevTitle.AutoSize = true;
             this.btnPrevTitle.BackgroundImage = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
             this.btnPrevTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnPrevTitle.Location = new System.Drawing.Point(79, 6);
+            this.btnPrevTitle.Location = new System.Drawing.Point(79, 9);
             this.btnPrevTitle.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnPrevTitle.Name = "btnPrevTitle";
             this.btnPrevTitle.Size = new System.Drawing.Size(32, 32);
-            this.btnPrevTitle.TabIndex = 12;
+            this.btnPrevTitle.TabIndex = 2;
+            this.tipMain.SetToolTip(this.btnPrevTitle, "Previous Title");
             this.btnPrevTitle.UseVisualStyleBackColor = true;
             this.btnPrevTitle.Click += new System.EventHandler(this.BtnPrevTitle_Click);
             // 
@@ -95,11 +96,12 @@ namespace PlexDL.UI
             this.btnSkipForward.AutoSize = true;
             this.btnSkipForward.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fast_forward_black_18dp;
             this.btnSkipForward.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnSkipForward.Location = new System.Drawing.Point(155, 6);
+            this.btnSkipForward.Location = new System.Drawing.Point(155, 9);
             this.btnSkipForward.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnSkipForward.Name = "btnSkipForward";
             this.btnSkipForward.Size = new System.Drawing.Size(32, 32);
-            this.btnSkipForward.TabIndex = 14;
+            this.btnSkipForward.TabIndex = 4;
+            this.tipMain.SetToolTip(this.btnSkipForward, "Step Forwards");
             this.btnSkipForward.UseVisualStyleBackColor = true;
             this.btnSkipForward.Click += new System.EventHandler(this.BtnSkipForward_Click);
             // 
@@ -109,11 +111,13 @@ namespace PlexDL.UI
             this.btnStop.AutoSize = true;
             this.btnStop.BackgroundImage = global::PlexDL.Properties.Resources.baseline_stop_black_18dp;
             this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnStop.Location = new System.Drawing.Point(41, 6);
+            this.btnStop.Enabled = false;
+            this.btnStop.Location = new System.Drawing.Point(41, 9);
             this.btnStop.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(32, 32);
-            this.btnStop.TabIndex = 11;
+            this.btnStop.TabIndex = 1;
+            this.tipMain.SetToolTip(this.btnStop, "Stop Playback");
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
@@ -123,11 +127,12 @@ namespace PlexDL.UI
             this.btnNextTitle.AutoSize = true;
             this.btnNextTitle.BackgroundImage = global::PlexDL.Properties.Resources.baseline_skip_next_black_18dp;
             this.btnNextTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnNextTitle.Location = new System.Drawing.Point(193, 6);
+            this.btnNextTitle.Location = new System.Drawing.Point(193, 9);
             this.btnNextTitle.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnNextTitle.Name = "btnNextTitle";
             this.btnNextTitle.Size = new System.Drawing.Size(32, 32);
-            this.btnNextTitle.TabIndex = 15;
+            this.btnNextTitle.TabIndex = 5;
+            this.tipMain.SetToolTip(this.btnNextTitle, "Next Title");
             this.btnNextTitle.UseVisualStyleBackColor = true;
             this.btnNextTitle.Click += new System.EventHandler(this.BtnNextTitle_Click);
             // 
@@ -137,11 +142,12 @@ namespace PlexDL.UI
             this.lblTimeSoFar.AutoSize = true;
             this.lblTimeSoFar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblTimeSoFar.ForeColor = System.Drawing.Color.Black;
-            this.lblTimeSoFar.Location = new System.Drawing.Point(231, 13);
+            this.lblTimeSoFar.Location = new System.Drawing.Point(231, 16);
             this.lblTimeSoFar.Name = "lblTimeSoFar";
             this.lblTimeSoFar.Size = new System.Drawing.Size(64, 18);
             this.lblTimeSoFar.TabIndex = 6;
             this.lblTimeSoFar.Text = "00:00:00";
+            this.tipMain.SetToolTip(this.lblTimeSoFar, "Time Passed");
             // 
             // trkDuration
             // 
@@ -152,9 +158,10 @@ namespace PlexDL.UI
             this.trkDuration.Margin = new System.Windows.Forms.Padding(0);
             this.trkDuration.Maximum = 100;
             this.trkDuration.Name = "trkDuration";
-            this.trkDuration.Size = new System.Drawing.Size(836, 45);
+            this.trkDuration.Size = new System.Drawing.Size(675, 51);
             this.trkDuration.TabIndex = 7;
-            this.trkDuration.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.trkDuration.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.tipMain.SetToolTip(this.trkDuration, "Seek");
             // 
             // lblTotalDuration
             // 
@@ -162,11 +169,12 @@ namespace PlexDL.UI
             this.lblTotalDuration.AutoSize = true;
             this.lblTotalDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblTotalDuration.ForeColor = System.Drawing.Color.Black;
-            this.lblTotalDuration.Location = new System.Drawing.Point(1137, 13);
+            this.lblTotalDuration.Location = new System.Drawing.Point(976, 16);
             this.lblTotalDuration.Name = "lblTotalDuration";
             this.lblTotalDuration.Size = new System.Drawing.Size(64, 18);
             this.lblTotalDuration.TabIndex = 8;
             this.lblTotalDuration.Text = "00:00:00";
+            this.tipMain.SetToolTip(this.lblTotalDuration, "Time Remaining");
             // 
             // btnPlayPause
             // 
@@ -174,11 +182,12 @@ namespace PlexDL.UI
             this.btnPlayPause.AutoSize = true;
             this.btnPlayPause.BackgroundImage = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
             this.btnPlayPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnPlayPause.Location = new System.Drawing.Point(3, 6);
+            this.btnPlayPause.Location = new System.Drawing.Point(3, 9);
             this.btnPlayPause.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnPlayPause.Name = "btnPlayPause";
             this.btnPlayPause.Size = new System.Drawing.Size(32, 32);
-            this.btnPlayPause.TabIndex = 10;
+            this.btnPlayPause.TabIndex = 0;
+            this.tipMain.SetToolTip(this.btnPlayPause, "Play Title");
             this.btnPlayPause.UseVisualStyleBackColor = true;
             this.btnPlayPause.Click += new System.EventHandler(this.BtnPlayPause_Click);
             // 
@@ -188,18 +197,19 @@ namespace PlexDL.UI
             this.btnExit.AutoSize = true;
             this.btnExit.BackgroundImage = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
             this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnExit.Location = new System.Drawing.Point(1245, 6);
+            this.btnExit.Location = new System.Drawing.Point(1245, 9);
             this.btnExit.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(32, 32);
-            this.btnExit.TabIndex = 11;
+            this.btnExit.TabIndex = 12;
+            this.tipMain.SetToolTip(this.btnExit, "Stop Playback and Quit");
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // tlpPlayerControls
             // 
             this.tlpPlayerControls.AutoSize = true;
-            this.tlpPlayerControls.ColumnCount = 11;
+            this.tlpPlayerControls.ColumnCount = 13;
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -211,8 +221,11 @@ namespace PlexDL.UI
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpPlayerControls.Controls.Add(this.btnFullScreen, 9, 0);
-            this.tlpPlayerControls.Controls.Add(this.btnExit, 10, 0);
+            this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpPlayerControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpPlayerControls.Controls.Add(this.lblVolume, 9, 0);
+            this.tlpPlayerControls.Controls.Add(this.btnFullScreen, 11, 0);
+            this.tlpPlayerControls.Controls.Add(this.btnExit, 12, 0);
             this.tlpPlayerControls.Controls.Add(this.btnPlayPause, 0, 0);
             this.tlpPlayerControls.Controls.Add(this.lblTotalDuration, 8, 0);
             this.tlpPlayerControls.Controls.Add(this.trkDuration, 7, 0);
@@ -222,14 +235,28 @@ namespace PlexDL.UI
             this.tlpPlayerControls.Controls.Add(this.btnSkipForward, 4, 0);
             this.tlpPlayerControls.Controls.Add(this.btnPrevTitle, 2, 0);
             this.tlpPlayerControls.Controls.Add(this.btnSkipBack, 3, 0);
+            this.tlpPlayerControls.Controls.Add(this.trkVolume, 9, 0);
             this.tlpPlayerControls.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPlayerControls.Location = new System.Drawing.Point(0, 726);
+            this.tlpPlayerControls.Location = new System.Drawing.Point(0, 720);
             this.tlpPlayerControls.Margin = new System.Windows.Forms.Padding(0);
             this.tlpPlayerControls.Name = "tlpPlayerControls";
             this.tlpPlayerControls.RowCount = 1;
             this.tlpPlayerControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpPlayerControls.Size = new System.Drawing.Size(1280, 45);
+            this.tlpPlayerControls.Size = new System.Drawing.Size(1280, 51);
             this.tlpPlayerControls.TabIndex = 11;
+            // 
+            // lblVolume
+            // 
+            this.lblVolume.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblVolume.AutoSize = true;
+            this.lblVolume.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblVolume.ForeColor = System.Drawing.Color.Black;
+            this.lblVolume.Location = new System.Drawing.Point(1156, 16);
+            this.lblVolume.Name = "lblVolume";
+            this.lblVolume.Size = new System.Drawing.Size(45, 18);
+            this.lblVolume.TabIndex = 10;
+            this.lblVolume.Text = "100%";
+            this.tipMain.SetToolTip(this.lblVolume, "Audio Volume");
             // 
             // btnFullScreen
             // 
@@ -237,13 +264,29 @@ namespace PlexDL.UI
             this.btnFullScreen.AutoSize = true;
             this.btnFullScreen.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fullscreen_black_18dp;
             this.btnFullScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFullScreen.Location = new System.Drawing.Point(1207, 6);
+            this.btnFullScreen.Location = new System.Drawing.Point(1207, 9);
             this.btnFullScreen.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnFullScreen.Name = "btnFullScreen";
             this.btnFullScreen.Size = new System.Drawing.Size(32, 32);
-            this.btnFullScreen.TabIndex = 12;
+            this.btnFullScreen.TabIndex = 11;
+            this.tipMain.SetToolTip(this.btnFullScreen, "Fullscreen Toggle");
             this.btnFullScreen.UseVisualStyleBackColor = true;
             this.btnFullScreen.Click += new System.EventHandler(this.BtnFullScreen_Click);
+            // 
+            // trkVolume
+            // 
+            this.trkVolume.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.trkVolume.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trkVolume.Location = new System.Drawing.Point(1046, 3);
+            this.trkVolume.Maximum = 100;
+            this.trkVolume.Name = "trkVolume";
+            this.trkVolume.Size = new System.Drawing.Size(104, 45);
+            this.trkVolume.TabIndex = 9;
+            this.trkVolume.TickFrequency = 10;
+            this.trkVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.tipMain.SetToolTip(this.trkVolume, "Audio Volume");
+            this.trkVolume.Value = 100;
+            this.trkVolume.Scroll += new System.EventHandler(this.TrkVolume_Scroll);
             // 
             // tlpMaster
             // 
@@ -262,16 +305,6 @@ namespace PlexDL.UI
             this.tlpMaster.Size = new System.Drawing.Size(1280, 771);
             this.tlpMaster.TabIndex = 12;
             // 
-            // pnlPlayer
-            // 
-            this.pnlPlayer.BackColor = System.Drawing.Color.Black;
-            this.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPlayer.Location = new System.Drawing.Point(0, 0);
-            this.pnlPlayer.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPlayer.Name = "pnlPlayer";
-            this.pnlPlayer.Size = new System.Drawing.Size(1280, 726);
-            this.pnlPlayer.TabIndex = 12;
-            // 
             // wmpMain
             // 
             this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -281,6 +314,16 @@ namespace PlexDL.UI
             this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
             this.wmpMain.Size = new System.Drawing.Size(1280, 771);
             this.wmpMain.TabIndex = 0;
+            // 
+            // pnlPlayer
+            // 
+            this.pnlPlayer.BackColor = System.Drawing.Color.Black;
+            this.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPlayer.Location = new System.Drawing.Point(0, 0);
+            this.pnlPlayer.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPlayer.Name = "pnlPlayer";
+            this.pnlPlayer.Size = new System.Drawing.Size(1280, 720);
+            this.pnlPlayer.TabIndex = 0;
             // 
             // Player
             // 
@@ -298,6 +341,7 @@ namespace PlexDL.UI
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
             this.tlpPlayerControls.ResumeLayout(false);
             this.tlpPlayerControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trkVolume)).EndInit();
             this.tlpMaster.ResumeLayout(false);
             this.tlpMaster.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
@@ -306,7 +350,6 @@ namespace PlexDL.UI
         }
 
         #endregion
-        private Timer tmrCopied;
         private Timer tmrRefreshUI;
         private Button btnSkipBack;
         private Button btnPrevTitle;
@@ -322,6 +365,9 @@ namespace PlexDL.UI
         private TableLayoutPanel tlpMaster;
         private Button btnFullScreen;
         private AxWMPLib.AxWindowsMediaPlayer wmpMain;
+        private TrackBar trkVolume;
+        private Label lblVolume;
+        private ToolTip tipMain;
         private Panel pnlPlayer;
     }
 }

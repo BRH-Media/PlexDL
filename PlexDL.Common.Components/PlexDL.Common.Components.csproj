@@ -40,6 +40,12 @@
     <Compile Include="CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorSlider.designer.cs">
+      <DependentUpon>ColorSlider.cs</DependentUpon>
+    </Compile>
     <Compile Include="DXPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -56,6 +62,11 @@
       <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
       <Name>PlexDL.Animation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ColorSlider.resx">
+      <DependentUpon>ColorSlider.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

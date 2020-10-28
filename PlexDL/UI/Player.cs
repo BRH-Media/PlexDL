@@ -13,6 +13,8 @@ using System;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable ArrangeThisQualifier
+
 #pragma warning disable 1591
 
 namespace PlexDL.UI
@@ -36,7 +38,7 @@ namespace PlexDL.UI
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
+                cp.ExStyle |= 0x02000000; //turn on WS_EX_COMPOSITED
                 return cp;
             }
         }
@@ -54,17 +56,25 @@ namespace PlexDL.UI
             //PVS setup
             if (!_isWmp && pvsSetup)
             {
-                _mPlayer = new PlexDL.Player.Player(pnlPlayer);
+                //PVS setup
+                _mPlayer = new PlexDL.Player.Player();
+
+                //events and slider configuration
                 _mPlayer.Sliders.Position.TrackBar = trkDuration;
+                _mPlayer.Sliders.AudioVolume = trkVolume;
                 _mPlayer.Events.MediaPositionChanged += MPlayer_MediaPositionChanged;
                 _mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
                 _mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
+
+                //render area setup
+                _mPlayer.Display.Mode = DisplayMode.ZoomCenter;
+                _mPlayer.Display.Window = pnlPlayer;
+
+                //fix parent
+                _mPlayer.FS_ResetDisplayParent();
             }
             else if (_isWmp)
-            {
                 wmpMain.URL = StreamingContent.StreamInformation.Links.View;
-                //wmpMain.fullScreen = true;
-            }
         }
 
         private void FrmPlayer_Load(object sender, EventArgs e)
@@ -200,18 +210,16 @@ namespace PlexDL.UI
             lblTotalDuration.Text = toStop.ToString(@"hh\:mm\:ss");
         }
 
-        private void TmrCopied_Tick(object sender, EventArgs e)
-        {
-            //btnCopyLink.Text = "Copy Stream Link";
-            tmrCopied.Stop();
-        }
-
         private void Stop()
         {
-            if (!_mPlayer.Playing) return;
+            if (!_mPlayer.Playing && !_mPlayer.Paused) return;
             _mPlayer.Stop();
             _mPlayer.Paused = false;
+            btnStop.Enabled = false;
             SetIconPlay();
+
+            //tooltip set
+            tipMain.SetToolTip(btnPlayPause, @"Play Title");
         }
 
         private void Play(string fileName)
@@ -231,13 +239,22 @@ namespace PlexDL.UI
 
         private void StartPlayer(string fileName)
         {
+            //multi-threaded wholesomeness
             if (pnlPlayer.InvokeRequired)
             {
-                var d = new SafePlayDelegate(StartPlayer);
-                pnlPlayer.Invoke(d, fileName);
+                //multi-threaded goodness
+                pnlPlayer.BeginInvoke((MethodInvoker)delegate
+               {
+                   //invoke myself again, but on the UI thread this time
+                   StartPlayer(fileName);
+               });
             }
             else
             {
+                //weird workaround suggested by Peter
+                this.Width++; this.Width--;
+
+                //start playback
                 _mPlayer.Play(fileName);
             }
         }
@@ -249,15 +266,21 @@ namespace PlexDL.UI
             if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Links.View))
             {
                 var fileName = (string)e.Arguments[0];
+
                 StartPlayer(fileName);
+
                 SetIconPause();
+
+                //tooltip set
+                tipMain.SetToolTip(btnPlayPause, @"Pause Playback");
+
+                //stop button enable
+                btnStop.Enabled = true;
             }
             else
-            {
                 UIMessages.Error(
                     @"Couldn't load the stream because the remote file doesn't exist or returned an error",
                     @"Network Error");
-            }
         }
 
         private void ToggleFullscreen()
@@ -400,6 +423,9 @@ namespace PlexDL.UI
             {
                 _mPlayer.Resume();
                 SetIconPause();
+
+                //tooltip set
+                tipMain.SetToolTip(btnPlayPause, @"Pause Playback");
             }
         }
 
@@ -409,6 +435,9 @@ namespace PlexDL.UI
             {
                 _mPlayer.Pause();
                 SetIconPlay();
+
+                //tooltip set
+                tipMain.SetToolTip(btnPlayPause, @"Resume Playback");
             }
         }
 
@@ -457,9 +486,7 @@ namespace PlexDL.UI
         private void PlayPause()
         {
             if (_mPlayer.Playing && !_mPlayer.Paused)
-            {
                 Pause();
-            }
             else
             {
                 if (_mPlayer.Paused)
@@ -491,6 +518,10 @@ namespace PlexDL.UI
                 btnFullScreen.BackgroundImage = Resources.baseline_fullscreen_black_18dp;
         }
 
-        private delegate void SafePlayDelegate(string fileName);
+        private void TrkVolume_Scroll(object sender, EventArgs e)
+        {
+            //update volume label
+            lblVolume.Text = $@"{trkVolume.Value}%";
+        }
     }
 }
