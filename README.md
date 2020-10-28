@@ -53,6 +53,7 @@ It should be noted, however, that PlexDL does support various forms of caching. 
 │   └───TransactionLog.logdel              -- Logs all PMS XML requests/events out of PlexDL
 ├───.default                               -- XML profile that is loaded on each start (default settings)
 ├───.entropy                               -- 20-byte pseudorandom entropy data used for WDPAPI
+├───.guid                                  -- 16-byte WDPAPI-protected GUID string. Used for uniquely identifying your PlexDL instance.
 └───.token                                 -- 20-char Plex.tv token; saved when the user logs in and is encrypted with WDPAPI
 ```
 
