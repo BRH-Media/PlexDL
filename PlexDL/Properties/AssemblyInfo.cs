@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCompany("BRH Media (Baeleigh Harris)")]
 [assembly: AssemblyProduct("PlexDL - C# Plex API Interface")]
-[assembly: AssemblyCopyright("Copyright (c) Baeleigh Harris 2020")]
+[assembly: AssemblyCopyright("Copyright (c) BRH Media 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
