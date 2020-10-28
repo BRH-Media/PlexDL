@@ -93,10 +93,15 @@ namespace PlexDL.UI
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabMovies = new System.Windows.Forms.TabPage();
             this.tlpMovies = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
             this.tabTV = new System.Windows.Forms.TabPage();
             this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
             this.tabMusic = new System.Windows.Forms.TabPage();
             this.tlpMusic = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackMetadataView = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,11 +113,15 @@ namespace PlexDL.UI
             this.itmTrackStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackCast = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpContentOptions = new System.Windows.Forms.TableLayoutPanel();
             this.pbMain = new System.Windows.Forms.ProgressBar();
+            this.dgvSections = new PlexDL.Common.Components.FlatDataGridView();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();
@@ -164,15 +173,6 @@ namespace PlexDL.UI
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
-            this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSections = new PlexDL.Common.Components.FlatDataGridView();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -183,27 +183,27 @@ namespace PlexDL.UI
             this.tabMain.SuspendLayout();
             this.tabMovies.SuspendLayout();
             this.tlpMovies.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).BeginInit();
             this.tabTV.SuspendLayout();
             this.tlpTV.SuspendLayout();
-            this.tabMusic.SuspendLayout();
-            this.tlpMusic.SuspendLayout();
-            this.cxtTrackOptions.SuspendLayout();
-            this.tabLog.SuspendLayout();
-            this.tlpLog.SuspendLayout();
-            this.tlpMain.SuspendLayout();
-            this.tlpContentOptions.SuspendLayout();
-            this.menuMain.SuspendLayout();
-            this.tsMain.SuspendLayout();
-            this.cxtTracks.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
+            this.tabMusic.SuspendLayout();
+            this.tlpMusic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).BeginInit();
+            this.cxtTrackOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).BeginInit();
+            this.tabLog.SuspendLayout();
+            this.tlpLog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
+            this.tlpMain.SuspendLayout();
+            this.tlpContentOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).BeginInit();
+            this.menuMain.SuspendLayout();
+            this.tsMain.SuspendLayout();
+            this.cxtTracks.SuspendLayout();
             this.SuspendLayout();
             // 
             // sfdSave
@@ -590,6 +590,41 @@ namespace PlexDL.UI
             this.tlpMovies.Size = new System.Drawing.Size(648, 338);
             this.tlpMovies.TabIndex = 19;
             // 
+            // dgvMovies
+            // 
+            this.dgvMovies.AllowUserToAddRows = false;
+            this.dgvMovies.AllowUserToDeleteRows = false;
+            this.dgvMovies.AllowUserToOrderColumns = true;
+            this.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMovies.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvMovies.ContextMenuStrip = this.cxtMovieOptions;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMovies.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvMovies.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvMovies.IsContentTable = true;
+            this.dgvMovies.Location = new System.Drawing.Point(2, 2);
+            this.dgvMovies.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvMovies.MultiSelect = false;
+            this.dgvMovies.Name = "dgvMovies";
+            this.dgvMovies.RowHeadersVisible = false;
+            this.dgvMovies.RowsEmptyText = "No Movies Found";
+            this.dgvMovies.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMovies.Size = new System.Drawing.Size(644, 334);
+            this.dgvMovies.TabIndex = 18;
+            this.dgvMovies.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            this.dgvMovies.SelectionChanged += new System.EventHandler(this.dgvMovies_OnRowChange);
+            // 
             // tabTV
             // 
             this.tabTV.Controls.Add(this.tlpTV);
@@ -620,6 +655,111 @@ namespace PlexDL.UI
             this.tlpTV.Size = new System.Drawing.Size(648, 338);
             this.tlpTV.TabIndex = 0;
             // 
+            // dgvTVShows
+            // 
+            this.dgvTVShows.AllowUserToAddRows = false;
+            this.dgvTVShows.AllowUserToDeleteRows = false;
+            this.dgvTVShows.AllowUserToOrderColumns = true;
+            this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTVShows.ContextMenuStrip = this.cxtEpisodeOptions;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvTVShows.IsContentTable = false;
+            this.dgvTVShows.Location = new System.Drawing.Point(2, 2);
+            this.dgvTVShows.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvTVShows.MultiSelect = false;
+            this.dgvTVShows.Name = "dgvTVShows";
+            this.dgvTVShows.RowHeadersVisible = false;
+            this.dgvTVShows.RowsEmptyText = "No TV Shows Found";
+            this.dgvTVShows.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.tlpTV.SetRowSpan(this.dgvTVShows, 2);
+            this.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTVShows.Size = new System.Drawing.Size(320, 334);
+            this.dgvTVShows.TabIndex = 27;
+            this.dgvTVShows.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
+            // 
+            // dgvSeasons
+            // 
+            this.dgvSeasons.AllowUserToAddRows = false;
+            this.dgvSeasons.AllowUserToDeleteRows = false;
+            this.dgvSeasons.AllowUserToOrderColumns = true;
+            this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvSeasons.ContextMenuStrip = this.cxtEpisodeOptions;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvSeasons.IsContentTable = false;
+            this.dgvSeasons.Location = new System.Drawing.Point(326, 2);
+            this.dgvSeasons.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvSeasons.MultiSelect = false;
+            this.dgvSeasons.Name = "dgvSeasons";
+            this.dgvSeasons.RowHeadersVisible = false;
+            this.dgvSeasons.RowsEmptyText = "No TV Seasons Found";
+            this.dgvSeasons.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSeasons.Size = new System.Drawing.Size(320, 165);
+            this.dgvSeasons.TabIndex = 20;
+            this.dgvSeasons.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
+            // 
+            // dgvEpisodes
+            // 
+            this.dgvEpisodes.AllowUserToAddRows = false;
+            this.dgvEpisodes.AllowUserToDeleteRows = false;
+            this.dgvEpisodes.AllowUserToOrderColumns = true;
+            this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvEpisodes.IsContentTable = true;
+            this.dgvEpisodes.Location = new System.Drawing.Point(326, 171);
+            this.dgvEpisodes.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvEpisodes.MultiSelect = false;
+            this.dgvEpisodes.Name = "dgvEpisodes";
+            this.dgvEpisodes.RowHeadersVisible = false;
+            this.dgvEpisodes.RowsEmptyText = "No TV Episodes Found";
+            this.dgvEpisodes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvEpisodes.Size = new System.Drawing.Size(320, 165);
+            this.dgvEpisodes.TabIndex = 21;
+            this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            // 
             // tabMusic
             // 
             this.tabMusic.Controls.Add(this.tlpMusic);
@@ -649,6 +789,42 @@ namespace PlexDL.UI
             this.tlpMusic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpMusic.Size = new System.Drawing.Size(648, 338);
             this.tlpMusic.TabIndex = 1;
+            // 
+            // dgvArtists
+            // 
+            this.dgvArtists.AllowUserToAddRows = false;
+            this.dgvArtists.AllowUserToDeleteRows = false;
+            this.dgvArtists.AllowUserToOrderColumns = true;
+            this.dgvArtists.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvArtists.ContextMenuStrip = this.cxtTrackOptions;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvArtists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvArtists.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvArtists.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvArtists.IsContentTable = false;
+            this.dgvArtists.Location = new System.Drawing.Point(2, 2);
+            this.dgvArtists.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvArtists.MultiSelect = false;
+            this.dgvArtists.Name = "dgvArtists";
+            this.dgvArtists.RowHeadersVisible = false;
+            this.dgvArtists.RowsEmptyText = "No Artists Found";
+            this.dgvArtists.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.tlpMusic.SetRowSpan(this.dgvArtists, 2);
+            this.dgvArtists.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvArtists.Size = new System.Drawing.Size(320, 334);
+            this.dgvArtists.TabIndex = 27;
+            this.dgvArtists.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            this.dgvArtists.SelectionChanged += new System.EventHandler(this.DgvArtists_OnRowChange);
             // 
             // cxtTrackOptions
             // 
@@ -738,6 +914,75 @@ namespace PlexDL.UI
             this.itmTrackCast.Text = "Cast";
             this.itmTrackCast.Click += new System.EventHandler(this.ItmTrackCast_Click);
             // 
+            // dgvAlbums
+            // 
+            this.dgvAlbums.AllowUserToAddRows = false;
+            this.dgvAlbums.AllowUserToDeleteRows = false;
+            this.dgvAlbums.AllowUserToOrderColumns = true;
+            this.dgvAlbums.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvAlbums.ContextMenuStrip = this.cxtTrackOptions;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvAlbums.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAlbums.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvAlbums.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvAlbums.IsContentTable = false;
+            this.dgvAlbums.Location = new System.Drawing.Point(326, 2);
+            this.dgvAlbums.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvAlbums.MultiSelect = false;
+            this.dgvAlbums.Name = "dgvAlbums";
+            this.dgvAlbums.RowHeadersVisible = false;
+            this.dgvAlbums.RowsEmptyText = "No Albums Found";
+            this.dgvAlbums.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvAlbums.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAlbums.Size = new System.Drawing.Size(320, 165);
+            this.dgvAlbums.TabIndex = 20;
+            this.dgvAlbums.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            this.dgvAlbums.SelectionChanged += new System.EventHandler(this.DgvAlbums_OnRowChange);
+            // 
+            // dgvTracks
+            // 
+            this.dgvTracks.AllowUserToAddRows = false;
+            this.dgvTracks.AllowUserToDeleteRows = false;
+            this.dgvTracks.AllowUserToOrderColumns = true;
+            this.dgvTracks.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTracks.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvTracks.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTracks.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTracks.ContextMenuStrip = this.cxtTrackOptions;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle7;
+            this.dgvTracks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTracks.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvTracks.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvTracks.IsContentTable = true;
+            this.dgvTracks.Location = new System.Drawing.Point(326, 171);
+            this.dgvTracks.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvTracks.MultiSelect = false;
+            this.dgvTracks.Name = "dgvTracks";
+            this.dgvTracks.RowHeadersVisible = false;
+            this.dgvTracks.RowsEmptyText = "No Tracks Found";
+            this.dgvTracks.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvTracks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTracks.Size = new System.Drawing.Size(320, 165);
+            this.dgvTracks.TabIndex = 21;
+            this.dgvTracks.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
+            // 
             // tabLog
             // 
             this.tabLog.Controls.Add(this.tlpLog);
@@ -762,6 +1007,39 @@ namespace PlexDL.UI
             this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 338F));
             this.tlpLog.Size = new System.Drawing.Size(648, 338);
             this.tlpLog.TabIndex = 1;
+            // 
+            // dgvLog
+            // 
+            this.dgvLog.AllowUserToAddRows = false;
+            this.dgvLog.AllowUserToDeleteRows = false;
+            this.dgvLog.AllowUserToOrderColumns = true;
+            this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLog.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvLog.IsContentTable = false;
+            this.dgvLog.Location = new System.Drawing.Point(2, 2);
+            this.dgvLog.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvLog.MultiSelect = false;
+            this.dgvLog.Name = "dgvLog";
+            this.dgvLog.RowHeadersVisible = false;
+            this.dgvLog.RowsEmptyText = "No Log Data";
+            this.dgvLog.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLog.Size = new System.Drawing.Size(644, 334);
+            this.dgvLog.TabIndex = 0;
             // 
             // tlpMain
             // 
@@ -807,6 +1085,41 @@ namespace PlexDL.UI
             this.pbMain.Name = "pbMain";
             this.pbMain.Size = new System.Drawing.Size(268, 21);
             this.pbMain.TabIndex = 34;
+            // 
+            // dgvSections
+            // 
+            this.dgvSections.AllowUserToAddRows = false;
+            this.dgvSections.AllowUserToDeleteRows = false;
+            this.dgvSections.AllowUserToOrderColumns = true;
+            this.dgvSections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSections.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvSections.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvSections.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvSections.ContextMenuStrip = this.cxtLibrarySections;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle9;
+            this.dgvSections.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSections.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.dgvSections.IsContentTable = false;
+            this.dgvSections.Location = new System.Drawing.Point(6, 100);
+            this.dgvSections.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvSections.MultiSelect = false;
+            this.dgvSections.Name = "dgvSections";
+            this.dgvSections.RowHeadersVisible = false;
+            this.dgvSections.RowsEmptyText = "No Library Sections Found";
+            this.dgvSections.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
+            this.tlpMain.SetRowSpan(this.dgvSections, 3);
+            this.dgvSections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSections.Size = new System.Drawing.Size(276, 278);
+            this.dgvSections.TabIndex = 16;
+            this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
             // 
             // menuMain
             // 
@@ -925,6 +1238,7 @@ namespace PlexDL.UI
             // 
             // itmContinueWatching
             // 
+            this.itmContinueWatching.Enabled = false;
             this.itmContinueWatching.Name = "itmContinueWatching";
             this.itmContinueWatching.Size = new System.Drawing.Size(198, 22);
             this.itmContinueWatching.Text = "Continue Watching";
@@ -952,7 +1266,7 @@ namespace PlexDL.UI
             // 
             this.itmMetadata.Name = "itmMetadata";
             this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
             this.itmMetadata.Text = "Metadata";
             this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
             // 
@@ -960,14 +1274,14 @@ namespace PlexDL.UI
             // 
             this.itmStartSearch.Name = "itmStartSearch";
             this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(180, 22);
+            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
             this.itmStartSearch.Text = "Start Search";
             this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
             // 
             // itmCast
             // 
             this.itmCast.Name = "itmCast";
-            this.itmCast.Size = new System.Drawing.Size(180, 22);
+            this.itmCast.Size = new System.Drawing.Size(176, 22);
             this.itmCast.Text = "Cast";
             this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
             // 
@@ -1203,319 +1517,6 @@ namespace PlexDL.UI
             // 
             this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
             // 
-            // dgvMovies
-            // 
-            this.dgvMovies.AllowUserToAddRows = false;
-            this.dgvMovies.AllowUserToDeleteRows = false;
-            this.dgvMovies.AllowUserToOrderColumns = true;
-            this.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMovies.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvMovies.ContextMenuStrip = this.cxtMovieOptions;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMovies.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvMovies.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvMovies.IsContentTable = true;
-            this.dgvMovies.Location = new System.Drawing.Point(2, 2);
-            this.dgvMovies.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvMovies.MultiSelect = false;
-            this.dgvMovies.Name = "dgvMovies";
-            this.dgvMovies.RowHeadersVisible = false;
-            this.dgvMovies.RowsEmptyText = "No Movies Found";
-            this.dgvMovies.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMovies.Size = new System.Drawing.Size(644, 334);
-            this.dgvMovies.TabIndex = 18;
-            this.dgvMovies.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvMovies.SelectionChanged += new System.EventHandler(this.dgvMovies_OnRowChange);
-            // 
-            // dgvTVShows
-            // 
-            this.dgvTVShows.AllowUserToAddRows = false;
-            this.dgvTVShows.AllowUserToDeleteRows = false;
-            this.dgvTVShows.AllowUserToOrderColumns = true;
-            this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvTVShows.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvTVShows.IsContentTable = false;
-            this.dgvTVShows.Location = new System.Drawing.Point(2, 2);
-            this.dgvTVShows.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvTVShows.MultiSelect = false;
-            this.dgvTVShows.Name = "dgvTVShows";
-            this.dgvTVShows.RowHeadersVisible = false;
-            this.dgvTVShows.RowsEmptyText = "No TV Shows Found";
-            this.dgvTVShows.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.tlpTV.SetRowSpan(this.dgvTVShows, 2);
-            this.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTVShows.Size = new System.Drawing.Size(320, 334);
-            this.dgvTVShows.TabIndex = 27;
-            this.dgvTVShows.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvTVShows.SelectionChanged += new System.EventHandler(this.DgvTVShows_OnRowChange);
-            // 
-            // dgvSeasons
-            // 
-            this.dgvSeasons.AllowUserToAddRows = false;
-            this.dgvSeasons.AllowUserToDeleteRows = false;
-            this.dgvSeasons.AllowUserToOrderColumns = true;
-            this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvSeasons.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvSeasons.IsContentTable = false;
-            this.dgvSeasons.Location = new System.Drawing.Point(326, 2);
-            this.dgvSeasons.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvSeasons.MultiSelect = false;
-            this.dgvSeasons.Name = "dgvSeasons";
-            this.dgvSeasons.RowHeadersVisible = false;
-            this.dgvSeasons.RowsEmptyText = "No TV Seasons Found";
-            this.dgvSeasons.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSeasons.Size = new System.Drawing.Size(320, 165);
-            this.dgvSeasons.TabIndex = 20;
-            this.dgvSeasons.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvSeasons.SelectionChanged += new System.EventHandler(this.DgvSeasons_OnRowChange);
-            // 
-            // dgvEpisodes
-            // 
-            this.dgvEpisodes.AllowUserToAddRows = false;
-            this.dgvEpisodes.AllowUserToDeleteRows = false;
-            this.dgvEpisodes.AllowUserToOrderColumns = true;
-            this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvEpisodes.IsContentTable = true;
-            this.dgvEpisodes.Location = new System.Drawing.Point(326, 171);
-            this.dgvEpisodes.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvEpisodes.MultiSelect = false;
-            this.dgvEpisodes.Name = "dgvEpisodes";
-            this.dgvEpisodes.RowHeadersVisible = false;
-            this.dgvEpisodes.RowsEmptyText = "No TV Episodes Found";
-            this.dgvEpisodes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEpisodes.Size = new System.Drawing.Size(320, 165);
-            this.dgvEpisodes.TabIndex = 21;
-            this.dgvEpisodes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            // 
-            // dgvArtists
-            // 
-            this.dgvArtists.AllowUserToAddRows = false;
-            this.dgvArtists.AllowUserToDeleteRows = false;
-            this.dgvArtists.AllowUserToOrderColumns = true;
-            this.dgvArtists.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvArtists.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvArtists.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvArtists.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvArtists.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvArtists.IsContentTable = false;
-            this.dgvArtists.Location = new System.Drawing.Point(2, 2);
-            this.dgvArtists.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvArtists.MultiSelect = false;
-            this.dgvArtists.Name = "dgvArtists";
-            this.dgvArtists.RowHeadersVisible = false;
-            this.dgvArtists.RowsEmptyText = "No Artists Found";
-            this.dgvArtists.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.tlpMusic.SetRowSpan(this.dgvArtists, 2);
-            this.dgvArtists.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvArtists.Size = new System.Drawing.Size(320, 334);
-            this.dgvArtists.TabIndex = 27;
-            this.dgvArtists.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvArtists.SelectionChanged += new System.EventHandler(this.DgvArtists_OnRowChange);
-            // 
-            // dgvAlbums
-            // 
-            this.dgvAlbums.AllowUserToAddRows = false;
-            this.dgvAlbums.AllowUserToDeleteRows = false;
-            this.dgvAlbums.AllowUserToOrderColumns = true;
-            this.dgvAlbums.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvAlbums.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvAlbums.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlbums.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvAlbums.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvAlbums.IsContentTable = false;
-            this.dgvAlbums.Location = new System.Drawing.Point(326, 2);
-            this.dgvAlbums.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvAlbums.MultiSelect = false;
-            this.dgvAlbums.Name = "dgvAlbums";
-            this.dgvAlbums.RowHeadersVisible = false;
-            this.dgvAlbums.RowsEmptyText = "No Albums Found";
-            this.dgvAlbums.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvAlbums.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlbums.Size = new System.Drawing.Size(320, 165);
-            this.dgvAlbums.TabIndex = 20;
-            this.dgvAlbums.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvAlbums.SelectionChanged += new System.EventHandler(this.DgvAlbums_OnRowChange);
-            // 
-            // dgvTracks
-            // 
-            this.dgvTracks.AllowUserToAddRows = false;
-            this.dgvTracks.AllowUserToDeleteRows = false;
-            this.dgvTracks.AllowUserToOrderColumns = true;
-            this.dgvTracks.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTracks.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvTracks.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvTracks.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvTracks.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle7;
-            this.dgvTracks.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTracks.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvTracks.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvTracks.IsContentTable = true;
-            this.dgvTracks.Location = new System.Drawing.Point(326, 171);
-            this.dgvTracks.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvTracks.MultiSelect = false;
-            this.dgvTracks.Name = "dgvTracks";
-            this.dgvTracks.RowHeadersVisible = false;
-            this.dgvTracks.RowsEmptyText = "No Tracks Found";
-            this.dgvTracks.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvTracks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTracks.Size = new System.Drawing.Size(320, 165);
-            this.dgvTracks.TabIndex = 21;
-            this.dgvTracks.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            // 
-            // dgvLog
-            // 
-            this.dgvLog.AllowUserToAddRows = false;
-            this.dgvLog.AllowUserToDeleteRows = false;
-            this.dgvLog.AllowUserToOrderColumns = true;
-            this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvLog.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvLog.IsContentTable = false;
-            this.dgvLog.Location = new System.Drawing.Point(2, 2);
-            this.dgvLog.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvLog.MultiSelect = false;
-            this.dgvLog.Name = "dgvLog";
-            this.dgvLog.RowHeadersVisible = false;
-            this.dgvLog.RowsEmptyText = "No Log Data";
-            this.dgvLog.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLog.Size = new System.Drawing.Size(644, 334);
-            this.dgvLog.TabIndex = 0;
-            // 
-            // dgvSections
-            // 
-            this.dgvSections.AllowUserToAddRows = false;
-            this.dgvSections.AllowUserToDeleteRows = false;
-            this.dgvSections.AllowUserToOrderColumns = true;
-            this.dgvSections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvSections.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvSections.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSections.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvSections.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle9;
-            this.dgvSections.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSections.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.dgvSections.IsContentTable = false;
-            this.dgvSections.Location = new System.Drawing.Point(6, 100);
-            this.dgvSections.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvSections.MultiSelect = false;
-            this.dgvSections.Name = "dgvSections";
-            this.dgvSections.RowHeadersVisible = false;
-            this.dgvSections.RowsEmptyText = "No Library Sections Found";
-            this.dgvSections.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
-            this.tlpMain.SetRowSpan(this.dgvSections, 3);
-            this.dgvSections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSections.Size = new System.Drawing.Size(276, 278);
-            this.dgvSections.TabIndex = 16;
-            this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
-            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1546,29 +1547,29 @@ namespace PlexDL.UI
             this.tabMain.ResumeLayout(false);
             this.tabMovies.ResumeLayout(false);
             this.tlpMovies.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).EndInit();
             this.tabTV.ResumeLayout(false);
             this.tlpTV.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             this.tabMusic.ResumeLayout(false);
             this.tlpMusic.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).EndInit();
             this.cxtTrackOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).EndInit();
             this.tabLog.ResumeLayout(false);
             this.tlpLog.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.tlpMain.ResumeLayout(false);
             this.tlpContentOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).EndInit();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.cxtTracks.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMovies)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTVShows)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArtists)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlbums)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTracks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSections)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
