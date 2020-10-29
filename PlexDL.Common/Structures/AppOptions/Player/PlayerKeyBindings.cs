@@ -12,6 +12,7 @@ namespace PlexDL.Common.Structures.AppOptions.Player
         public Keys NextTitle { get; set; } = Keys.Up;
         public Keys PrevTitle { get; set; } = Keys.Down;
         public Keys FullscreenToggle { get; set; } = Keys.F;
+        public Keys FramerateToggle { get; set; } = Keys.G;
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

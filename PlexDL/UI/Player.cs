@@ -11,6 +11,9 @@ using PlexDL.Player;
 using PlexDL.Properties;
 using PlexDL.WaitWindow;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -25,12 +28,80 @@ namespace PlexDL.UI
         private PlexDL.Player.Player _mPlayer;
 
         private bool _isWmp = ObjectProvider.Settings.Player.ForceWmpMode;
-
+        private bool _frameRateEnabled = false;
         public PlexObject StreamingContent { get; set; }
 
         public Player()
         {
             InitializeComponent();
+        }
+
+        private void TmrFramerate_Tick(object sender, EventArgs e)
+        {
+            UpdateFramerate();
+        }
+
+        private void UpdateFramerate()
+        {
+            try
+            {
+                //current video FPS
+                var fps = _mPlayer.Video.FrameRate.ToString(CultureInfo.InvariantCulture);
+
+                //render string to image
+                var fpsImage = TextToBitmap(fps);
+
+                //resize box to fit image
+                picFramerate.Size = fpsImage.Size;
+
+                //apply FPS image
+                picFramerate.BackgroundImage = fpsImage;
+            }
+            catch
+            {
+                //disable the framerate processor and blank out the FPS display
+                _frameRateEnabled = false;
+                tmrFramerate.Stop();
+                picFramerate.BackgroundImage = null;
+                picFramerate.Visible = false;
+            }
+        }
+
+        private void ToggleFramerate()
+        {
+            //FPS doesn't work for WMP mode
+            if (!_isWmp && _mPlayer.Playing && !_mPlayer.Paused)
+            {
+                if (_frameRateEnabled)
+                {
+                    _frameRateEnabled = false;
+                    tmrFramerate.Stop();
+
+                    //clear the FPS picturebox
+                    picFramerate.BackgroundImage = null;
+                    picFramerate.Visible = false;
+                }
+                else
+                {
+                    _frameRateEnabled = true;
+                    tmrFramerate.Start();
+
+                    //make FPS picturebox visible
+                    picFramerate.Visible = true;
+
+                    //immediately render FPS
+                    UpdateFramerate();
+                }
+            }
+            else
+            {
+                _frameRateEnabled = false;
+                tmrFramerate.Stop();
+
+                //clear the FPS picturebox
+                picFramerate.BackgroundImage = null;
+                picFramerate.Visible = false;
+            }
         }
 
         private void SwitchWmp(bool pvsSetup = true)
@@ -160,6 +231,12 @@ namespace PlexDL.UI
             if (keyData == ObjectProvider.Settings.Player.KeyBindings.FullscreenToggle)
             {
                 ToggleFullscreen();
+                return true;
+            }
+
+            if (keyData == ObjectProvider.Settings.Player.KeyBindings.FramerateToggle)
+            {
+                ToggleFramerate();
                 return true;
             }
 
@@ -509,6 +586,51 @@ namespace PlexDL.UI
         {
             //update volume label
             lblVolume.Text = $@"{trkVolume.Value}%";
+        }
+
+        private static Bitmap TextToBitmap(string text)
+        {
+            try
+            {
+                //create a dummy Bitmap just to get the Graphics object
+                var img = new Bitmap(1, 1);
+                var g = Graphics.FromImage(img);
+
+                //the font for our text
+                var f = new Font("Lucida Console", 32);
+
+                //work out how big the text will be when drawn as an image
+                var size = g.MeasureString(text, f);
+
+                //create a new Bitmap of the required size
+                img = new Bitmap((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+                g = Graphics.FromImage(img);
+
+                //give it a black background
+                g.Clear(Color.Black);
+
+                //new outline path for string
+                var p = new GraphicsPath();
+
+                //apply string
+                p.AddString(text, f.FontFamily, (int)f.Style, f.Size, new Point(0, 0), new StringFormat());
+
+                //new pen
+                var pen = new Pen(Color.Yellow, 1);
+
+                //draw the text in yellow with white outline
+                g.DrawPath(pen, p);
+
+                //return processed image
+                return img;
+            }
+            catch
+            {
+                //nothing
+            }
+
+            //default
+            return null;
         }
     }
 }

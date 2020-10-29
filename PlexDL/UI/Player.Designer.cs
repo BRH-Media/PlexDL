@@ -34,7 +34,6 @@ namespace PlexDL.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
-            this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
             this.btnSkipBack = new System.Windows.Forms.Button();
             this.btnPrevTitle = new System.Windows.Forms.Button();
             this.btnSkipForward = new System.Windows.Forms.Button();
@@ -51,12 +50,16 @@ namespace PlexDL.UI
             this.trkVolume = new System.Windows.Forms.TrackBar();
             this.tlpMaster = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPlayer = new System.Windows.Forms.Panel();
+            this.picFramerate = new System.Windows.Forms.PictureBox();
             this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.tmrFramerate = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             this.tlpPlayerControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trkVolume)).BeginInit();
             this.tlpMaster.SuspendLayout();
+            this.pnlPlayer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picFramerate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
             this.SuspendLayout();
             // 
@@ -308,12 +311,23 @@ namespace PlexDL.UI
             // pnlPlayer
             // 
             this.pnlPlayer.BackColor = System.Drawing.Color.Black;
+            this.pnlPlayer.Controls.Add(this.picFramerate);
             this.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPlayer.Location = new System.Drawing.Point(0, 0);
             this.pnlPlayer.Margin = new System.Windows.Forms.Padding(0);
             this.pnlPlayer.Name = "pnlPlayer";
             this.pnlPlayer.Size = new System.Drawing.Size(1280, 720);
             this.pnlPlayer.TabIndex = 0;
+            // 
+            // picFramerate
+            // 
+            this.picFramerate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picFramerate.Location = new System.Drawing.Point(0, 0);
+            this.picFramerate.Name = "picFramerate";
+            this.picFramerate.Size = new System.Drawing.Size(100, 50);
+            this.picFramerate.TabIndex = 0;
+            this.picFramerate.TabStop = false;
+            this.picFramerate.Visible = false;
             // 
             // wmpMain
             // 
@@ -324,6 +338,11 @@ namespace PlexDL.UI
             this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
             this.wmpMain.Size = new System.Drawing.Size(1280, 771);
             this.wmpMain.TabIndex = 0;
+            // 
+            // tmrFramerate
+            // 
+            this.tmrFramerate.Interval = 1000;
+            this.tmrFramerate.Tick += new System.EventHandler(this.TmrFramerate_Tick);
             // 
             // Player
             // 
@@ -345,13 +364,14 @@ namespace PlexDL.UI
             ((System.ComponentModel.ISupportInitialize)(this.trkVolume)).EndInit();
             this.tlpMaster.ResumeLayout(false);
             this.tlpMaster.PerformLayout();
+            this.pnlPlayer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picFramerate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private Timer tmrRefreshUI;
         private Button btnSkipBack;
         private Button btnPrevTitle;
         private Button btnSkipForward;
@@ -370,5 +390,7 @@ namespace PlexDL.UI
         private Label lblVolume;
         private ToolTip tipMain;
         private Panel pnlPlayer;
+        private PictureBox picFramerate;
+        private Timer tmrFramerate;
     }
 }
