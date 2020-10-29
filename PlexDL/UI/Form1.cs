@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class Form1 : Form
+    public partial class Form1 : DoubleBufferedForm
     {
         public Form1()
         {

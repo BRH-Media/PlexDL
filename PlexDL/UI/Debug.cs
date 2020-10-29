@@ -1,5 +1,6 @@
 ﻿using LogDel.Utilities;
 using PlexDL.Common;
+using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals.Providers;
 using System;
@@ -11,7 +12,7 @@ using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Debug : Form
+    public partial class Debug : DoubleBufferedForm
     {
         public Debug()
         {

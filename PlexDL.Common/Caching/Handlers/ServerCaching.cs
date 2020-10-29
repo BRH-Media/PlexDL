@@ -1,12 +1,11 @@
 ﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Security;
-using PlexDL.PlexAPI;
+using PlexDL.MyPlex;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using PlexDL.MyPlex;
 using Directory = System.IO.Directory;
 
 namespace PlexDL.Common.Caching.Handlers

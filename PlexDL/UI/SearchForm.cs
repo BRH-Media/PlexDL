@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Enums;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.SearchFramework;
 using System;
@@ -9,7 +10,7 @@ using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class SearchForm : Form
+    public partial class SearchForm : DoubleBufferedForm
     {
         public SearchOptions SearchContext = new SearchOptions();
 

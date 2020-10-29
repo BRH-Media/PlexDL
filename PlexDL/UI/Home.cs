@@ -45,7 +45,7 @@ using Directory = System.IO.Directory;
 
 namespace PlexDL.UI
 {
-    public partial class Home : Form
+    public partial class Home : DoubleBufferedForm
     {
         public Home()
         {

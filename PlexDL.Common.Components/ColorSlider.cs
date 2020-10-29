@@ -1,29 +1,29 @@
 ﻿#region License
 
 /* Copyright (c) 2017 Fabrice Lacharme
- * This code is inspired from Michal Brylka 
+ * This code is inspired from Michal Brylka
  * https://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to 
- * deal in the Software without restriction, including without limitation the 
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
- * sell copies of the Software, and to permit persons to whom the Software is 
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in 
- * all copies or substantial portions of the Software. 
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
 
-#endregion
+#endregion License
 
 #region Contact
 
@@ -32,8 +32,7 @@
  * Email: fabrice.lacharme@gmail.com
  */
 
-#endregion
-
+#endregion Contact
 
 using System;
 using System.ComponentModel;
@@ -45,29 +44,29 @@ namespace PlexDL.Common.Components
 {
     /* Original code from Michal Brylka on Code Project
     * see https://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider
-    * ColorSlider is a trackbar control written in C# as a replacement of the trackbar 
-    * 
+    * ColorSlider is a trackbar control written in C# as a replacement of the trackbar
+    *
     * CodeProject: https://www.codeproject.com/Tips/1193311/Csharp-Slider-Trackbar-Control-using-Windows-Forms
     * Github: https://github.com/fabricelacharme/ColorSlider
-    * 
+    *
     * 20/11/17 - version 1.0.O.1
-    * 
+    *
     * Fixed: erroneous vertical display in case of minimum <> 0 (negative or positive)
     * Modified: DrawColorSlider, OnMouseMove
-    * 
+    *
     * Added: Ticks display transformations
-    * - TickAdd: allow to add a fixed value to the graduations: 
+    * - TickAdd: allow to add a fixed value to the graduations:
     *       usage: transform K = °C + 273,15, or °F = 1,8°C + 32   K = (°F + 459,67) / 1,8
-    * - TickDivide: allow to diveide by a fixed value the graduations 
+    * - TickDivide: allow to diveide by a fixed value the graduations
     *       usage: divide by 1000 => display graduations in kilograms when in gram
-    *       
-    *       
+    *
+    *
     * 10/12/17 - version 1.0.0.2
     * Added ForeColor property to graduations text color
-    * 
+    *
     * 29/11/2019 - Version 1.0.0.3
     * Scale accept decimal negative values (-0.5 to 5.5 for ex)
-    * 
+    *
     */
 
     /// <summary>
@@ -93,8 +92,7 @@ namespace PlexDL.Common.Components
         [Category("Behavior")]
         public event ScrollEventHandler Scroll;
 
-        #endregion
-
+        #endregion Events
 
         #region Properties
 
@@ -105,11 +103,13 @@ namespace PlexDL.Common.Components
 
         // Margin left & right (bottom & Top)
         private int OffsetL = 0;
+
         private int OffsetR = 0;
 
         #region thumb
 
         private Rectangle thumbRect; //bounding rectangle of thumb area
+
         /// <summary>
         /// Gets the thumb rect. Usefull to determine bounding rectangle when creating custom thumb shape.
         /// </summary>
@@ -143,13 +143,14 @@ namespace PlexDL.Common.Components
                 }
                 else
                     throw new ArgumentOutOfRangeException(
-                        "TrackSize has to be greather than zero and lower than half of Slider width");                 
+                        "TrackSize has to be greather than zero and lower than half of Slider width");
 
                 Invalidate();
             }
         }
 
         private GraphicsPath _thumbCustomShape = null;
+
         /// <summary>
         /// Gets or sets the thumb custom shape. Use ThumbRect property to determine bounding rectangle.
         /// </summary>
@@ -172,6 +173,7 @@ namespace PlexDL.Common.Components
         }
 
         private Size _thumbRoundRectSize = new Size(16, 16);
+
         /// <summary>
         /// Gets or sets the size of the thumb round rectangle edges.
         /// </summary>
@@ -193,6 +195,7 @@ namespace PlexDL.Common.Components
         }
 
         private Size _borderRoundRectSize = new Size(8, 8);
+
         /// <summary>
         /// Gets or sets the size of the border round rect.
         /// </summary>
@@ -214,6 +217,7 @@ namespace PlexDL.Common.Components
         }
 
         private bool _drawSemitransparentThumb = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether to draw semitransparent thumb.
         /// </summary>
@@ -232,11 +236,12 @@ namespace PlexDL.Common.Components
         }
 
         private Image _thumbImage = null;
+
         //private Image _thumbImage = Properties.Resources.BTN_Thumb_Blue;
         /// <summary>
         /// Gets or sets the Image used to render the thumb.
         /// </summary>
-        /// <value>the thumb Image</value> 
+        /// <value>the thumb Image</value>
         [Description("Set to use a specific Image for the thumb")]
         [Category("ColorSlider")]
         [DefaultValue(null)]
@@ -253,12 +258,12 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
-
+        #endregion thumb
 
         #region Appearance
 
         private int _padding = 0;
+
         /// <summary>
         /// Gets or sets the padding (inside margins: left & right or bottom & top)
         /// </summary>
@@ -273,7 +278,7 @@ namespace PlexDL.Common.Components
             {
                 if (_padding != value)
                 {
-                    _padding = value;                    
+                    _padding = value;
                     OffsetL = OffsetR = _padding;
 
                     Invalidate();
@@ -282,6 +287,7 @@ namespace PlexDL.Common.Components
         }
 
         private Orientation _barOrientation = Orientation.Horizontal;
+
         /// <summary>
         /// Gets or sets the orientation of Slider.
         /// </summary>
@@ -298,7 +304,7 @@ namespace PlexDL.Common.Components
                 {
                     _barOrientation = value;
                     // Switch from horizontal to vertical (design mode)
-					// Comment these lines if problems in Run mode
+                    // Comment these lines if problems in Run mode
                     if (this.DesignMode)
                     {
                         int temp = Width;
@@ -312,6 +318,7 @@ namespace PlexDL.Common.Components
         }
 
         private bool _drawFocusRectangle = false;
+
         /// <summary>
         /// Gets or sets a value indicating whether to draw focus rectangle.
         /// </summary>
@@ -330,6 +337,7 @@ namespace PlexDL.Common.Components
         }
 
         private bool _mouseEffects = true;
+
         /// <summary>
         /// Gets or sets whether mouse entry and exit actions have impact on how control look.
         /// </summary>
@@ -347,12 +355,12 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
-
+        #endregion Appearance
 
         #region values
 
         private decimal _trackerValue = 30;
+
         /// <summary>
         /// Gets or sets the value of Slider.
         /// </summary>
@@ -377,6 +385,7 @@ namespace PlexDL.Common.Components
         }
 
         private decimal _minimum = 0;
+
         /// <summary>
         /// Gets or sets the minimum value.
         /// </summary>
@@ -405,6 +414,7 @@ namespace PlexDL.Common.Components
         }
 
         private decimal _maximum = 100;
+
         /// <summary>
         /// Gets or sets the maximum value.
         /// </summary>
@@ -433,6 +443,7 @@ namespace PlexDL.Common.Components
         }
 
         private decimal _smallChange = 1;
+
         /// <summary>
         /// Gets or sets trackbar's small change. It affects how to behave when directional keys are pressed
         /// </summary>
@@ -447,6 +458,7 @@ namespace PlexDL.Common.Components
         }
 
         private decimal _largeChange = 5;
+
         /// <summary>
         /// Gets or sets trackbar's large change. It affects how to behave when PageUp/PageDown keys are pressed
         /// </summary>
@@ -459,8 +471,9 @@ namespace PlexDL.Common.Components
             get { return _largeChange; }
             set { _largeChange = value; }
         }
-           
+
         private int _mouseWheelBarPartitions = 10;
+
         /// <summary>
         /// Gets or sets the mouse wheel bar partitions.
         /// </summary>
@@ -480,12 +493,12 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
-
+        #endregion values
 
         #region colors
 
         private Color _thumbOuterColor = Color.White;
+
         /// <summary>
         /// Gets or sets the thumb outer color.
         /// </summary>
@@ -504,12 +517,13 @@ namespace PlexDL.Common.Components
         }
 
         private Color _thumbInnerColor = Color.FromArgb(21, 56, 152);
+
         /// <summary>
         /// Gets or sets the inner color of the thumb.
         /// </summary>
         /// <value>The inner color of the thumb.</value>
         [Description("Set Slider thumb inner color")]
-        [Category("ColorSlider")]        
+        [Category("ColorSlider")]
         public Color ThumbInnerColor
         {
             get { return _thumbInnerColor; }
@@ -521,12 +535,13 @@ namespace PlexDL.Common.Components
         }
 
         private Color _thumbPenColor = Color.FromArgb(21, 56, 152);
+
         /// <summary>
         /// Gets or sets the color of the thumb pen.
         /// </summary>
         /// <value>The color of the thumb pen.</value>
         [Description("Set Slider thumb pen color")]
-        [Category("ColorSlider")]       
+        [Category("ColorSlider")]
         public Color ThumbPenColor
         {
             get { return _thumbPenColor; }
@@ -538,6 +553,7 @@ namespace PlexDL.Common.Components
         }
 
         private Color _barInnerColor = Color.Black;
+
         /// <summary>
         /// Gets or sets the inner color of the bar.
         /// </summary>
@@ -556,12 +572,13 @@ namespace PlexDL.Common.Components
         }
 
         private Color _elapsedPenColorTop = Color.FromArgb(95, 140, 180);   // bleu clair
+
         /// <summary>
         /// Gets or sets the top color of the Elapsed
         /// </summary>
         [Description("Gets or sets the top color of the elapsed")]
         [Category("ColorSlider")]
-        public Color ElapsedPenColorTop 
+        public Color ElapsedPenColorTop
         {
             get { return _elapsedPenColorTop; }
             set
@@ -572,12 +589,13 @@ namespace PlexDL.Common.Components
         }
 
         private Color _elapsedPenColorBottom = Color.FromArgb(99, 130, 208);   // bleu très clair
+
         /// <summary>
         /// Gets or sets the bottom color of the elapsed
         /// </summary>
         [Description("Gets or sets the bottom color of the elapsed")]
         [Category("ColorSlider")]
-        public Color ElapsedPenColorBottom 
+        public Color ElapsedPenColorBottom
         {
             get { return _elapsedPenColorBottom; }
             set
@@ -588,6 +606,7 @@ namespace PlexDL.Common.Components
         }
 
         private Color _barPenColorTop = Color.FromArgb(55, 60, 74);     // gris foncé
+
         /// <summary>
         /// Gets or sets the top color of the bar
         /// </summary>
@@ -604,6 +623,7 @@ namespace PlexDL.Common.Components
         }
 
         private Color _barPenColorBottom = Color.FromArgb(87, 94, 110);    // gris moyen
+
         /// <summary>
         /// Gets or sets the bottom color of bar
         /// </summary>
@@ -617,15 +637,16 @@ namespace PlexDL.Common.Components
                 _barPenColorBottom = value;
                 Invalidate();
             }
-        }   
+        }
 
         private Color _elapsedInnerColor = Color.FromArgb(21, 56, 152);
+
         /// <summary>
         /// Gets or sets the inner color of the elapsed.
         /// </summary>
         /// <value>The inner color of the elapsed.</value>
         [Description("Set Slider's elapsed part inner color")]
-        [Category("ColorSlider")]        
+        [Category("ColorSlider")]
         public Color ElapsedInnerColor
         {
             get { return _elapsedInnerColor; }
@@ -637,11 +658,12 @@ namespace PlexDL.Common.Components
         }
 
         private Color _tickColor = Color.White;
+
         /// <summary>
         /// Gets or sets the color of the graduations
         /// </summary>
         [Description("Color of graduations")]
-        [Category("ColorSlider")]            
+        [Category("ColorSlider")]
         public Color TickColor
         {
             get { return _tickColor; }
@@ -655,15 +677,14 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
-
+        #endregion colors
 
         #region divisions
 
-        // For ex: if values are multiples of 50, 
+        // For ex: if values are multiples of 50,
         // values = 0, 50, 100, 150 etc...
         //set TickDivide to 50
-        // And ticks will be displayed as 
+        // And ticks will be displayed as
         // values = 0, 1, 2, 3 etc...
         private float _tickDivide = 0;
 
@@ -672,24 +693,29 @@ namespace PlexDL.Common.Components
         public float TickDivide
         {
             get { return _tickDivide; }
-            set {
+            set
+            {
                 _tickDivide = value;
                 Invalidate();
             }
         }
 
         private float _tickAdd = 0;
+
         [Description("Gets or sets a value added to the graduation")]
         [Category("ColorSlider")]
         public float TickAdd
         {
             get { return _tickAdd; }
-            set { _tickAdd = value;
+            set
+            {
+                _tickAdd = value;
                 Invalidate();
             }
         }
 
         private TickStyle _tickStyle = TickStyle.TopLeft;
+
         /// <summary>
         /// Gets or sets where to display the ticks (None, both top-left, bottom-right)
         /// </summary>
@@ -699,13 +725,15 @@ namespace PlexDL.Common.Components
         public TickStyle TickStyle
         {
             get { return _tickStyle; }
-            set {
+            set
+            {
                 _tickStyle = value;
                 Invalidate();
             }
         }
 
         private decimal _scaleDivisions = 10;
+
         /// <summary>
         /// How many divisions of maximum?
         /// </summary>
@@ -714,10 +742,11 @@ namespace PlexDL.Common.Components
         public decimal ScaleDivisions
         {
             get { return _scaleDivisions; }
-            set {
+            set
+            {
                 if (value > 0)
                 {
-                    _scaleDivisions = value;                    
+                    _scaleDivisions = value;
                 }
                 //else throw new ArgumentOutOfRangeException("TickFreqency must be > 0 and < Maximum");
 
@@ -726,6 +755,7 @@ namespace PlexDL.Common.Components
         }
 
         private decimal _scaleSubDivisions = 5;
+
         /// <summary>
         /// How many subdivisions for each division
         /// </summary>
@@ -737,9 +767,8 @@ namespace PlexDL.Common.Components
             set
             {
                 if (value > 0 && _scaleDivisions > 0 && (_maximum - _minimum) / ((value + 1) * _scaleDivisions) > 0)
-                { 
+                {
                     _scaleSubDivisions = value;
-                    
                 }
                 //else throw new ArgumentOutOfRangeException("TickSubFreqency must be > 0 and < TickFrequency");
 
@@ -748,6 +777,7 @@ namespace PlexDL.Common.Components
         }
 
         private bool _showSmallScale = false;
+
         /// <summary>
         /// Shows Small Scale marking.
         /// </summary>
@@ -756,8 +786,8 @@ namespace PlexDL.Common.Components
         public bool ShowSmallScale
         {
             get { return _showSmallScale; }
-            set {
-
+            set
+            {
                 if (value == true)
                 {
                     if (_scaleDivisions > 0 && _scaleSubDivisions > 0 && (_maximum - _minimum) / ((_scaleSubDivisions + 1) * _scaleDivisions) > 0)
@@ -773,13 +803,14 @@ namespace PlexDL.Common.Components
                 else
                 {
                     _showSmallScale = value;
-                    // need to redraw 
+                    // need to redraw
                     Invalidate();
                 }
             }
         }
 
         private bool _showDivisionsText = true;
+
         /// <summary>
         /// Shows Small Scale marking.
         /// </summary>
@@ -788,13 +819,14 @@ namespace PlexDL.Common.Components
         public bool ShowDivisionsText
         {
             get { return _showDivisionsText; }
-            set { _showDivisionsText = value;
+            set
+            {
+                _showDivisionsText = value;
                 Invalidate();
             }
         }
 
-        #endregion
-
+        #endregion divisions
 
         #region Font
 
@@ -830,7 +862,8 @@ namespace PlexDL.Common.Components
         Description("Get or Sets the Color of the Text being displayed."),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible),
         EditorBrowsable(EditorBrowsableState.Always)]
-        public override Color ForeColor {
+        public override Color ForeColor
+        {
             get
             {
                 return base.ForeColor;
@@ -843,10 +876,9 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
+        #endregion Font
 
-        #endregion
-
+        #endregion Properties
 
         #region Color schemas
 
@@ -857,47 +889,45 @@ namespace PlexDL.Common.Components
                     Color.White,                    // thumb outer
                     Color.FromArgb(21, 56, 152),    // thumb inner
                     Color.FromArgb(21, 56, 152),    // thumb pen color
-                    
-                    Color.Black,                    // bar inner    
 
-                    Color.FromArgb(95, 140, 180),     // slider elapsed top                   
-                    Color.FromArgb(99, 130, 208),     // slider elapsed bottom                    
+                    Color.Black,                    // bar inner
 
-                    Color.FromArgb(55, 60, 74),     // slider remain top                    
+                    Color.FromArgb(95, 140, 180),     // slider elapsed top
+                    Color.FromArgb(99, 130, 208),     // slider elapsed bottom
+
+                    Color.FromArgb(55, 60, 74),     // slider remain top
                     Color.FromArgb(87, 94, 110),     // slider remain bottom
-                                         
+
                     Color.FromArgb(21, 56, 152)     // elapsed interieur centre
                 },
                 {
                     Color.White,                    // thumb outer
                     Color.Red,    // thumb inner
                     Color.Red,    // thumb pen color
-                    
-                    Color.Black,                    // bar inner    
 
-                    Color.LightCoral,     // slider elapsed top                   
+                    Color.Black,                    // bar inner
+
+                    Color.LightCoral,     // slider elapsed top
                     Color.Salmon,     // slider elapsed bottom
-                    
 
-                    Color.FromArgb(55, 60, 74),     // slider remain top                    
+                    Color.FromArgb(55, 60, 74),     // slider remain top
                     Color.FromArgb(87, 94, 110),     // slider remain bottom
-                                         
+
                     Color.Red     // gauche interieur centre
                 },
                 {
                     Color.White,                    // thumb outer
                     Color.Green,    // thumb inner
                     Color.Green,    // thumb pen color
-                    
-                    Color.Black,                    // bar inner    
 
-                    Color.SpringGreen,     // slider elapsed top                   
+                    Color.Black,                    // bar inner
+
+                    Color.SpringGreen,     // slider elapsed top
                     Color.LightGreen,     // slider elapsed bottom
-                    
 
-                    Color.FromArgb(55, 60, 74),     // slider remain top                    
+                    Color.FromArgb(55, 60, 74),     // slider remain top
                     Color.FromArgb(87, 94, 110),     // slider remain bottom
-                                         
+
                     Color.Green     // gauche interieur centre
                 },
             };
@@ -912,7 +942,7 @@ namespace PlexDL.Common.Components
         private ColorSchemas colorSchema = ColorSchemas.BlueColors;
 
         /// <summary>
-        /// Sets color schema. Color generalization / fast color changing. Has no effect when slider colors are changed manually after schema was applied. 
+        /// Sets color schema. Color generalization / fast color changing. Has no effect when slider colors are changed manually after schema was applied.
         /// </summary>
         /// <value>New color schema value</value>
         [Description("Set Slider color schema. Has no effect when slider colors are changed manually after schema was applied.")]
@@ -928,7 +958,7 @@ namespace PlexDL.Common.Components
                 _thumbOuterColor = aColorSchema[sn, 0];
                 _thumbInnerColor = aColorSchema[sn, 1];
                 _thumbPenColor = aColorSchema[sn, 2];
-                
+
                 _barInnerColor = aColorSchema[sn, 3];
 
                 _elapsedPenColorTop = aColorSchema[sn, 4];
@@ -943,8 +973,7 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
-
+        #endregion Color schemas
 
         #region Constructors
 
@@ -961,7 +990,7 @@ namespace PlexDL.Common.Components
                      ControlStyles.ResizeRedraw | ControlStyles.Selectable |
                      ControlStyles.SupportsTransparentBackColor | ControlStyles.UserMouse |
                      ControlStyles.UserPaint, true);
-            
+
             // Default backcolor
             BackColor = Color.FromArgb(70, 77, 95);
             ForeColor = Color.White;
@@ -980,7 +1009,7 @@ namespace PlexDL.Common.Components
         /// </summary>
         public ColorSlider() : this(0, 100, 30) { }
 
-        #endregion
+        #endregion Constructors
 
         #region Paint
 
@@ -993,15 +1022,15 @@ namespace PlexDL.Common.Components
             if (!Enabled)
             {
                 Color[] desaturatedColors = DesaturateColors(_thumbOuterColor, _thumbInnerColor, _thumbPenColor,
-                                                             _barInnerColor, 
-                                                             _elapsedPenColorTop, _elapsedPenColorBottom, 
+                                                             _barInnerColor,
+                                                             _elapsedPenColorTop, _elapsedPenColorBottom,
                                                              _barPenColorTop, _barPenColorBottom,
                                                              _elapsedInnerColor);
-                DrawColorSlider(e, 
-                                    desaturatedColors[0], desaturatedColors[1], desaturatedColors[2], 
-                                    desaturatedColors[3], 
-                                    desaturatedColors[4], desaturatedColors[5], 
-                                    desaturatedColors[6], desaturatedColors[7], 
+                DrawColorSlider(e,
+                                    desaturatedColors[0], desaturatedColors[1], desaturatedColors[2],
+                                    desaturatedColors[3],
+                                    desaturatedColors[4], desaturatedColors[5],
+                                    desaturatedColors[6], desaturatedColors[7],
                                     desaturatedColors[8]);
             }
             else
@@ -1010,22 +1039,22 @@ namespace PlexDL.Common.Components
                 {
                     Color[] lightenedColors = LightenColors(_thumbOuterColor, _thumbInnerColor, _thumbPenColor,
                                                             _barInnerColor,
-                                                            _elapsedPenColorTop, _elapsedPenColorBottom, 
+                                                            _elapsedPenColorTop, _elapsedPenColorBottom,
                                                             _barPenColorTop, _barPenColorBottom,
                                                             _elapsedInnerColor);
-                    DrawColorSlider(e, 
-                        lightenedColors[0], lightenedColors[1], lightenedColors[2], 
-                        lightenedColors[3], 
-                        lightenedColors[4], lightenedColors[5], 
-                        lightenedColors[6], lightenedColors[7], 
+                    DrawColorSlider(e,
+                        lightenedColors[0], lightenedColors[1], lightenedColors[2],
+                        lightenedColors[3],
+                        lightenedColors[4], lightenedColors[5],
+                        lightenedColors[6], lightenedColors[7],
                         lightenedColors[8]);
                 }
                 else
                 {
-                    DrawColorSlider(e, 
+                    DrawColorSlider(e,
                                     _thumbOuterColor, _thumbInnerColor, _thumbPenColor,
                                     _barInnerColor,
-                                    _elapsedPenColorTop, _elapsedPenColorBottom, 
+                                    _elapsedPenColorTop, _elapsedPenColorBottom,
                                     _barPenColorTop, _barPenColorBottom,
                                     _elapsedInnerColor);
                 }
@@ -1042,57 +1071,61 @@ namespace PlexDL.Common.Components
         /// <param name="barInnerColorPaint">The bar inner color paint.</param>
         /// <param name="barPenColorPaint">The bar pen color paint.</param>
         /// <param name="elapsedInnerColorPaint">The elapsed inner color paint.</param>
-        private void DrawColorSlider(PaintEventArgs e, 
-            Color thumbOuterColorPaint, Color thumbInnerColorPaint, Color thumbPenColorPaint, 
+        private void DrawColorSlider(PaintEventArgs e,
+            Color thumbOuterColorPaint, Color thumbInnerColorPaint, Color thumbPenColorPaint,
             Color barInnerColorPaint,
-            Color ElapsedTopPenColorPaint, Color ElapsedBottomPenColorPaint, 
+            Color ElapsedTopPenColorPaint, Color ElapsedBottomPenColorPaint,
             Color barTopPenColorPaint, Color barBottomPenColorPaint,
             Color elapsedInnerColorPaint)
         {
             try
             {
                 //adjust drawing rects
-                barRect = ClientRectangle;               
+                barRect = ClientRectangle;
 
                 //set up thumbRect approprietly
                 if (_barOrientation == Orientation.Horizontal)
                 {
                     #region horizontal
+
                     if (_thumbImage != null)
                     {
                         decimal TrackX = OffsetL + ((_trackerValue - _minimum) * (ClientRectangle.Width - OffsetL - OffsetR - _thumbImage.Width)) / (_maximum - _minimum);
-                        thumbRect = new Rectangle((int)TrackX, ClientRectangle.Height/2 - _thumbImage.Height/2, _thumbImage.Width, _thumbImage.Height);                        
+                        thumbRect = new Rectangle((int)TrackX, ClientRectangle.Height / 2 - _thumbImage.Height / 2, _thumbImage.Width, _thumbImage.Height);
                     }
                     else
                     {
                         decimal TrackX = OffsetL + ((_trackerValue - _minimum) * (ClientRectangle.Width - OffsetL - OffsetR - _thumbSize.Width)) / (_maximum - _minimum);
-                        thumbRect = new Rectangle((int)TrackX, barRect.Y + ClientRectangle.Height/2 - _thumbSize.Height/2 , _thumbSize.Width, _thumbSize.Height);                        
-                    }                    
-                    #endregion
+                        thumbRect = new Rectangle((int)TrackX, barRect.Y + ClientRectangle.Height / 2 - _thumbSize.Height / 2, _thumbSize.Width, _thumbSize.Height);
+                    }
+
+                    #endregion horizontal
                 }
                 else
                 {
                     #region vertical
+
                     if (_thumbImage != null)
-                    {                        
-                        decimal TrackY = OffsetR + ((_maximum - _trackerValue) * (ClientRectangle.Height - OffsetL -OffsetR - _thumbImage.Height)) / (_maximum - _minimum);
-                        thumbRect = new Rectangle(ClientRectangle.Width/2 - _thumbImage.Width/2, (int)TrackY, _thumbImage.Width, _thumbImage.Height);
+                    {
+                        decimal TrackY = OffsetR + ((_maximum - _trackerValue) * (ClientRectangle.Height - OffsetL - OffsetR - _thumbImage.Height)) / (_maximum - _minimum);
+                        thumbRect = new Rectangle(ClientRectangle.Width / 2 - _thumbImage.Width / 2, (int)TrackY, _thumbImage.Width, _thumbImage.Height);
                     }
                     else
-                    {                        
+                    {
                         decimal TrackY = OffsetR + ((_maximum - _trackerValue) * (ClientRectangle.Height - OffsetL - OffsetR - _thumbSize.Height)) / (_maximum - _minimum);
-                        thumbRect = new Rectangle(barRect.X + ClientRectangle.Width/2 - _thumbSize.Width/2, (int)TrackY, _thumbSize.Width, _thumbSize.Height);
+                        thumbRect = new Rectangle(barRect.X + ClientRectangle.Width / 2 - _thumbSize.Width / 2, (int)TrackY, _thumbSize.Width, _thumbSize.Height);
                     }
-                    #endregion
+
+                    #endregion vertical
                 }
 
                 thumbHalfRect = thumbRect;
                 LinearGradientMode gradientOrientation;
-              
+
                 if (_barOrientation == Orientation.Horizontal)
                 {
                     #region horizontal
-                                       
+
                     barRect.X = barRect.X + OffsetL;
                     barRect.Width = barRect.Width - OffsetL - OffsetR;
 
@@ -1100,13 +1133,12 @@ namespace PlexDL.Common.Components
                     barHalfRect.Height /= 2;
 
                     gradientOrientation = LinearGradientMode.Vertical;
-                    
 
                     thumbHalfRect.Height /= 2;
                     elapsedRect = barRect;
-                    elapsedRect.Width = (thumbRect.Left + _thumbSize.Width / 2) - OffsetL;                    
+                    elapsedRect.Width = (thumbRect.Left + _thumbSize.Width / 2) - OffsetL;
 
-                    #endregion
+                    #endregion horizontal
                 }
                 else
                 {
@@ -1114,22 +1146,22 @@ namespace PlexDL.Common.Components
 
                     barRect.Y = barRect.Y + OffsetR;
                     barRect.Height = barRect.Height - OffsetL - OffsetR;
-                    
+
                     barHalfRect = barRect;
                     barHalfRect.Width /= 2;
-                   
+
                     gradientOrientation = LinearGradientMode.Vertical;
 
                     thumbHalfRect.Width /= 2;
                     elapsedRect = barRect;
 
                     elapsedRect.Height = barRect.Height - (thumbRect.Top + ThumbSize.Height / 2) + OffsetR;
-                    elapsedRect.Y = 1 + thumbRect.Top + ThumbSize.Height/2  + OffsetR;                    
+                    elapsedRect.Y = 1 + thumbRect.Top + ThumbSize.Height / 2 + OffsetR;
 
-                    #endregion
+                    #endregion vertical
                 }
-                
-                //get thumb shape path 
+
+                //get thumb shape path
                 GraphicsPath thumbPath;
                 if (_thumbCustomShape == null)
                     thumbPath = CreateRoundRectPath(thumbRect, _thumbRoundRectSize);
@@ -1141,30 +1173,29 @@ namespace PlexDL.Common.Components
                     thumbPath.Transform(m);
                 }
 
-
                 //draw bar
 
                 #region draw inner bar
 
-                // inner bar is a single line 
+                // inner bar is a single line
                 // draw the line on the whole lenght of the control
                 if (_barOrientation == Orientation.Horizontal)
                 {
-                    e.Graphics.DrawLine(new Pen(barInnerColorPaint, 1f), barRect.X, barRect.Y + barRect.Height/2, barRect.X + barRect.Width, barRect.Y + barRect.Height/2);
+                    e.Graphics.DrawLine(new Pen(barInnerColorPaint, 1f), barRect.X, barRect.Y + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y + barRect.Height / 2);
                 }
                 else
                 {
-                    e.Graphics.DrawLine(new Pen(barInnerColorPaint, 1f), barRect.X + barRect.Width/2, barRect.Y, barRect.X + barRect.Width/2 , barRect.Y + barRect.Height);
+                    e.Graphics.DrawLine(new Pen(barInnerColorPaint, 1f), barRect.X + barRect.Width / 2, barRect.Y, barRect.X + barRect.Width / 2, barRect.Y + barRect.Height);
                 }
-                #endregion
 
+                #endregion draw inner bar
 
                 #region draw elapsed bar
 
-                //draw elapsed inner bar (single line too)                               
+                //draw elapsed inner bar (single line too)
                 if (_barOrientation == Orientation.Horizontal)
                 {
-                    e.Graphics.DrawLine(new Pen(elapsedInnerColorPaint, 1f), barRect.X, barRect.Y + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y + barRect.Height/2);
+                    e.Graphics.DrawLine(new Pen(elapsedInnerColorPaint, 1f), barRect.X, barRect.Y + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y + barRect.Height / 2);
                 }
                 else
                 {
@@ -1173,63 +1204,58 @@ namespace PlexDL.Common.Components
 
                 #endregion draw elapsed bar
 
-
                 #region draw external contours
-                
-                //draw external bar band 
+
+                //draw external bar band
                 // 2 lines: top and bottom
                 if (_barOrientation == Orientation.Horizontal)
                 {
                     #region horizontal
-                    // Elapsed top
-                    e.Graphics.DrawLine(new Pen(ElapsedTopPenColorPaint, 1f), barRect.X, barRect.Y - 1 + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y - 1 + barRect.Height/2);
-                    // Elapsed bottom
-                    e.Graphics.DrawLine(new Pen(ElapsedBottomPenColorPaint, 1f), barRect.X, barRect.Y + 1 + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y + 1 + barRect.Height/2);
 
+                    // Elapsed top
+                    e.Graphics.DrawLine(new Pen(ElapsedTopPenColorPaint, 1f), barRect.X, barRect.Y - 1 + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y - 1 + barRect.Height / 2);
+                    // Elapsed bottom
+                    e.Graphics.DrawLine(new Pen(ElapsedBottomPenColorPaint, 1f), barRect.X, barRect.Y + 1 + barRect.Height / 2, barRect.X + elapsedRect.Width, barRect.Y + 1 + barRect.Height / 2);
 
                     // Remain top
-                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X + elapsedRect.Width, barRect.Y - 1 + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y - 1 + barRect.Height/2);
+                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X + elapsedRect.Width, barRect.Y - 1 + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y - 1 + barRect.Height / 2);
                     // Remain bottom
-                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + elapsedRect.Width, barRect.Y + 1 + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y + 1 + barRect.Height/2);
-
+                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + elapsedRect.Width, barRect.Y + 1 + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y + 1 + barRect.Height / 2);
 
                     // Left vertical (dark)
-                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X, barRect.Y -1 + barRect.Height/2, barRect.X, barRect.Y + barRect.Height/2 + 1);
+                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X, barRect.Y - 1 + barRect.Height / 2, barRect.X, barRect.Y + barRect.Height / 2 + 1);
 
-                    // Right vertical (light)                        
-                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + barRect.Width, barRect.Y - 1 + barRect.Height/2, barRect.X + barRect.Width, barRect.Y + 1 + barRect.Height/2);
-                    #endregion
+                    // Right vertical (light)
+                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + barRect.Width, barRect.Y - 1 + barRect.Height / 2, barRect.X + barRect.Width, barRect.Y + 1 + barRect.Height / 2);
+
+                    #endregion horizontal
                 }
                 else
                 {
                     #region vertical
+
                     // Elapsed top
-                    e.Graphics.DrawLine(new Pen(ElapsedTopPenColorPaint, 1f), barRect.X -1 + barRect.Width/2, barRect.Y + (barRect.Height - elapsedRect.Height), barRect.X - 1 + barRect.Width/2, barRect.Y + barRect.Height);
+                    e.Graphics.DrawLine(new Pen(ElapsedTopPenColorPaint, 1f), barRect.X - 1 + barRect.Width / 2, barRect.Y + (barRect.Height - elapsedRect.Height), barRect.X - 1 + barRect.Width / 2, barRect.Y + barRect.Height);
 
                     // Elapsed bottom
-                    e.Graphics.DrawLine(new Pen(ElapsedBottomPenColorPaint, 1f), barRect.X + 1 + barRect.Width / 2, barRect.Y + (barRect.Height - elapsedRect.Height), barRect.X + 1 + barRect.Width/2, barRect.Y + barRect.Height);
-
+                    e.Graphics.DrawLine(new Pen(ElapsedBottomPenColorPaint, 1f), barRect.X + 1 + barRect.Width / 2, barRect.Y + (barRect.Height - elapsedRect.Height), barRect.X + 1 + barRect.Width / 2, barRect.Y + barRect.Height);
 
                     // Remain top
-                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X - 1 + barRect.Width / 2, barRect.Y, barRect.X - 1 + barRect.Width/2, barRect.Y + barRect.Height - elapsedRect.Height);
-
+                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X - 1 + barRect.Width / 2, barRect.Y, barRect.X - 1 + barRect.Width / 2, barRect.Y + barRect.Height - elapsedRect.Height);
 
                     // Remain bottom
-                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + 1 + barRect.Width/2, barRect.Y, barRect.X + 1 + barRect.Width/2, barRect.Y + barRect.Height - elapsedRect.Height);
+                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X + 1 + barRect.Width / 2, barRect.Y, barRect.X + 1 + barRect.Width / 2, barRect.Y + barRect.Height - elapsedRect.Height);
 
-
-                    // top horizontal (dark) 
-                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X - 1 + barRect.Width/2, barRect.Y, barRect.X + 1 + barRect.Width/2, barRect.Y);
+                    // top horizontal (dark)
+                    e.Graphics.DrawLine(new Pen(barTopPenColorPaint, 1f), barRect.X - 1 + barRect.Width / 2, barRect.Y, barRect.X + 1 + barRect.Width / 2, barRect.Y);
 
                     // bottom horizontal (light)
-                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X - 1 + barRect.Width/2, barRect.Y + barRect.Height, barRect.X + 1 + barRect.Width/2, barRect.Y + barRect.Height);
-                    #endregion
+                    e.Graphics.DrawLine(new Pen(barBottomPenColorPaint, 1f), barRect.X - 1 + barRect.Width / 2, barRect.Y + barRect.Height, barRect.X + 1 + barRect.Width / 2, barRect.Y + barRect.Height);
 
+                    #endregion vertical
                 }
-                    
-                #endregion draw contours
 
-                
+                #endregion draw external contours
 
                 #region draw thumb
 
@@ -1248,12 +1274,12 @@ namespace PlexDL.Common.Components
                 }
                 else
                 {
-                    lgbThumb = new LinearGradientBrush(thumbHalfRect, newthumbOuterColorPaint, newthumbInnerColorPaint, gradientOrientation);                    
+                    lgbThumb = new LinearGradientBrush(thumbHalfRect, newthumbOuterColorPaint, newthumbInnerColorPaint, gradientOrientation);
                 }
                 using (lgbThumb)
                 {
                     lgbThumb.WrapMode = WrapMode.TileFlipXY;
-                    
+
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(lgbThumb, thumbPath);
 
@@ -1264,7 +1290,6 @@ namespace PlexDL.Common.Components
                         newThumbPenColor = ControlPaint.Dark(newThumbPenColor);
                     using (Pen thumbPen = new Pen(newThumbPenColor))
                     {
-
                         if (_thumbImage != null)
                         {
                             Bitmap bmp = new Bitmap(_thumbImage);
@@ -1273,19 +1298,18 @@ namespace PlexDL.Common.Components
 
                             e.Graphics.DrawImage(bmp, thumbRect, srceRect, GraphicsUnit.Pixel);
                             bmp.Dispose();
-                            
                         }
                         else
                         {
                             e.Graphics.DrawPath(thumbPen, thumbPath);
                         }
                     }
-
                 }
+
                 #endregion draw thumb
 
-
                 #region draw focusing rectangle
+
                 //draw focusing rectangle
                 if (Focused & _drawFocusRectangle)
                     using (Pen p = new Pen(Color.FromArgb(200, ElapsedTopPenColorPaint)))
@@ -1295,15 +1319,15 @@ namespace PlexDL.Common.Components
                         r.Width -= 2;
                         r.Height--;
                         r.X++;
-                                               
+
                         using (GraphicsPath gpBorder = CreateRoundRectPath(r, _borderRoundRectSize))
                         {
                             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                             e.Graphics.DrawPath(p, gpBorder);
                         }
                     }
-                #endregion draw focusing rectangle
 
+                #endregion draw focusing rectangle
 
                 #region draw ticks
 
@@ -1311,51 +1335,50 @@ namespace PlexDL.Common.Components
                 if (_tickStyle != TickStyle.None)
                 {
                     int x1, x2, y1, y2 = 0;
-                    int nbticks = 1 +  (int)(_scaleDivisions * (_scaleSubDivisions + 1));                    
+                    int nbticks = 1 + (int)(_scaleDivisions * (_scaleSubDivisions + 1));
                     int interval = 0;
                     int start = 0;
                     int W = 0;
                     float rulerValue = 0;
                     int offset = 0;
 
-                    // Calculate width W to draw graduations 
+                    // Calculate width W to draw graduations
                     // Remove the width of the thumb (half thumb at each end)
-                    // in order that when the thumb is at minimum position or maximum position, 
-                    // the graduation coincide with the middle of the thumb  
+                    // in order that when the thumb is at minimum position or maximum position,
+                    // the graduation coincide with the middle of the thumb
                     if (_barOrientation == Orientation.Horizontal)
                     {
                         start = thumbRect.Width / 2;
                         W = barRect.Width - thumbRect.Width;
                         rulerValue = (float)_minimum;
-                        offset = 2 + thumbRect.Height/2;
+                        offset = 2 + thumbRect.Height / 2;
                     }
                     else
                     {
                         start = thumbRect.Height / 2;
                         W = barRect.Height - thumbRect.Height;
                         rulerValue = (float)_maximum;
-                        offset = 2 + thumbRect.Width/2;
+                        offset = 2 + thumbRect.Width / 2;
                     }
-                    
+
                     // pen for ticks
                     // TODO: color for subdivision different?
                     Pen penTickL = new Pen(_tickColor, 1f);
                     Pen penTickS = new Pen(_tickColor, 1f);
                     int idx = 0;
                     int scaleL = 5;     // division length
-                    int scaleS = 3;     // subdivision length    
-                    
+                    int scaleS = 3;     // subdivision length
 
                     // strings graduations
                     // TODO: color for Text different?
                     float tx = 0;
-                    float ty = 0;                    
+                    float ty = 0;
                     int startDiv = 0;
-                    
+
                     Color _scaleColor = ForeColor;
                     SolidBrush br = new SolidBrush(_scaleColor);
 
-                    // Calculate max size of text 
+                    // Calculate max size of text
                     //string str = String.Format("{0,0:D}", (int)_maximum);
                     string str = String.Format("{0,0:##}", _maximum);
                     Font font = this.Font;
@@ -1372,10 +1395,9 @@ namespace PlexDL.Common.Components
 
                         if (_tickAdd != 0)
                             val = val + _tickAdd;
-                        
+
                         str = String.Format("{0:0.##}", val);
-                        SizeF size = e.Graphics.MeasureString( str, font);
-                        
+                        SizeF size = e.Graphics.MeasureString(str, font);
 
                         // HORIZONTAL
                         if (_barOrientation == Orientation.Horizontal)
@@ -1389,37 +1411,36 @@ namespace PlexDL.Common.Components
                                 {
                                     tx = (start + barRect.X + interval) - (float)(size.Width * 0.5);
                                     //ty = barRect.Y + barRect.Height / 2 - (1.5F)*(size.Height) - scaleL - offset;
-                                    ty = barRect.Y + barRect.Height/2 - size.Height - scaleL - offset;
+                                    ty = barRect.Y + barRect.Height / 2 - size.Height - scaleL - offset;
                                     e.Graphics.DrawString(str, font, br, tx, ty);
                                 }
                                 if (_tickStyle == TickStyle.BottomRight || _tickStyle == TickStyle.Both)
                                 {
                                     tx = (start + barRect.X + interval) - (float)(size.Width * 0.5);
                                     //ty = barRect.Y + barRect.Height/2 + (size.Height/2) + scaleL + offset;
-                                    ty = barRect.Y + barRect.Height/2 + scaleL + offset;
-                                    e.Graphics.DrawString(str, font, br, tx, ty );
-                                }                                
+                                    ty = barRect.Y + barRect.Height / 2 + scaleL + offset;
+                                    e.Graphics.DrawString(str, font, br, tx, ty);
+                                }
                             }
-                            
-                            // draw main ticks                           
+
+                            // draw main ticks
                             if (_tickStyle == TickStyle.TopLeft || _tickStyle == TickStyle.Both)
-                            {                                 
-                                x1 = start + barRect.X + interval;                                
-                                y1 = barRect.Y + barRect.Height/2 - scaleL - offset;
-                                x2 = start + barRect.X + interval;                                
-                                y2 = barRect.Y + barRect.Height/2 - offset;
+                            {
+                                x1 = start + barRect.X + interval;
+                                y1 = barRect.Y + barRect.Height / 2 - scaleL - offset;
+                                x2 = start + barRect.X + interval;
+                                y2 = barRect.Y + barRect.Height / 2 - offset;
                                 e.Graphics.DrawLine(penTickL, x1, y1, x2, y2);
                             }
                             if (_tickStyle == TickStyle.BottomRight || _tickStyle == TickStyle.Both)
                             {
-
-                                x1 = start + barRect.X + interval;                                
-                                y1 = barRect.Y + barRect.Height/2 + offset;
+                                x1 = start + barRect.X + interval;
+                                y1 = barRect.Y + barRect.Height / 2 + offset;
                                 x2 = start + barRect.X + interval;
-                                y2 = barRect.Y + barRect.Height/2 + scaleL + offset;
+                                y2 = barRect.Y + barRect.Height / 2 + scaleL + offset;
                                 e.Graphics.DrawLine(penTickL, x1, y1, x2, y2);
                             }
-                                  
+
                             rulerValue += (float)((_maximum - _minimum) / (_scaleDivisions));
 
                             // Draw subdivisions
@@ -1432,27 +1453,28 @@ namespace PlexDL.Common.Components
 
                                     if (_showSmallScale)
                                     {
-                                        // Horizontal                            
+                                        // Horizontal
                                         if (_tickStyle == TickStyle.TopLeft || _tickStyle == TickStyle.Both)
                                         {
-                                            x1 = start + barRect.X + interval;                                            
-                                            y1 = barRect.Y + barRect.Height/2 -scaleS - offset;
-                                            x2 = start + barRect.X + interval;                                            
-                                            y2 = barRect.Y + barRect.Height/2 - offset;
+                                            x1 = start + barRect.X + interval;
+                                            y1 = barRect.Y + barRect.Height / 2 - scaleS - offset;
+                                            x2 = start + barRect.X + interval;
+                                            y2 = barRect.Y + barRect.Height / 2 - offset;
                                             e.Graphics.DrawLine(penTickS, x1, y1, x2, y2);
                                         }
                                         if (_tickStyle == TickStyle.BottomRight || _tickStyle == TickStyle.Both)
                                         {
-                                            x1 = start + barRect.X + interval;                                            
-                                            y1 = barRect.Y + barRect.Height/2 + offset;
-                                            x2 = start + barRect.X + interval;                                            
-                                            y2 = barRect.Y + barRect.Height/2 + scaleS + offset;
+                                            x1 = start + barRect.X + interval;
+                                            y1 = barRect.Y + barRect.Height / 2 + offset;
+                                            x2 = start + barRect.X + interval;
+                                            y2 = barRect.Y + barRect.Height / 2 + scaleS + offset;
                                             e.Graphics.DrawLine(penTickS, x1, y1, x2, y2);
                                         }
                                     }
                                 }
                             }
-                            #endregion
+
+                            #endregion horizontal
                         }
                         else
                         {
@@ -1460,7 +1482,7 @@ namespace PlexDL.Common.Components
 
                             // Draw string graduations
                             if (_showDivisionsText)
-                            {                                
+                            {
                                 if (_tickStyle == TickStyle.TopLeft || _tickStyle == TickStyle.Both)
                                 {
                                     //tx = lineLeftX - size.Width / 2;
@@ -1478,21 +1500,20 @@ namespace PlexDL.Common.Components
 
                                 startDiv = (int)maxsize.Width + 3;
                             }
-                            
 
-                            // draw main ticks                            
+                            // draw main ticks
                             if (_tickStyle == TickStyle.TopLeft || _tickStyle == TickStyle.Both)
-                            {                                
+                            {
                                 x1 = barRect.X + barRect.Width / 2 - scaleL - offset;
-                                y1 = start + barRect.Y + interval;                             
+                                y1 = start + barRect.Y + interval;
                                 x2 = barRect.X + barRect.Width / 2 - offset;
                                 y2 = start + barRect.Y + interval;
                                 e.Graphics.DrawLine(penTickL, x1, y1, x2, y2);
                             }
                             if (_tickStyle == TickStyle.BottomRight || _tickStyle == TickStyle.Both)
-                            {                                
+                            {
                                 x1 = barRect.X + barRect.Width / 2 + offset;
-                                y1 = start + barRect.Y + interval;                             
+                                y1 = start + barRect.Y + interval;
                                 x2 = barRect.X + barRect.Width / 2 + scaleL + offset;
                                 y2 = start + barRect.Y + interval;
                                 e.Graphics.DrawLine(penTickL, x1, y1, x2, y2);
@@ -1511,17 +1532,17 @@ namespace PlexDL.Common.Components
                                     if (_showSmallScale)
                                     {
                                         if (_tickStyle == TickStyle.TopLeft || _tickStyle == TickStyle.Both)
-                                        {                                            
+                                        {
                                             x1 = barRect.X + barRect.Width / 2 - scaleS - offset;
-                                            y1 = start + barRect.Y + interval;                                         
+                                            y1 = start + barRect.Y + interval;
                                             x2 = barRect.X + barRect.Width / 2 - offset;
                                             y2 = start + barRect.Y + interval;
                                             e.Graphics.DrawLine(penTickS, x1, y1, x2, y2);
                                         }
                                         if (_tickStyle == TickStyle.BottomRight || _tickStyle == TickStyle.Both)
-                                        {                                            
+                                        {
                                             x1 = barRect.X + barRect.Width / 2 + offset;
-                                            y1 = start + barRect.Y + interval;                                         
+                                            y1 = start + barRect.Y + interval;
                                             x2 = barRect.X + barRect.Width / 2 + scaleS + offset;
                                             y2 = start + barRect.Y + interval;
                                             e.Graphics.DrawLine(penTickS, x1, y1, x2, y2);
@@ -1529,11 +1550,13 @@ namespace PlexDL.Common.Components
                                     }
                                 }
                             }
-                            #endregion
-                        }                       
+
+                            #endregion vertical
+                        }
                     }
                 }
-                #endregion
+
+                #endregion draw ticks
             }
             catch (Exception Err)
             {
@@ -1544,11 +1567,12 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
+        #endregion Paint
 
         #region Overided events
 
         private bool mouseInRegion = false;
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.EnabledChanged"></see> event.
         /// </summary>
@@ -1608,35 +1632,35 @@ namespace PlexDL.Common.Components
         {
             base.OnMouseMove(e);
             mouseInThumbRegion = IsPointInRect(e.Location, thumbRect);
-            
+
             if (Capture & e.Button == MouseButtons.Left)
             {
                 ScrollEventType set = ScrollEventType.ThumbPosition;
                 Point pt = e.Location;
-                int p = _barOrientation == Orientation.Horizontal ? pt.X : pt.Y;                
+                int p = _barOrientation == Orientation.Horizontal ? pt.X : pt.Y;
 
                 int margin = _thumbSize.Height >> 1;
                 p -= margin;
-                              
+
                 if (_barOrientation == Orientation.Horizontal)
                 {
-                    if (_thumbImage != null) 
-                    {                        
-                        _trackerValue = _minimum  + (p - OffsetL) * (_maximum - _minimum) / (ClientRectangle.Width - OffsetL -OffsetR - _thumbImage.Width);
+                    if (_thumbImage != null)
+                    {
+                        _trackerValue = _minimum + (p - OffsetL) * (_maximum - _minimum) / (ClientRectangle.Width - OffsetL - OffsetR - _thumbImage.Width);
                     }
                     else
-                    {                     
+                    {
                         _trackerValue = _minimum + (p - OffsetL) * (_maximum - _minimum) / (ClientRectangle.Width - OffsetL - OffsetR - _thumbSize.Width);
                     }
                 }
                 else
                 {
                     if (_thumbImage != null)
-                    {                        
+                    {
                         _trackerValue = _maximum - (p - OffsetR) * (_maximum - _minimum) / (ClientRectangle.Height - OffsetL - OffsetR - _thumbImage.Height);
                     }
                     else
-                    {                     
+                    {
                         _trackerValue = _maximum - (p - OffsetR) * (_maximum - _minimum) / (ClientRectangle.Height - OffsetL - OffsetR - _thumbSize.Height);
                     }
                 }
@@ -1728,21 +1752,26 @@ namespace PlexDL.Common.Components
                     SetProperValue(Value - (int)_smallChange);
                     if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.SmallDecrement, (int)Value));
                     break;
+
                 case Keys.Up:
                 case Keys.Right:
                     SetProperValue(Value + (int)_smallChange);
                     if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.SmallIncrement, (int)Value));
                     break;
+
                 case Keys.Home:
                     Value = _minimum;
                     break;
+
                 case Keys.End:
                     Value = _maximum;
                     break;
+
                 case Keys.PageDown:
                     SetProperValue(Value - (int)_largeChange);
                     if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.LargeDecrement, (int)Value));
                     break;
+
                 case Keys.PageUp:
                     SetProperValue(Value + (int)_largeChange);
                     if (Scroll != null) Scroll(this, new ScrollEventArgs(ScrollEventType.LargeIncrement, (int)Value));
@@ -1772,7 +1801,7 @@ namespace PlexDL.Common.Components
             }
         }
 
-        #endregion
+        #endregion Overided events
 
         #region Help routines
 
@@ -1858,6 +1887,6 @@ namespace PlexDL.Common.Components
             else return false;
         }
 
-        #endregion
+        #endregion Help routines
     }
 }

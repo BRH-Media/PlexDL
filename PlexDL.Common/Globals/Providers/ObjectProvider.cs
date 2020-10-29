@@ -4,10 +4,9 @@ using PlexDL.Common.Enums;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.Plex;
-using PlexDL.PlexAPI;
+using PlexDL.MyPlex;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using PlexDL.MyPlex;
 
 namespace PlexDL.Common.Globals.Providers
 {

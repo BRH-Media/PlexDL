@@ -1,14 +1,14 @@
 ﻿using PlexDL.Common;
-using PlexDL.Common.Structures;
+using PlexDL.Common.Components;
+using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.Common.Structures.AppOptions;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class DirectConnect : Form
+    public partial class DirectConnect : DoubleBufferedForm
     {
         public DirectConnect()
         {

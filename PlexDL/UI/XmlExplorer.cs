@@ -1,12 +1,12 @@
-﻿using System;
+﻿using PlexDL.Common.Components;
+using System;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace PlexDL.UI
 {
-    public partial class XmlExplorer : Form
+    public partial class XmlExplorer : DoubleBufferedForm
     {
         public XmlDocument Xml { get; set; }
 

@@ -1,10 +1,11 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Logging;
 using System;
 using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class LinkViewer : Form
+    public partial class LinkViewer : DoubleBufferedForm
     {
         public LinkViewer()
         {

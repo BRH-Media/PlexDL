@@ -1,17 +1,17 @@
-﻿using PlexDL.Common.Enums;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Security;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace PlexDL.UI
 {
-    internal partial class About : Form
+    internal partial class About : DoubleBufferedForm
     {
         public About()
         {

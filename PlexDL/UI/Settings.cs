@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common;
+using PlexDL.Common.Components;
 using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -9,7 +10,7 @@ using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Settings : Form
+    public partial class Settings : DoubleBufferedForm
     {
         //this does not change...even when the original object does. This is a snapshot to revert
         //changes made in this form.

@@ -3,11 +3,12 @@ using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Components;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers.DGVRenderers;
-using PlexDL.Common.Structures;
-using PlexDL.PlexAPI;
+using PlexDL.Common.Structures.AppOptions;
+using PlexDL.MyPlex;
 using PlexDL.PlexAPI.LoginHandler;
 using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
 using PlexDL.WaitWindow;
@@ -15,13 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using PlexDL.Common.Structures.AppOptions;
-using PlexDL.MyPlex;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class ServerManager : Form
+    public partial class ServerManager : DoubleBufferedForm
     {
         public ServerManager()
         {

@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API;
+using PlexDL.Common.Components;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -19,7 +20,7 @@ using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Player : Form
+    public partial class Player : DoubleBufferedForm
     {
         private PlexDL.Player.Player _mPlayer;
 
@@ -30,17 +31,6 @@ namespace PlexDL.UI
         public Player()
         {
             InitializeComponent();
-        }
-
-        //double-buffering override for the entire form
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000; //turn on WS_EX_COMPOSITED
-                return cp;
-            }
         }
 
         private void SwitchWmp(bool pvsSetup = true)
@@ -251,9 +241,6 @@ namespace PlexDL.UI
             }
             else
             {
-                //weird workaround suggested by Peter
-                this.Width++; this.Width--;
-
                 //start playback
                 _mPlayer.Play(fileName);
             }

@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common;
-using PlexDL.Common.API;
+using PlexDL.Common.API.IO;
 using PlexDL.Common.API.Objects.AttributeTables;
+using PlexDL.Common.Components;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures.Plex;
@@ -9,14 +10,13 @@ using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.Common.API.IO;
 using UIHelpers;
 
 #pragma warning disable 1591
 
 namespace PlexDL.UI
 {
-    public partial class Metadata : Form
+    public partial class Metadata : DoubleBufferedForm
     {
         public Metadata()
         {

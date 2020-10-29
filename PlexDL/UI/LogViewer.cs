@@ -1,5 +1,6 @@
 ﻿using LogDel;
 using LogDel.Utilities;
+using PlexDL.Common.Components;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
@@ -14,7 +15,7 @@ using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class LogViewer : Form
+    public partial class LogViewer : DoubleBufferedForm
     {
         private bool _isFiltered;
 

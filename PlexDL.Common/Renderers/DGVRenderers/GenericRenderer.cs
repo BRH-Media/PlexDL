@@ -55,10 +55,10 @@ namespace PlexDL.Common.Renderers.DGVRenderers
                         //invoke the DataGridView so we don't thread-lock
                         target.BeginInvoke((MethodInvoker)delegate
                        {
-                            //bind the data to the grid ("render" the data)
-                            target.DataSource = dgvBind;
-                            //set the captions
-                            Methods.SetHeaderText(target, info.Data);
+                           //bind the data to the grid ("render" the data)
+                           target.DataSource = dgvBind;
+                           //set the captions
+                           Methods.SetHeaderText(target, info.Data);
                            target.Refresh();
                        });
                     }

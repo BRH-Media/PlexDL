@@ -4,29 +4,29 @@ using System.Linq;
 namespace LogDel.Utilities.Extensions
 {
     public static class CharHelper
-	{
-		public static string CleanLogDel(this string line)
-		{
-			var clean = line;
+    {
+        public static string CleanLogDel(this string line)
+        {
+            var clean = line;
 
-			char[] bannedChars =
-			{
-				'#', '!', '\n', '\r' //newline characters cause parsing problems
+            char[] bannedChars =
+            {
+                '#', '!', '\n', '\r' //newline characters cause parsing problems
 			};
 
-			foreach (var c in line)
-				if (bannedChars.Contains(c))
-				{
-					var index = clean.IndexOf(c);
-					clean = clean.Remove(index, 1);
-				}
+            foreach (var c in line)
+                if (bannedChars.Contains(c))
+                {
+                    var index = clean.IndexOf(c);
+                    clean = clean.Remove(index, 1);
+                }
 
-			return clean;
-		}
+            return clean;
+        }
 
-		public static string[] CleanLogDel(this IEnumerable<string> line)
-		{
-			return line.Select(CleanLogDel).ToArray();
-		}
-	}
+        public static string[] CleanLogDel(this IEnumerable<string> line)
+        {
+            return line.Select(CleanLogDel).ToArray();
+        }
+    }
 }

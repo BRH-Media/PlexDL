@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using PlexDL.Common.Globals.Providers;
+﻿using PlexDL.Common.Globals.Providers;
+using System.Xml;
 
 namespace PlexDL.Common.API.Metadata.Handlers.Parsers
 {

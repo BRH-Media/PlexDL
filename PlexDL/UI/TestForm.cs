@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Pxz.Structures;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Pxz.UI;
 using System;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class TestForm : Form
+    public partial class TestForm : DoubleBufferedForm
     {
         public TestForm()
         {

@@ -1,12 +1,12 @@
-﻿using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
-using PlexDL.Common.Structures.AppOptions;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Authenticate : Form
+    public partial class Authenticate : DoubleBufferedForm
     {
         public Authenticate()
         {

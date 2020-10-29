@@ -1,9 +1,8 @@
 ﻿using PlexDL.Common.Logging;
-using PlexDL.PlexAPI;
+using PlexDL.MyPlex;
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using PlexDL.MyPlex;
 using UIHelpers;
 
 namespace PlexDL.Common.API

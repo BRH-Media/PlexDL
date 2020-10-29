@@ -1,13 +1,13 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Components;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Data;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace PlexDL.UI
 {
-    public partial class DataExplorer : Form
+    public partial class DataExplorer : DoubleBufferedForm
     {
         public PlexObject PlexData { get; set; } = null;
         public DataSet RawData { get; set; } = null;

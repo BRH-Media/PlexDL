@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using PlexDL.Common.Pxz.Structures;
+﻿using PlexDL.Common.Pxz.Structures;
+using System.Xml;
 
 namespace PlexDL.Common.Pxz.Extensions
 {

@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using PlexDL.Common.Structures.Plex;
+﻿using PlexDL.Common.Structures.Plex;
+using System.Windows.Forms;
 using UIHelpers;
 
 namespace PlexDL.UI

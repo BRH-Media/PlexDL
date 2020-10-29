@@ -1,5 +1,6 @@
 ﻿using LogDel;
-using PlexDL.Common.API;
+using PlexDL.Common.API.IO;
+using PlexDL.Common.Components;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,11 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using PlexDL.Common.API.IO;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Translator : Form
+    public partial class Translator : DoubleBufferedForm
     {
         public Translator()
         {

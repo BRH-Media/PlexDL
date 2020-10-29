@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.CastAPI;
+using PlexDL.Common.Components;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
@@ -12,12 +13,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class Cast : Form
+    public partial class Cast : DoubleBufferedForm
     {
         public Cast()
         {

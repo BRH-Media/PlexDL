@@ -46,6 +46,9 @@
     <Compile Include="ColorSlider.designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
+    <Compile Include="DoubleBufferedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DXPanel.cs">
       <SubType>Component</SubType>
     </Compile>

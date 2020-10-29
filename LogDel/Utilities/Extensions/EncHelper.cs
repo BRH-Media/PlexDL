@@ -1,7 +1,6 @@
 ﻿using PlexDL.Common.Enums;
-using PlexDL.Common.Security;
-using System;
 using PlexDL.Common.Security.Protection;
+using System;
 
 namespace LogDel.Utilities.Extensions
 {

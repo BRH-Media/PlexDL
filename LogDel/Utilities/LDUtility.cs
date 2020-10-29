@@ -1,11 +1,10 @@
-﻿using LogDel.Utilities.Extensions;
+﻿using LogDel.Enums;
+using LogDel.Utilities.Extensions;
 using PlexDL.Common.Enums;
-using PlexDL.Common.Security;
+using PlexDL.Common.Security.Protection;
 using System;
 using System.Data;
 using System.IO;
-using LogDel.Enums;
-using PlexDL.Common.Security.Protection;
 
 namespace LogDel.Utilities
 {

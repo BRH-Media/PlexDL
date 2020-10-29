@@ -50,9 +50,9 @@ namespace PlexDL.UI
             this.btnFullScreen = new System.Windows.Forms.Button();
             this.trkVolume = new System.Windows.Forms.TrackBar();
             this.tlpMaster = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlPlayer = new System.Windows.Forms.Panel();
             this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.pnlPlayer = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             this.tlpPlayerControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trkVolume)).BeginInit();
@@ -305,16 +305,6 @@ namespace PlexDL.UI
             this.tlpMaster.Size = new System.Drawing.Size(1280, 771);
             this.tlpMaster.TabIndex = 12;
             // 
-            // wmpMain
-            // 
-            this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wmpMain.Enabled = true;
-            this.wmpMain.Location = new System.Drawing.Point(0, 0);
-            this.wmpMain.Name = "wmpMain";
-            this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-            this.wmpMain.Size = new System.Drawing.Size(1280, 771);
-            this.wmpMain.TabIndex = 0;
-            // 
             // pnlPlayer
             // 
             this.pnlPlayer.BackColor = System.Drawing.Color.Black;
@@ -325,12 +315,23 @@ namespace PlexDL.UI
             this.pnlPlayer.Size = new System.Drawing.Size(1280, 720);
             this.pnlPlayer.TabIndex = 0;
             // 
+            // wmpMain
+            // 
+            this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wmpMain.Enabled = true;
+            this.wmpMain.Location = new System.Drawing.Point(0, 0);
+            this.wmpMain.Name = "wmpMain";
+            this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
+            this.wmpMain.Size = new System.Drawing.Size(1280, 771);
+            this.wmpMain.TabIndex = 0;
+            // 
             // Player
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1280, 771);
             this.Controls.Add(this.tlpMaster);
             this.Controls.Add(this.wmpMain);
+            this.DoubleBufferedHack = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Player";
             this.ShowInTaskbar = false;

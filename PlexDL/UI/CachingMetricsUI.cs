@@ -1,12 +1,12 @@
 ﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Components;
 using PlexDL.Common.Logging;
 using System;
-using System.Windows.Forms;
 using UIHelpers;
 
 namespace PlexDL.UI
 {
-    public partial class CachingMetricsUi : Form
+    public partial class CachingMetricsUi : DoubleBufferedForm
     {
         public CachingMetricsUi()
         {
