@@ -1,0 +1,21 @@
+﻿namespace PlexDL.Player
+{
+    /// <summary>
+    /// Specifies the amount of noise reduction during seeking with the player's position slider. 
+    /// </summary>
+    public enum SilentSeek
+    {
+        /// <summary>
+        /// The audio output is not muted during seeking.
+        /// </summary>
+        Never,
+        /// <summary>
+        /// The audio output is only muted during seeking when the slider is moved.
+        /// </summary>
+        OnMoving,
+        /// <summary>
+        /// The audio output is always muted during seeking.
+        /// </summary>
+        Always
+    }
+}

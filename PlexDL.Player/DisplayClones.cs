@@ -83,67 +83,6 @@ namespace PlexDL.Player
 
     #region Display Clones - Enumerations
 
-    /// <summary>
-    /// Specifies the axis used to flip the video image of the display clone.
-    /// </summary>
-    public enum CloneFlip
-    {
-        /// <summary>
-        /// Specifies no flipping.
-        /// </summary>
-        FlipNone,
-        /// <summary>
-        /// Specifies a horizontal flip.
-        /// </summary>
-        FlipX,
-        /// <summary>
-        /// Specifies a vertical flip.
-        /// </summary>
-        FlipY,
-        /// <summary>
-        /// Specifies a horizontal and vertical flip.
-        /// </summary>
-        FlipXY
-    }
-
-    /// <summary>
-    /// Specifies the size and location of the video image of the display clone.
-    /// </summary>
-    public enum CloneLayout
-    {
-        /// <summary>
-        /// The video image is stretched across the display of the clone.
-        /// </summary>
-        Stretch,
-        /// <summary>
-        /// The video image is maximally enlarged within the display of the clone while maintaining the aspect ratio.
-        /// </summary>
-        Zoom,
-        /// <summary>
-        /// The video image completely fills the display of the clone while maintaining the aspect ratio, but possibly with horizontal or vertical image cropping.
-        /// </summary>
-        Cover
-    }
-
-    /// <summary>
-    /// Specifies the video quality of the display clone.
-    /// </summary>
-    public enum CloneQuality
-    {
-        /// <summary>
-        /// Specifies normal quality video.
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// Specifies high quality video.
-        /// </summary>
-        High,
-        /// <summary>
-        /// Specifies automatic quality video: high quality video if the video image of the display clone is smaller than the original video image, otherwise normal video quality.
-        /// </summary>
-        Auto
-    }
-
     #endregion
 
 
