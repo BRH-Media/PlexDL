@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace PlexDL.Common.Components
+namespace PlexDL.Common.Components.Forms
 {
     public class DoubleBufferedForm : Form
     {

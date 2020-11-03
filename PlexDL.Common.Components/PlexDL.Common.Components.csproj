@@ -37,25 +37,25 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularProgressBar.cs">
+    <Compile Include="Controls\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorSlider.cs">
+    <Compile Include="Controls\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ColorSlider.designer.cs">
+    <Compile Include="Controls\ColorSlider.designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
-    <Compile Include="DoubleBufferedForm.cs">
+    <Compile Include="Forms\DoubleBufferedForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DXPanel.cs">
+    <Compile Include="Controls\DXPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FlatDataGridView.cs">
+    <Compile Include="Controls\FlatDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="NoAutoSelectDataGridView.cs">
+    <Compile Include="Controls\NoAutoSelectDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,9 +67,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ColorSlider.resx">
+    <EmbeddedResource Include="Controls\ColorSlider.resx">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

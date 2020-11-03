@@ -1,4 +1,6 @@
-﻿namespace PlexDL.Common.Pxz.UI
+﻿using PlexDL.Common.Components.Controls;
+
+namespace PlexDL.Common.Pxz.UI
 {
     partial class PxzInformation
     {
@@ -33,10 +35,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PxzInformation));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvRecords = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvRecords = new FlatDataGridView();
             this.cxtExtract = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmExtractRecord = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvAttributes = new FlatDataGridView();
             this.btnOK = new System.Windows.Forms.Button();
             this.sfdExtract = new System.Windows.Forms.SaveFileDialog();
             this.tlpMain.SuspendLayout();
@@ -185,8 +187,8 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private Components.FlatDataGridView dgvRecords;
-        private Components.FlatDataGridView dgvAttributes;
+        private FlatDataGridView dgvRecords;
+        private FlatDataGridView dgvAttributes;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.ContextMenuStrip cxtExtract;
         private System.Windows.Forms.ToolStripMenuItem itmExtractRecord;

@@ -1,6 +1,6 @@
 ﻿using LogDel;
 using LogDel.Utilities;
-using PlexDL.Common.Components;
+using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;

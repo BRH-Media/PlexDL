@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Components;
+﻿using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Pxz.UI;
 using System;

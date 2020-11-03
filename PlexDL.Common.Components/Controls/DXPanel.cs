@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace PlexDL.Common.Components
+namespace PlexDL.Common.Components.Controls
 {
     public class DXPanel : Panel
     {

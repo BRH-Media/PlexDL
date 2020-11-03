@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Components;
+﻿using PlexDL.Common.Components.Forms;
 
 namespace PlexDL.UI
 {

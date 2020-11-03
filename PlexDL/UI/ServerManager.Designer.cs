@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using PlexDL.Common.Components;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.UI
 {
@@ -52,7 +53,7 @@ namespace PlexDL.UI
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCopyServerToken = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvServers = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvServers = new FlatDataGridView();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();

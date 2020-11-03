@@ -1,4 +1,6 @@
-﻿namespace PlexDL.UI
+﻿using PlexDL.Common.Components.Controls;
+
+namespace PlexDL.UI
 {
     partial class DataExplorer
     {
@@ -33,7 +35,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataExplorer));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lstTables = new System.Windows.Forms.ListBox();
-            this.dgvMain = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvMain = new FlatDataGridView();
             this.statusMain = new System.Windows.Forms.StatusStrip();
             this.lblTable = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTableValue = new System.Windows.Forms.ToolStripStatusLabel();
@@ -184,7 +186,7 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.ListBox lstTables;
-        private Common.Components.FlatDataGridView dgvMain;
+        private FlatDataGridView dgvMain;
         private System.Windows.Forms.StatusStrip statusMain;
         private System.Windows.Forms.ToolStripStatusLabel lblViewing;
         private System.Windows.Forms.ToolStripStatusLabel lblViewingValue;

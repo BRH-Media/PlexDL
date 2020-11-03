@@ -1,4 +1,6 @@
-﻿namespace PlexDL.PlexAPI.LoginHandler
+﻿using PlexDL.Common.Components.Controls;
+
+namespace PlexDL.PlexAPI.LoginHandler
 {
     partial class LoginWindow
     {
@@ -34,7 +36,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.tmrDotChange = new System.Windows.Forms.Timer(this.components);
             this.lnkRelaunch = new System.Windows.Forms.LinkLabel();
-            this.pbMain = new PlexDL.Common.Components.CircularProgressBar();
+            this.pbMain = new CircularProgressBar();
             this.tmrLoginDetection = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -148,7 +150,7 @@
 
         #endregion
 
-        private Common.Components.CircularProgressBar pbMain;
+        private CircularProgressBar pbMain;
         private System.Windows.Forms.Label lblInstructions;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Timer tmrDotChange;

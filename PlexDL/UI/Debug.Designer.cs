@@ -1,4 +1,6 @@
-﻿namespace PlexDL.UI
+﻿using PlexDL.Common.Components.Controls;
+
+namespace PlexDL.UI
 {
     partial class Debug
     {
@@ -49,7 +51,7 @@
             this.btnExportTitles = new System.Windows.Forms.Button();
             this.btnExportSeasons = new System.Windows.Forms.Button();
             this.gbGlobalFlags = new System.Windows.Forms.GroupBox();
-            this.dgvGlobalFlags = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvGlobalFlags = new FlatDataGridView();
             this.tlpControls = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPollRate = new System.Windows.Forms.TableLayoutPanel();
             this.lblPollRate = new System.Windows.Forms.Label();
@@ -543,6 +545,6 @@
         private System.Windows.Forms.Button btnExportAlbums;
         private System.Windows.Forms.Label lblRefreshCountValue;
         private System.Windows.Forms.Button btnResetRefreshCounter;
-        private Common.Components.FlatDataGridView dgvGlobalFlags;
+        private FlatDataGridView dgvGlobalFlags;
     }
 }

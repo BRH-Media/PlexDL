@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.WaitWindow
 {

@@ -1,4 +1,4 @@
-﻿namespace PlexDL.Common.Components
+﻿namespace PlexDL.Common.Components.Controls
 {
     partial class ColorSlider
     {

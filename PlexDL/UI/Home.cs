@@ -7,7 +7,8 @@ using PlexDL.Common.API.IO;
 using PlexDL.Common.API.Metadata.Handlers;
 using PlexDL.Common.API.Objects;
 using PlexDL.Common.Caching;
-using PlexDL.Common.Components;
+using PlexDL.Common.Components.Controls;
+using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
@@ -94,6 +95,21 @@ namespace PlexDL.UI
             return true;
         }
 
+        private void ItmStartSearch_Click(object sender, EventArgs e)
+        {
+            SearchProcedure();
+        }
+
+        private void ItmLoadProfile_Click(object sender, EventArgs e)
+        {
+            LoadProfile();
+        }
+
+        private void ItmSaveProfile_Click(object sender, EventArgs e)
+        {
+            SaveProfile();
+        }
+
         private void ItmDownloadThisEpisode_Click(object sender, EventArgs e)
         {
             cxtEpisodes.Close();
@@ -145,6 +161,66 @@ namespace PlexDL.UI
         private void NfyMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             BringToTop();
+        }
+
+        private void ItmSetDlDirectory_Click(object sender, EventArgs e)
+        {
+            SetDownloadDirectory();
+        }
+
+        private void BtnStream_Click(object sender, EventArgs e)
+        {
+            StartStreaming();
+        }
+
+        private void ItmMetadata_Click(object sender, EventArgs e)
+        {
+            Metadata();
+        }
+
+        private void ItmLogViewer_Click(object sender, EventArgs e)
+        {
+            ShowLogViewer();
+        }
+
+        private void ItmDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadSelected();
+        }
+
+        private void ItmDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTracks.Close();
+            DoDownloadAll();
+        }
+
+        private void CxtTrackOptions_Opening(object sender, CancelEventArgs e)
+        {
+            if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
+        }
+
+        private void ItmDGVDownloadThisTrack_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadSelected();
+        }
+
+        private void ItmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            DoDownloadAll();
+        }
+
+        private void ItmTrackMetadataView_Click(object sender, EventArgs e)
+        {
+            cxtTrackOptions.Close();
+            Metadata();
+        }
+
+        private void ItmCleanupAllData_Click(object sender, EventArgs e)
+        {
+            DoCleanup();
         }
 
         private void ItmStreamInPVS_Click(object sender, EventArgs e)
@@ -214,21 +290,6 @@ namespace PlexDL.UI
                     @"Network Error");
         }
 
-        private void ItmStartSearch_Click(object sender, EventArgs e)
-        {
-            SearchProcedure();
-        }
-
-        private void ItmLoadProfile_Click(object sender, EventArgs e)
-        {
-            LoadProfile();
-        }
-
-        private void ItmSaveProfile_Click(object sender, EventArgs e)
-        {
-            SaveProfile();
-        }
-
         private void ItmExportObj_Click(object sender, EventArgs e)
         {
             if (Flags.IsConnected)
@@ -283,26 +344,6 @@ namespace PlexDL.UI
             }
         }
 
-        private void ItmSetDlDirectory_Click(object sender, EventArgs e)
-        {
-            SetDownloadDirectory();
-        }
-
-        private void BtnStream_Click(object sender, EventArgs e)
-        {
-            StartStreaming();
-        }
-
-        private void ItmMetadata_Click(object sender, EventArgs e)
-        {
-            Metadata();
-        }
-
-        private void ItmLogViewer_Click(object sender, EventArgs e)
-        {
-            ShowLogViewer();
-        }
-
         private void ItmDisconnect_Click(object sender, EventArgs e)
         {
             if (Flags.IsConnected)
@@ -344,9 +385,7 @@ namespace PlexDL.UI
                     UIMessages.Info(@"Successfully deleted cached data");
                 }
                 else
-                {
                     UIMessages.Error(@"There's no cached data to clear", @"Validation Error");
-                }
             }
             catch (Exception ex)
             {
@@ -402,46 +441,6 @@ namespace PlexDL.UI
                 LoggingHelpers.RecordException(ex.Message, "WkrMetadataTimerError");
                 CancelDownload(true, "Worker Timeout");
             }
-        }
-
-        private void ItmDownloadThisTrack_Click(object sender, EventArgs e)
-        {
-            cxtTracks.Close();
-            DoDownloadSelected();
-        }
-
-        private void ItmDownloadThisAlbum_Click(object sender, EventArgs e)
-        {
-            cxtTracks.Close();
-            DoDownloadAll();
-        }
-
-        private void CxtTrackOptions_Opening(object sender, CancelEventArgs e)
-        {
-            if (dgvTracks.SelectedRows.Count == 0) e.Cancel = true;
-        }
-
-        private void ItmDGVDownloadThisTrack_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            DoDownloadSelected();
-        }
-
-        private void ItmDGVDownloadThisAlbum_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            DoDownloadAll();
-        }
-
-        private void ItmTrackMetadataView_Click(object sender, EventArgs e)
-        {
-            cxtTrackOptions.Close();
-            Metadata();
-        }
-
-        private void ItmCleanupAllData_Click(object sender, EventArgs e)
-        {
-            DoCleanup();
         }
 
         private static void DoCleanup(object sender, WaitWindowEventArgs e)

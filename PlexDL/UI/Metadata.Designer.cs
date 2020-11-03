@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.UI
 {
@@ -44,7 +45,7 @@ namespace PlexDL.UI
             this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
             this.gbStarring = new System.Windows.Forms.GroupBox();
             this.gbAttributes = new System.Windows.Forms.GroupBox();
-            this.dgvAttributes = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvAttributes = new FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -379,7 +380,7 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmVlc;
         private ToolStripMenuItem itmExit;
         private Panel pnlPlotSynopsis;
-        private Common.Components.FlatDataGridView dgvAttributes;
+        private FlatDataGridView dgvAttributes;
         private ToolStripMenuItem itmViewLink;
         private ToolStripMenuItem itmDataExplorer;
         private PictureBox picPoster;

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using libbrhscgui.Components;
 using PlexDL.Common.Components;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.UI
 {
@@ -93,15 +94,15 @@ namespace PlexDL.UI
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabMovies = new System.Windows.Forms.TabPage();
             this.tlpMovies = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvMovies = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvMovies = new FlatDataGridView();
             this.tabTV = new System.Windows.Forms.TabPage();
             this.tlpTV = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvTVShows = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvSeasons = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvEpisodes = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvTVShows = new FlatDataGridView();
+            this.dgvSeasons = new FlatDataGridView();
+            this.dgvEpisodes = new FlatDataGridView();
             this.tabMusic = new System.Windows.Forms.TabPage();
             this.tlpMusic = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvArtists = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvArtists = new FlatDataGridView();
             this.cxtTrackOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmTrackMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackMetadataView = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,15 +114,15 @@ namespace PlexDL.UI
             this.itmTrackStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackCast = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvAlbums = new PlexDL.Common.Components.FlatDataGridView();
-            this.dgvTracks = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvAlbums = new FlatDataGridView();
+            this.dgvTracks = new FlatDataGridView();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvLog = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvLog = new FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpContentOptions = new System.Windows.Forms.TableLayoutPanel();
             this.pbMain = new System.Windows.Forms.ProgressBar();
-            this.dgvSections = new PlexDL.Common.Components.FlatDataGridView();
+            this.dgvSections = new FlatDataGridView();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoadProfile = new System.Windows.Forms.ToolStripMenuItem();

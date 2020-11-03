@@ -1,6 +1,6 @@
 ﻿using LogDel;
 using PlexDL.Common.API.IO;
-using PlexDL.Common.Components;
+using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Collections.Generic;

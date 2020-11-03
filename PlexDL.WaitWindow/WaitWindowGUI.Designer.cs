@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.WaitWindow
 {
@@ -27,7 +28,7 @@ namespace PlexDL.WaitWindow
             this.components = new System.ComponentModel.Container();
             this.MessageLabel = new System.Windows.Forms.Label();
             this._tmrDots = new System.Windows.Forms.Timer(this.components);
-            this._progressMain = new PlexDL.Common.Components.CircularProgressBar();
+            this._progressMain = new CircularProgressBar();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMain.SuspendLayout();
             this.SuspendLayout();
