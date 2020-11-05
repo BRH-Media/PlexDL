@@ -1,9 +1,12 @@
-﻿namespace PlexDL.Common.Pxz.Structures
+﻿using PlexDL.Common.Pxz.Enum;
+using System;
+
+namespace PlexDL.Common.Pxz.Structures
 {
     public class PxzRecordNaming
     {
-        public string RecordName { get; set; } = @"NewRecord";
-
+        public PxzRecordType DataType { get; set; } = PxzRecordType.Xml;
+        public string RecordName { get; set; } = $@"NewRecord{new Random().Next(1, 99999)}";
         public string StoredName { get; set; } = @"";
     }
 }

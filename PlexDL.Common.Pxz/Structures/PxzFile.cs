@@ -1,6 +1,7 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Pxz.Compressors;
+using PlexDL.Common.Pxz.Enum;
 using PlexDL.Common.Pxz.Extensions;
 using PlexDL.Common.Pxz.UI;
 using System;
@@ -83,6 +84,50 @@ namespace PlexDL.Common.Pxz.Structures
                 FileIndex.RecordReference.Add(r.Header.Naming);
                 Records.Add(r);
             }
+        }
+
+        /// <summary>
+        /// Select all records of a specific type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<PxzRecord> SelectType(PxzRecordType type)
+        {
+            try
+            {
+                if (Records.Count > 0 && FileIndex.RecordReference.Count > 0)
+                {
+                    //store all record matches here
+                    var matchedRecords = new List<PxzRecord>();
+
+                    //go through each reference
+                    foreach (var recRef in FileIndex.RecordReference)
+                    {
+                        //perform match
+                        if (recRef.DataType == type)
+                        {
+                            //load the record in its entirety into memory
+                            foreach (var recObj in Records)
+                                if (recObj.Header.Naming.RecordName == recRef.RecordName &&
+                                    recObj.Header.Naming.StoredName == recRef.StoredName)
+                                {
+                                    matchedRecords.Add(recObj);
+                                    break;
+                                }
+                        }
+                    }
+
+                    //return the matches
+                    return matchedRecords;
+                }
+            }
+            catch
+            {
+                //nothing
+            }
+
+            //default
+            return new List<PxzRecord>();
         }
 
         /// <summary>
@@ -279,8 +324,6 @@ namespace PlexDL.Common.Pxz.Structures
 
                 //apply new values
                 FileIndex = index;
-
-                UIMessages.Info(index.FormatVersion.ToString());
 
                 //check authenticity flag, and warn if it's been altered
                 if (tamperedWith)

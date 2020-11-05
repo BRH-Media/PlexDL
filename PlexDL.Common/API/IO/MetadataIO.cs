@@ -1,6 +1,8 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Pxz.Enum;
 using PlexDL.Common.Pxz.Structures;
+using PlexDL.Common.Security;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.WaitWindow;
 using System;
@@ -79,6 +81,28 @@ namespace PlexDL.Common.API.IO
                     objMetadata,
                     ptrMetadata
                 };
+
+                //export the actor images (if any)
+                if (contentToExport.Actors != null)
+                    if (contentToExport.Actors.Count > 0)
+                    {
+                        //loop through each actor and attempt an image download
+                        foreach (var a in contentToExport.Actors)
+                        {
+                            //download
+                            var image = ImageHandler.GetImageFromUrl(a.ThumbnailUri);
+
+                            //verify
+                            if (image != Properties.Resources.image_not_available_png_8)
+                            {
+                                //create a new record for the image
+                                var record = new PxzRecord(image, $"actor_{Md5Helper.CalculateMd5Hash(a.ThumbnailUri)}");
+
+                                //add it to the collection
+                                data.Add(record);
+                            }
+                        }
+                    }
 
                 //embedded in PXZ indexing information
                 var plexdlVersion = Assembly.GetEntryAssembly()?.GetName().Version;
@@ -193,6 +217,35 @@ namespace PlexDL.Common.API.IO
 
                         //apply raw XML from PXZ file
                         obj.RawMetadata = file.LoadRecord(@"raw").Content.ToXmlDocument();
+
+                        //apply poster from PXZ file
+                        obj.StreamInformation.ContentThumbnail = file.LoadRecord(@"poster").Content.ToImage();
+
+                        //check if the PXZ has any actor thumbnails stored
+                        var bitmaps = file.SelectType(PxzRecordType.Bitmap);
+
+                        //find ny actor images
+                        foreach (var b in bitmaps)
+                        {
+                            //check if the record is an actor thumbnail
+                            if (b.Header.Naming.RecordName.StartsWith(@"actor_"))
+                            {
+                                //find out which actor this image belongs to
+                                foreach (var a in obj.Actors)
+                                {
+                                    //record naming is just the URL hashed
+                                    var recordName = $"actor_{Md5Helper.CalculateMd5Hash(a.ThumbnailUri)}";
+
+                                    //verify
+                                    if (recordName == b.Header.Naming.RecordName)
+                                    {
+                                        //apply image
+                                        a.Thumbnail = b.Content.ToImage();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
 
                         //return the new PlexObject
                         return obj;

@@ -24,7 +24,6 @@ namespace PlexDL.UI
         }
 
         public PlexObject StreamingContent { get; set; } = new PlexObject();
-        public Bitmap Poster { get; set; }
         public bool StationaryMode { get; set; }
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
@@ -45,10 +44,10 @@ namespace PlexDL.UI
                 if (picPoster.InvokeRequired)
                     picPoster.BeginInvoke((MethodInvoker)delegate
                    {
-                       picPoster.BackgroundImage = Poster ?? ImageHandler.GetPoster(StreamingContent);
+                       picPoster.BackgroundImage = StreamingContent.StreamInformation.ContentThumbnail ?? ImageHandler.GetPoster(StreamingContent);
                    });
                 else
-                    picPoster.BackgroundImage = Poster ?? ImageHandler.GetPoster(StreamingContent);
+                    picPoster.BackgroundImage = StreamingContent.StreamInformation.ContentThumbnail ?? ImageHandler.GetPoster(StreamingContent);
             }
 
             //fill the plot synopsis infobox
@@ -131,7 +130,7 @@ namespace PlexDL.UI
                         Size = new Size(79, 119),
                         Location = new Point(3, 3),
                         BackgroundImageLayout = ImageLayout.Zoom,
-                        BackgroundImage = ImageHandler.GetImageFromUrl(a.ThumbnailUri),
+                        BackgroundImage = a.Thumbnail ?? ImageHandler.GetImageFromUrl(a.ThumbnailUri),
                         Visible = true
                     };
                     p.Controls.Add(lblActorRole);
@@ -239,10 +238,6 @@ namespace PlexDL.UI
                 if (pxz != null)
                 {
                     StreamingContent = MetadataIO.MetadataFromFile(pxz);
-
-                    var profilePoster = (Bitmap)pxz.LoadRecord(@"poster").Content.ToImage();
-
-                    Poster = profilePoster;
 
                     flpActors.Controls.Clear();
 

@@ -32,7 +32,7 @@ namespace PlexDL.Common.Pxz.UI
                 {
                     var recordName = r.Header.Naming.RecordName;
                     var storedName = r.Header.Naming.StoredName;
-                    var recordType = r.Header.DataType.ToString();
+                    var recordType = r.Header.Naming.DataType.ToString();
                     var recordProt = r.ProtectedRecord.ToString();
                     var recordSize = $"{Utilities.FormatBytes((long)r.Header.Size.RawSize)}/{Utilities.FormatBytes((long)r.Header.Size.DecSize)}";
                     var comprRatio = $"{r.Header.Size.Ratio}%";

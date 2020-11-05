@@ -1,4 +1,7 @@
-﻿namespace PlexDL.Common.Structures
+﻿using System.Drawing;
+using System.Xml.Serialization;
+
+namespace PlexDL.Common.Structures
 {
     public class StreamInfo
     {
@@ -10,5 +13,8 @@
         public string FileName { get; set; } = "";
         public string ContentTitle { get; set; } = "";
         public string ContentThumbnailUri { get; set; } = "";
+
+        [XmlIgnore]
+        public Image ContentThumbnail { get; set; } = null;
     }
 }
