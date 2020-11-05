@@ -4,6 +4,7 @@
 #### Legal Disclaimer
 This software package **has not been endorsed** by Plex (Plex Incorporated), and is in no way officially supported by Plex Inc. This project accepts no monetary gain, and merely associates itself as 'PlexDL' in reference to the 'Plex Media Server (PMS)' software. It seeks merely to emphasise that it is compatible with the 'Plex Media Server (PMS)' software (developed by Plex Inc.), and **is in no way an official product, service or application**.
 
+#### Credits
 - Utilises modified `csharp-plex-api` by ammmze for server detection - [GitHub Repo](https://github.com/ammmze/csharp-plex-api)
 - Utilises Google's Material Design Icons - [Official Site](https://material.io/icons)
 - Utilises `Newtonsoft.Json` by JamesNK - [GitHub Repo](https://github.com/JamesNK/Newtonsoft.Json)
