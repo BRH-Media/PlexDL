@@ -405,20 +405,22 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF NOT EXIST "$(TargetDir)lib\" mkdir $(TargetDir)lib
-IF NOT EXIST "$(TargetDir)pdb\" mkdir $(TargetDir)pdb
-IF NOT EXIST "$(TargetDir)xml\" mkdir $(TargetDir)xml
+    <PostBuildEvent>IF $(ConfigurationName) == Release (
+	IF NOT EXIST "$(TargetDir)lib\" mkdir $(TargetDir)lib
+	IF NOT EXIST "$(TargetDir)pdb\" mkdir $(TargetDir)pdb
+	IF NOT EXIST "$(TargetDir)xml\" mkdir $(TargetDir)xml
 
-copy /y $(TargetDir)*.dll $(TargetDir)lib
-copy /y $(TargetDir)*.pdb $(TargetDir)pdb
-copy /y $(TargetDir)*.xml $(TargetDir)xml
+	copy /y $(TargetDir)*.dll $(TargetDir)lib
+	copy /y $(TargetDir)*.pdb $(TargetDir)pdb
+	copy /y $(TargetDir)*.xml $(TargetDir)xml
 
-del /f /q *.dll
-del /f /q *.pdb
-del /f /q *.xml
+	del /f /q *.dll
+	del /f /q *.pdb
+	del /f /q *.xml
 
-REM config files get restored on run
-del /f /q *.config</PostBuildEvent>
+	REM config files get restored on run
+	del /f /q *.config
+)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
