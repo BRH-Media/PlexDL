@@ -70,13 +70,13 @@ By using caching, you can drastically increase the performance of the applicatio
 
 ### How to get started
 #### __1. Building from Source__
-[Follow the Build Guide](./BUILDING.md)
+[Follow the Build Guide](./Documentation/BUILD.md)
 
 #### __2. Downloading from Releases__
 Alternatively, you can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all of the needed dependencies and the binary itself.
 
 ### __Using PlexDL__
-[Read the Usage Guide](./USAGE.md)
+[Read the Usage Guide](./Documentation/USAGE.md)
 
 ### __Looking for Demo Images?__
 [You Can Find Them Here](./demo_images)

@@ -195,6 +195,10 @@
       <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
       <Name>PlexDL.MyPlex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.ResourceProvider\PlexDL.ResourceProvider.csproj">
+      <Project>{0ee81c0d-834c-4f70-9e6a-6cc5db8f74b2}</Project>
+      <Name>PlexDL.ResourceProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
       <Name>PlexDL.WaitWindow</Name>

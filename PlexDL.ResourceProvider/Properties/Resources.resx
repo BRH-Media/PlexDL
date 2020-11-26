@@ -117,4 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="baseline_cancel_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_cancel_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_fast_forward_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_fast_forward_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_fast_rewind_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_fast_rewind_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_fullscreen_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_fullscreen_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_fullscreen_exit_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_fullscreen_exit_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_pause_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_pause_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_play_arrow_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_play_arrow_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_skip_next_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_skip_next_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_skip_previous_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_skip_previous_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="baseline_stop_black_18dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\baseline_stop_black_18dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="image_not_available_png_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\image-not-available-png-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keywordBlacklist" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\files\keywordblacklist.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

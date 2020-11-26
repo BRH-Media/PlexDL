@@ -313,19 +313,7 @@
     <None Include="Properties\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\keywordBlacklist.txt" />
-    <None Include="Resources\baseline_skip_previous_black_18dp.png" />
-    <None Include="Resources\baseline_skip_next_black_18dp.png" />
-    <None Include="Resources\baseline_stop_black_18dp.png" />
-    <None Include="Resources\baseline_cancel_black_18dp.png" />
-    <None Include="Resources\image-not-available-png-8.png" />
-    <None Include="Resources\baseline_fullscreen_black_18dp.png" />
-    <None Include="Resources\baseline_fullscreen_exit_black_18dp.png" />
     <Content Include="Resources\PlexDL.ico" />
-    <None Include="Resources\baseline_pause_black_18dp.png" />
-    <None Include="Resources\baseline_play_arrow_black_18dp.png" />
-    <None Include="Resources\baseline_fast_forward_black_18dp.png" />
-    <None Include="Resources\baseline_fast_rewind_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -396,6 +384,10 @@
     <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.MyPlex.csproj">
       <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
       <Name>PlexDL.MyPlex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlexDL.ResourceProvider\PlexDL.ResourceProvider.csproj">
+      <Project>{0ee81c0d-834c-4f70-9e6a-6cc5db8f74b2}</Project>
+      <Name>PlexDL.ResourceProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
       <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>

@@ -29,6 +29,9 @@
 - PlexDL includes a blank file named `keywordBlacklist.txt` in the `PlexDL\Resources` section of the source code. However, you must populate this list yourself and build the source from there. The format of this file is simply one blacklisted term per line.
 - PlexDL does not provide populated keyword lists by default; please do not ask for any. Also note that there are many available via a quick Google Search.
 
+### __Command-line Arguments__
+[Read the Guide](./ARGS.md)
+
 ### __Shortcut Keys__
 
 ---

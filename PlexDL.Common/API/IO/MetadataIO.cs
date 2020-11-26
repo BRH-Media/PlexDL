@@ -1,8 +1,10 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Security;
 using PlexDL.Common.Structures.Plex;
+using PlexDL.ResourceProvider.Properties;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,6 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
-using PlexDL.Common.Pxz.Enums;
 using UIHelpers;
 
 // ReSharper disable InconsistentNaming
@@ -93,7 +94,7 @@ namespace PlexDL.Common.API.IO
                             var image = ImageHandler.GetImageFromUrl(a.ThumbnailUri);
 
                             //verify
-                            if (image != Properties.Resources.image_not_available_png_8)
+                            if (image != Resources.image_not_available_png_8)
                             {
                                 //create a new record for the image
                                 var record = new PxzRecord(image, $"actor_{Md5Helper.CalculateMd5Hash(a.ThumbnailUri)}");
