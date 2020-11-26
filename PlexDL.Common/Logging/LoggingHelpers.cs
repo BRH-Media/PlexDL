@@ -4,6 +4,7 @@ using PlexDL.Common.Globals.Providers;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using LogDel.IO;
 
 namespace PlexDL.Common.Logging
 {

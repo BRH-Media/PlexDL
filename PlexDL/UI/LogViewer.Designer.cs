@@ -122,8 +122,7 @@ namespace PlexDL.UI
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(674, 24);
             this.menuMain.TabIndex = 17;
-            this.menuMain.Text = "menuStrip1";
-            this.menuMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MenuMain_ItemClicked);
+            this.menuMain.Text = "menuMain";
             // 
             // itmRefresh
             // 

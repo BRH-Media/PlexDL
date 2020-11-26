@@ -115,7 +115,6 @@
             this.btnMaybeLater.TabIndex = 3;
             this.btnMaybeLater.Text = "Maybe Later";
             this.btnMaybeLater.UseVisualStyleBackColor = true;
-            this.btnMaybeLater.Click += new System.EventHandler(this.BtnMaybeLater_Click);
             // 
             // tlpControls
             // 

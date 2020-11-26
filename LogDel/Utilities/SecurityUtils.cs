@@ -10,7 +10,7 @@ namespace LogDel.Utilities
     {
         public static bool ProtectionEnabled()
         {
-            return Vars.Protected == LogSecurity.Protected;
+            return Globals.Protected == LogSecurity.Protected;
         }
 
         public static void MarkFile(string filePath, Mark fileMark)

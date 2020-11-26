@@ -11,7 +11,9 @@ namespace LogDel.Utilities
         {
             try
             {
-                return logContents.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                //split at the newline character to format a string into its separate lines
+                return logContents.Split(new[] { '\n' },
+                    StringSplitOptions.RemoveEmptyEntries).ToList();
             }
             catch (Exception)
             {

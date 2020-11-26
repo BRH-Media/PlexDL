@@ -14,6 +14,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Html = GitHubUpdater.Formatting.Html;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable LocalizableElement
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace GitHubUpdater.UI
@@ -39,7 +41,7 @@ namespace GitHubUpdater.UI
             browserChanges.DocumentText = @"";
         }
 
-        private void LoadUi()
+        private void LoadUI()
         {
             if (AppUpdate == null)
                 NoUpdate();
@@ -83,7 +85,7 @@ namespace GitHubUpdater.UI
         private void Update_Load(object sender, EventArgs e)
         {
             //reposition elements and load all update information
-            LoadUi();
+            LoadUI();
         }
 
         private void YourVersionStatusUpdate()
@@ -168,32 +170,24 @@ namespace GitHubUpdater.UI
             lblUpdateTitle.Location = newLocation;
         }
 
-        private void BtnMaybeLater_Click(object sender, EventArgs e)
-        {
-        }
-
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
         {
-            BeginInvoke((MethodInvoker)delegate
-           {
-               Download();
-           });
+            Download();
         }
 
         private int NumberDownloads()
         {
-            return AppUpdate.UpdateData.assets.Sum(a => a.download_count);
+            //sum of all asset downloads denotes the total downloads counter
+            return AppUpdate.UpdateData
+                .assets.Sum(a => a.download_count);
         }
 
-        private void Download(bool waitWindow = true)
+        private void Download(bool closeForm = true)
         {
             try
             {
-                //offload? Depends on a flag
-                var status =
-                    waitWindow
-                    ? (ReturnStatus)WaitWindow.Show(Download, @"Downloading update files")
-                    : ExecuteDownload();
+                //download execution process
+                var status = ExecuteDownload();
 
                 switch (status)
                 {
@@ -218,13 +212,13 @@ namespace GitHubUpdater.UI
 
                         break;
 
-                    case ReturnStatus.Cancelled:
-                        //don't do anything
-                        break;
-
                     case ReturnStatus.Unknown:
                         MessageBox.Show(@"Download worker returned the 'unknown' job status indicator.", @"Warning",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        break;
+
+                    case ReturnStatus.Cancelled:
+                        //don't do anything
                         break;
 
                     default:
@@ -235,17 +229,36 @@ namespace GitHubUpdater.UI
             }
             catch (Exception ex)
             {
+                //log the error to a file
                 ExportError(ex);
+
+                //alert the user
                 MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            //always close form at the end of the download procedure
-            Close();
+            //always close form at the end of the download procedure (if allowed)
+            if (closeForm)
+                Close();
         }
 
-        private ReturnStatus ExecuteDownload()
+        /// <summary>
+        /// Multi-threaded WaitWindow invocation; do not execute as it is automatic.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExecuteDownload(object sender, WaitWindowEventArgs e)
         {
+            //return the control flow back to the original function, but disable the wait window
+            e.Result = ExecuteDownload(false);
+        }
+
+        private ReturnStatus ExecuteDownload(bool waitWindow = true)
+        {
+            //wait window
+            if (waitWindow)
+                return (ReturnStatus)WaitWindow.Show(ExecuteDownload, @"Downloading update files");
+
             //the final status to deliver to the UpdateClient
             var status = ReturnStatus.Unknown;
 
@@ -262,24 +275,31 @@ namespace GitHubUpdater.UI
                         Directory.CreateDirectory(dirA);
                     else
                     {
-                        Directory.Delete(dirA);
+                        //the directory already exists; delete it then create it once more
+                        Directory.Delete(dirA, true);
                         Directory.CreateDirectory(dirA);
                     }
 
                     //construct download job
                     var j = new Job
                     {
+                        //the asset URI to download
                         DownloadUri = new Uri(a.browser_download_url),
+
+                        //the path of the file to save the asset to
                         DownloadPath = $@"{dirA}\{a.name}",
+
+                        //the byte-size of the asset
                         DownloadSize = a.size
                     };
 
                     //download and flush job to disk
-                    status = Agent.DoDownload(j).Result;
+                    status = j.DoDownload().Result;
                 }
             }
             catch (Exception ex)
             {
+                //log the error to a file
                 ExportError(ex);
             }
 
@@ -287,17 +307,12 @@ namespace GitHubUpdater.UI
             return status;
         }
 
-        private void Download(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = ExecuteDownload();
-        }
-
         private void ExportError(Exception ex)
         {
             try
             {
                 //file name is MD5-hashed current date and time (for uniqueness)
-                var fileName = $"{Md5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
+                var fileName = $"UpdateError_{Md5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
 
                 //store all errors in the UpdateDirectory
                 var errorsPath = $@"{UpdateDirectory}\errors";

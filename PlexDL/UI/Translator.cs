@@ -1,4 +1,4 @@
-﻿using LogDel;
+﻿using LogDel.IO;
 using PlexDL.Common.API.IO;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Structures.AppOptions;

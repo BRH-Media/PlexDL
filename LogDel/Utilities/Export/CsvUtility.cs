@@ -3,7 +3,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace LogDel.Utilities
+namespace LogDel.Utilities.Export
 {
     public static class CsvUtility
     {

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 
-namespace LogDel.Utilities
+namespace LogDel.Utilities.Export
 {
     public static class XmlUtility
     {

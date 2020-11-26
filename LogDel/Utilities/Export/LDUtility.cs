@@ -6,7 +6,7 @@ using System;
 using System.Data;
 using System.IO;
 
-namespace LogDel.Utilities
+namespace LogDel.Utilities.Export
 {
     public static class LdUtility
     {

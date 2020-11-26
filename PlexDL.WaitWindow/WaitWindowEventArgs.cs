@@ -9,13 +9,13 @@ namespace PlexDL.WaitWindow
     public class WaitWindowEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initialises a new intance of the WaitWindowEventArgs class.
+        ///     Initialises a new instance of the WaitWindowEventArgs class.
         /// </summary>
-        /// <param name="GUI">The associated WaitWindow instance.</param>
+        /// <param name="gui">The associated WaitWindow instance.</param>
         /// <param name="args">A list of arguments to be passed.</param>
-        public WaitWindowEventArgs(WaitWindow GUI, List<object> args)
+        public WaitWindowEventArgs(WaitWindow gui, List<object> args)
         {
-            Window = GUI;
+            Window = gui;
             Arguments = args;
         }
 

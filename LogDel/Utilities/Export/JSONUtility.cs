@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 
-namespace LogDel.Utilities
+namespace LogDel.Utilities.Export
 {
     public static class JsonUtility
     {

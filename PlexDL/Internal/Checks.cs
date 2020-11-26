@@ -95,9 +95,9 @@ namespace PlexDL.Internal
         {
             //toggle log file (.logdel) DPAPI protection (REALLLLLY slow; please don't ever enable)
             if (Args.Contains("-lpon"))
-                Vars.Protected = LogSecurity.Protected;
+                Globals.Protected = LogSecurity.Protected;
             else if (Args.Contains("-lpoff"))
-                Vars.Protected = LogSecurity.Unprotected;
+                Globals.Protected = LogSecurity.Unprotected;
         }
 
         /// <summary>

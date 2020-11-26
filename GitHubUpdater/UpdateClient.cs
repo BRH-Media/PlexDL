@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Application = GitHubUpdater.API.Application;
 using UpdateChannel = GitHubUpdater.Enums.UpdateChannel;
 
+// ReSharper disable LocalizableElement
 // ReSharper disable SpecifyACultureInStringConversionExplicitly
 // ReSharper disable InvertIf
 
@@ -79,7 +80,7 @@ namespace GitHubUpdater
                 //make the update_files folder if it doesn't already exist
                 ConstructDirectory();
 
-                if (ConnectionChecker.CheckForInternetConnection())
+                if (Internet.IsConnected())
                 {
                     if (CurrentInstalledVersion == null)
                     {

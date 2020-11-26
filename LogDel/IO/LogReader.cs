@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 // ReSharper disable CoVariantArrayConversion
 
-namespace LogDel
+namespace LogDel.IO
 {
     public static class LogReader
     {
@@ -219,10 +219,13 @@ namespace LogDel
             }
             catch (Exception ex)
             {
+                //if we're allowed to, show the error message to the user
                 if (!silent)
-                    MessageBox.Show(ex.ToString(), @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.ToString(),
+                        @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            //return the final log DataTable
             return table;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using inet;
-using LogDel;
-using PlexDL.AltoHTTP.Classes;
+using LogDel.IO;
+using PlexDL.AltoHTTP.Classes.Downloader;
 using PlexDL.Common;
 using PlexDL.Common.API;
 using PlexDL.Common.API.IO;
@@ -37,7 +37,6 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using PlexDL.AltoHTTP.Classes.Downloader;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
@@ -274,7 +273,7 @@ namespace PlexDL.UI
 
         private void ItmServerManager_Click(object sender, EventArgs e)
         {
-            if (ConnectionChecker.CheckForInternetConnection())
+            if (Internet.IsConnected())
                 using (var frm = new ServerManager())
                 {
                     if (frm.ShowDialog() != DialogResult.OK) return;
