@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using PlexDL.Common.Components;
 using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.UI
@@ -53,7 +51,8 @@ namespace PlexDL.UI
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCopyServerToken = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvServers = new FlatDataGridView();
+            this.dgvServers = new PlexDL.Common.Components.Controls.FlatDataGridView();
+            this.itmDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
@@ -64,7 +63,7 @@ namespace PlexDL.UI
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmAuthenticate,
             this.itmLoad,
-            this.itmClearServers,
+            this.itmDisplay,
             this.itmConnect});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -104,8 +103,7 @@ namespace PlexDL.UI
             this.itmServers,
             this.itmRelays,
             this.itmDirectConnection,
-            this.itmLocalLink,
-            this.itmRenderTokenColumn});
+            this.itmLocalLink});
             this.itmLoad.Enabled = false;
             this.itmLoad.Name = "itmLoad";
             this.itmLoad.Size = new System.Drawing.Size(45, 20);
@@ -153,10 +151,9 @@ namespace PlexDL.UI
             // 
             // itmClearServers
             // 
-            this.itmClearServers.Enabled = false;
             this.itmClearServers.Name = "itmClearServers";
-            this.itmClearServers.Size = new System.Drawing.Size(86, 20);
-            this.itmClearServers.Text = "Clear Servers";
+            this.itmClearServers.Size = new System.Drawing.Size(71, 20);
+            this.itmClearServers.Text = "Clear Grid";
             this.itmClearServers.Click += new System.EventHandler(this.ItmClearServers_Click);
             // 
             // itmConnect
@@ -232,6 +229,19 @@ namespace PlexDL.UI
             this.dgvServers.Size = new System.Drawing.Size(800, 426);
             this.dgvServers.TabIndex = 18;
             this.dgvServers.DoubleClick += new System.EventHandler(this.DgvServers_DoubleClick);
+            this.dgvServers.SelectionChanged += new System.EventHandler(this.DgvServers_SelectionChanged);
+            // 
+            // itmDisplay
+            // 
+            this.itmDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.itmClearServers,
+                this.itmRenderTokenColumn
+            });
+            this.itmDisplay.Enabled = false;
+            this.itmDisplay.Name = "itmDisplay";
+            this.itmDisplay.Size = new System.Drawing.Size(57, 20);
+            this.itmDisplay.Text = "Display";
+
             // 
             // ServerManager
             // 
@@ -277,5 +287,6 @@ namespace PlexDL.UI
         private ToolStripMenuItem itmViewAccountToken;
         private FlatDataGridView dgvServers;
         private ToolStripMenuItem itmCopyServerToken;
+        private ToolStripMenuItem itmDisplay;
     }
 }

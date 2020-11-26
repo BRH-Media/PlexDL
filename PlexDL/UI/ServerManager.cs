@@ -96,7 +96,6 @@ namespace PlexDL.UI
                     {
                         ObjectProvider.PlexServers = servers;
                         RenderServersView(servers);
-                        itmConnect.Enabled = true;
                     }
                 }
                 else
@@ -138,7 +137,6 @@ namespace PlexDL.UI
                     {
                         ObjectProvider.PlexServers = servers;
                         RenderServersView(servers);
-                        itmConnect.Enabled = true;
                     }
                 }
                 else
@@ -293,17 +291,6 @@ namespace PlexDL.UI
             }
         }
 
-        private void dgvServers_SelectionChanged(object sender, EventArgs e)
-        {
-            itmConnect.Enabled = dgvServers.SelectedRows.Count == 1;
-        }
-
-        private void dgvServers_DoubleClick(object sender, EventArgs e)
-        {
-            if (dgvServers.SelectedRows.Count == 1)
-                DoConnect();
-        }
-
         private void SelectServer()
         {
             try
@@ -361,9 +348,16 @@ namespace PlexDL.UI
                 Properties.Settings.Default.Save();
         }
 
+        private void DgvServers_SelectionChanged(object sender, EventArgs e)
+        {
+            itmConnect.Enabled =
+                dgvServers.SelectedRows.Count == 1;
+        }
+
         private void DgvServers_DoubleClick(object sender, EventArgs e)
         {
-            if (dgvServers.SelectedRows.Count == 1) DoConnect();
+            if (dgvServers.SelectedRows.Count == 1)
+                DoConnect();
         }
 
         private void ServerManager_Load(object sender, EventArgs e)
@@ -384,9 +378,8 @@ namespace PlexDL.UI
                     RenderServersView(ObjectProvider.PlexServers);
                     SelectServer();
 
-                    itmConnect.Enabled = true;
-                    itmClearServers.Enabled = true;
                     itmLoad.Enabled = true;
+                    itmDisplay.Enabled = true;
                 }
                 else
                 {
@@ -569,7 +562,7 @@ namespace PlexDL.UI
                     ObjectProvider.User.authenticationToken = token;
                     ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = token;
                     itmLoad.Enabled = true;
-                    itmClearServers.Enabled = true;
+                    itmDisplay.Enabled = true;
                     dgvServers.DataSource = null;
                     if (!silent)
                         UIMessages.Info(
@@ -600,9 +593,8 @@ namespace PlexDL.UI
             //force a repaint
             dgvServers.Invalidate();
             ObjectProvider.PlexServers = null;
-            itmConnect.Enabled = false;
             itmLoad.Enabled = false;
-            itmClearServers.Enabled = false;
+            itmDisplay.Enabled = false;
         }
 
         private void ItmRenderTokenColumn_Click(object sender, EventArgs e)

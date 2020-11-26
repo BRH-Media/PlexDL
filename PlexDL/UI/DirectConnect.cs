@@ -2,7 +2,6 @@
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Structures.AppOptions;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -107,16 +106,22 @@ namespace PlexDL.UI
 
         private void NoDiffToken()
         {
-            Height = 178;
-            pnlControls.Location = new Point(pnlControls.Location.X, 110);
-            gbConnectionInformation.Height = 92;
+            //GUI status
+            txtToken.Visible = false;
+            txtToken.Enabled = false;
+
+            //realign the form
+            Height = 163;
         }
 
         private void DiffToken()
         {
-            Height = 204;
-            pnlControls.Location = new Point(pnlControls.Location.X, 136);
-            gbConnectionInformation.Height = 118;
+            //GUI status
+            txtToken.Visible = true;
+            txtToken.Enabled = true;
+
+            //realign the form
+            Height = 191;
         }
 
         private void DirectConnect_Load(object sender, EventArgs e)
