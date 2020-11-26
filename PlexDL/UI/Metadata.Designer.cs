@@ -94,7 +94,7 @@ namespace PlexDL.UI
             // picPoster
             // 
             this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.Properties.Resources.image_not_available_png_8;
+            this.picPoster.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.image_not_available_png_8;
             this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tlpMain.SetColumnSpan(this.picPoster, 3);
             this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;

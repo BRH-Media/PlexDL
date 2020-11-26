@@ -5,7 +5,7 @@ using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures.Plex;
-using PlexDL.Properties;
+using PlexDL.ResourceProvider.Properties;
 using PlexDL.WaitWindow;
 using System;
 using System.Drawing;

@@ -67,7 +67,7 @@ namespace PlexDL.UI
             // 
             this.btnSkipBack.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSkipBack.AutoSize = true;
-            this.btnSkipBack.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fast_rewind_black_18dp;
+            this.btnSkipBack.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_fast_rewind_black_18dp;
             this.btnSkipBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSkipBack.Location = new System.Drawing.Point(117, 9);
             this.btnSkipBack.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -82,7 +82,7 @@ namespace PlexDL.UI
             // 
             this.btnPrevTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnPrevTitle.AutoSize = true;
-            this.btnPrevTitle.BackgroundImage = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
+            this.btnPrevTitle.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_skip_previous_black_18dp;
             this.btnPrevTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnPrevTitle.Location = new System.Drawing.Point(79, 9);
             this.btnPrevTitle.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -97,7 +97,7 @@ namespace PlexDL.UI
             // 
             this.btnSkipForward.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSkipForward.AutoSize = true;
-            this.btnSkipForward.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fast_forward_black_18dp;
+            this.btnSkipForward.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_fast_forward_black_18dp;
             this.btnSkipForward.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSkipForward.Location = new System.Drawing.Point(155, 9);
             this.btnSkipForward.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -112,7 +112,7 @@ namespace PlexDL.UI
             // 
             this.btnStop.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnStop.AutoSize = true;
-            this.btnStop.BackgroundImage = global::PlexDL.Properties.Resources.baseline_stop_black_18dp;
+            this.btnStop.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_stop_black_18dp;
             this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(41, 9);
@@ -128,7 +128,7 @@ namespace PlexDL.UI
             // 
             this.btnNextTitle.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnNextTitle.AutoSize = true;
-            this.btnNextTitle.BackgroundImage = global::PlexDL.Properties.Resources.baseline_skip_next_black_18dp;
+            this.btnNextTitle.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_skip_next_black_18dp;
             this.btnNextTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnNextTitle.Location = new System.Drawing.Point(193, 9);
             this.btnNextTitle.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -183,7 +183,7 @@ namespace PlexDL.UI
             // 
             this.btnPlayPause.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnPlayPause.AutoSize = true;
-            this.btnPlayPause.BackgroundImage = global::PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
+            this.btnPlayPause.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_play_arrow_black_18dp;
             this.btnPlayPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnPlayPause.Location = new System.Drawing.Point(3, 9);
             this.btnPlayPause.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -198,7 +198,7 @@ namespace PlexDL.UI
             // 
             this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnExit.AutoSize = true;
-            this.btnExit.BackgroundImage = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
+            this.btnExit.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_cancel_black_18dp;
             this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnExit.Location = new System.Drawing.Point(1245, 9);
             this.btnExit.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
@@ -265,7 +265,7 @@ namespace PlexDL.UI
             // 
             this.btnFullScreen.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnFullScreen.AutoSize = true;
-            this.btnFullScreen.BackgroundImage = global::PlexDL.Properties.Resources.baseline_fullscreen_black_18dp;
+            this.btnFullScreen.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.baseline_fullscreen_black_18dp;
             this.btnFullScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnFullScreen.Location = new System.Drawing.Point(1207, 9);
             this.btnFullScreen.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);

@@ -879,6 +879,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4A190D3E3B124920979998E8CCE2A20F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4A1F9EFC82734F11985AEE96C5EFA112"
         "OwnerKey" = "8:_F0BDD37831EB429089027C56CA1B3C32"
         "MsmSig" = "8:_UNDEFINED"
@@ -6272,6 +6278,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4A190D3E3B124920979998E8CCE2A20F"
+            {
+            "SourcePath" = "8:..\\Documentation\\LICENSE.rtf"
+            "TargetName" = "8:LICENSE.rtf"
+            "Tag" = "8:"
+            "Folder" = "8:_647DC8BC9F0047BB9E8B5D731D158DE2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4A1F9EFC82734F11985AEE96C5EFA112"
             {
             "AssemblyRegister" = "3:1"
@@ -11155,7 +11181,8 @@
                             "Type" = "3:6"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:_4A190D3E3B124920979998E8CCE2A20F"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "Sunken"
@@ -11317,7 +11344,8 @@
                             "Type" = "3:6"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:_4A190D3E3B124920979998E8CCE2A20F"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "Sunken"

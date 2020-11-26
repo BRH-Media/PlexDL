@@ -8,7 +8,7 @@ using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Player;
-using PlexDL.Properties;
+using PlexDL.ResourceProvider.Properties;
 using PlexDL.WaitWindow;
 using System;
 using System.Drawing;
