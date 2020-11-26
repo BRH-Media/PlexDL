@@ -1,6 +1,7 @@
 ﻿using PlexDL.PlexAPI.LoginHandler;
 using System;
 using System.ComponentModel;
+using PlexDL.PlexAPI.LoginHandler.Security;
 
 namespace PlexDL.Common.Structures.AppOptions.Caching
 {

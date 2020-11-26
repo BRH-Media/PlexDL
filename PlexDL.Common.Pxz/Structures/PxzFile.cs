@@ -1,7 +1,7 @@
 ﻿using Ionic.Zip;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Pxz.Compressors;
-using PlexDL.Common.Pxz.Enum;
+using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Extensions;
 using PlexDL.Common.Pxz.UI;
 using System;
@@ -293,9 +293,11 @@ namespace PlexDL.Common.Pxz.Structures
                 var tamperedWith = false;
 
                 //load all records into memory
-                foreach (var recFile in index.RecordReference.Select(r => $"{dirName}/{r.StoredName}")
+                foreach (var recFile in index.RecordReference.Select(
+                        r => $"{dirName}/{r.StoredName}")
                     .Select(recName => zip[recName]))
                 {
+                    //byte stream for the raw record
                     using var recStream = new MemoryStream();
 
                     //grab data from the file and store in memory

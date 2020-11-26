@@ -9,8 +9,7 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers.DGVRenderers;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.MyPlex;
-using PlexDL.PlexAPI.LoginHandler;
-using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
+using PlexDL.PlexAPI.LoginHandler.Auth;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -442,7 +441,7 @@ namespace PlexDL.UI
 
                     switch (r)
                     {
-                        case AuthResult.Success:
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.Success:
                             if (ApplyToken(auth.Token))
                             {
                                 UIMessages.Info(
@@ -457,23 +456,23 @@ namespace PlexDL.UI
 
                             break;
 
-                        case AuthResult.Cancelled: //nothing
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.Cancelled: //nothing
                             break;
 
-                        case AuthResult.Failed: //alert the user to the failure
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.Failed: //alert the user to the failure
                             UIMessages.Error(
                                 @"Failed to apply your account token; the ticket authority didn't authorise the transaction or values were not valid.");
                             break;
 
-                        case AuthResult.Error: //alert the user to the error
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.Error: //alert the user to the error
                             UIMessages.Error(@"An unknown error occurred; we couldn't apply your account token.");
                             break;
 
-                        case AuthResult.Invalid: //alert the user
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.Invalid: //alert the user
                             UIMessages.Error(@"Failed to apply your account token; details were invalid.");
                             break;
 
-                        case AuthResult.IncorrectResponse:
+                        case PlexAPI.LoginHandler.Auth.Enums.AuthStatus.IncorrectResponse:
                             UIMessages.Error(
                                 @"Failed to get an authentication ticket from Plex.tv; an incorrectly formatted response was received.");
                             break;

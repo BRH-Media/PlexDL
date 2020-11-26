@@ -1,8 +1,8 @@
 ﻿namespace PlexDL.AltoHTTP.Enums
 {
-    internal enum FromTo
+    public enum FromTo
     {
-        //Think the units like stair steps
+        //Think of the units like stair steps
         BytesToKb = -1,
 
         BytesToMb = -2,

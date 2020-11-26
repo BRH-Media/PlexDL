@@ -23,7 +23,7 @@ using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
 using PlexDL.MyPlex;
-using PlexDL.PlexAPI.LoginHandler;
+using PlexDL.PlexAPI.LoginHandler.Security;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -37,6 +37,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.AltoHTTP.Classes.Downloader;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
@@ -1204,7 +1205,7 @@ namespace PlexDL.UI
             try
             {
                 //set needed globals
-                ObjectProvider.Engine = new DownloadQueue();
+                ObjectProvider.Engine = new HttpDownloadQueue();
 
                 //calculations for bytes per second (global is in Mbps NOT MBps)
                 var gSpeed = ObjectProvider.Settings.Generic.DownloadSpeedLimit;
@@ -1613,7 +1614,7 @@ namespace PlexDL.UI
                 Flags.IsDownloadRunning = false;
                 Flags.IsDownloadPaused = false;
                 Flags.IsEngineRunning = false;
-                Flags.IsDownloadQueueCancelled = true;
+                Flags.IsHttpDownloadQueueCancelled = true;
 
                 //set form global indices
                 DownloadsSoFar = 0;
@@ -1681,7 +1682,7 @@ namespace PlexDL.UI
             pbMain.Value = 0;
 
             LoggingHelpers.RecordGeneralEntry("Starting HTTP Engine");
-            ObjectProvider.Engine = new DownloadQueue();
+            ObjectProvider.Engine = new HttpDownloadQueue();
             if (queue.Count > 1)
             {
                 foreach (var dl in queue)

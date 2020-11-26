@@ -49,9 +49,11 @@ namespace PlexDL.Common.Pxz.Structures
         {
             get
             {
+                //The record should be decompressed
                 var raw = RawRecord;
                 var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
 
+                //Check if the record is protected
                 if (Encrypted && r != null)
                 {
                     var provider = new ProtectedBytes(r, ProtectionMode.Decrypt);

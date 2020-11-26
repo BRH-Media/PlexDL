@@ -14,3 +14,19 @@
 *.tif binary
 *.tiff binary
 *.ico binary
+
+# Audio files
+*.mp3 binary
+*.ogg binary
+*.m4a binary
+*.mp4a binary
+*.wav binary
+*.mid binary
+
+# Video files
+*.mp4 binary
+*.ts binary
+*.mov binary
+*.webm binary
+*.mkv binary
+*.m4v binary

@@ -1,6 +1,5 @@
 ﻿using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Pxz.Enum;
 using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Security;
 using PlexDL.Common.Structures.Plex;
@@ -12,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
+using PlexDL.Common.Pxz.Enums;
 using UIHelpers;
 
 // ReSharper disable InconsistentNaming
@@ -224,28 +224,29 @@ namespace PlexDL.Common.API.IO
                         //check if the PXZ has any actor thumbnails stored
                         var bitmaps = file.SelectType(PxzRecordType.Bitmap);
 
-                        //find ny actor images
-                        foreach (var b in bitmaps)
-                        {
-                            //check if the record is an actor thumbnail
-                            if (b.Header.Naming.RecordName.StartsWith(@"actor_"))
+                        //find any actor images
+                        if (bitmaps != null)
+                            foreach (var b in bitmaps)
                             {
-                                //find out which actor this image belongs to
-                                foreach (var a in obj.Actors)
+                                //check if the record is an actor thumbnail
+                                if (b.Header.Naming.RecordName.StartsWith(@"actor_"))
                                 {
-                                    //record naming is just the URL hashed
-                                    var recordName = $"actor_{Md5Helper.CalculateMd5Hash(a.ThumbnailUri)}";
-
-                                    //verify
-                                    if (recordName == b.Header.Naming.RecordName)
+                                    //find out which actor this image belongs to
+                                    foreach (var a in obj.Actors)
                                     {
-                                        //apply image
-                                        a.Thumbnail = b.Content.ToImage();
-                                        break;
+                                        //record naming is just the URL hashed
+                                        var recordName = $"actor_{Md5Helper.CalculateMd5Hash(a.ThumbnailUri)}";
+
+                                        //verify
+                                        if (recordName == b.Header.Naming.RecordName)
+                                        {
+                                            //apply image
+                                            a.Thumbnail = b.Content.ToImage();
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
 
                         //return the new PlexObject
                         return obj;

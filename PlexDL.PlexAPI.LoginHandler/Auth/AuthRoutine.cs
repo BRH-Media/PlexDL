@@ -1,13 +1,15 @@
-﻿using PlexDL.PlexAPI.LoginHandler.Auth;
-using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
+﻿using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
+using PlexDL.PlexAPI.LoginHandler.Auth.JSON;
+using PlexDL.PlexAPI.LoginHandler.Security;
+using PlexDL.PlexAPI.LoginHandler.UI;
 using PlexDL.WaitWindow;
 using System.Windows.Forms;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.Auth
 {
     public static class AuthRoutine
     {
-        public static AuthObject GetAuthToken()
+        public static AuthResult GetAuthToken()
         {
             var stored = TokenManager.StoredToken();
 
@@ -18,7 +20,7 @@ namespace PlexDL.PlexAPI.LoginHandler
 
                 //check if the new ticket is valid (not null)
                 if (init == null)
-                    return new AuthObject { Result = AuthResult.IncorrectResponse }; //null return value always means incorrect JSON response
+                    return new AuthResult() { Result = AuthStatus.IncorrectResponse }; //null return value always means incorrect JSON response
 
                 using (var frm = new LoginWindow())
                 {
@@ -32,30 +34,30 @@ namespace PlexDL.PlexAPI.LoginHandler
                             {
                                 var t = frm.Result.AuthToken;
                                 TokenManager.SaveToken(t);
-                                return new AuthObject { Token = t, Result = AuthResult.Success };
+                                return new AuthResult { Token = t, Result = AuthStatus.Success };
                             }
 
-                            return new AuthObject { Result = AuthResult.Failed };
+                            return new AuthResult { Result = AuthStatus.Failed };
                         }
 
-                        return new AuthObject { Result = AuthResult.Failed };
+                        return new AuthResult { Result = AuthStatus.Failed };
                     }
 
-                    return new AuthObject { Result = AuthResult.Cancelled };
+                    return new AuthResult { Result = AuthStatus.Cancelled };
                 }
             }
 
-            return new AuthObject { Token = stored, Result = AuthResult.Success }; ;
+            return new AuthResult { Token = stored, Result = AuthStatus.Success }; ;
         }
 
-        private static PlexPins NewInit()
+        private static PlexAuth NewInit()
         {
-            return (PlexPins)WaitWindow.WaitWindow.Show(NewInit_Callback, @"Getting a new ticket");
+            return (PlexAuth)WaitWindow.WaitWindow.Show(NewInit_Callback, @"Getting a new ticket");
         }
 
         private static void NewInit_Callback(object sender, WaitWindowEventArgs e)
         {
-            e.Result = PlexPins.NewPlexAuthPin();
+            e.Result = PlexAuthHandler.NewPlexAuthPin();
         }
     }
 }

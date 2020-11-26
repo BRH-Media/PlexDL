@@ -1,9 +1,11 @@
-﻿namespace PlexDL.AltoHTTP.Classes
+﻿// ReSharper disable NonReadonlyMemberInGetHashCode
+
+namespace PlexDL.AltoHTTP.Classes.Downloader
 {
     /// <summary>
-    ///     Struct to store the informations for download operations
+    ///     Struct to store the information for download operations
     /// </summary>
-    public struct QueueElement
+    public struct HttpDownloadQueueElement
     {
         /// <summary>
         ///     Checks if two objects are the same
@@ -12,9 +14,13 @@
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is QueueElement el)
-                return el.Url == Url && el.Destination == Destination && el.Completed == Completed && el.Id == Id;
+            if (obj is HttpDownloadQueueElement el)
+                return el.Url == Url
+                       && el.Destination == Destination
+                       && el.Completed == Completed
+                       && el.Id == Id;
 
+            //default
             return false;
         }
 
@@ -24,11 +30,14 @@
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return Id.GetHashCode() ^ Url.GetHashCode() ^ Destination.GetHashCode() ^ Completed.GetHashCode();
+            return Id.GetHashCode()
+                   ^ Url.GetHashCode()
+                   ^ Destination.GetHashCode()
+                   ^ Completed.GetHashCode();
         }
 
         /// <summary>
-        ///     Download object id
+        ///     Download object ID
         /// </summary>
         public string Id;
 

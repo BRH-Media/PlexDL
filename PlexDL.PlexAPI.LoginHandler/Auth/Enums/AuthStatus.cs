@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.PlexAPI.LoginHandler.Auth.Enums
 {
-    public enum AuthResult
+    public enum AuthStatus
     {
         Cancelled,
         Success,

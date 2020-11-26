@@ -1,6 +1,7 @@
-﻿using RestSharp;
+﻿using PlexDL.PlexAPI.LoginHandler.Globals;
+using RestSharp;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.Net
 {
     public static class Get
     {

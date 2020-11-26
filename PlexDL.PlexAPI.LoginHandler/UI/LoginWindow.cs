@@ -1,4 +1,4 @@
-﻿using PlexDL.PlexAPI.LoginHandler.Auth;
+﻿using PlexDL.PlexAPI.LoginHandler.Auth.JSON;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -7,15 +7,15 @@ using UIHelpers;
 
 // ReSharper disable InvertIf
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.UI
 {
     public partial class LoginWindow : Form
     {
-        public PlexPins PlexRequestPin { get; set; } = null;
+        public PlexAuth PlexRequestPin { get; set; } = null;
 
         public bool Success { get; set; }
 
-        public PlexPins Result { get; set; }
+        public PlexAuth Result { get; set; }
 
         public string ChangeToBrowser = "Press 'OK' once you've\nlogged in with your\nbrowser";
 
@@ -68,7 +68,7 @@ namespace PlexDL.PlexAPI.LoginHandler
             {
                 //Try and grab the new token.
                 //~Run this on a background thread (avoids UI lockup)
-                var newPin = await Task.Run(() => PlexRequestPin?.FromPinEndpoint());
+                var newPin = await Task.Run(() => PlexAuthHandler.FromPinEndpoint(PlexRequestPin));
 
                 //it's only successful if a token was actually provided
                 if (newPin != null)
@@ -118,7 +118,7 @@ namespace PlexDL.PlexAPI.LoginHandler
                 btnOK.Enabled = false; //so the user can't click it twice
 
                 //try and grab the new token
-                var newPin = await Task.Run(() => PlexRequestPin?.FromPinEndpoint()); //run this on a background thread (avoids UI lockup)
+                var newPin = await Task.Run(() => PlexAuthHandler.FromPinEndpoint(PlexRequestPin));
 
                 //it's only successful if a token was actually provided
                 if (newPin != null)

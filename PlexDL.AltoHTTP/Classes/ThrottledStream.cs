@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
+// ReSharper disable UnusedMember.Global
+
 namespace PlexDL.AltoHTTP.Classes
 {
     /// <summary>
@@ -91,7 +93,7 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         /// <value></value>
         /// <returns>The current position within the stream.</returns>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
         /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking. </exception>
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override long Position

@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using UIHelpers;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.Security
 {
     public static class TokenManager
     {

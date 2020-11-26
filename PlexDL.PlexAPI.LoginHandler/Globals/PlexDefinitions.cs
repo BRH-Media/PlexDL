@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Security;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.Globals
 {
     public static class PlexDefinitions
     {

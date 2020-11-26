@@ -6,7 +6,7 @@
     public enum DownloadState
     {
         /// <summary>
-        ///     Download is started
+        ///     Download has started
         /// </summary>
         Started,
 
@@ -16,12 +16,12 @@
         Paused,
 
         /// <summary>
-        ///     Download is going on
+        ///     Download is proceeding
         /// </summary>
         Downloading,
 
         /// <summary>
-        ///     Download is completed
+        ///     Download has completed
         /// </summary>
         Completed,
 
@@ -31,8 +31,8 @@
         Cancelled,
 
         /// <summary>
-        ///     An error occured while downloading
+        ///     An error occurred whilst downloading
         /// </summary>
-        ErrorOccured
+        ErrorOccurred
     }
 }

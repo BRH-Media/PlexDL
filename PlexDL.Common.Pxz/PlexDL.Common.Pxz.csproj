@@ -42,11 +42,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compressors\GZipCompressor.cs" />
     <Compile Include="Compressors\ZlibCompressor.cs" />
-    <Compile Include="Enum\PxzRecordType.cs" />
+    <Compile Include="Enums\PxzRecordCompression.cs" />
+    <Compile Include="Enums\PxzRecordType.cs" />
     <Compile Include="Extensions\VerifyChecksumExt.cs" />
     <Compile Include="Extensions\ToXmlExt.cs" />
     <Compile Include="UI\PxzInformation.cs">

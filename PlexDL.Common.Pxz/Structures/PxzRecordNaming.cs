@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Pxz.Enum;
+﻿using PlexDL.Common.Pxz.Enums;
 using System;
 
 namespace PlexDL.Common.Pxz.Structures

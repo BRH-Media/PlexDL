@@ -91,21 +91,17 @@ namespace PlexDL.Common.Pxz.Compressors
         /// <returns></returns>
         public static byte[] DecompressBytes(byte[] buffer)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                var dataLength = BitConverter.ToInt32(buffer, 0);
-                memoryStream.Write(buffer, 4, buffer.Length - 4);
+            using var memoryStream = new MemoryStream();
+            var dataLength = BitConverter.ToInt32(buffer, 0);
+            memoryStream.Write(buffer, 4, buffer.Length - 4);
 
-                var gZipBuffer = new byte[dataLength];
+            var gZipBuffer = new byte[dataLength];
 
-                memoryStream.Position = 0;
-                using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
-                {
-                    gZipStream.Read(gZipBuffer, 0, gZipBuffer.Length);
-                }
+            memoryStream.Position = 0;
+            using var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress);
+            gZipStream.Read(gZipBuffer, 0, gZipBuffer.Length);
 
-                return gZipBuffer;
-            }
+            return gZipBuffer;
         }
     }
 }

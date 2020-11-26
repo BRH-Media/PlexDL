@@ -7,7 +7,7 @@ namespace PlexDL.AltoHTTP.Classes
     {
         public static string ConvertBestScaledSize(this long bytes)
         {
-            var unit = 1024;
+            const int unit = 1024;
             var inBytes = bytes < unit;
             var inKb = bytes < unit * unit;
             var inMb = bytes < unit * unit * unit;

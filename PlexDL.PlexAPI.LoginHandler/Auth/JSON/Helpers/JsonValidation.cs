@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON
 {
-    public static class Validation
+    public static class JsonValidation
     {
         //CREDIT: https://stackoverflow.com/a/14977915
         public static bool IsValidJson(string strInput)

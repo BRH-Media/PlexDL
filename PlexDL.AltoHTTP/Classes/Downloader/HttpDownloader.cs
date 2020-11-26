@@ -8,7 +8,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PlexDL.AltoHTTP.Classes
+using DownloadProgressChangedEventArgs = PlexDL.AltoHTTP.Classes.Events.EventArgs.DownloadProgressChangedEventArgs;
+using ProgressChangedEventHandler = PlexDL.AltoHTTP.Classes.Events.EventHandlers.ProgressChangedEventHandler;
+
+namespace PlexDL.AltoHTTP.Classes.Downloader
 {
     /// <summary>
     ///     Contains methods to help downloading
@@ -116,21 +119,21 @@ namespace PlexDL.AltoHTTP.Classes
                     case DownloadState.Completed when DownloadCompleted != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadCompleted?.Invoke(this, EventArgs.Empty);
+                            DownloadCompleted?.Invoke(this, System.EventArgs.Empty);
                         }, null);
                         break;
 
                     case DownloadState.Cancelled when DownloadCancelled != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadCancelled?.Invoke(this, EventArgs.Empty);
+                            DownloadCancelled?.Invoke(this, System.EventArgs.Empty);
                         }, null);
                         break;
 
-                    case DownloadState.ErrorOccured when DownloadError != null:
+                    case DownloadState.ErrorOccurred when DownloadError != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadError?.Invoke(this, EventArgs.Empty);
+                            DownloadError?.Invoke(this, System.EventArgs.Empty);
                         }, null);
                         break;
                 }
@@ -184,13 +187,13 @@ namespace PlexDL.AltoHTTP.Classes
                     if (HeadersReceived != null)
                         _oprtor.Post(delegate
                         {
-                            HeadersReceived(this, EventArgs.Empty);
+                            HeadersReceived(this, System.EventArgs.Empty);
                         }, null);
                 }
             }
             catch
             {
-                _state = DownloadState.ErrorOccured;
+                _state = DownloadState.ErrorOccurred;
                 State = _state;
                 return;
             }
@@ -242,7 +245,7 @@ namespace PlexDL.AltoHTTP.Classes
         public async void StartAsync()
         {
             if ((_state != DownloadState.Started) & (_state != DownloadState.Completed) & (_state != DownloadState.Cancelled) &
-                (_state != DownloadState.ErrorOccured))
+                (_state != DownloadState.ErrorOccurred))
                 return;
 
             _state = DownloadState.Started;
@@ -281,7 +284,7 @@ namespace PlexDL.AltoHTTP.Classes
         /// </summary>
         public void Cancel()
         {
-            if ((_state == DownloadState.Completed) | (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccured)) return;
+            if ((_state == DownloadState.Completed) | (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccurred)) return;
             if (_state == DownloadState.Paused)
             {
                 Pause();
@@ -306,7 +309,7 @@ namespace PlexDL.AltoHTTP.Classes
             _resp?.Close();
             _file?.Close();
             _str?.Close();
-            if (DestPath != null && (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccured))
+            if (DestPath != null && (_state == DownloadState.Cancelled) | (_state == DownloadState.ErrorOccurred))
                 try
                 {
                     File.Delete(DestPath);

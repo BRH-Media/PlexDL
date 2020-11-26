@@ -36,13 +36,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="Classes\DownloadQueue.cs" />
-    <Compile Include="Classes\HttpDownloader.cs" />
-    <Compile Include="Classes\ProgressChangedEventHandler.cs" />
-    <Compile Include="Classes\QueueElement.cs" />
-    <Compile Include="Classes\QueueElementCompletedEventArgs.cs" />
-    <Compile Include="Classes\QueueElementCompletedEventHandler.cs" />
+    <Compile Include="Classes\Events\EventArgs\DownloadProgressChangedEventArgs.cs" />
+    <Compile Include="Classes\Downloader\HttpDownloadQueue.cs" />
+    <Compile Include="Classes\Downloader\HttpDownloader.cs" />
+    <Compile Include="Classes\Events\EventHandlers\DownloadProgressChangedEventHandler.cs" />
+    <Compile Include="Classes\Downloader\HttpDownloadQueueElement.cs" />
+    <Compile Include="Classes\Events\EventArgs\QueueElementCompletedEventArgs.cs" />
+    <Compile Include="Classes\Events\EventHandlers\QueueElementCompletedEventHandler.cs" />
     <Compile Include="Classes\SizeUnitConverter.cs" />
     <Compile Include="Classes\ThrottledStream.cs" />
     <Compile Include="Enums\DownloadState.cs" />
@@ -51,5 +51,6 @@
     <Compile Include="Interfaces\IQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

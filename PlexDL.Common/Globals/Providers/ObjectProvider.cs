@@ -7,13 +7,14 @@ using PlexDL.Common.Structures.Plex;
 using PlexDL.MyPlex;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Classes.Downloader;
 
 namespace PlexDL.Common.Globals.Providers
 {
     public static class ObjectProvider
     {
         public static Form DebugForm { get; set; } = null;
-        public static DownloadQueue Engine { get; set; } = new DownloadQueue();
+        public static HttpDownloadQueue Engine { get; set; } = new HttpDownloadQueue();
         public static List<StreamInfo> Queue { get; set; }
         public static ApplicationOptions Settings { get; set; } = new ApplicationOptions();
         public static MyPlex.MyPlex PlexProvider { get; set; } = new MyPlex.MyPlex();

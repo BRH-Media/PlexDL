@@ -1,4 +1,6 @@
-﻿namespace PlexDL.AltoHTTP.Classes
+﻿using PlexDL.AltoHTTP.Classes.Events.EventArgs;
+
+namespace PlexDL.AltoHTTP.Classes.Events.EventHandlers
 {
     /// <summary>
     ///     ProgressChanged event handler

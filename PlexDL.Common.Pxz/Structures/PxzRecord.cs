@@ -1,5 +1,5 @@
 ﻿using PlexDL.Common.Pxz.Compressors;
-using PlexDL.Common.Pxz.Enum;
+using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Extensions;
 using PlexDL.Common.Security;
 using System;

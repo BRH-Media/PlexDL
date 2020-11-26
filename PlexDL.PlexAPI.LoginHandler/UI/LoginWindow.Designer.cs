@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common.Components.Controls;
 
-namespace PlexDL.PlexAPI.LoginHandler
+namespace PlexDL.PlexAPI.LoginHandler.UI
 {
     partial class LoginWindow
     {
