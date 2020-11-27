@@ -19,7 +19,7 @@ namespace PlexDL.Common.PlayerLaunchers
                     //downloads won't work properly if you're streaming at the same time
                     if (!Flags.IsDownloadRunning && !Flags.IsEngineRunning)
                     {
-                        var frm = new UI.Player
+                        var frm = new UI.Forms.Player
                         {
                             StreamingContent = stream
                         };

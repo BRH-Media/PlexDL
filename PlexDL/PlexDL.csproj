@@ -117,172 +117,172 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\About.cs">
+    <Compile Include="UI\Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\About.Designer.cs">
+    <Compile Include="UI\Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DataExplorer.cs">
+    <Compile Include="UI\Forms\DataExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\DataExplorer.Designer.cs">
+    <Compile Include="UI\Forms\DataExplorer.Designer.cs">
       <DependentUpon>DataExplorer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Authenticate.cs">
+    <Compile Include="UI\Forms\Authenticate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Authenticate.Designer.cs">
+    <Compile Include="UI\Forms\Authenticate.Designer.cs">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CachingMetricsUi.cs">
+    <Compile Include="UI\Forms\CachingMetricsUi.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CachingMetricsUi.Designer.cs">
+    <Compile Include="UI\Forms\CachingMetricsUi.Designer.cs">
       <DependentUpon>CachingMetricsUi.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Cast.cs">
+    <Compile Include="UI\Forms\Cast.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Cast.Designer.cs">
+    <Compile Include="UI\Forms\Cast.Designer.cs">
       <DependentUpon>Cast.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Debug.cs">
+    <Compile Include="UI\Forms\Debug.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Debug.Designer.cs">
+    <Compile Include="UI\Forms\Debug.Designer.cs">
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DirectConnect.cs">
+    <Compile Include="UI\Forms\DirectConnect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\DirectConnect.Designer.cs">
+    <Compile Include="UI\Forms\DirectConnect.Designer.cs">
       <DependentUpon>DirectConnect.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DownloadManager.cs">
+    <Compile Include="UI\Forms\DownloadManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\DownloadManager.Designer.cs">
+    <Compile Include="UI\Forms\DownloadManager.Designer.cs">
       <DependentUpon>DownloadManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Home.cs">
+    <Compile Include="UI\Forms\Home.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Home.Designer.cs">
+    <Compile Include="UI\Forms\Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\LinkViewer.cs">
+    <Compile Include="UI\Forms\LinkViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\LinkViewer.Designer.cs">
+    <Compile Include="UI\Forms\LinkViewer.Designer.cs">
       <DependentUpon>LinkViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\LogViewer.cs">
+    <Compile Include="UI\Forms\LogViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\LogViewer.Designer.cs">
+    <Compile Include="UI\Forms\LogViewer.Designer.cs">
       <DependentUpon>LogViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Player.cs">
+    <Compile Include="UI\Forms\Player.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Player.Designer.cs">
+    <Compile Include="UI\Forms\Player.Designer.cs">
       <DependentUpon>Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Settings.cs">
+    <Compile Include="UI\Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Settings.Designer.cs">
+    <Compile Include="UI\Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ServerManager.cs">
+    <Compile Include="UI\Forms\ServerManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ServerManager.Designer.cs">
+    <Compile Include="UI\Forms\ServerManager.Designer.cs">
       <DependentUpon>ServerManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TestForm.cs">
+    <Compile Include="UI\Forms\TestForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\TestForm.Designer.cs">
+    <Compile Include="UI\Forms\TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\SearchForm.cs">
+    <Compile Include="UI\Forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\SearchForm.Designer.cs">
+    <Compile Include="UI\Forms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Metadata.cs">
+    <Compile Include="UI\Forms\Metadata.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Metadata.Designer.cs">
+    <Compile Include="UI\Forms\Metadata.Designer.cs">
       <DependentUpon>Metadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Internal\Program.cs" />
-    <Compile Include="UI\Translator.cs">
+    <Compile Include="UI\Forms\Translator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Translator.Designer.cs">
+    <Compile Include="UI\Forms\Translator.Designer.cs">
       <DependentUpon>Translator.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UiUtils.cs" />
-    <Compile Include="UI\XmlExplorer.cs">
+    <Compile Include="UI\Forms\XmlExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\XmlExplorer.Designer.cs">
+    <Compile Include="UI\Forms\XmlExplorer.Designer.cs">
       <DependentUpon>XmlExplorer.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\About.resx">
+    <EmbeddedResource Include="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DataExplorer.resx">
+    <EmbeddedResource Include="UI\Forms\DataExplorer.resx">
       <DependentUpon>DataExplorer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Authenticate.resx">
+    <EmbeddedResource Include="UI\Forms\Authenticate.resx">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CachingMetricsUi.resx">
+    <EmbeddedResource Include="UI\Forms\CachingMetricsUi.resx">
       <DependentUpon>CachingMetricsUi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Cast.resx">
+    <EmbeddedResource Include="UI\Forms\Cast.resx">
       <DependentUpon>Cast.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Debug.resx">
+    <EmbeddedResource Include="UI\Forms\Debug.resx">
       <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DirectConnect.resx">
+    <EmbeddedResource Include="UI\Forms\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DownloadManager.resx">
+    <EmbeddedResource Include="UI\Forms\DownloadManager.resx">
       <DependentUpon>DownloadManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Home.resx">
+    <EmbeddedResource Include="UI\Forms\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\LinkViewer.resx">
+    <EmbeddedResource Include="UI\Forms\LinkViewer.resx">
       <DependentUpon>LinkViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\LogViewer.resx">
+    <EmbeddedResource Include="UI\Forms\LogViewer.resx">
       <DependentUpon>LogViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Player.resx">
+    <EmbeddedResource Include="UI\Forms\Player.resx">
       <DependentUpon>Player.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Settings.resx">
+    <EmbeddedResource Include="UI\Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ServerManager.resx">
+    <EmbeddedResource Include="UI\Forms\ServerManager.resx">
       <DependentUpon>ServerManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\TestForm.resx">
+    <EmbeddedResource Include="UI\Forms\TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\SearchForm.resx">
+    <EmbeddedResource Include="UI\Forms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Metadata.resx">
+    <EmbeddedResource Include="UI\Forms\Metadata.resx">
       <DependentUpon>Metadata.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -290,10 +290,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Translator.resx">
+    <EmbeddedResource Include="UI\Forms\Translator.resx">
       <DependentUpon>Translator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\XmlExplorer.resx">
+    <EmbeddedResource Include="UI\Forms\XmlExplorer.resx">
       <DependentUpon>XmlExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

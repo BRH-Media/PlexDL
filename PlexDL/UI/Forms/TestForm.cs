@@ -1,0 +1,68 @@
+﻿using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Pxz.Structures;
+using PlexDL.Common.Pxz.UI;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+#pragma warning disable 1591
+
+namespace PlexDL.UI.Forms
+{
+    public partial class TestForm : DoubleBufferedForm
+    {
+        public TestForm()
+        {
+            InitializeComponent();
+        }
+
+        private void TestForm_Load(object sender, EventArgs e)
+        {
+            CenterInfoPanel();
+        }
+
+        /// <summary>
+        /// Puts the test form description in the middle of the form
+        /// </summary>
+        private void CenterInfoPanel()
+        {
+            // Half the Testing Area either way to get the absolute middle-point.
+            var middleHorizontalX = pnlTestingArea.Width / 2;
+            var middleVerticalY = pnlTestingArea.Height / 2;
+
+            // Half the panel to be centered either way to get the middle-point.
+            var middlePanelX = pnlNothingInteresting.Width / 2;
+            var middlePanelY = pnlNothingInteresting.Height / 2;
+
+            // Positioning directly at middleHorizontalX and middleHorizontalY would offset
+            // the object, due to how C# origins work (0,0 is top-left).
+            // To correct this, we can offset it by half its Height and Width to effectively
+            // make the origin in the center, rather than the top-left corner.
+            var x = middleHorizontalX - middlePanelX;
+            var y = middleVerticalY - middlePanelY;
+
+            // Construct the new point.
+            var newLocation = new Point(x, y);
+
+            // And finally, apply the re-centering to the object.
+            pnlNothingInteresting.Location = newLocation;
+        }
+
+        private void BtnOpenPxzExplorer_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog
+            {
+                Title = @"Open PXZ File",
+                Filter = @"PXZ Files|*.pxz"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var pxz = new PxzFile();
+                pxz.Load(ofd.FileName);
+
+                PxzInformation.ShowPxzInformation(pxz);
+            }
+        }
+    }
+}

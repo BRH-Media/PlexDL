@@ -2,7 +2,7 @@
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers;
 using PlexDL.Common.Renderers.DGVRenderers;
-using PlexDL.UI;
+using PlexDL.UI.Forms;
 using PlexDL.WaitWindow;
 using System;
 using System.Data;
