@@ -735,58 +735,76 @@ namespace PlexDL.UI.Forms
         {
             try
             {
+                //load the XML file to an object
                 var subReq = ProfileIO.ProfileFromFile(fileName, silent);
+
+                //null validation
+                if (subReq == null)
+                {
+                    UIMessages.Error(@"Load failed; profile was null.");
+                    return;
+                }
 
                 try
                 {
-                    var vStoredVersion = new Version(subReq.Generic.StoredAppVersion);
-                    var vThisVersion = new Version(Application.ProductVersion);
-                    var vCompare = vThisVersion.CompareTo(vStoredVersion);
-                    if (vCompare < 0)
+                    //check if the version information stored is valid
+                    if (!string.IsNullOrWhiteSpace(subReq.Generic.StoredAppVersion))
                     {
-                        if (!silent)
+                        //construct version objects for comparison
+                        var vStoredVersion = new Version(subReq.Generic.StoredAppVersion);
+                        var vThisVersion = new Version(Application.ProductVersion);
+
+                        //compare version objects to see which is newer or earlier
+                        var vCompare = vThisVersion.CompareTo(vStoredVersion);
+
+                        //below zero means the profile was made in a newer version
+                        if (vCompare < 0)
                         {
-                            var result = UIMessages.Question(
-                                "You're trying to load a profile made in a newer version of PlexDL. This could have several implications:\n" +
-                                "- Possible data loss of your current profile if PlexDL overwrites it\n" +
-                                "- Features may not work as intended\n" +
-                                "- Increased risk of errors\n\n" +
-                                "Are you sure you'd like to proceed?");
-                            if (!result)
-                                return;
+                            if (!silent)
+                            {
+                                //ask the user whether they want to continue
+                                var result = UIMessages.Question(
+                                    "You're trying to load a profile made in a newer version of PlexDL. This could have several implications:\n" +
+                                    "- Possible data loss of your current profile if PlexDL overwrites it\n" +
+                                    "- Features may not work as intended\n" +
+                                    "- Increased risk of errors\n\n" +
+                                    "Are you sure you'd like to proceed?");
+                                if (!result)
+                                    return;
+                            }
+
+                            //log event
+                            LoggingHelpers.RecordGeneralEntry("Tried to load a profile made in a newer version: " +
+                                                              vStoredVersion + " > " + vThisVersion);
                         }
 
-                        LoggingHelpers.RecordGeneralEntry("Tried to load a profile made in a newer version: " +
-                                                          vStoredVersion + " > " + vThisVersion);
-                    }
-                    else if (vCompare > 0)
-                    {
-                        if (!silent)
+                        //above zero means the profile was made in an earlier version
+                        else if (vCompare > 0)
                         {
-                            var result = UIMessages.Question(
-                                "You're trying to load a profile made in an earlier version of PlexDL. This could have several implications:\n" +
-                                "- Possible data loss of your current profile if PlexDL overwrites it\n" +
-                                "- Features may not work as intended\n" +
-                                "- Increased risk of errors\n\n" +
-                                "Are you sure you'd like to proceed?");
-                            if (!result)
-                                return;
-                        }
+                            if (!silent)
+                            {
+                                //ask the user whether they want to continue
+                                var result = UIMessages.Question(
+                                    "You're trying to load a profile made in an earlier version of PlexDL. This could have several implications:\n" +
+                                    "- Possible data loss of your current profile if PlexDL overwrites it\n" +
+                                    "- Features may not work as intended\n" +
+                                    "- Increased risk of errors\n\n" +
+                                    "Are you sure you'd like to proceed?");
+                                if (!result)
+                                    return;
+                            }
 
-                        LoggingHelpers.RecordGeneralEntry("Tried to load a profile made in an earlier version: " +
-                                                          vStoredVersion + " < " + vThisVersion);
+                            //log event
+                            LoggingHelpers.RecordGeneralEntry("Tried to load a profile made in an earlier version: " +
+                                                              vStoredVersion + " < " + vThisVersion);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     LoggingHelpers.RecordGeneralEntry("Version information load error: " + ex.Message);
                     LoggingHelpers.RecordException(ex.Message, "VersionLoadError");
-                    if (!silent)
-                        UIMessages.Error($"Error loading versioning information:\n\n{ex.Message}\n\nProfile load failed",
-                            "Load Error");
                 }
-
-                if (subReq == null) return;
 
                 ObjectProvider.Settings = subReq;
 

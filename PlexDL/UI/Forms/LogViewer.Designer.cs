@@ -49,9 +49,15 @@ namespace PlexDL.UI.Forms
             this.itmBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExportCsv = new System.Windows.Forms.SaveFileDialog();
             this.sfdExportJson = new System.Windows.Forms.SaveFileDialog();
+            this.tsMain = new System.Windows.Forms.ToolStrip();
+            this.lblCurrentLogFile = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sepAuthenticationStatus = new System.Windows.Forms.ToolStripSeparator();
+            this.lblViewing = new System.Windows.Forms.ToolStripLabel();
+            this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.tlpMain.SuspendLayout();
             this.menuMain.SuspendLayout();
+            this.tsMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvMain
@@ -72,7 +78,7 @@ namespace PlexDL.UI.Forms
             this.dgvMain.Name = "dgvMain";
             this.tlpMain.SetRowSpan(this.dgvMain, 2);
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(444, 405);
+            this.dgvMain.Size = new System.Drawing.Size(444, 380);
             this.dgvMain.TabIndex = 11;
             this.dgvMain.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvMain_CellContentDoubleClick);
             // 
@@ -89,7 +95,7 @@ namespace PlexDL.UI.Forms
             this.lstLogFiles.Name = "lstLogFiles";
             this.tlpMain.SetRowSpan(this.lstLogFiles, 2);
             this.lstLogFiles.ScrollAlwaysVisible = true;
-            this.lstLogFiles.Size = new System.Drawing.Size(218, 405);
+            this.lstLogFiles.Size = new System.Drawing.Size(218, 380);
             this.lstLogFiles.TabIndex = 0;
             this.lstLogFiles.SelectedValueChanged += new System.EventHandler(this.LstLogFiles_SelectedIndexChanged);
             // 
@@ -107,7 +113,7 @@ namespace PlexDL.UI.Forms
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMain.Size = new System.Drawing.Size(674, 411);
+            this.tlpMain.Size = new System.Drawing.Size(674, 386);
             this.tlpMain.TabIndex = 16;
             // 
             // menuMain
@@ -220,12 +226,51 @@ namespace PlexDL.UI.Forms
             this.sfdExportJson.Filter = "JSON File|*.json";
             this.sfdExportJson.Title = "Export";
             // 
+            // tsMain
+            // 
+            this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblCurrentLogFile,
+            this.sepAuthenticationStatus,
+            this.lblViewing,
+            this.lblViewingValue});
+            this.tsMain.Location = new System.Drawing.Point(0, 410);
+            this.tsMain.Name = "tsMain";
+            this.tsMain.Size = new System.Drawing.Size(674, 25);
+            this.tsMain.TabIndex = 18;
+            this.tsMain.Text = "tsMain";
+            // 
+            // lblCurrentLogFile
+            // 
+            this.lblCurrentLogFile.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblCurrentLogFile.Name = "lblCurrentLogFile";
+            this.lblCurrentLogFile.Size = new System.Drawing.Size(69, 20);
+            this.lblCurrentLogFile.Text = "Not Loaded";
+            // 
+            // sepAuthenticationStatus
+            // 
+            this.sepAuthenticationStatus.Name = "sepAuthenticationStatus";
+            this.sepAuthenticationStatus.Size = new System.Drawing.Size(6, 25);
+            // 
+            // lblViewing
+            // 
+            this.lblViewing.Name = "lblViewing";
+            this.lblViewing.Size = new System.Drawing.Size(52, 22);
+            this.lblViewing.Text = "Viewing:";
+            // 
+            // lblViewingValue
+            // 
+            this.lblViewingValue.Name = "lblViewingValue";
+            this.lblViewingValue.Size = new System.Drawing.Size(24, 22);
+            this.lblViewingValue.Text = "0/0";
+            // 
             // LogViewer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(674, 435);
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
+            this.Controls.Add(this.tsMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
@@ -239,6 +284,8 @@ namespace PlexDL.UI.Forms
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            this.tsMain.ResumeLayout(false);
+            this.tsMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -262,5 +309,10 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmThisSession;
         private ToolStripMenuItem itmSearchTerm;
         private ToolStripMenuItem itmCancelSearch;
+        private ToolStrip tsMain;
+        private ToolStripStatusLabel lblCurrentLogFile;
+        private ToolStripSeparator sepAuthenticationStatus;
+        private ToolStripLabel lblViewing;
+        private ToolStripLabel lblViewingValue;
     }
 }

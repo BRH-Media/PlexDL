@@ -13,9 +13,11 @@ namespace PlexDL.Common
         public string YieldString()
         {
             var result = Input;
+
             foreach (var v in Variables)
                 if (v.VariableName != null && v.VariableValue != null)
-                    result = result.Replace(v.VariableName, v.VariableValue.ToString());
+                    result = result.Replace(v.VariableName, 
+                        v.VariableValue.ToString());
 
             return result;
         }

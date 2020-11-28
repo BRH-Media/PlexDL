@@ -28,8 +28,10 @@ namespace PlexDL.Common.PlayerLaunchers
                 if (VlcInstalled())
                 {
                     c.Input = arg;
+
                     c.Variables = c.BuildFromDlInfo(stream.StreamInformation);
                     arg = c.YieldString();
+
                     p.StartInfo.FileName = vlc;
                     p.StartInfo.Arguments = arg;
                     p.Start();
@@ -71,9 +73,6 @@ namespace PlexDL.Common.PlayerLaunchers
             }
         }
 
-        public static bool VlcInstalled()
-        {
-            return File.Exists(ObjectProvider.Settings.Player.VlcMediaPlayerPath);
-        }
+        public static bool VlcInstalled() => File.Exists(ObjectProvider.Settings.Player.VlcMediaPlayerPath);
     }
 }

@@ -3,14 +3,19 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Xml;
+
+#pragma warning disable 1591
+
+// ReSharper disable InconsistentNaming
 
 namespace PlexDL.UI.Forms
 {
     public partial class DataExplorer : DoubleBufferedForm
     {
-        public PlexObject PlexData { get; set; } = null;
-        public DataSet RawData { get; set; } = null;
+        public PlexObject PlexData { get; set; }
+        public DataSet RawData { get; set; }
 
         public DataExplorer()
         {
@@ -73,15 +78,25 @@ namespace PlexDL.UI.Forms
 
                     dgvMain.DataSource = t;
 
-                    lblTableValue.Text = tableName;
-                    lblViewingValue.Text = $@"{c}/{c}";
+                    SetupGUI(c, tableName);
                 }
             }
             else
-            {
-                lblTableValue.Text = @"Not Loaded";
-                lblViewingValue.Text = @"0/0";
-            }
+                ResetGUI();
+        }
+
+        private void SetupGUI(int rowCount, string tableName)
+        {
+            lblTableValue.Text = tableName;
+            lblTableValue.ForeColor = Color.Black;
+            lblViewingValue.Text = $@"{rowCount}/{rowCount}";
+        }
+
+        private void ResetGUI()
+        {
+            lblTableValue.Text = @"Not Loaded";
+            lblTableValue.ForeColor = Color.DarkRed;
+            lblViewingValue.Text = @"0/0";
         }
 
         public static void ShowExplorer(PlexObject content)

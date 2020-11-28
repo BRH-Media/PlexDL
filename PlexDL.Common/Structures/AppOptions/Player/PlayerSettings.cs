@@ -8,7 +8,7 @@ namespace PlexDL.Common.Structures.AppOptions.Player
     {
         [DisplayName("VLC Arguments")]
         [Description("When launching VLC Media Player, PlexDL will execute these arguments.")]
-        public string VlcMediaPlayerArgs { get; set; } = @"%FILE% --meta-title=%TITLE%";
+        public string VlcMediaPlayerArgs { get; set; } = "%FILE% --meta-title=\"%TITLE%\"";
 
         [DisplayName("VLC Path")]
         [Description("The path to \"vlc.exe\"")]

@@ -9,11 +9,13 @@ using PlexDL.Common.Logging;
 using PlexDL.Common.SearchFramework;
 using System;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
 using UIHelpers;
 
+#pragma warning disable 1591
 #pragma warning disable 414
 
 namespace PlexDL.UI.Forms
@@ -21,7 +23,6 @@ namespace PlexDL.UI.Forms
     public partial class LogViewer : DoubleBufferedForm
     {
         private bool _isFiltered;
-        private DataTable _logFiltered;
         private DataTable _logRecords;
 
         public LogViewer()
@@ -130,6 +131,10 @@ namespace PlexDL.UI.Forms
 
                 //the original data is stored safely to ensure searches can be cleared correctly
                 _logRecords = table;
+
+                //update record status
+                SetInterfaceViewingStatus();
+                SetInterfaceCurrentLog(lstLogFiles.SelectedItem.ToString());
             }
             catch (Exception ex)
             {
@@ -139,6 +144,12 @@ namespace PlexDL.UI.Forms
 
                 //clear the log viewer grid
                 dgvMain.DataSource = null;
+
+                //clear the global
+                _logRecords = null;
+
+                //update record view status
+                SetInterfaceViewingStatus();
             }
         }
 
@@ -166,13 +177,12 @@ namespace PlexDL.UI.Forms
         {
             //Globals set
             _isFiltered = false;
-            _logFiltered = null;
-
-            //GUI set
-            GuiSetStopSearch();
 
             //Reset grid back to full log
             dgvMain.DataSource = _logRecords;
+
+            //GUI set
+            GuiSetStopSearch();
         }
 
         private void GuiSetStartSearch()
@@ -181,6 +191,9 @@ namespace PlexDL.UI.Forms
             itmSearchTerm.Enabled = false;
             itmThisSession.Enabled = false;
             itmCancelSearch.Enabled = true;
+
+            //update record view status
+            SetInterfaceViewingStatus();
         }
 
         private void GuiSetStopSearch()
@@ -189,6 +202,63 @@ namespace PlexDL.UI.Forms
             itmSearchTerm.Enabled = true;
             itmThisSession.Enabled = true;
             itmCancelSearch.Enabled = false;
+
+            //update record view status
+            SetInterfaceViewingStatus();
+        }
+
+        private void SetInterfaceCurrentLog(string currentLog)
+        {
+            try
+            {
+                //null check encompasses the validity
+                var isValid = !string.IsNullOrWhiteSpace(currentLog);
+
+                //just the file name (in-case we get given a path)
+                var fileName = Path.GetFileName(currentLog);
+
+                //set the fore colour dependent on status
+                lblCurrentLogFile.ForeColor = isValid
+                    ? Color.Black
+                    : Color.DarkRed;
+
+                //set text dependent on status
+                lblCurrentLogFile.Text = isValid
+                    ? fileName
+                    : @"Not Loaded";
+            }
+            catch (Exception ex)
+            {
+                //log the error but don't inform the user
+                LoggingHelpers.RecordException(ex.Message, @"LogViewerCurrentLogStatusError");
+            }
+        }
+
+        private void SetInterfaceViewingStatus()
+        {
+            try
+            {
+                //check for nulls
+                if (_logRecords != null && dgvMain.DataSource != null)
+                {
+                    //data length counters
+                    var gridCount = dgvMain.Rows.Count;
+                    var totalCount = _logRecords.Rows.Count;
+
+                    //the total can't exceed the current amount
+                    lblViewingValue.Text = totalCount < gridCount
+                        ? $@"{gridCount}/{totalCount}"
+                        : $@"{totalCount}/{totalCount}";
+                }
+                else
+                    //set the viewing values to 0
+                    lblViewingValue.Text = @"0/0";
+            }
+            catch (Exception ex)
+            {
+                //log the error but don't inform the user
+                LoggingHelpers.RecordException(ex.Message, @"LogViewerViewingStatusError");
+            }
         }
 
         private void ItmSearchTerm_Click(object sender, EventArgs e)

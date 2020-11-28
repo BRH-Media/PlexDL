@@ -35,7 +35,7 @@ namespace PlexDL.UI.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataExplorer));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lstTables = new System.Windows.Forms.ListBox();
-            this.dgvMain = new FlatDataGridView();
+            this.dgvMain = new PlexDL.Common.Components.Controls.FlatDataGridView();
             this.statusMain = new System.Windows.Forms.StatusStrip();
             this.lblTable = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTableValue = new System.Windows.Forms.ToolStripStatusLabel();
@@ -127,6 +127,7 @@ namespace PlexDL.UI.Forms
             // 
             // lblTableValue
             // 
+            this.lblTableValue.ForeColor = System.Drawing.Color.DarkRed;
             this.lblTableValue.Name = "lblTableValue";
             this.lblTableValue.Size = new System.Drawing.Size(69, 17);
             this.lblTableValue.Text = "Not Loaded";
@@ -148,12 +149,12 @@ namespace PlexDL.UI.Forms
             this.cxtMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmRawXml});
             this.cxtMain.Name = "cxtMain";
-            this.cxtMain.Size = new System.Drawing.Size(181, 48);
+            this.cxtMain.Size = new System.Drawing.Size(124, 26);
             // 
             // itmRawXml
             // 
             this.itmRawXml.Name = "itmRawXml";
-            this.itmRawXml.Size = new System.Drawing.Size(180, 22);
+            this.itmRawXml.Size = new System.Drawing.Size(123, 22);
             this.itmRawXml.Text = "Raw XML";
             this.itmRawXml.Click += new System.EventHandler(this.ItmRawXml_Click);
             // 
