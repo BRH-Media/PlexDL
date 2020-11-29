@@ -72,17 +72,17 @@
     <Compile Include="API\UpdateResponse.cs" />
     <Compile Include="Enums\UpdateChannel.cs" />
     <Compile Include="Enums\VersionStatus.cs" />
-    <Compile Include="DownloadManager\Agent.cs" />
-    <Compile Include="DownloadManager\Job.cs" />
-    <Compile Include="Enums\ReturnStatus.cs" />
+    <Compile Include="Net\DownloadManager\Agent.cs" />
+    <Compile Include="Net\DownloadManager\Job.cs" />
+    <Compile Include="Enums\DownloadStatus.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Formatting\Html.cs" />
+    <Compile Include="Display\Html.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Formatting\Stylesheet.cs" />
+    <Compile Include="Display\Stylesheet.cs" />
     <Compile Include="UI\Update.cs">
       <SubType>Form</SubType>
     </Compile>

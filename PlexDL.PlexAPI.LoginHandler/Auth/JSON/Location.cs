@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PlexDL.PlexAPI.LoginHandler.Auth.JSON.Helpers;
 
 namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON
 {

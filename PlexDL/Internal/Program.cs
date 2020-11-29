@@ -65,17 +65,17 @@ namespace PlexDL.Internal
             }
             else
                 //no arguments; run as normal.
-                UiUtils.RunPlexDlHome(true);
+                UIUtils.RunPlexDlHome(true);
         }
 
         private static void FormCheck(ICollection<string> args)
         {
             if (args.Contains("-tw"))
-                UiUtils.RunTestingWindow(true);
+                UIUtils.RunTestingWindow(true);
             else if (args.Contains("-t"))
-                UiUtils.RunTranslator(true);
+                UIUtils.RunTranslator(true);
             else
-                UiUtils.RunPlexDlHome(true);
+                UIUtils.RunPlexDlHome(true);
         }
     }
 }

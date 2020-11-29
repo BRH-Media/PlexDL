@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Parsers.StringVariables;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ namespace PlexDL.Common.PlayerLaunchers
                 if (!Methods.StreamAdultContentCheck(stream)) return;
 
                 var p = new Process();
-                var c = new SVarController();
+                var c = new StringVariableController();
 
                 var vlc = ObjectProvider.Settings.Player.VlcMediaPlayerPath;
                 var arg = ObjectProvider.Settings.Player.VlcMediaPlayerArgs;

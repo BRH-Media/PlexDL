@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Pxz.Structures;
+﻿using PlexDL.Common.Pxz.Structures.File.Record;
 
 namespace PlexDL.Common.Pxz.Extensions
 {

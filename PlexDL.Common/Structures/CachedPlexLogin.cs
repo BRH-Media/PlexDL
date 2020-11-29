@@ -1,5 +1,5 @@
 ﻿using PlexDL.Common.Logging;
-using PlexDL.Common.Security;
+using PlexDL.Common.Security.Hashing;
 using System;
 using System.Globalization;
 using System.IO;
@@ -21,7 +21,7 @@ namespace PlexDL.Common.Structures
         {
             var dt = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             var content = username + "\n" + password + "\n" + dt;
-            var hash = Md5Helper.CalculateMd5Hash(content);
+            var hash = MD5Helper.CalculateMd5Hash(content);
 
             //set the object values
             Username = username;
@@ -63,7 +63,7 @@ namespace PlexDL.Common.Structures
             try
             {
                 var content = Username + "\n" + Password + "\n" + WriteDateTime;
-                var actualHash = Md5Helper.CalculateMd5Hash(content);
+                var actualHash = MD5Helper.CalculateMd5Hash(content);
                 var storedHash = Md5Checksum;
                 return string.Equals(storedHash, actualHash);
             }

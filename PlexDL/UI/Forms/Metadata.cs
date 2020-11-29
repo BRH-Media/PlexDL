@@ -1,6 +1,6 @@
 ﻿using PlexDL.Common;
-using PlexDL.Common.API.IO;
-using PlexDL.Common.API.Objects.AttributeTables;
+using PlexDL.Common.API.PlexAPI.IO;
+using PlexDL.Common.API.PlexAPI.Objects.AttributeTables;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;

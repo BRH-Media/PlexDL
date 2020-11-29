@@ -89,7 +89,7 @@ namespace PlexDL.UI.Forms
                 if (UIMessages.Question(
                     "You are about to create PlexDL file associations for:\n\n*.pxz\n*.pmxml\n*.prof\n\nProceed?"))
                 {
-                    FileAssociationManager.EnsureAssociationsSet();
+                    FileAssociationsManager.EnsureAssociationsSet();
                     UIMessages.Info(@"Done!");
                 }
             }

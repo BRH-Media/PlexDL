@@ -1,12 +1,11 @@
 ﻿using LogDel;
 using LogDel.Enums;
 using PlexDL.Common;
-using PlexDL.Common.API.IO;
+using PlexDL.Common.API.PlexAPI.IO;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions;
-using PlexDL.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;

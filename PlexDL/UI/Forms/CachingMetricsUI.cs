@@ -4,11 +4,14 @@ using PlexDL.Common.Logging;
 using System;
 using UIHelpers;
 
+// ReSharper disable InconsistentNaming
+#pragma warning disable 1591
+
 namespace PlexDL.UI.Forms
 {
-    public partial class CachingMetricsUi : DoubleBufferedForm
+    public partial class CachingMetricsUI : DoubleBufferedForm
     {
-        public CachingMetricsUi()
+        public CachingMetricsUI()
         {
             InitializeComponent();
         }

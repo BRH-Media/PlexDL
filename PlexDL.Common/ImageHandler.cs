@@ -2,7 +2,7 @@
 using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Renderers;
+using PlexDL.Common.Renderers.Image;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.ResourceProvider.Properties;
 using PlexDL.WaitWindow;
@@ -18,7 +18,7 @@ namespace PlexDL.Common
         {
             try
             {
-                Helpers.CacheStructureBuilder();
+                CachingHelpers.CacheStructureBuilder();
                 if (string.IsNullOrEmpty(url))
                     return Resources.image_not_available_png_8;
 
@@ -29,7 +29,6 @@ namespace PlexDL.Common
             catch (UnauthorizedAccessException ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ThumbIOAccessError");
-                return ForceImageFromUrl(url);
             }
             catch (Exception ex)
             {
@@ -40,7 +39,7 @@ namespace PlexDL.Common
             return ForceImageFromUrl(url);
         }
 
-        private static Bitmap ForceImageFromUrl(string url)
+        public static Bitmap ForceImageFromUrl(string url)
         {
             try
             {
@@ -66,20 +65,23 @@ namespace PlexDL.Common
         public static Bitmap GetPoster(PlexObject stream, bool waitWindow = true)
         {
             if (waitWindow)
-                return (Bitmap)WaitWindow.WaitWindow.Show(GetPoster_Callback, @"Grabbing poster", stream);
+                return (Bitmap)WaitWindow.WaitWindow.Show(GetPoster, @"Grabbing poster", stream);
 
             var result = GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
 
             if (result == Resources.image_not_available_png_8) return result;
             if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
 
-            return Methods.AdultKeywordCheck(stream) ? ImagePixelation.Pixelate(result, 64) : result;
+            return Methods.AdultKeywordCheck(stream) ? Pixelation.Pixelate(result, 64) : result;
         }
 
-        private static void GetPoster_Callback(object sender, WaitWindowEventArgs e)
+        private static void GetPoster(object sender, WaitWindowEventArgs e)
         {
-            var c = (PlexObject)e.Arguments[0];
-            e.Result = GetPoster(c, false);
+            if (e.Arguments.Count == 1)
+            {
+                var c = (PlexObject)e.Arguments[0];
+                e.Result = GetPoster(c, false);
+            }
         }
     }
 }

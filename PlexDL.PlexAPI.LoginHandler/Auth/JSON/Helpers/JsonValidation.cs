@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON
+namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON.Helpers
 {
     public static class JsonValidation
     {

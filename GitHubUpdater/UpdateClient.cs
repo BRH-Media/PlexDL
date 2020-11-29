@@ -2,7 +2,7 @@
 using GitHubUpdater.UI;
 using inet;
 using Newtonsoft.Json;
-using PlexDL.Common.Security;
+using PlexDL.Common.Security.Hashing;
 using PlexDL.WaitWindow;
 using RestSharp;
 using System;
@@ -254,7 +254,7 @@ namespace GitHubUpdater
                 {
                     //the reason we hash the time is for uniqueness; it'll be different each time
                     //since the system time keeps ticking along.
-                    var timeHash = Md5Helper.CalculateMd5Hash(DateTime.Now.ToString());
+                    var timeHash = MD5Helper.CalculateMd5Hash(DateTime.Now.ToString());
 
                     //GitHub API responses are always in JSON format; the extension must reflect this.
                     var fileName = @$"apiResponse_{timeHash}.json";

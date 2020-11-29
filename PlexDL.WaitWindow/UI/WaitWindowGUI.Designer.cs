@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace PlexDL.WaitWindow.UI
 {
-    public partial class WaitWindowGui : Form
+    public partial class WaitWindowGUI : Form
     {
         /// <summary>
         /// Component provider

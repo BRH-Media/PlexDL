@@ -135,11 +135,11 @@
     <Compile Include="UI\Forms\Authenticate.Designer.cs">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Forms\CachingMetricsUi.cs">
+    <Compile Include="UI\Forms\CachingMetricsUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Forms\CachingMetricsUi.Designer.cs">
-      <DependentUpon>CachingMetricsUi.cs</DependentUpon>
+    <Compile Include="UI\Forms\CachingMetricsUI.Designer.cs">
+      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\Cast.cs">
       <SubType>Form</SubType>
@@ -226,7 +226,7 @@
     <Compile Include="UI\Forms\Translator.Designer.cs">
       <DependentUpon>Translator.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UiUtils.cs" />
+    <Compile Include="UI\UIUtils.cs" />
     <Compile Include="UI\Forms\XmlExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,8 +242,8 @@
     <EmbeddedResource Include="UI\Forms\Authenticate.resx">
       <DependentUpon>Authenticate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\CachingMetricsUi.resx">
-      <DependentUpon>CachingMetricsUi.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Forms\CachingMetricsUI.resx">
+      <DependentUpon>CachingMetricsUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Cast.resx">
       <DependentUpon>Cast.cs</DependentUpon>

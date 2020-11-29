@@ -1,4 +1,5 @@
-﻿using PlexDL.PlexAPI.LoginHandler.Globals;
+﻿using PlexDL.PlexAPI.LoginHandler.Auth.JSON.Helpers;
+using PlexDL.PlexAPI.LoginHandler.Globals;
 using PlexDL.PlexAPI.LoginHandler.Net;
 
 namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON

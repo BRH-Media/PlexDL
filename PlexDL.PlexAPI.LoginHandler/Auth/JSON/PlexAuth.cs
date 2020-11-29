@@ -8,6 +8,7 @@
 
 using System;
 using Newtonsoft.Json;
+using PlexDL.PlexAPI.LoginHandler.Auth.JSON.Helpers;
 using PlexDL.PlexAPI.LoginHandler.Globals;
 
 namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON

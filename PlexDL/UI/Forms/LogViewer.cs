@@ -24,6 +24,7 @@ namespace PlexDL.UI.Forms
     {
         private bool _isFiltered;
         private DataTable _logRecords;
+        private string _currentLogFile = @"";
 
         public LogViewer()
         {
@@ -101,8 +102,11 @@ namespace PlexDL.UI.Forms
 
         private void LstLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //when we select a new log, load it
-            DoLoadFromSelected();
+            //make sure it's not a file we already have loaded
+            if (_currentLogFile != lstLogFiles.SelectedItem.ToString()
+                && lstLogFiles.SelectedIndex > -1)
+                //when we select a new log, load it
+                DoLoadFromSelected();
         }
 
         private DataTable TableFromSelected()
@@ -120,6 +124,9 @@ namespace PlexDL.UI.Forms
                 // if the index is -1 then nothing is selected at all
                 if (lstLogFiles.SelectedIndex <= -1) return;
 
+                //apply the new file to the global internal variable
+                _currentLogFile = lstLogFiles.SelectedItem.ToString();
+
                 //get a table from the currently selected log file
                 var table = TableFromSelected();
 
@@ -134,7 +141,7 @@ namespace PlexDL.UI.Forms
 
                 //update record status
                 SetInterfaceViewingStatus();
-                SetInterfaceCurrentLog(lstLogFiles.SelectedItem.ToString());
+                SetInterfaceCurrentLog(_currentLogFile);
             }
             catch (Exception ex)
             {
@@ -218,12 +225,12 @@ namespace PlexDL.UI.Forms
                 var fileName = Path.GetFileName(currentLog);
 
                 //set the fore colour dependent on status
-                lblCurrentLogFile.ForeColor = isValid
+                lblCurrentLogFileValue.ForeColor = isValid
                     ? Color.Black
                     : Color.DarkRed;
 
                 //set text dependent on status
-                lblCurrentLogFile.Text = isValid
+                lblCurrentLogFileValue.Text = isValid
                     ? fileName
                     : @"Not Loaded";
             }
@@ -247,8 +254,8 @@ namespace PlexDL.UI.Forms
 
                     //the total can't exceed the current amount
                     lblViewingValue.Text = totalCount < gridCount
-                        ? $@"{gridCount}/{totalCount}"
-                        : $@"{totalCount}/{totalCount}";
+                        ? $@"{totalCount}/{totalCount}"
+                        : $@"{gridCount}/{totalCount}";
                 }
                 else
                     //set the viewing values to 0

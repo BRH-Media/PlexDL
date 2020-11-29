@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.API.IO;
+﻿using PlexDL.Common.API.PlexAPI.IO;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Security.Protection;

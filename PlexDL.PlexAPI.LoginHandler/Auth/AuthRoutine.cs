@@ -1,6 +1,6 @@
-﻿using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
+﻿using PlexDL.Common.Security;
+using PlexDL.PlexAPI.LoginHandler.Auth.Enums;
 using PlexDL.PlexAPI.LoginHandler.Auth.JSON;
-using PlexDL.PlexAPI.LoginHandler.Security;
 using PlexDL.PlexAPI.LoginHandler.UI;
 using PlexDL.WaitWindow;
 using System.Windows.Forms;

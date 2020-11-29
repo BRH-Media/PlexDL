@@ -1,7 +1,7 @@
 ﻿using LogDel.Utilities.Export;
-using PlexDL.Common;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Enums;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using System;

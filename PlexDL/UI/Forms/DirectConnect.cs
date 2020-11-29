@@ -1,5 +1,5 @@
-﻿using PlexDL.Common;
-using PlexDL.Common.Components.Forms;
+﻿using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Net;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;

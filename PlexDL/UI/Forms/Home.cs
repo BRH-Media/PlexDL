@@ -2,10 +2,10 @@
 using LogDel.IO;
 using PlexDL.AltoHTTP.Classes.Downloader;
 using PlexDL.Common;
-using PlexDL.Common.API;
-using PlexDL.Common.API.IO;
-using PlexDL.Common.API.Metadata.Handlers;
-using PlexDL.Common.API.Objects;
+using PlexDL.Common.API.PlexAPI;
+using PlexDL.Common.API.PlexAPI.IO;
+using PlexDL.Common.API.PlexAPI.Metadata.Handlers;
+using PlexDL.Common.API.PlexAPI.Objects;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Components.Controls;
 using PlexDL.Common.Components.Forms;
@@ -13,17 +13,17 @@ using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Net;
 using PlexDL.Common.PlayerLaunchers;
-using PlexDL.Common.Renderers;
-using PlexDL.Common.Renderers.DGVRenderers;
+using PlexDL.Common.Renderers.Forms.GridView;
 using PlexDL.Common.SearchFramework;
+using PlexDL.Common.Security;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.Common.Structures.AppOptions.Player;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Common.Update;
 using PlexDL.MyPlex;
-using PlexDL.PlexAPI.LoginHandler.Security;
 using PlexDL.WaitWindow;
 using System;
 using System.Collections.Generic;
@@ -360,7 +360,7 @@ namespace PlexDL.UI.Forms
 
         private void ItmCacheMetrics_Click(object sender, EventArgs e)
         {
-            using (var frm = new CachingMetricsUi())
+            using (var frm = new CachingMetricsUI())
             {
                 frm.Metrics = CachingMetrics.FromLatest();
                 frm.ShowDialog();
@@ -676,7 +676,7 @@ namespace PlexDL.UI.Forms
                             try
                             {
                                 var metadata = MetadataIO.MetadataFromFile(ofdLoad.FileName);
-                                UiUtils.RunMetadataWindow(metadata);
+                                UIUtils.RunMetadataWindow(metadata);
                             }
                             catch (Exception ex)
                             {
@@ -976,6 +976,42 @@ namespace PlexDL.UI.Forms
             }
         }
 
+        private void SetViewingStatus(bool noRecords = false)
+        {
+            try
+            {
+                //what record numbers to display
+                var currentlyViewing = noRecords
+                    ? 0
+                    : Flags.IsFiltered
+                        ? DataProvider.FilteredProvider.GetViewTable().Rows.Count
+                        : DataProvider.TitlesProvider.GetViewTable().Rows.Count;
+                var totalAvailable = noRecords
+                    ? 0
+                    : DataProvider.TitlesProvider.GetViewTable().Rows.Count;
+
+                //what text to display
+                var newText = noRecords
+                    ? @"Not Loaded"
+                    : $"{currentlyViewing}" +
+                      $"/{totalAvailable}";
+
+                //what colour to display
+                var newColour = noRecords
+                    ? Color.DarkRed
+                    : Color.Black;
+
+                //apply the values
+                lblViewingValue.Text = newText;
+                lblViewingValue.ForeColor = newColour;
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, @"SetMainViewingStatusError");
+            }
+        }
+
         private void UpdateContentViewWorker(XmlNode doc, ContentType type)
         {
             LoggingHelpers.RecordGeneralEntry("Updating library contents");
@@ -985,8 +1021,7 @@ namespace PlexDL.UI.Forms
             if (DataProvider.TitlesProvider.GetRawTable() != null)
             {
                 //set this in the toolstrip so the user can see how many items are loaded
-                lblViewingValue.Text =
-                    DataProvider.TitlesProvider.GetRawTable().Rows.Count + @"/" + DataProvider.TitlesProvider.GetRawTable().Rows.Count;
+                SetViewingStatus();
 
                 ObjectProvider.CurrentContentType = type;
 
@@ -1337,14 +1372,14 @@ namespace PlexDL.UI.Forms
             var wantedColumns = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayColumns;
             var wantedCaption = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayCaptions;
 
-            var info = new RenderStruct
+            var info = new GenericRenderStruct
             {
                 Data = content,
                 WantedColumns = wantedColumns,
                 WantedCaption = wantedCaption
             };
 
-            DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvMovies));
+            DataProvider.TitlesProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvMovies));
 
             SelectMoviesTab();
         }
@@ -1438,14 +1473,14 @@ namespace PlexDL.UI.Forms
             var wantedColumns = ObjectProvider.Settings.DataDisplay.TvView.DisplayColumns;
             var wantedCaption = ObjectProvider.Settings.DataDisplay.TvView.DisplayCaptions;
 
-            var info = new RenderStruct
+            var info = new GenericRenderStruct
             {
                 Data = content,
                 WantedColumns = wantedColumns,
                 WantedCaption = wantedCaption
             };
 
-            DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvTVShows));
+            DataProvider.TitlesProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvTVShows));
 
             SelectTvTab();
         }
@@ -1461,14 +1496,14 @@ namespace PlexDL.UI.Forms
                 var wantedColumns = ObjectProvider.Settings.DataDisplay.ArtistsView.DisplayColumns;
                 var wantedCaption = ObjectProvider.Settings.DataDisplay.ArtistsView.DisplayCaptions;
 
-                var info = new RenderStruct
+                var info = new GenericRenderStruct
                 {
                     Data = content,
                     WantedColumns = wantedColumns,
                     WantedCaption = wantedCaption
                 };
 
-                DataProvider.TitlesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvArtists));
+                DataProvider.TitlesProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvArtists));
 
                 SelectMusicTab();
             }
@@ -1481,14 +1516,14 @@ namespace PlexDL.UI.Forms
                 var wantedColumns = ObjectProvider.Settings.DataDisplay.SeriesView.DisplayColumns;
                 var wantedCaption = ObjectProvider.Settings.DataDisplay.SeriesView.DisplayCaptions;
 
-                var info = new RenderStruct
+                var info = new GenericRenderStruct
                 {
                     Data = content,
                     WantedColumns = wantedColumns,
                     WantedCaption = wantedCaption
                 };
 
-                DataProvider.SeasonsProvider.SetViewTable(GenericRenderer.RenderView(info, dgvSeasons));
+                DataProvider.SeasonsProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvSeasons));
             }
         }
 
@@ -1499,14 +1534,14 @@ namespace PlexDL.UI.Forms
                 var wantedColumns = ObjectProvider.Settings.DataDisplay.EpisodesView.DisplayColumns;
                 var wantedCaption = ObjectProvider.Settings.DataDisplay.EpisodesView.DisplayCaptions;
 
-                var info = new RenderStruct
+                var info = new GenericRenderStruct
                 {
                     Data = content,
                     WantedColumns = wantedColumns,
                     WantedCaption = wantedCaption
                 };
 
-                DataProvider.EpisodesProvider.SetViewTable(GenericRenderer.RenderView(info, dgvEpisodes));
+                DataProvider.EpisodesProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvEpisodes));
             }
         }
 
@@ -1517,14 +1552,14 @@ namespace PlexDL.UI.Forms
                 var wantedColumns = ObjectProvider.Settings.DataDisplay.AlbumsView.DisplayColumns;
                 var wantedCaption = ObjectProvider.Settings.DataDisplay.AlbumsView.DisplayCaptions;
 
-                var info = new RenderStruct
+                var info = new GenericRenderStruct
                 {
                     Data = content,
                     WantedColumns = wantedColumns,
                     WantedCaption = wantedCaption
                 };
 
-                DataProvider.AlbumsProvider.SetViewTable(GenericRenderer.RenderView(info, dgvAlbums));
+                DataProvider.AlbumsProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvAlbums));
             }
         }
 
@@ -1535,14 +1570,14 @@ namespace PlexDL.UI.Forms
                 var wantedColumns = ObjectProvider.Settings.DataDisplay.TracksView.DisplayColumns;
                 var wantedCaption = ObjectProvider.Settings.DataDisplay.TracksView.DisplayCaptions;
 
-                var info = new RenderStruct
+                var info = new GenericRenderStruct
                 {
                     Data = content,
                     WantedColumns = wantedColumns,
                     WantedCaption = wantedCaption
                 };
 
-                DataProvider.TracksProvider.SetViewTable(GenericRenderer.RenderView(info, dgvTracks));
+                DataProvider.TracksProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvTracks));
             }
         }
 
@@ -1559,14 +1594,14 @@ namespace PlexDL.UI.Forms
                 wantedCaption = wantedCaption.Prepend("Key").ToList();
             }
 
-            var info = new RenderStruct
+            var info = new GenericRenderStruct
             {
                 Data = content,
                 WantedColumns = wantedColumns,
                 WantedCaption = wantedCaption
             };
 
-            GenericRenderer.RenderView(info, dgvSections);
+            GenericViewRenderer.RenderView(info, dgvSections);
         }
 
         private void UpdateContentView(XmlDocument content, ContentType type)
@@ -1864,14 +1899,14 @@ namespace PlexDL.UI.Forms
                 LoggingHelpers.RecordGeneralEntry("Title search requested");
                 if (dgvMovies.Rows.Count > 0 || dgvTVShows.Rows.Count > 0 || dgvArtists.Rows.Count > 0)
                 {
-                    RenderStruct info = null;
+                    GenericRenderStruct info = null;
                     DataGridView dgv = null;
 
                     switch (ObjectProvider.CurrentContentType)
                     {
                         case ContentType.TvShows:
                             dgv = dgvTVShows;
-                            info = new RenderStruct
+                            info = new GenericRenderStruct
                             {
                                 Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.TvView.DisplayCaptions,
@@ -1881,7 +1916,7 @@ namespace PlexDL.UI.Forms
 
                         case ContentType.Movies:
                             dgv = dgvMovies;
-                            info = new RenderStruct
+                            info = new GenericRenderStruct
                             {
                                 Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayCaptions,
@@ -1891,7 +1926,7 @@ namespace PlexDL.UI.Forms
 
                         case ContentType.Music:
                             dgv = dgvArtists;
-                            info = new RenderStruct
+                            info = new GenericRenderStruct
                             {
                                 Data = DataProvider.TitlesProvider.GetRawTable(),
                                 WantedCaption = ObjectProvider.Settings.DataDisplay.ArtistsView.DisplayCaptions,
@@ -1988,22 +2023,20 @@ namespace PlexDL.UI.Forms
         {
             itmStartSearch.Text = @"Start Search";
             if (DataProvider.TitlesProvider.GetRawTable() != null)
-                lblViewingValue.Text =
-                    $@"{DataProvider.TitlesProvider.GetRawTable().Rows.Count}/{DataProvider.TitlesProvider.GetRawTable().Rows.Count}";
+                SetViewingStatus();
         }
 
         private void SetCancelSearch()
         {
             if (DataProvider.FilteredProvider.GetRawTable() != null && DataProvider.TitlesProvider.GetRawTable() != null)
-                lblViewingValue.Text =
-                    $@"{DataProvider.FilteredProvider.GetRawTable().Rows.Count}/{DataProvider.TitlesProvider.GetRawTable().Rows.Count}";
+                SetViewingStatus();
             itmStartSearch.Text = @"Clear Search";
         }
 
         private void SetConnect()
         {
             itmDisconnect.Enabled = false;
-            lblViewingValue.Text = @"0/0";
+            SetViewingStatus(true);
         }
 
         private void SetDisconnect()

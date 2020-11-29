@@ -7,7 +7,7 @@ namespace UIHelpers
 {
     public static class UIMessages
     {
-        public static void ThreadSafeMessage(string msg)
+        public static void ThreadSafeMessage(string msg, string title = @"Message", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information)
         {
             //all currently open Windows Forms (will not work on startup due to this)
             var openForms = Application.OpenForms;
@@ -23,11 +23,11 @@ namespace UIHelpers
                 {
                     form.BeginInvoke((MethodInvoker)delegate
                     {
-                        MessageBox.Show(msg);
+                        MessageBox.Show(msg, title, buttons, icon);
                     });
                 }
                 else
-                    MessageBox.Show(msg);
+                    MessageBox.Show(msg, title, buttons, icon);
             }
         }
 

@@ -1,9 +1,10 @@
 ﻿using PlexDL.Common;
-using PlexDL.Common.API;
+using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
+using PlexDL.Common.Net;
 using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;

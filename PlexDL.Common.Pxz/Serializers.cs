@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Structures;
+using PlexDL.Common.Pxz.Structures.File.Record;
 using System;
 using System.IO;
 using System.Xml;

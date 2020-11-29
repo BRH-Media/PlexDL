@@ -1,4 +1,4 @@
-﻿using PlexDL.Common.Pxz.Structures;
+﻿using PlexDL.Common.Pxz.Structures.File;
 using System;
 using System.Data;
 using System.Windows.Forms;

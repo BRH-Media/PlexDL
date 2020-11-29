@@ -59,15 +59,15 @@
     </Compile>
     <Compile Include="Serializers.cs" />
     <Compile Include="Structures\PxzAuthor.cs" />
-    <Compile Include="Structures\PxzRecordChecksum.cs" />
-    <Compile Include="Structures\PxzFile.cs" />
+    <Compile Include="Structures\File\Record\PxzRecordChecksum.cs" />
+    <Compile Include="Structures\File\PxzFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\PxzIndex.cs" />
-    <Compile Include="Structures\PxzRecord.cs" />
-    <Compile Include="Structures\PxzRecordContent.cs" />
-    <Compile Include="Structures\PxzRecordHeader.cs" />
-    <Compile Include="Structures\PxzRecordNaming.cs" />
-    <Compile Include="Structures\PxzRecordSize.cs" />
+    <Compile Include="Structures\File\Record\PxzRecord.cs" />
+    <Compile Include="Structures\File\Record\PxzRecordContent.cs" />
+    <Compile Include="Structures\File\Record\PxzRecordHeader.cs" />
+    <Compile Include="Structures\File\Record\PxzRecordNaming.cs" />
+    <Compile Include="Structures\File\Record\PxzRecordSize.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,5 +96,6 @@
       <DependentUpon>PxzInformation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

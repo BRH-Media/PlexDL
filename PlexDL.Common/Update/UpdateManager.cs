@@ -1,4 +1,5 @@
 ﻿using GitHubUpdater;
+using PlexDL.Common.Globals;
 using System.Reflection;
 
 namespace PlexDL.Common.Update

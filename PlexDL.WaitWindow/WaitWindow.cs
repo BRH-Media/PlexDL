@@ -54,19 +54,19 @@ namespace PlexDL.WaitWindow
         {
         }
 
-        private WaitWindowGui _GUI;
+        private WaitWindowGUI _gui;
 
-        internal delegate void MethodInvoker<T>(T parameter1);
+        internal delegate void MethodInvoker<in T>(T parameter1);
 
-        internal EventHandler<WaitWindowEventArgs> _WorkerMethod;
-        internal List<object> _Args;
+        internal EventHandler<WaitWindowEventArgs> WorkerMethod;
+        internal List<object> Args;
 
         /// <summary>
         ///     Updates the message displayed in the wait window.
         /// </summary>
         public string Message
         {
-            set => _GUI.Invoke(new MethodInvoker<string>(_GUI.SetMessage), value);
+            set => _gui.Invoke(new MethodInvoker<string>(_gui.SetMessage), value);
         }
 
         /// <summary>
@@ -74,37 +74,35 @@ namespace PlexDL.WaitWindow
         /// </summary>
         public void Cancel()
         {
-            _GUI.Invoke(new MethodInvoker(_GUI.Cancel), null);
+            _gui.Invoke(new MethodInvoker(_gui.Cancel), null);
         }
 
         private object Show(EventHandler<WaitWindowEventArgs> workerMethod, string message, List<object> args)
         {
             //	Validate Parameters
-            if (workerMethod == null)
-                throw new ArgumentException(@"No worker method has been specified.", "workerMethod");
-            _WorkerMethod = workerMethod;
+            WorkerMethod = workerMethod ?? throw new ArgumentException(@"No worker method has been specified.", nameof(workerMethod));
 
-            _Args = args;
+            Args = args;
 
             if (string.IsNullOrEmpty(message))
                 message = "Please wait...";
 
             //	Set up the window
-            _GUI = new WaitWindowGui(this);
-            _GUI.SetMessage(message);
+            _gui = new WaitWindowGUI(this);
+            _gui.SetMessage(message);
 
             //	Call it
-            _GUI.ShowDialog();
+            _gui.ShowDialog();
 
-            var result = _GUI.Result;
+            var result = _gui.Result;
 
             //	clean up
-            var _Error = _GUI.Error;
-            _GUI.Dispose();
+            var error = _gui.Error;
+            _gui.Dispose();
 
             //	Return result or throw and exception
-            if (_Error != null)
-                throw _Error;
+            if (error != null)
+                throw error;
             return result;
         }
 

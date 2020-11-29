@@ -1,5 +1,5 @@
 ﻿using PlexDL.Common;
-using PlexDL.Common.CastAPI;
+using PlexDL.Common.API.CastAPI;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;

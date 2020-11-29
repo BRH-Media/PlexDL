@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Globalization;
 
-namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON
+namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON.Helpers
 {
     internal static class Converter
     {

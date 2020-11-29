@@ -3,9 +3,13 @@ using PlexDL.UI.Forms;
 using System.Windows.Forms;
 using UIHelpers;
 
+#pragma warning disable 1591
+
+// ReSharper disable InconsistentNaming
+
 namespace PlexDL.UI
 {
-    public static class UiUtils
+    public static class UIUtils
     {
         public static void RunMetadataWindow(PlexObject metadata, bool appRun = false)
         {

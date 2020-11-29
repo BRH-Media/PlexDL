@@ -1,9 +1,9 @@
 ﻿using GitHubUpdater.API;
-using GitHubUpdater.DownloadManager;
+using GitHubUpdater.Display;
 using GitHubUpdater.Enums;
-using GitHubUpdater.Formatting;
+using GitHubUpdater.Net.DownloadManager;
 using Markdig;
-using PlexDL.Common.Security;
+using PlexDL.Common.Security.Hashing;
 using PlexDL.WaitWindow;
 using System;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Html = GitHubUpdater.Formatting.Html;
+using Html = GitHubUpdater.Display.Html;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
@@ -191,19 +191,19 @@ namespace GitHubUpdater.UI
 
                 switch (status)
                 {
-                    case ReturnStatus.Errored:
+                    case DownloadStatus.Errored:
                         MessageBox.Show(@"An unknown error occurred whilst attempting to download one or more update files", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         break;
 
-                    case ReturnStatus.NullJob:
+                    case DownloadStatus.NullJob:
                         MessageBox.Show(@"One or more download jobs were invalid; valid jobs have been completed.", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                         break;
 
-                    case ReturnStatus.Downloaded:
+                    case DownloadStatus.Downloaded:
                         var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
@@ -212,12 +212,12 @@ namespace GitHubUpdater.UI
 
                         break;
 
-                    case ReturnStatus.Unknown:
+                    case DownloadStatus.Unknown:
                         MessageBox.Show(@"Download worker returned the 'unknown' job status indicator.", @"Warning",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
-                    case ReturnStatus.Cancelled:
+                    case DownloadStatus.Cancelled:
                         //don't do anything
                         break;
 
@@ -253,14 +253,14 @@ namespace GitHubUpdater.UI
             e.Result = ExecuteDownload(false);
         }
 
-        private ReturnStatus ExecuteDownload(bool waitWindow = true)
+        private DownloadStatus ExecuteDownload(bool waitWindow = true)
         {
             //wait window
             if (waitWindow)
-                return (ReturnStatus)WaitWindow.Show(ExecuteDownload, @"Downloading update files");
+                return (DownloadStatus)WaitWindow.Show(ExecuteDownload, @"Downloading update files");
 
             //the final status to deliver to the UpdateClient
-            var status = ReturnStatus.Unknown;
+            var status = DownloadStatus.Unknown;
 
             try
             {
@@ -312,7 +312,7 @@ namespace GitHubUpdater.UI
             try
             {
                 //file name is MD5-hashed current date and time (for uniqueness)
-                var fileName = $"UpdateError_{Md5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
+                var fileName = $"UpdateError_{MD5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
 
                 //store all errors in the UpdateDirectory
                 var errorsPath = $@"{UpdateDirectory}\errors";

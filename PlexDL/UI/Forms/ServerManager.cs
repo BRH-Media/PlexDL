@@ -1,12 +1,13 @@
 ﻿using inet;
-using PlexDL.Common;
-using PlexDL.Common.API;
+using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Renderers.DGVRenderers;
+using PlexDL.Common.Net;
+using PlexDL.Common.Renderers.Forms.GridView;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.MyPlex;
 using PlexDL.PlexAPI.LoginHandler.Auth;
@@ -65,7 +66,7 @@ namespace PlexDL.UI.Forms
 
         private static void GetServerListWorker(object sender, WaitWindowEventArgs e)
         {
-            Helpers.CacheStructureBuilder();
+            CachingHelpers.CacheStructureBuilder();
             if (ServerCaching.ServerInCache(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken) &&
                 ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
                 e.Result = ServerCaching.ServerFromCache(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);

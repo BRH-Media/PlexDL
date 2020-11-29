@@ -50,7 +50,8 @@ namespace PlexDL.UI.Forms
             this.sfdExportCsv = new System.Windows.Forms.SaveFileDialog();
             this.sfdExportJson = new System.Windows.Forms.SaveFileDialog();
             this.tsMain = new System.Windows.Forms.ToolStrip();
-            this.lblCurrentLogFile = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblCurrentLogFile = new System.Windows.Forms.ToolStripLabel();
+            this.lblCurrentLogFileValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.sepAuthenticationStatus = new System.Windows.Forms.ToolStripSeparator();
             this.lblViewing = new System.Windows.Forms.ToolStripLabel();
             this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
@@ -97,7 +98,7 @@ namespace PlexDL.UI.Forms
             this.lstLogFiles.ScrollAlwaysVisible = true;
             this.lstLogFiles.Size = new System.Drawing.Size(218, 380);
             this.lstLogFiles.TabIndex = 0;
-            this.lstLogFiles.SelectedValueChanged += new System.EventHandler(this.LstLogFiles_SelectedIndexChanged);
+            this.lstLogFiles.SelectedIndexChanged += new System.EventHandler(this.LstLogFiles_SelectedIndexChanged);
             // 
             // tlpMain
             // 
@@ -231,6 +232,7 @@ namespace PlexDL.UI.Forms
             this.tsMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblCurrentLogFile,
+            this.lblCurrentLogFileValue,
             this.sepAuthenticationStatus,
             this.lblViewing,
             this.lblViewingValue});
@@ -242,10 +244,16 @@ namespace PlexDL.UI.Forms
             // 
             // lblCurrentLogFile
             // 
-            this.lblCurrentLogFile.ForeColor = System.Drawing.Color.DarkRed;
             this.lblCurrentLogFile.Name = "lblCurrentLogFile";
-            this.lblCurrentLogFile.Size = new System.Drawing.Size(69, 20);
-            this.lblCurrentLogFile.Text = "Not Loaded";
+            this.lblCurrentLogFile.Size = new System.Drawing.Size(30, 22);
+            this.lblCurrentLogFile.Text = "Log:";
+            // 
+            // lblCurrentLogFileValue
+            // 
+            this.lblCurrentLogFileValue.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblCurrentLogFileValue.Name = "lblCurrentLogFileValue";
+            this.lblCurrentLogFileValue.Size = new System.Drawing.Size(69, 20);
+            this.lblCurrentLogFileValue.Text = "Not Loaded";
             // 
             // sepAuthenticationStatus
             // 
@@ -310,9 +318,10 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmSearchTerm;
         private ToolStripMenuItem itmCancelSearch;
         private ToolStrip tsMain;
-        private ToolStripStatusLabel lblCurrentLogFile;
+        private ToolStripStatusLabel lblCurrentLogFileValue;
         private ToolStripSeparator sepAuthenticationStatus;
         private ToolStripLabel lblViewing;
         private ToolStripLabel lblViewingValue;
+        private ToolStripLabel lblCurrentLogFile;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using libbrhscgui.Components;
-using PlexDL.AltoHTTP.Classes;
+using PlexDL.AltoHTTP.Classes.Downloader;
 using PlexDL.Common.Enums;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.AppOptions;
@@ -7,7 +7,6 @@ using PlexDL.Common.Structures.Plex;
 using PlexDL.MyPlex;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using PlexDL.AltoHTTP.Classes.Downloader;
 
 namespace PlexDL.Common.Globals.Providers
 {

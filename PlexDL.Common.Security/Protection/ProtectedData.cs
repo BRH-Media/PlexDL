@@ -22,8 +22,8 @@ namespace PlexDL.Common.Security.Protection
 
         public string EncryptData(string plainText)
         {
-            var plainBytes = DataHelpers.StringToBytes(plainText);
-            return DataHelpers.BytesToBase64(EncryptData(plainBytes));
+            var plainBytes = Conversion.StringToBytes(plainText);
+            return Conversion.BytesToBase64(EncryptData(plainBytes));
         }
 
         public byte[] EncryptData(byte[] plainText)
@@ -47,8 +47,8 @@ namespace PlexDL.Common.Security.Protection
 
         public string DecryptData(string cipherText)
         {
-            var cipherBytes = DataHelpers.BytesFromBase64(cipherText);
-            return DataHelpers.BytesToString(DecryptData(cipherBytes));
+            var cipherBytes = Conversion.BytesFromBase64(cipherText);
+            return Conversion.BytesToString(DecryptData(cipherBytes));
         }
 
         public byte[] DecryptData(byte[] cipherText)

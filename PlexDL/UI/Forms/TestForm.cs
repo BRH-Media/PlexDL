@@ -1,9 +1,6 @@
 ﻿using PlexDL.Common.Components.Forms;
-using PlexDL.Common.Pxz.Structures;
-using PlexDL.Common.Pxz.UI;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 #pragma warning disable 1591
 
@@ -13,11 +10,13 @@ namespace PlexDL.UI.Forms
     {
         public TestForm()
         {
+            //Windows Forms designer required setup
             InitializeComponent();
         }
 
         private void TestForm_Load(object sender, EventArgs e)
         {
+            //Ensure the center panel is aligned correctly
             CenterInfoPanel();
         }
 
@@ -46,23 +45,6 @@ namespace PlexDL.UI.Forms
 
             // And finally, apply the re-centering to the object.
             pnlNothingInteresting.Location = newLocation;
-        }
-
-        private void BtnOpenPxzExplorer_Click(object sender, EventArgs e)
-        {
-            var ofd = new OpenFileDialog
-            {
-                Title = @"Open PXZ File",
-                Filter = @"PXZ Files|*.pxz"
-            };
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                var pxz = new PxzFile();
-                pxz.Load(ofd.FileName);
-
-                PxzInformation.ShowPxzInformation(pxz);
-            }
         }
     }
 }

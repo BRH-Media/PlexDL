@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Pxz.Structures.File.Record;
 using System;
 using System.Collections.Generic;
 
