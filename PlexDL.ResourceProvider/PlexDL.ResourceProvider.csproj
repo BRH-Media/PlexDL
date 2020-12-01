@@ -85,5 +85,9 @@
   <ItemGroup>
     <None Include="Files\keywordBlacklist.txt" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icons\PlexDL.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -55,7 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\PlexDL.ico</ApplicationIcon>
+    <ApplicationIcon>..\PlexDL.ResourceProvider\Icons\PlexDL.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>PlexDL.Internal.Program</StartupObject>
@@ -313,9 +313,6 @@
     <None Include="Properties\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\PlexDL.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -402,7 +399,6 @@
       <Name>UIHelpers</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF $(ConfigurationName) == Release (
