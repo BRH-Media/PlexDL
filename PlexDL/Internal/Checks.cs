@@ -6,6 +6,7 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.AppOptions;
+using PlexDL.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,8 +33,6 @@ namespace PlexDL.Internal
             //Windows has passed a file; we need to check what type it is
             var ext = Path.GetExtension(file);
 
-            //UIMessages.Info(file);
-
             //check if it's a supported file-type
             if (CheckAgainstSupportedFiles(file))
             {
@@ -42,7 +41,7 @@ namespace PlexDL.Internal
                 {
                     var metadata = MetadataIO.MetadataFromFile(file);
                     if (metadata != null)
-                        UiUtils.RunMetadataWindow(metadata, appRun);
+                        UIUtils.RunMetadataWindow(metadata, appRun);
                     else
                         UIMessages.Error(@"Metadata parse failed; null result.");
                 }
