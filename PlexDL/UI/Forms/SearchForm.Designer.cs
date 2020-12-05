@@ -56,7 +56,7 @@ namespace PlexDL.UI.Forms
             this.btnStartSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnStartSearch.Name = "btnStartSearch";
             this.btnStartSearch.Size = new System.Drawing.Size(191, 26);
-            this.btnStartSearch.TabIndex = 5;
+            this.btnStartSearch.TabIndex = 0;
             this.btnStartSearch.Text = "Search";
             this.tipMain.SetToolTip(this.btnStartSearch, "Start Content Search");
             this.btnStartSearch.Click += new System.EventHandler(this.BtnStartSearch_Click);
@@ -80,7 +80,7 @@ namespace PlexDL.UI.Forms
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(191, 26);
-            this.btnCancel.TabIndex = 12;
+            this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.tipMain.SetToolTip(this.btnCancel, "Start Content Search");
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
@@ -144,7 +144,7 @@ namespace PlexDL.UI.Forms
             this.cbxSearchColumn.Location = new System.Drawing.Point(3, 16);
             this.cbxSearchColumn.Name = "cbxSearchColumn";
             this.cbxSearchColumn.Size = new System.Drawing.Size(378, 21);
-            this.cbxSearchColumn.TabIndex = 1;
+            this.cbxSearchColumn.TabIndex = 0;
             // 
             // tlpMain
             // 
