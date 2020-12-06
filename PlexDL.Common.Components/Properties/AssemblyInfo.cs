@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PlexDL.Common.Components")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("GUI components and resources")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("PlexDL.Common.Components")]
 [assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
 [assembly: AssemblyTrademark("")]

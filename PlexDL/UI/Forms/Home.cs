@@ -1,6 +1,6 @@
 ﻿using inet;
 using LogDel.IO;
-using PlexDL.AltoHTTP.Classes.Downloader;
+using PlexDL.AltoHTTP.Common.Downloader;
 using PlexDL.Common;
 using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.API.PlexAPI.IO;

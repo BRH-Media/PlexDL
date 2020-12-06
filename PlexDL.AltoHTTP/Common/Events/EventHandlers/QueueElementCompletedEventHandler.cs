@@ -1,11 +1,11 @@
-﻿using PlexDL.AltoHTTP.Classes.Events.EventArgs;
+﻿using PlexDL.AltoHTTP.Common.Events.EventArgs;
 
-namespace PlexDL.AltoHTTP.Classes.Events.EventHandlers
+namespace PlexDL.AltoHTTP.Common.Events.EventHandlers
 {
     /// <summary>
     ///     Passes the QueueElementCompleted event args
     /// </summary>
-    /// <param name="sender">The objects which the event is occured in</param>
+    /// <param name="sender">The objects which the event is occurred in</param>
     /// <param name="e">Event arguments</param>
     public delegate void QueueElementCompletedEventHandler(object sender, QueueElementCompletedEventArgs e);
 }

@@ -1,6 +1,6 @@
 ﻿// ReSharper disable NonReadonlyMemberInGetHashCode
 
-namespace PlexDL.AltoHTTP.Classes.Downloader
+namespace PlexDL.AltoHTTP.Common.Downloader
 {
     /// <summary>
     ///     Struct to store the information for download operations

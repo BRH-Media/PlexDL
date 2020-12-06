@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UIHelpers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("UIHelpers")]
 [assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
 [assembly: AssemblyTrademark("")]

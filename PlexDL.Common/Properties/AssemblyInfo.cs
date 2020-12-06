@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PlexDL.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("PlexDL.Common")]
 [assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
 [assembly: AssemblyTrademark("")]

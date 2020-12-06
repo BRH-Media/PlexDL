@@ -7,7 +7,7 @@ using System.Resources;
 [assembly: AssemblyTitle("SharpCaster")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("SharpCaster")]
 [assembly: AssemblyCopyright("Copyright © Tapanila 2016")]
 [assembly: AssemblyTrademark("")]

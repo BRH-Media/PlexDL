@@ -1,4 +1,4 @@
-﻿namespace PlexDL.AltoHTTP.Classes.Events.EventArgs
+﻿namespace PlexDL.AltoHTTP.Common.Events.EventArgs
 {
     /// <summary>
     ///     Download progress changed event arguments

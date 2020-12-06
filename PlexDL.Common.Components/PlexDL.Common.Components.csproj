@@ -40,22 +40,10 @@
     <Compile Include="Controls\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ColorSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ColorSlider.designer.cs">
-      <DependentUpon>ColorSlider.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\DoubleBufferedForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\DXPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\FlatDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\NoAutoSelectDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,11 +53,6 @@
       <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
       <Name>PlexDL.Animation</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\ColorSlider.resx">
-      <DependentUpon>ColorSlider.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

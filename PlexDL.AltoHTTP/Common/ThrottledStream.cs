@@ -5,7 +5,7 @@ using System.Threading;
 
 // ReSharper disable UnusedMember.Global
 
-namespace PlexDL.AltoHTTP.Classes
+namespace PlexDL.AltoHTTP.Common
 {
     /// <summary>
     /// Class for streaming data with throttling support.
@@ -103,7 +103,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:PlexDL.AltoHTTP.Classes.ThrottledStream"/> class with an
+        /// Initializes a new instance of the <see cref="T:PlexDL.AltoHTTP.Common.ThrottledStream"/> class with an
         /// infinite amount of bytes that can be processed.
         /// </summary>
         /// <param name="baseStream">The base stream.</param>
@@ -113,7 +113,7 @@ namespace PlexDL.AltoHTTP.Classes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:PlexDL.AltoHTTP.Classes.ThrottledStream"/> class.
+        /// Initializes a new instance of the <see cref="T:PlexDL.AltoHTTP.Common.ThrottledStream"/> class.
         /// </summary>
         /// <param name="baseStream">The base stream.</param>
         /// <param name="maximumBytesPerSecond">The maximum bytes per second that can be transferred through the base stream.</param>

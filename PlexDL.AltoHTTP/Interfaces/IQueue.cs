@@ -1,4 +1,4 @@
-﻿using PlexDL.AltoHTTP.Classes.Events.EventHandlers;
+﻿using PlexDL.AltoHTTP.Common.Events.EventHandlers;
 using System;
 
 namespace PlexDL.AltoHTTP.Interfaces

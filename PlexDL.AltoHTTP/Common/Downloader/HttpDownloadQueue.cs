@@ -1,5 +1,5 @@
-﻿using PlexDL.AltoHTTP.Classes.Events.EventArgs;
-using PlexDL.AltoHTTP.Classes.Events.EventHandlers;
+﻿using PlexDL.AltoHTTP.Common.Events.EventArgs;
+using PlexDL.AltoHTTP.Common.Events.EventHandlers;
 using PlexDL.AltoHTTP.Enums;
 using PlexDL.AltoHTTP.Interfaces;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace PlexDL.AltoHTTP.Classes.Downloader
+namespace PlexDL.AltoHTTP.Common.Downloader
 {
     /// <summary>
     ///     Provides methods to create and process download queue

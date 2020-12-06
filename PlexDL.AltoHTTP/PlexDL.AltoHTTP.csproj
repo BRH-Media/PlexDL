@@ -36,15 +36,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Events\EventArgs\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="Classes\Downloader\HttpDownloadQueue.cs" />
-    <Compile Include="Classes\Downloader\HttpDownloader.cs" />
-    <Compile Include="Classes\Events\EventHandlers\DownloadProgressChangedEventHandler.cs" />
-    <Compile Include="Classes\Downloader\HttpDownloadQueueElement.cs" />
-    <Compile Include="Classes\Events\EventArgs\QueueElementCompletedEventArgs.cs" />
-    <Compile Include="Classes\Events\EventHandlers\QueueElementCompletedEventHandler.cs" />
-    <Compile Include="Classes\SizeUnitConverter.cs" />
-    <Compile Include="Classes\ThrottledStream.cs" />
+    <Compile Include="Common\Events\EventArgs\DownloadProgressChangedEventArgs.cs" />
+    <Compile Include="Common\Downloader\HttpDownloadQueue.cs" />
+    <Compile Include="Common\Downloader\HttpDownloader.cs" />
+    <Compile Include="Common\Events\EventHandlers\DownloadProgressChangedEventHandler.cs" />
+    <Compile Include="Common\Downloader\HttpDownloadQueueElement.cs" />
+    <Compile Include="Common\Events\EventArgs\QueueElementCompletedEventArgs.cs" />
+    <Compile Include="Common\Events\EventHandlers\QueueElementCompletedEventHandler.cs" />
+    <Compile Include="Common\SizeUnitConverter.cs" />
+    <Compile Include="Common\ThrottledStream.cs" />
     <Compile Include="Enums\DownloadState.cs" />
     <Compile Include="Enums\FromTo.cs" />
     <Compile Include="Interfaces\IDownloader.cs" />

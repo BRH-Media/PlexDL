@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GitHubUpdater")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("GitHubUpdater")]
 [assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
 [assembly: AssemblyTrademark("")]

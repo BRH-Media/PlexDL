@@ -1,6 +1,6 @@
-﻿using PlexDL.AltoHTTP.Classes.Downloader;
+﻿using PlexDL.AltoHTTP.Common.Downloader;
 
-namespace PlexDL.AltoHTTP.Classes.Events.EventArgs
+namespace PlexDL.AltoHTTP.Common.Events.EventArgs
 {
     /// <summary>
     ///     Queue element completed event arguments
@@ -11,6 +11,7 @@ namespace PlexDL.AltoHTTP.Classes.Events.EventArgs
         ///     Contains QueueElementCompleted event args
         /// </summary>
         /// <param name="index"></param>
+        /// <param name="element"></param>
         public QueueElementCompletedEventArgs(int index, HttpDownloadQueueElement element)
         {
             Index = index;

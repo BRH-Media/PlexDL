@@ -7,11 +7,10 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using DownloadProgressChangedEventArgs = PlexDL.AltoHTTP.Common.Events.EventArgs.DownloadProgressChangedEventArgs;
+using ProgressChangedEventHandler = PlexDL.AltoHTTP.Common.Events.EventHandlers.ProgressChangedEventHandler;
 
-using DownloadProgressChangedEventArgs = PlexDL.AltoHTTP.Classes.Events.EventArgs.DownloadProgressChangedEventArgs;
-using ProgressChangedEventHandler = PlexDL.AltoHTTP.Classes.Events.EventHandlers.ProgressChangedEventHandler;
-
-namespace PlexDL.AltoHTTP.Classes.Downloader
+namespace PlexDL.AltoHTTP.Common.Downloader
 {
     /// <summary>
     ///     Contains methods to help downloading

@@ -1,7 +1,7 @@
 ﻿using PlexDL.AltoHTTP.Enums;
 using System;
 
-namespace PlexDL.AltoHTTP.Classes
+namespace PlexDL.AltoHTTP.Common
 {
     internal static class SizeUnitConverter
     {
