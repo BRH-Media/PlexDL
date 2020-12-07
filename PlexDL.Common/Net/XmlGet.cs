@@ -1,107 +1,120 @@
-﻿using PlexDL.Common.Caching;
+﻿using PlexDL.AltoHTTP.Common.Net;
+using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
+using PlexDL.Common.Extensions;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.WaitWindow;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading;
 using System.Xml;
 using UIHelpers;
+
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+// ReSharper disable InvertIf
 
 namespace PlexDL.Common.Net
 {
     public static class XmlGet
     {
-        public static void GetXmlTransactionWorker(object sender, WaitWindowEventArgs e)
+        public static void GetXmlTransaction(object sender, WaitWindowEventArgs e)
         {
-            var uri = (string)e.Arguments[0];
-            var forceNoCache = false;
-            var silent = false;
-            if (e.Arguments.Count > 1)
-                forceNoCache = (bool)e.Arguments[1];
+            //enforce correct argument count
+            if (e.Arguments.Count > 0)
+            {
+                //first argument is always the URI to request
+                var uri = (string)e.Arguments[0];
 
-            if (e.Arguments.Count > 2)
-                silent = (bool)e.Arguments[2];
+                //second argument is always whether or not to force a re-download
+                var forceNoCache = false;
 
-            e.Result = GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken, forceNoCache,
-                silent);
+                //third argument is always whether or not to silence messages to the user
+                var silent = false;
+
+                //if specified, set forceNoCache
+                if (e.Arguments.Count > 1)
+                    forceNoCache = (bool)e.Arguments[1];
+
+                //if specified, set silent
+                if (e.Arguments.Count > 2)
+                    silent = (bool)e.Arguments[2];
+
+                //execute the download and return the result
+                e.Result = GetXmlTransaction(uri, forceNoCache, silent, false);
+
+                //exit method
+                return;
+            }
+
+            //default
+            e.Result = new XmlDocument();
         }
 
-        public static XmlDocument GetXmlTransaction(string uri, string secret = "", bool forceNoCache = false,
-            bool silent = false)
+        public static XmlDocument GetXmlTransaction(string uri, bool forceNoCache = false,
+            bool silent = false, bool waitWindow = true)
         {
+            //allows multi-threaded operations
+            if (waitWindow)
+
+                //offload to another thread if specified
+                return (XmlDocument)WaitWindow.WaitWindow.Show(GetXmlTransaction, @"Fetching from API", uri,
+                    forceNoCache, silent);
+
             //Create the cache folder structure
             CachingHelpers.CacheStructureBuilder();
 
+            //check if it's already cached
             if (XmlCaching.XmlInCache(uri) && !forceNoCache)
                 try
                 {
+                    //load from the cache
                     var xmlCache = XmlCaching.XmlFromCache(uri);
-                    return xmlCache ?? GetXmlTransaction(uri, "", true);
+
+                    //return the cached XML if not null, otherwise force a re-download
+                    return xmlCache ?? GetXmlTransaction(uri, true, silent, false);
                 }
                 catch (Exception ex)
                 {
+                    //record the error
                     LoggingHelpers.RecordException(ex.Message, "CacheLoadError");
-                    //force the GetXMLTransaction method to ignore cached items
-                    return GetXmlTransaction(uri, secret, true, silent);
+
+                    //force a re-download
+                    return GetXmlTransaction(uri, true, silent, false);
                 }
 
-            //Declare XMLResponse document
-            XmlDocument xmlResponse = null;
-            //Declare an HTTP-specific implementation of the WebRequest class.
-            //Declare a generic view of a sequence of bytes
-            Stream objResponseStream = null;
-            //Declare XMLReader
+            //default secret account token
+            var secret = !string.IsNullOrWhiteSpace(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken)
+                ? ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
+                : ObjectProvider.User.authenticationToken;
 
-            var secret2 = string.IsNullOrEmpty(secret)
+            //allows specific server connection matching for the correct token
+            var uriToken = string.IsNullOrEmpty(secret)
                 ? Methods.MatchUriToToken(uri, ObjectProvider.PlexServers)
                 : secret;
-            if (string.IsNullOrEmpty(secret2))
-                secret2 = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken;
 
-            var fullUri = uri + secret2;
+            //the API URI is combined with the token to yield the fully-qualified URI
+            var fullUri = $@"{uri}{uriToken}";
 
-            //UIMessages.Info(fullUri);
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //Creates an HttpWebRequest for the specified URL.
-            var objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
-            //Declare an HTTP-specific implementation of the WebResponse class
-            //---------- Start HttpRequest
             try
             {
-                //Set HttpWebRequest properties
-                objHttpWebRequest.Method = "GET";
-                objHttpWebRequest.KeepAlive = false;
-                //---------- End HttpRequest
-                //Sends the HttpWebRequest, and waits for a response.
-                var objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
-                switch (objHttpWebResponse.StatusCode)
+                //attempt to grab the resource
+                var xmlFetch = ResourceGrab.GrabString(fullUri).Result;
+
+                //validation
+                if (!string.IsNullOrWhiteSpace(xmlFetch))
                 {
-                    //---------- Start HttpResponse, Return code 200
-                    case HttpStatusCode.OK:
-                        {
-                            objResponseStream = objHttpWebResponse.GetResponseStream();
-                            xmlResponse = objResponseStream.ToXmlDocument();
-                            break;
-                        }
-                    case HttpStatusCode.Unauthorized:
-                        {
-                            if (!silent)
-                                UIMessages.Error(
-                                    "The web server denied access to the resource. Check your token and try again.");
-                            break;
-                        }
+                    //record the transaction
+                    LoggingHelpers.RecordTransaction(fullUri, ResourceGrab.LastStatusCode);
+
+                    //construct a new XML document from the returned string
+                    var xmlResponse = xmlFetch.ToXmlDocument();
+
+                    //ensure the document is cached appropriately for next time
+                    XmlCaching.XmlToCache(xmlResponse, uri);
+
+                    //return the XML document response
+                    return xmlResponse;
                 }
-
-                //Close Steam
-                objResponseStream?.Close();
-                //Close HttpWebResponse
-                objHttpWebResponse.Close();
-
-                LoggingHelpers.RecordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
             }
             catch (ThreadAbortException)
             {
@@ -109,43 +122,19 @@ namespace PlexDL.Common.Net
             }
             catch (Exception ex)
             {
+                //log the error
                 LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
-                LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
+
+                //log the transaction
+                LoggingHelpers.RecordTransaction(fullUri, "Errored");
+
+                //if we're allowed to, display an error message
                 if (!silent)
                     UIMessages.Error("Error Occurred in XML Transaction\n\n" + ex, @"Network Error");
-                return new XmlDocument();
             }
 
-            XmlCaching.XmlToCache(xmlResponse, uri);
-            return xmlResponse;
-        }
-
-        public static XmlDocument ToXmlDocument(this XmlTextReader reader)
-        {
-            //Declare XMLDocument
-            var xmlDoc = new XmlDocument();
-            xmlDoc.Load(reader);
-            //Set XMLResponse object returned from XMLReader
-            var val = xmlDoc;
-            //Close XMLReader
-            reader.Close();
-            return val;
-        }
-
-        public static XmlDocument ToXmlDocument(this Stream dataStream)
-        {
-            //Load stream into XMLReader
-            var objXmlReader = new XmlTextReader(dataStream);
-
-            return objXmlReader.ToXmlDocument(); //using the method above
-        }
-
-        public static XmlDocument ToXmlDocument(this string xmlString)
-        {
-            //Load string into XmlReader
-            var objXmlReader = new XmlTextReader(xmlString);
-
-            return objXmlReader.ToXmlDocument(); //using the method above
+            //default
+            return new XmlDocument();
         }
     }
 }

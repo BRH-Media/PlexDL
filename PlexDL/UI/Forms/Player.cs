@@ -29,7 +29,7 @@ namespace PlexDL.UI.Forms
         private PlexDL.Player.Player _mPlayer;
 
         private bool _isWmp = ObjectProvider.Settings.Player.ForceWmpMode;
-        private bool _frameRateEnabled = false;
+        private bool _frameRateEnabled;
         public PlexObject StreamingContent { get; set; }
 
         public Player()
@@ -399,7 +399,7 @@ namespace PlexDL.UI.Forms
                 key = key.TrimStart('/');
                 var uri = baseUri + key + "/?X-Plex-Token=";
 
-                var reply = XmlGet.GetXmlTransaction(uri, ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
+                var reply = XmlGet.GetXmlTransaction(uri, false, false, false);
 
                 var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply);
                 return obj;

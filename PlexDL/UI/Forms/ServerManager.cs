@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Common.Net;
 using UIHelpers;
 
 // ReSharper disable InvertIf
@@ -81,7 +82,7 @@ namespace PlexDL.UI.Forms
 
         private static void GetRelaysListWorker(object sender, WaitWindowEventArgs e)
         {
-            var result = Relays.GetServerRelays(ObjectProvider.User.authenticationToken);
+            var result = Relays.GetServerRelays();
             e.Result = result;
         }
 

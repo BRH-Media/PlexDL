@@ -40,9 +40,9 @@ using System.Xml;
 using UIHelpers;
 using Directory = System.IO.Directory;
 
-#pragma warning disable 1591
+// ReSharper disable InvertIf
 
-//using System.Threading.Tasks;
+#pragma warning disable 1591
 
 namespace PlexDL.UI.Forms
 {
@@ -254,13 +254,12 @@ namespace PlexDL.UI.Forms
                 RelaysOnly = ObjectProvider.Settings.ConnectionInfo.RelaysOnly
             };
 
-            ObjectProvider.Settings.ConnectionInfo = connectInfo;
-
             var uri = Strings.GetBaseUri(true);
-            //UIMessages.Info(uri);
-            var reply = (XmlDocument)WaitWindow.WaitWindow.Show(XmlGet.GetXmlTransactionWorker, "Connecting", uri);
+            var reply = XmlGet.GetXmlTransaction(uri, false, false, false);
+
             Flags.IsConnected = true;
 
+            ObjectProvider.Settings.ConnectionInfo = connectInfo;
             if (ObjectProvider.Settings.Generic.ShowConnectionSuccess)
                 UIMessages.Info(@"Connection successful!");
 
@@ -910,11 +909,11 @@ namespace PlexDL.UI.Forms
                 var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
                 var baseUri = Strings.GetBaseUri(false);
                 var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
-                var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey);
+                var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey, false, false, false);
 
                 var sectionDir = KeyGatherers.GetSectionKey(xmlSectionKey).TrimEnd('/');
                 var uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
-                var xmlSections = XmlGet.GetXmlTransaction(uriSections);
+                var xmlSections = XmlGet.GetXmlTransaction(uriSections, false, false, false);
 
                 LoggingHelpers.RecordGeneralEntry("Creating new datasets");
                 var sections = new DataSet();
@@ -2072,42 +2071,34 @@ namespace PlexDL.UI.Forms
         {
             if (Flags.IsDownloadRunning)
             {
-                if (Flags.IsMsgAlreadyShown) return;
+                if (Flags.IsMsgAlreadyShown)
+                    return;
 
                 if (UIMessages.Question(@"Are you sure you want to exit PlexDL? A download is still running."))
                 {
                     Flags.IsMsgAlreadyShown = true;
                     LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
+
                     e.Cancel = false;
                 }
                 else
-                {
                     e.Cancel = true;
-                }
             }
             else
-            {
                 LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
-            }
         }
 
         private static void ResetDownloadDirectory()
         {
+            //the My Videos folder of the current user
             var curUser = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+
+            //assign the My Videos folder \PlexDL as the default download directory
             ObjectProvider.Settings.Generic.DownloadDirectory = curUser + @"\PlexDL";
+
+            //ensure this directory definitely exists
             if (!Directory.Exists(ObjectProvider.Settings.Generic.DownloadDirectory))
                 Directory.CreateDirectory(ObjectProvider.Settings.Generic.DownloadDirectory);
-        }
-
-        private void SetDebugLocation()
-        {
-            if (ObjectProvider.DebugForm != null && Flags.IsDebug)
-            {
-                var currentPoint = Location;
-                var x = currentPoint.X + Width;
-                var y = currentPoint.Y;
-                ObjectProvider.DebugForm.Location = new Point(x, y);
-            }
         }
 
         private void SetSessionId()
@@ -2120,36 +2111,80 @@ namespace PlexDL.UI.Forms
             SetDebugLocation();
         }
 
-        private void Home_Focus(object sender, EventArgs e)
+        private void SetDebugLocation()
         {
+            //ensure the debug form and debug mode is setup correctly
+            if (ObjectProvider.DebugForm != null && Flags.IsDebug)
+            {
+                //current location of the Home form
+                var currentPoint = Location;
+
+                //top-right corner of Home form
+                var x = currentPoint.X + Width;
+
+                //same y as Home form
+                var y = currentPoint.Y;
+
+                //assign the debug form location
+                ObjectProvider.DebugForm.Location = new Point(x, y);
+            }
+        }
+
+        private void DebugFormSetup()
+        {
+            //is Debug mode enabled?
+            if (Flags.IsDebug)
+            {
+                //setup new debug form instance
+                ObjectProvider.DebugForm = new Debug();
+
+                //configure the debug form screen location
+                SetDebugLocation();
+
+                //screen center origin
+                var primaryWidth = Screen.PrimaryScreen.Bounds.Width;
+
+                //reset Home form and debug form to center of screen
+                var combinedWidth = Width + ObjectProvider.DebugForm.Width;
+
+                //new x position
+                var x = (primaryWidth / 2) - (combinedWidth / 2);
+
+                //assign new x value
+                Location = new Point(x, Location.Y);
+
+                //show the debug form
+                ObjectProvider.DebugForm.Show();
+            }
         }
 
         private void Home_Load(object sender, EventArgs e)
         {
             try
             {
-                if (ObjectProvider.Settings.Generic.AutoUpdateEnabled) UpdateManager.RunUpdateCheck(true);
+                //did the user enable automatic update checking?
+                if (ObjectProvider.Settings.Generic.AutoUpdateEnabled)
 
-                if (Flags.IsDebug)
-                {
-                    ObjectProvider.DebugForm = new Debug();
-                    SetDebugLocation();
-                    ObjectProvider.DebugForm.Show();
-                }
+                    //yes, perform a silent update check but alert them if one is available
+                    UpdateManager.RunUpdateCheck(true);
 
-                //UIMessages.Info(Strings.PlexDlAppData);
-                //CachingFileDir.RootCacheDirectory = $"{Strings.PlexDlAppData}\\caching";
-
+                //generic initial setup
+                DebugFormSetup();
                 SetSessionId();
                 LoadDevStatus();
                 ResetDownloadDirectory();
+
+                //logging
                 LoggingHelpers.RecordGeneralEntry("PlexDL Started");
                 LoggingHelpers.RecordGeneralEntry($"Data location: {Strings.PlexDlAppData}");
                 LoggingHelpers.RecordCacheEvent($"Using cache directory: {CachingFileDir.RootCacheDirectory}", "N/A");
             }
             catch (Exception ex)
             {
+                //log the error
                 LoggingHelpers.RecordException(ex.Message, "StartupError");
+
+                //alert the user
                 UIMessages.Error("Startup Error:\n\n" + ex, "Startup Error");
             }
         }
@@ -2167,19 +2202,22 @@ namespace PlexDL.UI.Forms
         {
             var type = (ContentType)e.Arguments[1];
             var key = (string)e.Arguments[0];
+
             try
             {
-                if (!Flags.IsInitialFill) Flags.IsInitialFill = true;
+                Flags.IsInitialFill = true;
 
                 LoggingHelpers.RecordGeneralEntry(@"Requesting library contents");
+
                 var contentUri = Strings.CurrentApiUri + key + @"/all/?X-Plex-Token=";
-                var contentXml = XmlGet.GetXmlTransaction(contentUri);
+                var contentXml = XmlGet.GetXmlTransaction(contentUri, false, false, false);
 
                 UpdateContentView(contentXml, type);
             }
             catch (WebException ex)
             {
                 LoggingHelpers.RecordException(ex.Message, @"UpdateLibraryError");
+
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                     if (ex.Response is HttpWebResponse response)
                         switch ((int)response.StatusCode)

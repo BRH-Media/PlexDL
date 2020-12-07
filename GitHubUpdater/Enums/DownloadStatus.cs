@@ -28,6 +28,11 @@
         /// <summary>
         /// The job object provided was null, meaning the download immediately failed.
         /// </summary>
-        NullJob
+        NullJob,
+
+        /// <summary>
+        /// The downloaded job asset was null
+        /// </summary>
+        NullDownload
     }
 }

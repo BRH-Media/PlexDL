@@ -278,7 +278,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Update Available";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.Update_Load);
             this.gbUpdateChanges.ResumeLayout(false);
             this.tlpControls.ResumeLayout(false);

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,9 @@
     <Compile Include="Common\Downloader\HttpDownloadQueueElement.cs" />
     <Compile Include="Common\Events\EventArgs\QueueElementCompletedEventArgs.cs" />
     <Compile Include="Common\Events\EventHandlers\QueueElementCompletedEventHandler.cs" />
+    <Compile Include="Common\Net\NetGlobals.cs" />
+    <Compile Include="Common\Net\ResourceGrab.cs" />
+    <Compile Include="Common\Net\WebCheck.cs" />
     <Compile Include="Common\SizeUnitConverter.cs" />
     <Compile Include="Common\ThrottledStream.cs" />
     <Compile Include="Enums\DownloadState.cs" />
@@ -51,6 +55,11 @@
     <Compile Include="Interfaces\IQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
+      <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
+      <Name>PlexDL.WaitWindow</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using DownloadProgressChangedEventArgs = PlexDL.AltoHTTP.Common.Events.EventArgs.DownloadProgressChangedEventArgs;
 using ProgressChangedEventHandler = PlexDL.AltoHTTP.Common.Events.EventHandlers.ProgressChangedEventHandler;
 
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+
 namespace PlexDL.AltoHTTP.Common.Downloader
 {
     /// <summary>
@@ -118,21 +120,21 @@ namespace PlexDL.AltoHTTP.Common.Downloader
                     case DownloadState.Completed when DownloadCompleted != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadCompleted?.Invoke(this, System.EventArgs.Empty);
+                            DownloadCompleted?.Invoke(this, EventArgs.Empty);
                         }, null);
                         break;
 
                     case DownloadState.Cancelled when DownloadCancelled != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadCancelled?.Invoke(this, System.EventArgs.Empty);
+                            DownloadCancelled?.Invoke(this, EventArgs.Empty);
                         }, null);
                         break;
 
                     case DownloadState.ErrorOccurred when DownloadError != null:
                         _oprtor.Post(delegate
                         {
-                            DownloadError?.Invoke(this, System.EventArgs.Empty);
+                            DownloadError?.Invoke(this, EventArgs.Empty);
                         }, null);
                         break;
                 }
@@ -186,7 +188,7 @@ namespace PlexDL.AltoHTTP.Common.Downloader
                     if (HeadersReceived != null)
                         _oprtor.Post(delegate
                         {
-                            HeadersReceived(this, System.EventArgs.Empty);
+                            HeadersReceived(this, EventArgs.Empty);
                         }, null);
                 }
             }

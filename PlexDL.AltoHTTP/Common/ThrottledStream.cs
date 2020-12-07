@@ -8,9 +8,11 @@ using System.Threading;
 namespace PlexDL.AltoHTTP.Common
 {
     /// <summary>
-    /// Class for streaming data with throttling support.
+    ///     Class for streaming data with throttling support.
     /// </summary>
-    /// <remarks>http://www.codeproject.com/Articles/18243/Bandwidth-throttling</remarks>
+    /// <remarks>
+    ///     Source: http://www.codeproject.com/Articles/18243/Bandwidth-throttling
+    /// </remarks>
     public class ThrottledStream : Stream
     {
         /// <summary>
@@ -39,7 +41,7 @@ namespace PlexDL.AltoHTTP.Common
         /// Gets or sets the maximum bytes per second that can be transferred through the base stream.
         /// </summary>
         /// <value>The maximum bytes per second.</value>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">Value is negative. </exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">Value is negative.</exception>
         public long MaximumBytesPerSecond
         {
             get => _maximumBytesPerSecond;
@@ -84,8 +86,8 @@ namespace PlexDL.AltoHTTP.Common
         /// </summary>
         /// <value></value>
         /// <returns>A long value representing the length of the stream in bytes.</returns>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public override long Length => _baseStream.Length;
 
         /// <summary>
@@ -93,9 +95,9 @@ namespace PlexDL.AltoHTTP.Common
         /// </summary>
         /// <value></value>
         /// <returns>The current position within the stream.</returns>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public override long Position
         {
             get => _baseStream.Position;
@@ -146,12 +148,12 @@ namespace PlexDL.AltoHTTP.Common
         /// <returns>
         /// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
         /// </returns>
-        /// <exception cref="T:System.ArgumentException">The sum of offset and count is larger than the buffer length. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support reading. </exception>
-        /// <exception cref="T:System.ArgumentNullException">buffer is null. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception>
+        /// <exception cref="T:System.ArgumentException">The sum of offset and count is larger than the buffer length.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support reading.</exception>
+        /// <exception cref="T:System.ArgumentNullException">buffer is null.</exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative.</exception>
         public override int Read(byte[] buffer, int offset, int count)
         {
             var total = 0;
@@ -177,9 +179,9 @@ namespace PlexDL.AltoHTTP.Common
         /// <returns>
         /// The new position within the current stream.
         /// </returns>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking, such as if the stream is constructed from a pipe or console output. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support seeking, such as if the stream is constructed from a pipe or console output.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public override long Seek(long offset, SeekOrigin origin)
         {
             return _baseStream.Seek(offset, origin);
@@ -189,9 +191,9 @@ namespace PlexDL.AltoHTTP.Common
         /// Sets the length of the current stream.
         /// </summary>
         /// <param name="value">The desired length of the current stream in bytes.</param>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output.</exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public override void SetLength(long value)
         {
             _baseStream.SetLength(value);
@@ -203,12 +205,12 @@ namespace PlexDL.AltoHTTP.Common
         /// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.</param>
         /// <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
         /// <param name="count">The number of bytes to be written to the current stream.</param>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.NotSupportedException">The base stream does not support writing. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-        /// <exception cref="T:System.ArgumentNullException">buffer is null. </exception>
-        /// <exception cref="T:System.ArgumentException">The sum of offset and count is greater than the buffer length. </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.NotSupportedException">The base stream does not support writing.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        /// <exception cref="T:System.ArgumentNullException">buffer is null.</exception>
+        /// <exception cref="T:System.ArgumentException">The sum of offset and count is greater than the buffer length.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative.</exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
             while (count > BlockSize)

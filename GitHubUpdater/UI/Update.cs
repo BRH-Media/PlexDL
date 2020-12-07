@@ -3,14 +3,13 @@ using GitHubUpdater.Display;
 using GitHubUpdater.Enums;
 using GitHubUpdater.Net.DownloadManager;
 using Markdig;
-using PlexDL.Common.Security.Hashing;
 using PlexDL.WaitWindow;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Html = GitHubUpdater.Display.Html;
 
@@ -23,8 +22,6 @@ namespace GitHubUpdater.UI
     public partial class Update : Form
     {
         public UpdateResponse AppUpdate { get; set; } = null;
-
-        public string UpdateDirectory { get; set; } = @"";
 
         public Update()
         {
@@ -55,12 +52,14 @@ namespace GitHubUpdater.UI
                     var dir = $@"{Globals.UpdateRootDir}\{AppUpdate.UpdateData.id}";
 
                     //set global
-                    UpdateDirectory = dir;
+                    Agent.UpdateDirectory = dir;
 
+                    //GUI setup
                     var title = AppUpdate.UpdateData.name;
                     var changes = AppUpdate.UpdateData.body;
                     var css = new Stylesheet().CssText;
 
+                    //setup the markdown HTML for the mini-browser
                     var changesHtml = @"<h4>Changelog information is unavailable. Please ask the vendor for more information.</h4>";
                     lblUpdateTitle.Text = !string.IsNullOrEmpty(title) ? title : @"Update Available";
 
@@ -182,25 +181,28 @@ namespace GitHubUpdater.UI
                 .assets.Sum(a => a.download_count);
         }
 
-        private void Download(bool closeForm = true)
+        private async void Download(bool closeForm = true)
         {
             try
             {
                 //download execution process
-                var status = ExecuteDownload();
+                var status = await ExecuteDownload();
 
                 switch (status)
                 {
                     case DownloadStatus.Errored:
                         MessageBox.Show(@"An unknown error occurred whilst attempting to download one or more update files", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                         break;
 
                     case DownloadStatus.NullJob:
                         MessageBox.Show(@"One or more download jobs were invalid; valid jobs have been completed.", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        break;
 
+                    case DownloadStatus.NullDownload:
+                        MessageBox.Show(@"One or more download jobs were returned as null; this means the data received was invalid and some or all downloads did not complete.", @"Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
                     case DownloadStatus.Downloaded:
@@ -208,8 +210,7 @@ namespace GitHubUpdater.UI
                             MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                         if (msg == DialogResult.Yes)
-                            Process.Start(UpdateDirectory);
-
+                            Process.Start(Agent.UpdateDirectory);
                         break;
 
                     case DownloadStatus.Unknown:
@@ -230,7 +231,7 @@ namespace GitHubUpdater.UI
             catch (Exception ex)
             {
                 //log the error to a file
-                ExportError(ex);
+                Agent.ExportError(ex);
 
                 //alert the user
                 MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
@@ -250,14 +251,14 @@ namespace GitHubUpdater.UI
         private void ExecuteDownload(object sender, WaitWindowEventArgs e)
         {
             //return the control flow back to the original function, but disable the wait window
-            e.Result = ExecuteDownload(false);
+            e.Result = ExecuteDownload(false).Result;
         }
 
-        private DownloadStatus ExecuteDownload(bool waitWindow = true)
+        private async Task<DownloadStatus> ExecuteDownload(bool waitWindow = true)
         {
             //wait window
             if (waitWindow)
-                return (DownloadStatus)WaitWindow.Show(ExecuteDownload, @"Downloading update files");
+                return (DownloadStatus)WaitWindow.Show(ExecuteDownload, @"Downloading update");
 
             //the final status to deliver to the UpdateClient
             var status = DownloadStatus.Unknown;
@@ -268,7 +269,7 @@ namespace GitHubUpdater.UI
                 foreach (var a in AppUpdate.UpdateData.assets)
                 {
                     //location of the unique folder
-                    var dirA = $@"{UpdateDirectory}\{a.id}";
+                    var dirA = $@"{Agent.UpdateDirectory}\{a.id}";
 
                     //each asset has a separate directory inside the 'UpdateId' directory
                     if (!Directory.Exists(dirA))
@@ -294,43 +295,17 @@ namespace GitHubUpdater.UI
                     };
 
                     //download and flush job to disk
-                    status = j.DoDownload().Result;
+                    status = await j.DoDownload();
                 }
             }
             catch (Exception ex)
             {
                 //log the error to a file
-                ExportError(ex);
+                Agent.ExportError(ex);
             }
 
             //finally, return the final status
             return status;
-        }
-
-        private void ExportError(Exception ex)
-        {
-            try
-            {
-                //file name is MD5-hashed current date and time (for uniqueness)
-                var fileName = $"UpdateError_{MD5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
-
-                //store all errors in the UpdateDirectory
-                var errorsPath = $@"{UpdateDirectory}\errors";
-
-                //ensure the 'errors' folder exists
-                if (!Directory.Exists(errorsPath))
-                    Directory.CreateDirectory(errorsPath);
-
-                //full path
-                var filePath = $@"{errorsPath}\{fileName}";
-
-                //export error to log
-                File.WriteAllText(filePath, ex.ToString());
-            }
-            catch
-            {
-                //ignore
-            }
         }
     }
 }

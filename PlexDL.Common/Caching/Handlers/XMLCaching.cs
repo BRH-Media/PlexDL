@@ -134,7 +134,7 @@ namespace PlexDL.Common.Caching.Handlers
                         {
                             LoggingHelpers.RecordCacheEvent("Cached URL is out-of-date; attempting to get a new copy.",
                                 sourceUrl);
-                            var doc = XmlGet.GetXmlTransaction(sourceUrl, "", true);
+                            var doc = XmlGet.GetXmlTransaction(sourceUrl, true, false, false);
                             XmlReplaceCache(doc, sourceUrl);
                             return doc;
                         }

@@ -10,7 +10,7 @@ namespace PlexDL.Common.API.PlexAPI
 {
     public static class Relays
     {
-        public static List<Server> GetServerRelays(string token)
+        public static List<Server> GetServerRelays()
         {
             try
             {
@@ -18,7 +18,7 @@ namespace PlexDL.Common.API.PlexAPI
                 const string uri = "https://plex.tv/api/resources?includeHttps=1&amp;includeRelay=1&amp;X-Plex-Token=";
 
                 //cache is disabled for relays. This is because they're always changing, and cache would need to be frequently cleared.
-                var reply = XmlGet.GetXmlTransaction(uri, token, true, true);
+                var reply = XmlGet.GetXmlTransaction(uri, true, true, false);
 
                 //an invalid reply isn't usable; so we just return the blank list declared above :)
                 if (!Methods.PlexXmlValid(reply)) return relays;

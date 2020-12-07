@@ -1,8 +1,8 @@
-﻿using PlexDL.WaitWindow;
-using System;
+﻿using System;
 using System.Net;
+using PlexDL.WaitWindow;
 
-namespace PlexDL.Common.Net
+namespace PlexDL.AltoHTTP.Common.Net
 {
     public class WebCheck
     {

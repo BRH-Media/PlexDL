@@ -23,14 +23,13 @@ namespace PlexDL.AltoHTTP.Common
         public static double ConvertMemorySize(this long size, FromTo fromTo)
         {
             var degree = (int)fromTo;
-            if (degree < 0)
-            {
-                var divide = Math.Pow(1024, -degree);
-                return size / divide;
-            }
+            var factor = Math.Pow(1024, degree < 0
+                ? -degree
+                : degree);
 
-            var multiplier = Math.Pow(1024, degree);
-            return size * multiplier;
+            return degree <= 0
+                ? size * factor
+                : size / factor;
         }
     }
 }

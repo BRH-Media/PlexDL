@@ -3,6 +3,7 @@ using PlexDL.Common.Net;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
+using PlexDL.AltoHTTP.Common.Net;
 using UIHelpers;
 
 namespace PlexDL.UI.Forms

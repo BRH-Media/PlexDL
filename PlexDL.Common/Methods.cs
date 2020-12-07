@@ -80,7 +80,8 @@ namespace PlexDL.Common
             foreach (var s in from s in plexServers
                               let serverUri = "http://" + s.address + ":" + s.port + "/"
                               where uri.Contains(serverUri)
-                              select s) return s.accessToken;
+                              select s)
+                return s.accessToken;
 
             return "";
         }
