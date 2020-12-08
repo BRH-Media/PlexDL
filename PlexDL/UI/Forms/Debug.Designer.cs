@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.Components.Controls;
+﻿using System.Windows.Forms;
+using PlexDL.Common.Components.Controls;
 
 namespace PlexDL.UI.Forms
 {
@@ -317,10 +318,10 @@ namespace PlexDL.UI.Forms
             this.cbxExportFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxExportFormat.FormattingEnabled = true;
             this.cbxExportFormat.Items.AddRange(new object[] {
-            "CSV",
-            "JSON",
-            "XML",
-            "LOGDEL"});
+                "CSV",
+                "JSON",
+                "XML",
+                "LOGDEL"});
             this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
             this.cbxExportFormat.Name = "cbxExportFormat";
             this.cbxExportFormat.Size = new System.Drawing.Size(195, 21);
@@ -343,6 +344,7 @@ namespace PlexDL.UI.Forms
             this.dgvGlobalFlags.AllowUserToAddRows = false;
             this.dgvGlobalFlags.AllowUserToDeleteRows = false;
             this.dgvGlobalFlags.AllowUserToOrderColumns = true;
+            this.dgvGlobalFlags.AllowUserToResizeRows = false;
             this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvGlobalFlags.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -545,6 +547,7 @@ namespace PlexDL.UI.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Debug";
             this.Load += new System.EventHandler(this.Debug_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Debug_FormClosing);
             this.tlpDebug.ResumeLayout(false);
             this.gbGlobalValues.ResumeLayout(false);
             this.tlpGlobalValues.ResumeLayout(false);

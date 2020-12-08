@@ -6,7 +6,7 @@ namespace PlexDL.Common.Globals
     public static class Strings
     {
         public static string CurrentApiUri { get; set; } = "";
-        public static string RepoUrl { get; } = "https://github.com/brhsoftco/plexdl";
+        public static string RepoUrl { get; } = "https://github.com/brh-media/plexdl";
         public static string CurrentSessionId { get; } = Methods.GenerateRandomNumber(Integers.SessionIdLength);
 
         public static string UserAppData { get; } =

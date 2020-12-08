@@ -11,6 +11,8 @@ using System.Linq;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable InvertIf
+
 #pragma warning disable 1591
 
 namespace PlexDL.UI.Forms
@@ -507,7 +509,7 @@ namespace PlexDL.UI.Forms
             dgvGlobalFlags.DataSource = t;
         }
 
-        private bool CancelDebugging()
+        private bool CancelDebugging(bool doClose = true)
         {
             //the UIMessages handler will return true for 'Yes' and false for 'No'
             var msg = UIMessages.Question(
@@ -522,7 +524,8 @@ namespace PlexDL.UI.Forms
             Flags.IsDebug = false;
 
             //and close the form.
-            Close();
+            if (doClose)
+                Close();
 
             //default
             return true;
@@ -556,6 +559,25 @@ namespace PlexDL.UI.Forms
         }
 
         #region Event Handlers
+
+        private void Debug_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!Flags.IsMsgAlreadyShown)
+            {
+                //display question dialog
+                var debugChoice = CancelDebugging(false);
+
+                //cancel
+                if (!debugChoice)
+                    e.Cancel = true;
+                else
+                {
+                    Flags.IsMsgAlreadyShown = true;
+                    Close();
+                    Flags.IsMsgAlreadyShown = false;
+                }
+            }
+        }
 
         private void Debug_Load(object sender, EventArgs e) => Startup();
 
