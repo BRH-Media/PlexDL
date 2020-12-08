@@ -1,3 +1,4 @@
+using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Security;
 using RestSharp;
 using System;
@@ -11,7 +12,11 @@ namespace PlexDL.MyPlex
 
         protected RestClient GetRestClient()
         {
-            var client = new RestClient { BaseUrl = new Uri(GetBaseUrl()) };
+            var client = new RestClient
+            {
+                BaseUrl = new Uri(GetBaseUrl()),
+                UserAgent = NetGlobals.GlobalUserAgent
+            };
             return client;
         }
 

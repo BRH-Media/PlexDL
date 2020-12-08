@@ -20,23 +20,25 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// Downloads a web resource then transforms it into an ASCII/UTF-8 string
         /// </summary>
         /// <param name="uri"></param>
+        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(Uri uri, string referrer = @"", string method = @"GET")
-            => await GrabString(uri.ToString(), referrer, method);
+        public static async Task<string> GrabString(Uri uri, int timeout = 3, string referrer = @"", string method = @"GET")
+            => await GrabString(uri.ToString(), timeout, referrer, method);
 
         /// <summary>
         /// Downloads a web resource then transforms it into an ASCII/UTF-8 string
         /// </summary>
         /// <param name="uri"></param>
+        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(string uri, string referrer = @"", string method = @"GET")
+        public static async Task<string> GrabString(string uri, int timeout = 3, string referrer = @"", string method = @"GET")
         {
             //download raw bytes
-            var data = await GrabBytes(uri, referrer, method);
+            var data = await GrabBytes(uri, timeout, referrer, method);
 
             //validation; convert bytes to string then return the result
             return data != null
@@ -48,76 +50,68 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// Downloads a raw web resource with no transforms
         /// </summary>
         /// <param name="uri"></param>
+        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(Uri uri, string referrer = @"", string method = @"GET")
-            => await GrabBytes(uri.ToString(), referrer, method);
+        public static async Task<byte[]> GrabBytes(Uri uri, int timeout = 3, string referrer = @"", string method = @"GET")
+            => await GrabBytes(uri.ToString(), timeout, referrer, method);
 
         /// <summary>
         /// Downloads a raw web resource with no transforms
         /// </summary>
         /// <param name="uri"></param>
+        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(string uri, string referrer = @"", string method = @"GET")
+        public static async Task<byte[]> GrabBytes(string uri, int timeout = 3, string referrer = @"", string method = @"GET")
         {
-            try
+            //request handler
+            var handler = new HttpClientHandler
             {
-                //request handler
-                var handler = new HttpClientHandler
-                {
-                    //allows decompression methods
-                    AutomaticDecompression = ~DecompressionMethods.None,
+                //allows decompression methods
+                AutomaticDecompression = ~DecompressionMethods.None,
 
-                    //complies with 'Location' headers
-                    AllowAutoRedirect = true,
+                //complies with 'Location' headers
+                AllowAutoRedirect = true,
 
-                    //supports settings cookies
-                    CookieContainer = new CookieContainer(),
-                };
+                //supports settings cookies
+                CookieContainer = new CookieContainer(),
+            };
 
-                //request client
-                var client = new HttpClient(handler)
-                {
-                    //request timeout of three seconds
-                    Timeout = TimeSpan.FromSeconds(3)
-                };
+            //request client
+            var client = new HttpClient(handler);
 
-                //add user agent
-                client.DefaultRequestHeaders.Add(@"User-Agent", NetGlobals.GlobalUserAgent);
+            //apply timeout
+            if (timeout > 0)
+                client.Timeout = TimeSpan.FromSeconds(timeout);
 
-                //new request message for this session
-                var request = new HttpRequestMessage(new HttpMethod(method), uri);
+            //add user agent
+            client.DefaultRequestHeaders.Add(@"User-Agent", NetGlobals.GlobalUserAgent);
 
-                //if the referrer was set, we can assign the header a value
-                if (!string.IsNullOrWhiteSpace(referrer))
-                    request.Headers.TryAddWithoutValidation("Referer", referrer);
+            //new request message for this session
+            var request = new HttpRequestMessage(new HttpMethod(method), uri);
 
-                //the response from the server is retrieved using the client
-                var response = client.SendAsync(request).Result;
+            //if the referrer was set, we can assign the header a value
+            if (!string.IsNullOrWhiteSpace(referrer))
+                request.Headers.TryAddWithoutValidation("Referer", referrer);
 
-                //raw response body (in bytes)
-                var body = await response.Content.ReadAsByteArrayAsync();
+            //the response from the server is retrieved using the client
+            var response = await client.SendAsync(request);
 
-                //set the status code global
-                LastStatusCode = ((int)response.StatusCode).ToString();
+            //raw response body (in bytes)
+            var body = await response.Content.ReadAsByteArrayAsync();
 
-                //verify status code
-                if (string.IsNullOrWhiteSpace(LastStatusCode))
-                    LastStatusCode = @"Unknown";
+            //set the status code global
+            LastStatusCode = ((int)response.StatusCode).ToString();
 
-                //return response body
-                return body;
-            }
-            catch
-            {
-                //nothing
-            }
+            //verify status code
+            if (string.IsNullOrWhiteSpace(LastStatusCode))
+                LastStatusCode = @"Unknown";
 
-            //default
-            return null;
+            //return response body
+            return body;
         }
     }
 }

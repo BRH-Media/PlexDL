@@ -54,7 +54,6 @@
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
@@ -72,6 +71,7 @@
     <Compile Include="API\UpdateResponse.cs" />
     <Compile Include="Enums\UpdateChannel.cs" />
     <Compile Include="Enums\VersionStatus.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Net\DownloadManager\Agent.cs" />
     <Compile Include="Net\DownloadManager\Job.cs" />
     <Compile Include="Enums\DownloadStatus.cs" />

@@ -218,6 +218,11 @@ namespace GitHubUpdater.UI
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
+                    case DownloadStatus.Timeout:
+                        MessageBox.Show(@"Download worker experienced a HTTP timeout on one or more operations.", @"Warning",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        break;
+
                     case DownloadStatus.Cancelled:
                         //don't do anything
                         break;
@@ -231,7 +236,7 @@ namespace GitHubUpdater.UI
             catch (Exception ex)
             {
                 //log the error to a file
-                Agent.ExportError(ex);
+                ex.ExportError();
 
                 //alert the user
                 MessageBox.Show($"Error downloading your update files\n\n{ex}", @"Error",
@@ -301,7 +306,7 @@ namespace GitHubUpdater.UI
             catch (Exception ex)
             {
                 //log the error to a file
-                Agent.ExportError(ex);
+                ex.ExportError();
             }
 
             //finally, return the final status

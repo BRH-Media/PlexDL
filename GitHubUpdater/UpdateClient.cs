@@ -2,6 +2,7 @@
 using GitHubUpdater.UI;
 using inet;
 using Newtonsoft.Json;
+using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Security.Hashing;
 using PlexDL.WaitWindow;
 using RestSharp;
@@ -27,6 +28,10 @@ namespace GitHubUpdater
         public bool DebugMode { get; set; } = false;
         public Version CurrentInstalledVersion { get; set; }
 
+        /// <summary>
+        /// Creates a new Update form and then shows it based on the UpdateResponse data provided
+        /// </summary>
+        /// <param name="data"></param>
         public void ShowUpdateForm(UpdateResponse data)
         {
             var frm = new Update
@@ -37,12 +42,21 @@ namespace GitHubUpdater
             frm.ShowDialog();
         }
 
+        /// <summary>
+        /// Ensures the update directory is created
+        /// </summary>
         public void ConstructDirectory()
         {
             if (!Directory.Exists(Globals.UpdateRootDir))
                 Directory.CreateDirectory(Globals.UpdateRootDir);
         }
 
+        /// <summary>
+        /// Downloads the update information from GitHub's servers
+        /// </summary>
+        /// <param name="waitWindow"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         public UpdateResponse GetUpdateData(bool waitWindow = true, UpdateChannel channel = UpdateChannel.Stable)
         {
             var data = new UpdateResponse();
@@ -73,6 +87,10 @@ namespace GitHubUpdater
             return data;
         }
 
+        /// <summary>
+        /// Main update routine
+        /// </summary>
+        /// <param name="silentCheck"></param>
         public void CheckIfLatest(bool silentCheck = false)
         {
             try
@@ -138,6 +156,11 @@ namespace GitHubUpdater
             }
         }
 
+        /// <summary>
+        /// Gets the latest 'stable' update
+        /// </summary>
+        /// <param name="waitWindow"></param>
+        /// <returns></returns>
         public Application GetLatestStableRelease(bool waitWindow = true)
         {
             Application data = null;
@@ -155,6 +178,11 @@ namespace GitHubUpdater
             return data;
         }
 
+        /// <summary>
+        /// Gets the latest 'pre-release' update
+        /// </summary>
+        /// <param name="waitWindow"></param>
+        /// <returns></returns>
         public Application GetLatestDevelopmentRelease(bool waitWindow = true)
         {
             try
@@ -174,6 +202,11 @@ namespace GitHubUpdater
             return null;
         }
 
+        /// <summary>
+        /// Downloads and serialises release information for an update
+        /// </summary>
+        /// <param name="waitWindow"></param>
+        /// <returns></returns>
         public Application[] GetAllReleases(bool waitWindow = true)
         {
             Application[] data = null;
@@ -185,21 +218,35 @@ namespace GitHubUpdater
             }
             catch (Exception ex)
             {
+                //log the error
+                ex.ExportError();
+
+                //alert the user
                 MessageBox.Show($"Update error\r\n\r\n{ex}");
             }
 
             return data;
         }
 
+        /// <summary>
+        /// Constructs a new rest client from the GitHub API's base URI
+        /// </summary>
+        /// <returns></returns>
         protected RestClient GetRestClient()
         {
             var client = new RestClient
             {
-                BaseUrl = new Uri(BaseUrl)
+                BaseUrl = new Uri(BaseUrl),
+                UserAgent = NetGlobals.GlobalUserAgent
             };
             return client;
         }
 
+        /// <summary>
+        /// Multi-threaded code; this is automatic do not hook or call.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetUpdateInfo(object sender, WaitWindowEventArgs e)
         {
             if (e.Arguments.Count == 1)
@@ -209,6 +256,12 @@ namespace GitHubUpdater
             }
         }
 
+        /// <summary>
+        /// Retrieve a GitHub API update resource
+        /// </summary>
+        /// <param name="resource">The relative path; not a complete URI</param>
+        /// <param name="waitWindow"></param>
+        /// <returns></returns>
         private string GetUpdateInfo(string resource, bool waitWindow = true)
         {
             if (waitWindow)
@@ -226,18 +279,6 @@ namespace GitHubUpdater
             LogApiResponse(apiJson, true);
 
             return apiJson;
-        }
-
-        /// <summary>
-        /// Indents and formats a JSON string<br />
-        /// CREDIT: https://stackoverflow.com/a/21407175
-        /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
-        private static string FormatJson(string json)
-        {
-            dynamic parsedJson = JsonConvert.DeserializeObject(json);
-            return JsonConvert.SerializeObject(parsedJson, Newtonsoft.Json.Formatting.Indented);
         }
 
         /// <summary>
@@ -268,7 +309,7 @@ namespace GitHubUpdater
                     //finally, write the API contents to the file
                     File.WriteAllText(filePath,
                         prettyPrint
-                        ? FormatJson(apiResponse)
+                        ? apiResponse.FormatJson()
                         : apiResponse);
                 }
             }

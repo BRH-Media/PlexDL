@@ -21,6 +21,11 @@
         Cancelled,
 
         /// <summary>
+        /// The system cancelled the download due to a HTTP timeout occurring
+        /// </summary>
+        Timeout,
+
+        /// <summary>
         /// Represents an unknown job status.
         /// </summary>
         Unknown,

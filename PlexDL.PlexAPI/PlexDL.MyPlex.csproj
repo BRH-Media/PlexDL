@@ -49,6 +49,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlexDL.AltoHTTP\PlexDL.AltoHTTP.csproj">
+      <Project>{765ccd3e-b3c3-4948-a3c3-824a94f9ade8}</Project>
+      <Name>PlexDL.AltoHTTP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Common.Security\PlexDL.Common.Security.csproj">
       <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
       <Name>PlexDL.Common.Security</Name>

@@ -1,8 +1,6 @@
 ﻿using GitHubUpdater.Enums;
 using PlexDL.AltoHTTP.Common.Net;
-using PlexDL.Common.Security.Hashing;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +9,7 @@ namespace GitHubUpdater.Net.DownloadManager
 {
     public static class Agent
     {
-        public static string UpdateDirectory { get; set; } = @"";
+        public static string UpdateDirectory { get; set; } = $@"{Globals.UpdateRootDir}";
 
         public static async Task<DownloadStatus> DoDownload(this Job downloadJob)
         {
@@ -22,7 +20,7 @@ namespace GitHubUpdater.Net.DownloadManager
                     return DownloadStatus.NullJob;
 
                 //use the generic resource downloader
-                var responseBytes = await ResourceGrab.GrabBytes(downloadJob.DownloadUri);
+                var responseBytes = await ResourceGrab.GrabBytes(downloadJob.DownloadUri, 0);
 
                 //validate the downloaded bytes
                 if (responseBytes != null)
@@ -41,52 +39,29 @@ namespace GitHubUpdater.Net.DownloadManager
                 //if the checks above fail, they will land here
                 return DownloadStatus.NullDownload;
             }
-            catch (TaskCanceledException)
+            catch (TaskCanceledException ex)
             {
+                //log it
+                ex.ExportError();
+
                 //this only gets raised on cancellation and is therefore non-critical
-                return DownloadStatus.Cancelled;
+                return DownloadStatus.Timeout;
             }
-            catch (ThreadAbortException)
+            catch (ThreadAbortException ex)
             {
+                //log it
+                ex.ExportError();
+
                 //this only gets raised on cancellation and is therefore non-critical
                 return DownloadStatus.Cancelled;
             }
             catch (Exception ex)
             {
                 //export error
-                ExportError(ex);
+                ex.ExportError();
 
                 //set status to errored
                 return DownloadStatus.Errored;
-            }
-
-            //default
-            return DownloadStatus.Unknown;
-        }
-
-        public static void ExportError(Exception ex)
-        {
-            try
-            {
-                //file name is MD5-hashed current date and time (for uniqueness)
-                var fileName = $"UpdateError_{MD5Helper.CalculateMd5Hash(DateTime.Now.ToString(CultureInfo.CurrentCulture))}.log";
-
-                //store all errors in the UpdateDirectory
-                var errorsPath = $@"{UpdateDirectory}\errors";
-
-                //ensure the 'errors' folder exists
-                if (!Directory.Exists(errorsPath))
-                    Directory.CreateDirectory(errorsPath);
-
-                //full path
-                var filePath = $@"{errorsPath}\{fileName}";
-
-                //export error to log
-                File.WriteAllText(filePath, ex.ToString());
-            }
-            catch
-            {
-                //ignore
             }
         }
     }
