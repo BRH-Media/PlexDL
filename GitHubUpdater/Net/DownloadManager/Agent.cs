@@ -20,7 +20,7 @@ namespace GitHubUpdater.Net.DownloadManager
                     return DownloadStatus.NullJob;
 
                 //use the generic resource downloader
-                var responseBytes = await ResourceGrab.GrabBytes(downloadJob.DownloadUri, 0);
+                var responseBytes = await ResourceGrab.GrabBytes(downloadJob.DownloadUri);
 
                 //validate the downloaded bytes
                 if (responseBytes != null)

@@ -295,14 +295,7 @@ namespace PlexDL.UI.Forms
         }
 
         private void ItmViewLink_Click(object sender, EventArgs e)
-        {
-            var viewer = new LinkViewer
-            {
-                Link = StreamingContent.StreamInformation.Links.Download //download link (octet-stream)
-            };
-
-            viewer.ShowDialog();
-        }
+            => LinkViewer.ShowLinkViewer(StreamingContent, false);
 
         private void ItmDataExplorer_Click(object sender, EventArgs e)
         {

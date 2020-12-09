@@ -1,4 +1,5 @@
 ﻿using inet;
+using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
@@ -6,7 +7,6 @@ using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
-using PlexDL.Common.Net;
 using PlexDL.Common.Renderers.Forms.GridView;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.MyPlex;
@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using PlexDL.AltoHTTP.Common.Net;
 using UIHelpers;
 
 // ReSharper disable InvertIf
@@ -689,10 +688,7 @@ namespace PlexDL.UI.Forms
         private void ItmViewLink_Click(object sender, EventArgs e)
         {
             if (dgvServers.SelectedRows.Count == 1)
-            {
-                var lnk = new LinkViewer { Link = ConnectionLink(CurrentServer()) };
-                lnk.ShowDialog();
-            }
+                LinkViewer.ShowLinkViewer(ConnectionLink(CurrentServer()));
         }
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)

@@ -20,25 +20,23 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// Downloads a web resource then transforms it into an ASCII/UTF-8 string
         /// </summary>
         /// <param name="uri"></param>
-        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(Uri uri, int timeout = 3, string referrer = @"", string method = @"GET")
-            => await GrabString(uri.ToString(), timeout, referrer, method);
+        public static async Task<string> GrabString(Uri uri, string referrer = @"", string method = @"GET")
+            => await GrabString(uri.ToString(), referrer, method);
 
         /// <summary>
         /// Downloads a web resource then transforms it into an ASCII/UTF-8 string
         /// </summary>
         /// <param name="uri"></param>
-        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(string uri, int timeout = 3, string referrer = @"", string method = @"GET")
+        public static async Task<string> GrabString(string uri, string referrer = @"", string method = @"GET")
         {
             //download raw bytes
-            var data = await GrabBytes(uri, timeout, referrer, method);
+            var data = await GrabBytes(uri, referrer, method);
 
             //validation; convert bytes to string then return the result
             return data != null
@@ -50,22 +48,20 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// Downloads a raw web resource with no transforms
         /// </summary>
         /// <param name="uri"></param>
-        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(Uri uri, int timeout = 3, string referrer = @"", string method = @"GET")
-            => await GrabBytes(uri.ToString(), timeout, referrer, method);
+        public static async Task<byte[]> GrabBytes(Uri uri, string referrer = @"", string method = @"GET")
+            => await GrabBytes(uri.ToString(), referrer, method);
 
         /// <summary>
         /// Downloads a raw web resource with no transforms
         /// </summary>
         /// <param name="uri"></param>
-        /// <param name="timeout"></param>
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(string uri, int timeout = 3, string referrer = @"", string method = @"GET")
+        public static async Task<byte[]> GrabBytes(string uri, string referrer = @"", string method = @"GET")
         {
             //request handler
             var handler = new HttpClientHandler
@@ -84,8 +80,8 @@ namespace PlexDL.AltoHTTP.Common.Net
             var client = new HttpClient(handler);
 
             //apply timeout
-            if (timeout > 0)
-                client.Timeout = TimeSpan.FromSeconds(timeout);
+            if (NetGlobals.Timeout > 0)
+                client.Timeout = TimeSpan.FromSeconds(NetGlobals.Timeout);
 
             //add user agent
             client.DefaultRequestHeaders.Add(@"User-Agent", NetGlobals.GlobalUserAgent);

@@ -519,41 +519,6 @@ namespace PlexDL.UI.Forms
             RenderLibraryView(DataProvider.SectionsProvider.GetRawTable(), itmRenderKeyColumn.Checked);
         }
 
-        private static void ShowLinkViewer(PlexObject media)
-        {
-            var viewer = new LinkViewer { Link = media.StreamInformation.Links.Download }; //download link (octet-stream)
-            viewer.ShowDialog();
-        }
-
-        private void ShowLinkViewer_Worker(object sender, WaitWindowEventArgs e)
-        {
-            e.Result = ObjectFromSelection();
-        }
-
-        private void ShowLinkViewer()
-        {
-            var o = (PlexObject)WaitWindow.WaitWindow.Show(ShowLinkViewer_Worker, @"Getting link");
-            if (o != null)
-                ShowLinkViewer(o);
-            else
-                UIMessages.Error(@"Content object was null; couldn't construct a link for you.");
-        }
-
-        private void ItmDGVViewTrackDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
-        private void ItmDGVViewMovieDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
-        private void ItmDGVViewEpisodeDownloadLink_Click(object sender, EventArgs e)
-        {
-            ShowLinkViewer();
-        }
-
         private void ItmClearMyToken_Click(object sender, EventArgs e)
         {
             TokenManager.TokenClearProcedure();
@@ -2310,7 +2275,7 @@ namespace PlexDL.UI.Forms
             UpdateTracksView(tracks.Xml);
         }
 
-        private void dgvMovies_OnRowChange(object sender, EventArgs e)
+        private void DgvMovies_OnRowChange(object sender, EventArgs e)
         {
             //nothing, more or less.
         }
@@ -2611,12 +2576,14 @@ namespace PlexDL.UI.Forms
 
         private void CxtEpisodeOptions_Opening(object sender, CancelEventArgs e)
         {
-            if (dgvEpisodes.SelectedRows.Count == 0) e.Cancel = true;
+            if (dgvEpisodes.SelectedRows.Count == 0)
+                e.Cancel = true;
         }
 
         private void CxtContentOptions_Opening(object sender, CancelEventArgs e)
         {
-            if (dgvMovies.SelectedRows.Count == 0) e.Cancel = true;
+            if (dgvMovies.SelectedRows.Count == 0)
+                e.Cancel = true;
         }
 
         private void Metadata(PlexObject result = null)
@@ -2664,6 +2631,27 @@ namespace PlexDL.UI.Forms
             }
         }
 
+        private void ShowLinkViewer(object sender, WaitWindowEventArgs e)
+        {
+            e.Result = ObjectFromSelection();
+        }
+
+        private void ShowLinkViewer(bool viewMode = true)
+        {
+            //fetch the selected object in the background
+            var o = (PlexObject)WaitWindow.WaitWindow.Show(ShowLinkViewer, @"Getting link");
+
+            //ensure a valid object was received
+            if (o != null)
+
+                //show the viewer
+                LinkViewer.ShowLinkViewer(o, viewMode);
+            else
+
+                //alert the user to the null error
+                UIMessages.Error(@"Content object was null; couldn't construct a link for you.");
+        }
+
         private static void ShowLogViewer()
         {
             using (var frm = new LogViewer())
@@ -2701,5 +2689,11 @@ namespace PlexDL.UI.Forms
         {
             DoStreamExport();
         }
+
+        private void GenericViewLinkHandler(object sender, EventArgs e)
+            => ShowLinkViewer();
+
+        private void GenericDownloadLinkHandler(object sender, EventArgs e)
+            => ShowLinkViewer(false);
     }
 }

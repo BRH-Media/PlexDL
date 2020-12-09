@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PlexDL.WaitWindow;
+using System;
 using System.Net;
-using PlexDL.WaitWindow;
 
 namespace PlexDL.AltoHTTP.Common.Net
 {
@@ -10,31 +10,24 @@ namespace PlexDL.AltoHTTP.Common.Net
         public string StatusCode { get; set; } = "Undetermined";
         public bool ConnectionSuccess { get; set; }
 
-        public static WebCheck TestUrl(string url, bool waitWindow = true)
-        {
-            WebCheck obj;
-
-            if (waitWindow)
-                obj = (WebCheck)WaitWindow.WaitWindow.Show(TestUrl_WaitWindow, @"Checking connection", url);
-            else
-                obj = TestUrl_Worker(url);
-
-            return obj;
-        }
-
-        private static void TestUrl_WaitWindow(object sender, WaitWindowEventArgs e)
+        private static void TestUrl(object sender, WaitWindowEventArgs e)
         {
             var url = (string)e.Arguments[0];
-            e.Result = TestUrl_Worker(url);
+            e.Result = TestUrl(url, false);
         }
 
-        private static WebCheck TestUrl_Worker(string url)
+        public static WebCheck TestUrl(string url, bool waitWindow = true)
         {
+            if (waitWindow)
+                return (WebCheck)WaitWindow.WaitWindow.Show(TestUrl, @"Checking connection", url);
+
             var obj = new WebCheck();
+
             try
             {
                 //Creating the HttpWebRequest
                 var request = (HttpWebRequest)WebRequest.Create(url);
+                request.UserAgent = NetGlobals.GlobalUserAgent;
 
                 //5s timeout
                 request.Timeout = 5000;

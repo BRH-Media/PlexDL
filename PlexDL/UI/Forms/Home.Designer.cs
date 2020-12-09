@@ -35,7 +35,6 @@ namespace PlexDL.UI.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -43,7 +42,8 @@ namespace PlexDL.UI.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.fbdDownloadPath = new System.Windows.Forms.FolderBrowserDialog();
@@ -60,7 +60,9 @@ namespace PlexDL.UI.Forms
             this.itmEpisodeDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisSeason = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDGVViewEpisodeDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVEpisodeLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVEpisodeLinkView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVEpisodeLinkDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmEpisodeCast = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +75,7 @@ namespace PlexDL.UI.Forms
             this.itmContentMetadataExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisMovie = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDGVViewMovieDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVMovieLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContentCast = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,7 +110,7 @@ namespace PlexDL.UI.Forms
             this.itmTrackDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDGVDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDGVViewTrackDownloadLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVTrackLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackStream = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmTrackCast = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,6 +174,10 @@ namespace PlexDL.UI.Forms
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
+            this.itmDGVTrackLinkView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVTrackLinkDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVMovieLinkView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDGVMovieLinkDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -269,14 +275,14 @@ namespace PlexDL.UI.Forms
             // itmEpisodeMetadataView
             // 
             this.itmEpisodeMetadataView.Name = "itmEpisodeMetadataView";
-            this.itmEpisodeMetadataView.Size = new System.Drawing.Size(108, 22);
+            this.itmEpisodeMetadataView.Size = new System.Drawing.Size(180, 22);
             this.itmEpisodeMetadataView.Text = "View";
             this.itmEpisodeMetadataView.Click += new System.EventHandler(this.ItmEpisodeMetadataView_Click);
             // 
             // itmEpisodeMetadataExport
             // 
             this.itmEpisodeMetadataExport.Name = "itmEpisodeMetadataExport";
-            this.itmEpisodeMetadataExport.Size = new System.Drawing.Size(108, 22);
+            this.itmEpisodeMetadataExport.Size = new System.Drawing.Size(180, 22);
             this.itmEpisodeMetadataExport.Text = "Export";
             this.itmEpisodeMetadataExport.Click += new System.EventHandler(this.ItmEpisodeMetadataExport_Click);
             // 
@@ -285,7 +291,7 @@ namespace PlexDL.UI.Forms
             this.itmEpisodeDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmDGVDownloadThisEpisode,
             this.itmDGVDownloadThisSeason,
-            this.itmDGVViewEpisodeDownloadLink});
+            this.itmDGVEpisodeLink});
             this.itmEpisodeDownload.Name = "itmEpisodeDownload";
             this.itmEpisodeDownload.Size = new System.Drawing.Size(128, 22);
             this.itmEpisodeDownload.Text = "Download";
@@ -293,23 +299,25 @@ namespace PlexDL.UI.Forms
             // itmDGVDownloadThisEpisode
             // 
             this.itmDGVDownloadThisEpisode.Name = "itmDGVDownloadThisEpisode";
-            this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(172, 22);
+            this.itmDGVDownloadThisEpisode.Size = new System.Drawing.Size(180, 22);
             this.itmDGVDownloadThisEpisode.Text = "Download Episode";
             this.itmDGVDownloadThisEpisode.Click += new System.EventHandler(this.ItmDGVDownloadThisEpisode_Click);
             // 
             // itmDGVDownloadThisSeason
             // 
             this.itmDGVDownloadThisSeason.Name = "itmDGVDownloadThisSeason";
-            this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(172, 22);
+            this.itmDGVDownloadThisSeason.Size = new System.Drawing.Size(180, 22);
             this.itmDGVDownloadThisSeason.Text = "Download Season";
             this.itmDGVDownloadThisSeason.Click += new System.EventHandler(this.ItmDGVDownloadThisSeason_Click);
             // 
-            // itmDGVViewEpisodeDownloadLink
+            // itmDGVEpisodeLink
             // 
-            this.itmDGVViewEpisodeDownloadLink.Name = "itmDGVViewEpisodeDownloadLink";
-            this.itmDGVViewEpisodeDownloadLink.Size = new System.Drawing.Size(172, 22);
-            this.itmDGVViewEpisodeDownloadLink.Text = "View Episode Link";
-            this.itmDGVViewEpisodeDownloadLink.Click += new System.EventHandler(this.ItmDGVViewEpisodeDownloadLink_Click);
+            this.itmDGVEpisodeLink.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVEpisodeLinkView,
+            this.itmDGVEpisodeLinkDownload});
+            this.itmDGVEpisodeLink.Name = "itmDGVEpisodeLink";
+            this.itmDGVEpisodeLink.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVEpisodeLink.Text = "Episode Link";
             // 
             // itmEpisodeStream
             // 
@@ -367,7 +375,7 @@ namespace PlexDL.UI.Forms
             this.itmContentSearch,
             this.itmContentCast});
             this.cxtMovieOptions.Name = "cxtEpisodeOptions";
-            this.cxtMovieOptions.Size = new System.Drawing.Size(129, 114);
+            this.cxtMovieOptions.Size = new System.Drawing.Size(181, 136);
             this.cxtMovieOptions.Opening += new System.ComponentModel.CancelEventHandler(this.CxtContentOptions_Opening);
             // 
             // itmContentMetadata
@@ -376,20 +384,20 @@ namespace PlexDL.UI.Forms
             this.itmContentMetadataView,
             this.itmContentMetadataExport});
             this.itmContentMetadata.Name = "itmContentMetadata";
-            this.itmContentMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmContentMetadata.Size = new System.Drawing.Size(180, 22);
             this.itmContentMetadata.Text = "Metadata";
             // 
             // itmContentMetadataView
             // 
             this.itmContentMetadataView.Name = "itmContentMetadataView";
-            this.itmContentMetadataView.Size = new System.Drawing.Size(108, 22);
+            this.itmContentMetadataView.Size = new System.Drawing.Size(180, 22);
             this.itmContentMetadataView.Text = "View";
             this.itmContentMetadataView.Click += new System.EventHandler(this.ItmContentMetadataView_Click);
             // 
             // itmContentMetadataExport
             // 
             this.itmContentMetadataExport.Name = "itmContentMetadataExport";
-            this.itmContentMetadataExport.Size = new System.Drawing.Size(108, 22);
+            this.itmContentMetadataExport.Size = new System.Drawing.Size(180, 22);
             this.itmContentMetadataExport.Text = "Export";
             this.itmContentMetadataExport.Click += new System.EventHandler(this.ItmContentMetadataExport_Click);
             // 
@@ -397,43 +405,45 @@ namespace PlexDL.UI.Forms
             // 
             this.itmContentDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmDGVDownloadThisMovie,
-            this.itmDGVViewMovieDownloadLink});
+            this.itmDGVMovieLink});
             this.itmContentDownload.Name = "itmContentDownload";
-            this.itmContentDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmContentDownload.Size = new System.Drawing.Size(180, 22);
             this.itmContentDownload.Text = "Download";
             // 
             // itmDGVDownloadThisMovie
             // 
             this.itmDGVDownloadThisMovie.Name = "itmDGVDownloadThisMovie";
-            this.itmDGVDownloadThisMovie.Size = new System.Drawing.Size(164, 22);
+            this.itmDGVDownloadThisMovie.Size = new System.Drawing.Size(180, 22);
             this.itmDGVDownloadThisMovie.Text = "Download Movie";
             this.itmDGVDownloadThisMovie.Click += new System.EventHandler(this.ItmDGVDownloadThisMovie_Click);
             // 
-            // itmDGVViewMovieDownloadLink
+            // itmDGVMovieLink
             // 
-            this.itmDGVViewMovieDownloadLink.Name = "itmDGVViewMovieDownloadLink";
-            this.itmDGVViewMovieDownloadLink.Size = new System.Drawing.Size(164, 22);
-            this.itmDGVViewMovieDownloadLink.Text = "View Link";
-            this.itmDGVViewMovieDownloadLink.Click += new System.EventHandler(this.ItmDGVViewMovieDownloadLink_Click);
+            this.itmDGVMovieLink.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVMovieLinkView,
+            this.itmDGVMovieLinkDownload});
+            this.itmDGVMovieLink.Name = "itmDGVMovieLink";
+            this.itmDGVMovieLink.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVMovieLink.Text = "Movie Link";
             // 
             // itmContentStream
             // 
             this.itmContentStream.Name = "itmContentStream";
-            this.itmContentStream.Size = new System.Drawing.Size(128, 22);
+            this.itmContentStream.Size = new System.Drawing.Size(180, 22);
             this.itmContentStream.Text = "Stream";
             this.itmContentStream.Click += new System.EventHandler(this.ItmContentStream_Click);
             // 
             // itmContentSearch
             // 
             this.itmContentSearch.Name = "itmContentSearch";
-            this.itmContentSearch.Size = new System.Drawing.Size(128, 22);
+            this.itmContentSearch.Size = new System.Drawing.Size(180, 22);
             this.itmContentSearch.Text = "Search";
             this.itmContentSearch.Click += new System.EventHandler(this.ItmContentSearch_Click);
             // 
             // itmContentCast
             // 
             this.itmContentCast.Name = "itmContentCast";
-            this.itmContentCast.Size = new System.Drawing.Size(128, 22);
+            this.itmContentCast.Size = new System.Drawing.Size(180, 22);
             this.itmContentCast.Text = "Cast";
             this.itmContentCast.Click += new System.EventHandler(this.ItmContentCast_Click);
             // 
@@ -594,19 +604,20 @@ namespace PlexDL.UI.Forms
             this.dgvMovies.AllowUserToAddRows = false;
             this.dgvMovies.AllowUserToDeleteRows = false;
             this.dgvMovies.AllowUserToOrderColumns = true;
+            this.dgvMovies.AllowUserToResizeRows = false;
             this.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMovies.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvMovies.ContextMenuStrip = this.cxtMovieOptions;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMovies.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMovies.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvMovies.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -622,7 +633,7 @@ namespace PlexDL.UI.Forms
             this.dgvMovies.Size = new System.Drawing.Size(644, 334);
             this.dgvMovies.TabIndex = 18;
             this.dgvMovies.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvMovies.SelectionChanged += new System.EventHandler(this.dgvMovies_OnRowChange);
+            this.dgvMovies.SelectionChanged += new System.EventHandler(this.DgvMovies_OnRowChange);
             // 
             // tabTV
             // 
@@ -659,19 +670,20 @@ namespace PlexDL.UI.Forms
             this.dgvTVShows.AllowUserToAddRows = false;
             this.dgvTVShows.AllowUserToDeleteRows = false;
             this.dgvTVShows.AllowUserToOrderColumns = true;
+            this.dgvTVShows.AllowUserToResizeRows = false;
             this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTVShows.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTVShows.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTVShows.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvTVShows.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -695,19 +707,20 @@ namespace PlexDL.UI.Forms
             this.dgvSeasons.AllowUserToAddRows = false;
             this.dgvSeasons.AllowUserToDeleteRows = false;
             this.dgvSeasons.AllowUserToOrderColumns = true;
+            this.dgvSeasons.AllowUserToResizeRows = false;
             this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvSeasons.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSeasons.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSeasons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSeasons.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvSeasons.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -730,19 +743,20 @@ namespace PlexDL.UI.Forms
             this.dgvEpisodes.AllowUserToAddRows = false;
             this.dgvEpisodes.AllowUserToDeleteRows = false;
             this.dgvEpisodes.AllowUserToOrderColumns = true;
+            this.dgvEpisodes.AllowUserToResizeRows = false;
             this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvEpisodes.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvEpisodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEpisodes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvEpisodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -794,19 +808,20 @@ namespace PlexDL.UI.Forms
             this.dgvArtists.AllowUserToAddRows = false;
             this.dgvArtists.AllowUserToDeleteRows = false;
             this.dgvArtists.AllowUserToOrderColumns = true;
+            this.dgvArtists.AllowUserToResizeRows = false;
             this.dgvArtists.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvArtists.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvArtists.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvArtists.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvArtists.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvArtists.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -866,7 +881,7 @@ namespace PlexDL.UI.Forms
             this.itmTrackDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmDGVDownloadThisTrack,
             this.itmDGVDownloadThisAlbum,
-            this.itmDGVViewTrackDownloadLink});
+            this.itmDGVTrackLink});
             this.itmTrackDownload.Name = "itmTrackDownload";
             this.itmTrackDownload.Size = new System.Drawing.Size(128, 22);
             this.itmTrackDownload.Text = "Download";
@@ -874,23 +889,25 @@ namespace PlexDL.UI.Forms
             // itmDGVDownloadThisTrack
             // 
             this.itmDGVDownloadThisTrack.Name = "itmDGVDownloadThisTrack";
-            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisTrack.Size = new System.Drawing.Size(180, 22);
             this.itmDGVDownloadThisTrack.Text = "Download Track";
             this.itmDGVDownloadThisTrack.Click += new System.EventHandler(this.ItmDGVDownloadThisTrack_Click);
             // 
             // itmDGVDownloadThisAlbum
             // 
             this.itmDGVDownloadThisAlbum.Name = "itmDGVDownloadThisAlbum";
-            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(167, 22);
+            this.itmDGVDownloadThisAlbum.Size = new System.Drawing.Size(180, 22);
             this.itmDGVDownloadThisAlbum.Text = "Download Album";
             this.itmDGVDownloadThisAlbum.Click += new System.EventHandler(this.ItmDGVDownloadThisAlbum_Click);
             // 
-            // itmDGVViewTrackDownloadLink
+            // itmDGVTrackLink
             // 
-            this.itmDGVViewTrackDownloadLink.Name = "itmDGVViewTrackDownloadLink";
-            this.itmDGVViewTrackDownloadLink.Size = new System.Drawing.Size(167, 22);
-            this.itmDGVViewTrackDownloadLink.Text = "View Link";
-            this.itmDGVViewTrackDownloadLink.Click += new System.EventHandler(this.ItmDGVViewTrackDownloadLink_Click);
+            this.itmDGVTrackLink.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDGVTrackLinkView,
+            this.itmDGVTrackLinkDownload});
+            this.itmDGVTrackLink.Name = "itmDGVTrackLink";
+            this.itmDGVTrackLink.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVTrackLink.Text = "Track Link";
             // 
             // itmTrackStream
             // 
@@ -918,19 +935,20 @@ namespace PlexDL.UI.Forms
             this.dgvAlbums.AllowUserToAddRows = false;
             this.dgvAlbums.AllowUserToDeleteRows = false;
             this.dgvAlbums.AllowUserToOrderColumns = true;
+            this.dgvAlbums.AllowUserToResizeRows = false;
             this.dgvAlbums.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvAlbums.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlbums.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvAlbums.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlbums.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAlbums.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -953,19 +971,20 @@ namespace PlexDL.UI.Forms
             this.dgvTracks.AllowUserToAddRows = false;
             this.dgvTracks.AllowUserToDeleteRows = false;
             this.dgvTracks.AllowUserToOrderColumns = true;
+            this.dgvTracks.AllowUserToResizeRows = false;
             this.dgvTracks.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTracks.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvTracks.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTracks.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTracks.ContextMenuStrip = this.cxtTrackOptions;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTracks.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvTracks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTracks.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvTracks.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -1012,19 +1031,20 @@ namespace PlexDL.UI.Forms
             this.dgvLog.AllowUserToAddRows = false;
             this.dgvLog.AllowUserToDeleteRows = false;
             this.dgvLog.AllowUserToOrderColumns = true;
+            this.dgvLog.AllowUserToResizeRows = false;
             this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLog.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLog.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLog.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -1090,19 +1110,20 @@ namespace PlexDL.UI.Forms
             this.dgvSections.AllowUserToAddRows = false;
             this.dgvSections.AllowUserToDeleteRows = false;
             this.dgvSections.AllowUserToOrderColumns = true;
+            this.dgvSections.AllowUserToResizeRows = false;
             this.dgvSections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSections.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvSections.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSections.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvSections.ContextMenuStrip = this.cxtLibrarySections;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSections.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvSections.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSections.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -1517,6 +1538,48 @@ namespace PlexDL.UI.Forms
             // 
             this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
             // 
+            // itmDGVEpisodeLinkView
+            // 
+            this.itmDGVEpisodeLinkView.Name = "itmDGVEpisodeLinkView";
+            this.itmDGVEpisodeLinkView.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVEpisodeLinkView.Text = "View";
+            this.itmDGVEpisodeLinkView.Click += new System.EventHandler(this.GenericViewLinkHandler);
+            // 
+            // itmDGVEpisodeLinkDownload
+            // 
+            this.itmDGVEpisodeLinkDownload.Name = "itmDGVEpisodeLinkDownload";
+            this.itmDGVEpisodeLinkDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVEpisodeLinkDownload.Text = "Download";
+            this.itmDGVEpisodeLinkDownload.Click += new System.EventHandler(this.GenericDownloadLinkHandler);
+            // 
+            // itmDGVTrackLinkView
+            // 
+            this.itmDGVTrackLinkView.Name = "itmDGVTrackLinkView";
+            this.itmDGVTrackLinkView.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVTrackLinkView.Text = "View";
+            this.itmDGVTrackLinkView.Click += new System.EventHandler(this.GenericViewLinkHandler);
+            // 
+            // itmDGVTrackLinkDownload
+            // 
+            this.itmDGVTrackLinkDownload.Name = "itmDGVTrackLinkDownload";
+            this.itmDGVTrackLinkDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVTrackLinkDownload.Text = "Download";
+            this.itmDGVTrackLinkDownload.Click += new System.EventHandler(this.GenericDownloadLinkHandler);
+            // 
+            // itmDGVMovieLinkView
+            // 
+            this.itmDGVMovieLinkView.Name = "itmDGVMovieLinkView";
+            this.itmDGVMovieLinkView.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVMovieLinkView.Text = "View";
+            this.itmDGVMovieLinkView.Click += new System.EventHandler(this.GenericViewLinkHandler);
+            // 
+            // itmDGVMovieLinkDownload
+            // 
+            this.itmDGVMovieLinkDownload.Name = "itmDGVMovieLinkDownload";
+            this.itmDGVMovieLinkDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmDGVMovieLinkDownload.Text = "Download";
+            this.itmDGVMovieLinkDownload.Click += new System.EventHandler(this.GenericDownloadLinkHandler);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1676,10 +1739,10 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmAbout;
         private ToolStripMenuItem itmRepo;
         private ToolStripMenuItem itmRenderKeyColumn;
-        private ToolStripMenuItem itmDGVViewEpisodeDownloadLink;
-        private ToolStripMenuItem itmDGVViewTrackDownloadLink;
+        private ToolStripMenuItem itmDGVEpisodeLink;
+        private ToolStripMenuItem itmDGVTrackLink;
         private ToolStripMenuItem itmDGVDownloadThisMovie;
-        private ToolStripMenuItem itmDGVViewMovieDownloadLink;
+        private ToolStripMenuItem itmDGVMovieLink;
         private ToolStripMenuItem itmClearMyToken;
         private ToolStripMenuItem itmOpenDataFolder;
         private ToolStripMenuItem itmCast;
@@ -1702,6 +1765,12 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmSaveProfile;
         private AbortableBackgroundWorker wkrGetMetadata;
         private ToolStripMenuItem itmContinueWatching;
+        private ToolStripMenuItem itmDGVEpisodeLinkView;
+        private ToolStripMenuItem itmDGVEpisodeLinkDownload;
+        private ToolStripMenuItem itmDGVTrackLinkView;
+        private ToolStripMenuItem itmDGVTrackLinkDownload;
+        private ToolStripMenuItem itmDGVMovieLinkView;
+        private ToolStripMenuItem itmDGVMovieLinkDownload;
     }
 }
 
