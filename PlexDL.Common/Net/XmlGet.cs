@@ -97,22 +97,22 @@ namespace PlexDL.Common.Net
 
             try
             {
-                //attempt to grab the resource
-                var xmlFetch = ResourceGrab.GrabString(fullUri).Result;
+                //get the resource
+                var xmlString = ResourceGrab.GrabString(fullUri);
 
                 //validation
-                if (!string.IsNullOrWhiteSpace(xmlFetch))
+                if (!string.IsNullOrWhiteSpace(xmlString))
                 {
-                    //record the transaction
+                    //conversion
+                    var xmlResponse = xmlString.ToXmlDocument();
+
+                    //log outcome
                     LoggingHelpers.RecordTransaction(fullUri, ResourceGrab.LastStatusCode);
 
-                    //construct a new XML document from the returned string
-                    var xmlResponse = xmlFetch.ToXmlDocument();
-
-                    //ensure the document is cached appropriately for next time
+                    //ensure file is cached
                     XmlCaching.XmlToCache(xmlResponse, uri);
 
-                    //return the XML document response
+                    //return XML document
                     return xmlResponse;
                 }
             }
@@ -122,13 +122,8 @@ namespace PlexDL.Common.Net
             }
             catch (Exception ex)
             {
-                //log the error
                 LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
-
-                //log the transaction
-                LoggingHelpers.RecordTransaction(fullUri, "Errored");
-
-                //if we're allowed to, display an error message
+                LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
                 if (!silent)
                     UIMessages.Error("Error Occurred in XML Transaction\n\n" + ex, @"Network Error");
             }

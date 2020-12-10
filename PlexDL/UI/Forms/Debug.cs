@@ -225,7 +225,7 @@ namespace PlexDL.UI.Forms
                         var file = sfdExport.FileName;
 
                         //use the export extensions provider to save the data to a CSV file
-                        table.ToCSV(file);
+                        table.ToCsv(file);
 
                         //inform the user
                         UIMessages.Info("Success!");

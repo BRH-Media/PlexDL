@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PlexDL.AltoHTTP.Common.Net
 {
@@ -23,8 +22,8 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(Uri uri, string referrer = @"", string method = @"GET")
-            => await GrabString(uri.ToString(), referrer, method);
+        public static string GrabString(Uri uri, string referrer = @"", string method = @"GET")
+            => GrabString(uri.ToString(), referrer, method);
 
         /// <summary>
         /// Downloads a web resource then transforms it into an ASCII/UTF-8 string
@@ -33,10 +32,10 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<string> GrabString(string uri, string referrer = @"", string method = @"GET")
+        public static string GrabString(string uri, string referrer = @"", string method = @"GET")
         {
             //download raw bytes
-            var data = await GrabBytes(uri, referrer, method);
+            var data = GrabBytes(uri, referrer, method);
 
             //validation; convert bytes to string then return the result
             return data != null
@@ -51,8 +50,8 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(Uri uri, string referrer = @"", string method = @"GET")
-            => await GrabBytes(uri.ToString(), referrer, method);
+        public static byte[] GrabBytes(Uri uri, string referrer = @"", string method = @"GET")
+            => GrabBytes(uri.ToString(), referrer, method);
 
         /// <summary>
         /// Downloads a raw web resource with no transforms
@@ -61,7 +60,7 @@ namespace PlexDL.AltoHTTP.Common.Net
         /// <param name="referrer"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GrabBytes(string uri, string referrer = @"", string method = @"GET")
+        public static byte[] GrabBytes(string uri, string referrer = @"", string method = @"GET")
         {
             //request handler
             var handler = new HttpClientHandler
@@ -94,10 +93,10 @@ namespace PlexDL.AltoHTTP.Common.Net
                 request.Headers.TryAddWithoutValidation("Referer", referrer);
 
             //the response from the server is retrieved using the client
-            var response = await client.SendAsync(request);
+            var response = client.SendAsync(request).Result;
 
             //raw response body (in bytes)
-            var body = await response.Content.ReadAsByteArrayAsync();
+            var body = response.Content.ReadAsByteArrayAsync().Result;
 
             //set the status code global
             LastStatusCode = ((int)response.StatusCode).ToString();

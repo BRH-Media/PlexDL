@@ -19,8 +19,14 @@ namespace GitHubUpdater.Net.DownloadManager
                 if (downloadJob == null)
                     return DownloadStatus.NullJob;
 
+                //disable timeout
+                NetGlobals.Timeout = 0;
+
                 //use the generic resource downloader
-                var responseBytes = await ResourceGrab.GrabBytes(downloadJob.DownloadUri);
+                var responseBytes = ResourceGrab.GrabBytes(downloadJob.DownloadUri);
+
+                //disable timeout
+                NetGlobals.Timeout = 3;
 
                 //validate the downloaded bytes
                 if (responseBytes != null)

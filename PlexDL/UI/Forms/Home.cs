@@ -260,6 +260,7 @@ namespace PlexDL.UI.Forms
             Flags.IsConnected = true;
 
             ObjectProvider.Settings.ConnectionInfo = connectInfo;
+
             if (ObjectProvider.Settings.Generic.ShowConnectionSuccess)
                 UIMessages.Info(@"Connection successful!");
 
@@ -275,12 +276,14 @@ namespace PlexDL.UI.Forms
             if (Internet.IsConnected())
                 using (var frm = new ServerManager())
                 {
-                    if (frm.ShowDialog() != DialogResult.OK) return;
+                    if (frm.ShowDialog() != DialogResult.OK)
+                        return;
 
                     ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = frm.SelectedServer.accessToken;
                     ObjectProvider.Settings.ConnectionInfo.PlexAddress = frm.SelectedServer.address;
                     ObjectProvider.Settings.ConnectionInfo.PlexPort = frm.SelectedServer.port;
                     ObjectProvider.Svr = frm.SelectedServer;
+
                     DoConnectFromServer(frm.SelectedServer);
                 }
             else
@@ -866,11 +869,13 @@ namespace PlexDL.UI.Forms
 
         private void PopulateLibraryWorker(XmlDocument doc)
         {
-            if (doc == null) return;
+            if (doc == null)
+                return;
 
             try
             {
                 LoggingHelpers.RecordGeneralEntry("Library population requested");
+
                 var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
                 var baseUri = Strings.GetBaseUri(false);
                 var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
@@ -2160,10 +2165,10 @@ namespace PlexDL.UI.Forms
             {
                 key, type
             };
-            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey_Worker, @"Getting Metadata", args);
+            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey, @"Getting Metadata", args);
         }
 
-        private void UpdateFromLibraryKey_Worker(object sender, WaitWindowEventArgs e)
+        private void UpdateFromLibraryKey(object sender, WaitWindowEventArgs e)
         {
             var type = (ContentType)e.Arguments[1];
             var key = (string)e.Arguments[0];

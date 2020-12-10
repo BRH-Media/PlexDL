@@ -318,10 +318,10 @@ namespace PlexDL.UI.Forms
             this.cbxExportFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxExportFormat.FormattingEnabled = true;
             this.cbxExportFormat.Items.AddRange(new object[] {
-                "CSV",
-                "JSON",
-                "XML",
-                "LOGDEL"});
+            "CSV",
+            "JSON",
+            "XML",
+            "LOGDEL"});
             this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
             this.cbxExportFormat.Name = "cbxExportFormat";
             this.cbxExportFormat.Size = new System.Drawing.Size(195, 21);
@@ -546,8 +546,8 @@ namespace PlexDL.UI.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Debug";
-            this.Load += new System.EventHandler(this.Debug_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Debug_FormClosing);
+            this.Load += new System.EventHandler(this.Debug_Load);
             this.tlpDebug.ResumeLayout(false);
             this.gbGlobalValues.ResumeLayout(false);
             this.tlpGlobalValues.ResumeLayout(false);

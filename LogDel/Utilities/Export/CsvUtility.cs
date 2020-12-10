@@ -7,13 +7,14 @@ namespace LogDel.Utilities.Export
 {
     public static class CsvUtility
     {
-        public static void ToCSV(this DataTable dtDataTable, string strFilePath)
+        public static void ToCsv(this DataTable dtDataTable, string filePath)
         {
             try
             {
                 if (dtDataTable != null)
                 {
-                    var sw = new StreamWriter(strFilePath, false);
+                    var sw = new StreamWriter(filePath, false);
+
                     //headers
                     for (var i = 0; i < dtDataTable.Columns.Count; i++)
                     {
@@ -31,7 +32,7 @@ namespace LogDel.Utilities.Export
                                 var value = dr[i].ToString();
                                 if (value.Contains(','))
                                 {
-                                    value = string.Format("\"{0}\"", value);
+                                    value = $"\"{value}\"";
                                     sw.Write(value);
                                 }
                                 else

@@ -132,6 +132,7 @@ namespace GitHubUpdater.UI
             var text = @"";
             var foreColor = KnownColor.Chocolate;
 
+
             switch (AppUpdate.Channel)
             {
                 case Enums.UpdateChannel.Stable:
@@ -170,9 +171,7 @@ namespace GitHubUpdater.UI
         }
 
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
-        {
-            Download();
-        }
+            => Download();
 
         private int NumberDownloads()
         {

@@ -10,7 +10,7 @@ namespace LogDel.Utilities.Export
 {
     public static class LdUtility
     {
-        public static void ToLogdel(this DataTable table, string path, LogSecurity security = LogSecurity.Unprotected)
+        public static void ToLogdel(this DataTable table, string filePath, LogSecurity security = LogSecurity.Unprotected)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace LogDel.Utilities.Export
                 }
 
                 //finalise the log file
-                File.WriteAllText(path, contentToWrite);
+                File.WriteAllText(filePath, contentToWrite);
             }
             catch (Exception) //catch all exceptions
             {

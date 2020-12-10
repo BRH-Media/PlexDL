@@ -398,7 +398,7 @@ namespace PlexDL.UI.Forms
 
                         var f = sfdExportCsv.FileName;
                         var t = LogReader.TableFromFile(sel, false, false);
-                        t.ToCSV(f);
+                        t.ToCsv(f);
                         UIMessages.Info("Successfully exported log file to CSV",
                             "Success");
                     }

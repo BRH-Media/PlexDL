@@ -1,14 +1,19 @@
-﻿using PlexDL.Common.Components.Forms;
+﻿using LogDel.Utilities.Export;
+using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Xml;
+using UIHelpers;
+
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+// ReSharper disable InconsistentNaming
 
 #pragma warning disable 1591
-
-// ReSharper disable InconsistentNaming
 
 namespace PlexDL.UI.Forms
 {
@@ -40,6 +45,26 @@ namespace PlexDL.UI.Forms
             }
         }
 
+        private void SetupGUI(int rowCount, string tableName)
+        {
+            lblTableValue.Text = tableName;
+            lblTableValue.ForeColor = Color.Black;
+            lblViewingValue.Text = $@"{rowCount}/{rowCount}";
+
+            //enable exporting
+            itmExport.Enabled = true;
+        }
+
+        private void ResetGUI()
+        {
+            lblTableValue.Text = @"Not Loaded";
+            lblTableValue.ForeColor = Color.DarkRed;
+            lblViewingValue.Text = @"0/0";
+
+            //disable exporting
+            itmExport.Enabled = false;
+        }
+
         private void PopulateList(DataSet data)
         {
             lstTables.Items.Clear();
@@ -53,7 +78,7 @@ namespace PlexDL.UI.Forms
                 lstTables.SelectedIndex = 0;
         }
 
-        private void ApiExplorer_Load(object sender, EventArgs e)
+        private void Startup()
         {
             if (PlexData != null)
             {
@@ -65,7 +90,7 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void LstTables_SelectedIndexChanged(object sender, EventArgs e)
+        private void DataUpdate()
         {
             if (lstTables.SelectedIndex > -1 && RawData != null)
             {
@@ -85,33 +110,138 @@ namespace PlexDL.UI.Forms
                 ResetGUI();
         }
 
-        private void SetupGUI(int rowCount, string tableName)
+        private void DataExport(ExportFormat format)
         {
-            lblTableValue.Text = tableName;
-            lblTableValue.ForeColor = Color.Black;
-            lblViewingValue.Text = $@"{rowCount}/{rowCount}";
+            try
+            {
+                //validation
+                if (dgvMain.Rows.Count > 0)
+                {
+                    //flag for success message
+                    var exportSuccess = false;
+
+                    //the data to export
+                    var data = (DataTable)dgvMain.DataSource;
+
+                    //use export framework
+                    switch (format)
+                    {
+                        //XML exporter
+                        case ExportFormat.Xml:
+
+                            //setup the dialog
+                            sfdExport.Filter = @"XML File|*.xml";
+                            sfdExport.DefaultExt = @"xml";
+
+                            //show the dialog
+                            if (sfdExport.ShowDialog() == DialogResult.OK)
+                            {
+                                //do the export
+                                data.ToXml(sfdExport.FileName);
+
+                                //set success
+                                exportSuccess = true;
+                            }
+
+                            break;
+
+                        //CSV exporter
+                        case ExportFormat.Csv:
+
+                            //setup the dialog
+                            sfdExport.Filter = @"CSV File|*.csv";
+                            sfdExport.DefaultExt = @"csv";
+
+                            //show the dialog
+                            if (sfdExport.ShowDialog() == DialogResult.OK)
+                            {
+                                //do the export
+                                data.ToCsv(sfdExport.FileName);
+
+                                //set success
+                                exportSuccess = true;
+                            }
+
+                            break;
+
+                        //JSON exporter
+                        case ExportFormat.Json:
+
+                            //setup the dialog
+                            sfdExport.Filter = @"JSON File|*.json";
+                            sfdExport.DefaultExt = @"json";
+
+                            //show the dialog
+                            if (sfdExport.ShowDialog() == DialogResult.OK)
+                            {
+                                //do the export
+                                data.ToJson(sfdExport.FileName);
+
+                                //set success
+                                exportSuccess = true;
+                            }
+
+                            break;
+
+                        //LOGDEL exporter
+                        case ExportFormat.Logdel:
+
+                            //setup the dialog
+                            sfdExport.Filter = @"LOGDEL File|*.logdel";
+                            sfdExport.DefaultExt = @"logdel";
+
+                            //show the dialog
+                            if (sfdExport.ShowDialog() == DialogResult.OK)
+                            {
+                                //do the export
+                                data.ToLogdel(sfdExport.FileName);
+
+                                //set success
+                                exportSuccess = true;
+                            }
+
+                            break;
+                    }
+
+                    //show only on success
+                    if (exportSuccess)
+                        UIMessages.Info(@"Export was successful");
+                }
+                else
+                    UIMessages.Error(@"Export failed; no data available.");
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, @"ApiExplorerExportError");
+
+                //alert the user
+                UIMessages.Error($"Export error:\n\n{ex}");
+            }
         }
 
-        private void ResetGUI()
-        {
-            lblTableValue.Text = @"Not Loaded";
-            lblTableValue.ForeColor = Color.DarkRed;
-            lblViewingValue.Text = @"0/0";
-        }
+        private void ApiExplorer_Load(object sender, EventArgs e)
+            => Startup();
+
+        private void LstTables_SelectedIndexChanged(object sender, EventArgs e)
+            => DataUpdate();
+
+        private void ItmExportXml_Click(object sender, EventArgs e)
+            => DataExport(ExportFormat.Xml);
+
+        private void ItmExportJson_Click(object sender, EventArgs e)
+            => DataExport(ExportFormat.Json);
+
+        private void ItmExportCsv_Click(object sender, EventArgs e)
+            => DataExport(ExportFormat.Csv);
+
+        private void ItmExportLogdel_Click(object sender, EventArgs e)
+            => DataExport(ExportFormat.Logdel);
 
         public static void ShowExplorer(PlexObject content)
-        {
-            var frm = new DataExplorer
-            {
-                PlexData = content
-            };
-
-            frm.ShowDialog();
-        }
+            => new DataExplorer { PlexData = content }.ShowDialog();
 
         private void ItmRawXml_Click(object sender, EventArgs e)
-        {
-            XmlExplorer.ShowXmlExplorer(PlexData.RawMetadata);
-        }
+            => XmlExplorer.ShowXmlExplorer(PlexData.RawMetadata);
     }
 }
