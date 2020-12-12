@@ -90,7 +90,7 @@ namespace PlexDL.UI.Forms
             try
             {
                 //check if there's a connection before trying to contact Plex.tv
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     if (!IsTokenSet()) return;
 
@@ -131,7 +131,7 @@ namespace PlexDL.UI.Forms
             try
             {
                 //check if there's a connection before trying to contact Plex.tv
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     if (!IsTokenSet()) return;
 
@@ -177,7 +177,7 @@ namespace PlexDL.UI.Forms
         {
             try
             {
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet()) return;
 
@@ -429,7 +429,7 @@ namespace PlexDL.UI.Forms
                 SetInterfaceAuthenticationStatus(false);
 
                 //check if there's an internet connection first; it may have been disconnected while the window was closed.
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     //check to see if a loaded profile instated some valid server details. If there are, we can potentially fast-forward
                     //the connection process!
@@ -493,7 +493,7 @@ namespace PlexDL.UI.Forms
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     var auth = AuthRoutine.GetAuthToken();
 
@@ -564,7 +564,7 @@ namespace PlexDL.UI.Forms
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                     using (var frm = new Authenticate())
                     {
                         var existingInfo = new ConnectionInfo
@@ -632,7 +632,7 @@ namespace PlexDL.UI.Forms
             try
             {
                 //check if there's a connection before trying to update the authentication token
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     ObjectProvider.User.authenticationToken = token;
                     ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = token;

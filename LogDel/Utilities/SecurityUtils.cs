@@ -8,10 +8,8 @@ namespace LogDel.Utilities
 {
     public static class SecurityUtils
     {
-        public static bool ProtectionEnabled()
-        {
-            return Globals.Protected == LogSecurity.Protected;
-        }
+        public static bool ProtectionEnabled
+            => Globals.Protected == LogSecurity.Protected;
 
         public static void MarkFile(string filePath, Mark fileMark)
         {
@@ -42,13 +40,6 @@ namespace LogDel.Utilities
             }
         }
 
-        //https://stackoverflow.com/questions/45880713/check-if-file-is-encrypted-or-not
-        public static bool IsFileEncrypted(string filePath)
-        {
-            var attributes = File.GetAttributes(filePath);
-            return (attributes & FileAttributes.Encrypted) == FileAttributes.Encrypted;
-        }
-
         public static List<string> DecryptLog(string cipherText, bool cleanLog = false)
         {
             try
@@ -72,7 +63,7 @@ namespace LogDel.Utilities
             {
                 var existingContents = @"";
                 if (append && File.Exists(filePath)) existingContents = File.ReadAllText(filePath);
-                if (!string.IsNullOrEmpty(existingContents) && ProtectionEnabled())
+                if (!string.IsNullOrEmpty(existingContents) && ProtectionEnabled)
                 {
                     //decrypt and save the log to memory
                     existingContents = existingContents.DecryptString();
@@ -81,7 +72,7 @@ namespace LogDel.Utilities
                 //content to save to the final file (ASCII)
                 var contentToWrite = !string.IsNullOrEmpty(existingContents) ? $"{existingContents}\n{logContents}" : logContents;
 
-                var finalContent = ProtectionEnabled()
+                var finalContent = ProtectionEnabled
                     ? contentToWrite.EncryptString()
                     : contentToWrite;
 
@@ -89,7 +80,7 @@ namespace LogDel.Utilities
                 File.WriteAllText(filePath, finalContent);
 
                 //decide marking
-                MarkFile(filePath, ProtectionEnabled() ? Mark.Encrypted : Mark.Decrypted);
+                MarkFile(filePath, ProtectionEnabled ? Mark.Encrypted : Mark.Decrypted);
             }
             catch (Exception)
             {

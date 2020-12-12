@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+
 namespace LogDel.Utilities.Extensions
 {
-    public static class CharHelper
+    public static class CharacterHelper
     {
         public static string CleanLogDel(this string line)
         {

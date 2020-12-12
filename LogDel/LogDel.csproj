@@ -47,8 +47,8 @@
     <Compile Include="IO\LogReader.cs" />
     <Compile Include="IO\LogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Extensions\CharHelper.cs" />
-    <Compile Include="Utilities\Extensions\EncHelper.cs" />
+    <Compile Include="Utilities\Extensions\CharacterHelper.cs" />
+    <Compile Include="Utilities\Extensions\EncryptionHelper.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="Utilities\Export\JsonUtility.cs" />
     <Compile Include="Utilities\Export\LdUtility.cs" />

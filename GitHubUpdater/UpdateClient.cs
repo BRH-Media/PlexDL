@@ -98,7 +98,7 @@ namespace GitHubUpdater
                 //make the update_files folder if it doesn't already exist
                 ConstructDirectory();
 
-                if (Internet.IsConnected())
+                if (Internet.IsConnected)
                 {
                     if (CurrentInstalledVersion == null)
                     {

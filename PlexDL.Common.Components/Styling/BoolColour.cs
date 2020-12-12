@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 
-namespace PlexDL.Common.Components
+namespace PlexDL.Common.Components.Styling
 {
     /// <summary>
     /// Represents a boolean cell colouring scheme

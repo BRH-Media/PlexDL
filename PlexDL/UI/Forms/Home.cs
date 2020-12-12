@@ -273,7 +273,7 @@ namespace PlexDL.UI.Forms
 
         private void ItmServerManager_Click(object sender, EventArgs e)
         {
-            if (Internet.IsConnected())
+            if (Internet.IsConnected)
                 using (var frm = new ServerManager())
                 {
                     if (frm.ShowDialog() != DialogResult.OK)

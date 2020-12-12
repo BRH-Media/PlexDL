@@ -53,7 +53,7 @@ namespace LogDel.IO
                     var logContents = File.ReadAllText(fileName);
 
                     //store processed log lines here
-                    var log = SecurityUtils.ProtectionEnabled()
+                    var log = SecurityUtils.ProtectionEnabled
                         ? SecurityUtils.DecryptLog(logContents)
                         : FileHelper.SplitLogLines(logContents);
 

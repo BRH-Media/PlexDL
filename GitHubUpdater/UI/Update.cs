@@ -132,7 +132,6 @@ namespace GitHubUpdater.UI
             var text = @"";
             var foreColor = KnownColor.Chocolate;
 
-
             switch (AppUpdate.Channel)
             {
                 case Enums.UpdateChannel.Stable:

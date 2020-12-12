@@ -17,7 +17,7 @@ namespace inet
         /// Uses the Win32 API to check whether Windows has a valid internet connection
         /// </summary>
         /// <returns></returns>
-        public static bool IsConnected() =>
+        public static bool IsConnected =>
             InternetGetConnectedState(out _, 0);
     }
 }

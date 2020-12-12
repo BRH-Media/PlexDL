@@ -2,28 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 
 namespace PlexDL.Internal
 {
+    /// <summary>
+    /// Internal program code
+    /// </summary>
     public static class Program
     {
-        public static List<string> Args { get; set; }
-
         /// <summary>
-        ///     The main entry point for the application.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main(string[] args)
+        private static void Main()
         {
-            //assign to global
-            Args = args.ToList();
-
-            //set default values
-            //ObjectProvider.PlexProviderDlAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\.plexdl";
-
             //global exception handlers
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler.CriticalExceptionHandler;
@@ -47,10 +41,10 @@ namespace PlexDL.Internal
             Checks.FullArgumentCheck();
 
             //have any arguments been passed?
-            if (Args.Count > 0)
+            if (Checks.Args.Count > 0)
             {
                 //when 'open with...' is used in Windows, the first argument will be the file
-                var firstArg = Args[0];
+                var firstArg = Checks.Args[0];
 
                 //MessageBox.Show(firstArg);
 
@@ -61,7 +55,7 @@ namespace PlexDL.Internal
                     Checks.OpenWith(firstArg);
                 else
                     //first argument isn't a file (no 'Open With'); check if it's a form open instruction
-                    FormCheck(Args);
+                    FormCheck(Checks.Args);
             }
             else
                 //no arguments; run as normal.

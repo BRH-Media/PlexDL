@@ -37,8 +37,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoolColour.cs" />
-    <Compile Include="BoolColourMode.cs" />
+    <Compile Include="Styling\BoolColour.cs" />
+    <Compile Include="Styling\BoolColourMode.cs" />
     <Compile Include="Controls\CircularProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlexDL.Common.Components.Styling;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -12,6 +13,11 @@ namespace PlexDL.Common.Components.Controls
 {
     public sealed class FlatDataGridView : DataGridView
     {
+        /// <summary>
+        /// Default 8.25pt, regular font
+        /// </summary>
+        private Font DefaultCellFont { get; } = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Regular);
+
         public FlatDataGridView()
         {
             //user modification permissions
@@ -27,7 +33,8 @@ namespace PlexDL.Common.Components.Controls
 
             //visual settings
             BackgroundColor = Color.FromArgb(224, 224, 224);
-            Font = new Font(FontFamily.GenericSansSerif, (float)8.25);
+            Font = DefaultCellFont;
+            DefaultCellStyle.Font = DefaultCellFont;
 
             //base event handlers
             Paint += DgvPaint;
@@ -108,7 +115,7 @@ namespace PlexDL.Common.Components.Controls
                 else
                     //default font for when data is displayed;
                     //this must be set to avoid the default large font size
-                    Font = new Font(FontFamily.GenericSansSerif, (float)8.25);
+                    Font = DefaultCellFont;
             }
             catch
             {
@@ -117,18 +124,27 @@ namespace PlexDL.Common.Components.Controls
             }
         }
 
+        /// <summary>
+        /// Handles repainting bool colouring on reorder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DgvColumnHeaderClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                DgvRepaintBoolColouring();
-            }
-            catch
-            {
-                //nothing
-            }
-        }
+            => DgvRepaintBoolColouring();
 
+        /// <summary>
+        /// Cancels any data errors
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void DgvDataError(object sender, DataGridViewDataErrorEventArgs e)
+            => e.Cancel = true;
+
+        /// <summary>
+        /// Attempts to find the column name of a provided cell
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
         private string ColumnNameFromCell(DataGridViewCell cell)
         {
             try
@@ -153,7 +169,11 @@ namespace PlexDL.Common.Components.Controls
             return @"";
         }
 
-        private void DgvRepaintCell(DataGridViewCell c)
+        /// <summary>
+        /// Initiates a cell boolean repaint based on the current settings
+        /// </summary>
+        /// <param name="c"></param>
+        private void DgvRepaintCellBoolColouring(DataGridViewCell c)
         {
             //null validation
             if (c != null)
@@ -176,16 +196,13 @@ namespace PlexDL.Common.Components.Controls
                         break;
                 }
 
-                //existing cell font
-                var f = c.Style.Font;
-
                 //switch for correct operation
                 switch (BoolColouringScheme.ColouringMode)
                 {
                     case BoolColourMode.BackColour:
 
                         //apply new font for bold
-                        c.Style.Font = Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
+                        c.Style.Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
 
                         //apply bool colour
                         c.Style.ForeColor = Color.White;
@@ -200,7 +217,7 @@ namespace PlexDL.Common.Components.Controls
                     case BoolColourMode.ForeColour:
 
                         //apply new font for bold
-                        c.Style.Font = Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
+                        c.Style.Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
 
                         //apply bool colour
                         c.Style.ForeColor = colour;
@@ -215,6 +232,9 @@ namespace PlexDL.Common.Components.Controls
             }
         }
 
+        /// <summary>
+        /// Initiates a full boolean repaint
+        /// </summary>
         private void DgvRepaintBoolColouring()
         {
             try
@@ -241,7 +261,7 @@ namespace PlexDL.Common.Components.Controls
                                     if (BoolColouringScheme.RelevantColumns.Contains(columnName))
 
                                         //check cell value against bool colouring values
-                                        DgvRepaintCell(c);
+                                        DgvRepaintCellBoolColouring(c);
                             }
                         }
                     }
@@ -251,12 +271,6 @@ namespace PlexDL.Common.Components.Controls
                 //force an immediate repaint
                 Invalidate();
             }
-        }
-
-        private static void DgvDataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-            //cancel any data error events; the user does not need to be bothered by them
-            e.Cancel = true;
         }
     }
 }

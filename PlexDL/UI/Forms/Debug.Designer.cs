@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using PlexDL.Common.Components.Controls;
+using PlexDL.Common.Components.Styling;
 
 namespace PlexDL.UI.Forms
 {
@@ -32,7 +33,7 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            PlexDL.Common.Components.BoolColour boolColour1 = new PlexDL.Common.Components.BoolColour();
+            BoolColour boolColour1 = new BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debug));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
@@ -349,7 +350,7 @@ namespace PlexDL.UI.Forms
             this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             boolColour1.BoolColouringEnabled = true;
-            boolColour1.ColouringMode = PlexDL.Common.Components.BoolColourMode.ForeColour;
+            boolColour1.ColouringMode = BoolColourMode.BackColour;
             boolColour1.FalseColour = System.Drawing.Color.Red;
             boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
             boolColour1.TrueColour = System.Drawing.Color.Green;

@@ -4,7 +4,7 @@ using System;
 
 namespace LogDel.Utilities.Extensions
 {
-    public static class EncHelper
+    public static class EncryptionHelper
     {
         public static string DecryptString(this string cipherText)
         {

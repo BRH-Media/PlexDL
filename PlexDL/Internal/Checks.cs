@@ -21,7 +21,24 @@ namespace PlexDL.Internal
     /// </summary>
     public static class Checks
     {
-        public static ICollection<string> Args { get; } = Environment.GetCommandLineArgs().ToList();
+        /// <summary>
+        /// Command-line arguments passed into PlexDL
+        /// </summary>
+        public static List<string> Args
+        {
+            get
+            {
+                //get all command-line args
+                var args = Environment.GetCommandLineArgs().ToList();
+
+                //remove first index (executable name)
+                if (args.Count > 0)
+                    args.RemoveAt(0);
+
+                //return command-line args
+                return args;
+            }
+        }
 
         /// <summary>
         /// Attempts to run PlexDL in 'Open With' mode

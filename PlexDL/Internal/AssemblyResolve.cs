@@ -6,6 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
+// ReSharper disable LocalizableElement
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+
 namespace PlexDL.Internal
 {
     /// <summary>
@@ -127,7 +130,7 @@ namespace PlexDL.Internal
                 const string checkFor = @"-libDir=";
                 var sep = checkFor[checkFor.Length - 1];
 
-                foreach (var s in Program.Args)
+                foreach (var s in Checks.Args)
                 {
                     if (!s.Contains(checkFor)) continue;
 
