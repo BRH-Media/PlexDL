@@ -294,9 +294,6 @@ namespace PlexDL.UI.Forms
             txtPlotSynopsis.SelectionLength = 0;
         }
 
-        private void ItmViewLink_Click(object sender, EventArgs e)
-            => LinkViewer.ShowLinkViewer(StreamingContent, false);
-
         private void ItmDataExplorer_Click(object sender, EventArgs e)
         {
             if (StationaryMode || StreamingContent.StreamInformation.Links.Download == null ||
@@ -304,5 +301,11 @@ namespace PlexDL.UI.Forms
 
             DataExplorer.ShowExplorer(StreamingContent);
         }
+
+        private void ItmSourceLinkView_Click(object sender, EventArgs e)
+            => LinkViewer.ShowLinkViewer(StreamingContent);
+
+        private void ItmSourceLinkDownload_Click(object sender, EventArgs e)
+            => LinkViewer.ShowLinkViewer(StreamingContent, false);
     }
 }

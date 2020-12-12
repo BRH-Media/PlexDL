@@ -33,8 +33,8 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
@@ -45,7 +45,7 @@ namespace PlexDL.UI.Forms
             this.txtPlotSynopsis = new System.Windows.Forms.RichTextBox();
             this.gbStarring = new System.Windows.Forms.GroupBox();
             this.gbAttributes = new System.Windows.Forms.GroupBox();
-            this.dgvAttributes = new FlatDataGridView();
+            this.dgvAttributes = new PlexDL.Common.Components.Controls.FlatDataGridView();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +56,10 @@ namespace PlexDL.UI.Forms
             this.itmPvs = new System.Windows.Forms.ToolStripMenuItem();
             this.itmBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.itmVlc = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSourceLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSourceLinkView = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSourceLinkDownload = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).BeginInit();
             this.gbPlot.SuspendLayout();
             this.pnlPlotSynopsis.SuspendLayout();
@@ -94,7 +96,7 @@ namespace PlexDL.UI.Forms
             // picPoster
             // 
             this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.image_not_available_png_8;
+            this.picPoster.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picPoster.BackgroundImage")));
             this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tlpMain.SetColumnSpan(this.picPoster, 3);
             this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -175,6 +177,7 @@ namespace PlexDL.UI.Forms
             this.dgvAttributes.AllowUserToAddRows = false;
             this.dgvAttributes.AllowUserToDeleteRows = false;
             this.dgvAttributes.AllowUserToOrderColumns = true;
+            this.dgvAttributes.AllowUserToResizeRows = false;
             this.dgvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAttributes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -284,7 +287,7 @@ namespace PlexDL.UI.Forms
             this.itmPvs,
             this.itmBrowser,
             this.itmVlc,
-            this.itmViewLink});
+            this.itmSourceLink});
             this.itmStream.Enabled = false;
             this.itmStream.Name = "itmStream";
             this.itmStream.Size = new System.Drawing.Size(56, 20);
@@ -294,7 +297,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(157, 22);
+            this.itmPvs.Size = new System.Drawing.Size(180, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.ItmPvs_Click);
             // 
@@ -302,7 +305,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
+            this.itmBrowser.Size = new System.Drawing.Size(180, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.ItmBrowser_Click);
             // 
@@ -310,16 +313,18 @@ namespace PlexDL.UI.Forms
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(157, 22);
+            this.itmVlc.Size = new System.Drawing.Size(180, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.ItmVlc_Click);
             // 
-            // itmViewLink
+            // itmSourceLink
             // 
-            this.itmViewLink.Name = "itmViewLink";
-            this.itmViewLink.Size = new System.Drawing.Size(157, 22);
-            this.itmViewLink.Text = "View Link";
-            this.itmViewLink.Click += new System.EventHandler(this.ItmViewLink_Click);
+            this.itmSourceLink.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmSourceLinkView,
+            this.itmSourceLinkDownload});
+            this.itmSourceLink.Name = "itmSourceLink";
+            this.itmSourceLink.Size = new System.Drawing.Size(180, 22);
+            this.itmSourceLink.Text = "Source Link";
             // 
             // itmExit
             // 
@@ -327,6 +332,20 @@ namespace PlexDL.UI.Forms
             this.itmExit.Size = new System.Drawing.Size(38, 20);
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
+            // 
+            // itmSourceLinkView
+            // 
+            this.itmSourceLinkView.Name = "itmSourceLinkView";
+            this.itmSourceLinkView.Size = new System.Drawing.Size(180, 22);
+            this.itmSourceLinkView.Text = "View";
+            this.itmSourceLinkView.Click += new System.EventHandler(this.ItmSourceLinkView_Click);
+            // 
+            // itmSourceLinkDownload
+            // 
+            this.itmSourceLinkDownload.Name = "itmSourceLinkDownload";
+            this.itmSourceLinkDownload.Size = new System.Drawing.Size(180, 22);
+            this.itmSourceLinkDownload.Text = "Download";
+            this.itmSourceLinkDownload.Click += new System.EventHandler(this.ItmSourceLinkDownload_Click);
             // 
             // Metadata
             // 
@@ -381,8 +400,10 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmExit;
         private Panel pnlPlotSynopsis;
         private FlatDataGridView dgvAttributes;
-        private ToolStripMenuItem itmViewLink;
+        private ToolStripMenuItem itmSourceLink;
         private ToolStripMenuItem itmDataExplorer;
         private PictureBox picPoster;
+        private ToolStripMenuItem itmSourceLinkView;
+        private ToolStripMenuItem itmSourceLinkDownload;
     }
 }

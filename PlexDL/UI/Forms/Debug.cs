@@ -501,7 +501,6 @@ namespace PlexDL.UI.Forms
                 //make sure the flag object is of the same length as the
                 //allowed column length
                 if (t.Columns.Count == f.Length)
-
                     //add the row; checks succeeded
                     t.Rows.Add(f);
 
@@ -562,6 +561,8 @@ namespace PlexDL.UI.Forms
 
         private void Debug_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //if this event has already been fired (and the user clicked 'Yes'),
+            //this will stop it from running again
             if (!Flags.IsMsgAlreadyShown)
             {
                 //display question dialog
@@ -569,43 +570,64 @@ namespace PlexDL.UI.Forms
 
                 //cancel
                 if (!debugChoice)
+
+                    //cancel the form close
                     e.Cancel = true;
                 else
                 {
+                    //ensures the question dialog doesn't get triggered again
                     Flags.IsMsgAlreadyShown = true;
+
+                    //close the form
                     Close();
+
+                    //reset limiter flag
                     Flags.IsMsgAlreadyShown = false;
                 }
             }
         }
 
-        private void Debug_Load(object sender, EventArgs e) => Startup();
+        private void Debug_Load(object sender, EventArgs e)
+            => Startup();
 
-        private void TmrAutoRefresh_Tick(object sender, EventArgs e) => DoRefresh();
+        private void TmrAutoRefresh_Tick(object sender, EventArgs e)
+            => DoRefresh();
 
-        private void BtnRefresh_Click(object sender, EventArgs e) => DoRefresh();
+        private void BtnRefresh_Click(object sender, EventArgs e)
+            => DoRefresh();
 
-        private void BtnCancel_Click(object sender, EventArgs e) => CancelDebugging();
+        private void BtnCancel_Click(object sender, EventArgs e)
+            => CancelDebugging();
 
-        private void NumPollRateValue_ValueChanged(object sender, EventArgs e) => UpdateTimerPollInterval();
+        private void NumPollRateValue_ValueChanged(object sender, EventArgs e)
+            => UpdateTimerPollInterval();
 
-        private void BtnTimer_Click(object sender, EventArgs e) => TimerToggle();
+        private void BtnTimer_Click(object sender, EventArgs e)
+            => TimerToggle();
 
-        private void BtnExportSections_Click(object sender, EventArgs e) => ExportSections();
+        private void BtnExportSections_Click(object sender, EventArgs e)
+            => ExportSections();
 
-        private void BtnExportTitles_Click(object sender, EventArgs e) => ExportTitles();
+        private void BtnExportTitles_Click(object sender, EventArgs e)
+            => ExportTitles();
 
-        private void BtnExportFiltered_Click(object sender, EventArgs e) => ExportFiltered();
+        private void BtnExportFiltered_Click(object sender, EventArgs e)
+            => ExportFiltered();
 
-        private void BtnExportSeasons_Click(object sender, EventArgs e) => ExportSeasons();
+        private void BtnExportSeasons_Click(object sender, EventArgs e)
+            => ExportSeasons();
 
-        private void BtnExportEpisodes_Click(object sender, EventArgs e) => ExportEpisodes();
+        private void BtnExportEpisodes_Click(object sender, EventArgs e)
+            => ExportEpisodes();
 
-        private void BtnExportAlbums_Click(object sender, EventArgs e) => ExportAlbums();
+        private void BtnExportAlbums_Click(object sender, EventArgs e)
+            => ExportAlbums();
 
-        private void BtnExportTracks_Click(object sender, EventArgs e) => ExportTracks();
+        private void BtnExportTracks_Click(object sender, EventArgs e)
+            => ExportTracks();
 
-        private void BtnResetRefreshCounter_Click(object sender, EventArgs e) => ResetRefreshCounter();
+        private void BtnResetRefreshCounter_Click(object sender, EventArgs e)
+            => ResetRefreshCounter();
 
         #endregion Event Handlers
     }

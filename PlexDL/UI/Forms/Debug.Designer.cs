@@ -32,8 +32,9 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.BoolColour boolColour1 = new PlexDL.Common.Components.BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debug));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
             this.tlpDebug = new System.Windows.Forms.TableLayoutPanel();
             this.gbGlobalValues = new System.Windows.Forms.GroupBox();
@@ -347,6 +348,12 @@ namespace PlexDL.UI.Forms
             this.dgvGlobalFlags.AllowUserToResizeRows = false;
             this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour1.BoolColouringEnabled = true;
+            boolColour1.ColouringMode = PlexDL.Common.Components.BoolColourMode.ForeColour;
+            boolColour1.FalseColour = System.Drawing.Color.Red;
+            boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
+            boolColour1.TrueColour = System.Drawing.Color.Green;
+            this.dgvGlobalFlags.BoolColouringScheme = boolColour1;
             this.dgvGlobalFlags.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvGlobalFlags.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvGlobalFlags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;

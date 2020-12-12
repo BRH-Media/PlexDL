@@ -1,6 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+// ReSharper disable UnusedVariable
+// ReSharper disable UnusedMember.Local
+// ReSharper disable InvertIf
 
 namespace PlexDL.Common.Components.Controls
 {
@@ -26,6 +32,7 @@ namespace PlexDL.Common.Components.Controls
             //base event handlers
             Paint += DgvPaint;
             DataError += DgvDataError;
+            ColumnHeaderMouseClick += DgvColumnHeaderClicked;
 
             //border styling
             BorderStyle = BorderStyle.None;
@@ -49,6 +56,24 @@ namespace PlexDL.Common.Components.Controls
         [Category("PlexDL")]
         [Description("Tracks, Episodes, Movies, etc.")]
         public bool IsContentTable { get; set; } = false;
+
+        [Category("PlexDL")]
+        [Description("Configures bool colouring")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public BoolColour BoolColouringScheme { get; set; } = new BoolColour();
+
+        public new object DataSource
+        {
+            get => base.DataSource;
+            set
+            {
+                //new value is applied
+                base.DataSource = value;
+
+                //grid is repainted with boolean colouring
+                DgvRepaintBoolColouring();
+            }
+        }
 
         /// <summary>
         /// This is the function
@@ -84,6 +109,142 @@ namespace PlexDL.Common.Components.Controls
                     //default font for when data is displayed;
                     //this must be set to avoid the default large font size
                     Font = new Font(FontFamily.GenericSansSerif, (float)8.25);
+            }
+            catch
+            {
+                //force an immediate repaint
+                Invalidate();
+            }
+        }
+
+        private void DgvColumnHeaderClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                DgvRepaintBoolColouring();
+            }
+            catch
+            {
+                //nothing
+            }
+        }
+
+        private string ColumnNameFromCell(DataGridViewCell cell)
+        {
+            try
+            {
+                //null validation
+                if (cell != null)
+                {
+                    //index of the column
+                    var columnIndex = cell.ColumnIndex;
+
+                    //name of the column
+                    if (ColumnCount >= columnIndex + 1)
+                        return Columns[columnIndex].Name;
+                }
+            }
+            catch
+            {
+                //nothing
+            }
+
+            //default
+            return @"";
+        }
+
+        private void DgvRepaintCell(DataGridViewCell c)
+        {
+            //null validation
+            if (c != null)
+            {
+                //convert cell value
+                var cellString = c.Value.ToString().ToLower();
+
+                //decide correct colour
+                var colour = Color.Black;
+
+                //switch for the correct colour
+                switch (cellString)
+                {
+                    case @"true":
+                        colour = BoolColouringScheme.TrueColour;
+                        break;
+
+                    case @"false":
+                        colour = BoolColouringScheme.FalseColour;
+                        break;
+                }
+
+                //existing cell font
+                var f = c.Style.Font;
+
+                //switch for correct operation
+                switch (BoolColouringScheme.ColouringMode)
+                {
+                    case BoolColourMode.BackColour:
+
+                        //apply new font for bold
+                        c.Style.Font = Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
+
+                        //apply bool colour
+                        c.Style.ForeColor = Color.White;
+                        c.Style.SelectionForeColor = Color.White;
+
+                        //apply bool colour
+                        c.Style.BackColor = colour;
+                        c.Style.SelectionBackColor = colour;
+
+                        break;
+
+                    case BoolColourMode.ForeColour:
+
+                        //apply new font for bold
+                        c.Style.Font = Font = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Bold);
+
+                        //apply bool colour
+                        c.Style.ForeColor = colour;
+                        c.Style.SelectionForeColor = Color.White;
+
+                        //apply back colour
+                        c.Style.BackColor = SystemColors.Window;
+                        c.Style.SelectionBackColor = SystemColors.Highlight;
+
+                        break;
+                }
+            }
+        }
+
+        private void DgvRepaintBoolColouring()
+        {
+            try
+            {
+                //check if colouring is even enabled
+                if (BoolColouringScheme.BoolColouringEnabled)
+
+                    //validation
+                    if (Rows.Count > 0 && ColumnCount > 0)
+                    {
+                        //loop through each row
+                        foreach (DataGridViewRow r in Rows)
+                        {
+                            //loop through each cell in this row
+                            foreach (DataGridViewCell c in r.Cells)
+                            {
+                                //column name of the current cell
+                                var columnName = ColumnNameFromCell(c);
+
+                                //null validation
+                                if (!string.IsNullOrWhiteSpace(columnName))
+
+                                    //check if the current column should be coloured
+                                    if (BoolColouringScheme.RelevantColumns.Contains(columnName))
+
+                                        //check cell value against bool colouring values
+                                        DgvRepaintCell(c);
+                            }
+                        }
+                    }
             }
             catch
             {
