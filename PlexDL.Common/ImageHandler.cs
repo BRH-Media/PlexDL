@@ -20,7 +20,7 @@ namespace PlexDL.Common
             {
                 CachingHelpers.CacheStructureBuilder();
                 if (string.IsNullOrEmpty(url))
-                    return Resources.image_not_available_png_8;
+                    return Resources.unavailable;
 
                 if (!forceNoCache)
                     if (ThumbCaching.ThumbInCache(url))
@@ -33,7 +33,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Resources.image_not_available_png_8;
+                return Resources.unavailable;
             }
 
             return ForceImageFromUrl(url);
@@ -50,7 +50,7 @@ namespace PlexDL.Common
                 {
                     var result = stream != null
                         ? (Bitmap)Image.FromStream(stream)
-                        : Resources.image_not_available_png_8;
+                        : Resources.unavailable;
                     ThumbCaching.ThumbToCache(result, url);
                     return result;
                 }
@@ -58,7 +58,7 @@ namespace PlexDL.Common
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "ImageFetchError");
-                return Resources.image_not_available_png_8;
+                return Resources.unavailable;
             }
         }
 
@@ -69,7 +69,7 @@ namespace PlexDL.Common
 
             var result = GetImageFromUrl(stream.StreamInformation.ContentThumbnailUri);
 
-            if (result == Resources.image_not_available_png_8) return result;
+            if (result == Resources.unavailable) return result;
             if (!ObjectProvider.Settings.Generic.AdultContentProtection) return result;
 
             return Methods.AdultKeywordCheck(stream) ? Pixelation.Pixelate(result, 64) : result;

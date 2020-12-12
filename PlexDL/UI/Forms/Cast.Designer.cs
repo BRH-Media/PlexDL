@@ -44,7 +44,7 @@
             // picPoster
             // 
             this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.image_not_available_png_8;
+            this.picPoster.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.unavailable;
             this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picPoster.Location = new System.Drawing.Point(8, 8);
             this.picPoster.Margin = new System.Windows.Forms.Padding(2);

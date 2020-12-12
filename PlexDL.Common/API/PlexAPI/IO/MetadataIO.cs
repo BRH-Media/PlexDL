@@ -95,7 +95,7 @@ namespace PlexDL.Common.API.PlexAPI.IO
                             var image = ImageHandler.GetImageFromUrl(a.ThumbnailUri);
 
                             //verify
-                            if (image != Resources.image_not_available_png_8)
+                            if (image != Resources.unavailable)
                             {
                                 //create a new record for the image
                                 var record = new PxzRecord(image, $"actor_{MD5Helper.CalculateMd5Hash(a.ThumbnailUri)}");

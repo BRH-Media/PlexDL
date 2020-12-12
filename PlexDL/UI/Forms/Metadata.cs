@@ -182,7 +182,7 @@ namespace PlexDL.UI.Forms
                 Size = new Size(79, 119),
                 Location = new Point(3, 3),
                 BackgroundImageLayout = ImageLayout.Stretch,
-                BackgroundImage = Resources.image_not_available_png_8,
+                BackgroundImage = Resources.unavailable,
                 Visible = true
             };
             p.Controls.Add(lblActorRole);

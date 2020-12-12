@@ -161,21 +161,21 @@ namespace PlexDL.ResourceProvider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap image_not_available_png_8 {
-            get {
-                object obj = ResourceManager.GetObject("image_not_available_png_8", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string keywordBlacklist {
             get {
                 return ResourceManager.GetString("keywordBlacklist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap unavailable {
+            get {
+                object obj = ResourceManager.GetObject("unavailable", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
