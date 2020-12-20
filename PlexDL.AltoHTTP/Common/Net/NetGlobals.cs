@@ -13,6 +13,6 @@ namespace PlexDL.AltoHTTP.Common.Net
         public static string CurrentClientVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public static string OSVersionString => $@"{Environment.OSVersion.Platform}_{Environment.OSVersion.Version.Major}_{Environment.OSVersion.Version.Minor}";
-        public static int Timeout { get; set; } = 3;
+        public static int Timeout { get; set; } = 0;
     }
 }

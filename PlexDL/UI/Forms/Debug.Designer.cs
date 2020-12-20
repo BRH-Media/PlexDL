@@ -33,7 +33,7 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            BoolColour boolColour1 = new BoolColour();
+            PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Debug));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tmrAutoRefresh = new System.Windows.Forms.Timer(this.components);
@@ -56,6 +56,8 @@ namespace PlexDL.UI.Forms
             this.gbExportFormat = new System.Windows.Forms.GroupBox();
             this.cbxExportFormat = new System.Windows.Forms.ComboBox();
             this.gbGlobalFlags = new System.Windows.Forms.GroupBox();
+            this.tlpGlobalFlags = new System.Windows.Forms.TableLayoutPanel();
+            this.btnExportGlobalFlags = new System.Windows.Forms.Button();
             this.dgvGlobalFlags = new PlexDL.Common.Components.Controls.FlatDataGridView();
             this.tlpControls = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPollRate = new System.Windows.Forms.TableLayoutPanel();
@@ -78,6 +80,7 @@ namespace PlexDL.UI.Forms
             this.tlpExportFormat.SuspendLayout();
             this.gbExportFormat.SuspendLayout();
             this.gbGlobalFlags.SuspendLayout();
+            this.tlpGlobalFlags.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).BeginInit();
             this.tlpControls.SuspendLayout();
             this.tlpPollRate.SuspendLayout();
@@ -147,6 +150,7 @@ namespace PlexDL.UI.Forms
             // gbDataExport
             // 
             this.gbDataExport.Controls.Add(this.tlpDataExport);
+            this.gbDataExport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbDataExport.Location = new System.Drawing.Point(3, 3);
             this.gbDataExport.Name = "gbDataExport";
             this.gbDataExport.Size = new System.Drawing.Size(207, 223);
@@ -176,6 +180,7 @@ namespace PlexDL.UI.Forms
             this.tlpDataExport.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDataExport.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDataExport.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpDataExport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpDataExport.Size = new System.Drawing.Size(201, 204);
             this.tlpDataExport.TabIndex = 7;
             // 
@@ -259,6 +264,7 @@ namespace PlexDL.UI.Forms
             // gbExportMode
             // 
             this.gbExportMode.Controls.Add(this.tlpExportFormat);
+            this.gbExportMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbExportMode.Location = new System.Drawing.Point(3, 287);
             this.gbExportMode.Name = "gbExportMode";
             this.gbExportMode.Size = new System.Drawing.Size(207, 49);
@@ -308,6 +314,7 @@ namespace PlexDL.UI.Forms
             // gbExportFormat
             // 
             this.gbExportFormat.Controls.Add(this.cbxExportFormat);
+            this.gbExportFormat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbExportFormat.Location = new System.Drawing.Point(3, 232);
             this.gbExportFormat.Name = "gbExportFormat";
             this.gbExportFormat.Size = new System.Drawing.Size(207, 49);
@@ -317,6 +324,7 @@ namespace PlexDL.UI.Forms
             // 
             // cbxExportFormat
             // 
+            this.cbxExportFormat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbxExportFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxExportFormat.FormattingEnabled = true;
             this.cbxExportFormat.Items.AddRange(new object[] {
@@ -324,14 +332,14 @@ namespace PlexDL.UI.Forms
             "JSON",
             "XML",
             "LOGDEL"});
-            this.cbxExportFormat.Location = new System.Drawing.Point(6, 19);
+            this.cbxExportFormat.Location = new System.Drawing.Point(3, 16);
             this.cbxExportFormat.Name = "cbxExportFormat";
-            this.cbxExportFormat.Size = new System.Drawing.Size(195, 21);
+            this.cbxExportFormat.Size = new System.Drawing.Size(201, 21);
             this.cbxExportFormat.TabIndex = 0;
             // 
             // gbGlobalFlags
             // 
-            this.gbGlobalFlags.Controls.Add(this.dgvGlobalFlags);
+            this.gbGlobalFlags.Controls.Add(this.tlpGlobalFlags);
             this.gbGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbGlobalFlags.Location = new System.Drawing.Point(3, 3);
             this.gbGlobalFlags.Name = "gbGlobalFlags";
@@ -340,6 +348,32 @@ namespace PlexDL.UI.Forms
             this.gbGlobalFlags.TabIndex = 0;
             this.gbGlobalFlags.TabStop = false;
             this.gbGlobalFlags.Text = "Global Flags";
+            // 
+            // tlpGlobalFlags
+            // 
+            this.tlpGlobalFlags.ColumnCount = 1;
+            this.tlpGlobalFlags.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpGlobalFlags.Controls.Add(this.btnExportGlobalFlags, 0, 1);
+            this.tlpGlobalFlags.Controls.Add(this.dgvGlobalFlags, 0, 0);
+            this.tlpGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpGlobalFlags.Location = new System.Drawing.Point(3, 16);
+            this.tlpGlobalFlags.Name = "tlpGlobalFlags";
+            this.tlpGlobalFlags.RowCount = 2;
+            this.tlpGlobalFlags.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpGlobalFlags.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpGlobalFlags.Size = new System.Drawing.Size(213, 338);
+            this.tlpGlobalFlags.TabIndex = 0;
+            // 
+            // btnExportGlobalFlags
+            // 
+            this.btnExportGlobalFlags.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExportGlobalFlags.Location = new System.Drawing.Point(3, 311);
+            this.btnExportGlobalFlags.Name = "btnExportGlobalFlags";
+            this.btnExportGlobalFlags.Size = new System.Drawing.Size(207, 24);
+            this.btnExportGlobalFlags.TabIndex = 7;
+            this.btnExportGlobalFlags.Text = "Export Flags";
+            this.btnExportGlobalFlags.UseVisualStyleBackColor = true;
+            this.btnExportGlobalFlags.Click += new System.EventHandler(this.BtnExportGlobalFlags_Click);
             // 
             // dgvGlobalFlags
             // 
@@ -350,7 +384,7 @@ namespace PlexDL.UI.Forms
             this.dgvGlobalFlags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGlobalFlags.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             boolColour1.BoolColouringEnabled = true;
-            boolColour1.ColouringMode = BoolColourMode.BackColour;
+            boolColour1.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
             boolColour1.FalseColour = System.Drawing.Color.Red;
             boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
             boolColour1.TrueColour = System.Drawing.Color.Green;
@@ -370,15 +404,15 @@ namespace PlexDL.UI.Forms
             this.dgvGlobalFlags.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvGlobalFlags.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvGlobalFlags.IsContentTable = false;
-            this.dgvGlobalFlags.Location = new System.Drawing.Point(3, 16);
+            this.dgvGlobalFlags.Location = new System.Drawing.Point(3, 3);
             this.dgvGlobalFlags.MultiSelect = false;
             this.dgvGlobalFlags.Name = "dgvGlobalFlags";
             this.dgvGlobalFlags.RowHeadersVisible = false;
             this.dgvGlobalFlags.RowsEmptyText = "No Flags";
             this.dgvGlobalFlags.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.dgvGlobalFlags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGlobalFlags.Size = new System.Drawing.Size(213, 338);
-            this.dgvGlobalFlags.TabIndex = 0;
+            this.dgvGlobalFlags.Size = new System.Drawing.Size(207, 302);
+            this.dgvGlobalFlags.TabIndex = 1;
             // 
             // tlpControls
             // 
@@ -508,6 +542,7 @@ namespace PlexDL.UI.Forms
             // btnTimer
             // 
             this.tlpControls.SetColumnSpan(this.btnTimer, 2);
+            this.btnTimer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnTimer.Location = new System.Drawing.Point(114, 51);
             this.btnTimer.Name = "btnTimer";
             this.btnTimer.Size = new System.Drawing.Size(216, 23);
@@ -518,6 +553,7 @@ namespace PlexDL.UI.Forms
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRefresh.Location = new System.Drawing.Point(3, 51);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(105, 23);
@@ -528,6 +564,7 @@ namespace PlexDL.UI.Forms
             // 
             // btnCancel
             // 
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCancel.Location = new System.Drawing.Point(336, 51);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 23);
@@ -566,6 +603,7 @@ namespace PlexDL.UI.Forms
             this.tlpExportFormat.PerformLayout();
             this.gbExportFormat.ResumeLayout(false);
             this.gbGlobalFlags.ResumeLayout(false);
+            this.tlpGlobalFlags.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvGlobalFlags)).EndInit();
             this.tlpControls.ResumeLayout(false);
             this.tlpPollRate.ResumeLayout(false);
@@ -597,7 +635,6 @@ namespace PlexDL.UI.Forms
         private System.Windows.Forms.ComboBox cbxExportFormat;
         private System.Windows.Forms.Button btnExportTracks;
         private System.Windows.Forms.Button btnExportAlbums;
-        private FlatDataGridView dgvGlobalFlags;
         private System.Windows.Forms.TableLayoutPanel tlpControls;
         private System.Windows.Forms.TableLayoutPanel tlpPollRate;
         private System.Windows.Forms.Label lblPollRate;
@@ -612,5 +649,8 @@ namespace PlexDL.UI.Forms
         private System.Windows.Forms.TableLayoutPanel tlpDataExport;
         private System.Windows.Forms.TableLayoutPanel tlpExportFormat;
         private System.Windows.Forms.TableLayoutPanel tlpGlobalValues;
+        private TableLayoutPanel tlpGlobalFlags;
+        private FlatDataGridView dgvGlobalFlags;
+        private Button btnExportGlobalFlags;
     }
 }

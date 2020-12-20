@@ -298,7 +298,7 @@ namespace GitHubUpdater.UI
                     };
 
                     //download and flush job to disk
-                    status = await j.DoDownload();
+                    status = j.DoDownload();
                 }
             }
             catch (Exception ex)

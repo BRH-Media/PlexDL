@@ -17,6 +17,11 @@ namespace PlexDL.MyPlex
                 BaseUrl = new Uri(GetBaseUrl()),
                 UserAgent = NetGlobals.GlobalUserAgent
             };
+
+            //if a timeout is specified, we need to apply it to the client
+            if (NetGlobals.Timeout > 0)
+                client.Timeout = NetGlobals.Timeout * 1000;
+
             return client;
         }
 

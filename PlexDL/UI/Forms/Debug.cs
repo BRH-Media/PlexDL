@@ -168,6 +168,17 @@ namespace PlexDL.UI.Forms
                 UIMessages.Error("PlexDL is not in Music Mode");
         }
 
+        private void ExportFlags()
+        {
+            if (dgvGlobalFlags.DataSource != null)
+
+                //use the generic exporter and the PlexDL data provider framework
+                ProcessExport((DataTable)dgvGlobalFlags.DataSource);
+            else
+                //inform the user of the problem (invalid data)
+                UIMessages.Error("Global boolean flag data was null");
+        }
+
         /// <summary>
         /// Universal export handler; avoids messy function calls.
         /// </summary>
@@ -625,6 +636,9 @@ namespace PlexDL.UI.Forms
 
         private void BtnExportTracks_Click(object sender, EventArgs e)
             => ExportTracks();
+
+        private void BtnExportGlobalFlags_Click(object sender, EventArgs e)
+            => ExportFlags();
 
         private void BtnResetRefreshCounter_Click(object sender, EventArgs e)
             => ResetRefreshCounter();

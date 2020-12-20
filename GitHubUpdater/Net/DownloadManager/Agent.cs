@@ -5,13 +5,15 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+// ReSharper disable InvertIf
+
 namespace GitHubUpdater.Net.DownloadManager
 {
     public static class Agent
     {
         public static string UpdateDirectory { get; set; } = $@"{Globals.UpdateRootDir}";
 
-        public static async Task<DownloadStatus> DoDownload(this Job downloadJob)
+        public static DownloadStatus DoDownload(this Job downloadJob)
         {
             try
             {
@@ -25,12 +27,9 @@ namespace GitHubUpdater.Net.DownloadManager
                 //use the generic resource downloader
                 var responseBytes = ResourceGrab.GrabBytes(downloadJob.DownloadUri);
 
-                //disable timeout
-                NetGlobals.Timeout = 3;
-
                 //validate the downloaded bytes
                 if (responseBytes != null)
-                {
+
                     //make sure there are actually valid bytes
                     if (responseBytes.Length > 0)
                     {
@@ -40,7 +39,6 @@ namespace GitHubUpdater.Net.DownloadManager
                         //successfully downloaded
                         return DownloadStatus.Downloaded;
                     }
-                }
 
                 //if the checks above fail, they will land here
                 return DownloadStatus.NullDownload;
