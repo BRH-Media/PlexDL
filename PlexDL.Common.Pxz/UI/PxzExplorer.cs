@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Pxz.Structures.File;
+using PlexDL.WaitWindow;
 using System;
 using System.Data;
 using System.IO;
@@ -93,8 +94,18 @@ namespace PlexDL.Common.Pxz.UI
             return table;
         }
 
-        private void DoPxzLoad(string fileName)
+        private static void LoadPxz(object sender, WaitWindowEventArgs e)
         {
+            if (e.Arguments.Count == 1)
+                e.Result = LoadPxz((string)e.Arguments[0], false);
+        }
+
+        private static PxzFile LoadPxz(string fileName, bool waitWindow = true)
+        {
+            //multi-threaded handler
+            if (waitWindow)
+                return (PxzFile)WaitWindow.WaitWindow.Show(LoadPxz, @"Loading PXZ file", fileName);
+
             try
             {
                 //ensure the file exists
@@ -103,6 +114,29 @@ namespace PlexDL.Common.Pxz.UI
                     //attempt PXZ load
                     var pxz = new PxzFile();
                     pxz.Load(fileName);
+
+                    //return the loaded PXZ file
+                    return pxz;
+                }
+            }
+            catch (Exception ex)
+            {
+                UIMessages.Error(ex.ToString(), @"Load PXZ File Error");
+            }
+
+            //default
+            return null;
+        }
+
+        private void DoPxzLoad(string fileName)
+        {
+            try
+            {
+                //ensure the file exists
+                if (File.Exists(fileName))
+                {
+                    //attempt PXZ load
+                    var pxz = LoadPxz(fileName);
 
                     //set the global
                     Pxz = pxz;

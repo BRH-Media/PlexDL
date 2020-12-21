@@ -86,6 +86,10 @@
       <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
       <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.WaitWindow\PlexDL.WaitWindow.csproj">
+      <Project>{6d5d6fdd-9371-4ebb-8875-eebe170a47cd}</Project>
+      <Name>PlexDL.WaitWindow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIHelpers\UIHelpers.csproj">
       <Project>{e3ce262b-b962-44ff-abc0-5ebfb403d51d}</Project>
       <Name>UIHelpers</Name>
