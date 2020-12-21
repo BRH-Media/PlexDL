@@ -55,6 +55,10 @@
       <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
       <Name>PlexDL.Animation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIHelpers\UIHelpers.csproj">
+      <Project>{e3ce262b-b962-44ff-abc0-5ebfb403d51d}</Project>
+      <Name>UIHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

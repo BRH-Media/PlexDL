@@ -15,6 +15,7 @@ using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Net;
 using PlexDL.Common.PlayerLaunchers;
+using PlexDL.Common.Pxz.UI;
 using PlexDL.Common.Renderers.Forms.GridView;
 using PlexDL.Common.SearchFramework;
 using PlexDL.Common.Security;
@@ -2700,5 +2701,8 @@ namespace PlexDL.UI.Forms
 
         private void GenericDownloadLinkHandler(object sender, EventArgs e)
             => ShowLinkViewer(false);
+
+        private void ItmPxzExplorer_Click(object sender, EventArgs e)
+            => PxzExplorer.ShowPxzExplorer();
     }
 }

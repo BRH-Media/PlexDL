@@ -31,8 +31,9 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataExplorer));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lstTables = new System.Windows.Forms.ListBox();
             this.dgvMain = new PlexDL.Common.Components.Controls.FlatDataGridView();
@@ -91,8 +92,15 @@ namespace PlexDL.UI.Forms
             this.dgvMain.AllowUserToResizeRows = false;
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMain.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour1.BoolColouringEnabled = false;
+            boolColour1.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour1.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
+            boolColour1.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvMain.BoolColouringScheme = boolColour1;
             this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMain.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvMain.CellContentClickMessage = true;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
@@ -195,34 +203,34 @@ namespace PlexDL.UI.Forms
             this.itmExportLogdel});
             this.itmExport.Enabled = false;
             this.itmExport.Name = "itmExport";
-            this.itmExport.Size = new System.Drawing.Size(180, 22);
+            this.itmExport.Size = new System.Drawing.Size(108, 22);
             this.itmExport.Text = "Export";
             // 
             // itmExportXml
             // 
             this.itmExportXml.Name = "itmExportXml";
-            this.itmExportXml.Size = new System.Drawing.Size(180, 22);
+            this.itmExportXml.Size = new System.Drawing.Size(117, 22);
             this.itmExportXml.Text = "XML";
             this.itmExportXml.Click += new System.EventHandler(this.ItmExportXml_Click);
             // 
             // itmExportJson
             // 
             this.itmExportJson.Name = "itmExportJson";
-            this.itmExportJson.Size = new System.Drawing.Size(180, 22);
+            this.itmExportJson.Size = new System.Drawing.Size(117, 22);
             this.itmExportJson.Text = "JSON";
             this.itmExportJson.Click += new System.EventHandler(this.ItmExportJson_Click);
             // 
             // itmExportCsv
             // 
             this.itmExportCsv.Name = "itmExportCsv";
-            this.itmExportCsv.Size = new System.Drawing.Size(180, 22);
+            this.itmExportCsv.Size = new System.Drawing.Size(117, 22);
             this.itmExportCsv.Text = "CSV";
             this.itmExportCsv.Click += new System.EventHandler(this.ItmExportCsv_Click);
             // 
             // itmExportLogdel
             // 
             this.itmExportLogdel.Name = "itmExportLogdel";
-            this.itmExportLogdel.Size = new System.Drawing.Size(180, 22);
+            this.itmExportLogdel.Size = new System.Drawing.Size(117, 22);
             this.itmExportLogdel.Text = "LOGDEL";
             this.itmExportLogdel.Click += new System.EventHandler(this.ItmExportLogdel_Click);
             // 

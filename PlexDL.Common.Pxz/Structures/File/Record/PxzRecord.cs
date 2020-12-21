@@ -1,7 +1,6 @@
 ﻿using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Extensions;
-using PlexDL.Common.Security.Hashing;
 using System;
 using System.Drawing;
 using System.Xml;
@@ -47,8 +46,6 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
 
         public PxzRecord(XmlNode data, string name, bool protectedRecord = false)
         {
-            ProtectedRecord = protectedRecord;
-
             var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
@@ -57,19 +54,18 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
                 Naming = new PxzRecordNaming
                 {
                     RecordName = name,
-                    StoredName = $"{MD5Helper.CalculateMd5Hash(name)}.record",
+                    StoredName = $"{Guid.NewGuid()}.record",
                     DataType = PxzRecordType.Xml
                 }
             };
 
+            ProtectedRecord = protectedRecord;
             Header = header;
             Content = content;
         }
 
         public PxzRecord(byte[] data, string name, bool protectedRecord = false)
         {
-            ProtectedRecord = protectedRecord;
-
             var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
@@ -78,19 +74,18 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
                 Naming = new PxzRecordNaming
                 {
                     RecordName = name,
-                    StoredName = $"{MD5Helper.CalculateMd5Hash(name)}.record",
+                    StoredName = $"{Guid.NewGuid()}.record",
                     DataType = PxzRecordType.Byte
                 }
             };
 
+            ProtectedRecord = protectedRecord;
             Header = header;
             Content = content;
         }
 
         public PxzRecord(string data, string name, PxzRecordType recordType = PxzRecordType.Text, bool protectedRecord = false)
         {
-            ProtectedRecord = protectedRecord;
-
             var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
@@ -99,19 +94,18 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
                 Naming = new PxzRecordNaming
                 {
                     RecordName = name,
-                    StoredName = $"{MD5Helper.CalculateMd5Hash(name)}.record",
+                    StoredName = $"{Guid.NewGuid()}.record",
                     DataType = recordType
                 }
             };
 
+            ProtectedRecord = protectedRecord;
             Header = header;
             Content = content;
         }
 
         public PxzRecord(Image data, string name, bool protectedRecord = false)
         {
-            ProtectedRecord = protectedRecord;
-
             var content = new PxzRecordContent(data, protectedRecord);
             var header = new PxzRecordHeader
             {
@@ -120,11 +114,12 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
                 Naming = new PxzRecordNaming
                 {
                     RecordName = name,
-                    StoredName = $"{MD5Helper.CalculateMd5Hash($"{name}{DateTime.Now}")}.record",
+                    StoredName = $"{Guid.NewGuid()}.record",
                     DataType = PxzRecordType.Bitmap
                 }
             };
 
+            ProtectedRecord = protectedRecord;
             Header = header;
             Content = content;
         }

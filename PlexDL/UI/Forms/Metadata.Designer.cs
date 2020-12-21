@@ -363,7 +363,6 @@ namespace PlexDL.UI.Forms
             this.Name = "Metadata";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Metadata";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metadata_FormClosing);
             this.Load += new System.EventHandler(this.Metadata_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picPoster)).EndInit();
             this.gbPlot.ResumeLayout(false);

@@ -51,11 +51,11 @@
     <Compile Include="Enums\PxzRecordType.cs" />
     <Compile Include="Extensions\VerifyChecksumExt.cs" />
     <Compile Include="Extensions\ToXmlExt.cs" />
-    <Compile Include="UI\PxzInformation.cs">
+    <Compile Include="UI\PxzExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PxzInformation.Designer.cs">
-      <DependentUpon>PxzInformation.cs</DependentUpon>
+    <Compile Include="UI\PxzExplorer.Designer.cs">
+      <DependentUpon>PxzExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="Serializers.cs" />
     <Compile Include="Structures\PxzAuthor.cs" />
@@ -92,8 +92,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\PxzInformation.resx">
-      <DependentUpon>PxzInformation.cs</DependentUpon>
+    <EmbeddedResource Include="UI\PxzExplorer.resx">
+      <DependentUpon>PxzExplorer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

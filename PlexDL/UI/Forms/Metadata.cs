@@ -12,6 +12,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable InvertIf
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+
 #pragma warning disable 1591
 
 namespace PlexDL.UI.Forms
@@ -87,72 +90,6 @@ namespace PlexDL.UI.Forms
             StationaryMode = false;
         }
 
-        private void ActorsWorker(object sender, WaitWindowEventArgs e)
-        {
-            //Clear all previous actors (maybe there's a dud panel in place?)
-            if (flpActors.Controls.Count > 0)
-            {
-                if (flpActors.InvokeRequired)
-                    flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Clear(); });
-                else
-                    flpActors.Controls.Clear();
-            }
-
-            if (StreamingContent.Actors.Count > 0)
-            {
-                //start filling the actors panel from the real data
-                foreach (var a in StreamingContent.Actors)
-                {
-                    var p = new Panel
-                    {
-                        Size = new Size(flpActors.Width, 119),
-                        Location = new Point(3, 3),
-                        BackColor = Color.White
-                    };
-                    var lblActorName = new Label
-                    {
-                        Text = a.ActorName,
-                        AutoSize = true,
-                        Location = new Point(88, 3),
-                        Font = new Font(FontFamily.GenericSansSerif, 13),
-                        Visible = true
-                    };
-
-                    var lblActorRole = new Label
-                    {
-                        Text = a.ActorRole,
-                        AutoSize = true,
-                        Location = new Point(112, 29),
-                        Visible = true
-                    };
-                    var actorPortrait = new PictureBox
-                    {
-                        Size = new Size(79, 119),
-                        Location = new Point(3, 3),
-                        BackgroundImageLayout = ImageLayout.Zoom,
-                        BackgroundImage = a.Thumbnail ?? ImageHandler.GetImageFromUrl(a.ThumbnailUri),
-                        Visible = true
-                    };
-                    p.Controls.Add(lblActorRole);
-                    p.Controls.Add(lblActorName);
-                    p.Controls.Add(actorPortrait);
-
-                    if (flpActors.InvokeRequired)
-                        flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(p); });
-                    else
-                        flpActors.Controls.Add(p);
-                }
-            }
-            else
-            {
-                //no actors, so tell the user with a dud panel
-                if (flpActors.InvokeRequired)
-                    flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(NoActorsFound()); });
-                else
-                    flpActors.Controls.Add(NoActorsFound());
-            }
-        }
-
         private static Panel NoActorsFound()
         {
             var p = new Panel
@@ -192,7 +129,97 @@ namespace PlexDL.UI.Forms
             return p;
         }
 
-        private void Metadata_Load(object sender, EventArgs e)
+        private Panel ActorPanel(PlexActor a)
+        {
+            //the containing panel to be returned
+            var p = new Panel
+            {
+                Size = new Size(flpActors.Width, 119),
+                Location = new Point(3, 3),
+                BackColor = Color.White
+            };
+
+            //their name
+            var lblActorName = new Label
+            {
+                Text = a.ActorName,
+                AutoSize = true,
+                Location = new Point(88, 3),
+                Font = new Font(FontFamily.GenericSansSerif, 13),
+                Visible = true
+            };
+
+            //the role they play in the content
+            var lblActorRole = new Label
+            {
+                Text = a.ActorRole,
+                AutoSize = true,
+                Location = new Point(112, 29),
+                Visible = true
+            };
+
+            //actor's photo
+            var actorPortrait = new PictureBox
+            {
+                Size = new Size(79, 119),
+                Location = new Point(3, 3),
+                BackgroundImageLayout = ImageLayout.Zoom,
+                BackgroundImage = a.Thumbnail ?? ImageHandler.GetImageFromUrl(a.ThumbnailUri),
+                Visible = true
+            };
+
+            //add the image preview handler to the portrait
+            actorPortrait.DoubleClick += ImagePreview_Portrait;
+
+            //add the sub-controls
+            p.Controls.Add(lblActorRole);
+            p.Controls.Add(lblActorName);
+            p.Controls.Add(actorPortrait);
+
+            //return the result
+            return p;
+        }
+
+        private void ActorsWorker(object sender, WaitWindowEventArgs e)
+        {
+            //Clear all previous actors (maybe there's a dud panel in place?)
+            if (flpActors.Controls.Count > 0)
+            {
+                if (flpActors.InvokeRequired)
+                    flpActors.BeginInvoke((MethodInvoker)delegate
+                   {
+                       flpActors.Controls.Clear();
+                   });
+                else
+                    flpActors.Controls.Clear();
+            }
+
+            if (StreamingContent.Actors.Count > 0)
+            {
+                //start filling the actors panel from the real data
+                foreach (var a in StreamingContent.Actors)
+                {
+                    //actor panel
+                    var p = ActorPanel(a);
+
+                    //add it to the form
+                    if (flpActors.InvokeRequired)
+                        flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(p); });
+                    else
+                        flpActors.Controls.Add(p);
+                }
+            }
+            else
+            {
+                //no actors, so tell the user with a dud panel
+                if (flpActors.InvokeRequired)
+                    flpActors.BeginInvoke((MethodInvoker)delegate { flpActors.Controls.Add(NoActorsFound()); });
+                else
+                    flpActors.Controls.Add(NoActorsFound());
+            }
+        }
+
+        private void DoDataLoad()
         {
             if (!StationaryMode)
             {
@@ -206,8 +233,38 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void Metadata_FormClosing(object sender, FormClosingEventArgs e)
+        private void DoImport()
         {
+            try
+            {
+                if (ofdImport.ShowDialog() != DialogResult.OK)
+                    return;
+
+                var pxz = MetadataIO.LoadMetadataArchive(ofdImport.FileName);
+
+                if (pxz != null)
+                {
+                    //assign globals
+                    StreamingContent = MetadataIO.MetadataFromFile(pxz);
+                    StationaryMode = false;
+
+                    //clear all actors
+                    flpActors.Controls.Clear();
+
+                    //set this in-case the loader doesn't find anything; that way the user still gets feedback.
+                    txtPlotSynopsis.Text = @"Plot synopsis not provided";
+
+                    //reload all data
+                    DoDataLoad();
+                }
+                else
+                    UIMessages.Error(@"Import error; PXZ parse returned null.");
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"MetadataPxzImportError");
+                UIMessages.Error($"Import error:\n\n{ex}");
+            }
         }
 
         private void DoExport()
@@ -218,45 +275,15 @@ namespace PlexDL.UI.Forms
                 StreamingContent.StreamInformation.Links.View == null) return;
             if (sfdExport.ShowDialog() == DialogResult.OK)
             {
-                WaitWindow.WaitWindow.Show(DoExport_Callback, @"Exporting");
+                WaitWindow.WaitWindow.Show(DoExport, @"Exporting");
             }
         }
 
-        private void DoExport_Callback(object sender, WaitWindowEventArgs e)
-        {
-            MetadataIO.MetadataToFile(sfdExport.FileName, StreamingContent);
-        }
+        private void DoExport(object sender, WaitWindowEventArgs e)
+            => MetadataIO.MetadataToFile(sfdExport.FileName, StreamingContent);
 
-        private void DoImport()
-        {
-            try
-            {
-                if (ofdImport.ShowDialog() != DialogResult.OK) return;
-
-                var pxz = MetadataIO.LoadMetadataArchive(ofdImport.FileName);
-
-                if (pxz != null)
-                {
-                    StreamingContent = MetadataIO.MetadataFromFile(pxz);
-
-                    flpActors.Controls.Clear();
-
-                    //set this in-case the loader doesn't find anything; that way the user still gets feedback.
-                    txtPlotSynopsis.Text = @"Plot synopsis not provided";
-
-                    WaitWindow.WaitWindow.Show(LoadWorker, "Parsing Metadata");
-                }
-                else
-                {
-                    UIMessages.Error(@"Import error; PXZ parse returned null.");
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, @"MetadataPxzImportError");
-                UIMessages.Error($"Import error:\n\n{ex}");
-            }
-        }
+        private void Metadata_Load(object sender, EventArgs e)
+            => DoDataLoad();
 
         private void ItmImport_Click(object sender, EventArgs e)
         {
@@ -292,6 +319,15 @@ namespace PlexDL.UI.Forms
         {
             // cancel any possible selection
             txtPlotSynopsis.SelectionLength = 0;
+        }
+
+        private static void ImagePreview_Portrait(object sender, EventArgs e)
+        {
+            //verify type
+            if (sender is PictureBox p)
+
+                //show the image preview window
+                ImagePreviewer.DisplayPreview(p.BackgroundImage);
         }
 
         private void ItmDataExplorer_Click(object sender, EventArgs e)

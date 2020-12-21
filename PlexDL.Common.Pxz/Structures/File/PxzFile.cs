@@ -13,6 +13,8 @@ using System.Text;
 using System.Xml.Serialization;
 using UIHelpers;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable InvertIf
 
 namespace PlexDL.Common.Pxz.Structures.File
@@ -136,7 +138,7 @@ namespace PlexDL.Common.Pxz.Structures.File
         /// </summary>
         public void ShowInformation()
         {
-            PxzInformation.ShowPxzInformation(this);
+            PxzExplorer.ShowPxzExplorer(this);
         }
 
         /// <summary>
@@ -150,7 +152,8 @@ namespace PlexDL.Common.Pxz.Structures.File
 
             foreach (var r in FileIndex.RecordReference)
             {
-                if (r.RecordName != recordName) continue;
+                if (r.RecordName != recordName)
+                    continue;
 
                 var i = FileIndex.RecordReference.IndexOf(r);
                 return Records[i];
@@ -175,7 +178,8 @@ namespace PlexDL.Common.Pxz.Structures.File
         /// <param name="record">Exact instance of the record to delete</param>
         public void RemoveRecord(PxzRecord record)
         {
-            if (Records.Contains(record)) Records.Remove(record);
+            if (Records.Contains(record))
+                Records.Remove(record);
         }
 
         /// <summary>
@@ -186,7 +190,8 @@ namespace PlexDL.Common.Pxz.Structures.File
         {
             foreach (var r in FileIndex.RecordReference)
             {
-                if (r.RecordName != recordName) continue;
+                if (r.RecordName != recordName)
+                    continue;
 
                 var i = FileIndex.RecordReference.IndexOf(r);
                 Records.RemoveAt(i);
@@ -227,11 +232,19 @@ namespace PlexDL.Common.Pxz.Structures.File
             //traverse the records list
             foreach (var r in Records)
             {
-                if (r == null) continue;
+                //null records are skipped
+                if (r == null)
+                    continue;
 
+                //convert to record string
                 var raw = r.ToRawForm();
+
+                //record name
                 var fileName = $"{recName}/{r.Header.Naming.StoredName}";
-                archive.AddEntry(fileName, raw);
+
+                //add the ZIP entry of the file
+                if (!archive.Any(entry => entry.FileName.EndsWith(fileName)))
+                    archive.AddEntry(fileName, raw);
             }
 
             //finalise ZIP file

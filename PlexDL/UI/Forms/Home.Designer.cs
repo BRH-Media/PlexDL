@@ -35,14 +35,23 @@ namespace PlexDL.UI.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
+            PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour2 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour3 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour4 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour5 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour6 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour7 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour8 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour9 = new PlexDL.Common.Components.Styling.BoolColour();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.wkrUpdateContentView = new System.ComponentModel.BackgroundWorker();
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
@@ -139,9 +148,9 @@ namespace PlexDL.UI.Forms
             this.itmCleanupAllData = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServerManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearMyToken = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContinueWatching = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmContent = new System.Windows.Forms.ToolStripMenuItem();
             this.itmMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStartSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -178,6 +187,7 @@ namespace PlexDL.UI.Forms
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
+            this.itmPxzExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -635,8 +645,15 @@ namespace PlexDL.UI.Forms
             this.dgvMovies.AllowUserToResizeRows = false;
             this.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMovies.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour1.BoolColouringEnabled = false;
+            boolColour1.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour1.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
+            boolColour1.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvMovies.BoolColouringScheme = boolColour1;
             this.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvMovies.CellContentClickMessage = false;
             this.dgvMovies.ContextMenuStrip = this.cxtMovieOptions;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
@@ -701,8 +718,15 @@ namespace PlexDL.UI.Forms
             this.dgvTVShows.AllowUserToResizeRows = false;
             this.dgvTVShows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTVShows.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour2.BoolColouringEnabled = false;
+            boolColour2.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour2.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour2.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour2.RelevantColumns")));
+            boolColour2.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvTVShows.BoolColouringScheme = boolColour2;
             this.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTVShows.CellContentClickMessage = false;
             this.dgvTVShows.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
@@ -738,8 +762,15 @@ namespace PlexDL.UI.Forms
             this.dgvSeasons.AllowUserToResizeRows = false;
             this.dgvSeasons.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSeasons.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour3.BoolColouringEnabled = false;
+            boolColour3.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour3.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour3.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour3.RelevantColumns")));
+            boolColour3.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvSeasons.BoolColouringScheme = boolColour3;
             this.dgvSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvSeasons.CellContentClickMessage = false;
             this.dgvSeasons.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
@@ -774,8 +805,15 @@ namespace PlexDL.UI.Forms
             this.dgvEpisodes.AllowUserToResizeRows = false;
             this.dgvEpisodes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvEpisodes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour4.BoolColouringEnabled = false;
+            boolColour4.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour4.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour4.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour4.RelevantColumns")));
+            boolColour4.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvEpisodes.BoolColouringScheme = boolColour4;
             this.dgvEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvEpisodes.CellContentClickMessage = false;
             this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
@@ -839,8 +877,15 @@ namespace PlexDL.UI.Forms
             this.dgvArtists.AllowUserToResizeRows = false;
             this.dgvArtists.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvArtists.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour5.BoolColouringEnabled = false;
+            boolColour5.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour5.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour5.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour5.RelevantColumns")));
+            boolColour5.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvArtists.BoolColouringScheme = boolColour5;
             this.dgvArtists.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvArtists.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvArtists.CellContentClickMessage = false;
             this.dgvArtists.ContextMenuStrip = this.cxtTrackOptions;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
@@ -980,8 +1025,15 @@ namespace PlexDL.UI.Forms
             this.dgvAlbums.AllowUserToResizeRows = false;
             this.dgvAlbums.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAlbums.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour6.BoolColouringEnabled = false;
+            boolColour6.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour6.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour6.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour6.RelevantColumns")));
+            boolColour6.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvAlbums.BoolColouringScheme = boolColour6;
             this.dgvAlbums.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAlbums.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvAlbums.CellContentClickMessage = false;
             this.dgvAlbums.ContextMenuStrip = this.cxtTrackOptions;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
@@ -1016,8 +1068,15 @@ namespace PlexDL.UI.Forms
             this.dgvTracks.AllowUserToResizeRows = false;
             this.dgvTracks.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTracks.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour7.BoolColouringEnabled = false;
+            boolColour7.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour7.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour7.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour7.RelevantColumns")));
+            boolColour7.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvTracks.BoolColouringScheme = boolColour7;
             this.dgvTracks.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTracks.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvTracks.CellContentClickMessage = false;
             this.dgvTracks.ContextMenuStrip = this.cxtTrackOptions;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
@@ -1076,8 +1135,15 @@ namespace PlexDL.UI.Forms
             this.dgvLog.AllowUserToResizeRows = false;
             this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLog.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour8.BoolColouringEnabled = false;
+            boolColour8.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour8.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour8.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour8.RelevantColumns")));
+            boolColour8.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvLog.BoolColouringScheme = boolColour8;
             this.dgvLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvLog.CellContentClickMessage = false;
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
@@ -1155,8 +1221,15 @@ namespace PlexDL.UI.Forms
             this.dgvSections.AllowUserToResizeRows = false;
             this.dgvSections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSections.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour9.BoolColouringEnabled = false;
+            boolColour9.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour9.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour9.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour9.RelevantColumns")));
+            boolColour9.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvSections.BoolColouringScheme = boolColour9;
             this.dgvSections.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSections.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvSections.CellContentClickMessage = false;
             this.dgvSections.ContextMenuStrip = this.cxtLibrarySections;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
@@ -1291,6 +1364,15 @@ namespace PlexDL.UI.Forms
             this.itmServerManager.Text = "Server Manager";
             this.itmServerManager.Click += new System.EventHandler(this.ItmServerManager_Click);
             // 
+            // itmDisconnect
+            // 
+            this.itmDisconnect.Enabled = false;
+            this.itmDisconnect.Name = "itmDisconnect";
+            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
+            this.itmDisconnect.Text = "Disconnect";
+            this.itmDisconnect.Click += new System.EventHandler(this.ItmDisconnect_Click);
+            // 
             // itmClearMyToken
             // 
             this.itmClearMyToken.Name = "itmClearMyToken";
@@ -1305,21 +1387,13 @@ namespace PlexDL.UI.Forms
             this.itmContinueWatching.Size = new System.Drawing.Size(198, 22);
             this.itmContinueWatching.Text = "Continue Watching";
             // 
-            // itmDisconnect
-            // 
-            this.itmDisconnect.Enabled = false;
-            this.itmDisconnect.Name = "itmDisconnect";
-            this.itmDisconnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.itmDisconnect.Size = new System.Drawing.Size(198, 22);
-            this.itmDisconnect.Text = "Disconnect";
-            this.itmDisconnect.Click += new System.EventHandler(this.ItmDisconnect_Click);
-            // 
             // itmContent
             // 
             this.itmContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmMetadata,
             this.itmStartSearch,
-            this.itmCast});
+            this.itmCast,
+            this.itmPxzExplorer});
             this.itmContent.Name = "itmContent";
             this.itmContent.Size = new System.Drawing.Size(62, 20);
             this.itmContent.Text = "Content";
@@ -1328,7 +1402,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmMetadata.Name = "itmMetadata";
             this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
+            this.itmMetadata.Size = new System.Drawing.Size(180, 22);
             this.itmMetadata.Text = "Metadata";
             this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
             // 
@@ -1336,14 +1410,14 @@ namespace PlexDL.UI.Forms
             // 
             this.itmStartSearch.Name = "itmStartSearch";
             this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
+            this.itmStartSearch.Size = new System.Drawing.Size(180, 22);
             this.itmStartSearch.Text = "Start Search";
             this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
             // 
             // itmCast
             // 
             this.itmCast.Name = "itmCast";
-            this.itmCast.Size = new System.Drawing.Size(176, 22);
+            this.itmCast.Size = new System.Drawing.Size(180, 22);
             this.itmCast.Text = "Cast";
             this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
             // 
@@ -1399,21 +1473,21 @@ namespace PlexDL.UI.Forms
             // itmCheckForUpdates
             // 
             this.itmCheckForUpdates.Name = "itmCheckForUpdates";
-            this.itmCheckForUpdates.Size = new System.Drawing.Size(171, 22);
+            this.itmCheckForUpdates.Size = new System.Drawing.Size(180, 22);
             this.itmCheckForUpdates.Text = "Check for Updates";
             this.itmCheckForUpdates.Click += new System.EventHandler(this.ItmCheckForUpdates_Click);
             // 
             // itmRepo
             // 
             this.itmRepo.Name = "itmRepo";
-            this.itmRepo.Size = new System.Drawing.Size(171, 22);
+            this.itmRepo.Size = new System.Drawing.Size(180, 22);
             this.itmRepo.Text = "Repo";
             this.itmRepo.Click += new System.EventHandler(this.ItmRepo_Click);
             // 
             // itmAbout
             // 
             this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(171, 22);
+            this.itmAbout.Size = new System.Drawing.Size(180, 22);
             this.itmAbout.Text = "About";
             this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
             // 
@@ -1579,6 +1653,13 @@ namespace PlexDL.UI.Forms
             // wkrGetMetadata
             // 
             this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
+            // 
+            // itmPxzExplorer
+            // 
+            this.itmPxzExplorer.Name = "itmPxzExplorer";
+            this.itmPxzExplorer.Size = new System.Drawing.Size(180, 22);
+            this.itmPxzExplorer.Text = "PXZ Explorer";
+            this.itmPxzExplorer.Click += new System.EventHandler(this.ItmPxzExplorer_Click);
             // 
             // Home
             // 
@@ -1771,6 +1852,7 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmDGVTrackLinkDownload;
         private ToolStripMenuItem itmDGVMovieLinkView;
         private ToolStripMenuItem itmDGVMovieLinkDownload;
+        private ToolStripMenuItem itmPxzExplorer;
     }
 }
 

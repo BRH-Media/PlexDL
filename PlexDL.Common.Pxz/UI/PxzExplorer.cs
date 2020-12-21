@@ -1,16 +1,19 @@
 ﻿using PlexDL.Common.Pxz.Structures.File;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable InvertIf
+
 namespace PlexDL.Common.Pxz.UI
 {
-    public partial class PxzInformation : Form
+    public partial class PxzExplorer : Form
     {
         public PxzFile Pxz { get; set; }
 
-        public PxzInformation()
+        public PxzExplorer()
         {
             InitializeComponent();
         }
@@ -90,7 +93,34 @@ namespace PlexDL.Common.Pxz.UI
             return table;
         }
 
-        private void PxzInformation_Load(object sender, EventArgs e)
+        private void DoPxzLoad(string fileName)
+        {
+            try
+            {
+                //ensure the file exists
+                if (File.Exists(fileName))
+                {
+                    //attempt PXZ load
+                    var pxz = new PxzFile();
+                    pxz.Load(fileName);
+
+                    //set the global
+                    Pxz = pxz;
+
+                    //perform UI load
+                    DoPxzLoad();
+                }
+                else
+                    //alert the user
+                    UIMessages.Error(@"Couldn't find the specified PXZ file", @"Validation Error");
+            }
+            catch (Exception ex)
+            {
+                UIMessages.Error(ex.ToString(), @"Load PXZ File Error");
+            }
+        }
+
+        private void DoPxzLoad()
         {
             try
             {
@@ -106,19 +136,17 @@ namespace PlexDL.Common.Pxz.UI
             }
         }
 
-        private void BtnOK_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void PxzInformation_Load(object sender, EventArgs e)
+            => DoPxzLoad();
 
-        public static void ShowPxzInformation(PxzFile file)
-        {
-            var frm = new PxzInformation
-            {
-                Pxz = file
-            };
-            frm.ShowDialog();
-        }
+        private void BtnOK_Click(object sender, EventArgs e)
+            => Close();
+
+        public static void ShowPxzExplorer(PxzFile file)
+            => new PxzExplorer { Pxz = file }.ShowDialog();
+
+        public static void ShowPxzExplorer()
+            => new PxzExplorer().ShowDialog();
 
         private void ItmExtractRecord_Click(object sender, EventArgs e)
         {
@@ -142,6 +170,12 @@ namespace PlexDL.Common.Pxz.UI
             //there needs to be a row selected to allow extraction
             if (dgvRecords.SelectedRows.Count == 0)
                 e.Cancel = true;
+        }
+
+        private void ItmOpen_Click(object sender, EventArgs e)
+        {
+            if (ofdOpenPxzFile.ShowDialog() == DialogResult.OK)
+                DoPxzLoad(ofdOpenPxzFile.FileName);
         }
     }
 }

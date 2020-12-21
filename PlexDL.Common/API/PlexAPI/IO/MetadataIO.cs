@@ -16,6 +16,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using UIHelpers;
 
+// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable InvertIf
 // ReSharper disable InconsistentNaming
 
 namespace PlexDL.Common.API.PlexAPI.IO
@@ -200,10 +203,7 @@ namespace PlexDL.Common.API.PlexAPI.IO
         public static PlexObject MetadataFromFile(PxzFile file, bool waitWindow = true, bool silent = false)
         {
             if (waitWindow)
-            {
-                var waitArgs = new object[] { file, silent };
-                return (PlexObject)WaitWindow.WaitWindow.Show(MetadataFromFile, @"Reading data", waitArgs);
-            }
+                return (PlexObject)WaitWindow.WaitWindow.Show(MetadataFromFile, @"Reading data", file, silent);
 
             if (file != null)
             {
@@ -228,6 +228,8 @@ namespace PlexDL.Common.API.PlexAPI.IO
 
                         //find any actor images
                         if (bitmaps != null)
+
+                            //loop through each bitmap
                             foreach (var b in bitmaps)
                             {
                                 //check if the record is an actor thumbnail

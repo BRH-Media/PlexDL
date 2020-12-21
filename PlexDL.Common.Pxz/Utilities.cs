@@ -48,10 +48,8 @@ namespace PlexDL.Common.Pxz
 
         public static Bitmap ByteToImage(byte[] img)
         {
-            using (var mStream = new MemoryStream(img))
-            {
-                return (Bitmap)Image.FromStream(mStream);
-            }
+            using var mStream = new MemoryStream(img);
+            return (Bitmap)Image.FromStream(mStream);
         }
     }
 }

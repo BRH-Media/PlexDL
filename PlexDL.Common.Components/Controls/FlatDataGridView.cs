@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using UIHelpers;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 // ReSharper disable UnusedVariable
@@ -40,6 +41,7 @@ namespace PlexDL.Common.Components.Controls
             Paint += DgvPaint;
             DataError += DgvDataError;
             ColumnHeaderMouseClick += DgvColumnHeaderClicked;
+            CellDoubleClick += DgvCellDoubleClick;
 
             //border styling
             BorderStyle = BorderStyle.None;
@@ -65,6 +67,10 @@ namespace PlexDL.Common.Components.Controls
         public bool IsContentTable { get; set; } = false;
 
         [Category("PlexDL")]
+        [Description("If the user double-clicks a cell, they will receive a message box with the cell contents if this is enabled.")]
+        public bool CellContentClickMessage { get; set; } = false;
+
+        [Category("PlexDL")]
         [Description("Configures bool colouring")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public BoolColour BoolColouringScheme { get; set; } = new BoolColour();
@@ -79,6 +85,30 @@ namespace PlexDL.Common.Components.Controls
 
                 //grid is repainted with boolean colouring
                 DgvRepaintBoolColouring();
+            }
+        }
+
+        private void DgvCellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                //ensure we're allowed to execute this function
+                if (CellContentClickMessage)
+
+                    //verify sender
+                    if (sender is FlatDataGridView gridView)
+                    {
+                        //parse out the message
+                        var value = gridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                        //validate
+                        if (!string.IsNullOrWhiteSpace(value))
+                            UIMessages.Info(value, @"Cell Content");
+                    }
+            }
+            catch
+            {
+                //nothing
             }
         }
 

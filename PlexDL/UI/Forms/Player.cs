@@ -3,9 +3,7 @@ using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
-using PlexDL.Common.Logging;
 using PlexDL.Common.Net;
-using PlexDL.Common.PlayerLaunchers;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.Player;
@@ -18,6 +16,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using UIHelpers;
 
+// ReSharper disable InvertIf
 // ReSharper disable ArrangeThisQualifier
 
 #pragma warning disable 1591
@@ -33,14 +32,10 @@ namespace PlexDL.UI.Forms
         public PlexObject StreamingContent { get; set; }
 
         public Player()
-        {
-            InitializeComponent();
-        }
+            => InitializeComponent();
 
         private void TmrFramerate_Tick(object sender, EventArgs e)
-        {
-            UpdateFramerate();
-        }
+            => UpdateFramerate();
 
         private void UpdateFramerate()
         {
@@ -126,7 +121,6 @@ namespace PlexDL.UI.Forms
                 _mPlayer.Sliders.AudioVolume = trkVolume;
                 _mPlayer.Events.MediaPositionChanged += MPlayer_MediaPositionChanged;
                 _mPlayer.Events.MediaEnded += MPlayer_ContentFinished;
-                _mPlayer.Events.MediaStarted += MPlayer_ContentStarted;
 
                 //render area setup
                 _mPlayer.Display.Mode = DisplayMode.ZoomCenter;
@@ -157,22 +151,9 @@ namespace PlexDL.UI.Forms
             {
                 var msg =
                     UIMessages.Question(
-                        @"PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed");
+                        @"PlexDL Matroska (mkv) playback is not supported, however some codecs may still work unofficially. Would you like to continue playback via PVS?");
 
-                if (msg)
-                    try
-                    {
-                        VlcLauncher.LaunchVlc(StreamingContent);
-                        Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        UIMessages.Error("Error occurred whilst trying to launch VLC\n\n" + ex,
-                            @"Launch Error");
-                        LoggingHelpers.RecordException(ex.Message, "VLCLaunchError");
-                        Close();
-                    }
-                else
+                if (!msg)
                     Close();
             }
 
@@ -264,11 +245,6 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private static void MPlayer_ContentStarted(object sender, EventArgs e)
-        {
-            //nothing just yet :)
-        }
-
         private void MPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
         {
             var fromStart = TimeSpan.FromTicks(e.FromStart);
@@ -278,9 +254,11 @@ namespace PlexDL.UI.Forms
             lblTotalDuration.Text = toStop.ToString(@"hh\:mm\:ss");
         }
 
-        private void Stop()
+        private void Stop(bool overrideChecks = false)
         {
-            if (!_mPlayer.Playing && !_mPlayer.Paused) return;
+            if (!_mPlayer.Playing && !_mPlayer.Paused && !overrideChecks)
+                return;
+
             _mPlayer.Stop();
             _mPlayer.Paused = false;
             btnStop.Enabled = false;
@@ -309,31 +287,29 @@ namespace PlexDL.UI.Forms
         {
             //multi-threaded wholesomeness
             if (pnlPlayer.InvokeRequired)
-            {
                 //multi-threaded goodness
                 pnlPlayer.BeginInvoke((MethodInvoker)delegate
                {
                    //invoke myself again, but on the UI thread this time
                    StartPlayer(fileName);
                });
-            }
             else
-            {
                 //start playback
                 _mPlayer.Play(fileName);
-            }
         }
 
         private void PlayWorker(object sender, WaitWindowEventArgs e)
         {
-            if (_mPlayer.Playing) return;
+            if (_mPlayer.Playing)
+                return;
 
             if (Methods.RemoteFileExists(StreamingContent.StreamInformation.Links.View))
             {
+                //file/URI to play
                 var fileName = (string)e.Arguments[0];
 
+                //GUI and worker methods
                 StartPlayer(fileName);
-
                 SetIconPause();
 
                 //tooltip set
@@ -414,25 +390,37 @@ namespace PlexDL.UI.Forms
         {
             //check if the table has been loaded correctly before trying
             //to get data from it.
-            if (!TableManager.ActiveTableFilled) return;
+            if (!TableManager.ActiveTableFilled)
+                return;
 
             if (StreamingContent.StreamIndex + 1 < TableManager.ReturnCorrectTable().Rows.Count)
             {
+                //fetch the correct content
                 var next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
                 StreamingContent = next;
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                //set the form title to the new content
                 Text = formTitle;
+
+                //reset and repaint the GUI
+                Stop(true);
                 Refresh();
-                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else if (StreamingContent.StreamIndex + 1 == TableManager.ReturnCorrectTable().Rows.Count)
             {
+                //fetch the correct content
                 var next = GetObjectFromIndex(0);
                 StreamingContent = next;
+
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                //set the form title to the new content
                 Text = formTitle;
+
+                //reset and repaint the GUI
+                Stop(true);
                 Refresh();
-                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
 
@@ -440,25 +428,36 @@ namespace PlexDL.UI.Forms
         {
             //check if the table has been loaded correctly before trying
             //to get data from it.
-            if (!TableManager.ActiveTableFilled) return;
+            if (!TableManager.ActiveTableFilled)
+                return;
 
             if (StreamingContent.StreamIndex != 0)
             {
-                var next = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
-                StreamingContent = next;
+                //fetch the correct content
+                var prev = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
+                StreamingContent = prev;
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                //set the form title to the new content
                 Text = formTitle;
+
+                //reset and repaint the GUI
+                Stop(true);
                 Refresh();
-                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
             else
             {
-                var next = GetObjectFromIndex(TableManager.ReturnCorrectTable().Rows.Count - 1);
-                StreamingContent = next;
+                //fetch the correct content
+                var prev = GetObjectFromIndex(TableManager.ReturnCorrectTable().Rows.Count - 1);
+                StreamingContent = prev;
                 var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                //set the form title to the new content
                 Text = formTitle;
+
+                //reset and repaint the GUI
+                Stop(true);
                 Refresh();
-                //UIMessages.Info(StreamingContent.StreamIndex + "\n" + TitlesTable.Rows.Count);
             }
         }
 
