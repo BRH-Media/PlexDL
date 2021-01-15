@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Html = GitHubUpdater.Display.Html;
 
@@ -170,39 +169,45 @@ namespace GitHubUpdater.UI
         }
 
         private void BtnDownloadUpdate_Click(object sender, EventArgs e)
+
+            //execute update download
             => Download();
 
         private int NumberDownloads()
-        {
-            //sum of all asset downloads denotes the total downloads counter
-            return AppUpdate.UpdateData
-                .assets.Sum(a => a.download_count);
-        }
 
-        private async void Download(bool closeForm = true)
+            //sum of all asset downloads denotes the total downloads counter
+            => AppUpdate.UpdateData
+                .assets.Sum(a => a.download_count);
+
+        private void Download(bool closeForm = true)
         {
             try
             {
                 //download execution process
-                var status = await ExecuteDownload();
+                var status = ExecuteDownload();
 
+                //execute appropriate action
                 switch (status)
                 {
+                    //unknown error occurred
                     case DownloadStatus.Errored:
                         MessageBox.Show(@"An unknown error occurred whilst attempting to download one or more update files", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
 
+                    //invalid job (one or more were null)
                     case DownloadStatus.NullJob:
                         MessageBox.Show(@"One or more download jobs were invalid; valid jobs have been completed.", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
+                    //invalid download (one or more completed jobs came back null)
                     case DownloadStatus.NullDownload:
                         MessageBox.Show(@"One or more download jobs were returned as null; this means the data received was invalid and some or all downloads did not complete.", @"Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
+                    //all jobs were successful
                     case DownloadStatus.Downloaded:
                         var msg = MessageBox.Show(@"Done! Open download location?", @"Question",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -211,20 +216,24 @@ namespace GitHubUpdater.UI
                             Process.Start(Agent.UpdateDirectory);
                         break;
 
+                    //unknown job status; usually indicative of an undiagnosable issue
                     case DownloadStatus.Unknown:
                         MessageBox.Show(@"Download worker returned the 'unknown' job status indicator.", @"Warning",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
+                    //downloader experienced a HTTP timeout error
                     case DownloadStatus.Timeout:
                         MessageBox.Show(@"Download worker experienced a HTTP timeout on one or more operations.", @"Warning",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
 
+                    //the user cancelled the download operation
                     case DownloadStatus.Cancelled:
                         //don't do anything
                         break;
 
+                    //default actioner if none of the above clauses apply
                     default:
                         MessageBox.Show(@"Download worker returned an invalid job status indicator.", @"Warning",
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -252,12 +261,10 @@ namespace GitHubUpdater.UI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ExecuteDownload(object sender, WaitWindowEventArgs e)
-        {
-            //return the control flow back to the original function, but disable the wait window
-            e.Result = ExecuteDownload(false).Result;
-        }
+            =>  //return the control flow back to the original function, but disable the wait window
+                e.Result = ExecuteDownload(false);
 
-        private async Task<DownloadStatus> ExecuteDownload(bool waitWindow = true)
+        private DownloadStatus ExecuteDownload(bool waitWindow = true)
         {
             //wait window
             if (waitWindow)

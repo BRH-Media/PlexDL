@@ -2,6 +2,7 @@
 	
 	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Abortable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=actioner/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=API_0027s/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=APPDATA/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=ASSOCCHANGED/@EntryIndexedValue">True</s:Boolean>
