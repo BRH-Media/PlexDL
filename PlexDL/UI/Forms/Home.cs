@@ -950,15 +950,25 @@ namespace PlexDL.UI.Forms
         {
             try
             {
+                var filteredProvider = DataProvider.FilteredProvider;
+                var titlesProvider = DataProvider.TitlesProvider;
+
                 //what record numbers to display
                 var currentlyViewing = noRecords
                     ? 0
                     : Flags.IsFiltered
-                        ? DataProvider.FilteredProvider.GetViewTable().Rows.Count
-                        : DataProvider.TitlesProvider.GetViewTable().Rows.Count;
+                        ? filteredProvider.GetViewTable() != null
+                            ? filteredProvider.GetViewTable().Rows.Count
+                            : titlesProvider.GetViewTable().Rows.Count
+                        : titlesProvider.GetViewTable() != null
+                            ? titlesProvider.GetViewTable().Rows.Count
+                            : 0;
+
                 var totalAvailable = noRecords
                     ? 0
-                    : DataProvider.TitlesProvider.GetViewTable().Rows.Count;
+                    : titlesProvider.GetViewTable() != null
+                        ? titlesProvider.GetViewTable().Rows.Count
+                        : 0;
 
                 //what text to display
                 var newText = noRecords
