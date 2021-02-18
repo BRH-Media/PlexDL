@@ -1,4 +1,6 @@
-﻿namespace PlexDL.UI.Forms
+﻿using PlexDL.Common.Components.Controls;
+
+namespace PlexDL.UI.Forms
 {
     partial class Cast
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Cast));
-            this.picPoster = new System.Windows.Forms.PictureBox();
+            this.picPoster = new PreviewPictureBox();
             this.gbStreamControl = new System.Windows.Forms.GroupBox();
             this.lstDevices = new System.Windows.Forms.ListBox();
             this.btnDiscover = new System.Windows.Forms.Button();
@@ -44,8 +46,6 @@
             // picPoster
             // 
             this.picPoster.BackColor = System.Drawing.SystemColors.Control;
-            this.picPoster.BackgroundImage = global::PlexDL.ResourceProvider.Properties.Resources.unavailable;
-            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picPoster.Location = new System.Drawing.Point(8, 8);
             this.picPoster.Margin = new System.Windows.Forms.Padding(2);
             this.picPoster.Name = "picPoster";
@@ -154,7 +154,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox picPoster;
+        private PreviewPictureBox picPoster;
         private System.Windows.Forms.GroupBox gbStreamControl;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblTitle;

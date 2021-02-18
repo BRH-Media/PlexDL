@@ -70,7 +70,7 @@
             this.btnLoadDict.TabIndex = 2;
             this.btnLoadDict.Text = "Load";
             this.btnLoadDict.UseVisualStyleBackColor = true;
-            this.btnLoadDict.Click += new System.EventHandler(this.btnLoadDict_Click);
+            this.btnLoadDict.Click += new System.EventHandler(this.BtnLoadDict_Click);
             // 
             // btnBrowseLogdel
             // 
@@ -225,7 +225,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Translator";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Translator_Load);
             this.gbLogdel.ResumeLayout(false);
             this.gbLogdel.PerformLayout();
             this.groupBox1.ResumeLayout(false);

@@ -17,7 +17,8 @@ namespace PlexDL.Common.Components.Controls
         /// <summary>
         /// Default 8.25pt, regular font
         /// </summary>
-        private Font DefaultCellFont { get; } = new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Regular);
+        private Font DefaultCellFont { get; } =
+            new Font(FontFamily.GenericSansSerif, (float)8.25, FontStyle.Regular);
 
         public FlatDataGridView()
         {

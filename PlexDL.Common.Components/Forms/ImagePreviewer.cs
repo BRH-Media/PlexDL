@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 #pragma warning disable 1591
 
-namespace PlexDL.UI.Forms
+namespace PlexDL.Common.Components.Forms
 {
     public partial class ImagePreviewer : Form
     {

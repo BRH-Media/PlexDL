@@ -37,6 +37,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\PreviewPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\ImagePreviewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImagePreviewer.Designer.cs">
+      <DependentUpon>ImagePreviewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Styling\BoolColour.cs" />
     <Compile Include="Styling\BoolColourMode.cs" />
     <Compile Include="Controls\CircularProgressBar.cs">
@@ -55,11 +64,19 @@
       <Project>{ef2e6fd4-9e55-458b-81a2-df40fcb52d57}</Project>
       <Name>PlexDL.Animation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.ResourceProvider\PlexDL.ResourceProvider.csproj">
+      <Project>{0ee81c0d-834c-4f70-9e6a-6cc5db8f74b2}</Project>
+      <Name>PlexDL.ResourceProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UIHelpers\UIHelpers.csproj">
       <Project>{e3ce262b-b962-44ff-abc0-5ebfb403d51d}</Project>
       <Name>UIHelpers</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\ImagePreviewer.resx">
+      <DependentUpon>ImagePreviewer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

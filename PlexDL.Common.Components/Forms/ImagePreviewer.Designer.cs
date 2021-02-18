@@ -1,4 +1,4 @@
-﻿namespace PlexDL.UI.Forms
+﻿namespace PlexDL.Common.Components.Forms
 {
     partial class ImagePreviewer
     {

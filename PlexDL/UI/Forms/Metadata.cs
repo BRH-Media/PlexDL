@@ -1,6 +1,7 @@
 ﻿using PlexDL.Common;
 using PlexDL.Common.API.PlexAPI.IO;
 using PlexDL.Common.API.PlexAPI.Objects.AttributeTables;
+using PlexDL.Common.Components.Controls;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
@@ -22,9 +23,7 @@ namespace PlexDL.UI.Forms
     public partial class Metadata : DoubleBufferedForm
     {
         public Metadata()
-        {
-            InitializeComponent();
-        }
+            => InitializeComponent();
 
         public PlexObject StreamingContent { get; set; } = new PlexObject();
         public bool StationaryMode { get; set; }
@@ -159,7 +158,7 @@ namespace PlexDL.UI.Forms
             };
 
             //actor's photo
-            var actorPortrait = new PictureBox
+            var actorPortrait = new PreviewPictureBox()
             {
                 Size = new Size(79, 119),
                 Location = new Point(3, 3),
@@ -167,9 +166,6 @@ namespace PlexDL.UI.Forms
                 BackgroundImage = a.Thumbnail ?? ImageHandler.GetImageFromUrl(a.ThumbnailUri),
                 Visible = true
             };
-
-            //add the image preview handler to the portrait
-            actorPortrait.DoubleClick += ImagePreview_Portrait;
 
             //add the sub-controls
             p.Controls.Add(lblActorRole);
@@ -286,49 +282,31 @@ namespace PlexDL.UI.Forms
             => DoDataLoad();
 
         private void ItmImport_Click(object sender, EventArgs e)
-        {
-            DoImport();
-        }
+            => DoImport();
 
         private void ItmExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+            => Close();
 
         private void ItmExport_Click(object sender, EventArgs e)
-        {
-            DoExport();
-        }
+            => DoExport();
 
         private void ItmPvs_Click(object sender, EventArgs e)
-        {
-            PvsLauncher.LaunchPvs(StreamingContent);
-        }
+            => PvsLauncher.LaunchPvs(StreamingContent);
 
         private void ItmBrowser_Click(object sender, EventArgs e)
-        {
-            BrowserLauncher.LaunchBrowser(StreamingContent);
-        }
+            => BrowserLauncher.LaunchBrowser(StreamingContent);
 
         private void ItmVlc_Click(object sender, EventArgs e)
-        {
-            VlcLauncher.LaunchVlc(StreamingContent);
-        }
+            => VlcLauncher.LaunchVlc(StreamingContent);
+
+        private void ItmSourceLinkView_Click(object sender, EventArgs e)
+            => LinkViewer.ShowLinkViewer(StreamingContent);
+
+        private void ItmSourceLinkDownload_Click(object sender, EventArgs e)
+            => LinkViewer.ShowLinkViewer(StreamingContent, false);
 
         private void TxtPlotSynopsis_SelectionChanged(object sender, EventArgs e)
-        {
-            // cancel any possible selection
-            txtPlotSynopsis.SelectionLength = 0;
-        }
-
-        private static void ImagePreview_Portrait(object sender, EventArgs e)
-        {
-            //verify type
-            if (sender is PictureBox p)
-
-                //show the image preview window
-                ImagePreviewer.DisplayPreview(p.BackgroundImage);
-        }
+            => txtPlotSynopsis.SelectionLength = 0;
 
         private void ItmDataExplorer_Click(object sender, EventArgs e)
         {
@@ -337,11 +315,5 @@ namespace PlexDL.UI.Forms
 
             DataExplorer.ShowExplorer(StreamingContent);
         }
-
-        private void ItmSourceLinkView_Click(object sender, EventArgs e)
-            => LinkViewer.ShowLinkViewer(StreamingContent);
-
-        private void ItmSourceLinkDownload_Click(object sender, EventArgs e)
-            => LinkViewer.ShowLinkViewer(StreamingContent, false);
     }
 }

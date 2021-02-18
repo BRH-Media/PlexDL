@@ -41,6 +41,7 @@ namespace PlexDL.UI.Forms
             if (keyData != Keys.Enter) return base.ProcessCmdKey(ref msg, keyData);
 
             DoConnect();
+
             return true;
         }
 
@@ -261,9 +262,7 @@ namespace PlexDL.UI.Forms
         }
 
         private static string ConnectionLink(Server svr)
-        {
-            return $"http://{svr.address}:{svr.port}/?X-Plex-Token={svr.accessToken}";
-        }
+            => $@"http://{svr.address}:{svr.port}/?X-Plex-Token={svr.accessToken}";
 
         private void RunDirectConnect(bool localLink)
         {
@@ -272,23 +271,32 @@ namespace PlexDL.UI.Forms
                 PlexAccountToken = ObjectProvider.User.authenticationToken,
                 PlexAddress = ""
             };
+
             RunDirectConnect(localLink, info);
         }
 
         private void RunDirectConnect(bool localLink, ConnectionInfo info, bool diffToken = false)
         {
+            //new list of servers
             var servers = new List<Server>();
+
+            //construct a new direct connection dialog
             using (var frmDir = new DirectConnect())
             {
+                //setup form prerequisities
                 frmDir.ConnectionInfo = info;
                 frmDir.DifferentToken = diffToken;
                 frmDir.LoadLocalLink = localLink;
 
+                //dialog verification
                 if (frmDir.ShowDialog() != DialogResult.OK) return;
                 if (!frmDir.Success) return;
 
+                //set auth globals
                 ObjectProvider.Settings.ConnectionInfo = frmDir.ConnectionInfo;
                 ObjectProvider.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+
+                //construct new server obejct from supplied direct connection information
                 var s = new Server
                 {
                     accessToken = ObjectProvider.User.authenticationToken,
@@ -296,10 +304,16 @@ namespace PlexDL.UI.Forms
                     port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
                     name = "DirectConnect"
                 };
+
+                //apply listing information for auth
                 servers.Add(s);
                 ObjectProvider.PlexServers = servers;
+
+                //set globals
                 SelectedServer = s;
                 DialogResult = DialogResult.OK;
+
+                //close the GUI
                 Close();
             }
         }
@@ -382,19 +396,26 @@ namespace PlexDL.UI.Forms
                 var shown = Properties.Settings.Default.PLSShown;
                 var disable = Properties.Settings.Default.DisablePLSOnShown;
 
-                if (shown && disable) return;
+                //don't show the message if these are both true (cancel execution)
+                if (shown && disable)
+                    return;
 
+                //the message to display to the user
                 const string msg =
-                    @"It appears your loaded profile contains a previously loaded server. Would you like to prefill those details and connect?";
+                    "It appears your loaded profile contains a previously loaded server. " +
+                    "Would you like to prefill those details and connect?";
 
+                //prompt the user (true for 'Yes', false for 'No')
                 if (UIMessages.Question(msg))
                 {
                     LoadProfileDefinedServer();
                     PlsShown(true, false);
+
                     return;
                 }
 
-                if (!disable) return;
+                if (!disable)
+                    return;
 
                 UIMessages.Info(
                     @"We won't ask again. You can reenable this dialog via the global application config file (not your profile).");
@@ -404,16 +425,17 @@ namespace PlexDL.UI.Forms
 
         private static void PlsShown(bool value, bool save = true)
         {
+            //set the settings file in memory (not to disk)
             Properties.Settings.Default.PLSShown = value;
+
+            //whether or not to commit to the settings file
             if (save)
                 Properties.Settings.Default.Save();
         }
 
         private void DgvServers_SelectionChanged(object sender, EventArgs e)
-        {
-            itmConnect.Enabled =
+            => itmConnect.Enabled =
                 dgvServers.SelectedRows.Count == 1;
-        }
 
         private void DgvServers_DoubleClick(object sender, EventArgs e)
         {
@@ -513,9 +535,9 @@ namespace PlexDL.UI.Forms
                                 SetInterfaceAuthenticationStatus(true);
                             }
                             else
-                            {
+
+                                //alert the user to the error
                                 UIMessages.Error(@"An unknown error occurred; we couldn't apply your account token.");
-                            }
 
                             break;
 
@@ -545,16 +567,18 @@ namespace PlexDL.UI.Forms
                     }
                 }
                 else
-                // trying to connect on no connection will not end well; alert the user.
-                {
+
+                    // trying to connect on no connection will not end well; alert the user.
                     UIMessages.Warning(
                         @"No internet connection. Please connect to a network before attempting to authenticate.",
                         @"Network Error");
-                }
             }
             catch (Exception ex)
             {
+                //log the error
                 LoggingHelpers.RecordException(ex.Message, "ConnectionError");
+
+                //alert the user to the error
                 UIMessages.Error("Connection Error:\n\n" + ex, @"Connection Error");
             }
         }
@@ -565,24 +589,35 @@ namespace PlexDL.UI.Forms
             {
                 //check if there's a connection before trying to update the authentication token
                 if (Internet.IsConnected)
+
+                    //new token input form
                     using (var frm = new Authenticate())
                     {
+                        //construct a new authentication information descriptor
                         var existingInfo = new ConnectionInfo
                         {
                             PlexAccountToken = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
                         };
 
+                        //apply the descriptor
                         frm.ConnectionInfo = existingInfo;
 
+                        //show the dialog and ensure 'OK' was pressed
                         if (frm.ShowDialog() != DialogResult.OK)
                             return;
+
+                        //exit if the attempt was unsuccessful
                         if (!frm.Success)
                             return;
 
+                        //apply the new token
                         if (ApplyToken(frm.ConnectionInfo.PlexAccountToken))
                         {
+                            //alert the user to the status
                             UIMessages.Info(
                                 @"Token applied successfully. You can now load servers and relays from Plex.tv");
+
+                            //render the servers view
                             LoadServers(true);
 
                             //status update
@@ -590,6 +625,7 @@ namespace PlexDL.UI.Forms
                         }
                         else
 
+                            //alert the user to the error
                             UIMessages.Error(@"An unknown error occurred");
                     }
                 else
@@ -600,7 +636,10 @@ namespace PlexDL.UI.Forms
             }
             catch (Exception ex)
             {
+                //log the error
                 LoggingHelpers.RecordException(ex.Message, "ConnectionError");
+
+                //alert the user to the error
                 UIMessages.Error("Connection Error:\n\n" + ex, @"Connection Error");
             }
         }
