@@ -678,7 +678,6 @@ namespace PlexDL.UI.Forms
             this.dgvMovies.Size = new System.Drawing.Size(644, 334);
             this.dgvMovies.TabIndex = 18;
             this.dgvMovies.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DoubleClickProcessor);
-            this.dgvMovies.SelectionChanged += new System.EventHandler(this.DgvMovies_OnRowChange);
             // 
             // tabTV
             // 
@@ -1254,7 +1253,7 @@ namespace PlexDL.UI.Forms
             this.dgvSections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSections.Size = new System.Drawing.Size(276, 278);
             this.dgvSections.TabIndex = 16;
-            this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvLibrary_OnRowChange);
+            this.dgvSections.SelectionChanged += new System.EventHandler(this.DgvSections_OnRowChange);
             // 
             // menuMain
             // 

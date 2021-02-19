@@ -34,7 +34,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
@@ -868,78 +867,24 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void PopulateLibraryWorker(XmlDocument doc)
-        {
-            if (doc == null)
-                return;
-
-            try
-            {
-                LoggingHelpers.RecordGeneralEntry("Library population requested");
-
-                var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
-                var baseUri = Strings.GetBaseUri(false);
-                var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
-                var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey, false, false, false);
-
-                var sectionDir = KeyGatherers.GetSectionKey(xmlSectionKey).TrimEnd('/');
-                var uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
-                var xmlSections = XmlGet.GetXmlTransaction(uriSections, false, false, false);
-
-                LoggingHelpers.RecordGeneralEntry("Creating new datasets");
-                var sections = new DataSet();
-                sections.ReadXml(new XmlNodeReader(xmlSections));
-
-                var sectionsTable = sections.Tables["Directory"];
-                DataProvider.SectionsProvider.SetRawTable(sectionsTable);
-
-                LoggingHelpers.RecordGeneralEntry("Binding to grid");
-                RenderLibraryView(sectionsTable);
-                Flags.IsLibraryFilled = true;
-                Strings.CurrentApiUri = baseUri + libraryDir + "/" + sectionDir + "/";
-            }
-            catch (WebException ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "LibPopError");
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                    if (ex.Response is HttpWebResponse response)
-                        switch ((int)response.StatusCode)
-                        {
-                            case 401:
-                                UIMessages.Error(
-                                    @"The web server denied access to the resource. Check your token and try again. (401)");
-                                break;
-
-                            case 404:
-                                UIMessages.Error(
-                                    @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
-                                break;
-
-                            case 400:
-                                UIMessages.Error(
-                                    @"The web server couldn't serve the request because the request was bad. (400)");
-                                break;
-                        }
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "LibPopError");
-                UIMessages.Error(ex.ToString());
-            }
-        }
-
         private static void GetTitlesTable(XmlNode doc, ContentType type)
         {
+            //setup DataSet for XML parsing
             var sections = new DataSet();
             sections.ReadXml(new XmlNodeReader(doc));
 
+            //switch through the current content type
             switch (type)
             {
+                //Music titles
                 case ContentType.Music:
+
+                //TV Show titles
                 case ContentType.TvShows:
                     DataProvider.TitlesProvider.SetRawTable(sections.Tables["Directory"]);
                     break;
 
+                //Movie titles
                 case ContentType.Movies:
                     DataProvider.TitlesProvider.SetRawTable(sections.Tables["Video"]);
                     break;
@@ -950,25 +895,24 @@ namespace PlexDL.UI.Forms
         {
             try
             {
-                var filteredProvider = DataProvider.FilteredProvider;
-                var titlesProvider = DataProvider.TitlesProvider;
+                //view data table providers
+                var filteredViewTable = DataProvider.FilteredProvider.GetViewTable();
+                var titlesViewTable = DataProvider.TitlesProvider.GetViewTable();
 
-                //what record numbers to display
+                //total records currently being displayed
                 var currentlyViewing = noRecords
                     ? 0
                     : Flags.IsFiltered
-                        ? filteredProvider.GetViewTable() != null
-                            ? filteredProvider.GetViewTable().Rows.Count
-                            : titlesProvider.GetViewTable().Rows.Count
-                        : titlesProvider.GetViewTable() != null
-                            ? titlesProvider.GetViewTable().Rows.Count
-                            : 0;
+                        ? filteredViewTable?.Rows.Count
+                          ?? titlesViewTable.Rows.Count
+                        : titlesViewTable?.Rows.Count
+                          ?? 0;
 
+                //total available records to display
                 var totalAvailable = noRecords
                     ? 0
-                    : titlesProvider.GetViewTable() != null
-                        ? titlesProvider.GetViewTable().Rows.Count
-                        : 0;
+                    : titlesViewTable?.Rows.Count
+                      ?? 0;
 
                 //what text to display
                 var newText = noRecords
@@ -992,121 +936,359 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void UpdateContentViewWorker(XmlNode doc, ContentType type)
+        private void PopulateLibrary(object sender, WaitWindowEventArgs e)
+            => PopulateLibrary((XmlDocument)e.Arguments[0], false);
+
+        private void PopulateLibrary(XmlDocument doc, bool waitWindow = true)
         {
-            LoggingHelpers.RecordGeneralEntry("Updating library contents");
-
-            GetTitlesTable(doc, type);
-
-            if (DataProvider.TitlesProvider.GetRawTable() != null)
+            try
             {
-                //set this in the toolstrip so the user can see how many items are loaded
-                SetViewingStatus();
-
-                ObjectProvider.CurrentContentType = type;
-
-                //UIMessages.Info(ObjectProvider.CurrentContentType.ToString());
-
-                switch (type)
+                //multi-threaded operation
+                if (waitWindow)
                 {
-                    case ContentType.Movies:
-                        LoggingHelpers.RecordGeneralEntry("Rendering Movies");
-                        RenderMoviesView(DataProvider.TitlesProvider.GetRawTable());
-                        break;
-
-                    case ContentType.TvShows:
-                        LoggingHelpers.RecordGeneralEntry("Rendering TV Shows");
-                        RenderTvView(DataProvider.TitlesProvider.GetRawTable());
-                        break;
-
-                    case ContentType.Music:
-                        LoggingHelpers.RecordGeneralEntry("Rendering Artists");
-                        RenderArtistsView(DataProvider.TitlesProvider.GetRawTable());
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type,
-                            $@"Unrecognised content type: {type}");
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(PopulateLibrary, "Populating Library", doc);
                 }
+                else
+                {
+                    //if we're given a null XML document
+                    if (doc == null)
 
-                //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                        //exit; no point working on null info
+                        return;
+
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Library population requested");
+
+                    //directory on the server for sections
+                    var libraryDir = KeyGatherers.GetLibraryKey(doc).TrimEnd('/');
+
+                    //server base URI
+                    var baseUri = Strings.GetBaseUri(false);
+
+                    //get the library sections key from the Plex API (future-proofing)
+                    var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
+
+                    //XML for where to find the section key
+                    var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey, false, false, false);
+
+                    //the XML API path listing library sections
+                    var sectionDir = KeyGatherers.GetSectionKey(xmlSectionKey).TrimEnd('/');
+
+                    //the XML endpoint listing library sections
+                    var uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
+
+                    //XML for all library sections
+                    var xmlSections = XmlGet.GetXmlTransaction(uriSections, false, false, false);
+
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Creating new datasets");
+
+                    //setup DataSet for XML parsing
+                    var sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(xmlSections));
+
+                    //parse out XML DataTable
+                    var sectionsTable = sections.Tables["Directory"];
+
+                    //apply the sections DataTable to the sections DataSet
+                    DataProvider.SectionsProvider.SetRawTable(sectionsTable);
+
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Binding to grid");
+
+                    //render library sections
+                    RenderLibraryView(sectionsTable);
+
+                    //set globals
+                    Flags.IsLibraryFilled = true;
+                    Strings.CurrentApiUri = baseUri + libraryDir + "/" + sectionDir + "/";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                LoggingHelpers.RecordGeneralEntry("Library contents were null; rendering did not occur");
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "LibPopError");
+
+                //alert the user
+                UIMessages.Error(ex.ToString());
             }
         }
 
-        private void UpdateEpisodeViewWorker(XmlNode doc)
+        private void UpdateContentView(object sender, WaitWindowEventArgs e)
+            => UpdateContentView((XmlDocument)e.Arguments[0], (ContentType)e.Arguments[1], false);
+
+        private void UpdateContentView(XmlNode doc, ContentType type, bool waitWindow = true)
         {
-            LoggingHelpers.RecordGeneralEntry("Updating episode contents");
+            try
+            {
+                //multi-threaded operation
+                if (waitWindow)
+                {
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(UpdateContentView, "Updating Content", doc, type);
+                }
+                else
+                {
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Updating library contents");
 
-            LoggingHelpers.RecordGeneralEntry("Creating datasets");
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(doc));
+                    //set the titles table appropriately
+                    GetTitlesTable(doc, type);
 
-            DataProvider.EpisodesProvider.SetRawTable(sections.Tables["Video"]);
+                    //null validation
+                    if (DataProvider.TitlesProvider.GetRawTable() != null)
+                    {
+                        //set current types
+                        ObjectProvider.CurrentContentType = type;
 
-            LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                        //switch through the current content type to decide
+                        //how to render it
+                        switch (type)
+                        {
+                            //Movies
+                            case ContentType.Movies:
 
-            LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderEpisodesView(DataProvider.EpisodesProvider.GetRawTable());
+                                //log status
+                                LoggingHelpers.RecordGeneralEntry("Rendering Movies");
 
-            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                                //render the movies
+                                RenderMoviesView(DataProvider.TitlesProvider.GetRawTable());
+
+                                //set this in the toolstrip so the user can see how many items are loaded
+                                SetViewingStatus();
+
+                                //exit
+                                break;
+
+                            //TV Shows
+                            case ContentType.TvShows:
+
+                                //log status
+                                LoggingHelpers.RecordGeneralEntry("Rendering TV Shows");
+
+                                //render the TV shows and subsequent seasons and episodes
+                                RenderTvView(DataProvider.TitlesProvider.GetRawTable());
+
+                                //set this in the toolstrip so the user can see how many items are loaded
+                                SetViewingStatus();
+
+                                //exit
+                                break;
+
+                            //Music
+                            case ContentType.Music:
+
+                                //log status
+                                LoggingHelpers.RecordGeneralEntry("Rendering Artists");
+
+                                //render the artists and subsequent albums and tracks
+                                RenderArtistsView(DataProvider.TitlesProvider.GetRawTable());
+
+                                //set this in the toolstrip so the user can see how many items are loaded
+                                SetViewingStatus();
+
+                                //exit
+                                break;
+
+                            //Unsupported content type
+                            default:
+
+                                //throw an exception to declare such
+                                throw new ArgumentOutOfRangeException(nameof(type), type,
+                                    $@"Unrecognised content type: {type}");
+                        }
+                    }
+                    else
+
+                        //log the problem
+                        LoggingHelpers.RecordGeneralEntry("Library contents were null; rendering did not occur");
+                }
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "UpdateContentViewError");
+
+                //alert the user
+                UIMessages.Error(ex.ToString());
+            }
         }
 
-        private void UpdateTracksViewWorker(XmlNode doc)
+        private void UpdateEpisodesView(object sender, WaitWindowEventArgs e)
+            => UpdateEpisodesView((XmlDocument)e.Arguments[0], false);
+
+        private void UpdateEpisodesView(XmlNode doc, bool waitWindow = true)
         {
-            LoggingHelpers.RecordGeneralEntry("Updating track contents");
+            try
+            {
+                //multi-threaded operation
+                if (waitWindow)
+                {
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(UpdateEpisodesView, "Updating Episodes", doc);
+                }
+                else
+                {
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Updating episode contents");
+                    LoggingHelpers.RecordGeneralEntry("Creating datasets");
 
-            LoggingHelpers.RecordGeneralEntry("Creating datasets");
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(doc));
+                    //setup the DataSet for XML parsing
+                    var sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(doc));
 
-            DataProvider.TracksProvider.SetRawTable(sections.Tables["Track"]);
+                    //apply new data
+                    DataProvider.EpisodesProvider.SetRawTable(sections.Tables["Video"]);
 
-            LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    LoggingHelpers.RecordGeneralEntry("Binding to grid");
 
-            LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderTracksView(DataProvider.TracksProvider.GetRawTable());
+                    //render the view
+                    RenderEpisodesView(DataProvider.EpisodesProvider.GetRawTable());
+                }
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "UpdateEpisodesViewError");
 
-            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                //alert the user
+                UIMessages.Error(ex.ToString());
+            }
         }
 
-        private void UpdateSeriesViewWorker(XmlNode doc)
+        private void UpdateTracksView(object sender, WaitWindowEventArgs e)
+            => UpdateTracksView((XmlDocument)e.Arguments[0], false);
+
+        private void UpdateTracksView(XmlNode doc, bool waitWindow = true)
         {
-            LoggingHelpers.RecordGeneralEntry("Updating series contents");
+            try
+            {
+                //multi-threaded operation
+                if (waitWindow)
+                {
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(UpdateTracksView, "Updating Tracks", doc);
+                }
+                else
+                {
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Updating track contents");
+                    LoggingHelpers.RecordGeneralEntry("Creating datasets");
 
-            LoggingHelpers.RecordGeneralEntry("Creating datasets");
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(doc));
+                    //setup the DataSet for XML parsing
+                    var sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(doc));
 
-            DataProvider.SeasonsProvider.SetRawTable(sections.Tables["Directory"]);
+                    //apply new data
+                    DataProvider.TracksProvider.SetRawTable(sections.Tables["Track"]);
 
-            LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    LoggingHelpers.RecordGeneralEntry("Binding to grid");
 
-            LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderSeasonsView(DataProvider.SeasonsProvider.GetRawTable());
+                    //render the data
+                    RenderTracksView(DataProvider.TracksProvider.GetRawTable());
+                }
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "UpdateTracksViewError");
 
-            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                //alert the user
+                UIMessages.Error(ex.ToString());
+            }
         }
 
-        private void UpdateAlbumsViewWorker(XmlNode doc)
+        private void UpdateSeriesView(object sender, WaitWindowEventArgs e)
+            => UpdateSeriesView((XmlDocument)e.Arguments[0], false);
+
+        private void UpdateSeriesView(XmlNode doc, bool waitWindow = true)
         {
-            LoggingHelpers.RecordGeneralEntry("Updating album contents");
+            try
+            {
+                //multi-threaded operation
+                if (waitWindow)
+                {
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(UpdateSeriesView, "Updating Series", doc);
+                }
+                else
+                {
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Updating series contents");
+                    LoggingHelpers.RecordGeneralEntry("Creating datasets");
 
-            LoggingHelpers.RecordGeneralEntry("Creating data-sets");
-            var sections = new DataSet();
-            sections.ReadXml(new XmlNodeReader(doc));
+                    //setup the DataSet for XML parsing
+                    var sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(doc));
 
-            DataProvider.AlbumsProvider.SetRawTable(sections.Tables["Directory"]);
+                    //apply new data
+                    DataProvider.SeasonsProvider.SetRawTable(sections.Tables["Directory"]);
 
-            LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    LoggingHelpers.RecordGeneralEntry("Binding to grid");
 
-            LoggingHelpers.RecordGeneralEntry("Binding to grid");
-            RenderAlbumsView(DataProvider.AlbumsProvider.GetRawTable());
+                    //render the data
+                    RenderSeasonsView(DataProvider.SeasonsProvider.GetRawTable());
+                }
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "UpdateSeriesViewError");
 
-            //UIMessages.Info("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + GlobalTables.TitlesTable.Rows.Count.ToString());
+                //alert the user
+                UIMessages.Error(ex.ToString());
+            }
+        }
+
+        private void UpdateAlbumsView(object sender, WaitWindowEventArgs e)
+            => UpdateAlbumsView((XmlDocument)e.Arguments[0], false);
+
+        private void UpdateAlbumsView(XmlNode doc, bool waitWindow = true)
+        {
+            try
+            {
+                //multi-threaded operation
+                if (waitWindow)
+                {
+                    //execute wait window
+                    WaitWindow.WaitWindow.Show(UpdateAlbumsView, "Updating Albums", doc);
+                }
+                else
+                {
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Updating album contents");
+                    LoggingHelpers.RecordGeneralEntry("Creating data-sets");
+
+                    //setup the DataSet for XML parsing
+                    var sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(doc));
+
+                    //apply new data
+                    DataProvider.AlbumsProvider.SetRawTable(sections.Tables["Directory"]);
+
+                    //log status
+                    LoggingHelpers.RecordGeneralEntry("Cleaning unwanted data");
+                    LoggingHelpers.RecordGeneralEntry("Binding to grid");
+
+                    //render the data
+                    RenderAlbumsView(DataProvider.AlbumsProvider.GetRawTable());
+                }
+            }
+            catch (Exception ex)
+            {
+                //log the error
+                LoggingHelpers.RecordException(ex.Message, "UpdateAlbumsViewError");
+
+                //alert the user
+                UIMessages.Error(ex.ToString());
+            }
         }
 
         private void WkrGrabTv()
@@ -1183,41 +1365,67 @@ namespace PlexDL.UI.Forms
 
         private void WkrGrabMusic()
         {
+            //whether or not to download all tracks
             if (Flags.IsDownloadAll)
             {
+                //log status
                 LoggingHelpers.RecordGeneralEntry(@"Worker is to grab metadata for All Tracks");
 
+                //row count of the raw data table
                 var rowCount = DataProvider.TracksProvider.GetRawTable().Rows.Count;
 
+                //go through each
                 for (var i = 0; i < rowCount; i++)
                 {
+                    //set UI status
                     SetProgressLabel(@"Getting Metadata " + (i + 1) + @"/" + rowCount);
 
+                    //get the PlexObject for the specified index
                     var track = ObjectBuilders.GetMusicObjectFromIndex(i);
+
+                    //download information is just the stream information provided by the Plex processor
                     var dlInfo = track.StreamInformation;
+
+                    //create the download directory layout
                     var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
                         DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
+
+                    //the download path should be the album path
                     dlInfo.DownloadPath = dir.AlbumPath;
+
+                    //add download to the queue
                     ObjectProvider.Queue.Add(dlInfo);
                 }
             }
             else
             {
+                //log status
                 LoggingHelpers.RecordGeneralEntry(@"Worker is to grab Single Track metadata");
 
+                //set UI status
                 SetProgressLabel(@"Getting Metadata 1/1");
 
+                //get the PlexObject for the specified index
                 var track = GetMusicObjectFromSelection();
+
+                //download information is just the stream information provided by the Plex processor
                 var dlInfo = track.StreamInformation;
+
+                //create the download directory layout
                 var dir = DownloadLayout.CreateDownloadLayoutMusic(track, ObjectProvider.Settings,
                     DownloadLayout.MF_PLEX_STANDARD_LAYOUT);
+
+                //the download path should be the album path
                 dlInfo.DownloadPath = dir.AlbumPath;
+
+                //add download to the queue
                 ObjectProvider.Queue.Add(dlInfo);
             }
         }
 
         private void WkrGrabMovie()
         {
+            //set UI status
             SetProgressLabel(@"Getting Metadata 1/1");
 
             //create Movies folder if it doesn't exist
@@ -1231,9 +1439,7 @@ namespace PlexDL.UI.Forms
         }
 
         private void WkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
-        {
-            GetMetadata();
-        }
+            => GetMetadata();
 
         private void GetMetadata()
         {
@@ -1250,46 +1456,71 @@ namespace PlexDL.UI.Forms
                     ? (long)Math.Round(ObjectProvider.Settings.Generic.DownloadSpeedLimit / (decimal)0.000008)
                     : 0;
 
-                //UIMessages.Info(speed.ToString());
-
                 //apply queue download speed limit
                 ObjectProvider.Engine.MaxSpeedInBytes = speed;
 
                 //clear and reset the global download queue
                 ObjectProvider.Queue = new List<StreamInfo>();
 
+                //log status
                 LoggingHelpers.RecordGeneralEntry(@"Metadata worker started");
                 LoggingHelpers.RecordGeneralEntry(@"Doing directory checks");
 
-                if (string.IsNullOrEmpty(ObjectProvider.Settings.Generic.DownloadDirectory) ||
-                    string.IsNullOrWhiteSpace(ObjectProvider.Settings.Generic.DownloadDirectory))
+                //invalid download directory specified?
+                if (string.IsNullOrWhiteSpace(ObjectProvider.Settings.Generic.DownloadDirectory))
+
+                    //yes, reset to the default download directory
                     ResetDownloadDirectory();
 
+                //log status
                 LoggingHelpers.RecordGeneralEntry(@"Grabbing metadata");
 
+                //switch current content type
                 switch (ObjectProvider.CurrentContentType)
                 {
+                    //TV Show
                     case ContentType.TvShows:
+
+                        //log status
                         LoggingHelpers.RecordGeneralEntry(@"Worker is to grab TV Show metadata");
+
+                        //
                         WkrGrabTv();
+
+                        //exit
                         break;
 
+                    //Movies
                     case ContentType.Movies:
+
+                        //log status
                         LoggingHelpers.RecordGeneralEntry(@"Worker is to grab Movie metadata");
                         WkrGrabMovie();
+
+                        //exit
                         break;
 
+                    //Music
                     case ContentType.Music:
+
+                        //log status
                         LoggingHelpers.RecordGeneralEntry(@"Worker is to grab Music metadata");
                         WkrGrabMusic();
+
+                        //exit
                         break;
                 }
 
+                //log status
                 LoggingHelpers.RecordGeneralEntry("Worker is to invoke downloader thread");
 
+                //invoke the UI
                 BeginInvoke((MethodInvoker)delegate
                 {
+                    //start the download procedure using the global queue
                     StartDownload(ObjectProvider.Queue);
+
+                    //log status
                     LoggingHelpers.RecordGeneralEntry("Worker has started the download process");
                 });
             }
@@ -1299,68 +1530,51 @@ namespace PlexDL.UI.Forms
             }
             catch (Exception ex)
             {
+                //set UI status
                 SetProgressLabel(@"Errored - Check Log");
-                UIMessages.Error("Error occurred whilst getting needed metadata:\n\n" + ex);
+
+                //log error
                 LoggingHelpers.RecordException(ex.Message, "MetadataWkrError");
+
+                //alert the user
+                UIMessages.Error("Error occurred whilst getting needed metadata:\n\n" + ex);
             }
-        }
-
-        private void WorkerUpdateContentView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            UpdateContentViewWorker(doc, (ContentType)e.Arguments[1]);
-        }
-
-        private void WorkerUpdateLibraryView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            PopulateLibraryWorker(doc);
-        }
-
-        private void WorkerUpdateSeriesView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            UpdateSeriesViewWorker(doc);
-        }
-
-        private void WorkerUpdateEpisodesView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            UpdateEpisodeViewWorker(doc);
-        }
-
-        private void WorkerUpdateTracksView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            UpdateTracksViewWorker(doc);
-        }
-
-        private void WorkerUpdateAlbumsView(object sender, WaitWindowEventArgs e)
-        {
-            var doc = (XmlDocument)e.Arguments[0];
-            UpdateAlbumsViewWorker(doc);
         }
 
         private void RenderMoviesView(DataTable content)
         {
-            if (content == null) return;
+            //was a null table provided?
+            if (content == null)
 
+                //null table; exit
+                return;
+
+            //clear all views
             ClearTvViews();
             ClearContentView();
             ClearMusicViews();
 
+            //setup the values for rendering
             var wantedColumns = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayColumns;
             var wantedCaption = ObjectProvider.Settings.DataDisplay.MoviesView.DisplayCaptions;
 
+            //rendering information
             var info = new GenericRenderStruct
             {
+                //data to render
                 Data = content,
+
+                //columns to render
                 WantedColumns = wantedColumns,
+
+                //captions for the columns to render
                 WantedCaption = wantedCaption
             };
 
+            //setup the titles view table via rendering
             DataProvider.TitlesProvider.SetViewTable(GenericViewRenderer.RenderView(info, dgvMovies));
 
+            //shift the selected tab to the Movies tab
             SelectMoviesTab();
         }
 
@@ -1582,36 +1796,6 @@ namespace PlexDL.UI.Forms
             };
 
             GenericViewRenderer.RenderView(info, dgvSections);
-        }
-
-        private void UpdateContentView(XmlDocument content, ContentType type)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateContentView, "Updating Content", content, type);
-        }
-
-        private void UpdateSeriesView(XmlDocument content)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateSeriesView, "Updating Series", content);
-        }
-
-        private void UpdateEpisodeView(XmlDocument content)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateEpisodesView, "Updating Episodes", content);
-        }
-
-        private void UpdateTracksView(XmlDocument content)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateTracksView, "Updating Tracks", content);
-        }
-
-        private void UpdateAlbumsView(XmlDocument content)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateAlbumsView, "Updating Albums", content);
-        }
-
-        private void PopulateLibrary(XmlDocument content)
-        {
-            WaitWindow.WaitWindow.Show(WorkerUpdateLibraryView, "Updating Library", content);
         }
 
         private void CancelDownload(bool silent = false, string msg = "Download Cancelled")
@@ -1942,11 +2126,6 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        /// <summary>
-        ///     Thread-safe way of changing the progress label
-        /// </summary>
-        /// <param name="status">
-        /// </param>
         private void SetProgressLabel(string status)
         {
             if (InvokeRequired)
@@ -2048,26 +2227,42 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void Home_FormClosing(object sender, FormClosingEventArgs e)
+        private bool ShutdownActioner()
         {
-            if (Flags.IsDownloadRunning)
+            //is the download engine running?
+            if (Flags.IsDownloadRunning || Flags.IsEngineRunning)
             {
+                //check if we have already asked the user
                 if (Flags.IsMsgAlreadyShown)
-                    return;
 
+                    //yes, exit immediately and do not show the prompt
+                    return false;
+
+                //ask the user their preference
                 if (UIMessages.Question(@"Are you sure you want to exit PlexDL? A download is still running."))
                 {
+                    //disable showing this question again
                     Flags.IsMsgAlreadyShown = true;
-                    LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
 
-                    e.Cancel = false;
+                    //log PlexDL has exited
+                    LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
                 }
                 else
-                    e.Cancel = true;
+
+                    //don't exit
+                    return true;
             }
             else
+
+                //log PlexDL has exited
                 LoggingHelpers.RecordGeneralEntry("PlexDL Exited");
+
+            //default
+            return false;
         }
+
+        private void Home_FormClosing(object sender, FormClosingEventArgs e)
+            => e.Cancel = ShutdownActioner();
 
         private static void ResetDownloadDirectory()
         {
@@ -2083,14 +2278,10 @@ namespace PlexDL.UI.Forms
         }
 
         private void SetSessionId()
-        {
-            lblSidValue.Text = Strings.CurrentSessionId;
-        }
+            => lblSidValue.Text = Strings.CurrentSessionId;
 
         private void Home_Move(object sender, EventArgs e)
-        {
-            SetDebugLocation();
-        }
+            => SetDebugLocation();
 
         private void SetDebugLocation()
         {
@@ -2139,7 +2330,7 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void Home_Load(object sender, EventArgs e)
+        private void InitialStartup()
         {
             try
             {
@@ -2170,14 +2361,11 @@ namespace PlexDL.UI.Forms
             }
         }
 
+        private void Home_Load(object sender, EventArgs e)
+            => InitialStartup();
+
         private void UpdateFromLibraryKey(string key, ContentType type)
-        {
-            object[] args =
-            {
-                key, type
-            };
-            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey, @"Getting Metadata", args);
-        }
+            => WaitWindow.WaitWindow.Show(UpdateFromLibraryKey, @"Getting Metadata", key, type);
 
         private void UpdateFromLibraryKey(object sender, WaitWindowEventArgs e)
         {
@@ -2195,30 +2383,6 @@ namespace PlexDL.UI.Forms
 
                 UpdateContentView(contentXml, type);
             }
-            catch (WebException ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, @"UpdateLibraryError");
-
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                    if (ex.Response is HttpWebResponse response)
-                        switch ((int)response.StatusCode)
-                        {
-                            case 401:
-                                UIMessages.Error(
-                                    @"The web server denied access to the resource. Check your token and try again. (401)");
-                                break;
-
-                            case 404:
-                                UIMessages.Error(
-                                    @"The web server couldn't serve the request because it couldn't find the resource specified. (404)");
-                                break;
-
-                            case 400:
-                                UIMessages.Error(
-                                    @"The web server couldn't serve the request because the request was bad. (400)");
-                                break;
-                        }
-            }
             catch (Exception ex)
             {
                 LoggingHelpers.RecordException(ex.Message, "UpdateLibraryError");
@@ -2228,10 +2392,11 @@ namespace PlexDL.UI.Forms
 
         private void CxtLibrarySections_Opening(object sender, CancelEventArgs e)
         {
-            if (dgvSections.Rows.Count == 0) e.Cancel = true;
+            if (dgvSections.Rows.Count == 0)
+                e.Cancel = true;
         }
 
-        private void DgvLibrary_OnRowChange(object sender, EventArgs e)
+        private void DgvSections_OnRowChange(object sender, EventArgs e)
         {
             LibrarySectionChange();
         }
@@ -2241,32 +2406,53 @@ namespace PlexDL.UI.Forms
             if (dgvSections.SelectedRows.Count != 1 || !Flags.IsLibraryFilled) return;
 
             LoggingHelpers.RecordGeneralEntry("Selection Changed");
+
             //don't re-render the grids when clearing the search; this would end badly for performance reasons.
             ClearSearch(false);
+
+            //log search cleared
             LoggingHelpers.RecordGeneralEntry("Cleared possible searches");
+
+            //match the current row to a row in the raw data and then return the index of such
             var index = TableManager.GetTableIndexFromDgv(dgvSections, DataProvider.SectionsProvider.GetRawTable());
+
+            //get the row object using the index above
             var r = RowGet.GetDataRowLibrary(index);
 
+            //values necessary for traversal
             var key = "";
             var type = "";
+
+            //null validation
             if (r != null)
             {
+                //is the key column set?
                 if (r["key"] != null)
+
+                    //yes, convert to string
                     key = r["key"].ToString();
+
+                //is the type column set?
                 if (r["type"] != null)
+
+                    //yes, convert to string
                     type = r["type"].ToString();
             }
 
+            //switch through the content type specified
             switch (type)
             {
+                //TV Show
                 case "show":
                     UpdateFromLibraryKey(key, ContentType.TvShows);
                     break;
 
+                //Movie
                 case "movie":
                     UpdateFromLibraryKey(key, ContentType.Movies);
                     break;
 
+                //Music
                 case "artist":
                     UpdateFromLibraryKey(key, ContentType.Music);
                     break;
@@ -2275,25 +2461,24 @@ namespace PlexDL.UI.Forms
 
         private void DgvSeasons_OnRowChange(object sender, EventArgs e)
         {
-            if (dgvSeasons.SelectedRows.Count != 1) return;
+            if (dgvSeasons.SelectedRows.Count != 1)
+                return;
 
             var index = TableManager.GetTableIndexFromDgv(dgvSeasons, DataProvider.SeasonsProvider.GetRawTable());
             var episodes = XmlMetadataLists.GetEpisodeListXml(index);
-            UpdateEpisodeView(episodes.Xml);
+
+            UpdateEpisodesView(episodes.Xml);
         }
 
         private void DgvAlbums_OnRowChange(object sender, EventArgs e)
         {
-            if (dgvAlbums.SelectedRows.Count != 1) return;
+            if (dgvAlbums.SelectedRows.Count != 1)
+                return;
 
             var index = TableManager.GetTableIndexFromDgv(dgvAlbums, DataProvider.AlbumsProvider.GetRawTable());
             var tracks = XmlMetadataLists.GetTracksListXml(index);
-            UpdateTracksView(tracks.Xml);
-        }
 
-        private void DgvMovies_OnRowChange(object sender, EventArgs e)
-        {
-            //nothing, more or less.
+            UpdateTracksView(tracks.Xml);
         }
 
         private void DoubleClickLaunch()
