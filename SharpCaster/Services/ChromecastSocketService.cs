@@ -6,6 +6,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+// ReSharper disable InconsistentlySynchronizedField
+
 namespace SharpCaster.Services
 {
     public class ChromecastSocketService : IChromecastSocketService
@@ -15,8 +17,10 @@ namespace SharpCaster.Services
 
         public async Task Initialize(string host, string port, ConnectionChannel connectionChannel, HeartbeatChannel heartbeatChannel, Action<Stream, bool, CancellationToken> packetReader, CancellationToken cancellationToken)
         {
-            if (_client == null) _client = new TcpSocketClient();
-            await _client.ConnectAsync(host, int.Parse(port), true, cancellationToken, true);
+            if (_client == null)
+                _client = new TcpSocketClient();
+
+            await _client?.ConnectAsync(host, int.Parse(port), true, cancellationToken, true);
 
             await connectionChannel.OpenConnection();
             heartbeatChannel.StartHeartbeat();
@@ -25,16 +29,24 @@ namespace SharpCaster.Services
             {
                 while (true)
                 {
+                    // Client null validation
+                    if (_client == null)
+                        break;
+
+                    // Buffer for Chromecast message
                     var sizeBuffer = new byte[4];
+
                     // First message should contain the size of message
-                    await _client.ReadStream.ReadAsync(sizeBuffer, 0, sizeBuffer.Length, cancellationToken);
+                    await _client?.ReadStream.ReadAsync(sizeBuffer, 0, sizeBuffer.Length, cancellationToken);
+
                     // The message is little-endian (that is, little end first),
                     // reverse the byte array.
                     Array.Reverse(sizeBuffer);
+
                     //Retrieve the size of message
                     var messageSize = BitConverter.ToInt32(sizeBuffer, 0);
                     var messageBuffer = new byte[messageSize];
-                    await _client.ReadStream.ReadAsync(messageBuffer, 0, messageBuffer.Length, cancellationToken);
+                    await _client?.ReadStream.ReadAsync(messageBuffer, 0, messageBuffer.Length, cancellationToken);
                     var answer = new MemoryStream(messageBuffer.Length);
                     await answer.WriteAsync(messageBuffer, 0, messageBuffer.Length, cancellationToken);
                     answer.Position = 0;
@@ -67,7 +79,8 @@ namespace SharpCaster.Services
 
         public async Task Disconnect()
         {
-            await _client.DisconnectAsync();
+            if (_client != null)
+                await _client.DisconnectAsync();
             _client = null;
         }
     }

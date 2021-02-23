@@ -1,32 +1,32 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
-namespace PlexDL.Common.API.CastAPI.PlayQueue
+﻿namespace PlexDL.Common.API.CastAPI.PlayQueue
 {
-    /// <remarks />
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public class MediaContainerVideoMediaPartStream
+    /// <remarks/>
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class MediaContainerVideoMediaPartStream
     {
-        private string audioChannelLayoutField;
+        private uint idField;
+
+        private byte streamTypeField;
+
+        private byte defaultField;
+
+        private bool defaultFieldSpecified;
+
+        private string codecField;
+
+        private byte indexField;
+
+        private ushort bitrateField;
+
+        private bool bitrateFieldSpecified;
 
         private byte bitDepthField;
 
         private bool bitDepthFieldSpecified;
 
-        private ushort bitrateField;
-
-        private byte channelsField;
-
-        private bool channelsFieldSpecified;
-
-        private string chromaLocationField;
-
         private string chromaSubsamplingField;
-
-        private string codecField;
 
         private ushort codedHeightField;
 
@@ -36,28 +36,21 @@ namespace PlexDL.Common.API.CastAPI.PlayQueue
 
         private bool codedWidthFieldSpecified;
 
-        private byte defaultField;
+        private string colorPrimariesField;
 
-        private string displayTitleField;
+        private string colorRangeField;
+
+        private string colorSpaceField;
+
+        private string colorTrcField;
 
         private decimal frameRateField;
 
         private bool frameRateFieldSpecified;
 
-        private byte hasScalingMatrixField;
-
-        private bool hasScalingMatrixFieldSpecified;
-
         private ushort heightField;
 
         private bool heightFieldSpecified;
-        private uint idField;
-
-        private byte indexField;
-
-        private string languageCodeField;
-
-        private string languageField;
 
         private byte levelField;
 
@@ -69,324 +62,620 @@ namespace PlexDL.Common.API.CastAPI.PlayQueue
 
         private bool refFramesFieldSpecified;
 
-        private ushort samplingRateField;
+        private ushort widthField;
 
-        private bool samplingRateFieldSpecified;
+        private bool widthFieldSpecified;
 
-        private string scanTypeField;
+        private string displayTitleField;
+
+        private string extendedDisplayTitleField;
 
         private byte selectedField;
 
         private bool selectedFieldSpecified;
 
-        private byte streamTypeField;
+        private byte channelsField;
 
-        private ushort widthField;
+        private bool channelsFieldSpecified;
 
-        private bool widthFieldSpecified;
+        private string audioChannelLayoutField;
 
-        /// <remarks />
-        [XmlAttribute]
+        private ushort samplingRateField;
+
+        private bool samplingRateFieldSpecified;
+
+        private string titleField;
+
+        private string languageField;
+
+        private string languageCodeField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint id
         {
-            get => idField;
-            set => idField = value;
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte streamType
         {
-            get => streamTypeField;
-            set => streamTypeField = value;
+            get
+            {
+                return this.streamTypeField;
+            }
+            set
+            {
+                this.streamTypeField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte @default
         {
-            get => defaultField;
-            set => defaultField = value;
+            get
+            {
+                return this.defaultField;
+            }
+            set
+            {
+                this.defaultField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool defaultSpecified
+        {
+            get
+            {
+                return this.defaultFieldSpecified;
+            }
+            set
+            {
+                this.defaultFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string codec
         {
-            get => codecField;
-            set => codecField = value;
+            get
+            {
+                return this.codecField;
+            }
+            set
+            {
+                this.codecField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte index
         {
-            get => indexField;
-            set => indexField = value;
+            get
+            {
+                return this.indexField;
+            }
+            set
+            {
+                this.indexField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort bitrate
         {
-            get => bitrateField;
-            set => bitrateField = value;
+            get
+            {
+                return this.bitrateField;
+            }
+            set
+            {
+                this.bitrateField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool bitrateSpecified
+        {
+            get
+            {
+                return this.bitrateFieldSpecified;
+            }
+            set
+            {
+                this.bitrateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte bitDepth
         {
-            get => bitDepthField;
-            set => bitDepthField = value;
+            get
+            {
+                return this.bitDepthField;
+            }
+            set
+            {
+                this.bitDepthField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool bitDepthSpecified
         {
-            get => bitDepthFieldSpecified;
-            set => bitDepthFieldSpecified = value;
+            get
+            {
+                return this.bitDepthFieldSpecified;
+            }
+            set
+            {
+                this.bitDepthFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string chromaLocation
-        {
-            get => chromaLocationField;
-            set => chromaLocationField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string chromaSubsampling
         {
-            get => chromaSubsamplingField;
-            set => chromaSubsamplingField = value;
+            get
+            {
+                return this.chromaSubsamplingField;
+            }
+            set
+            {
+                this.chromaSubsamplingField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort codedHeight
         {
-            get => codedHeightField;
-            set => codedHeightField = value;
+            get
+            {
+                return this.codedHeightField;
+            }
+            set
+            {
+                this.codedHeightField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool codedHeightSpecified
         {
-            get => codedHeightFieldSpecified;
-            set => codedHeightFieldSpecified = value;
+            get
+            {
+                return this.codedHeightFieldSpecified;
+            }
+            set
+            {
+                this.codedHeightFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort codedWidth
         {
-            get => codedWidthField;
-            set => codedWidthField = value;
+            get
+            {
+                return this.codedWidthField;
+            }
+            set
+            {
+                this.codedWidthField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool codedWidthSpecified
         {
-            get => codedWidthFieldSpecified;
-            set => codedWidthFieldSpecified = value;
+            get
+            {
+                return this.codedWidthFieldSpecified;
+            }
+            set
+            {
+                this.codedWidthFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string colorPrimaries
+        {
+            get
+            {
+                return this.colorPrimariesField;
+            }
+            set
+            {
+                this.colorPrimariesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string colorRange
+        {
+            get
+            {
+                return this.colorRangeField;
+            }
+            set
+            {
+                this.colorRangeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string colorSpace
+        {
+            get
+            {
+                return this.colorSpaceField;
+            }
+            set
+            {
+                this.colorSpaceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string colorTrc
+        {
+            get
+            {
+                return this.colorTrcField;
+            }
+            set
+            {
+                this.colorTrcField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal frameRate
         {
-            get => frameRateField;
-            set => frameRateField = value;
+            get
+            {
+                return this.frameRateField;
+            }
+            set
+            {
+                this.frameRateField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool frameRateSpecified
         {
-            get => frameRateFieldSpecified;
-            set => frameRateFieldSpecified = value;
+            get
+            {
+                return this.frameRateFieldSpecified;
+            }
+            set
+            {
+                this.frameRateFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public byte hasScalingMatrix
-        {
-            get => hasScalingMatrixField;
-            set => hasScalingMatrixField = value;
-        }
-
-        /// <remarks />
-        [XmlIgnore]
-        public bool hasScalingMatrixSpecified
-        {
-            get => hasScalingMatrixFieldSpecified;
-            set => hasScalingMatrixFieldSpecified = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort height
         {
-            get => heightField;
-            set => heightField = value;
+            get
+            {
+                return this.heightField;
+            }
+            set
+            {
+                this.heightField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool heightSpecified
         {
-            get => heightFieldSpecified;
-            set => heightFieldSpecified = value;
+            get
+            {
+                return this.heightFieldSpecified;
+            }
+            set
+            {
+                this.heightFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte level
         {
-            get => levelField;
-            set => levelField = value;
+            get
+            {
+                return this.levelField;
+            }
+            set
+            {
+                this.levelField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool levelSpecified
         {
-            get => levelFieldSpecified;
-            set => levelFieldSpecified = value;
+            get
+            {
+                return this.levelFieldSpecified;
+            }
+            set
+            {
+                this.levelFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string profile
         {
-            get => profileField;
-            set => profileField = value;
+            get
+            {
+                return this.profileField;
+            }
+            set
+            {
+                this.profileField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte refFrames
         {
-            get => refFramesField;
-            set => refFramesField = value;
+            get
+            {
+                return this.refFramesField;
+            }
+            set
+            {
+                this.refFramesField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool refFramesSpecified
         {
-            get => refFramesFieldSpecified;
-            set => refFramesFieldSpecified = value;
+            get
+            {
+                return this.refFramesFieldSpecified;
+            }
+            set
+            {
+                this.refFramesFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string scanType
-        {
-            get => scanTypeField;
-            set => scanTypeField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort width
         {
-            get => widthField;
-            set => widthField = value;
+            get
+            {
+                return this.widthField;
+            }
+            set
+            {
+                this.widthField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool widthSpecified
         {
-            get => widthFieldSpecified;
-            set => widthFieldSpecified = value;
+            get
+            {
+                return this.widthFieldSpecified;
+            }
+            set
+            {
+                this.widthFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string displayTitle
         {
-            get => displayTitleField;
-            set => displayTitleField = value;
+            get
+            {
+                return this.displayTitleField;
+            }
+            set
+            {
+                this.displayTitleField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string extendedDisplayTitle
+        {
+            get
+            {
+                return this.extendedDisplayTitleField;
+            }
+            set
+            {
+                this.extendedDisplayTitleField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte selected
         {
-            get => selectedField;
-            set => selectedField = value;
+            get
+            {
+                return this.selectedField;
+            }
+            set
+            {
+                this.selectedField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool selectedSpecified
         {
-            get => selectedFieldSpecified;
-            set => selectedFieldSpecified = value;
+            get
+            {
+                return this.selectedFieldSpecified;
+            }
+            set
+            {
+                this.selectedFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte channels
         {
-            get => channelsField;
-            set => channelsField = value;
+            get
+            {
+                return this.channelsField;
+            }
+            set
+            {
+                this.channelsField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool channelsSpecified
         {
-            get => channelsFieldSpecified;
-            set => channelsFieldSpecified = value;
+            get
+            {
+                return this.channelsFieldSpecified;
+            }
+            set
+            {
+                this.channelsFieldSpecified = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string language
-        {
-            get => languageField;
-            set => languageField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
-        public string languageCode
-        {
-            get => languageCodeField;
-            set => languageCodeField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string audioChannelLayout
         {
-            get => audioChannelLayoutField;
-            set => audioChannelLayoutField = value;
+            get
+            {
+                return this.audioChannelLayoutField;
+            }
+            set
+            {
+                this.audioChannelLayoutField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort samplingRate
         {
-            get => samplingRateField;
-            set => samplingRateField = value;
+            get
+            {
+                return this.samplingRateField;
+            }
+            set
+            {
+                this.samplingRateField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlIgnore]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool samplingRateSpecified
         {
-            get => samplingRateFieldSpecified;
-            set => samplingRateFieldSpecified = value;
+            get
+            {
+                return this.samplingRateFieldSpecified;
+            }
+            set
+            {
+                this.samplingRateFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title
+        {
+            get
+            {
+                return this.titleField;
+            }
+            set
+            {
+                this.titleField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string language
+        {
+            get
+            {
+                return this.languageField;
+            }
+            set
+            {
+                this.languageField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string languageCode
+        {
+            get
+            {
+                return this.languageCodeField;
+            }
+            set
+            {
+                this.languageCodeField = value;
+            }
         }
     }
 }

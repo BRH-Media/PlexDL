@@ -36,6 +36,9 @@
     <Reference Include="libbrhscgui, Version=1.0.7261.35271, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libbrhscgui.1.0.0\lib\libbrhscgui.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -51,6 +54,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainer.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideo.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoDirector.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoField.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMedia.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMediaPart.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMediaPartStream.cs" />
+    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoRole.cs" />
     <Compile Include="API\PlexAPI\DownloadInfoGatherers.cs" />
     <Compile Include="API\PlexAPI\IO\MetadataIO.cs" />
     <Compile Include="API\PlexAPI\KeyGatherers.cs" />
@@ -81,18 +92,6 @@
     <Compile Include="API\CastAPI\CustomData.cs" />
     <Compile Include="API\CastAPI\Extensions.cs" />
     <Compile Include="API\CastAPI\PlayQueueHandler.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainer.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideo.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoCountry.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoDirector.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoGenre.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMedia.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMediaPart.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoMediaPartStream.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoProducer.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoRole.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoSimilar.cs" />
-    <Compile Include="API\CastAPI\PlayQueue\MediaContainerVideoWriter.cs" />
     <Compile Include="API\CastAPI\PlexMediaData.cs" />
     <Compile Include="API\CastAPI\QueueResult.cs" />
     <Compile Include="DefaultSettingsManager.cs" />

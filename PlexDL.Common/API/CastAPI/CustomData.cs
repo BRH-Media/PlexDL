@@ -1,4 +1,10 @@
-﻿namespace PlexDL.Common.API.CastAPI
+﻿using PlexDL.MyPlex;
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedVariable
+
+namespace PlexDL.Common.API.CastAPI
 {
     public class CustomData
     {
@@ -30,16 +36,11 @@
                 accessToken = svr.accessToken
             };
 
-            data.user = new User { username = svr.user.username };
+            data.user = svr.user;
             data.server = newServer;
 
             return data;
         }
-    }
-
-    public class User
-    {
-        public string username { get; set; }
     }
 
     public class Server

@@ -1,92 +1,169 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
-namespace PlexDL.Common.API.CastAPI.PlayQueue
+﻿namespace PlexDL.Common.API.CastAPI.PlayQueue
 {
-    /// <remarks />
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public class MediaContainerVideoMediaPart
+    /// <remarks/>
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class MediaContainerVideoMediaPart
     {
-        private string containerField;
-
-        private uint durationField;
-
-        private string fileField;
+        private MediaContainerVideoMediaPartStream[] streamField;
 
         private ushort idField;
 
         private string keyField;
 
-        private ulong sizeField;
-        private MediaContainerVideoMediaPartStream[] streamField;
+        private uint durationField;
+
+        private string fileField;
+
+        private uint sizeField;
+
+        private string audioProfileField;
+
+        private string containerField;
+
+        private string indexesField;
 
         private string videoProfileField;
 
-        /// <remarks />
-        [XmlElement("Stream")]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Stream")]
         public MediaContainerVideoMediaPartStream[] Stream
         {
-            get => streamField;
-            set => streamField = value;
+            get
+            {
+                return this.streamField;
+            }
+            set
+            {
+                this.streamField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort id
         {
-            get => idField;
-            set => idField = value;
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string key
         {
-            get => keyField;
-            set => keyField = value;
+            get
+            {
+                return this.keyField;
+            }
+            set
+            {
+                this.keyField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint duration
         {
-            get => durationField;
-            set => durationField = value;
+            get
+            {
+                return this.durationField;
+            }
+            set
+            {
+                this.durationField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string file
         {
-            get => fileField;
-            set => fileField = value;
+            get
+            {
+                return this.fileField;
+            }
+            set
+            {
+                this.fileField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public ulong size
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public uint size
         {
-            get => sizeField;
-            set => sizeField = value;
+            get
+            {
+                return this.sizeField;
+            }
+            set
+            {
+                this.sizeField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string audioProfile
+        {
+            get
+            {
+                return this.audioProfileField;
+            }
+            set
+            {
+                this.audioProfileField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string container
         {
-            get => containerField;
-            set => containerField = value;
+            get
+            {
+                return this.containerField;
+            }
+            set
+            {
+                this.containerField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string indexes
+        {
+            get
+            {
+                return this.indexesField;
+            }
+            set
+            {
+                this.indexesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string videoProfile
         {
-            get => videoProfileField;
-            set => videoProfileField = value;
+            get
+            {
+                return this.videoProfileField;
+            }
+            set
+            {
+                this.videoProfileField = value;
+            }
         }
     }
 }

@@ -1,339 +1,392 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
-namespace PlexDL.Common.API.CastAPI.PlayQueue
+﻿namespace PlexDL.Common.API.CastAPI.PlayQueue
 {
-    /// <remarks />
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public class MediaContainerVideo
+    /// <remarks/>
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class MediaContainerVideo
     {
-        private uint addedAtField;
+        private MediaContainerVideoMedia mediaField;
 
-        private string artField;
+        private MediaContainerVideoDirector[] directorField;
 
-        private decimal audienceRatingField;
+        private MediaContainerVideoRole[] roleField;
 
-        private string audienceRatingImageField;
+        private MediaContainerVideoField[] fieldField;
 
-        private string chapterSourceField;
+        private ushort playQueueItemIDField;
 
-        private string contentRatingField;
+        private ushort ratingKeyField;
 
-        private MediaContainerVideoCountry countryField;
-
-        private MediaContainerVideoDirector directorField;
-
-        private uint durationField;
-
-        private MediaContainerVideoGenre[] genreField;
+        private string keyField;
 
         private string guidField;
 
-        private string keyField;
+        private string studioField;
+
+        private string typeField;
+
+        private string titleField;
+
+        private string librarySectionTitleField;
 
         private byte librarySectionIDField;
 
         private string librarySectionKeyField;
 
-        private string librarySectionTitleField;
-        private MediaContainerVideoMedia mediaField;
-
-        private DateTime originallyAvailableAtField;
-
-        private uint playQueueItemIDField;
-
-        private MediaContainerVideoProducer[] producerField;
-
-        private decimal ratingField;
-
-        private string ratingImageField;
-
-        private ushort ratingKeyField;
-
-        private MediaContainerVideoRole[] roleField;
-
-        private MediaContainerVideoSimilar[] similarField;
-
-        private string studioField;
+        private string originalTitleField;
 
         private string summaryField;
 
-        private string taglineField;
-
-        private string thumbField;
-
-        private ushort titleField;
-
-        private string typeField;
-
-        private uint updatedAtField;
-
-        private MediaContainerVideoWriter[] writerField;
+        private decimal ratingField;
 
         private ushort yearField;
 
-        /// <remarks />
+        private string thumbField;
+
+        private string artField;
+
+        private uint durationField;
+
+        private System.DateTime originallyAvailableAtField;
+
+        private uint addedAtField;
+
+        private uint updatedAtField;
+
+        /// <remarks/>
         public MediaContainerVideoMedia Media
         {
-            get => mediaField;
-            set => mediaField = value;
+            get
+            {
+                return this.mediaField;
+            }
+            set
+            {
+                this.mediaField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlElement("Genre")]
-        public MediaContainerVideoGenre[] Genre
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Director")]
+        public MediaContainerVideoDirector[] Director
         {
-            get => genreField;
-            set => genreField = value;
+            get
+            {
+                return this.directorField;
+            }
+            set
+            {
+                this.directorField = value;
+            }
         }
 
-        /// <remarks />
-        public MediaContainerVideoDirector Director
-        {
-            get => directorField;
-            set => directorField = value;
-        }
-
-        /// <remarks />
-        [XmlElement("Writer")]
-        public MediaContainerVideoWriter[] Writer
-        {
-            get => writerField;
-            set => writerField = value;
-        }
-
-        /// <remarks />
-        [XmlElement("Producer")]
-        public MediaContainerVideoProducer[] Producer
-        {
-            get => producerField;
-            set => producerField = value;
-        }
-
-        /// <remarks />
-        public MediaContainerVideoCountry Country
-        {
-            get => countryField;
-            set => countryField = value;
-        }
-
-        /// <remarks />
-        [XmlElement("Role")]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Role")]
         public MediaContainerVideoRole[] Role
         {
-            get => roleField;
-            set => roleField = value;
+            get
+            {
+                return this.roleField;
+            }
+            set
+            {
+                this.roleField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlElement("Similar")]
-        public MediaContainerVideoSimilar[] Similar
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Field")]
+        public MediaContainerVideoField[] Field
         {
-            get => similarField;
-            set => similarField = value;
+            get
+            {
+                return this.fieldField;
+            }
+            set
+            {
+                this.fieldField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public uint playQueueItemID
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort playQueueItemID
         {
-            get => playQueueItemIDField;
-            set => playQueueItemIDField = value;
+            get
+            {
+                return this.playQueueItemIDField;
+            }
+            set
+            {
+                this.playQueueItemIDField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort ratingKey
         {
-            get => ratingKeyField;
-            set => ratingKeyField = value;
+            get
+            {
+                return this.ratingKeyField;
+            }
+            set
+            {
+                this.ratingKeyField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string key
         {
-            get => keyField;
-            set => keyField = value;
+            get
+            {
+                return this.keyField;
+            }
+            set
+            {
+                this.keyField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string guid
         {
-            get => guidField;
-            set => guidField = value;
+            get
+            {
+                return this.guidField;
+            }
+            set
+            {
+                this.guidField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string studio
         {
-            get => studioField;
-            set => studioField = value;
+            get
+            {
+                return this.studioField;
+            }
+            set
+            {
+                this.studioField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string type
         {
-            get => typeField;
-            set => typeField = value;
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public ushort title
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string title
         {
-            get => titleField;
-            set => titleField = value;
+            get
+            {
+                return this.titleField;
+            }
+            set
+            {
+                this.titleField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string librarySectionTitle
         {
-            get => librarySectionTitleField;
-            set => librarySectionTitleField = value;
+            get
+            {
+                return this.librarySectionTitleField;
+            }
+            set
+            {
+                this.librarySectionTitleField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte librarySectionID
         {
-            get => librarySectionIDField;
-            set => librarySectionIDField = value;
+            get
+            {
+                return this.librarySectionIDField;
+            }
+            set
+            {
+                this.librarySectionIDField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string librarySectionKey
         {
-            get => librarySectionKeyField;
-            set => librarySectionKeyField = value;
+            get
+            {
+                return this.librarySectionKeyField;
+            }
+            set
+            {
+                this.librarySectionKeyField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string contentRating
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string originalTitle
         {
-            get => contentRatingField;
-            set => contentRatingField = value;
+            get
+            {
+                return this.originalTitleField;
+            }
+            set
+            {
+                this.originalTitleField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string summary
         {
-            get => summaryField;
-            set => summaryField = value;
+            get
+            {
+                return this.summaryField;
+            }
+            set
+            {
+                this.summaryField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal rating
         {
-            get => ratingField;
-            set => ratingField = value;
+            get
+            {
+                return this.ratingField;
+            }
+            set
+            {
+                this.ratingField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public decimal audienceRating
-        {
-            get => audienceRatingField;
-            set => audienceRatingField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort year
         {
-            get => yearField;
-            set => yearField = value;
+            get
+            {
+                return this.yearField;
+            }
+            set
+            {
+                this.yearField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string tagline
-        {
-            get => taglineField;
-            set => taglineField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string thumb
         {
-            get => thumbField;
-            set => thumbField = value;
+            get
+            {
+                return this.thumbField;
+            }
+            set
+            {
+                this.thumbField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string art
         {
-            get => artField;
-            set => artField = value;
+            get
+            {
+                return this.artField;
+            }
+            set
+            {
+                this.artField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint duration
         {
-            get => durationField;
-            set => durationField = value;
+            get
+            {
+                return this.durationField;
+            }
+            set
+            {
+                this.durationField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute(DataType = "date")]
-        public DateTime originallyAvailableAt
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "date")]
+        public System.DateTime originallyAvailableAt
         {
-            get => originallyAvailableAtField;
-            set => originallyAvailableAtField = value;
+            get
+            {
+                return this.originallyAvailableAtField;
+            }
+            set
+            {
+                this.originallyAvailableAtField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint addedAt
         {
-            get => addedAtField;
-            set => addedAtField = value;
+            get
+            {
+                return this.addedAtField;
+            }
+            set
+            {
+                this.addedAtField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint updatedAt
         {
-            get => updatedAtField;
-            set => updatedAtField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
-        public string audienceRatingImage
-        {
-            get => audienceRatingImageField;
-            set => audienceRatingImageField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
-        public string chapterSource
-        {
-            get => chapterSourceField;
-            set => chapterSourceField = value;
-        }
-
-        /// <remarks />
-        [XmlAttribute]
-        public string ratingImage
-        {
-            get => ratingImageField;
-            set => ratingImageField = value;
+            get
+            {
+                return this.updatedAtField;
+            }
+            set
+            {
+                this.updatedAtField = value;
+            }
         }
     }
 }

@@ -1,42 +1,57 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
-namespace PlexDL.Common.API.CastAPI.PlayQueue
+﻿namespace PlexDL.Common.API.CastAPI.PlayQueue
 {
-    /// <remarks />
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public class MediaContainerVideoDirector
+    /// <remarks/>
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class MediaContainerVideoDirector
     {
-        private string filterField;
         private ushort idField;
+
+        private string filterField;
 
         private string tagField;
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort id
         {
-            get => idField;
-            set => idField = value;
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string filter
         {
-            get => filterField;
-            set => filterField = value;
+            get
+            {
+                return this.filterField;
+            }
+            set
+            {
+                this.filterField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string tag
         {
-            get => tagField;
-            set => tagField = value;
+            get
+            {
+                return this.tagField;
+            }
+            set
+            {
+                this.tagField = value;
+            }
         }
     }
 }

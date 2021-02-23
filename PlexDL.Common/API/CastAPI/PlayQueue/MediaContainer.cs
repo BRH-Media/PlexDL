@@ -1,27 +1,26 @@
 ﻿// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
-
-using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
 namespace PlexDL.Common.API.CastAPI.PlayQueue
 {
-    /// <remarks />
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    [XmlRoot(Namespace = "", IsNullable = false)]
-    public class MediaContainer
+    /// <remarks/>
+    [System.SerializableAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+    public partial class MediaContainer
     {
+        private MediaContainerVideo videoField;
+
+        private byte sizeField;
+
         private string identifierField;
 
         private string mediaTagPrefixField;
 
         private uint mediaTagVersionField;
 
-        private string playQueueIDField;
+        private ushort playQueueIDField;
 
-        private uint playQueueSelectedItemIDField;
+        private ushort playQueueSelectedItemIDField;
 
         private byte playQueueSelectedItemOffsetField;
 
@@ -35,110 +34,185 @@ namespace PlexDL.Common.API.CastAPI.PlayQueue
 
         private byte playQueueVersionField;
 
-        private byte sizeField;
-        private MediaContainerVideo videoField;
-
-        /// <remarks />
+        /// <remarks/>
         public MediaContainerVideo Video
         {
-            get => videoField;
-            set => videoField = value;
+            get
+            {
+                return this.videoField;
+            }
+            set
+            {
+                this.videoField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte size
         {
-            get => sizeField;
-            set => sizeField = value;
+            get
+            {
+                return this.sizeField;
+            }
+            set
+            {
+                this.sizeField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string identifier
         {
-            get => identifierField;
-            set => identifierField = value;
+            get
+            {
+                return this.identifierField;
+            }
+            set
+            {
+                this.identifierField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string mediaTagPrefix
         {
-            get => mediaTagPrefixField;
-            set => mediaTagPrefixField = value;
+            get
+            {
+                return this.mediaTagPrefixField;
+            }
+            set
+            {
+                this.mediaTagPrefixField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public uint mediaTagVersion
         {
-            get => mediaTagVersionField;
-            set => mediaTagVersionField = value;
+            get
+            {
+                return this.mediaTagVersionField;
+            }
+            set
+            {
+                this.mediaTagVersionField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public string playQueueID
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort playQueueID
         {
-            get => playQueueIDField;
-            set => playQueueIDField = value;
+            get
+            {
+                return this.playQueueIDField;
+            }
+            set
+            {
+                this.playQueueIDField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
-        public uint playQueueSelectedItemID
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort playQueueSelectedItemID
         {
-            get => playQueueSelectedItemIDField;
-            set => playQueueSelectedItemIDField = value;
+            get
+            {
+                return this.playQueueSelectedItemIDField;
+            }
+            set
+            {
+                this.playQueueSelectedItemIDField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte playQueueSelectedItemOffset
         {
-            get => playQueueSelectedItemOffsetField;
-            set => playQueueSelectedItemOffsetField = value;
+            get
+            {
+                return this.playQueueSelectedItemOffsetField;
+            }
+            set
+            {
+                this.playQueueSelectedItemOffsetField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public ushort playQueueSelectedMetadataItemID
         {
-            get => playQueueSelectedMetadataItemIDField;
-            set => playQueueSelectedMetadataItemIDField = value;
+            get
+            {
+                return this.playQueueSelectedMetadataItemIDField;
+            }
+            set
+            {
+                this.playQueueSelectedMetadataItemIDField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte playQueueShuffled
         {
-            get => playQueueShuffledField;
-            set => playQueueShuffledField = value;
+            get
+            {
+                return this.playQueueShuffledField;
+            }
+            set
+            {
+                this.playQueueShuffledField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string playQueueSourceURI
         {
-            get => playQueueSourceURIField;
-            set => playQueueSourceURIField = value;
+            get
+            {
+                return this.playQueueSourceURIField;
+            }
+            set
+            {
+                this.playQueueSourceURIField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte playQueueTotalCount
         {
-            get => playQueueTotalCountField;
-            set => playQueueTotalCountField = value;
+            get
+            {
+                return this.playQueueTotalCountField;
+            }
+            set
+            {
+                this.playQueueTotalCountField = value;
+            }
         }
 
-        /// <remarks />
-        [XmlAttribute]
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte playQueueVersion
         {
-            get => playQueueVersionField;
-            set => playQueueVersionField = value;
+            get
+            {
+                return this.playQueueVersionField;
+            }
+            set
+            {
+                this.playQueueVersionField = value;
+            }
         }
     }
 }
