@@ -35,7 +35,7 @@ namespace PlexDL.UI.Forms
             this.settingsGrid = new System.Windows.Forms.PropertyGrid();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmGlobal = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSettingsControl = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +63,7 @@ namespace PlexDL.UI.Forms
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpMain.Controls.Add(this.btnCancel, 0, 1);
             this.tlpMain.Controls.Add(this.settingsGrid, 0, 0);
-            this.tlpMain.Controls.Add(this.btnOK, 1, 1);
+            this.tlpMain.Controls.Add(this.btnApply, 1, 1);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMain.Location = new System.Drawing.Point(0, 24);
             this.tlpMain.Name = "tlpMain";
@@ -85,16 +85,17 @@ namespace PlexDL.UI.Forms
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
-            // btnOK
+            // btnApply
             // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.Location = new System.Drawing.Point(162, 258);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(154, 23);
-            this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnApply.Location = new System.Drawing.Point(162, 258);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(154, 23);
+            this.btnApply.TabIndex = 1;
+            this.btnApply.Text = "Apply";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.BtnApply_Click);
             // 
             // menuMain
             // 
@@ -121,20 +122,20 @@ namespace PlexDL.UI.Forms
             this.itmCommitToDefault,
             this.itmReset});
             this.itmSettingsControl.Name = "itmSettingsControl";
-            this.itmSettingsControl.Size = new System.Drawing.Size(180, 22);
+            this.itmSettingsControl.Size = new System.Drawing.Size(161, 22);
             this.itmSettingsControl.Text = "Settings Control";
             // 
             // itmCommitToDefault
             // 
             this.itmCommitToDefault.Name = "itmCommitToDefault";
-            this.itmCommitToDefault.Size = new System.Drawing.Size(180, 22);
+            this.itmCommitToDefault.Size = new System.Drawing.Size(173, 22);
             this.itmCommitToDefault.Text = "Commit to Default";
             this.itmCommitToDefault.Click += new System.EventHandler(this.ItmCommitToDefault_Click);
             // 
             // itmReset
             // 
             this.itmReset.Name = "itmReset";
-            this.itmReset.Size = new System.Drawing.Size(180, 22);
+            this.itmReset.Size = new System.Drawing.Size(173, 22);
             this.itmReset.Text = "Reset";
             this.itmReset.Click += new System.EventHandler(this.ItmReset_Click);
             // 
@@ -143,27 +144,25 @@ namespace PlexDL.UI.Forms
             this.itmFileAssoc.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmCreateAssociations});
             this.itmFileAssoc.Name = "itmFileAssoc";
-            this.itmFileAssoc.Size = new System.Drawing.Size(180, 22);
+            this.itmFileAssoc.Size = new System.Drawing.Size(161, 22);
             this.itmFileAssoc.Text = "File Associations";
             // 
             // itmCreateAssociations
             // 
             this.itmCreateAssociations.Name = "itmCreateAssociations";
-            this.itmCreateAssociations.Size = new System.Drawing.Size(180, 22);
+            this.itmCreateAssociations.Size = new System.Drawing.Size(108, 22);
             this.itmCreateAssociations.Text = "Create";
             this.itmCreateAssociations.Click += new System.EventHandler(this.ItmCreateAssociations_Click);
             // 
             // Settings
             // 
-            this.AcceptButton = this.btnOK;
+            this.AcceptButton = this.btnApply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(319, 308);
-            this.ControlBox = false;
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
             this.MaximizeBox = false;
@@ -173,6 +172,7 @@ namespace PlexDL.UI.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PlexDL Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Settings_Closing);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.tlpMain.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
@@ -186,7 +186,7 @@ namespace PlexDL.UI.Forms
 
         private PropertyGrid settingsGrid;
         private TableLayoutPanel tlpMain;
-        private Button btnOK;
+        private Button btnApply;
         private Button btnCancel;
         private MenuStrip menuMain;
         private ToolStripMenuItem itmCommitToDefault;
