@@ -70,6 +70,7 @@
             this.Name = "DownloadManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Download Manager";
+            this.Load += new System.EventHandler(this.DownloadManager_Load);
             this.tlpMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
