@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCompany("BRH Media (Baeleigh Harris)")]
 [assembly: AssemblyProduct("PlexDL - C# Plex API Interface")]
-[assembly: AssemblyCopyright("Copyright (c) BRH Media 2020")]
+[assembly: AssemblyCopyright("Copyright (c) BRH Media 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.6.0.*")]
-[assembly: AssemblyFileVersion("1.6.0.*")]
+[assembly: AssemblyVersion("1.7.0.*")]
+[assembly: AssemblyFileVersion("1.7.0.*")]
 [assembly: NeutralResourcesLanguage("en-AU")]
