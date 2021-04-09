@@ -404,21 +404,36 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF $(ConfigurationName) == Release (
-	IF NOT EXIST "$(TargetDir)lib\" mkdir $(TargetDir)lib
-	IF NOT EXIST "$(TargetDir)pdb\" mkdir $(TargetDir)pdb
-	IF NOT EXIST "$(TargetDir)xml\" mkdir $(TargetDir)xml
+    <PostBuildEvent>@ECHO OFF
+IF $(ConfigurationName) == Release (
 
-	copy /y $(TargetDir)*.dll $(TargetDir)lib
-	copy /y $(TargetDir)*.pdb $(TargetDir)pdb
-	copy /y $(TargetDir)*.xml $(TargetDir)xml
+	REM create new directories if they don't exist
+	ECHO Creating Release Directories....
+	IF NOT EXIST "$(TargetDir)lib\" mkdir "$(TargetDir)lib" &gt;nul
+	IF NOT EXIST "$(TargetDir)pdb\" mkdir "$(TargetDir)pdb" &gt;nul
+	IF NOT EXIST "$(TargetDir)xml\" mkdir "$(TargetDir)xml" &gt;nul
 
-	del /f /q *.dll
-	del /f /q *.pdb
-	del /f /q *.xml
+	REM copy to new location
+	ECHO Copying Release Files...
+	copy /y "$(TargetDir)*.dll" "$(TargetDir)lib" &gt;nul
+	copy /y "$(TargetDir)*.pdb" "$(TargetDir)pdb" &gt;nul
+	copy /y "$(TargetDir)*.xml" "$(TargetDir)xml" &gt;nul
+
+	REM delete old files
+	ECHO Cleaning Release Files...
+	del /f /q *.dll &gt;nul
+	del /f /q *.pdb &gt;nul
+	del /f /q *.xml &gt;nul
 
 	REM config files get restored on run
-	del /f /q *.config
+	ECHO Cleaning Old Configuration Files...
+	del /f /q *.config &gt;nul
+
+	REM create release zip
+	ECHO Creating Release Package...
+	powershell Compress-Archive -Force -Path '$(TargetDir)*' -DestinationPath '$(TargetDir)Release.zip' &gt;nul
+
+	ECHO Release Package Is Ready
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
