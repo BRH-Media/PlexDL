@@ -1,4 +1,5 @@
 ﻿using inet;
+using LogDel;
 using LogDel.IO;
 using PlexDL.AltoHTTP.Common.Downloader;
 using PlexDL.Common;
@@ -401,8 +402,8 @@ namespace PlexDL.UI.Forms
         {
             if (tabMain.SelectedTab == tabLog)
                 dgvLog.DataSource =
-                    File.Exists($@"{LogWriter.LogDirectory}\PlexDL.logdel") //check if the main log file exists
-                        ? LogReader.TableFromFile($@"{LogWriter.LogDirectory}\PlexDL.logdel",
+                    File.Exists($@"{LogDelGlobals.LogDirectory}\PlexDL.logdel") //check if the main log file exists
+                        ? LogReader.TableFromFile($@"{LogDelGlobals.LogDirectory}\PlexDL.logdel",
                             false) //if it does, load it.
                         : null; //if it doesn't, clear the grid by applying a null value.
             else

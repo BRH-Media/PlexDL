@@ -31,7 +31,7 @@ namespace PlexDL.UI.Forms
             InitializeComponent();
         }
 
-        public string LogDir { get; set; } = Globals.LogDirectory;
+        public string LogDir { get; set; } = LogDelGlobals.LogDirectory;
 
         public void RefreshLogItems()
         {
