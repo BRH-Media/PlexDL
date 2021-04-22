@@ -353,6 +353,10 @@
       <Project>{765ccd3e-b3c3-4948-a3c3-824a94f9ade8}</Project>
       <Name>PlexDL.AltoHTTP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.BarcodeHandler\PlexDL.Common.BarcodeHandler.csproj">
+      <Project>{18ee5af7-1f83-4f29-8c6c-a241fd0a0331}</Project>
+      <Name>PlexDL.Common.BarcodeHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Common.Components\PlexDL.Common.Components.csproj">
       <Project>{3c18fc31-d361-42fb-ae18-42faacd4e419}</Project>
       <Name>PlexDL.Common.Components</Name>

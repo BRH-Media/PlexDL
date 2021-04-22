@@ -34,8 +34,8 @@ namespace PlexDL.UI.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metadata));
-            PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour2 = new PlexDL.Common.Components.Styling.BoolColour();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.flpActors = new System.Windows.Forms.FlowLayoutPanel();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.ofdImport = new System.Windows.Forms.OpenFileDialog();
@@ -76,10 +76,10 @@ namespace PlexDL.UI.Forms
             this.flpActors.AutoScroll = true;
             this.flpActors.BackColor = System.Drawing.Color.White;
             this.flpActors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpActors.Location = new System.Drawing.Point(4, 19);
-            this.flpActors.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.flpActors.Location = new System.Drawing.Point(3, 16);
+            this.flpActors.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.flpActors.Name = "flpActors";
-            this.flpActors.Size = new System.Drawing.Size(710, 284);
+            this.flpActors.Size = new System.Drawing.Size(535, 231);
             this.flpActors.TabIndex = 1;
             this.tipMain.SetToolTip(this.flpActors, "Actors/Actresses in this title");
             // 
@@ -97,14 +97,16 @@ namespace PlexDL.UI.Forms
             // picPoster
             // 
             this.picPoster.BackColor = System.Drawing.SystemColors.Control;
+            this.picPoster.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picPoster.BackgroundImage")));
+            this.picPoster.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tlpMain.SetColumnSpan(this.picPoster, 3);
             this.picPoster.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picPoster.Location = new System.Drawing.Point(3, 2);
-            this.picPoster.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.picPoster.Location = new System.Drawing.Point(2, 2);
+            this.picPoster.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.picPoster.Name = "picPoster";
             this.picPoster.PreviewWindowEnabled = true;
             this.tlpMain.SetRowSpan(this.picPoster, 4);
-            this.picPoster.Size = new System.Drawing.Size(357, 288);
+            this.picPoster.Size = new System.Drawing.Size(266, 232);
             this.picPoster.TabIndex = 12;
             this.picPoster.TabStop = false;
             this.tipMain.SetToolTip(this.picPoster, "Poster");
@@ -114,12 +116,10 @@ namespace PlexDL.UI.Forms
             this.tlpMain.SetColumnSpan(this.gbPlot, 6);
             this.gbPlot.Controls.Add(this.pnlPlotSynopsis);
             this.gbPlot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbPlot.Location = new System.Drawing.Point(367, 4);
-            this.gbPlot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbPlot.Location = new System.Drawing.Point(273, 3);
             this.gbPlot.Name = "gbPlot";
-            this.gbPlot.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpMain.SetRowSpan(this.gbPlot, 3);
-            this.gbPlot.Size = new System.Drawing.Size(718, 211);
+            this.gbPlot.Size = new System.Drawing.Size(541, 171);
             this.gbPlot.TabIndex = 20;
             this.gbPlot.TabStop = false;
             this.gbPlot.Text = "Plot";
@@ -129,23 +129,21 @@ namespace PlexDL.UI.Forms
             this.pnlPlotSynopsis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlPlotSynopsis.Controls.Add(this.txtPlotSynopsis);
             this.pnlPlotSynopsis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPlotSynopsis.Location = new System.Drawing.Point(4, 19);
-            this.pnlPlotSynopsis.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlPlotSynopsis.Location = new System.Drawing.Point(3, 16);
             this.pnlPlotSynopsis.Name = "pnlPlotSynopsis";
-            this.pnlPlotSynopsis.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pnlPlotSynopsis.Size = new System.Drawing.Size(710, 188);
+            this.pnlPlotSynopsis.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pnlPlotSynopsis.Size = new System.Drawing.Size(535, 152);
             this.pnlPlotSynopsis.TabIndex = 22;
             // 
             // txtPlotSynopsis
             // 
             this.txtPlotSynopsis.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPlotSynopsis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPlotSynopsis.Location = new System.Drawing.Point(4, 4);
-            this.txtPlotSynopsis.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPlotSynopsis.Location = new System.Drawing.Point(3, 3);
             this.txtPlotSynopsis.Name = "txtPlotSynopsis";
             this.txtPlotSynopsis.ReadOnly = true;
             this.txtPlotSynopsis.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.txtPlotSynopsis.Size = new System.Drawing.Size(700, 178);
+            this.txtPlotSynopsis.Size = new System.Drawing.Size(527, 144);
             this.txtPlotSynopsis.TabIndex = 21;
             this.txtPlotSynopsis.Text = "Unknown";
             this.txtPlotSynopsis.SelectionChanged += new System.EventHandler(this.TxtPlotSynopsis_SelectionChanged);
@@ -155,12 +153,10 @@ namespace PlexDL.UI.Forms
             this.tlpMain.SetColumnSpan(this.gbStarring, 6);
             this.gbStarring.Controls.Add(this.flpActors);
             this.gbStarring.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbStarring.Location = new System.Drawing.Point(367, 223);
-            this.gbStarring.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbStarring.Location = new System.Drawing.Point(273, 180);
             this.gbStarring.Name = "gbStarring";
-            this.gbStarring.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpMain.SetRowSpan(this.gbStarring, 4);
-            this.gbStarring.Size = new System.Drawing.Size(718, 307);
+            this.gbStarring.Size = new System.Drawing.Size(541, 250);
             this.gbStarring.TabIndex = 21;
             this.gbStarring.TabStop = false;
             this.gbStarring.Text = "Starring";
@@ -170,12 +166,10 @@ namespace PlexDL.UI.Forms
             this.tlpMain.SetColumnSpan(this.gbAttributes, 3);
             this.gbAttributes.Controls.Add(this.dgvAttributes);
             this.gbAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbAttributes.Location = new System.Drawing.Point(4, 296);
-            this.gbAttributes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbAttributes.Location = new System.Drawing.Point(3, 239);
             this.gbAttributes.Name = "gbAttributes";
-            this.gbAttributes.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpMain.SetRowSpan(this.gbAttributes, 3);
-            this.gbAttributes.Size = new System.Drawing.Size(355, 234);
+            this.gbAttributes.Size = new System.Drawing.Size(264, 191);
             this.gbAttributes.TabIndex = 22;
             this.gbAttributes.TabStop = false;
             this.gbAttributes.Text = "Content Attributes";
@@ -188,30 +182,29 @@ namespace PlexDL.UI.Forms
             this.dgvAttributes.AllowUserToResizeRows = false;
             this.dgvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvAttributes.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            boolColour1.BoolColouringEnabled = false;
-            boolColour1.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
-            boolColour1.FalseColour = System.Drawing.Color.DarkRed;
-            boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
-            boolColour1.TrueColour = System.Drawing.Color.DarkGreen;
-            this.dgvAttributes.BoolColouringScheme = boolColour1;
+            boolColour2.BoolColouringEnabled = false;
+            boolColour2.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour2.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour2.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour2.RelevantColumns")));
+            boolColour2.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvAttributes.BoolColouringScheme = boolColour2;
             this.dgvAttributes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAttributes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvAttributes.CellContentClickMessage = false;
             this.dgvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAttributes.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAttributes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvAttributes.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.dgvAttributes.IsContentTable = false;
-            this.dgvAttributes.Location = new System.Drawing.Point(4, 19);
-            this.dgvAttributes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvAttributes.Location = new System.Drawing.Point(3, 16);
             this.dgvAttributes.MultiSelect = false;
             this.dgvAttributes.Name = "dgvAttributes";
             this.dgvAttributes.RowHeadersVisible = false;
@@ -219,7 +212,7 @@ namespace PlexDL.UI.Forms
             this.dgvAttributes.RowsEmptyText = "No Attributes";
             this.dgvAttributes.RowsEmptyTextForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(134)))), ((int)(((byte)(134)))));
             this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAttributes.Size = new System.Drawing.Size(347, 211);
+            this.dgvAttributes.Size = new System.Drawing.Size(258, 172);
             this.dgvAttributes.TabIndex = 0;
             // 
             // tlpMain
@@ -239,8 +232,7 @@ namespace PlexDL.UI.Forms
             this.tlpMain.Controls.Add(this.gbPlot, 3, 0);
             this.tlpMain.Controls.Add(this.gbStarring, 3, 3);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMain.Location = new System.Drawing.Point(0, 28);
-            this.tlpMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpMain.Location = new System.Drawing.Point(0, 24);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 7;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.75F));
@@ -250,8 +242,8 @@ namespace PlexDL.UI.Forms
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.75F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.75F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.5F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tlpMain.Size = new System.Drawing.Size(1089, 534);
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMain.Size = new System.Drawing.Size(817, 433);
             this.tlpMain.TabIndex = 23;
             // 
             // menuMain
@@ -263,7 +255,8 @@ namespace PlexDL.UI.Forms
             this.itmExit});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(1089, 28);
+            this.menuMain.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuMain.Size = new System.Drawing.Size(817, 24);
             this.menuMain.TabIndex = 24;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -274,14 +267,14 @@ namespace PlexDL.UI.Forms
             this.itmExport,
             this.itmDataExplorer});
             this.itmFile.Name = "itmFile";
-            this.itmFile.Size = new System.Drawing.Size(46, 24);
+            this.itmFile.Size = new System.Drawing.Size(37, 20);
             this.itmFile.Text = "File";
             // 
             // itmImport
             // 
             this.itmImport.Name = "itmImport";
             this.itmImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.itmImport.Size = new System.Drawing.Size(190, 26);
+            this.itmImport.Size = new System.Drawing.Size(180, 22);
             this.itmImport.Text = "Import";
             this.itmImport.Click += new System.EventHandler(this.ItmImport_Click);
             // 
@@ -289,14 +282,14 @@ namespace PlexDL.UI.Forms
             // 
             this.itmExport.Name = "itmExport";
             this.itmExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmExport.Size = new System.Drawing.Size(190, 26);
+            this.itmExport.Size = new System.Drawing.Size(180, 22);
             this.itmExport.Text = "Export";
             this.itmExport.Click += new System.EventHandler(this.ItmExport_Click);
             // 
             // itmDataExplorer
             // 
             this.itmDataExplorer.Name = "itmDataExplorer";
-            this.itmDataExplorer.Size = new System.Drawing.Size(190, 26);
+            this.itmDataExplorer.Size = new System.Drawing.Size(180, 22);
             this.itmDataExplorer.Text = "Data Explorer";
             this.itmDataExplorer.Click += new System.EventHandler(this.ItmDataExplorer_Click);
             // 
@@ -309,14 +302,14 @@ namespace PlexDL.UI.Forms
             this.itmSourceLink});
             this.itmStream.Enabled = false;
             this.itmStream.Name = "itmStream";
-            this.itmStream.Size = new System.Drawing.Size(70, 24);
+            this.itmStream.Size = new System.Drawing.Size(56, 20);
             this.itmStream.Text = "Stream";
             // 
             // itmPvs
             // 
             this.itmPvs.Name = "itmPvs";
             this.itmPvs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.itmPvs.Size = new System.Drawing.Size(196, 26);
+            this.itmPvs.Size = new System.Drawing.Size(157, 22);
             this.itmPvs.Text = "PVS";
             this.itmPvs.Click += new System.EventHandler(this.ItmPvs_Click);
             // 
@@ -324,7 +317,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmBrowser.Name = "itmBrowser";
             this.itmBrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.itmBrowser.Size = new System.Drawing.Size(196, 26);
+            this.itmBrowser.Size = new System.Drawing.Size(157, 22);
             this.itmBrowser.Text = "Browser";
             this.itmBrowser.Click += new System.EventHandler(this.ItmBrowser_Click);
             // 
@@ -332,7 +325,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmVlc.Name = "itmVlc";
             this.itmVlc.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.itmVlc.Size = new System.Drawing.Size(196, 26);
+            this.itmVlc.Size = new System.Drawing.Size(157, 22);
             this.itmVlc.Text = "VLC";
             this.itmVlc.Click += new System.EventHandler(this.ItmVlc_Click);
             // 
@@ -342,41 +335,41 @@ namespace PlexDL.UI.Forms
             this.itmSourceLinkView,
             this.itmSourceLinkDownload});
             this.itmSourceLink.Name = "itmSourceLink";
-            this.itmSourceLink.Size = new System.Drawing.Size(196, 26);
+            this.itmSourceLink.Size = new System.Drawing.Size(180, 22);
             this.itmSourceLink.Text = "Source Link";
             // 
             // itmSourceLinkView
             // 
             this.itmSourceLinkView.Name = "itmSourceLinkView";
-            this.itmSourceLinkView.Size = new System.Drawing.Size(161, 26);
+            this.itmSourceLinkView.Size = new System.Drawing.Size(180, 22);
             this.itmSourceLinkView.Text = "View";
             this.itmSourceLinkView.Click += new System.EventHandler(this.ItmSourceLinkView_Click);
             // 
             // itmSourceLinkDownload
             // 
             this.itmSourceLinkDownload.Name = "itmSourceLinkDownload";
-            this.itmSourceLinkDownload.Size = new System.Drawing.Size(161, 26);
+            this.itmSourceLinkDownload.Size = new System.Drawing.Size(180, 22);
             this.itmSourceLinkDownload.Text = "Download";
             this.itmSourceLinkDownload.Click += new System.EventHandler(this.ItmSourceLinkDownload_Click);
             // 
             // itmExit
             // 
             this.itmExit.Name = "itmExit";
-            this.itmExit.Size = new System.Drawing.Size(47, 24);
+            this.itmExit.Size = new System.Drawing.Size(38, 20);
             this.itmExit.Text = "Exit";
             this.itmExit.Click += new System.EventHandler(this.ItmExit_Click);
             // 
             // Metadata
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1089, 562);
+            this.ClientSize = new System.Drawing.Size(817, 457);
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Metadata";

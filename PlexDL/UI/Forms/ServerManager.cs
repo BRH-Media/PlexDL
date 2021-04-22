@@ -727,7 +727,7 @@ namespace PlexDL.UI.Forms
         private void ItmViewLink_Click(object sender, EventArgs e)
         {
             if (dgvServers.SelectedRows.Count == 1)
-                LinkViewer.ShowLinkViewer(ConnectionLink(CurrentServer()));
+                LinkViewer.ShowLinkViewer(ConnectionLink(CurrentServer()), false);
         }
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)
