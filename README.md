@@ -1,3 +1,8 @@
+<!--- BADGES -->
+[![License](https://img.shields.io/github/license/BRH-Media/PlexDL)]()
+[![Lines of code](https://img.shields.io/tokei/lines/github/BRH-Media/PlexDL)]()
+[![Downloads](https://img.shields.io/github/downloads/BRH-Media/PlexDL/total.svg)]()
+
 # PlexDL
 ### Plex Downloader/Streamer written in C#
 
