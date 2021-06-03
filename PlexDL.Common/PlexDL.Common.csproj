@@ -146,6 +146,7 @@
     <Compile Include="Structures\DownloadLayout.cs" />
     <Compile Include="Structures\FileAssociation.cs" />
     <Compile Include="Structures\LoggingSettings.cs" />
+    <Compile Include="Structures\MediaContainerFormats.cs" />
     <Compile Include="Structures\MusicDirectoryLayout.cs" />
     <Compile Include="Structures\Plex\PlexActor.cs" />
     <Compile Include="Structures\Plex\PlexMovie.cs" />

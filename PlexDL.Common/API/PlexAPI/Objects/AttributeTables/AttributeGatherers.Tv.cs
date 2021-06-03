@@ -1,4 +1,5 @@
 ﻿using PlexDL.Common.Logging;
+using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using System;
 using System.Data;
@@ -31,7 +32,7 @@ namespace PlexDL.Common.API.PlexAPI.Objects.AttributeTables
                 var resolution = new[] { "Resolution", content.StreamResolution.ResolutionString() };
                 var frameRate = new[] { "Frame-rate", FormatFramerate(content) };
                 var size = new[] { "File size", Methods.FormatBytes(content.StreamInformation.ByteLength) };
-                var container = new[] { "Container", content.StreamInformation.Container };
+                var container = new[] { "Container", MediaContainerFormats.FormatToDescription(content.StreamInformation.Container) };
 
                 var newRows = new[]
                 {
