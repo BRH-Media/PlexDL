@@ -7,6 +7,10 @@ using System.ComponentModel;
 namespace PlexDL.Common.Structures.AppOptions
 {
     [Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [Category("Application Settings")]
+    [DisplayName("Application Settings")]
+    [Description("View and modify all available PlexDL application settings.")]
     public class ApplicationOptions
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]
