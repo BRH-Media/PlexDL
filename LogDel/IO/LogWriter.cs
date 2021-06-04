@@ -60,15 +60,16 @@ namespace LogDel.IO
                     Directory.CreateDirectory(LogDelGlobals.LogDirectory);
 
                 //join the logging directory and the requested log file name to form the path to write to
-                var fqFile = $"{LogDelGlobals.LogDirectory}\\{fileName}";
+                var fqFile = $@"{LogDelGlobals.LogDirectory}\{fileName}";
 
                 //log parsing will fail if the headers don't match the entry
                 //it's the same as having 4 cells to a row; but only 3 columns...
                 if (headers.Length != logEntry.Length)
                     return;
 
-                //encode the log entry
-                logEntry = PerformEntryEncoding(logEntry);
+                //encode the log entry (if enabled)
+                if (LogDelGlobals.LogBase64Enabled)
+                    logEntry = PerformEntryEncoding(logEntry);
 
                 //remove forbidden characters from log entry like '!' and '#'
                 logEntry = logEntry.CleanLogDel();

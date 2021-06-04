@@ -16,5 +16,10 @@ namespace LogDel
         /// The entry prefix to denote a base64-encoded log entry
         /// </summary>
         public static string LogBase64Prefix { get; } = @"b64:";
+
+        /// <summary>
+        /// Whether or not to encode entries in Base64
+        /// </summary>
+        public static bool LogBase64Enabled { get; set; } = true;
     }
 }
