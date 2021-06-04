@@ -1,4 +1,8 @@
 # Building PlexDL from source
+
+## Before Modifying the Source Code
+It is a requirement to first build the solution since multiple projects rely on each other. Failure to do so would result in a potentially broken Visual Studio Designer and unknown references amongst a host of other issues.
+
 ### Main NuGet References
 - [libbrhscgui](https://www.nuget.org/packages/libbrhscgui/)
 - [RestSharp](https://www.nuget.org/packages/RestSharp/)
