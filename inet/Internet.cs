@@ -11,7 +11,7 @@ namespace inet
         /// <param name="reservedValue"></param>
         /// <returns></returns>
         [DllImport("wininet.dll")]
-        public static extern bool InternetGetConnectedState(out int description, int reservedValue);
+        private static extern bool InternetGetConnectedState(out int description, int reservedValue);
 
         /// <summary>
         /// Uses the Win32 API to check whether Windows has a valid internet connection

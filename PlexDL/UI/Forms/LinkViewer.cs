@@ -1,4 +1,5 @@
-﻿using PlexDL.Common.BarcodeHandler.QRCode;
+﻿using inet;
+using PlexDL.Common.BarcodeHandler.QRCode;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
@@ -6,6 +7,7 @@ using PlexDL.WaitWindow;
 using System;
 using System.Windows.Forms;
 
+// ReSharper disable InvertIf
 // ReSharper disable InconsistentNaming
 
 #pragma warning disable 1591
@@ -45,6 +47,8 @@ namespace PlexDL.UI.Forms
         /// <param name="link">The link to display</param>
         /// <param name="qrCode"></param>
         public static void ShowLinkViewer(string link, bool qrCode = true)
+
+            //create new LinkViewer form and display it
             => new LinkViewer { Link = link, QRCode = qrCode }.ShowDialog();
 
         private void BtnCopy_Click(object sender, EventArgs e)
@@ -59,7 +63,8 @@ namespace PlexDL.UI.Forms
 
                 //save it to the clipboard, but only if the link is valid
                 //i.e. not whitespace/null
-                if (!string.IsNullOrWhiteSpace(Link)) Clipboard.SetText(Link);
+                if (!string.IsNullOrWhiteSpace(Link))
+                    Clipboard.SetText(Link);
 
                 //restart the text change timer
                 tmrBtnTxtUpdate.Stop();
@@ -101,8 +106,10 @@ namespace PlexDL.UI.Forms
 
         private void GenerateQRCode(bool waitWindow = true)
         {
+            //check if multi-threaded
             if (waitWindow)
 
+                //multi-threaded waitwindow
                 WaitWindow.WaitWindow.Show(GenerateQRCode, @"Generating code");
             else
             {
@@ -138,8 +145,8 @@ namespace PlexDL.UI.Forms
             //new height
             var newHeight = (int)Math.Round(Height * growth);
 
-            //QR code enabled?
-            if (QRCode)
+            //is QR code functionality enabled and do we have an internet connection?
+            if (QRCode && Internet.IsConnected)
             {
                 //change form size
                 Height = newHeight;

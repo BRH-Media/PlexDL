@@ -1,4 +1,6 @@
-﻿namespace PlexDL.UI.Forms
+﻿using System.Windows.Forms;
+
+namespace PlexDL.UI.Forms
 {
     partial class LinkViewer
     {
@@ -126,6 +128,7 @@
             this.picQRCode.TabIndex = 6;
             this.picQRCode.TabStop = false;
             this.picQRCode.Visible = false;
+            this.picQRCode.Margin = new Padding(15);
             // 
             // LinkViewer
             // 
