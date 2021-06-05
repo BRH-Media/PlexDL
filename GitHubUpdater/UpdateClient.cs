@@ -63,9 +63,6 @@ namespace GitHubUpdater
 
             try
             {
-                //fetch the data itself and apply it
-                data.CurrentVersion = CurrentInstalledVersion;
-
                 //get the update from the right channel
                 data.UpdateData = channel switch
                 {
@@ -74,6 +71,9 @@ namespace GitHubUpdater
                     UpdateChannel.Unknown => null,
                     _ => throw new ArgumentOutOfRangeException(nameof(channel), channel, null)
                 };
+
+                //fetch the data itself and apply it
+                data.CurrentVersion = CurrentInstalledVersion;
 
                 //apply the channel mode to the update data
                 data.Channel = channel;
