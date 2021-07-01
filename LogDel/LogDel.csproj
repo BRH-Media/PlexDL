@@ -49,12 +49,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Extensions\CharacterHelper.cs" />
     <Compile Include="Utilities\Extensions\EncryptionHelper.cs" />
+    <Compile Include="Utilities\Extensions\LineParseHelper.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="Utilities\Export\JsonUtility.cs" />
     <Compile Include="Utilities\Export\LdUtility.cs" />
     <Compile Include="Utilities\SecurityUtils.cs" />
     <Compile Include="Utilities\Export\XmlUtility.cs" />
-    <Compile Include="Globals.cs" />
+    <Compile Include="LogDelGlobals.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

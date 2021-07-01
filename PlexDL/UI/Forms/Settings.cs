@@ -18,7 +18,7 @@ namespace PlexDL.UI.Forms
     {
         //this does not change...even when the original object does. This is a snapshot to revert
         //changes made in this form.
-        private ApplicationOptions Snapshot { get; } = ObjectProvider.Settings.DeepClone();
+        private ApplicationOptions Snapshot { get; set; } = ObjectProvider.Settings.DeepClone();
 
         //used to prevent a call-stack overflow when closing the form
         private bool AlreadyClosing { get; set; }
@@ -34,7 +34,7 @@ namespace PlexDL.UI.Forms
         private void Settings_Load(object sender, EventArgs e)
 
             =>  //assign grid to global settings provider
-                settingsGrid.SelectedObject = ObjectProvider.Settings;
+                settingsGrid.SelectedObject = Snapshot;
 
         private void BtnCancel_Click(object sender, EventArgs e)
 
@@ -76,6 +76,9 @@ namespace PlexDL.UI.Forms
                 //disable cancel operation
                 AlreadyClosing = true;
 
+                //apply final settings
+                ObjectProvider.Settings = Snapshot;
+
                 //ensure a correct DialogResult of 'OK'
                 DialogResult = DialogResult.OK;
 
@@ -95,10 +98,6 @@ namespace PlexDL.UI.Forms
             {
                 if (!AlreadyClosing && !ChangesApplied)
                 {
-                    //revert changes by assigning the snapshot taken at the start to the main setting
-                    //provider.
-                    ObjectProvider.Settings = Snapshot;
-
                     //return of 'Cancel'
                     DialogResult = DialogResult.Cancel;
 
@@ -116,15 +115,15 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private static void DoCommitDefault()
+        private void DoCommitDefault()
         {
             try
             {
                 //null validation
-                if (ObjectProvider.Settings != null)
+                if (Snapshot != null)
                 {
                     //returns true if the commit operation succeeded
-                    if (ObjectProvider.Settings.CommitDefaultSettings())
+                    if (Snapshot.CommitDefaultSettings())
 
                         //alert user
                         UIMessages.Info(@"Successfully saved settings");
@@ -156,10 +155,10 @@ namespace PlexDL.UI.Forms
                 if (UIMessages.Question(@"Are you sure? This will clear all settings in the current session."))
                 {
                     //do the reset
-                    ObjectProvider.Settings = new ApplicationOptions();
+                    Snapshot = ObjectProvider.Settings.DeepClone();
 
                     //refresh PropertyGrid on this form
-                    settingsGrid.SelectedObject = ObjectProvider.Settings;
+                    settingsGrid.SelectedObject = Snapshot;
                     settingsGrid.Refresh();
 
                     //show alert

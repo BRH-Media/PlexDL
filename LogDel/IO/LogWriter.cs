@@ -3,15 +3,47 @@ using LogDel.Utilities.Extensions;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace LogDel.IO
 {
     public static class LogWriter
     {
-        /// <summary>
-        /// The directory where log files are read from/written to
-        /// </summary>
-        public static string LogDirectory { get; set; } = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\.plexdl\logs";
+        public static string[] PerformEntryEncoding(string[] entry)
+        {
+            try
+            {
+                //validation
+                if (entry?.Length > 0)
+                {
+                    //aggregated
+                    var encodedEntries = new string[entry.Length];
+
+                    //go through each entry
+                    for (var i = 0; i < entry.Length; i++)
+                    {
+                        //encode log entry to base64
+                        var encoded = Convert.ToBase64String(Encoding.Default.GetBytes(entry[i]));
+
+                        //combine with prefix
+                        var encodedEntry = $"{LogDelGlobals.LogBase64Prefix}{encoded}";
+
+                        //apply encoded entry
+                        encodedEntries[i] = encodedEntry;
+                    }
+
+                    //return final result
+                    return encodedEntries;
+                }
+            }
+            catch (Exception)
+            {
+                //ignore error
+            }
+
+            //default return
+            return new string[] { };
+        }
 
         /// <summary>
         /// Allows for writing contents to a LogDel-formatted file
@@ -19,20 +51,25 @@ namespace LogDel.IO
         /// <param name="fileName"></param>
         /// <param name="headers"></param>
         /// <param name="logEntry"></param>
-        public static void LogDelWriter(string fileName, string[] headers, string[] logEntry)
+        public static void PerformWrite(string fileName, string[] headers, string[] logEntry)
         {
             try
             {
                 //if the logging directory doesn't exist, create it
-                if (!Directory.Exists(LogDirectory))
-                    Directory.CreateDirectory(LogDirectory);
+                if (!Directory.Exists(LogDelGlobals.LogDirectory))
+                    Directory.CreateDirectory(LogDelGlobals.LogDirectory);
 
                 //join the logging directory and the requested log file name to form the path to write to
-                var fqFile = $"{LogDirectory}\\{fileName}";
+                var fqFile = $@"{LogDelGlobals.LogDirectory}\{fileName}";
 
                 //log parsing will fail if the headers don't match the entry
                 //it's the same as having 4 cells to a row; but only 3 columns...
-                if (headers.Length != logEntry.Length) return;
+                if (headers.Length != logEntry.Length)
+                    return;
+
+                //encode the log entry (if enabled)
+                if (LogDelGlobals.LogBase64Enabled)
+                    logEntry = PerformEntryEncoding(logEntry);
 
                 //remove forbidden characters from log entry like '!' and '#'
                 logEntry = logEntry.CleanLogDel();

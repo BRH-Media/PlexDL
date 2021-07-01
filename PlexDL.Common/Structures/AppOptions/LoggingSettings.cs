@@ -1,7 +1,8 @@
-﻿using System;
+﻿using LogDel;
+using System;
 using System.ComponentModel;
 
-namespace PlexDL.Common.Structures
+namespace PlexDL.Common.Structures.AppOptions
 {
     [Serializable]
     public class LoggingSettings
@@ -21,6 +22,14 @@ namespace PlexDL.Common.Structures
         [DisplayName("Cache Logging")]
         [Description("If this is enabled, PlexDL will log every cache event to a file.")]
         public bool EnableCacheLogDel { get; set; } = true;
+
+        [DisplayName("Base64 Encoding")]
+        [Description("If this is enabled, PlexDL will encode all entries in Base64 to preserve formatting.")]
+        public bool EnableBase64Encoding
+        {
+            get => LogDelGlobals.LogBase64Enabled;
+            set => LogDelGlobals.LogBase64Enabled = value;
+        }
 
         // to make sure the PropertyGrid doesn't keep showing the name of this class, just return a blank string.
         public override string ToString()

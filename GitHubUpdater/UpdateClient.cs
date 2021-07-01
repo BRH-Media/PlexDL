@@ -63,9 +63,6 @@ namespace GitHubUpdater
 
             try
             {
-                //fetch the data itself and apply it
-                data.CurrentVersion = CurrentInstalledVersion;
-
                 //get the update from the right channel
                 data.UpdateData = channel switch
                 {
@@ -74,6 +71,9 @@ namespace GitHubUpdater
                     UpdateChannel.Unknown => null,
                     _ => throw new ArgumentOutOfRangeException(nameof(channel), channel, null)
                 };
+
+                //fetch the data itself and apply it
+                data.CurrentVersion = CurrentInstalledVersion;
 
                 //apply the channel mode to the update data
                 data.Channel = channel;
@@ -286,19 +286,19 @@ namespace GitHubUpdater
         /// </summary>
         /// <param name="apiResponse">The raw JSON itself</param>
         /// <param name="prettyPrint">Whether or not the JSON is formatted when the file is written (false for better performance, true for readability)</param>
-        private static void LogApiResponse(string apiResponse, bool prettyPrint = false)
+        private void LogApiResponse(string apiResponse, bool prettyPrint = false)
         {
             try
             {
-                //check if the data is valid before trying to write it to a file
-                if (!string.IsNullOrEmpty(apiResponse))
+                //check if the data is valid before trying to write it to a file,
+                //and only allow this function to run if in debug mode
+                if (!string.IsNullOrWhiteSpace(apiResponse) && DebugMode)
                 {
-                    //the reason we hash the time is for uniqueness; it'll be different each time
-                    //since the system time keeps ticking along.
-                    var timeHash = MD5Helper.CalculateMd5Hash(DateTime.Now.ToString());
+                    //hash a new GUID for uniqueness
+                    var uniqueString = MD5Helper.CalculateMd5Hash(Guid.NewGuid().ToString());
 
                     //GitHub API responses are always in JSON format; the extension must reflect this.
-                    var fileName = @$"apiResponse_{timeHash}.json";
+                    var fileName = @$"apiResponse_{uniqueString}.json";
                     var fileDir = $@"{Globals.UpdateRootDir}\debug";
                     var filePath = $@"{fileDir}\{fileName}";
 

@@ -11,7 +11,7 @@ namespace PlexDL.Common.Update
             var version = Assembly.GetCallingAssembly().GetName().Version;
             var updater = new UpdateClient
             {
-                Author = "brhsoftco",
+                Author = "brh-media",
                 RepositoryName = "plexdl",
                 CurrentInstalledVersion = version,
                 DebugMode = Flags.IsDebug

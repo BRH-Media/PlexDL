@@ -30,7 +30,7 @@ namespace PlexDL.Common.Logging
                     DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
-                LogWriter.LogDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+                LogWriter.PerformWrite("PlexDL.logdel", headers, logEntryToAdd);
             }
             catch
             {
@@ -57,7 +57,7 @@ namespace PlexDL.Common.Logging
                     Strings.CurrentSessionId, reqUrl, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalEntry
                 };
 
-                LogWriter.LogDelWriter("Caching.logdel", headers, logEntryToAdd);
+                LogWriter.PerformWrite("Caching.logdel", headers, logEntryToAdd);
             }
             catch
             {
@@ -89,7 +89,7 @@ namespace PlexDL.Common.Logging
                     Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), finalMessage, function,
                     type
                 };
-                LogWriter.LogDelWriter("ExceptionLog.logdel", headers, logEntry);
+                LogWriter.PerformWrite("ExceptionLog.logdel", headers, logEntry);
             }
             catch
             {
@@ -111,7 +111,7 @@ namespace PlexDL.Common.Logging
                 {
                     Strings.CurrentSessionId, DateTime.Now.ToString(CultureInfo.CurrentCulture), uri, statusCode
                 };
-                LogWriter.LogDelWriter("TransactionLog.logdel", headers, logEntry);
+                LogWriter.PerformWrite("TransactionLog.logdel", headers, logEntry);
             }
             catch
             {

@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PlexDL.Common")]
+[assembly: AssemblyTitle("PlexDL.Common.BarcodeHandler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BRH Media")]
-[assembly: AssemblyProduct("PlexDL.Common")]
-[assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("PlexDL.Common.BarcodeHandler")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a464f174-fedd-45c7-b17a-4fd707867f2b")]
+[assembly: Guid("18ee5af7-1f83-4f29-8c6c-a241fd0a0331")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.2.*")]
-[assembly: AssemblyFileVersion("1.7.2.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

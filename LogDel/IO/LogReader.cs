@@ -1,10 +1,12 @@
 ﻿using LogDel.Utilities;
+using LogDel.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
+// ReSharper disable InvertIf
 // ReSharper disable CoVariantArrayConversion
 
 namespace LogDel.IO
@@ -150,7 +152,8 @@ namespace LogDel.IO
                         else if (line.Contains("!"))
                         {
                             //headers cannot be applied outside of row 1
-                            if (line.StartsWith(@"###")) continue;
+                            if (line.StartsWith(@"###"))
+                                continue;
 
                             //split the line into cells via the '!' delimiter.
                             var strSplit = line.Split('!');
@@ -161,6 +164,7 @@ namespace LogDel.IO
 
                             //check if we're meant to be including line numbers
                             if (lineNumbers)
+
                                 //we are, so add the current row count - 1.
                                 //we subtract 1, because the row count includes the header row.
                                 //If we didn't do this, it would show up in a grid as the first row being
@@ -176,17 +180,26 @@ namespace LogDel.IO
 
                             //check if the cell-count (amount of values in the items[] array) is equal
                             //to the header-count (amount of Columns in our table).
-                            //If this isn't equal, it will error out, and complain that it can't add the row.
+                            //If this isn't equal, it will error out, and complain that it can\'t add the row.
                             //So to fix that, we only add it if they're both equal.
                             if (items.Length == table.Columns.Count)
+                            {
+                                //perform row cleanup
+                                items = items.LogEntryParse();
+
+                                //perform row add
                                 table.Rows.Add(items);
+                            }
                         }
                         //none of the above were satisfied as true, this means that the current line
                         //is not recognisable as LogDel-compliant, and hence, is probably a regular text-file.
                         else
                         {
                             //to verify that it isn't LogDel, we can check to see if no headers have been found.
-                            if (headersFound) continue; //headers were found, don't worry about the next section of code :)
+                            if (headersFound)
+
+                                //headers were found, don't worry about the next section of code :)
+                                continue;
 
                             //define a new List in order to add line numbers (if enabled).
                             //This is needed due to string[] arrays being fixed.
@@ -212,7 +225,13 @@ namespace LogDel.IO
                             //If this isn't equal, it will error out, and complain that it can't add the row.
                             //So to fix that, we only add it if they're both equal.
                             if (items.Length == table.Columns.Count)
+                            {
+                                //perform row cleanup
+                                items = items.LogEntryParse();
+
+                                //perform row add
                                 table.Rows.Add(items);
+                            }
                         }
                     }
                 }

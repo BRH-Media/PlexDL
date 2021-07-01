@@ -27,8 +27,6 @@ namespace LogDel.Utilities.Extensions
         }
 
         public static string[] CleanLogDel(this IEnumerable<string> line)
-        {
-            return line.Select(CleanLogDel).ToArray();
-        }
+            => line.Select(CleanLogDel).ToArray();
     }
 }
