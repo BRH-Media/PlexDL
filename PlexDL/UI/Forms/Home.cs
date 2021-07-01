@@ -967,7 +967,7 @@ namespace PlexDL.UI.Forms
                     var baseUri = Strings.GetBaseUri(false);
 
                     //get the library sections key from the Plex API (future-proofing)
-                    var uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
+                    var uriSectionKey = baseUri + "library/?X-Plex-Token=";
 
                     //XML for where to find the section key
                     var xmlSectionKey = XmlGet.GetXmlTransaction(uriSectionKey, false, false, false);
