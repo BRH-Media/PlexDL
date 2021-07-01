@@ -42,6 +42,7 @@ namespace PlexDL.UI.Forms
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkForceHttps = new System.Windows.Forms.CheckBox();
             this.gbConnectionInformation.SuspendLayout();
             this.tlpControls.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -80,7 +81,7 @@ namespace PlexDL.UI.Forms
             this.gbConnectionInformation.Location = new System.Drawing.Point(3, 0);
             this.gbConnectionInformation.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.gbConnectionInformation.Name = "gbConnectionInformation";
-            this.gbConnectionInformation.Size = new System.Drawing.Size(292, 123);
+            this.gbConnectionInformation.Size = new System.Drawing.Size(292, 117);
             this.gbConnectionInformation.TabIndex = 15;
             this.gbConnectionInformation.TabStop = false;
             this.gbConnectionInformation.Text = "Connection Information";
@@ -89,26 +90,29 @@ namespace PlexDL.UI.Forms
             // 
             this.tlpControls.ColumnCount = 1;
             this.tlpControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpControls.Controls.Add(this.chkForceHttps, 0, 3);
             this.tlpControls.Controls.Add(this.txtServerIP, 0, 0);
-            this.tlpControls.Controls.Add(this.txtToken, 0, 3);
+            this.tlpControls.Controls.Add(this.txtToken, 0, 4);
             this.tlpControls.Controls.Add(this.txtServerPort, 0, 1);
-            this.tlpControls.Controls.Add(this.chkToken, 0, 2);
+            this.tlpControls.Controls.Add(this.chkToken, 0, 4);
             this.tlpControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpControls.Location = new System.Drawing.Point(3, 16);
             this.tlpControls.Name = "tlpControls";
-            this.tlpControls.RowCount = 4;
+            this.tlpControls.RowCount = 5;
             this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpControls.Size = new System.Drawing.Size(286, 104);
+            this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpControls.Size = new System.Drawing.Size(286, 98);
             this.tlpControls.TabIndex = 4;
             // 
             // txtToken
             // 
             this.txtToken.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtToken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.txtToken.Location = new System.Drawing.Point(3, 78);
+            this.txtToken.Location = new System.Drawing.Point(3, 101);
             this.txtToken.MaxLength = 20;
             this.txtToken.Name = "txtToken";
             this.txtToken.Size = new System.Drawing.Size(280, 20);
@@ -120,7 +124,7 @@ namespace PlexDL.UI.Forms
             // 
             this.chkToken.AutoSize = true;
             this.chkToken.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkToken.Location = new System.Drawing.Point(3, 55);
+            this.chkToken.Location = new System.Drawing.Point(3, 78);
             this.chkToken.Name = "chkToken";
             this.chkToken.Size = new System.Drawing.Size(280, 17);
             this.chkToken.TabIndex = 2;
@@ -142,13 +146,13 @@ namespace PlexDL.UI.Forms
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(298, 152);
+            this.tlpMain.Size = new System.Drawing.Size(298, 146);
             this.tlpMain.TabIndex = 18;
             // 
             // btnConnect
             // 
             this.btnConnect.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnConnect.Location = new System.Drawing.Point(152, 126);
+            this.btnConnect.Location = new System.Drawing.Point(152, 120);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(143, 23);
             this.btnConnect.TabIndex = 1;
@@ -160,19 +164,30 @@ namespace PlexDL.UI.Forms
             this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Location = new System.Drawing.Point(3, 126);
+            this.btnCancel.Location = new System.Drawing.Point(3, 120);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(143, 23);
             this.btnCancel.TabIndex = 16;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // chkForceHttps
+            // 
+            this.chkForceHttps.AutoSize = true;
+            this.chkForceHttps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkForceHttps.Location = new System.Drawing.Point(3, 55);
+            this.chkForceHttps.Name = "chkForceHttps";
+            this.chkForceHttps.Size = new System.Drawing.Size(280, 17);
+            this.chkForceHttps.TabIndex = 4;
+            this.chkForceHttps.Text = "Force HTTPS";
+            this.chkForceHttps.UseVisualStyleBackColor = true;
+            // 
             // DirectConnect
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(298, 152);
+            this.ClientSize = new System.Drawing.Size(298, 146);
             this.Controls.Add(this.tlpMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -203,5 +218,6 @@ namespace PlexDL.UI.Forms
         private Button btnConnect;
         private Button btnCancel;
         private TableLayoutPanel tlpControls;
+        private CheckBox chkForceHttps;
     }
 }

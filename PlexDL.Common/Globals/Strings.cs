@@ -22,13 +22,21 @@ namespace PlexDL.Common.Globals
         }
 
         public static string GetBaseUri(bool incToken)
+            => GetBaseUri(incToken, Flags.IsHttps);
+
+        public static string GetBaseUri(bool incToken, bool https)
         {
+            //HTTP or HTTPS
+            var protocol = https ? @"https" : @"http";
+
+            //include authentication value?
             if (incToken)
-                return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" +
-                       ObjectProvider.Settings.ConnectionInfo.PlexPort +
-                       "/?X-Plex-Token=";
-            return "http://" + ObjectProvider.Settings.ConnectionInfo.PlexAddress + ":" +
-                   ObjectProvider.Settings.ConnectionInfo.PlexPort + "/";
+
+                //base URI
+                return $"{protocol}://{ObjectProvider.Settings.ConnectionInfo.PlexAddress}:{ObjectProvider.Settings.ConnectionInfo.PlexPort}/?X-Plex-Token=";
+
+            //raw base URI with no authentication information
+            return $"{protocol}://{ObjectProvider.Settings.ConnectionInfo.PlexAddress}:{ObjectProvider.Settings.ConnectionInfo.PlexPort}/";
         }
     }
 }

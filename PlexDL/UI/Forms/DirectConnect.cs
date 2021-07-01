@@ -1,5 +1,6 @@
 ﻿using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Globals;
 using PlexDL.Common.Structures.AppOptions;
 using System;
 using System.Windows.Forms;
@@ -55,12 +56,19 @@ namespace PlexDL.UI.Forms
             {
                 if (Convert.ToInt32(txtServerPort.Text) <= 65535)
                 {
+                    //HTTP or HTTPS
+                    var protocol = chkForceHttps.Checked ? @"https" : @"http";
+
+                    //server information
                     ConnectionInfo.PlexAddress = txtServerIP.Text;
                     ConnectionInfo.PlexPort = Convert.ToInt32(txtServerPort.Text);
+
+                    //URI to test
                     var uri = chkToken.Checked
-                        ? $"http://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={txtToken.Text}"
-                        : $"http://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={ConnectionInfo.PlexAccountToken}";
+                        ? $"{protocol}://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={txtToken.Text}"
+                        : $"{protocol}://{ConnectionInfo.PlexAddress}:{ConnectionInfo.PlexPort}/?X-Plex-Token={ConnectionInfo.PlexAccountToken}";
                     //UIMessages.Info(uri);
+
                     var testUrl = WebCheck.TestUrl(uri);
                     if (testUrl.ConnectionSuccess)
                     {
@@ -68,8 +76,14 @@ namespace PlexDL.UI.Forms
                         if (chkToken.Checked)
                             ConnectionInfo.PlexAccountToken = txtToken.Text;
 
+                        //set the Force HTTPS value
+                        Flags.IsHttps = chkForceHttps.Checked;
+
+                        //finalise the result
                         Success = true;
                         DialogResult = DialogResult.OK;
+
+                        //close the form
                         Close();
                     }
                     else
@@ -111,7 +125,7 @@ namespace PlexDL.UI.Forms
             txtToken.Enabled = false;
 
             //realign the form
-            Height = 163;
+            Height = 185;
         }
 
         private void DiffToken()
@@ -121,7 +135,7 @@ namespace PlexDL.UI.Forms
             txtToken.Enabled = true;
 
             //realign the form
-            Height = 191;
+            Height = 212;
         }
 
         private void DirectConnect_Load(object sender, EventArgs e)
@@ -131,8 +145,13 @@ namespace PlexDL.UI.Forms
             txtServerPort.Text = ConnectionInfo.PlexPort.ToString();
             txtToken.Text = ConnectionInfo.PlexAccountToken;
 
+            //setup HTTPS checkbox
+            chkForceHttps.Checked = Flags.IsHttps;
+
+            //local link?
             if (LoadLocalLink)
             {
+                //setup with locally-hosted Plex server values
                 txtServerIP.Text = @"127.0.0.1";
                 txtServerIP.ReadOnly = true;
                 Text = @"Local Machine Connection";

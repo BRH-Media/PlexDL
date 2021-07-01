@@ -262,7 +262,7 @@ namespace PlexDL.UI.Forms
         }
 
         private static string ConnectionLink(Server svr)
-            => $@"http://{svr.address}:{svr.port}/?X-Plex-Token={svr.accessToken}";
+            => $@"{(Flags.IsHttps ? @"https" : @"http")}://{svr.address}:{svr.port}/?X-Plex-Token={svr.accessToken}";
 
         private void RunDirectConnect(bool localLink)
         {
@@ -450,6 +450,9 @@ namespace PlexDL.UI.Forms
                 //default status update
                 SetInterfaceAuthenticationStatus(false);
 
+                //set interface item checked
+                itmForceHttps.Checked = Flags.IsHttps;
+
                 //check if there's an internet connection first; it may have been disconnected while the window was closed.
                 if (Internet.IsConnected)
                 {
@@ -465,7 +468,7 @@ namespace PlexDL.UI.Forms
                     SelectServer();
 
                     itmLoad.Enabled = true;
-                    itmDisplay.Enabled = true;
+                    itmOptions.Enabled = true;
 
                     //status update
                     SetInterfaceAuthenticationStatus(true);
@@ -676,7 +679,7 @@ namespace PlexDL.UI.Forms
                     ObjectProvider.User.authenticationToken = token;
                     ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = token;
                     itmLoad.Enabled = true;
-                    itmDisplay.Enabled = true;
+                    itmOptions.Enabled = true;
                     dgvServers.DataSource = null;
                     if (!silent)
                         UIMessages.Info(
@@ -708,7 +711,7 @@ namespace PlexDL.UI.Forms
             dgvServers.Invalidate();
             ObjectProvider.PlexServers = null;
             itmLoad.Enabled = false;
-            itmDisplay.Enabled = false;
+            itmOptions.Enabled = false;
         }
 
         private void ItmRenderTokenColumn_Click(object sender, EventArgs e)
@@ -749,10 +752,14 @@ We've also copied it to the clipboard for you :)");
             {
                 var token = CurrentServer().accessToken;
 
-                if (string.IsNullOrEmpty(token)) return;
+                if (string.IsNullOrEmpty(token))
+                    return;
 
                 Clipboard.SetText(token);
             }
         }
+
+        private void ItmForceHttps_Click(object sender, EventArgs e)
+            => Flags.IsHttps = itmForceHttps.Checked;
     }
 }

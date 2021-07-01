@@ -2,6 +2,7 @@
 {
     public static class Flags
     {
+        public static bool IsHttps { get; set; } = false;
         public static bool IsDebug { get; set; } = false;
         public static bool IsConnected { get; set; } = false;
         public static bool IsInitialFill { get; set; } = true;

@@ -33,8 +33,9 @@ namespace PlexDL.UI.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerManager));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.itmAuthenticate = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViaToken = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,7 @@ namespace PlexDL.UI.Forms
             this.itmRelays = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDirectConnection = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLocalLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmDisplay = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRenderTokenColumn = new System.Windows.Forms.ToolStripMenuItem();
             this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,6 +59,7 @@ namespace PlexDL.UI.Forms
             this.sepAuthenticationStatus = new System.Windows.Forms.ToolStripSeparator();
             this.lblViewing = new System.Windows.Forms.ToolStripLabel();
             this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
+            this.itmForceHttps = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
@@ -69,7 +71,7 @@ namespace PlexDL.UI.Forms
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmAuthenticate,
             this.itmLoad,
-            this.itmDisplay,
+            this.itmOptions,
             this.itmConnect});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -91,7 +93,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmViaToken.Name = "itmViaToken";
             this.itmViaToken.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.itmViaToken.Size = new System.Drawing.Size(168, 22);
+            this.itmViaToken.Size = new System.Drawing.Size(180, 22);
             this.itmViaToken.Text = "Via Token";
             this.itmViaToken.Click += new System.EventHandler(this.ItmViaToken_Click);
             // 
@@ -99,7 +101,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmViaPlexTv.Name = "itmViaPlexTv";
             this.itmViaPlexTv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.itmViaPlexTv.Size = new System.Drawing.Size(168, 22);
+            this.itmViaPlexTv.Size = new System.Drawing.Size(180, 22);
             this.itmViaPlexTv.Text = "Via Plex.tv";
             this.itmViaPlexTv.Click += new System.EventHandler(this.ItmViaPlexTv_Click);
             // 
@@ -147,15 +149,16 @@ namespace PlexDL.UI.Forms
             this.itmLocalLink.Text = "Local Link";
             this.itmLocalLink.Click += new System.EventHandler(this.ItmLocalLink_Click);
             // 
-            // itmDisplay
+            // itmOptions
             // 
-            this.itmDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmClearServers,
-            this.itmRenderTokenColumn});
-            this.itmDisplay.Enabled = false;
-            this.itmDisplay.Name = "itmDisplay";
-            this.itmDisplay.Size = new System.Drawing.Size(57, 20);
-            this.itmDisplay.Text = "Display";
+            this.itmRenderTokenColumn,
+            this.itmForceHttps});
+            this.itmOptions.Enabled = false;
+            this.itmOptions.Name = "itmOptions";
+            this.itmOptions.Size = new System.Drawing.Size(61, 20);
+            this.itmOptions.Text = "Options";
             // 
             // itmClearServers
             // 
@@ -217,10 +220,18 @@ namespace PlexDL.UI.Forms
             this.dgvServers.AllowUserToAddRows = false;
             this.dgvServers.AllowUserToDeleteRows = false;
             this.dgvServers.AllowUserToOrderColumns = true;
+            this.dgvServers.AllowUserToResizeRows = false;
             this.dgvServers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvServers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            boolColour1.BoolColouringEnabled = false;
+            boolColour1.ColouringMode = PlexDL.Common.Components.Styling.BoolColourMode.BackColour;
+            boolColour1.FalseColour = System.Drawing.Color.DarkRed;
+            boolColour1.RelevantColumns = ((System.Collections.Generic.List<string>)(resources.GetObject("boolColour1.RelevantColumns")));
+            boolColour1.TrueColour = System.Drawing.Color.DarkGreen;
+            this.dgvServers.BoolColouringScheme = boolColour1;
             this.dgvServers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvServers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvServers.CellContentClickMessage = false;
             this.dgvServers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvServers.ContextMenuStrip = this.cxtServers;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -285,6 +296,14 @@ namespace PlexDL.UI.Forms
             this.lblViewingValue.Size = new System.Drawing.Size(24, 22);
             this.lblViewingValue.Text = "0/0";
             // 
+            // itmForceHttps
+            // 
+            this.itmForceHttps.CheckOnClick = true;
+            this.itmForceHttps.Name = "itmForceHttps";
+            this.itmForceHttps.Size = new System.Drawing.Size(191, 22);
+            this.itmForceHttps.Text = "Force HTTPS";
+            this.itmForceHttps.Click += new System.EventHandler(this.ItmForceHttps_Click);
+            // 
             // ServerManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,11 +351,12 @@ namespace PlexDL.UI.Forms
         private ToolStripMenuItem itmViewAccountToken;
         private FlatDataGridView dgvServers;
         private ToolStripMenuItem itmCopyServerToken;
-        private ToolStripMenuItem itmDisplay;
+        private ToolStripMenuItem itmOptions;
         private ToolStrip tsMain;
         private ToolStripStatusLabel lblAuthenticationStatus;
         private ToolStripSeparator sepAuthenticationStatus;
         private ToolStripLabel lblViewing;
         private ToolStripLabel lblViewingValue;
+        private ToolStripMenuItem itmForceHttps;
     }
 }
