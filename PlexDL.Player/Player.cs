@@ -7347,7 +7347,7 @@ namespace PlexDL.Player
             _display.Parent.BringToFront();
         }
 
-        private void FS_ResetDisplayParent()
+        public void FS_ResetDisplayParent()
         {
             try
             {
