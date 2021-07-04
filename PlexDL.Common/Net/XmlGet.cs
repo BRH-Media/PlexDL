@@ -10,6 +10,7 @@ using System.Threading;
 using System.Xml;
 using UIHelpers;
 
+// ReSharper disable RedundantIfElseBlock
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 // ReSharper disable InvertIf
 
@@ -26,18 +27,10 @@ namespace PlexDL.Common.Net
                 var uri = (string)e.Arguments[0];
 
                 //second argument is always whether or not to force a re-download
-                var forceNoCache = false;
+                var forceNoCache = (bool)e.Arguments[1];
 
                 //third argument is always whether or not to silence messages to the user
-                var silent = false;
-
-                //if specified, set forceNoCache
-                if (e.Arguments.Count > 1)
-                    forceNoCache = (bool)e.Arguments[1];
-
-                //if specified, set silent
-                if (e.Arguments.Count > 2)
-                    silent = (bool)e.Arguments[2];
+                var silent = (bool)e.Arguments[2];
 
                 //execute the download and return the result
                 e.Result = GetXmlTransaction(uri, forceNoCache, silent, false);
@@ -65,6 +58,7 @@ namespace PlexDL.Common.Net
 
             //check if it's already cached
             if (XmlCaching.XmlInCache(uri) && !forceNoCache)
+            {
                 try
                 {
                     //load from the cache
@@ -81,51 +75,57 @@ namespace PlexDL.Common.Net
                     //force a re-download
                     return GetXmlTransaction(uri, true, silent, false);
                 }
-
-            //default secret account token
-            var secret = !string.IsNullOrWhiteSpace(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken)
-                ? ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
-                : ObjectProvider.User.authenticationToken;
-
-            //allows specific server connection matching for the correct token
-            var uriToken = string.IsNullOrEmpty(secret)
-                ? Methods.MatchUriToToken(uri, ObjectProvider.PlexServers)
-                : secret;
-
-            //the API URI is combined with the token to yield the fully-qualified URI
-            var fullUri = $@"{uri}{uriToken}";
-
-            try
+            }
+            else
             {
-                //get the resource
-                var xmlString = ResourceGrab.GrabString(fullUri);
+                //default secret account token
+                var secret = !string.IsNullOrWhiteSpace(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken)
+                    ? ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
+                    : ObjectProvider.User.authenticationToken;
 
-                //validation
-                if (!string.IsNullOrWhiteSpace(xmlString))
+                //allows specific server connection matching for the correct token
+                var uriToken = string.IsNullOrEmpty(secret)
+                    ? Methods.MatchUriToToken(uri, ObjectProvider.PlexServers)
+                    : secret;
+
+                //the API URI is combined with the token to yield the fully-qualified URI
+                var fullUri = $@"{uri}{uriToken}";
+
+                try
                 {
-                    //conversion
-                    var xmlResponse = xmlString.ToXmlDocument();
+                    //get the resource
+                    var xmlString = ResourceGrab.GrabString(fullUri);
 
-                    //log outcome
-                    LoggingHelpers.RecordTransaction(fullUri, ResourceGrab.LastStatusCode);
+                    //validation
+                    if (!string.IsNullOrWhiteSpace(xmlString))
+                    {
+                        //conversion
+                        var xmlResponse = xmlString.ToXmlDocument();
 
-                    //ensure file is cached
-                    XmlCaching.XmlToCache(xmlResponse, uri);
+                        //log outcome
+                        LoggingHelpers.RecordTransaction(fullUri, ResourceGrab.LastStatusCode);
 
-                    //return XML document
-                    return xmlResponse;
+                        //ensure file is cached
+                        XmlCaching.XmlToCache(xmlResponse, uri);
+
+                        //return XML document
+                        return xmlResponse;
+                    }
                 }
-            }
-            catch (ThreadAbortException)
-            {
-                //literally nothing; this gets raised when a cancellation happens.
-            }
-            catch (Exception ex)
-            {
-                LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
-                LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
-                if (!silent)
-                    UIMessages.Error("Error Occurred in XML Transaction\n\n" + ex, @"Network Error");
+                catch (ThreadAbortException)
+                {
+                    //literally nothing; this gets raised when a cancellation happens.
+                }
+                catch (Exception ex)
+                {
+                    //log error
+                    LoggingHelpers.RecordException(ex.Message, "XMLTransactionError");
+                    LoggingHelpers.RecordTransaction(fullUri, "Undetermined");
+
+                    //show the user the error (if allowed)
+                    if (!silent)
+                        UIMessages.Error("Error Occurred in XML Transaction\n\n" + ex, @"Network Error");
+                }
             }
 
             //default
