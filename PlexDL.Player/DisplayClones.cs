@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -41,14 +44,17 @@
     Extension to file 'Player.cs'.
 
     Display Clones
-    Video Recorder
 
     ****************
+
+    Thanks!
 
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
@@ -56,7 +62,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -64,8 +70,8 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 
 #endregion
 
@@ -144,8 +150,10 @@ namespace PlexDL.Player
 
         private bool                    dc_IsDragging;
         internal Cursor                 dc_OldCursor;
-        private Form                    dc_DragForm;
-        private Point                   dc_OldLocation;
+#pragma warning disable CA2213 // Disposable fields should be disposed
+		private Form                    dc_DragForm;
+#pragma warning restore CA2213 // Disposable fields should be disposed
+		private Point                   dc_OldLocation;
 
         private object                  dc_Lock                     = new object();
 
@@ -326,7 +334,8 @@ namespace PlexDL.Player
                                     }
                                 }
                             }
-                            catch { /* ignore */ }
+                            catch { /* ignored */ }
+
                             dc_DisplayClones[i].Control = null;
                             dc_DisplayClones[i]         = null;
                         }
@@ -379,7 +388,7 @@ namespace PlexDL.Player
                                         }
                                         dc_DisplayClones[j].Control.Invalidate();
                                     }
-                                    catch { /* ignore */ }
+                                    catch { /* ignored */ }
 
                                     dc_DisplayClones[j].Control = null;
                                     dc_DisplayClones[j]         = null;
@@ -526,6 +535,11 @@ namespace PlexDL.Player
 
                         if (!_displayHold && dc_DisplayClones != null)
                         {
+                            while (dc_PaintBusy)
+                            {
+                                Thread.Sleep(5);
+                                Application.DoEvents();
+                            }
                             for (int i = 0; i < dc_DisplayClones.Length; i++)
                             {
                                 try
@@ -535,7 +549,7 @@ namespace PlexDL.Player
                                         dc_DisplayClones[i].Control.Invalidate();
                                     }
                                 }
-                                catch { /* ignore */ }
+                                catch { /* ignored */ }
                             }
                         }
 
@@ -557,7 +571,7 @@ namespace PlexDL.Player
                     int timeOut = DC_BUSY_TIME_OUT;
                     while (dc_PaintBusy && --timeOut > 0)
                     {
-                        Thread.Sleep(1);
+                        Thread.Sleep(5);
                         Application.DoEvents();
                     }
                     paused = true;
@@ -603,7 +617,7 @@ namespace PlexDL.Player
                 int timeOut = DC_BUSY_TIME_OUT;
                 while (dc_PaintBusy && --timeOut > 0)
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
                     Application.DoEvents();
                 }
             }
@@ -740,7 +754,7 @@ namespace PlexDL.Player
                         clone.Control.Region = update;
                     }
                 }
-                catch { /* ignore */ }
+                catch { /* ignored */ }
             }
         }
 
@@ -881,8 +895,6 @@ namespace PlexDL.Player
                 {
                     try
                     {
-                        int transparentColor = ColorTranslator.ToWin32(_overlay.TransparencyKey);
-
                         // create a 'screencopy' in backBuffer
                         if (!_hasVideo || _overlayMode == OverlayMode.Display)
                         {
@@ -921,50 +933,17 @@ namespace PlexDL.Player
 
                         if (_overlay.Opacity == 1 || _overlayBlend == OverlayBlend.None)
                         {
-                            SafeNativeMethods.TransparentBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, transparentColor);
+                            //SafeNativeMethods.TransparentBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, transparentColor);
+                            SafeNativeMethods.TransparentBlt(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, ColorTranslator.ToWin32(_overlay.TransparencyKey));
                         }
                         else
                         {
-                            // can't get AlphaBlend to work as form opacity
-
-                            //Bitmap backBuffer = new Bitmap(sourceRect.Width, sourceRect.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-                            //Graphics g = Graphics.FromImage(backBuffer);
-
-                            ////SolidBrush b = new SolidBrush(Color.FromArgb(255, 255, 0, 0));
-                            ////g.FillRectangle(b, 0, 0, 200, 200);
-                            ////b.Dispose();
-
-                            //IntPtr gHdc = g.GetHdc();
-
-                            ////transparentColor = ColorTranslator.ToWin32(Color.Black);
-                            //SafeNativeMethods.TransparentBlt(gHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, transparentColor);
-                            ////SafeNativeMethods.BitBlt(gHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, SafeNativeMethods.SRCCOPY);
-                            ////backBuffer.MakeTransparent(backBuffer.GetPixel(1,1));
-
-                            ////Color c = backBuffer.GetPixel(1, 1);
-                            ////MessageBox.Show(c.ToString());
-
-                            ////g.ReleaseHdc(gHdc);
-                            ////SolidBrush b2 = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
-                            ////g.FillRectangle(b2, 0, 0, 100, 100);
-                            ////b2.Dispose();
-                            ////gHdc = g.GetHdc();
-
-                            //dc_BlendFunction.SourceConstantAlpha = (byte)(_overlay.Opacity * 0xFF);
-                            //dc_BlendFunction.AlphaFormat = 0;
-                            //SafeNativeMethods.AlphaBlend(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, gHdc, 0, 0, _overlay.Width, _overlay.Height, dc_BlendFunction);
-
-                            //g.ReleaseHdc(gHdc);
-                            //g.Dispose();
-
-                            //backBuffer.Dispose();
-
                             _blendFunction.SourceConstantAlpha = (byte)(_overlay.Opacity * 0xFF);
                             SafeNativeMethods.AlphaBlend(sourceHdc, 0, 0, sourceRect.Width, sourceRect.Height, tempHdc, 0, 0, _overlay.Width, _overlay.Height, _blendFunction);
                         }
 
                         tempGraphics.ReleaseHdc(tempHdc);
-                        tempGraphics.Dispose();
+						tempGraphics.Dispose();
                         tempGraphics = null;
 
                         sourceRect.X = 0;
@@ -1050,16 +1029,19 @@ namespace PlexDL.Player
                             {
                                 dc_DisplayClones[i].Refresh = false;
 
+#pragma warning disable CA1806 // Do not ignore method results
+
                                 // set quality
                                 if (dc_DisplayClones[i].Quality != CloneQuality.Normal)
                                 {
                                     if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
                                     {
                                         if (destRect.Width < sourceRect.Width || destRect.Height < sourceRect.Height)
-                                            SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
-                                    }
+											SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+									}
                                     else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
                                 }
+#pragma warning restore CA1806 // Do not ignore method results
 
                                 if (flipMode == CloneFlip.FlipNone)
                                 {
@@ -1107,16 +1089,18 @@ namespace PlexDL.Player
                                         dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[] { i });
                                     }
 
+#pragma warning disable CA1806 // Do not ignore method results
                                     // set quality
                                     if (dc_DisplayClones[i].Quality != CloneQuality.Normal)
                                     {
                                         if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
                                         {
                                             if (dc_RefreshRect.Width < sourceRect.Width || dc_RefreshRect.Height < sourceRect.Height)
-                                                SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
-                                        }
+												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+										}
                                         else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
                                     }
+#pragma warning restore CA1806 // Do not ignore method results
 
                                     if (flipMode == CloneFlip.FlipNone)
                                     {
@@ -1157,16 +1141,18 @@ namespace PlexDL.Player
                                         dc_DisplayClones[i].Control.Invoke(dc_RefreshCallback, new object[] { i });
                                     }
 
+#pragma warning disable CA1806 // Do not ignore method results
                                     // set quality
                                     if (dc_DisplayClones[i].Quality != CloneQuality.Normal)
                                     {
                                         if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
                                         {
                                             if (dc_RefreshRect.Width < sourceRect.Width || dc_RefreshRect.Height < sourceRect.Height)
-                                                SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
-                                        }
+												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+										}
                                         else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
                                     }
+#pragma warning restore CA1806 // Do not ignore method results
 
                                     if (flipMode == CloneFlip.FlipNone)
                                     {
@@ -1206,11 +1192,11 @@ namespace PlexDL.Player
                     }
 
                     if (destGraphics != null)
-                    {
-                        if (destHdc != IntPtr.Zero) destGraphics.ReleaseHdc(destHdc);
-                        destGraphics.Dispose();
-                    }
-                }
+					{
+						if (destHdc != IntPtr.Zero) destGraphics.ReleaseHdc(destHdc);
+						destGraphics.Dispose();
+					}
+				}
 
                 #endregion
 
@@ -1234,7 +1220,7 @@ namespace PlexDL.Player
             {
                 dc_DisplayClones[index].Control.Invalidate(dc_RefreshRegion);
             }
-            catch { /* ignore */ }
+            catch { /* ignored */ }
         }
 
         #endregion

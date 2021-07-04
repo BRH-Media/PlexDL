@@ -74,6 +74,32 @@ namespace PlexDL.Player
         }
 
         /// <summary>
+        /// Occurs when the player's chapter repeat setting has changed.
+        /// </summary>
+        public event EventHandler MediaChapterRepeatChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaChapterRepeatChanged += value;
+            }
+            remove { _base._mediaChapterRepeatChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when a chapter playback has ended and is repeated.
+        /// </summary>
+        public event EventHandler MediaChapterRepeated
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaChapterRepeated += value;
+            }
+            remove { _base._mediaChapterRepeated -= value; }
+        }
+
+        /// <summary>
         /// Occurs when media starts playing.
         /// </summary>
         public event EventHandler MediaStarted
@@ -84,6 +110,19 @@ namespace PlexDL.Player
                 _base._mediaStarted += value;
             }
             remove { _base._mediaStarted -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when a new chapter starts playing or when chapter playback has ended before media playback has ended.
+        /// </summary>
+        public event EventHandler<ChapterStartedEventArgs> MediaChapterStarted
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaChapterStarted += value;
+            }
+            remove { _base._mediaChapterStarted -= value; }
         }
 
         /// <summary>
@@ -243,7 +282,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Occurs when the videobounds of the video on the player's display window have changed (by using VideoBounds, VideoZoom or VideoMove options).
+        /// Occurs when the videobounds of the video on the player's display window have changed (by using the player's VideoBounds, Video Zoom, etc. options).
         /// </summary>
         public event EventHandler MediaVideoBoundsChanged
         {
@@ -253,6 +292,45 @@ namespace PlexDL.Player
                 _base._mediaVideoBoundsChanged += value;
             }
             remove { _base._mediaVideoBoundsChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video aspect ratio has changed.
+        /// </summary>
+        public event EventHandler MediaVideoAspectRatioChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaVideoAspectRatioChanged += value;
+            }
+            remove { _base._mediaVideoAspectRatioChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video View3D setting has changed.
+        /// </summary>
+        public event EventHandler MediaVideo3DViewChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaVideoView3DChanged += value;
+            }
+            remove { _base._mediaVideoView3DChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the player's video crop setting has changed (by using the Video Crop option).
+        /// </summary>
+        public event EventHandler MediaVideoCropChanged
+        {
+            add
+            {
+                _base._lastError = Player.NO_ERROR;
+                _base._mediaVideoCropChanged += value;
+            }
+            remove { _base._mediaVideoCropChanged -= value; }
         }
 
         /// <summary>
@@ -560,43 +638,69 @@ namespace PlexDL.Player
             remove { _base._mediaWebcamFormatChanged -= value; }
         }
 
+        ///// <summary>
+        ///// Occurs when the player's video recorder starts recording.
+        ///// </summary>
+        //public event EventHandler MediaRecorderStarted
+        //{
+        //    add
+        //    {
+        //        _base._lastError = Player.NO_ERROR;
+        //        _base._mediaRecorderStarted += value;
+        //    }
+        //    remove { _base._mediaRecorderStarted -= value; }
+        //}
+
+        ///// <summary>
+        ///// Occurs when the player's video recorder stops recording.
+        ///// </summary>
+        //public event EventHandler MediaRecorderStopped
+        //{
+        //    add
+        //    {
+        //        _base._lastError = Player.NO_ERROR;
+        //        _base._mediaRecorderStopped += value;
+        //    }
+        //    remove { _base._mediaRecorderStopped -= value; }
+        //}
+
+        ///// <summary>
+        ///// Occurs when the player's video recorder pause mode is activated (recording is paused) or deactivated (recording is resumed).
+        ///// </summary>
+        //public event EventHandler MediaRecorderPausedChanged
+        //{
+        //    add
+        //    {
+        //        _base._lastError = Player.NO_ERROR;
+        //        _base._mediaRecorderPausedChanged += value;
+        //    }
+        //    remove { _base._mediaRecorderPausedChanged -= value; }
+        //}
+
         /// <summary>
-        /// Occurs when the player's video recorder starts recording.
+        /// Occurs when the player's webcam recorder starts recording.
         /// </summary>
-        public event EventHandler MediaRecorderStarted
+        public event EventHandler MediaWebcamRecorderStarted
         {
             add
             {
                 _base._lastError = Player.NO_ERROR;
-                _base._mediaRecorderStarted += value;
+                _base._mediaWebcamRecorderStarted += value;
             }
-            remove { _base._mediaRecorderStarted -= value; }
+            remove { _base._mediaWebcamRecorderStarted -= value; }
         }
 
         /// <summary>
-        /// Occurs when the player's video recorder stops recording.
+        /// Occurs when the player's webcam recorder stops recording.
         /// </summary>
-        public event EventHandler MediaRecorderStopped
+        public event EventHandler MediaWebcamRecorderStopped
         {
             add
             {
                 _base._lastError = Player.NO_ERROR;
-                _base._mediaRecorderStopped += value;
+                _base._mediaWebcamRecorderStopped += value;
             }
-            remove { _base._mediaRecorderStopped -= value; }
-        }
-
-        /// <summary>
-        /// Occurs when the player's video recorder pause mode is activated (recording is paused) or deactivated (recording is resumed).
-        /// </summary>
-        public event EventHandler MediaRecorderPausedChanged
-        {
-            add
-            {
-                _base._lastError = Player.NO_ERROR;
-                _base._mediaRecorderPausedChanged += value;
-            }
-            remove { _base._mediaRecorderPausedChanged -= value; }
+            remove { _base._mediaWebcamRecorderStopped -= value; }
         }
     }
 }

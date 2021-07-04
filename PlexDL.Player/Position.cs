@@ -224,9 +224,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Changes the playback position of the playing media in any direction by the given amount of video frames. The result can differ from the specified value.
+        /// Changes the playback position of the playing media in any direction by the given amount of video frames. The result can differ from the specified value. See also: Player.Position.StepEnd.
         /// </summary>
-        /// <param name="frames">The amount of frames to step (use a negative value to step backwards).</param>
+        /// <param name="frames">The number of frames to step. Use a negative value to step backwards.</param>
         public int Step(int frames)
         {
             if (!_base._fileMode || !_base._playing)
@@ -261,5 +261,15 @@ namespace PlexDL.Player
             }
         }
 
+        /// <summary>
+        /// Restores the player's video image after using the Player.Position.Step method while the player is paused (step-end playback recovery).
+        /// </summary>
+        public int StepEnd()
+        {
+            if (_base._stepMode && _base._hasVideo && _base._paused) _base.AV_UpdateTopology();
+
+            _base._lastError = Player.NO_ERROR;
+            return Player.NO_ERROR;
+        }
     }
 }

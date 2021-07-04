@@ -3,21 +3,21 @@ using System.Windows.Forms;
 
 namespace PlexDL.Player
 {
-    internal sealed class MFCallback : IMFAsyncCallback
+    internal sealed class MF_PlayerCallBack : IMFAsyncCallback
     {
-        private Player              _basePlayer;
+        private Player              _base;
         private delegate void       EndOfMediaDelegate();
         private EndOfMediaDelegate  CallEndOfMedia;
 
-        public MFCallback(Player player)
+        public MF_PlayerCallBack(Player player)
         {
-            _basePlayer     = player;
-            CallEndOfMedia  = new EndOfMediaDelegate(_basePlayer.AV_EndOfMedia);
+            _base           = player;
+            CallEndOfMedia  = new EndOfMediaDelegate(_base.AV_EndOfMedia);
         }
 
         public void Dispose()
         {
-            _basePlayer     = null;
+            _base           = null;
             CallEndOfMedia  = null;
         }
 
@@ -36,20 +36,20 @@ namespace PlexDL.Player
 
             try
             {
-                _basePlayer.mf_MediaSession.EndGetEvent(result, out mediaEvent);
+                _base.mf_MediaSession.EndGetEvent(result, out mediaEvent);
                 mediaEvent.GetType(out mediaEventType);
                 mediaEvent.GetStatus(out HResult errorCode);
 
-                if (_basePlayer._playing)
+                if (_base._playing)
                 {
                     if (mediaEventType == MediaEventType.MEError
-                        || (_basePlayer._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
-                        || (_basePlayer._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
+                        || (_base._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
+                        || (_base._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
                         //if (errorCode < 0)
                     {
-                        _basePlayer._lastError = errorCode;
-                        errorCode = Player.NO_ERROR;
-                        getNext = false;
+                        _base._lastError    = errorCode;
+                        errorCode           = Player.NO_ERROR;
+                        getNext             = false;
                     }
 
                     if (errorCode >= 0)
@@ -58,35 +58,35 @@ namespace PlexDL.Player
                         {
                             if (getNext)
                             {
-                                _basePlayer._lastError = Player.NO_ERROR;
-                                if (!_basePlayer._repeat) getNext = false;
+                                _base._lastError = Player.NO_ERROR;
+                                if (!_base._repeat && !_base._chapterMode) getNext = false;
                             }
 
-                            Control control = _basePlayer._display;
+                            Control control = _base._display;
                             if (control == null)
                             {
                                 FormCollection forms = Application.OpenForms;
                                 if (forms != null && forms.Count > 0) control = forms[0];
                             }
                             if (control != null) control.BeginInvoke(CallEndOfMedia);
-                            else _basePlayer.AV_EndOfMedia();
+                            else _base.AV_EndOfMedia();
                         }
                     }
-                    else _basePlayer._lastError = errorCode;
+                    else _base._lastError = errorCode;
                 }
-                else _basePlayer._lastError = errorCode;
+                else _base._lastError = errorCode;
             }
             finally
             {
-                if (getNext && mediaEventType != MediaEventType.MESessionClosed) _basePlayer.mf_MediaSession.BeginGetEvent(this, null);
+                if (getNext && mediaEventType != MediaEventType.MESessionClosed) _base.mf_MediaSession.BeginGetEvent(this, null);
                 if (mediaEvent != null) Marshal.ReleaseComObject(mediaEvent);
 
-                if (_basePlayer.mf_AwaitCallback)
+                if (_base.mf_AwaitCallBack)
                 {
-                    _basePlayer.mf_AwaitCallback = false;
-                    _basePlayer.WaitForEvent.Set();
+                    _base.mf_AwaitCallBack = false;
+                    _base.WaitForEvent.Set();
                 }
-                _basePlayer.mf_AwaitDoEvents = false;
+                _base.mf_AwaitDoEvents = false;
             }
             return 0;
         }

@@ -10,8 +10,12 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class VideoColorEventArgs : HideObjectEventArgs
     {
+        #region Fields (VideoColorEventArgs)
+
         internal VideoColorAttribute _colorAttribute;
         internal double              _colorValue;
+
+        #endregion
 
         internal VideoColorEventArgs(VideoColorAttribute attribute, double value)
         {

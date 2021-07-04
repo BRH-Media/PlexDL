@@ -75,6 +75,8 @@ namespace PlexDL.Player
             return newP;
         }
 
+#pragma warning disable CA1822 // Mark members as static
+
         /// <summary>
         /// Returns the slider value at the specified location on the specified slider (trackbar).
         /// </summary>
@@ -95,5 +97,7 @@ namespace PlexDL.Player
         {
             return PlexDL.Player.SliderValue.FromPoint(slider, x, y);
         }
+
+#pragma warning restore CA1822 // Mark members as static
     }
 }

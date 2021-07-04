@@ -39,17 +39,14 @@ namespace PlexDL.Player
                 {
                     if (_base._hasPositionSlider)
                     {
-                        _base._timer.Stop();
+                        if (_base._psTimer != null) _base._timer.Stop();
 
                         _base._positionSlider.MouseDown -= _base.PositionSlider_MouseDown;
-                        //_base._positionSlider.MouseUp -= _base.PositionSlider_MouseUp;
-                        //_base._positionSlider.MouseMove -= _base.PositionSlider_MouseMove;
                         _base._positionSlider.Scroll -= _base.PositionSlider_Scroll;
                         _base._positionSlider.MouseWheel -= _base.PositionSlider_MouseWheel;
-
                         _base._positionSlider = null;
-                        _base._hasPositionSlider = false;
 
+                        _base._hasPositionSlider = false;
                         _base._psTracking = false;
                         _base._psValue = 0;
                         _base._psBusy = false;
@@ -76,17 +73,12 @@ namespace PlexDL.Player
 
                         // add events
                         _base._positionSlider.MouseDown += _base.PositionSlider_MouseDown;
-                        //_base._positionSlider.MouseUp += _base.PositionSlider_MouseUp;
-                        //_base._positionSlider.MouseMove += _base.PositionSlider_MouseMove;
                         _base._positionSlider.Scroll += _base.PositionSlider_Scroll;
                         _base._positionSlider.MouseWheel += _base.PositionSlider_MouseWheel;
 
                         if (!_base._playing) _base._positionSlider.Enabled = false;
 
-                        _base._psTimer = new Timer
-                        {
-                            Interval = 100
-                        };
+                        _base._psTimer = new Timer { Interval = 100 };
                         _base._psTimer.Tick += _base.PositionSlider_TimerTick;
                     }
                     _base.StartMainTimerCheck();
@@ -96,7 +88,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the mode (track or progress) of the player's position slider (default: PositionSliderMode.Track).
+        /// Gets or sets the mode (track or progress) of the player's position slider (default: PositionSliderMode.Progress).
         /// </summary>
         public PositionSliderMode Mode
         {
@@ -115,14 +107,14 @@ namespace PlexDL.Player
         private void SetPositionSliderMode(bool progressMode)
         {
             _base._psHandlesProgress = progressMode;
-            if (_base._hasPositionSlider)
+            if (_base._hasPositionSlider && _base._playing)
             {
                 if (_base._psHandlesProgress)
                 {
                     _base._positionSlider.Minimum = (int)(_base._startTime * Player.TICKS_TO_MS);
                     _base._positionSlider.Maximum = _base._stopTime == 0 ? (_base._mediaLength == 0 ? 10 : (int)(_base._mediaLength * Player.TICKS_TO_MS)) : (int)(_base._stopTime * Player.TICKS_TO_MS);
 
-                    if (_base._playing)
+                    //if (_base._playing)
                     {
                         int pos = (int)(_base.PositionX * Player.TICKS_TO_MS);
                         if (pos < _base._positionSlider.Minimum) _base._positionSlider.Value = _base._positionSlider.Minimum;
@@ -190,6 +182,32 @@ namespace PlexDL.Player
                 _base._psSilentSeek = value;
                 _base._lastError = Player.NO_ERROR;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the thumb of the slider can be immediately dragged when the mouse is clicked anywhere on the slider (default: true).  
+        /// </summary>
+        public bool ClickAndDrag
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base._psClickAndDrag;
+            }
+            set
+            {
+                _base._psClickAndDrag = value;
+                _base._lastError = Player.NO_ERROR;
+            }
+        }
+
+        /// <summary>
+        /// Removes control by the player of the media playback position slider.
+        /// </summary>
+        public int Remove()
+        {
+            TrackBar = null;
+            return (int)_base._lastError;
         }
     }
 }

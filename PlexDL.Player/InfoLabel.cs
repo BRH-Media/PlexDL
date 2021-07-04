@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -41,10 +44,14 @@
 
     ****************
 
+    Thanks!
+
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
@@ -52,7 +59,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -122,8 +129,15 @@ namespace PlexDL.Player
 
             internal sealed class DisplayLabel : Label
             {
-                // Prevent mouseclick activation / detection
-                protected override void WndProc(ref Message m)
+
+				protected override void OnPaint(PaintEventArgs e)
+				{
+                    //e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                    base.OnPaint(e);
+				}
+
+				// Prevent mouseclick activation / detection
+				protected override void WndProc(ref Message m)
                 {
                     const int WM_MOUSEACTIVATE = 0x0021;
                     const int MA_NOACTIVATEANDEAT = 0x0004;
@@ -265,9 +279,11 @@ namespace PlexDL.Player
         private int             il_TextMarginsHeight        = IL_TEXT_MARGIN_TOP + IL_TEXT_MARGIN_BOTTOM;
 
         private Control         il_Control;
-        private Form            il_BaseForm;
+#pragma warning disable CA2213 // Disposable fields should be disposed
+		private Form            il_BaseForm;
+#pragma warning restore CA2213 // Disposable fields should be disposed
 
-        private Size            il_OldTextSize              = Size.Empty;
+		private Size            il_OldTextSize              = Size.Empty;
         private Color           il_OldBackColor;
         private Image           il_OldImage;
 
@@ -319,7 +335,8 @@ namespace PlexDL.Player
                         il_InfoForm.Visible = false;
                         il_InfoForm.Dispose();
                     }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
+
                     il_InfoForm = null;
                 }
 
@@ -332,7 +349,8 @@ namespace PlexDL.Player
                         il_BaseForm.Deactivate -= BaseForm_HideLabel;
                         il_BaseForm.Move -= BaseForm_HideLabel;
                     }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
+
                     il_BaseForm = null;
                 }
             }
@@ -438,7 +456,8 @@ namespace PlexDL.Player
                     il_BaseForm.Deactivate -= BaseForm_HideLabel;
                     il_BaseForm.Move -= BaseForm_HideLabel;
                 }
-                catch { /* ignore */ }
+                catch { /* ignored */ }
+
                 il_BaseForm = null;
             }
         }
@@ -503,8 +522,9 @@ namespace PlexDL.Player
         /// <param name="duration">The duration, in milliseconds, to display the infolabel.</param>
         public int Show(string text, Control control, Point location, ContentAlignment alignment, int duration)
         {
-            HResult result = HResult.S_OK;
+            if (control == null) return (int)HResult.E_INVALIDARG;
 
+            HResult result = HResult.S_OK;
             if (!il_Busy)
             {
                 il_Busy = true;
@@ -595,7 +615,8 @@ namespace PlexDL.Player
                                 il_BaseForm.Deactivate  -= BaseForm_HideLabel;
                                 il_BaseForm.Move        -= BaseForm_HideLabel;
                             }
-                            catch { /* ignore */ }
+                            catch { /* ignored */ }
+
                             il_BaseForm = null;
                         }
                         if (form != null)
@@ -845,7 +866,7 @@ namespace PlexDL.Player
                         il_InfoForm.Label.Font = value;
                         if (il_InfoForm.Label.AutoSize) SetSize();
                     }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
                 }
             }
         }
@@ -866,7 +887,7 @@ namespace PlexDL.Player
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font.FontFamily, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch { /* ignore */ }
+                catch { /* ignored */ }
             }
         }
 
@@ -883,7 +904,7 @@ namespace PlexDL.Player
                     il_InfoForm.Label.Font = new Font(il_InfoForm.Label.Font, value);
                     if (il_InfoForm.Label.AutoSize) SetSize();
                 }
-                catch { /* ignore */ }
+                catch { /* ignored */ }
             }
         }
 
@@ -911,7 +932,7 @@ namespace PlexDL.Player
                         il_InfoForm.ForeColor = value;
                         if (il_InfoForm.Visible) il_InfoForm.Invalidate();
                     }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
                 }
             }
         }
@@ -962,7 +983,7 @@ namespace PlexDL.Player
                             il_InfoForm.BackMode = InfoForm.BackgroundMode.Solid;
                         }
                     }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
                 }
                 if (il_InfoForm.Visible) il_InfoForm.Invalidate();
             }

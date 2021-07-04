@@ -5,11 +5,13 @@ using System.Security;
 namespace PlexDL.Player
 {
     [StructLayout(LayoutKind.Explicit)]
+#pragma warning disable CA1060 // Move pinvokes to native methods class
     internal class PropVariant : ConstPropVariant
+#pragma warning restore CA1060 // Move pinvokes to native methods class
     {
         #region Declarations
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("ole32.dll", ExactSpelling = true, PreserveSig = false), SuppressUnmanagedCodeSecurity]
         protected static extern void PropVariantClear([In, MarshalAs(UnmanagedType.LPStruct)] PropVariant pvar);
 
@@ -164,7 +166,9 @@ namespace PlexDL.Player
             Clear();
             if (disposing)
             {
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
                 GC.SuppressFinalize(this);
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
             }
         }
 

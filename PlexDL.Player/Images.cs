@@ -118,7 +118,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the image on the player's display will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. Same as: Player.Display.Hold. See also: Player.Image.HoldClear.
+        /// Gets or sets a value that indicates whether the image will be retained on the player's display window after it has finished playing (default: false). Can be used to smooth the transition between images. If set to true, the value must be reset to false when all media playback is complete to clear the display. Same as Player.Display.Hold. See also: Player.Images.HoldClear.
         /// </summary>
         public bool Hold
         {
@@ -139,7 +139,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Clears the player's display when the Player.Image.Hold option is enabled and no media is playing. Same as 'Player.Image.Hold = false' but does not disable the Player.Image.Hold option. Same as: Player.Display.HoldClear. See also: Player.Image.Hold.
+        /// Clears the player's display when the Player.Image.Hold option is enabled and no media is playing. Same as: Player.Display.HoldClear. See also: Player.Image.Hold.
         /// </summary>
         public int HoldClear()
         {

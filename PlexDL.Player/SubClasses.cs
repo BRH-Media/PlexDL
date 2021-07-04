@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -51,9 +54,12 @@
     Audio Input Device Class
     Slider Value Class
     Metadata Class
-    Media Chapter Class
-    Clone Properties Class
-    MF Callback Class
+    Media Chapters Class
+    Display Clone Properties Class
+    OverlayForm Class
+    OverlayLabel Class
+
+    Player MF Callback Class
     Hide System Object Members Classes
 
     Grouping Classes Player
@@ -67,6 +73,8 @@
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
 
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
+
     Special thanks to the creators of Media Foundation .NET for their great library!
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
@@ -74,7 +82,7 @@
     Thank you very much, Sean and Deeksha!
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -100,7 +108,7 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
 
-    // ******************************** Device Info Class
+    // ******************************** Device Info Class (Abstract Class)
 
     #region Device Info Class
 
@@ -212,20 +220,35 @@ namespace PlexDL.Player
     #endregion
 
 
-    // ******************************** Player MF Callback Class
+	// ******************************** OverlayForm Class
 
-    #region Player MF Callback Class
-
-    // Media Foundation Callback Class
+	#region OverlayForm Class
 
     #endregion
 
 
-    // ******************************** Hide System Object Members Classes
+    // ******************************** OverlayLabel Class
 
-    #region  Hide System Object Members Classes
+    #region OverlayLabel Class
 
     #endregion
+
+
+    // ******************************** Player MF CallBack Class
+
+    #region Player MF CallBack Class
+
+    // Media Foundation Player CallBack Class
+
+    #endregion
+
+
+	// ******************************** Hide System Object Members Classes
+
+	#region  Hide System Object Members Classes
+
+    #endregion
+
 
 
     // ******************************** Player Grouping Classes
@@ -246,7 +269,7 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region Display Class
+	#region Display Class
 
     #endregion
 
@@ -814,11 +837,15 @@ namespace PlexDL.Player
                     clone.HasShape = true;
 
                     if (oldRegion != null) oldRegion.Dispose();
-                    while (_base.dc_PaintBusy) ;
+                    //while (_base.dc_PaintBusy)
+                    //{
+                    //    System.Threading.Thread.Sleep(1);
+                    //    Application.DoEvents();
+                    //}
                     clone.Control.Invalidate();
                 }
             }
-            catch { /* ignore */ }
+            catch { /* ignored */ }
         }
 
         private int GetCloneIndex(Control clone)
@@ -838,7 +865,6 @@ namespace PlexDL.Player
             _base._lastError = index == -1 ? HResult.E_INVALIDARG : Player.NO_ERROR;
             return index;
         }
-
     }
 
     #endregion
@@ -904,7 +930,8 @@ namespace PlexDL.Player
             get
             {
                 _base._lastError = Player.NO_ERROR;
-                return _base.Subtitles_Exists() != string.Empty;
+                //return _base.Subtitles_Exists() != string.Empty;
+                return _base.Subtitles_Exists().Length > 0;
             }
         }
 
@@ -1047,7 +1074,7 @@ namespace PlexDL.Player
             }
             set
             {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                _base._lastError = HResult.E_INVALIDARG;
                 if (!string.IsNullOrWhiteSpace(value) && System.IO.Directory.Exists(value))
                 {
                     try
@@ -1201,6 +1228,10 @@ namespace PlexDL.Player
 
     #endregion
 
+    #region Chapters Class
+
+    #endregion
+
     #region Images Class
 
     #endregion
@@ -1213,7 +1244,15 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region Speed Class
+	#region Speed Class
+
+    #endregion
+
+	#region Network Class
+
+    #endregion
+
+    #region DragAndDrop Class
 
     #endregion
 
@@ -1221,448 +1260,523 @@ namespace PlexDL.Player
 
     #endregion
 
+    /*
 
     // ******************************** Video Recorder Class
 
-//    /// <summary>
-//    /// Represents a video recorder that can be used to store video images in a file.
-//    /// </summary>
-//    [CLSCompliant(true)]
-//    [EditorBrowsable(EditorBrowsableState.Never)]
-//    public sealed class VideoRecorder : HideObjectMembers
-//    {
-//        #region Fields (Video Recorder Class)
-
-//        // Constants
-//        private const int       BUSY_TIME_OUT           = 1000;
-//        private const int       DEFAULT_FRAME_RATE      = 15;
-//        private const bool      DEFAULT_SHOW_OVERLAY    = true;
-
-//        // Base Player
-//        private Player          _base;
-//        private bool            _basePaused;
-
-//        // Recorder Type
-//        private bool            _webcam;
-
-//        // Timer
-//        private volatile System.Threading.Timer
-//                                _timer;
-//        private volatile int    _timerInterval;
-//        private volatile bool   _timerRestart;
-//        private volatile bool   _timerBusy;
-
-//        // Buffers
-//        private IMFMediaBuffer  _mediaBuffer;
-//        private Bitmap          _bitmapBuffer;
-
-//        // Sink Writer
-//        private IMFSinkWriter   _sinkwriter;
-
-//        // Recorder Settings
-//        private int             _frameRate              = DEFAULT_FRAME_RATE;
-//        private bool            _showOverlay            = DEFAULT_SHOW_OVERLAY;
-
-//        internal bool           _recording;
-//        private bool            _paused;
-
-//        #endregion
-
-
-//        internal VideoRecorder(Player player, bool webCam)
-//        {
-//            _base = player;
-//            _webcam = webCam;
-//        }
-
-//        public int Start(string fileName)
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        public int Start(string fileName, int frameRate)
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        public int Start(string fileName, bool showOverlay)
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        public int Start(string fileName, int frameRate, bool showOverlay)
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public int Pause()
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public int Resume()
-//        {
-//            return (int)_base._lastError;
-//        }
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public int Stop()
-//        {
-//            if (_recording)
-//            {
-//                _base.Events.MediaPausedChanged -= BasePlayer_MediaPausedChanged;
-//                _base.Events.MediaEndedNotice -= BasePlayer_MediaEndedNotice;
-
-//                // stop timer etc.
-
-//                _recording = false;
-//                _paused = false;
-//            }
-//            return (int)_base._lastError;
-//        }
-
-//        /// <summary>
-//        /// Gets or sets the number of video frames to record per second. Values from 0 to 60 (default: 15).
-//        /// </summary>
-//        public int FrameRate
-//        {
-//            get
-//            {
-//                return _frameRate;
-//            }
-//            set
-//            {
-//            }
-
-//        }
-
-//        /// <summary>
-//        /// Gets or sets a value that indicates whether display overlays (if any) are also recorded (default: true).
-//        /// </summary>
-//        public bool ShowOverlay
-//        {
-//            get
-//            {
-//                return _showOverlay;
-//            }
-//            set
-//            {
-//            }
-//        }
-
-//        // ********
-
-//        private int StartRecording()
-//        {
-//            // create timer etc.
-
-//            _base.Events.MediaPausedChanged += BasePlayer_MediaPausedChanged;
-//            _base.Events.MediaEndedNotice += BasePlayer_MediaEndedNotice;
-
-//            return (int)_base._lastError;
-//        }
-
-//        private void BasePlayer_MediaPausedChanged(object sender, EventArgs e)
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        private void BasePlayer_MediaEndedNotice(object sender, EndedEventArgs e)
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        private HResult Recorder_Init()
-//        {
-//            if (!_base._hasVideo || (_webcam && !_base._webcamMode)) return HResult.MF_E_NOT_AVAILABLE;
-
-//            HResult result = Player.NO_ERROR;
-
-//            // create even size
-//            int width = _base._videoBoundsClip.Width % 2 == 0 ? _base._videoBoundsClip.Width : _base._videoBoundsClip.Width - 1;
-//            int height = _base._videoBoundsClip.Height % 2 == 0 ? _base._videoBoundsClip.Height : _base._videoBoundsClip.Height - 1;
-//            if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
-//            {
-//                width = _base._display.DisplayRectangle.Width;
-//                height = _base._display.DisplayRectangle.Height;
-//                if (width == height)
-//                {
-//                    if (width != _base._display.DisplayRectangle.Width) width += 2;
-//                    else if (height != _base._display.DisplayRectangle.Height) height += 2;
-//                    else height -= 2;
-//                }
-//            }
-//            else if (width == height)
-//            {
-//                if (width != _base._videoBoundsClip.Width) width += 2;
-//                else if (height != _base._videoBoundsClip.Height) height += 2;
-//                else height -= 2;
-//            }
-
-//            // create buffer
-//            // add pixel depth
-
-//            //result = MFExtern.MFCreateMemoryBuffer(bufferSize, out wr_MediaBuffer);
-//            if (result == Player.NO_ERROR)
-//            {
-//            }
-
-
-//            return result;
-//        }
-
-//        #region Recorder - Timer Start / Stop
-
-//        private void Recorder_StartTimer()
-//        {
-//            if (_timer == null)
-//            {
-//                _timerRestart = true;
-//                _timer = new System.Threading.Timer(Recorder_Callback, null, 0, System.Threading.Timeout.Infinite);
-//            }
-//        }
-
-//        private void Recorder_StopTimer()
-//        {
-//            if (_timer != null)
-//            {
-//                _timerRestart = false;
-//                _timer.Dispose();
-//                _timer = null;
-
-//                int timeOut = BUSY_TIME_OUT;
-//                while (_timerBusy && --timeOut > 0)
-//                {
-//                    System.Threading.Thread.Sleep(1);
-//                    Application.DoEvents();
-//                }
-//            }
-//        }
-
-//        #endregion
-
-//        private IMFSinkWriter CreateSinkWriter(string fileName, int width, int height)
-//        {
-//            const int VIDEO_BIT_RATE = 800000;
-
-//            int streamIndex = 0;
-
-//            HResult result = MFExtern.MFCreateSinkWriterFromURL(fileName, null, null, out IMFSinkWriter sinkWriter);
-//            if (result == Player.NO_ERROR)
-//            {
-//                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeOut);
-//                if (result == Player.NO_ERROR)
-//                {
-//                    result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
-//                    if (result == Player.NO_ERROR)
-//                    {
-//                        // if changing the encoder also change the file extension (IMAGES_FILE_EXTENSION)
-//                        result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
-//                        if (result == Player.NO_ERROR)
-//                        {
-//                            result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
-//                            if (result == Player.NO_ERROR)
-//                            {
-//                                result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
-//                                if (result == Player.NO_ERROR)
-//                                {
-//                                    result = MFExtern.MFSetAttributeSize(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
-//                                    if (result == Player.NO_ERROR)
-//                                    {
-//                                        result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
-//                                        if (result == Player.NO_ERROR)
-//                                        {
-//                                            result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-//                                            if (result == Player.NO_ERROR)
-//                                            {
-//                                                result = sinkWriter.AddStream(mediaTypeOut, out streamIndex);
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                if (mediaTypeOut != null) Marshal.ReleaseComObject(mediaTypeOut);
-//            }
-
-//            if (result == Player.NO_ERROR)
-//            {
-//                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeIn);
-//                if (result == Player.NO_ERROR)
-//                {
-//                    result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
-//                    if (result == Player.NO_ERROR)
-//                    {
-//                        result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.RGB32);
-//                        if (result == Player.NO_ERROR)
-//                        {
-//                            result = mediaTypeIn.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
-//                            if (result == Player.NO_ERROR)
-//                            {
-//                                result = MFExtern.MFSetAttributeSize(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
-//                                if (result == Player.NO_ERROR)
-//                                {
-//                                    result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
-//                                    if (result == Player.NO_ERROR)
-//                                    {
-//                                        result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-//                                        if (result == Player.NO_ERROR)
-//                                        {
-//                                            result = sinkWriter.SetInputMediaType(streamIndex, mediaTypeIn, null);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                if (mediaTypeIn != null) Marshal.ReleaseComObject(mediaTypeIn);
-//            }
-
-//            if (result != Player.NO_ERROR && sinkWriter != null)
-//            {
-//                Marshal.ReleaseComObject(sinkWriter);
-//                sinkWriter = null;
-//            }
-
-//            _base._lastError = result;
-//            return sinkWriter;
-//        }
-
-//        private void Recorder_Callback(object state)
-//        {
-//            if (!_timerBusy && _timerRestart)
-//            {
-//                IntPtr destHdc = IntPtr.Zero;
-//                Graphics destGraphics = null;
-//                Rectangle sourceRect = _base._videoBoundsClip;
-
-//                Graphics sourceGraphics = null;
-//                IntPtr sourceHdc = IntPtr.Zero;
-
-//                _timerBusy = true;
-
-//                try
-//                {
-//                    destGraphics = Graphics.FromImage(_bitmapBuffer); destHdc = destGraphics.GetHdc();
-//                    sourceGraphics = _base._display.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
-
-//                    if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
-//                    {
-//                        if (_base._overlayMode == OverlayMode.Display) sourceRect = _base._display.DisplayRectangle; // with overlay - same size as display
-
-//                        // copy display to buffer
-//                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
-//                        sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
-
-//                        // copy overlay to buffer - transparent + opacity
-//                        sourceGraphics = _base._overlay.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
-//                        if (_base._overlay.Opacity == 1 || _base._overlayBlend == OverlayBlend.None)
-//                        {
-//                            SafeNativeMethods.TransparentBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, ColorTranslator.ToWin32(_base._overlay.TransparencyKey));
-//                        }
-//                        else
-//                        {
-//                            _base._blendFunction.SourceConstantAlpha = (byte)(_base._overlay.Opacity * 0xFF);
-//                            SafeNativeMethods.AlphaBlend(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, _base._blendFunction);
-//                        }
-//                    }
-//                    else
-//                    {
-//                        // copy display to buffer
-//                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
-//                    }
-
-//                    sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
-//                    destGraphics.ReleaseHdc(destHdc); destGraphics.Dispose(); destGraphics = null;
-
-//                    //Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
-//                }
-//                catch
-//                {
-//                    if (sourceGraphics != null)
-//                    {
-//                        if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
-//                        sourceGraphics.Dispose();
-//                    }
-//                    if (destGraphics != null)
-//                    {
-//                        if (destHdc != IntPtr.Zero) destGraphics.ReleaseHdc(destHdc);
-//                        destGraphics.Dispose();
-//                    }
-
-//                }
-//            }
-
-//            if (_timerRestart) _timer.Change(_timerInterval, System.Threading.Timeout.Infinite);
-//            _timerBusy = false;
-//        }
-
-//        internal void Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
-//        {
-//            HResult result = Player.NO_ERROR;
-
-//            System.Drawing.Imaging.BitmapData bmpData = null;
-//            try { bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat); }
-//            catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
-
-//            if (result == Player.NO_ERROR)
-//            {
-//                int cbWidth = _imageBytesPerPixel * image.Width;
-//                int cbBuffer = cbWidth * image.Height;
-//                result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
-
-//                if (result == Player.NO_ERROR)
-//                {
-//#pragma warning disable IDE0059 // Unnecessary assignment of a value
-//                    result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
-//#pragma warning restore IDE0059 // Unnecessary assignment of a value
-
-//                    if (result == Player.NO_ERROR)
-//                    {
-//                        //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
-//                        result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((image.Height - 1) * cbWidth), -cbWidth, cbWidth, image.Height);
-//                        buffer.Unlock();
-
-//                        if (result == Player.NO_ERROR)
-//                        {
-//                            buffer.SetCurrentLength(cbBuffer);
-
-//                            result = MFExtern.MFCreateSample(out IMFSample sample);
-//                            if (result == Player.NO_ERROR)
-//                            {
-//                                result = sample.AddBuffer(buffer);
-//                                if (result == Player.NO_ERROR)
-//                                {
-//                                    result = sample.SetSampleTime(0);
-//                                    if (result == Player.NO_ERROR)
-//                                    {
-//                                        result = sample.SetSampleDuration(_imageDuration);
-//                                        if (result == Player.NO_ERROR)
-//                                        {
-//                                            sinkWriter.WriteSample(0, sample);
-//                                        }
-//                                    }
-//                                }
-//                                Marshal.ReleaseComObject(sample);
-//                            }
-//                        }
-//                    }
-//                    Marshal.ReleaseComObject(buffer);
-//                }
-//                image.UnlockBits(bmpData);
-//            }
-//        }
-//    }
+    /// <summary>
+    /// Represents a video recorder that can be used to store video images in a file.
+    /// </summary>
+    [CLSCompliant(true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class VideoRecorder : HideObjectMembers
+    {
+        #region Fields (Video Recorder Class)
+
+        // Constants
+        private const int       BUSY_TIME_OUT           = 1000;
+        private const int       DEFAULT_FRAME_RATE      = 15;
+        private const bool      DEFAULT_SHOW_OVERLAY    = true;
+
+        // Base Player
+        private Player          _base;
+        private bool            _basePaused;
+
+        // Recorder Type
+        private bool            _webcam;
+
+        // Timer
+        private volatile System.Threading.Timer
+                                _timer;
+        private volatile int    _timerInterval;
+        private volatile bool   _timerRestart;
+        private volatile bool   _timerBusy;
+
+        // Buffers
+        private IMFMediaBuffer  _mediaBuffer;
+        private Bitmap          _bitmapBuffer;
+        private int             _bytesPerPixel  = 4;
+        private Guid             _mediaType     = MFMediaType.RGB32;
+
+        // Sink Writer
+        private string          _fileName;
+        private IMFSinkWriter   _sinkWriter;
+
+        // Recorder Settings
+        private int             _frameRate              = DEFAULT_FRAME_RATE;
+        private bool            _showOverlay            = DEFAULT_SHOW_OVERLAY;
+
+        internal bool           _recording;
+        private bool            _paused;
+
+        #endregion
+
+
+        internal VideoRecorder(Player player, bool webCam)
+        {
+            _base = player;
+            _webcam = webCam;
+        }
+
+        public int Start(string fileName)
+        {
+            return (int)_base._lastError;
+        }
+
+        public int Start(string fileName, int frameRate)
+        {
+            return (int)_base._lastError;
+        }
+
+        public int Start(string fileName, bool showOverlay)
+        {
+            return (int)_base._lastError;
+        }
+
+        public int Start(string fileName, int frameRate, bool showOverlay)
+        {
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Pause()
+        {
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Resume()
+        {
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Stop()
+        {
+            if (_recording)
+            {
+                _base.Events.MediaPausedChanged -= BasePlayer_MediaPausedChanged;
+                _base.Events.MediaEndedNotice -= BasePlayer_MediaEndedNotice;
+
+                // stop timer etc.
+
+                _recording = false;
+                _paused = false;
+            }
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Gets or sets the number of video frames to record per second. Values from 0 to 60 (default: 15).
+        /// </summary>
+        public int FrameRate
+        {
+            get
+            {
+                return _frameRate;
+            }
+            set
+            {
+            }
+
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether display overlays (if any) are also recorded (default: true).
+        /// </summary>
+        public bool ShowOverlay
+        {
+            get
+            {
+                return _showOverlay;
+            }
+            set
+            {
+            }
+        }
+
+        // ********
+
+        private int StartRecording()
+        {
+            // create timer etc.
+
+            _base.Events.MediaPausedChanged += BasePlayer_MediaPausedChanged;
+            _base.Events.MediaEndedNotice += BasePlayer_MediaEndedNotice;
+
+            return (int)_base._lastError;
+        }
+
+        private void BasePlayer_MediaPausedChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BasePlayer_MediaEndedNotice(object sender, EndedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private HResult Recorder_Init()
+        {
+            // check status
+            if (!_base._hasVideo || (_webcam && !_base._webcamMode)) return HResult.MF_E_NOT_AVAILABLE;
+
+            HResult result = Player.NO_ERROR;
+
+            // create even size
+            int width = _base._videoBoundsClip.Width % 2 == 0 ? _base._videoBoundsClip.Width : _base._videoBoundsClip.Width - 1;
+            int height = _base._videoBoundsClip.Height % 2 == 0 ? _base._videoBoundsClip.Height : _base._videoBoundsClip.Height - 1;
+            if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
+            {
+                width = _base._display.DisplayRectangle.Width;
+                height = _base._display.DisplayRectangle.Height;
+                if (width == height)
+                {
+                    if (width != _base._display.DisplayRectangle.Width) width += 2;
+                    else if (height != _base._display.DisplayRectangle.Height) height += 2;
+                    else height -= 2;
+                }
+            }
+            else if (width == height)
+            {
+                if (width != _base._videoBoundsClip.Width) width += 2;
+                else if (height != _base._videoBoundsClip.Height) height += 2;
+                else height -= 2;
+            }
+
+            // set pixel depth (TO DO calculate)
+            //_bytesPerPixel = 4;
+            //_mediaType = MFMediaType.RGB32;
+
+            // create sinkwriter
+            _sinkWriter = CreateSinkWriter(_fileName, width, height);
+            if (_base._lastError == Player.NO_ERROR && _sinkWriter != null)
+            {
+                // create buffer
+                _bitmapBuffer = new Bitmap(width, height);
+
+
+
+                // add pixel depth
+
+                //result = MFExtern.MFCreateMemoryBuffer(bufferSize, out wr_MediaBuffer);
+                if (result == Player.NO_ERROR)
+                {
+                }
+            }
+
+
+            return result;
+        }
+
+        #region Recorder - Timer Start / Stop
+
+        private void Recorder_StartTimer()
+        {
+            if (_timer == null)
+            {
+                _timerRestart = true;
+                _timer = new System.Threading.Timer(Recorder_Callback, null, 0, System.Threading.Timeout.Infinite);
+            }
+        }
+
+        private void Recorder_StopTimer()
+        {
+            if (_timer != null)
+            {
+                _timerRestart = false;
+                _timer.Dispose();
+                _timer = null;
+
+                int timeOut = BUSY_TIME_OUT;
+                while (_timerBusy && --timeOut > 0)
+                {
+                    System.Threading.Thread.Sleep(1);
+                    Application.DoEvents();
+                }
+            }
+        }
+
+        #endregion
+
+        private IMFSinkWriter CreateSinkWriter(string fileName, int width, int height)
+        {
+            const int VIDEO_BIT_RATE = 800000;
+
+            int streamIndex = 0;
+
+            HResult result = MFExtern.MFCreateSinkWriterFromURL(fileName, null, null, out IMFSinkWriter sinkWriter);
+            if (result == Player.NO_ERROR)
+            {
+                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeOut);
+                if (result == Player.NO_ERROR)
+                {
+                    result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+                    if (result == Player.NO_ERROR)
+                    {
+                        // if changing the encoder also change the file extension (IMAGES_FILE_EXTENSION)
+                        result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
+                        if (result == Player.NO_ERROR)
+                        {
+                            result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
+                            if (result == Player.NO_ERROR)
+                            {
+                                result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+                                if (result == Player.NO_ERROR)
+                                {
+                                    result = MFExtern.MFSetAttributeSize(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+                                    if (result == Player.NO_ERROR)
+                                    {
+                                        result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
+                                        if (result == Player.NO_ERROR)
+                                        {
+                                            result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+                                            if (result == Player.NO_ERROR)
+                                            {
+                                                result = sinkWriter.AddStream(mediaTypeOut, out streamIndex);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (mediaTypeOut != null) Marshal.ReleaseComObject(mediaTypeOut);
+            }
+
+            if (result == Player.NO_ERROR)
+            {
+                result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeIn);
+                if (result == Player.NO_ERROR)
+                {
+                    result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
+                    if (result == Player.NO_ERROR)
+                    {
+                        result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, _mediaType); // MFMediaType.RGB32);
+                        if (result == Player.NO_ERROR)
+                        {
+                            result = mediaTypeIn.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
+                            if (result == Player.NO_ERROR)
+                            {
+                                result = MFExtern.MFSetAttributeSize(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
+                                if (result == Player.NO_ERROR)
+                                {
+                                    result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
+                                    if (result == Player.NO_ERROR)
+                                    {
+                                        result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+                                        if (result == Player.NO_ERROR)
+                                        {
+                                            result = sinkWriter.SetInputMediaType(streamIndex, mediaTypeIn, null);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (mediaTypeIn != null) Marshal.ReleaseComObject(mediaTypeIn);
+            }
+
+            if (result != Player.NO_ERROR && sinkWriter != null)
+            {
+                Marshal.ReleaseComObject(sinkWriter);
+                sinkWriter = null;
+            }
+
+            _base._lastError = result;
+            return sinkWriter;
+        }
+
+        private void Recorder_Callback(object state)
+        {
+            if (!_timerBusy && _timerRestart)
+            {
+                IntPtr destHdc = IntPtr.Zero;
+                Graphics destGraphics = null;
+                Rectangle sourceRect = _base._videoBoundsClip;
+
+                Graphics sourceGraphics = null;
+                IntPtr sourceHdc = IntPtr.Zero;
+
+                _timerBusy = true;
+
+                try
+                {
+                    destGraphics = Graphics.FromImage(_bitmapBuffer); destHdc = destGraphics.GetHdc();
+                    sourceGraphics = _base._display.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
+
+                    if (_showOverlay && (_base._hasOverlay && _base._overlay.Visible))
+                    {
+                        if (_base._overlayMode == OverlayMode.Display) sourceRect = _base._display.DisplayRectangle; // with overlay - same size as display
+
+                        // copy display to buffer
+                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                        sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
+
+                        // copy overlay to buffer - transparent + opacity
+                        sourceGraphics = _base._overlay.CreateGraphics(); sourceHdc = sourceGraphics.GetHdc();
+                        if (_base._overlay.Opacity == 1 || _base._overlayBlend == OverlayBlend.None)
+                        {
+                            SafeNativeMethods.TransparentBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, ColorTranslator.ToWin32(_base._overlay.TransparencyKey));
+                        }
+                        else
+                        {
+                            _base._blendFunction.SourceConstantAlpha = (byte)(_base._overlay.Opacity * 0xFF);
+                            SafeNativeMethods.AlphaBlend(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, 0, 0, _base._overlay.Width, _base._overlay.Height, _base._blendFunction);
+                        }
+                    }
+                    else
+                    {
+                        // copy display to buffer
+                        SafeNativeMethods.StretchBlt(destHdc, 0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height, sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                    }
+
+                    sourceGraphics.ReleaseHdc(sourceHdc); sourceGraphics.Dispose(); sourceGraphics = null;
+                    destGraphics.ReleaseHdc(destHdc); destGraphics.Dispose(); destGraphics = null;
+
+                    //Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
+                }
+                catch
+                {
+                    if (sourceGraphics != null)
+                    {
+                        if (sourceHdc != IntPtr.Zero) sourceGraphics.ReleaseHdc(sourceHdc);
+                        sourceGraphics.Dispose();
+                    }
+                    if (destGraphics != null)
+                    {
+                        if (destHdc != IntPtr.Zero) destGraphics.ReleaseHdc(destHdc);
+                        destGraphics.Dispose();
+                    }
+
+                }
+            }
+
+            if (_timerRestart) _timer.Change(_timerInterval, System.Threading.Timeout.Infinite);
+            _timerBusy = false;
+        }
+
+        internal void Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
+        {
+            HResult result = Player.NO_ERROR;
+
+            System.Drawing.Imaging.BitmapData bmpData = null;
+            try { bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat); }
+            catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
+
+            if (result == Player.NO_ERROR)
+            {
+                int cbWidth = 0;// _imageBytesPerPixel * image.Width;
+                int cbBuffer = cbWidth * image.Height;
+                result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
+
+                if (result == Player.NO_ERROR)
+                {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                    result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
+                    if (result == Player.NO_ERROR)
+                    {
+                        //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
+                        result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((image.Height - 1) * cbWidth), -cbWidth, cbWidth, image.Height);
+                        buffer.Unlock();
+
+                        if (result == Player.NO_ERROR)
+                        {
+                            buffer.SetCurrentLength(cbBuffer);
+
+                            result = MFExtern.MFCreateSample(out IMFSample sample);
+                            if (result == Player.NO_ERROR)
+                            {
+                                result = sample.AddBuffer(buffer);
+                                if (result == Player.NO_ERROR)
+                                {
+                                    result = sample.SetSampleTime(0);
+                                    if (result == Player.NO_ERROR)
+                                    {
+                                        result = sample.SetSampleDuration(0);// _imageDuration);
+                                        if (result == Player.NO_ERROR)
+                                        {
+                                            sinkWriter.WriteSample(0, sample);
+                                        }
+                                    }
+                                }
+                                Marshal.ReleaseComObject(sample);
+                            }
+                        }
+                    }
+                    Marshal.ReleaseComObject(buffer);
+                }
+                image.UnlockBits(bmpData);
+            }
+        }
+
+        internal void Recorder_WriteImageFram2()
+        {
+            HResult result = Player.NO_ERROR;
+
+            System.Drawing.Imaging.BitmapData bmpData = null;
+            try { bmpData = _bitmapBuffer.LockBits(new Rectangle(0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, _bitmapBuffer.PixelFormat); }
+            catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
+
+            if (result == Player.NO_ERROR)
+            {
+                int cbWidth = _bytesPerPixel * _bitmapBuffer.Width;
+                int cbBuffer = cbWidth * _bitmapBuffer.Height;
+                result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
+
+                if (result == Player.NO_ERROR)
+                {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                    result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
+                    if (result == Player.NO_ERROR)
+                    {
+                        //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
+                        result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((_bitmapBuffer.Height - 1) * cbWidth), -cbWidth, cbWidth, _bitmapBuffer.Height);
+                        buffer.Unlock();
+
+                        if (result == Player.NO_ERROR)
+                        {
+                            buffer.SetCurrentLength(cbBuffer);
+
+                            result = MFExtern.MFCreateSample(out IMFSample sample);
+                            if (result == Player.NO_ERROR)
+                            {
+                                result = sample.AddBuffer(buffer);
+                                if (result == Player.NO_ERROR)
+                                {
+                                    result = sample.SetSampleTime(0);
+                                    if (result == Player.NO_ERROR)
+                                    {
+                                        result = sample.SetSampleDuration(0);// _imageDuration);
+                                        if (result == Player.NO_ERROR)
+                                        {
+                                            _sinkWriter.WriteSample(0, sample);
+                                        }
+                                    }
+                                }
+                                Marshal.ReleaseComObject(sample);
+                            }
+                        }
+                    }
+                    Marshal.ReleaseComObject(buffer);
+                }
+                _bitmapBuffer.UnlockBits(bmpData);
+            }
+        }
+    }
+    */
 
 }

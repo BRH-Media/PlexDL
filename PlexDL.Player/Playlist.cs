@@ -26,7 +26,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the contents (file names only) of the specified m3u type playlist file as a list of file names. Returns null if no or empty playlist is found.
+        /// Returns a list of path and file names from the specified m3u type playlist file or null if none are found.
         /// </summary>
         /// <param name="playlist">The path and file name of the playlist file. Supported file types are .m3u and .m3u8.</param>
         public string[] Open(string playlist)
@@ -76,7 +76,8 @@ namespace PlexDL.Player
                             {
                                 line = line.TrimStart();
                                 // skip if line is empty, #extm3u, #extinf info or # comment
-                                if (line != string.Empty && line[0] != '#')
+                                //if (line != string.Empty && line[0] != '#')
+                                if (line.Length > 0 && line[0] != '#')
                                 {
                                     // get absolute path...
                                     if (line[1] != ':' && !line.Contains(@"://") && !line.Contains(@":\\")) fileNames.Add(Path.GetFullPath(Path.Combine(playListPath, line)));
@@ -158,7 +159,7 @@ namespace PlexDL.Player
 
         // Taken from: https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
         // Thanks Dave!
-        private string GetRelativePath(string fromPath, string toPath)
+        private static string GetRelativePath(string fromPath, string toPath)
         {
             if (string.IsNullOrWhiteSpace(toPath)) return string.Empty;
 

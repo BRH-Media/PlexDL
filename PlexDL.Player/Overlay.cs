@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PlexDL.Player
@@ -106,8 +107,11 @@ namespace PlexDL.Player
                         }
                         else if (_base._hasOverlayShown && (!_base._playing))
                         {
+                            bool tempHold = _base._displayHold;
+                            _base._displayHold = false;
                             _base.AV_HideOverlay();
-                            if (_base.dc_HasDisplayClones && !_base._playing) _base.DisplayClones_Stop(false);
+                            //if (_base.dc_HasDisplayClones && !_base._playing) _base.DisplayClones_Stop(false);
+                            _base._displayHold = tempHold;
                         }
                     }
                     _base._mediaOverlayHoldChanged?.Invoke(_base, EventArgs.Empty);
@@ -132,7 +136,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the number of milliseconds that the visibilty of the player's display overlay is delayed when restoring the player's minimized display window (form). Set to 0 to disable (default: 200 ms).
+        /// Gets or sets the number of milliseconds that the visibilty of the player's display overlay is delayed when restoring the player's minimized display window (form). Set the value to 0 to disable (default: 200 ms).
         /// </summary>
         public int Delay
         {
@@ -161,7 +165,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player's display overlay is active.
+        /// Gets a value that indicates whether the player's display overlay is active. See also: Player.Overlay.Present and Player.Overlay.Visible.
         /// </summary>
         public bool Active
         {
@@ -173,7 +177,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player has a display overlay (set, but not necessarily active or visible).
+        /// Gets a value that indicates whether the player has a display overlay (set, but not necessarily active or visible). See also: Player.Overlay.Active and Player.Overlay.Visible.
         /// </summary>
         public bool Present
         {
@@ -185,7 +189,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player's display overlay is active and visible.
+        /// Gets a value that indicates whether the player's display overlay is active and visible. See also: Player.Overlay.Active and Player.Overlay.Present.
         /// </summary>
         public bool Visible
         {
@@ -217,7 +221,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the opacity of display overlays displayed on screen copies and player display clones. May require specially designed display overlays (default: OverlayBlend.None).
+        /// Gets or sets a value that indicates the opacity of display overlays displayed on screenshots and display clones (default: OverlayBlend.None).
         /// </summary>
         public OverlayBlend Blend
         {
@@ -233,5 +237,27 @@ namespace PlexDL.Player
                 _base._overlayBlend = value;
             }
         }
+
+        /// <summary>
+        /// Gets the size and location (in pixels) of the display overlay window relative to the player's display window.
+        /// </summary>
+        public Rectangle Bounds
+        {
+            get
+            {
+                Rectangle bounds;
+
+                _base._lastError = Player.NO_ERROR;
+                if (_base._hasOverlayShown)
+                {
+                    if (_base._hasVideo && _base._overlayMode == OverlayMode.Video) bounds = _base._videoBounds;
+                    else bounds = new Rectangle(Point.Empty, _base._display.Size);
+                }
+                else bounds = Rectangle.Empty;
+
+                return bounds;
+            }
+        }
+
     }
 }

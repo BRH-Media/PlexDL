@@ -15,11 +15,13 @@ namespace PlexDL.Player
     /// caller frees his copy, yours will no longer be valid.
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]
+#pragma warning disable CA1060 // Move pinvokes to native methods class
     internal class ConstPropVariant : IDisposable
+#pragma warning restore CA1060 // Move pinvokes to native methods class
     {
         #region Declarations
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("ole32.dll", ExactSpelling = true, PreserveSig = false), SuppressUnmanagedCodeSecurity]
         protected static extern void PropVariantCopy(
             [Out, MarshalAs(UnmanagedType.LPStruct)] PropVariant pvarDest,
@@ -47,7 +49,7 @@ namespace PlexDL.Player
             StringArray = 0x1000 + 31
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         [StructLayout(LayoutKind.Sequential), UnmanagedName("BLOB")]
         protected struct Blob
         {
@@ -55,7 +57,7 @@ namespace PlexDL.Player
             public IntPtr pBlobData;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         [StructLayout(LayoutKind.Sequential), UnmanagedName("CALPWSTR")]
         protected struct CALPWstr
         {
@@ -873,7 +875,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2216:DisposableTypesShouldDeclareFinalizer")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2216:DisposableTypesShouldDeclareFinalizer")]
         public void Dispose()
         {
             Dispose(true);

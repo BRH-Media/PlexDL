@@ -10,8 +10,12 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class SubtitleEventArgs : HideObjectEventArgs
     {
+        #region Fields (SubtitleEventArgs)
+
         internal int    _index;
         internal string _subtitle;
+
+        #endregion
 
         /// <summary>
         /// Gets the index of the current subtitle in the list of the player's active subtitles.

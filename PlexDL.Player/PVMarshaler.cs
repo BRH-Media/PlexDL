@@ -12,7 +12,7 @@ namespace PlexDL.Player
 
             private int m_InProcsss;
             private bool m_IAllocated;
-            private MyProps m_Parent = null;
+            private MyProps m_Parent;
 
             [ThreadStatic]
             private static MyProps[] m_CurrentProps;

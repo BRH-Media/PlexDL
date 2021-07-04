@@ -20,7 +20,61 @@ namespace PlexDL.Player
         internal MediaChapter() { }
 
         /// <summary>
-        /// Gets the title of the media chapter. The chapter can have multiple titles in different languages.
+        /// Initializes a new instance of the MediaChapter class.
+        /// </summary>
+        /// <param name="title">The title of the media chapter.</param>
+        /// <param name="startTime">The start time of the media chapter.</param>
+        /// <param name="endTime">The end time of the media chapter. TimeSpan.Zero indicates the beginning of the next chapter or the end of the media.</param>
+        public MediaChapter(string title, TimeSpan startTime, TimeSpan endTime)
+        {
+            _title          = new string[1];
+            _title[0]       = string.IsNullOrWhiteSpace(title) ? string.Empty : title;
+            _startTime      = startTime;
+            _endTime        = endTime;
+            _language       = new string[1];
+            _language[0]    = string.Empty;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MediaChapter class.
+        /// </summary>
+        /// <param name="titles">The title(s) of the media chapter.</param>
+        /// <param name="startTime">The start time of the media chapter.</param>
+        /// <param name="endTime">The end time of the media chapter. TimeSpan.Zero indicates the beginning of the next chapter or the end of the media.</param>
+        /// <param name="languages">The language(s) (3 letter name (ISO 639.2)) of the title(s) of the media chapter. Must be the same number as the number of titles.</param>
+        public MediaChapter(string[] titles, TimeSpan startTime, TimeSpan endTime, string[] languages)
+        {
+            if (titles == null)
+            {
+                _title          = new string[1];
+                _title[0]       = string.Empty;
+                _language       = new string[1];
+                _language[0]    = string.Empty;
+            }
+            else
+            {
+                //_title = new string[titles.Length];
+                //titles.CopyTo(_title, 0);
+                _title = titles;
+
+                if (languages == null)
+                {
+                    _language    = new string[1];
+                    _language[0] = string.Empty;
+                }
+                else
+                {
+                    //_language = new string[languages.Length];
+                    //languages.CopyTo(_language, 0);
+                    _language = languages;
+                }
+            }
+            _startTime  = startTime;
+            _endTime    = endTime;
+        }
+
+        /// <summary>
+        /// Gets the title of the media chapter. The chapter can have multiple titles in different languages when extracted from a media file.
         /// </summary>
         public string[] Title
         {

@@ -1,7 +1,7 @@
 ﻿namespace PlexDL.Player
 {
     /// <summary>
-    /// Specifies the video output quality of webcams.
+    /// Specifies the video output quality of a webcam.
     /// </summary>
     public enum WebcamQuality
     {

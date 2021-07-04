@@ -51,7 +51,7 @@ namespace PlexDL.Player
             }
             set
             {
-                _base.Play(value, null, _base._display, null);
+                _base.Play(value, null, null);
             }
         }
 
@@ -151,7 +151,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the enabled webcam devices of the system. Returns null if no enabled webcam devices are present. See also: Player.Webcam.DeviceCount.
+        /// Returns a list of the enabled webcam devices of the system or null if none are present. See also: Player.Webcam.DeviceCount.
         /// </summary>
         public WebcamDevice[] GetDevices()
         {
@@ -162,20 +162,24 @@ namespace PlexDL.Player
             attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
 
             result = MFExtern.MFEnumDeviceSources(attributes, out IMFActivate[] webcams, out int webcamCount);
-            if (result == Player.NO_ERROR && webcams != null)
+            if (result == Player.NO_ERROR)
             {
-                devices = new WebcamDevice[webcamCount];
-                for (int i = 0; i < webcamCount; i++)
+                if (webcams == null) result = HResult.MF_E_NO_CAPTURE_DEVICES_AVAILABLE;
+                else
                 {
-                    devices[i] = new WebcamDevice();
+                    devices = new WebcamDevice[webcamCount];
+                    for (int i = 0; i < webcamCount; i++)
+                    {
+                        devices[i] = new WebcamDevice();
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
-                    webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_FRIENDLY_NAME, _base._textBuffer1, _base._textBuffer1.Capacity, out int length);
-                    devices[i]._name = _base._textBuffer1.ToString();
-                    webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK, _base._textBuffer1, _base._textBuffer1.Capacity, out length);
+                        webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_FRIENDLY_NAME, _base._textBuffer1, _base._textBuffer1.Capacity, out int length);
+                        devices[i]._name = _base._textBuffer1.ToString();
+                        webcams[i].GetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK, _base._textBuffer1, _base._textBuffer1.Capacity, out length);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
-                    devices[i]._id = _base._textBuffer1.ToString();
+                        devices[i]._id = _base._textBuffer1.ToString();
 
-                    Marshal.ReleaseComObject(webcams[i]);
+                        Marshal.ReleaseComObject(webcams[i]);
+                    }
                 }
             }
             Marshal.ReleaseComObject(attributes);
@@ -254,7 +258,7 @@ namespace PlexDL.Player
                 }
                 else _base._lastError = HResult.E_INVALIDARG;
             }
-            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
         }
 
         /// <summary>
@@ -279,7 +283,7 @@ namespace PlexDL.Player
                 }
                 else _base._lastError = HResult.E_INVALIDARG;
             }
-            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
         }
 
         /// <summary>
@@ -386,7 +390,7 @@ namespace PlexDL.Player
 
                     _base._lastError = Player.NO_ERROR;
                 }
-                else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                else _base._lastError = HResult.MF_E_INVALIDREQUEST;
                 return settings;
             }
             set
@@ -481,7 +485,7 @@ namespace PlexDL.Player
                 }
                 else _base._lastError = HResult.E_INVALIDARG;
             }
-            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
             return (int)_base._lastError;
         }
 
@@ -853,7 +857,7 @@ namespace PlexDL.Player
             return (list == null || list.Count == 0) ? null : list.ToArray();
         }
 
-        private bool FormatExists(List<WebcamFormat> list, int width, int height, float frameRate)
+        private static bool FormatExists(List<WebcamFormat> list, int width, int height, float frameRate)
         {
             bool exists = false;
             int length = list.Count;
@@ -869,7 +873,7 @@ namespace PlexDL.Player
             return exists;
         }
 
-        private HResult GetMediaSource(string webcamId, out IMFMediaSource source)
+        private static HResult GetMediaSource(string webcamId, out IMFMediaSource source)
         {
             MFExtern.MFCreateAttributes(out IMFAttributes attributes, 2);
             attributes.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
@@ -946,7 +950,7 @@ namespace PlexDL.Player
         {
             if (!_base._webcamMode)
             {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                _base._lastError = HResult.MF_E_INVALIDREQUEST;
                 return null;
             }
             return GetWebcamFormats(_base._webcamDevice._id, false, false, 0, 0, 0);
@@ -972,14 +976,14 @@ namespace PlexDL.Player
         {
             if (!_base._webcamMode)
             {
-                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                _base._lastError = HResult.MF_E_INVALIDREQUEST;
                 return null;
             }
             return GetWebcamFormats(_base._webcamDevice._id, true, exact, width, height, frameRate);
         }
 
         /// <summary>
-        /// Returns the available video output formats (or null) of the specified webcam that match the specified values. The formats can be used with the Player.Play methods for webcams.
+        /// Returns the available video output formats of the specified webcam that match the specified values or null if none are found. The formats can be used with the Player.Play methods for webcams.
         /// </summary>
         /// <param name="webcam">The webcam whose video output formats are to be obtained.</param>
         /// <param name="exact">A value that indicates whether the specified values must exactly match the webcam formats or whether they are minimum values.</param>
@@ -1009,6 +1013,177 @@ namespace PlexDL.Player
         //}
 
         //#endregion
+
+        #region Webcam Recorder
+
+        #region Recorder Audio / Video Formats
+
+        ///// <summary>
+        ///// Gets or sets the audio format for the webcam recorder (cannot be changed during recording). 
+        ///// </summary>
+        //public RecorderAudioFormat RecorderAudioFormat
+        //{
+        //    get
+        //    {
+        //        _base._lastError = Player.NO_ERROR;
+        //        return _base.wsr_AudioFormat;
+        //    }
+        //    set
+        //    {
+        //        if (!_recording)
+        //        {
+        //            _base._lastError = Player.NO_ERROR;
+        //            _audioFormat = value;
+        //        }
+        //        else _base._lastError = HResult.MF_E_INVALIDREQUEST;
+        //    }
+        //}
+
+        /// <summary>
+        /// Gets or sets the video format for the webcam recorder (cannot be changed during recording). 
+        /// </summary>
+        public RecorderVideoFormat RecorderVideoFormat
+        {
+            get
+            {
+                _base._lastError = Player.NO_ERROR;
+                return _base.wsr_VideoFormat;
+            }
+            set
+            {
+                if (!_base.wsr_Recording)
+                {
+                    _base._lastError = Player.NO_ERROR;
+                    _base.wsr_VideoFormat = value;
+                }
+                else _base._lastError = HResult.MF_E_INVALIDREQUEST;
+            }
+        }
+
+        #endregion
+
+        #region Recorder Start / Stop
+
+        /// <summary>
+        /// Starts recording the webcam video played by the player to a file, named with the date and time, in the system documents folder.
+        /// </summary>
+        public int RecorderStart()
+        {
+            return RecorderStart(_base.WSR_CreateFileName(), -1, -1, -1);
+        }
+
+        /// <summary>
+        /// Starts recording the video of the webcam played by the player to a file, named with the date and time, in the system documents folder.
+        /// </summary>
+        /// <param name="scale">The size of the video image in the recording as a percentage of the device's video size. Values from 1 to 200 percent.</param>
+        /// <param name="frameRate">The frame rate of the recording. A value of -1 represents the current setting of the device. Scaling with frame rates lower than 10 fps could cause problems.</param>
+        public int RecorderStart(int scale, int frameRate)
+        {
+            if (!_base.wsr_Recording && _base._webcamMode)
+            {
+                if (scale >= 1 && scale <= 200 && frameRate >= 1)
+                {
+                    VideoTrack[] tracks = _base.AV_GetVideoTracks();
+                    double factor = scale / 100.0;
+                    return RecorderStart(_base.WSR_CreateFileName(), (int)(tracks[0]._width * factor), (int)(tracks[0]._height * factor), frameRate);
+                }
+                else _base._lastError = HResult.E_INVALIDARG;
+            }
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Starts recording the video of the webcam played by the player to a file, named with the date and time, in the system documents folder.
+        /// </summary>
+        /// <param name="width">The width of the video image in the recording. A value of -1 represents the current setting of the device.</param>
+        /// <param name="height">The height of the video image in the recording. A value of -1 represents the current setting of the device.</param>
+        /// <param name="frameRate">The frame rate of the recording. A value of -1 represents the current setting of the device. Scaling with frame rates lower than 10 fps could cause problems.</param>
+        public int RecorderStart(int width, int height, int frameRate)
+        {
+            return RecorderStart(_base.WSR_CreateFileName(), width, height, frameRate);
+        }
+
+        /// <summary>
+        /// Starts recording the video of the webcam played by the player to the specified file.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the recording. The file name extension can be changed by the recorder. If the file already exists, it is overwritten.</param>
+        public int RecorderStart(string fileName)
+        {
+            return RecorderStart(fileName, -1, -1, -1);
+        }
+
+        /// <summary>
+        /// Starts recording the video of the webcam played by the player to a file, named with the date and time, in the system documents folder.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the recording. The file name extension can be changed by the recorder. If the file already exists, it is overwritten.</param>
+        /// <param name="scale">The size of the video image in the recording as a percentage of the device's video size. Values from 1 to 200 percent.</param>
+        /// <param name="frameRate">The frame rate of the recording. A value of -1 represents the current setting of the device. Scaling with frame rates lower than 10 fps could cause problems.</param>
+        public int RecorderStart(string fileName, int scale, int frameRate)
+        {
+            if (!_base.wsr_Recording && _base._webcamMode)
+            {
+                if (scale >= 1 && scale <= 200 && frameRate >= 1)
+                {
+                    VideoTrack[] tracks = _base.AV_GetVideoTracks();
+                    double factor = scale / 100.0;
+                    return RecorderStart(fileName, (int)(tracks[0]._width * factor), (int)(tracks[0]._height * factor), frameRate);
+                }
+                else _base._lastError = HResult.E_INVALIDARG;
+            }
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Starts recording the video of the webcam played by the player to the specified file with the specified settings.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the recording. The file name extension can be changed by the recorder. If the file already exists, it is overwritten.</param>
+        /// <param name="width">The width of the video image in the recording. A value of -1 represents the current setting of the device.</param>
+        /// <param name="height">The height of the video image in the recording. A value of -1 represents the current setting of the device.</param>
+        /// <param name="frameRate">The frame rate of the recording. A value of -1 represents the current setting of the device. Scaling with frame rates lower than 10 fps could cause problems.</param>
+        public int RecorderStart(string fileName, int width, int height, int frameRate)
+        {
+            //if (!_recording && (_base._webcamMode || _base._micMode))
+            if (!_base.wsr_Recording && _base._webcamMode)
+            {
+                if (!string.IsNullOrWhiteSpace(fileName))
+                {
+                    //if (_base._micMode) _base._lastError = _base.WSR_StartRecorder(fileName, 0, 0, 0);
+                    //else
+                    {
+                        VideoTrack[] tracks = _base.AV_GetVideoTracks();
+
+                        if (width == -1) width = tracks[0]._width;
+                        if (height == -1) height = tracks[0]._height;
+
+                        float rate = frameRate;
+                        if (frameRate == -1) rate = tracks[0]._frameRate;
+
+                        if (width >= 8 && height >= 8 && rate >= 1) _base._lastError = _base.WSR_StartRecorder(fileName, width, height, rate);
+                        else _base._lastError = HResult.E_INVALIDARG;
+                    }
+                }
+                else _base._lastError = HResult.ERROR_INVALID_NAME;
+            }
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
+            return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Stops recording the video of the webcam played by the player.
+        /// </summary>
+        public int RecorderStop()
+        {
+            _base.WSR_StopRecorder();
+
+            _base._lastError = Player.NO_ERROR;
+            return Player.NO_ERROR;
+        }
+
+        #endregion
+
+        #endregion
 
     }
 }

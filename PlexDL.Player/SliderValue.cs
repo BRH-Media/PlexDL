@@ -53,7 +53,6 @@ namespace PlexDL.Player
                 else if (y >= slider.Height - SLIDER_TOP_MARGIN) pos = 0;
                 else pos = 1 - (float)(y - SLIDER_TOP_MARGIN) / (slider.Height - (SLIDER_TOP_MARGIN + SLIDER_BOTTOM_MARGIN));
             }
-            //pos = (pos * (slider.Maximum - slider.Minimum)) + slider.Minimum;
             return (int)(pos * (slider.Maximum - slider.Minimum)) + slider.Minimum;
         }
 
@@ -73,6 +72,7 @@ namespace PlexDL.Player
                     if (value >= slider.Maximum) pos = 1;
                     else pos = (double)(value - slider.Minimum) / (slider.Maximum - slider.Minimum);
                 }
+
                 if (slider.Orientation == Orientation.Horizontal) result.X = (int)(pos * (slider.Width - (SLIDER_LEFT_MARGIN + SLIDER_RIGHT_MARGIN)) + 0.5) + SLIDER_LEFT_MARGIN;
                 else result.Y = (int)(pos * (slider.Height - (SLIDER_TOP_MARGIN + SLIDER_BOTTOM_MARGIN)) + 0.5) + SLIDER_TOP_MARGIN;
             }

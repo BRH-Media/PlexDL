@@ -10,9 +10,13 @@ namespace PlexDL.Player
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class PeakLevelEventArgs : HideObjectEventArgs
     {
+        #region Fields (PeakLevelEventArgs)
+
         internal int        _channelCount;
         internal float      _masterPeakValue;
         internal float[]    _channelsValues;
+
+        #endregion
 
         /// <summary>
         /// Gets the number of audio output channels (and number of peak values) returned by the ChannelsValues property (usually 2 for stereo devices).

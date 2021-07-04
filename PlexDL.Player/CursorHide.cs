@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -42,10 +45,14 @@
 
     ****************
 
+    Thanks!
+
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
@@ -53,7 +60,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -303,19 +310,19 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+		#endregion
 
 
-        // ******************************** Cursor Hide - Show Cursor / Hide Cursor (Forced)
+		// ******************************** Cursor Hide - Show Cursor / Hide Cursor (Forced)
 
-        #region Cursor Hide - Show Cursor / Hide Cursor (Forced)
+		#region Cursor Hide - Show Cursor / Hide Cursor (Forced)
 
-        internal static void CH_ShowCursor()
+		internal static void CH_ShowCursor()
         {
             if (ch_Active && ch_Hidden)
             {
                 Cursor.Show();
-                ch_Hidden = false;
+				ch_Hidden = false;
                 ch_Moved = DateTime.Now;
                 ch_Timer.Start();
             }
@@ -475,8 +482,9 @@ namespace PlexDL.Player
                                 ch_OldPosition = Cursor.Position;
                                 Cursor.Hide();
                                 ch_Hidden = true;
-                                break;
+                                //break;
                             }
+                            break;
                         }
                     }
                 }

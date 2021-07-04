@@ -18,11 +18,15 @@ namespace PlexDL.Player
         private Player _base;
 
         private bool _isDragging;
+
         private Cursor _oldCursor;
         private Cursor _dragCursor = Cursors.SizeAll;
+
         private bool _setDragCursor = true;
-        private Form _dragForm;
+
         private Point _oldLocation;
+
+        private Form _dragForm;
 
         #endregion
 
@@ -94,7 +98,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's full screen mode is activated (default: false). See also: Player.Display.FullScreenMode and Player.Display.Wall.
+        /// Gets or sets a value that indicates whether the player's full screen mode is activated (default: false). See also: Player.Display.FullScreenMode.
         /// </summary>
         public bool FullScreen
         {
@@ -107,7 +111,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the player's full screen display mode (default: FullScreenMode.Display). See also: Player.Display.FullScreen and Player.Display.Wall.
+        /// Gets or sets the player's full screen display mode (default: FullScreenMode.Display). See also: Player.Display.FullScreen.
         /// </summary>
         public FullScreenMode FullScreenMode
         {
@@ -245,7 +249,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the graphics path used to create a custom display shape. The custom shape can be activated with for example myPlayer.Display.Shape = DisplayShape.Custom.
+        /// Gets or sets a custom display shape. The shape can be activated with Player.Display.Shape = DisplayShape.Custom.
         /// </summary>
         public GraphicsPath CustomShape
         {
@@ -277,7 +281,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shape of the cursor that is used when the player's display window is dragged (default: Cursors.SizeAll). See also: Player.Display.DragEnabled.
+        /// Gets or sets the cursor that is used when the player's display window is dragged (default: Cursors.SizeAll). See also: Player.Display.DragEnabled.
         /// </summary>
         public Cursor DragCursor
         {
@@ -294,7 +298,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the parent window (form) of the player's display window can be moved by dragging the player's display window (default: false). See also: Player.Display.DragCursor.
+        /// Gets or sets a value that indicates whether the parent window of the player's display window can be moved by dragging the player's display window (default: false). See also: Player.Display.DragCursor.
         /// </summary>
         public bool DragEnabled
         {
@@ -330,47 +334,44 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Drags (when enabled) the parent window (form) of the player's display window. Use as the mousedown eventhandler of any control other than the player's display window, for example, a display overlay. 
+        /// Drags the parent window (form) of the player's display window. Use as the mousedown eventhandler of any control other than the player's display window (see Player.Display.DragEnabled), for example, a display overlay. 
         /// </summary>
         public void Drag_MouseDown(object sender, MouseEventArgs e)
         {
-            if (_base._dragEnabled && !_isDragging)
+            if (!_isDragging && e.Button == MouseButtons.Left)
             {
-                if (e.Button == MouseButtons.Left)
+                if (sender != null && _base._hasDisplay && !_base._fullScreen)
                 {
-                    if (sender != null && _base._hasDisplay && !_base._fullScreen)
+                    _dragForm = _base._display.FindForm();
+                    if (_base._hasOverlay)
                     {
-                        _dragForm = _base._display.FindForm();
-                        if (_base._hasOverlay)
+                        foreach (Form f in Application.OpenForms)
                         {
-                            foreach (Form f in Application.OpenForms)
-                            {
-                                if (f != _base._overlay && f.Owner == _base._overlay.Owner) f.BringToFront();
-                            }
+                            if (f != _base._overlay && f.Owner == _base._overlay.Owner) f.BringToFront();
                         }
-                        _dragForm.Activate();
+                    }
+                    _dragForm.Activate();
 
-                        if (_dragForm.WindowState != FormWindowState.Maximized)
+                    if (_dragForm.WindowState != FormWindowState.Maximized)
+                    {
+                        Control control = (Control)sender;
+
+                        _oldLocation = control.PointToScreen(e.Location);
+
+                        control.MouseMove += DragDisplay_MouseMove;
+                        control.MouseUp += DragDisplay_MouseUp;
+
+                        if (_setDragCursor)
                         {
-                            Control control = (Control)sender;
-
-                            _oldLocation = control.PointToScreen(e.Location);
-
-                            control.MouseMove += DragDisplay_MouseMove;
-                            control.MouseUp += DragDisplay_MouseUp;
-
-                            if (_setDragCursor)
-                            {
-                                _oldCursor = control.Cursor;
-                                control.Cursor = _dragCursor;
-                            }
-
-                            _isDragging = true;
+                            _oldCursor = control.Cursor;
+                            control.Cursor = _dragCursor;
                         }
-                        else
-                        {
-                            _dragForm = null;
-                        }
+
+                        _isDragging = true;
+                    }
+                    else
+                    {
+                        _dragForm = null;
                     }
                 }
             }
@@ -380,11 +381,11 @@ namespace PlexDL.Player
         {
             if (_isDragging)
             {
-                Point location = ((Control)sender).PointToScreen(e.Location);
+                Point location  = ((Control)sender).PointToScreen(e.Location);
 
-                _dragForm.Left += location.X - _oldLocation.X;
-                _dragForm.Top += location.Y - _oldLocation.Y;
-                _oldLocation = location;
+                _dragForm.Left  += location.X - _oldLocation.X;
+                _dragForm.Top   += location.Y - _oldLocation.Y;
+                _oldLocation    = location;
             }
         }
 
@@ -392,15 +393,15 @@ namespace PlexDL.Player
         {
             if (_isDragging)
             {
-                Control control = (Control)sender;
+                Control control     = (Control)sender;
 
-                control.MouseMove -= DragDisplay_MouseMove;
-                control.MouseUp -= DragDisplay_MouseUp;
-                _dragForm = null;
+                control.MouseMove   -= DragDisplay_MouseMove;
+                control.MouseUp     -= DragDisplay_MouseUp;
+                _dragForm           = null;
 
                 if (_setDragCursor) control.Cursor = _oldCursor;
 
-                _isDragging = false;
+                _isDragging         = false;
             }
         }
 
@@ -418,6 +419,7 @@ namespace PlexDL.Player
             else if (_base.mf_VideoDisplayControl != null)
             {
                 _base.mf_VideoDisplayControl.RepaintVideo();
+                if (_base._display != null) _base._display.Invalidate();
             }
             else
             {
@@ -427,7 +429,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the contents of the player's display window will be preserved when media has finished playing (default: false). If set to true, the value must be reset to false when all media playback is complete to clear the display. See also: Player.Display.HoldClear.
+        /// Gets or sets a value that indicates whether the contents of the player's display window are retained after media has finished playing (default: false). Can be used to smooth the transition between media. If set to true, the value must be reset to false when all media playback is complete to clear the display. See also: Player.Display.HoldClear.
         /// </summary>
         public bool Hold
         {
@@ -448,7 +450,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Clears the player's display window when the Player.Display.Hold option is enabled and no media is playing. Same as 'Player.Display.Hold = false' but does not disable the Player.Display.Hold option. See also: Player.Display.Hold.
+        /// Clears the player's display window when the Player.Display.Hold option is enabled and no media is playing. See also: Player.Display.Hold.
         /// </summary>
         public int HoldClear()
         {
@@ -457,9 +459,8 @@ namespace PlexDL.Player
                 _base.AV_ClearHold();
                 _base._lastError = Player.NO_ERROR;
             }
-            else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            else _base._lastError = HResult.MF_E_INVALIDREQUEST;
             return (int)_base._lastError;
         }
-
     }
 }

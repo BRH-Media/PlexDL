@@ -171,7 +171,7 @@
 
         //MF_E_BUFFERTOOSMALL = unchecked((int)0xC00D36B1),
 
-        //MF_E_INVALIDREQUEST = unchecked((int)0xC00D36B2),
+        MF_E_INVALIDREQUEST = unchecked((int)0xC00D36B2),
         //MF_E_INVALIDSTREAMNUMBER = unchecked((int)0xC00D36B3),
         //MF_E_INVALIDMEDIATYPE = unchecked((int)0xC00D36B4),
         //MF_E_NOTACCEPTING = unchecked((int)0xC00D36B5),
@@ -281,7 +281,7 @@
         //MF_E_AUDIO_RECORDING_DEVICE_IN_USE = unchecked((int)0xC00D3EA0),
         MF_E_AUDIO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA1),
         MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA2),
-        //MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED = unchecked((int)0xC00D3EA3),
+        MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED = unchecked((int)0xC00D3EA3),
 
         //MF_E_NETWORK_RESOURCE_FAILURE = unchecked((int)0xC00D4268),
         //MF_E_NET_WRITE = unchecked((int)0xC00D4269),
@@ -486,7 +486,7 @@
         //MF_E_INVALID_STREAM_STATE = unchecked((int)0xC00DA7FC),
         //MF_E_HW_STREAM_NOT_CONNECTED = unchecked((int)0xC00DA7FD),
 
-        //MF_E_NO_CAPTURE_DEVICES_AVAILABLE = unchecked((int)0xC00DABE0),
+        MF_E_NO_CAPTURE_DEVICES_AVAILABLE = unchecked((int)0xC00DABE0),
         //MF_E_CAPTURE_SINK_OUTPUT_NOT_SET = unchecked((int)0xC00DABE1),
         //MF_E_CAPTURE_SINK_MIRROR_ERROR = unchecked((int)0xC00DABE2),
         //MF_E_CAPTURE_SINK_ROTATE_ERROR = unchecked((int)0xC00DABE3),

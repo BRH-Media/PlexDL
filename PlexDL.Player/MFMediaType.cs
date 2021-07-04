@@ -83,10 +83,10 @@ namespace PlexDL.Player
         //public static readonly Guid MP43 = new FourCC("MP43").ToMediaSubtype();
         //public static readonly Guid MP4S = new FourCC("MP4S").ToMediaSubtype();
         //public static readonly Guid M4S2 = new FourCC("M4S2").ToMediaSubtype();
-        //public static readonly Guid MP4V = new FourCC("MP4V").ToMediaSubtype();
+        public static readonly Guid MP4V = new FourCC("MP4V").ToMediaSubtype();
         //public static readonly Guid WMV1 = new FourCC("WMV1").ToMediaSubtype();
         //public static readonly Guid WMV2 = new FourCC("WMV2").ToMediaSubtype();
-        //public static readonly Guid WMV3 = new FourCC("WMV3").ToMediaSubtype();
+        public static readonly Guid WMV3 = new FourCC("WMV3").ToMediaSubtype();
         //public static readonly Guid WVC1 = new FourCC("WVC1").ToMediaSubtype();
         //public static readonly Guid MSS1 = new FourCC("MSS1").ToMediaSubtype();
         //public static readonly Guid MSS2 = new FourCC("MSS2").ToMediaSubtype();

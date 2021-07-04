@@ -11,13 +11,13 @@ namespace PlexDL.Player
     {
         #region Fields (Clone Properties Class)
 
-        internal CloneQuality _quality = CloneQuality.Auto;
-        internal CloneLayout _layout = CloneLayout.Zoom;
-        internal CloneFlip _flip = CloneFlip.FlipNone;
-        internal DisplayShape _shape = DisplayShape.Normal;
-        internal bool _videoShape = true;
-        internal bool _dragEnabled = false;
-        internal Cursor _dragCursor = Cursors.SizeAll;
+        internal CloneQuality   _quality        = CloneQuality.Auto;
+        internal CloneLayout    _layout         = CloneLayout.Zoom;
+        internal CloneFlip      _flip           = CloneFlip.FlipNone;
+        internal DisplayShape   _shape          = DisplayShape.Normal;
+        internal bool           _videoShape     = true;
+        internal bool           _dragEnabled;
+        internal Cursor         _dragCursor     = Cursors.SizeAll;
 
         #endregion
 

@@ -14,10 +14,10 @@ namespace PlexDL.Player
     {
         #region Fields (TaskbarProgress Class)
 
-        private Player                  _base;
-        private List<Form>              _taskbarItems;
-        internal TaskbarProgressMode    _progressMode;
-        private TaskbarProgressState            _taskbarState = TaskbarProgressState.NoProgress;
+        private Player                      _base;
+        private List<Form>                  _taskbarItems;
+        internal TaskbarProgressMode        _progressMode;
+        private TaskbarProgressState        _taskbarState = TaskbarProgressState.NoProgress;
 
         #endregion
 
@@ -30,8 +30,8 @@ namespace PlexDL.Player
                 Player.TaskbarInstance = (TaskbarIndicator.ITaskbarList3)new TaskbarIndicator.TaskbarInstance();
                 Player._taskbarProgressEnabled = true;
             }
-            _taskbarItems = new List<Form>(4);
-            _progressMode = TaskbarProgressMode.Progress;
+            _taskbarItems    = new List<Form>(4);
+            _progressMode    = TaskbarProgressMode.Progress;
 
             _base._lastError = Player.NO_ERROR;
         }
@@ -114,8 +114,6 @@ namespace PlexDL.Player
 
                         if (_taskbarItems.Count == 0)
                         {
-                            _base._hasTaskbarProgress = false;
-                            _base.StopMainTimerCheck();
                             _taskbarItems = new List<Form>(4);
                         }
                     }
@@ -138,7 +136,7 @@ namespace PlexDL.Player
                     _base._hasTaskbarProgress = false;
                     _base.StopMainTimerCheck();
                     SetState(TaskbarProgressState.NoProgress);
-                    _taskbarItems = new List<Form>(4);
+                    _taskbarItems    = new List<Form>(4);
                 }
                 _base._lastError = Player.NO_ERROR;
             }
@@ -161,8 +159,12 @@ namespace PlexDL.Player
         {
             get
             {
+                int count = 0;
+
+                if (_taskbarItems == null)      count = _taskbarItems.Count;
+
                 _base._lastError = Player.NO_ERROR;
-                return _taskbarItems == null ? 0 : _taskbarItems.Count;
+                return count;
             }
         }
 
@@ -235,6 +237,20 @@ namespace PlexDL.Player
                 }
                 else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             }
+        }
+
+        /// <summary>
+        /// Updates all taskbar progress indicators of the player. Only for use in special cases.
+        /// </summary>
+        public int Update()
+        {
+            if (_base._hasTaskbarProgress && _base.Playing)
+            {
+                SetValue(_base.PositionX);
+                if (_base._paused) SetState(TaskbarProgressState.Paused);
+            }
+            _base._lastError = Player.NO_ERROR;
+            return (int)_base._lastError;
         }
 
         #endregion

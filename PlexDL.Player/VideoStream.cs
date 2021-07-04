@@ -12,5 +12,15 @@ namespace PlexDL.Player
         internal float  FrameRate;
         internal int    SourceWidth;
         internal int    SourceHeight;
+
+        internal bool   PixelAspectRatio;
+        internal double PixelWidthRatio;
+        internal double PixelHeightRatio;
+
+        internal bool   Rotated;
+        internal int    Rotation;
+
+        // used to show one image when video has 2 images beside each other
+        //internal int    View3D; // 0 = none; 2 = left/right, 3 = top/bottom
     }
 }

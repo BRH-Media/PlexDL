@@ -10,6 +10,7 @@ namespace PlexDL.Player
         internal string Name;
         internal string Language;
         internal int    ChannelCount;
+        internal int    ChannelCountRestore;
         internal int    Samplerate;
         internal int    Bitdepth;
         internal int    Bitrate;

@@ -18,5 +18,9 @@ namespace PlexDL.Player
         internal static PropertyKey PKEY_Music_TrackNumber = new PropertyKey { fmtid = new Guid(unchecked(0x56A3372E), 0xCE9C, 0x11D2, 0x9F, 0x0E, 0x00, 0x60, 0x97, 0xC6, 0x86, 0xF6), pID = 7 };
         internal static PropertyKey PKEY_Media_Year = new PropertyKey { fmtid = new Guid(unchecked(0x56A3372E), 0xCE9C, 0x11D2, 0x9F, 0x0E, 0x00, 0x60, 0x97, 0xC6, 0x86, 0xF6), pID = 5 };
         internal static PropertyKey PKEY_ThumbnailStream = new PropertyKey { fmtid = new Guid(unchecked(0xF29F85E0), 0x4FF9, 0x1068, 0xAB, 0x91, 0x08, 0x00, 0x2B, 0x27, 0xB3, 0xD9), pID = 27 };
+
+        // Network Statistics
+        // MFNETSOURCE_STATISTICS - this PKEY is used for all statistics with the pId changed to the proper statistics ID
+        internal static PropertyKey PKEY_NetSource_Statistics = new PropertyKey { fmtid = new Guid(unchecked(0x3cb1f274), 0x0505, 0x4c5d, 0xae, 0x71, 0x0a, 0x55, 0x63, 0x44, 0xef, 0xa1), pID = 0 };
     }
 }

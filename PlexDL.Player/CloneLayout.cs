@@ -10,7 +10,7 @@
         /// </summary>
         Stretch,
         /// <summary>
-        /// The video image is maximally enlarged within the display of the clone while maintaining the aspect ratio.
+        /// The video image is maximally enlarged and centered within the display of the clone while maintaining the aspect ratio.
         /// </summary>
         Zoom,
         /// <summary>

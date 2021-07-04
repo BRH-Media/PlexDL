@@ -141,8 +141,8 @@ namespace PlexDL.Player
                     {
                         //if (copy.Width > copy.Height) theImage = new Bitmap(copy, size, (size * copy.Height) / copy.Width);
                         //else theImage = new Bitmap(copy, (size * copy.Width) / copy.Height, size);
-                        if (copy.Width > copy.Height) theImage = _base.AV_ResizeImage(copy, size, (size * copy.Height) / copy.Width);
-                        else theImage = _base.AV_ResizeImage(copy, (size * copy.Width) / copy.Height, size);
+                        if (copy.Width > copy.Height) theImage = Player.AV_ResizeImage(copy, size, (size * copy.Height) / copy.Width);
+                        else theImage = Player.AV_ResizeImage(copy, (size * copy.Width) / copy.Height, size);
                     }
                     catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
                     copy.Dispose();
@@ -180,7 +180,7 @@ namespace PlexDL.Player
                 if (copy != null)
                 {
                     //try { theImage = new Bitmap(copy, width, height); }
-                    try { theImage = _base.AV_ResizeImage(copy, width, height); }
+                    try { theImage = Player.AV_ResizeImage(copy, width, height); }
                     catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
                     copy.Dispose();
                 }

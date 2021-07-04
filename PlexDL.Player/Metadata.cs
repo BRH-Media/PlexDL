@@ -12,6 +12,7 @@ namespace PlexDL.Player
         #region Fields (Metadata Class)
 
         internal string     _artist;
+        internal string     _albumArtist;
         internal string     _title;
         internal string     _album;
         internal int        _trackNumber;
@@ -27,9 +28,14 @@ namespace PlexDL.Player
         internal Metadata() { }
 
         /// <summary>
-        /// Gets the main artist(s)/performer(s)/band/orchestra of the media.
+        /// Gets the artist(s)/performer(s)/band/orchestra of the media.
         /// </summary>
         public string Artist { get { return _artist; } }
+
+        /// <summary>
+        /// Gets the main artist(s)/performer(s)/band/orchestra of the media.
+        /// </summary>
+        public string AlbumArtist { get { return _albumArtist; } }
 
         /// <summary>
         /// Gets the title of the media.
@@ -82,7 +88,7 @@ namespace PlexDL.Player
                 if (_image != null)
                 {
                     try { _image.Dispose(); }
-                    catch { /* ignore */ }
+                    catch { /* ignored */ }
                     _image = null;
                 }
             }

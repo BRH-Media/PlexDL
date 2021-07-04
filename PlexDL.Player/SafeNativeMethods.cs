@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -44,10 +47,14 @@
 
     ****************
 
+    Thanks!
+
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
@@ -55,7 +62,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -125,6 +132,7 @@ namespace PlexDL.Player
 
         #endregion
 
+        
         // ******************************** BitBlt (VideoCopy)
 
         #region BitBlt
@@ -208,6 +216,7 @@ namespace PlexDL.Player
 
         #endregion
 
+        
         // ******************************** Center System Dialogs
 
         #region Center System Dialogs
@@ -267,6 +276,7 @@ namespace PlexDL.Player
 
         #endregion
 
+        
         // ******************************** Change System Sleep Mode
 
         #region Change System Sleep Mode
@@ -292,15 +302,17 @@ namespace PlexDL.Player
                 {
                     if (_sleepCount > 0)
                     {
-                        if (--_sleepCount == 0) SetThreadExecutionState(_oldState);
-                    }
+#pragma warning disable CA1806 // Do not ignore method results
+						if (--_sleepCount == 0) SetThreadExecutionState(_oldState);
+#pragma warning restore CA1806 // Do not ignore method results
+					}
                 }
             }
         }
 
         #endregion
 
-
+        
         // ******************************** Rounded Rectangle
 
         #region Rounded Rectangle (used with InfoLabel + Preset Display Clip)
@@ -319,18 +331,50 @@ namespace PlexDL.Player
         [DllImport("gdi32.dll")]
         internal static extern bool DeleteObject(IntPtr hObject);
 
+		[DllImport("gdi32.dll", EntryPoint = "SelectObject")]
+		public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
+
+		#endregion
+
+
+		// ******************************** Mouse Event - Used with Position Slider
+
+		#region Mouse Event - Used with Position Slider
+
+		internal const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        internal const int MOUSEEVENTF_LEFTUP = 0x04;
+        //internal const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        //internal const int MOUSEEVENTF_RIGHTUP = 0x10;
+
+        [DllImport("user32.dll")]
+#pragma warning disable IDE1006 // Naming Styles
+		internal static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, int dwExtraInfo);
+#pragma warning restore IDE1006 // Naming Styles
+
         #endregion
-    }
-
-    #endregion
 
 
-    // ******************************** Taskbar Indicator - Com Import
+        // ******************************** Window Attribute - Used with disabling Form animation
 
-    #region Taskbar Indicator
+        #region Window Attribute - Used with disabling Form animation
 
-    // TaskbarProgress class based on code by WhoIsRich at:
-    // stackoverflow.com/questions/1295890/windows-7-progress-bar-in-taskbar-in-c
+        internal const int DWMWA_TRANSITIONS_FORCEDISABLED = 3;
+
+		[DllImport("dwmapi.dll", PreserveSig = true)]
+		internal static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, bool attrValue, int attrSize);
+
+		#endregion
+	}
+
+	#endregion
+
+
+	// ******************************** Taskbar Indicator - Com Import
+
+	#region Taskbar Indicator
+
+	// TaskbarProgress class based on code by WhoIsRich at:
+	// stackoverflow.com/questions/1295890/windows-7-progress-bar-in-taskbar-in-c
 
     #endregion
 
@@ -372,6 +416,15 @@ namespace PlexDL.Player
     //    IsPartiallyDownloaded = 0x00000200,
     //    ShareWrite = 0x00000400,
     //    DoesNotUseNetwork = 0x00000800,
+    //}
+
+    //[UnmanagedName("MFVideo3DFormat")]
+    //internal enum MFVideo3DFormat
+    //{
+    //    BaseView = 0,
+    //    MultiView = 1,
+    //    PackedLeftRight = 2,
+    //    PackedTopBottom = 3
     //}
 
     //[Flags, UnmanagedName("MFT_ENUM_FLAG")]
@@ -428,50 +481,30 @@ namespace PlexDL.Player
     //    public int dwClockJitter;
     //}
 
-    #endregion
-
-    //#region Abstract Classes
-
-    //abstract internal class COMBase
+    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFFOLDDOWN_MATRIX")]
+    //internal struct MFFOLDDOWN_MATRIX
     //{
-    //    public static bool Succeeded(HResult hr)
-    //    {
-    //        return hr >= 0;
-    //    }
+    //    public int      cbSize;
+    //    public int      cSrcChannels;
+    //    public int      cDstChannels;
+    //    public int      dwChannelMask;
+    //    public long[]   Coeff;
 
-    //    public static bool Failed(HResult hr)
+    //    public MFFOLDDOWN_MATRIX(int size, int sourceChannels, int destChannels, int channelMask, long[] coefficients)
     //    {
-    //        return hr < 0;
+    //        cbSize          = size;
+    //        cSrcChannels    = sourceChannels;
+    //        cDstChannels    = destChannels;
+    //        dwChannelMask   = channelMask;
+    //        Coeff           = coefficients;
     //    }
-
-    //    public static void SafeRelease(object o)
-    //    {
-    //        if (o != null)
-    //        {
-    //            if (Marshal.IsComObject(o))
-    //            {
-    //                int i = Marshal.ReleaseComObject(o);
-    //            }
-    //            else
-    //            {
-    //                IDisposable iDis = o as IDisposable;
-    //                if (iDis != null)
-    //                {
-    //                    iDis.Dispose();
-    //                }
-    //                else
-    //                {
-    //                    throw new Exception("What the heck was that?");
-    //                }
-    //            }
-    //        }
-    //    }
-
     //}
 
-    //#endregion
+    #endregion
 
     #region Static Classes
+
+#pragma warning disable CA1060 // Move pinvokes to native methods class
 
     #endregion
 
@@ -951,34 +984,34 @@ namespace PlexDL.Player
     // could be nested quite deeply).
 
     //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTER_TYPE_INFO")]
-    //internal class MFTRegisterTypeInfo
-    //{
-    //    public Guid guidMajorType;
-    //    public Guid guidSubtype;
-    //}
+	//internal class MFTRegisterTypeInfo
+	//{
+	//    public Guid guidMajorType;
+	//    public Guid guidSubtype;
+	//}
 
-    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
-    //internal class MFNetCredentialManagerGetParam
-    //{
-    //    public HResult hrOp;
-    //    [MarshalAs(UnmanagedType.Bool)]
-    //    public bool fAllowLoggedOnUser;
-    //    [MarshalAs(UnmanagedType.Bool)]
-    //    public bool fClearTextPackage;
-    //    [MarshalAs(UnmanagedType.LPWStr)]
-    //    public string pszUrl;
-    //    [MarshalAs(UnmanagedType.LPWStr)]
-    //    public string pszSite;
-    //    [MarshalAs(UnmanagedType.LPWStr)]
-    //    public string pszRealm;
-    //    [MarshalAs(UnmanagedType.LPWStr)]
-    //    public string pszPackage;
-    //    public int nRetries;
-    //}
+	//[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
+	//internal class MFNetCredentialManagerGetParam
+	//{
+	//	public HResult hrOp;
+	//	[MarshalAs(UnmanagedType.Bool)]
+	//	public bool fAllowLoggedOnUser;
+	//	[MarshalAs(UnmanagedType.Bool)]
+	//	public bool fClearTextPackage;
+	//	[MarshalAs(UnmanagedType.LPWStr)]
+	//	public string pszUrl;
+	//	[MarshalAs(UnmanagedType.LPWStr)]
+	//	public string pszSite;
+	//	[MarshalAs(UnmanagedType.LPWStr)]
+	//	public string pszRealm;
+	//	[MarshalAs(UnmanagedType.LPWStr)]
+	//	public string pszPackage;
+	//	public int nRetries;
+	//}
 
-    #endregion
+	#endregion
 
-    #region Interfaces
+	#region Interfaces
 
     //[ComImport, SuppressUnmanagedCodeSecurity,
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
@@ -1123,58 +1156,104 @@ namespace PlexDL.Player
     //        );
     //}
 
-    //[ComImport, SuppressUnmanagedCodeSecurity,
-    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    //Guid("A5C6C53F-C202-4AA5-9695-175BA8C508A5")]
-    //internal interface IMFVideoMixerControl
-    //{
-    //    [PreserveSig]
-    //    HResult SetStreamZOrder(
-    //        [In] int dwStreamID,
-    //        [In] int dwZ
-    //        );
-
-    //    [PreserveSig]
-    //    HResult GetStreamZOrder(
-    //        [In] int dwStreamID,
-    //        out int pdwZ
-    //        );
-
-    //    [PreserveSig]
-    //    HResult SetStreamOutputRect(
-    //        [In] int dwStreamID,
-    //        [In] MFVideoNormalizedRect pnrcOutput
-    //        );
-
-    //    [PreserveSig]
-    //    HResult GetStreamOutputRect(
-    //        [In] int dwStreamID,
-    //        [Out, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pnrcOutput
-    //        );
-    //}
-
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     //Guid("A3F675D5-6119-4f7f-A100-1D8B280F0EFB")]
     //internal interface IMFVideoProcessorControl
     //{
+    //    //[PreserveSig]
+    //    //HResult SetBorderColor(
+    //    //    MFARGB pBorderColor
+    //    //);
     //    [PreserveSig]
     //    HResult SetBorderColor();
 
     //    [PreserveSig]
-    //    HResult SetSourceRectangle();
+    //    HResult SetSourceRectangle(
+    //        MFRect pSrcRect
+    //    );
 
     //    [PreserveSig]
-    //    HResult SetDestinationRectangle();
+    //    HResult SetDestinationRectangle(
+    //        MFRect pDstRect
+    //    );
 
+    //    //[PreserveSig]
+    //    //HResult SetMirror(
+    //    //    MF_VIDEO_PROCESSOR_MIRROR eMirror
+    //    //);
     //    [PreserveSig]
-    //    HResult SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
+    //    HResult SetMirror();
 
+    //    //[PreserveSig]
+    //    //HResult SetRotation(
+    //    //    MF_VIDEO_PROCESSOR_ROTATION eRotation
+    //    //);
     //    [PreserveSig]
     //    HResult SetRotation();
 
     //    [PreserveSig]
-    //    HResult SetConstrictionSize();
+    //    HResult SetConstrictionSize(
+    //        [In] MFSize pConstrictionSize
+    //    );
+    //}
+
+    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    //Guid("BDE633D3-E1DC-4a7f-A693-BBAE399C4A20")]
+    //internal interface IMFVideoProcessorControl2 : IMFVideoProcessorControl
+    //{
+
+    //    //[PreserveSig]
+    //    //new HResult SetBorderColor(
+    //    //    MFARGB pBorderColor
+    //    //);
+    //    [PreserveSig]
+    //    new HResult SetBorderColor();
+
+    //    [PreserveSig]
+    //    new HResult SetSourceRectangle(
+    //        MFRect pSrcRect
+    //    );
+
+    //    [PreserveSig]
+    //    new HResult SetDestinationRectangle(
+    //        MFRect pDstRect
+    //    );
+
+    //    //[PreserveSig]
+    //    //new HResult SetMirror(
+    //    //    MF_VIDEO_PROCESSOR_MIRROR eMirror
+    //    //);
+    //    [PreserveSig]
+    //    new HResult SetMirror();
+
+    //    //[PreserveSig]
+    //    //new HResult SetRotation(
+    //    //    MF_VIDEO_PROCESSOR_ROTATION eRotation
+    //    //);
+    //    [PreserveSig]
+    //    new HResult SetRotation();
+
+    //    [PreserveSig]
+    //    new HResult SetConstrictionSize(
+    //        [In] MFSize pConstrictionSize
+    //    );
+
+    //    [PreserveSig]
+    //    HResult SetRotationOverride(
+    //        int uiRotation
+    //        );
+
+    //    [PreserveSig]
+    //    HResult EnableHardwareEffects(
+    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEnabled
+    //        );
+
+    //    [PreserveSig]
+    //    HResult GetSupportedHardwareEffects(
+    //        out int puiSupport
+    //        );
     //}
 
     // This is the ASync version of IMFSourceReader.  The only difference is the ReadSample method, which must allow
@@ -1224,23 +1303,43 @@ namespace PlexDL.Player
     //}
 
 
-    // Authentication - not yet
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     //internal interface IMFNetCredentialManager
     //{
-    //    [PreserveSig]
-    //    HResult BeginGetCredentials(
-    //        [In] MFNetCredentialManagerGetParam pParam,
-    //        [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-    //        [In, MarshalAs(UnmanagedType.IUnknown)] object pState
-    //        );
+    //	[PreserveSig]
+    //	HResult BeginGetCredentials(
+    //		[In] MFNetCredentialManagerGetParam pParam,
+    //		[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+    //		[In, MarshalAs(UnmanagedType.IUnknown)] object pState
+    //		);
 
+    //	[PreserveSig]
+    //	HResult EndGetCredentials(
+    //		[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
+    //		[MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
+    //		);
+
+    //	[PreserveSig]
+    //	HResult SetGood(
+    //		[In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+    //		[In, MarshalAs(UnmanagedType.Bool)] bool fGood
+    //		);
+    //}
+
+    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    //Guid("5B87EF6C-7ED8-434F-BA0E-184FAC1628D1")]
+    //internal interface IMFNetCredentialCache
+    //{
     //    [PreserveSig]
-    //    HResult EndGetCredentials(
-    //        [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
-    //        [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
+    //    HResult GetCredential(
+    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
+    //        [In, MarshalAs(UnmanagedType.LPWStr)] string pszRealm,
+    //        [In] MFNetAuthenticationFlags dwAuthenticationFlags,
+    //        [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred,
+    //        out MFNetCredentialRequirements pdwRequirementsFlags
     //        );
 
     //    [PreserveSig]
@@ -1248,46 +1347,75 @@ namespace PlexDL.Player
     //        [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
     //        [In, MarshalAs(UnmanagedType.Bool)] bool fGood
     //        );
+
+    //    [PreserveSig]
+    //    HResult SetUserOptions(
+    //        [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+    //        [In] MFNetCredentialOptions dwOptionsFlags
+    //        );
     //}
 
-    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    //   [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     //Guid("5B87EF6A-7ED8-434F-BA0E-184FAC1628D1")]
     //internal interface IMFNetCredential
     //{
-    //    [PreserveSig]
-    //    HResult SetUser(
-    //        [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
-    //        [In] int cbData,
-    //        [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
-    //        );
+    //	[PreserveSig]
+    //	HResult SetUser(
+    //		[In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+    //		[In] int cbData,
+    //		[In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+    //		);
 
-    //    [PreserveSig]
-    //    HResult SetPassword(
-    //        [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
-    //        [In] int cbData,
-    //        [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
-    //        );
+    //	[PreserveSig]
+    //	HResult SetPassword(
+    //		[In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+    //		[In] int cbData,
+    //		[In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+    //		);
 
-    //    [PreserveSig]
-    //    HResult GetUser(
-    //        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
-    //        [In, Out] MFInt pcbData,
-    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
-    //        );
+    //	[PreserveSig]
+    //	HResult GetUser(
+    //		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+    //		[In, Out] MFInt pcbData,
+    //		[In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+    //		);
 
-    //    [PreserveSig]
-    //    HResult GetPassword(
-    //        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
-    //        [In, Out] MFInt pcbData,
-    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
-    //        );
+    //	[PreserveSig]
+    //	HResult GetPassword(
+    //		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+    //		[In, Out] MFInt pcbData,
+    //		[In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+    //		);
 
-    //    [PreserveSig]
-    //    HResult LoggedOnUser(
-    //        [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
-    //        );
+    //	[PreserveSig]
+    //	HResult LoggedOnUser(
+    //		[MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
+    //		);
     //}
+
+    #endregion
+
+    #endregion
+
+    #region Media Foundation - Capture Engine
+
+    // see internal static class MFAttributesClsid
+    //public static readonly Guid CLSID_MFCaptureEngine = new Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a");
+
+    #region Enum
+
+    #endregion
+
+    #region Structs
+
+    #endregion
+
+    #region Classes
+
+    #endregion
+
+    #region Interfaces
 
     #endregion
 
@@ -1297,6 +1425,40 @@ namespace PlexDL.Player
     // ******************************** Windows Core Audio API - Com Import
 
     #region Windows Core Audio API
+
+    #endregion
+
+
+    // ******************************** Windows Drag-And-Drop - Com Import
+
+    #region Windows Drag-And-Drop
+
+    /*
+        Taken from: https://forums.getpaint.net/topic/27926-drag-drop-ghost-image/
+        Code by midora (adjusted by PVS).
+    */
+
+    //[StructLayout(LayoutKind.Sequential)]
+    //internal struct ShDragImage
+    //{
+    //    public Win32Size sizeDragImage;
+    //    public Win32Point ptOffset;
+    //    public IntPtr hbmpDragImage;
+    //    public int crColorKey;
+    //}
+
+    //[ComImport, Guid("DE5BF786-477A-11D2-839D-00C04FD918D0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    //internal interface IDragSourceHelper
+    //{
+    //    void InitializeFromBitmap(
+    //        [In, MarshalAs(UnmanagedType.Struct)] ref ShDragImage dragImage,
+    //        [In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IDataObject dataObject);
+
+    //    void InitializeFromWindow(
+    //        [In] IntPtr hwnd,
+    //        [In] ref Win32Point pt,
+    //        [In, MarshalAs(UnmanagedType.Interface)] System.Runtime.InteropServices.ComTypes.IDataObject dataObject);
+    //}
 
     #endregion
 

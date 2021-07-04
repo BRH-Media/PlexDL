@@ -1,15 +1,17 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.0
-    September 2020, The Netherlands
-    © Copyright 2020 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.4
+    June 2021, The Netherlands
+    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher, Microsoft .NET Framework version 4.0 or higher and WinForms (any CPU).
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
+    * Use of the recorder requires Windows 8 or later.
+
     Created with Microsoft Visual Studio.
 
     Article on CodeProject with information on the use of the PVS.MediaPlayer library:
@@ -29,6 +31,7 @@
     8. Infolabel.cs     - custom ToolTip
 
     Required references:
+
     System
     System.Drawing
     System.Windows.Forms
@@ -42,10 +45,14 @@
 
     ****************
 
+    Thanks!
+
     Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
     writing about programming on the internet (a great source for ideas and solving problems),
     the websites publishing those or other writings about programming, the people responding to the
     PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
+
+    Thanks to Google for their free online services like Search, Drive, Translate and others.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
@@ -53,7 +60,7 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
     Peter Vegter
-    September 2020, The Netherlands
+    June 2021, The Netherlands
 
     ****************************************************************/
 
@@ -85,17 +92,17 @@ namespace PlexDL.Player
         private const int               ST_DEFAULT_DIRECTORY_DEPTH  = 0;
 
         // static regex
-        internal static Regex           st_TimeRegex = new Regex("(?<start>[0-9:,]+) --> (?<end>[0-9:,]+)", RegexOptions.Compiled);
+        internal static Regex           st_TimeRegex = new Regex(@"(?<start>[0-9:,]+)(\s*)-->(\s*)(?<end>[0-9:,]+)", RegexOptions.Compiled);
         internal static Regex           st_TagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
         // classes
-        private sealed class SubtitlesSearchData
+        internal sealed class FileSearchData
         {
             internal bool               Found;
             internal string             FileName;
             internal StringBuilder      FilePath = new StringBuilder(260);
 
-            internal SubtitlesSearchData(string fileName)
+            internal FileSearchData(string fileName)
             {
                 FileName = Path.DirectorySeparatorChar + fileName;
             }
@@ -139,6 +146,7 @@ namespace PlexDL.Player
 
         // used with get current subtitle
         internal bool                   st_SubtitleOn;
+        internal bool                   st_SubtitleForce;
         internal int                    st_CurrentIndex     = -1;
         private long                    st_CurrentStart;
         private long                    st_CurrentEnd;
@@ -154,41 +162,42 @@ namespace PlexDL.Player
         {
             if (st_HasSubtitles) Subtitles_Stop();
 
-            if (st_SubtitlesEnabled && _playing && !_webcamMode && (_hasVideo || st_AudioOnlyEnabled))
-            {
-                string subtitlesFile = Subtitles_Exists();
-                if (subtitlesFile != string.Empty)
-                {
-                    if (Subtitles_GetFromFile(subtitlesFile))
-                    {
-                        st_CurrentIndex = 0;
-                        this._mediaPositionChanged += Subtitles_MediaPositionChanged;
+			//if (st_SubtitlesEnabled && _playing && !_webcamMode && (_hasVideo || st_AudioOnlyEnabled))
+			if (st_SubtitlesEnabled && _fileMode && (_hasVideo || st_AudioOnlyEnabled))
+			{
+				string subtitlesFile = Subtitles_Exists();
+				if (subtitlesFile.Length > 0)
+				{
+					if (Subtitles_GetFromFile(subtitlesFile))
+					{
+						st_CurrentIndex = 0;
+						_mediaPositionChanged += Subtitles_MediaPositionChanged;
 
-                        st_HasSubtitles = true;
-                        st_SubtitlesName = subtitlesFile;
+						st_HasSubtitles = true;
+						st_SubtitlesName = subtitlesFile;
 
-                        if (refresh) OnMediaPositionChanged();
-                    }
-                }
-            }
+						if (refresh) OnMediaPositionChanged();
+					}
+				}
+			}
         }
 
         // check subtitles file exists (just the file (name), no contents check)
         internal string Subtitles_Exists()
         {
-            if (_webcamMode) return string.Empty;
+            if (!_fileMode) return string.Empty;
             if (st_HasSubtitles) return st_SubtitlesName;
 
             string searchFile;
             string initialDirectory;
 
             if (!string.IsNullOrWhiteSpace(st_FileName)) searchFile = st_FileName;
-            else searchFile = this.Media.GetName(MediaName.FileNameWithoutExtension) + SUBTITLES_FILE_EXTENSION;
+            else searchFile = Media.GetName(MediaName.FileNameWithoutExtension) + SUBTITLES_FILE_EXTENSION;
 
             if (!string.IsNullOrWhiteSpace(st_Directory)) initialDirectory = st_Directory;
-            else initialDirectory = this.Media.GetName(MediaName.DirectoryName);
+            else initialDirectory = Media.GetName(MediaName.DirectoryName);
 
-            return Subtitles_FindFile(searchFile, initialDirectory);
+            return Subtitles_FindFile(searchFile, initialDirectory, st_DirectoryDepth);
             // TODO check contents of file (Count > 0)
         }
 
@@ -233,13 +242,13 @@ namespace PlexDL.Player
                 long position = e.FromBegin - st_TimeShift;
                 if (position < 0) position = 0;
 
-                if (position < st_CurrentStart || position >= st_CurrentEnd)
+                if (st_SubtitleForce || position < st_CurrentStart || position >= st_CurrentEnd)
                 {
                     bool backwards = position < st_CurrentStart;
 
                     if (Subtitle_Find(position, st_CurrentIndex, backwards, out int index))
                     {
-                        if (!st_SubtitleOn || index != st_CurrentIndex)
+                        if (!st_SubtitleOn || (index != st_CurrentIndex || st_SubtitleForce))
                         {
                             st_CurrentIndex = index;
 
@@ -254,7 +263,7 @@ namespace PlexDL.Player
                     }
                     else
                     {
-                        if (st_SubtitleOn || index != st_CurrentIndex)
+                        if (st_SubtitleOn || (index != st_CurrentIndex || st_SubtitleForce))
                         {
                             st_CurrentIndex = index;
 
@@ -273,6 +282,7 @@ namespace PlexDL.Player
                             }
                         }
                     }
+                    st_SubtitleForce = false;
                 }
                 st_SubtitlesBusy = false;
             }
@@ -334,23 +344,23 @@ namespace PlexDL.Player
         #endregion
 
 
-        // ******************************** Subtitles - Find File / Search File
+        // ******************************** Subtitles - Find File / Search File - also used by Media.GetChaptersFile
 
-        #region Subtitles - Find File / Search File
+        #region Subtitles - Find File / Search File - also used by Media.GetChaptersFile and Playlist.GetChaptersBaseFile
 
-        private string Subtitles_FindFile(string fileName, string initialDirectory)
+        internal string Subtitles_FindFile(string fileName, string initialDirectory, int directoryDepth)
         {
             if (string.IsNullOrWhiteSpace(fileName)
                 || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
                 || !Directory.Exists(initialDirectory))
                 return string.Empty;
 
-            SubtitlesSearchData data = new SubtitlesSearchData(fileName);
-            Subtitles_SearchFile(initialDirectory, st_DirectoryDepth, data);
+            FileSearchData data = new FileSearchData(fileName);
+            Subtitles_SearchFile(initialDirectory, directoryDepth, data);
             return data.Found ? data.FilePath.ToString() : string.Empty;
         }
 
-        private void Subtitles_SearchFile(string directory, int depth, SubtitlesSearchData data)
+        private void Subtitles_SearchFile(string directory, int depth, FileSearchData data)
         {
             try
             {
@@ -368,7 +378,7 @@ namespace PlexDL.Player
                     }
                 }
             }
-            catch { /* ignore */ }
+            catch { /* ignored */ }
         }
 
         #endregion
@@ -385,8 +395,9 @@ namespace PlexDL.Player
             if (!string.IsNullOrWhiteSpace(fileName))
             {
                 StreamReader reader = new StreamReader(fileName, st_Encoding, true);
+				int count = Subtitles_Count(reader);
+                reader.Close();
 
-                int count = Subtitles_Count(reader);
                 if (count > 0)
                 {
                     bool    error       = false;
@@ -401,9 +412,11 @@ namespace PlexDL.Player
                     int index           = 0;
                     st_SubtitleItems    = new SubtitleItem[count];
 
+                    // use new reader because of problems with files with BOM
+                    reader = new StreamReader(fileName, st_Encoding, true);
                     while ((line = (reader.ReadLine())) != null && !error)
                     {
-                        line = line.Trim();
+						line = line.Trim();
                         if (string.IsNullOrWhiteSpace(line)) continue;
 
                         int testId;
@@ -424,7 +437,7 @@ namespace PlexDL.Player
                                     if (!TimeSpan.TryParse(m.Groups["end"].Value.Replace(",", "."), out endTime)) error = true;
                                 }
                                 else error = true;
-                                readStep = 2;
+								readStep = 2;
                                 break;
                             case 2: // Text
                                 if (int.TryParse(line, out testId)) // if not id (subtitle number)
@@ -435,13 +448,16 @@ namespace PlexDL.Player
                                     text = "";
                                     readStep = 1;
                                 }
-                                else text += line + "\r\n";
+                                else
+                                {
+                                    text += line + "\r\n";
+                                }
                                 break;
                         }
                     }
                     if (!error)
                     {
-                        if (text != "")
+						if (text.Length > 0)
                         {
                             if (st_RemoveHTMLTags) st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, st_TagsRegex.Replace(text, string.Empty));
                             else st_SubtitleItems[index++] = new SubtitleItem(startTime.Ticks, endTime.Ticks, text);
@@ -460,21 +476,21 @@ namespace PlexDL.Player
 
                         result = true;
                     }
+                    reader.Close();
                 }
-                reader.Close();
             }
             return result;
         }
 
         // ... also for dimensioning the subtitles array
-        private int Subtitles_Count(StreamReader reader)
+        private static int Subtitles_Count(StreamReader reader)
         {
             bool error          = false;
             string line;
             int readStep        = 0;
             int count           = 0;
 
-            while ((line = (reader.ReadLine())) != null && !error)
+			while ((line = (reader.ReadLine())) != null && !error)
             {
                 line = line.Trim();
                 if (string.IsNullOrWhiteSpace(line)) continue;
@@ -506,9 +522,8 @@ namespace PlexDL.Player
                         break;
                 }
             }
-            reader.DiscardBufferedData();
-            reader.BaseStream.Seek(0, SeekOrigin.Begin);
-            reader.BaseStream.Position = 0;
+			//reader.DiscardBufferedData();
+			//reader.BaseStream.Position = 0;
             return error ? 0 : count;
         }
 

@@ -47,7 +47,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of the system's enabled audio input devices. Returns null if no enabled audio input devices are present. See also: Player.AudioInput.DeviceCount and Player.AudioInput.GetDefaultDevice.
+        /// Returns a list of the system's enabled audio input devices or null if none are present. See also: Player.AudioInput.DeviceCount and Player.AudioInput.GetDefaultDevice.
         /// </summary>
         public AudioInputDevice[] GetDevices()
         {
@@ -81,7 +81,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the system's default audio input device. Returns null if no default audio input device is present. See also: Player.AudioInput.GetDevices.
+        /// Returns the system's default audio input device or null if not present. See also: Player.AudioInput.GetDevices.
         /// </summary>
         public AudioInputDevice GetDefaultDevice()
         {
@@ -108,7 +108,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether an audio input device is playing (alone or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
+        /// Gets a value indicating whether an audio input device is playing (by itself or with a webcam device - including paused audio input). Use the Player.Play method to play an audio input device.
         /// </summary>
         public bool Playing
         {
@@ -121,7 +121,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets (changes) the audio input device being played (alone or with a webcam device). Use the Player.Play method to play an audio input device. See also: Player.AudioInput.GetDevices.
+        /// Gets or sets (changes) the audio input device being played (by itself or with a webcam device). Use the Player.Play method to play an audio input device. See also: Player.AudioInput.GetDevices.
         /// </summary>
         public AudioInputDevice Device
         {
@@ -149,7 +149,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Updates or restores the audio playback of the playing audio input device.
+        /// Updates or restores the playing audio input device.
         /// </summary>
         public int Update()
         {
@@ -160,6 +160,57 @@ namespace PlexDL.Player
             }
             else _base._lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
             return (int)_base._lastError;
+        }
+
+        /// <summary>
+        /// Gets or sets the input volume of the audio input device of the player, values from 0.0 (off) to 1.0 (max).
+        /// </summary>
+        public float DeviceVolume
+        {
+            get
+            {
+                float volume = Player.AudioDevice_InputLevel(_base._micDevice, 0, false);
+                if (volume == -1)
+                {
+                    volume = 0;
+                    _base._lastError = HResult.MF_E_NOT_AVAILABLE; // device not ready
+                }
+                else _base._lastError = Player.NO_ERROR;
+
+                return volume;
+            }
+            set
+            {
+                if (value < Player.AUDIO_VOLUME_MINIMUM || value > Player.AUDIO_VOLUME_MAXIMUM)
+                {
+                    _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+                }
+                else
+                {
+                    float volume = Player.AudioDevice_InputLevel(_base._micDevice, value, true);
+                    if (volume == -1) _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                    else _base._lastError = Player.NO_ERROR;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the muting state of the audio input device of the player.
+        /// </summary>
+        public bool DeviceMute
+        {
+            get
+            {
+                bool muteState = false;
+                _base._lastError = (HResult)Player.AudioDevice_InputMute(_base._micDevice, ref muteState, false);
+                return muteState;
+
+            }
+            set
+            {
+                bool muteState = value;
+                _base._lastError = (HResult)Player.AudioDevice_InputMute(_base._micDevice, ref muteState, true);
+            }
         }
     }
 }
