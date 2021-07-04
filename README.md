@@ -78,7 +78,10 @@ By using caching, you can drastically increase the performance of the applicatio
 [Follow the Build Guide](./Documentation/BUILD.md)
 
 #### __2. Downloading from Releases__
-Alternatively, you can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all of the needed dependencies and the binary itself.
+You can access the latest official build [here](https://github.com/Brhsoftco/PlexDL/releases/latest). Just download `Release.zip` to get all of the needed dependencies and the binary itself.
+
+#### __3. Downloading from the Build Server__
+On every commit to the master branch, a new build is executed on the Azure DevOps pipeline. These builds aren't recommended for uses other than testing, but if you like living on the edge, you can access the pipeline [here](https://dev.azure.com/brhmedia/PlexDL/_build).
 
 ### __Using PlexDL__
 [Read the Usage Guide](./Documentation/USAGE.md)
