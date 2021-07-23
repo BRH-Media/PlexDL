@@ -10,7 +10,8 @@ namespace PlexDL.Common.Caching.Handlers
         public static string ThumbCachePath(string sourceUrl)
         {
             var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
+            var serverHash = MD5Helper.CalculateMd5Hash($"{ObjectProvider.Settings.ConnectionInfo.PlexAddress}" +
+                                                        $":{ObjectProvider.Settings.ConnectionInfo.PlexPort}");
             var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ThumbExt;
             var cachePath =
                 $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.ThumbRelativeDirectory}";

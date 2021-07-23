@@ -15,7 +15,8 @@ namespace PlexDL.Common.Caching.Handlers
         public static string XmlCachePath(string sourceUrl)
         {
             var accountHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken);
-            var serverHash = MD5Helper.CalculateMd5Hash(ObjectProvider.Settings.ConnectionInfo.PlexAddress);
+            var serverHash = MD5Helper.CalculateMd5Hash($"{ObjectProvider.Settings.ConnectionInfo.PlexAddress}" +
+                                                        $":{ObjectProvider.Settings.ConnectionInfo.PlexPort}");
             var fileName = MD5Helper.CalculateMd5Hash(sourceUrl) + CachingFileExt.ApiXmlExt;
             var cachePath =
                 $"{CachingFileDir.RootCacheDirectory}\\{accountHash}\\{serverHash}\\{CachingFileDir.XmlRelativeDirectory}";
@@ -174,7 +175,7 @@ namespace PlexDL.Common.Caching.Handlers
                                     sourceUrl);
 
                                 //force the download of a new copy
-                                var newDoc = XmlGet.GetXmlTransaction(sourceUrl, true, false, false);
+                                var newDoc = XmlGet.GetXmlTransaction(sourceUrl, true);
 
                                 //replace the existing record with the new one
                                 var replaceResult = XmlReplaceCache(newDoc, sourceUrl);
