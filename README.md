@@ -18,6 +18,7 @@ This software package **has not been endorsed** by Plex (Plex Incorporated), and
 - Utilises `WinFormAnimation` by falahati - [Github Repo](https://github.com/falahati/WinFormAnimation/)
 - Utilises `CircularProgressBar` by falahati - [GitHub Repo](https://github.com/falahati/CircularProgressBar/)
 - Utilises `SharpCaster` by Tapanila - [GitHub Repo](https://github.com/Tapanila/SharpCaster)
+- Utilises `QRCoder` by codebude - [GitHub Repo](https://github.com/codebude/QRCoder)
 
 ### What does PlexDL do?
 Many different things!

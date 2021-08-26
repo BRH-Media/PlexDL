@@ -40,7 +40,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QRCode\QRProvider.cs" />
+    <Compile Include="QRCode\OfflineProvider\AbstractQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\ArtQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\ASCIIQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\Base64QRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\BitmapByteQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\Exceptions\DataTooLongException.cs" />
+    <Compile Include="QRCode\OfflineProvider\Framework4.0Methods\Stream4Methods.cs" />
+    <Compile Include="QRCode\OfflineProvider\Framework4.0Methods\String4Methods.cs" />
+    <Compile Include="QRCode\OfflineProvider\PayloadGenerator.cs" />
+    <Compile Include="QRCode\OfflineProvider\PdfByteQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\PngByteQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\PostscriptQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\QRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\QRCodeData.cs" />
+    <Compile Include="QRCode\OfflineProvider\QRCodeGenerator.cs" />
+    <Compile Include="QRCode\OfflineProvider\SvgQRCode.cs" />
+    <Compile Include="QRCode\OfflineProvider\XamlQRCode.cs" />
+    <Compile Include="QRCode\OnlineProvider\QROnlineProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\inet\inet.csproj">

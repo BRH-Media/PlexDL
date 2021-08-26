@@ -10,15 +10,15 @@ using System.Web;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
 
-namespace PlexDL.Common.BarcodeHandler.QRCode
+namespace PlexDL.Common.BarcodeHandler.QRCode.OnlineProvider
 {
-    public class QRProvider
+    public class QROnlineProvider
     {
         public string CodeUrl { get; }
         public string CodeBase64 { get; set; } = "";
         public Image CodeImage { get; set; }
 
-        public QRProvider(string url)
+        public QROnlineProvider(string url)
         {
             //set URL
             CodeUrl = url;

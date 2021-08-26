@@ -23,6 +23,7 @@ It is a requirement to first build the solution since multiple projects rely on 
 - WinFormAnimation by falahati \[`PlexDL.Animation`]
 - PVS.MediaPlayer by Peter Vegter \[`PlexDL.Player`]
 - csharp-plex-api by ammmze \[`PlexDL.MyPlex`]
+- QRCoder by codebude \[`PlexDL.Common.BarcodeHandler`]
 
 ### Build Prerequisites
 - Visual Studio 2017/2019
