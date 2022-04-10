@@ -18,6 +18,8 @@ namespace PlexDL.Player
 
         #region Constants
 
+        private const int   NO_ERROR                = 0;
+
         private const int   VOLUME_FADE_INTERVAL    = 20;
         private const int   BALANCE_FADE_INTERVAL   = 10;
 
@@ -63,69 +65,71 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the playing media contains audio.
+        /// Gets a value indicating whether the playing media contains audio.
         /// </summary>
         public bool Present
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hasAudio;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the audio output of the player is enabled (default: true).
+        /// Gets or sets a value indicating whether the player's audio output is enabled (default: true).
         /// </summary>
         public bool Enabled
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioEnabled;
             }
             set { _base.AV_SetAudioEnabled(value); }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the audio output from the player is muted (default: false).
+        /// Gets or sets a value indicating whether the player's audio output is muted (default: false).
+        /// <br/>See also: Player.AudioMultiTrack.SetMuteAll.
         /// </summary>
         public bool Mute
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return !_base._audioEnabled;
             }
             set { _base.AV_SetAudioEnabled(!value); }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether audio tracks in subsequent media files are ignored by the player (default: false). The audio track information remains available. Allows to play video from media with unsupported audio formats.
+        /// Gets or sets a value indicating whether audio tracks in subsequent media files are ignored by the player (default: false).
+        /// <br/>The audio track information remains available. Allows to play video from media with unsupported audio formats.
         /// </summary>
         public bool Cut
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioCut;
             }
             set
             {
                 _base._audioCut = value;
                 if (value) _base._videoCut = false;
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the audio output from the player is in mono mode (default: false).
+        /// Gets or sets a value indicating whether the player's audio output is in mono (default: false).
         /// </summary>
         public bool Mono
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioMono;
             }
             set
@@ -139,39 +143,81 @@ namespace PlexDL.Player
                         _base.AV_UpdateTopology();
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         // Tracks:
 
         /// <summary>
-        /// Gets or sets the active audio track of the playing media. See also: Player.Audio.TrackCount and Player.Audio.GetTracks.
+        /// Gets or sets the active audio track of the playing media.
+        /// <br/>See also: Player.Audio.TrackCount and Player.Audio.GetTracks.
         /// </summary>
         public int Track
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioTrackCurrent;
             }
             set { _base.AV_SetTrack(value, true); }
         }
 
         /// <summary>
-        /// Gets the number of audio tracks in the playing media. See also: Player.Audio.Track and Player.Audio.GetTracks.
+        /// Gets a string with a detailed description of the active audio track of the playing media.
+        /// <br/>See also: Player.Audio.GetTrackString.
+        /// </summary>
+        public string TrackString
+        {
+            get
+            {
+                if (_base._hasAudio)
+                {
+                    _base._lastError = NO_ERROR;
+                    return _base.AV_GetAudioTracks()[_base._audioTrackCurrent].ToString();
+                }
+
+                _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Returns a string with a detailed description of the specified audio track of the playing media.
+        /// <br/>See also: Player.Audio.TrackString.
+        /// </summary>
+        /// <param name="track">The track number of the audio track to get the string of.</param>
+        public string GetTrackString(int track)
+        {
+            if (_base._hasAudio)
+            {
+                if (track >= 0 && track < _base._audioTrackCount)
+                {
+                    _base._lastError = NO_ERROR;
+                    return _base.AV_GetAudioTracks()[track].ToString();
+                }
+                else _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+            }
+            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Gets the number of audio tracks in the playing media.
+        /// <br/>See also: Player.Audio.Track and Player.Audio.GetTracks.
         /// </summary>
         public int TrackCount
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioTrackCount;
             }
         }
 
         /// <summary>
-        /// Returns a list of the audio tracks in the playing media or null if none are present. See also: Player.Audio.Track and Player.Audio.TrackCount.
+        /// Returns the audio tracks in the playing media.
+        /// <br/>See also: Player.Audio.Track and Player.Audio.TrackCount.
         /// </summary>
         public AudioTrack[] GetTracks()
         {
@@ -181,26 +227,28 @@ namespace PlexDL.Player
         // Channels:
 
         /// <summary>
-        /// Gets the number of audio channels (e.g. 2 for stereo) in the active audio track of the playing media. See also: Player.Audio.DeviceChannelCount.
+        /// Gets the number of audio channels (e.g. 2 for stereo) in the active audio track of the playing media.
         /// </summary>
         public int ChannelCount
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (!_base._playing) return 0;
                 return _base._mediaChannelCount;
             }
         }
 
         /// <summary>
-        /// Gets or sets the volume of each individual audio output channel (up to 16 channels) of the player, values from 0.0 (mute) to 1.0 (max). See also: Player.Audio.ChannelCount and Player.Audio.DeviceChannelCount.
+        /// Gets or sets the volume of each individual audio output channel (up to 8 channels) of the player.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max) (default: 1.0).
+        /// <br/>See also: Player.Audio.ChannelCount.
         /// </summary>
         public float[] ChannelVolumes
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
 
                 float[] volumes = new float[Player.MAX_AUDIO_CHANNELS];
                 for (int i = 0; i < Player.MAX_AUDIO_CHANNELS; i++)
@@ -237,7 +285,7 @@ namespace PlexDL.Player
 
                     if (valid)
                     {
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
 
                         float newBalance;
                         if (value[0] >= value[1])
@@ -263,16 +311,39 @@ namespace PlexDL.Player
             }
         }
 
+        ///// <summary>
+        ///// Gets or sets the maximum number of audio channels used by the player (default: 0 (no limit)). When set, the setting applies to the next media to be played. This option can be used to play media with more audio channels than is supported for the audio type.
+        ///// </summary>
+        //public int ChannelsLimit
+        //{
+        //    get
+        //    {
+        //        _base._lastError = NO_ERROR;
+        //        return _base._audioChannelsLimit;
+        //    }
+
+        //    set
+        //    {
+        //        if (value > 0 && value <= Player.MAX_AUDIO_CHANNELS)
+        //        {
+        //            _base._lastError = NO_ERROR;
+        //            _base._audioChannelsLimit = value;
+        //        }
+        //        else _base._lastError = HResult.MF_E_OUT_OF_RANGE;
+        //    }
+        //}
+
         // Volume:
 
         /// <summary>
-        /// Gets or sets the audio volume of the player, values from 0.0 (mute) to 1.0 (max) (default: 1.0).
+        /// Gets or sets the audio volume of the player.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max) (default: 1.0).
         /// </summary>
         public float Volume
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioVolume;
             }
             set { _base.AV_SetAudioVolume(value, true, true); }
@@ -281,7 +352,7 @@ namespace PlexDL.Player
         /// <summary>
         /// Gradually increases or decreases the audio volume of the player to the specified level.
         /// </summary>
-        /// <param name="level">The audio volume level to be set, values from 0.0 (mute) to 1.0 (max).</param>
+        /// <param name="level">The audio volume level to be set. Values from 0.0 (mute) to 1.0 (max).</param>
         public int VolumeTo(float level)
         {
             if (level < Player.AUDIO_VOLUME_MINIMUM || level > Player.AUDIO_VOLUME_MAXIMUM)
@@ -311,7 +382,7 @@ namespace PlexDL.Player
                     _volumeFadeTimer.Tick   += VolumeStep_Tick;
                     _volumeFadeTimer.Start();
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             return (int)_base._lastError;
         }
@@ -319,8 +390,11 @@ namespace PlexDL.Player
         /// <summary>
         /// Gradually increases or decreases the audio volume of the player to the specified level.
         /// </summary>
-        /// <param name="level">The audio volume level to be set, values from 0.0 (mute) to 1.0 (max).</param>
-        /// <param name="interval">The time, in milliseconds, between two consecutive volume values. Values from 1 to 100 (default: 20). This interval is used until it is changed again.</param>
+        /// <param name="level">The audio volume level to be set.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max).</param>
+        /// <param name="interval">The time, in milliseconds, between two consecutive volume values.
+        /// <br/>Values from 1 to 100 (default: 20).
+        /// <br/>This interval is used until it is changed again.</param>
         public int VolumeTo(float level, int interval)
         {
             if (level < Player.AUDIO_VOLUME_MINIMUM || level > Player.AUDIO_VOLUME_MAXIMUM || interval < FADE_INTERVAL_MINIMUM || interval > FADE_INTERVAL_MAXIMUM)
@@ -356,13 +430,14 @@ namespace PlexDL.Player
         // Balance:
 
         /// <summary>
-        /// Gets or sets the audio balance of the player, values from -1.0 (left) to 1.0 (right) (default: 0.0).
+        /// Gets or sets the audio balance of the player.
+        /// <br/>Values from -1.0 (left) to 1.0 (right) (default: 0.0).
         /// </summary>
         public float Balance
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioBalance;
             }
             set { _base.AV_SetAudioBalance(value, true, true); }
@@ -371,7 +446,8 @@ namespace PlexDL.Player
         /// <summary>
         /// Gradually changes the audio balance of the player to the specified level.
         /// </summary>
-        /// <param name="level">The audio balance level to be set, values from -1.0 (left) to 1.0 (right).</param>
+        /// <param name="level">The audio balance level to be set.
+        /// <br/>Values from -1.0 (left) to 1.0 (right).</param>
         public int BalanceTo(float level)
         {
             if (level < Player.AUDIO_BALANCE_MINIMUM || level > Player.AUDIO_BALANCE_MAXIMUM)
@@ -401,7 +477,7 @@ namespace PlexDL.Player
                     _balanceFadeTimer.Tick      += BalanceStep_Tick;
                     _balanceFadeTimer.Start();
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             return (int)_base._lastError;
         }
@@ -409,8 +485,11 @@ namespace PlexDL.Player
         /// <summary>
         /// Gradually changes the audio balance of the player to the specified level.
         /// </summary>
-        /// <param name="level">The audio balance level to be set, values from -1.0 (left) to 1.0 (right).</param>
-        /// <param name="interval">The time, in milliseconds, between two consecutive balance values. Values from 1 to 100 (default: 10). This interval is used until it is changed again.</param>
+        /// <param name="level">The audio balance level to be set.
+        /// <br/>Values from -1.0 (left) to 1.0 (right).</param>
+        /// <param name="interval">The time, in milliseconds, between two consecutive balance values.
+        /// <br/>This interval is used until it is changed again.
+        /// <br/>Values from 1 to 100 (default: 10).</param>
         public int BalanceTo(float level, int interval)
         {
             if (level < Player.AUDIO_BALANCE_MINIMUM || level > Player.AUDIO_BALANCE_MAXIMUM || interval < FADE_INTERVAL_MINIMUM || interval > FADE_INTERVAL_MAXIMUM)
@@ -443,11 +522,11 @@ namespace PlexDL.Player
             }
         }
 
-		
         // Audio Devices:
 
         /// <summary>
-        /// Gets the number of the system's enabled audio output devices. See also: Player.Audio.GetDevices.
+        /// Gets the number of the system's enabled audio output devices.
+        /// <br/>See also: Player.Audio.GetDevices.
         /// </summary>
         public int DeviceCount
         {
@@ -465,13 +544,14 @@ namespace PlexDL.Player
                     Marshal.ReleaseComObject(deviceCollection);
                 }
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return (int)count;
             }
         }
 
         /// <summary>
-        /// Returns a list of the system's enabled audio output devices or null if none are present. See also: Player.Audio.DeviceCount and Player.Audio.GetDefaultDevice.
+        /// Returns the system's enabled audio output devices.
+        /// <br/>See also: Player.Audio.DeviceCount and Player.Audio.GetDefaultDevice.
         /// </summary>
         public AudioDevice[] GetDevices()
         {
@@ -497,7 +577,7 @@ namespace PlexDL.Player
 
                         Marshal.ReleaseComObject(device);
                     }
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 Marshal.ReleaseComObject(deviceCollection);
             }
@@ -505,7 +585,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the system's default audio output device or null if not present. See also: Player.Audio.GetDevices.
+        /// Returns the system's default audio output device.
+        /// <br/>See also: Player.Audio.DeviceCount and Player.Audio.GetDevices.
         /// </summary>
         public AudioDevice GetDefaultDevice()
         {
@@ -521,7 +602,7 @@ namespace PlexDL.Player
                 Player.GetDeviceInfo(device, audioDevice);
 
                 Marshal.ReleaseComObject(device);
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else
             {
@@ -531,22 +612,23 @@ namespace PlexDL.Player
             return audioDevice;
         }
 
-
         // Active Audio Device:
 
         /// <summary>
-        /// Gets or sets the audio output device used by the player (default: null). The default audio output device of the system is indicated by null. See also: Player.Audio.GetDevices and Player.Audio.GetDefaultDevice.
+        /// Gets or sets the audio output device used by the player (default: null).
+        /// <br/>The default audio output device of the system is indicated by null.
+        /// <br/>See also: Player.Audio.DeviceCount and Player.Audio.GetDevices.
         /// </summary>
         public AudioDevice Device
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._audioDevice;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 bool setDevice = false;
 
                 if (value == null)
@@ -579,7 +661,7 @@ namespace PlexDL.Player
                         _base.AV_UpdateTopology();
                     }
 
-                    if (_base._lastError == Player.NO_ERROR)
+                    if (_base._lastError == NO_ERROR)
                     {
                         if (_base.pm_HasPeakMeter)
                         {
@@ -592,6 +674,7 @@ namespace PlexDL.Player
                             else _base.StartSystemDevicesChangedHandlerCheck();
                         }
                         _base._mediaAudioDeviceChanged?.Invoke(_base, EventArgs.Empty);
+                        _base._lastError = NO_ERROR;
                     }
                     else
                     {
@@ -602,7 +685,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the volume of the audio output device of the player, values from 0.0 (mute) to 1.0 (max).
+        /// Gets or sets the volume of the player's audio output device.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max).
         /// </summary>
         public float DeviceVolume
         {
@@ -614,7 +698,7 @@ namespace PlexDL.Player
                     volume = 0;
                     _base._lastError = HResult.MF_E_NOT_AVAILABLE; // device not ready
                 }
-                else _base._lastError = Player.NO_ERROR;
+                else _base._lastError = NO_ERROR;
 
                 return volume;
             }
@@ -632,14 +716,14 @@ namespace PlexDL.Player
                     {
                         if (volume < 0.001) DeviceMute = true;
                         else if (DeviceMute) DeviceMute = false;
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets the muting state of the audio output device of the player.
+        /// Gets or sets a value that indicates whether the player's audio output device is muted.
         /// </summary>
         public bool DeviceMute
         {
@@ -658,13 +742,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of audio output channels of the player's audio output device. See also: Player.Audio.ChannelCount.
+        /// Gets the number of audio output channels of the player's audio output device.
         /// </summary>
         public int DeviceChannelCount
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
 
                 if (_base.pm_HasPeakMeter) return _base.pm_PeakMeterChannelCount;
                 else return Player.Device_GetChannelCount(_base._audioDevice);
@@ -672,9 +756,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gradually increases or decreases the volume of the audio output device of the player to the specified level.
+        /// Gradually increases or decreases the volume of the player's audio output device to the specified level.
         /// </summary>
-        /// <param name="level">The audio volume level to be set, values from 0.0 (mute) to 1.0 (max).</param>
+        /// <param name="level">The audio volume level to be set.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max).</param>
         public int DeviceVolumeTo(float level)
         {
             float currentVolume = DeviceVolume;
@@ -705,16 +790,19 @@ namespace PlexDL.Player
                     _deviceFadeTimer.Tick       += DeviceVolumeStep_Tick;
                     _deviceFadeTimer.Start();
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Gradually increases or decreases the volume of the audio output device of the player to the specified level.
+        /// Gradually increases or decreases the volume of the player's audio output device to the specified level.
         /// </summary>
-        /// <param name="level">The audio volume level to be set, values from 0.0 (mute) to 1.0 (max).</param>
-        /// <param name="interval">The time, in milliseconds, between two consecutive volume values. Values from 1 to 100 (default: 20). This interval is used until it is changed again.</param>
+        /// <param name="level">The audio volume level to be set.
+        /// <br/>Values from 0.0 (mute) to 1.0 (max).</param>
+        /// <param name="interval">The time, in milliseconds, between two consecutive volume values.
+        /// <br/>This interval is used until it is changed again.
+        /// <br/>Values from 1 to 100 (default: 20).</param>
         public int DeviceVolumeTo(float level, int interval)
         {
             if (level < Player.AUDIO_VOLUME_MINIMUM || level > Player.AUDIO_VOLUME_MAXIMUM || interval < FADE_INTERVAL_MINIMUM || interval > FADE_INTERVAL_MAXIMUM)

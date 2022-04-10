@@ -40,8 +40,10 @@ namespace PlexDL.Player
         /// </summary>
         /// <param name="titles">The title(s) of the media chapter.</param>
         /// <param name="startTime">The start time of the media chapter.</param>
-        /// <param name="endTime">The end time of the media chapter. TimeSpan.Zero indicates the beginning of the next chapter or the end of the media.</param>
-        /// <param name="languages">The language(s) (3 letter name (ISO 639.2)) of the title(s) of the media chapter. Must be the same number as the number of titles.</param>
+        /// <param name="endTime">The end time of the media chapter.
+        /// <br/>TimeSpan.Zero indicates the beginning of the next chapter or the end of the media.</param>
+        /// <param name="languages">The language(s) (3 letter name (ISO 639.2)) of the title(s) of the media chapter.
+        /// <br/>Must be the same number as the number of titles.</param>
         public MediaChapter(string[] titles, TimeSpan startTime, TimeSpan endTime, string[] languages)
         {
             if (titles == null)
@@ -74,7 +76,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the title of the media chapter. The chapter can have multiple titles in different languages when extracted from a media file.
+        /// Gets the title of the media chapter.
+        /// <br/>The chapter can have multiple titles in different languages when extracted from a media file.
         /// </summary>
         public string[] Title
         {
@@ -82,7 +85,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the language (3 letter name (ISO 639.2)) used for the title of the media chapter or null if not available. The index of the language corresponds to the index of the title.
+        /// Gets the language (3 letter name (ISO 639.2)) used for the title of the media chapter.
+        /// <br/>The index of the language corresponds to the index of the title.
         /// </summary>
         public string[] Language
         {
@@ -98,7 +102,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the end time of the media chapter. TimeSpan.Zero indicates the beginning of the next chapter or the end of the file.
+        /// Gets the end time of the media chapter.
+        /// <br/>TimeSpan.Zero indicates the beginning of the next chapter or the end of the file.
         /// </summary>
         public TimeSpan EndTime
         {

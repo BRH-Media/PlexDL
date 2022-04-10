@@ -37,11 +37,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// A parametred constructor. Initialize fields with a given <see cref="System.Drawing.Rectangle"/>.
+        /// A parametred constructor. Initialize fields with a given <see cref="Rectangle"/>.
         /// </summary>
-        /// <param name="rectangle">A <see cref="System.Drawing.Rectangle"/></param>
+        /// <param name="rectangle">A <see cref="Rectangle"/></param>
         /// <remarks>
-        /// Warning, MFRect define a rectangle by defining two of his corners and <see cref="System.Drawing.Rectangle"/> define a rectangle with his upper/left corner, his width and his height.
+        /// Warning, MFRect define a rectangle by defining two of his corners and <see cref="Rectangle"/> define a rectangle with his upper/left corner, his width and his height.
         /// </remarks>
         public MFRect(Rectangle rectangle)
             : this(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom)
@@ -95,7 +95,7 @@ namespace PlexDL.Player
 
         /// <summary>
         /// Define implicit cast between MFRect and System.Drawing.Rectangle for languages supporting this feature.
-        /// VB.Net doesn't support implicit cast. <see cref="MFRect.ToRectangle"/> for similar functionality.
+        /// VB.Net doesn't support implicit cast. <see cref="ToRectangle"/> for similar functionality.
         /// <code>
         ///   // Define a new Rectangle instance
         ///   Rectangle r = new Rectangle(0, 0, 100, 100);
@@ -114,7 +114,7 @@ namespace PlexDL.Player
 
         /// <summary>
         /// Define implicit cast between System.Drawing.Rectangle and MFRect for languages supporting this feature.
-        /// VB.Net doesn't support implicit cast. <see cref="MFRect.FromRectangle"/> for similar functionality.
+        /// VB.Net doesn't support implicit cast. <see cref="FromRectangle"/> for similar functionality.
         /// <code>
         ///   // Define a new MFRect instance
         ///   MFRect mfR = new MFRect(0, 0, 100, 100);
@@ -141,9 +141,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Get a new MFRect instance for a given <see cref="System.Drawing.Rectangle"/>
+        /// Get a new MFRect instance for a given <see cref="Rectangle"/>
         /// </summary>
-        /// <param name="r">The <see cref="System.Drawing.Rectangle"/> used to initialize this new MFGuid</param>
+        /// <param name="r">The <see cref="Rectangle"/> used to initialize this new MFGuid</param>
         /// <returns>A new instance of MFGuid</returns>
         public static MFRect FromRectangle(Rectangle r)
         {

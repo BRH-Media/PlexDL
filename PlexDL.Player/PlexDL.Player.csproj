@@ -18,9 +18,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,12 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio.cs" />
+    <Compile Include="AudioBitRate.cs" />
     <Compile Include="AudioDevice.cs" />
     <Compile Include="AudioDevices.cs" />
+    <Compile Include="AudioEventArgs.cs" />
+    <Compile Include="AudioFormat.cs" />
     <Compile Include="AudioInput.cs" />
     <Compile Include="AudioInputDevice.cs" />
+    <Compile Include="AudioMultiTrack.cs" />
     <Compile Include="AudioStream.cs" />
     <Compile Include="AudioTrack.cs" />
+    <Compile Include="AudioTrackDeviceEventArgs.cs" />
     <Compile Include="CameraControlFlags.cs" />
     <Compile Include="CameraControlProperty.cs" />
     <Compile Include="Chapters.cs" />
@@ -71,10 +77,12 @@
     <Compile Include="DXVA2VideoProcessorCaps.cs" />
     <Compile Include="EDataFlow.cs" />
     <Compile Include="EndedEventArgs.cs" />
+    <Compile Include="EndedPausedEventArgs.cs" />
     <Compile Include="ERole.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="FourCC.cs" />
     <Compile Include="FullScreenMode.cs" />
+    <Compile Include="GETPROPERTYSTOREFLAGS.cs" />
     <Compile Include="Has.cs" />
     <Compile Include="HideObjectEventArgs.cs" />
     <Compile Include="HideObjectMembers.cs" />
@@ -114,6 +122,8 @@
     <Compile Include="IMFMediaSource.cs" />
     <Compile Include="IMFMediaType.cs" />
     <Compile Include="IMFMediaTypeHandler.cs" />
+    <Compile Include="IMFMetadata.cs" />
+    <Compile Include="IMFMetadataProvider.cs" />
     <Compile Include="IMFPresentationClock.cs" />
     <Compile Include="IMFPresentationDescriptor.cs" />
     <Compile Include="IMFPresentationTimeSource.cs" />
@@ -130,10 +140,12 @@
     <Compile Include="IMFStreamSink.cs" />
     <Compile Include="IMFTopology.cs" />
     <Compile Include="IMFTopologyNode.cs" />
+    <Compile Include="IMFTransform.cs" />
     <Compile Include="IMFVideoDisplayControl.cs" />
     <Compile Include="IMFVideoMixerBitmap.cs" />
     <Compile Include="IMFVideoMixerControl.cs" />
     <Compile Include="IMFVideoProcessor.cs" />
+    <Compile Include="IMFVideoProcessorControl.cs" />
     <Compile Include="IMMDevice.cs" />
     <Compile Include="IMMDeviceCollection.cs" />
     <Compile Include="IMMDeviceEnumerator.cs" />
@@ -143,6 +155,7 @@
     <Compile Include="IPropertyStore.cs" />
     <Compile Include="ISequentialStream.cs" />
     <Compile Include="IStream.cs" />
+    <Compile Include="IWMResampleProps.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="MediaChapter.cs" />
     <Compile Include="MediaEventType.cs" />
@@ -167,14 +180,12 @@
     <Compile Include="MFEventFlag.cs" />
     <Compile Include="MFExtern.cs" />
     <Compile Include="MfFloat.cs" />
+    <Compile Include="MFFOLDDOWN_MATRIX.cs" />
     <Compile Include="MFInt.cs" />
     <Compile Include="MFMediaEqual.cs" />
     <Compile Include="MFMediaSinkCharacteristics.cs" />
     <Compile Include="MFMediaSourceCharacteristics.cs" />
     <Compile Include="MFMediaType.cs" />
-    <Compile Include="MFNetAuthenticationFlags.cs" />
-    <Compile Include="MFNetCredentialOptions.cs" />
-    <Compile Include="MFNetCredentialRequirements.cs" />
     <Compile Include="MFObjectType.cs" />
     <Compile Include="MFRateDirection.cs" />
     <Compile Include="MFRect.cs" />
@@ -188,6 +199,9 @@
     <Compile Include="MFStreamSinkMarkerType.cs" />
     <Compile Include="MFTopologyType.cs" />
     <Compile Include="MFTranscodeContainerType.cs" />
+    <Compile Include="MFTRegisterTypeInfo.cs" />
+    <Compile Include="MFTSetTypeFlags.cs" />
+    <Compile Include="MFT_EnumFlag.cs" />
     <Compile Include="MFVideoAlphaBitmap.cs" />
     <Compile Include="MFVideoAlphaBitmapFlags.cs" />
     <Compile Include="MFVideoAlphaBitmapParams.cs" />
@@ -202,6 +216,8 @@
     <Compile Include="MF_SOURCE_READER_CONTROL_FLAG.cs" />
     <Compile Include="MF_SOURCE_READER_FLAG.cs" />
     <Compile Include="MMDeviceEnumerator.cs" />
+    <Compile Include="MotionDetection.cs" />
+    <Compile Include="MotionEventArgs.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="NetworkProtocol.cs" />
     <Compile Include="NetworkStatistics.cs" />
@@ -227,8 +243,8 @@
     <Compile Include="PropertyKeys.cs" />
     <Compile Include="PropVariant.cs" />
     <Compile Include="PVMarshaler.cs" />
-    <Compile Include="RecorderAudioFormat.cs" />
-    <Compile Include="RecorderVideoFormat.cs" />
+    <Compile Include="Recorder.cs" />
+    <Compile Include="RecordingInfo.cs" />
     <Compile Include="ShapeCallback.cs" />
     <Compile Include="SilentSeek.cs" />
     <Compile Include="Sliders.cs" />
@@ -255,8 +271,11 @@
     <Compile Include="VideoDisplay.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="VideoFormat.cs" />
+    <Compile Include="VideoOverlay.cs" />
     <Compile Include="VideoProcAmpFlags.cs" />
     <Compile Include="VideoProcAmpProperty.cs" />
+    <Compile Include="VideoRotation.cs" />
     <Compile Include="VideoStream.cs" />
     <Compile Include="VideoTrack.cs" />
     <Compile Include="Webcam.cs" />

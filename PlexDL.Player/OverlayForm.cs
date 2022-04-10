@@ -12,7 +12,7 @@ namespace PlexDL.Player
         private bool _clickThrough;
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the overlay is transparent for mouse events (default: false).
+        /// Gets or sets a value indicating whether the overlay is transparent for mouse events (default: false).
         /// </summary>
         public bool ClickThrough
         {
@@ -21,7 +21,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value indicating whether the window will be activated when it is shown (overlay override: not activated).
+        /// Gets a (system) value indicating the window will not be activated when it is shown.
         /// </summary>
         protected override bool ShowWithoutActivation
         {
@@ -51,10 +51,10 @@ namespace PlexDL.Player
         /// <param name="m">The Windows Message to process.</param>
         protected override void WndProc(ref Message m)
         {
-            const int WM_NCHITTEST = 0x0084;
-            const int HTTRANSPARENT = -1;
-            const int WM_MOUSEACTIVATE = 0x0021;
-            const int MA_NOACTIVATE = 0x0003;
+            const int WM_NCHITTEST      = 0x0084;
+            const int HTTRANSPARENT     = -1;
+            const int WM_MOUSEACTIVATE  = 0x0021;
+            const int MA_NOACTIVATE     = 0x0003;
 
             // prevent form activation
             if (m.Msg == WM_NCHITTEST)

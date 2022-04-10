@@ -49,7 +49,7 @@ namespace PlexDL.Player
         public int VideoHeight { get { return _height; } }
 
         /// <summary>
-        /// Gets the video frame rate of the format, in frames per second.
+        /// Gets the video frame rate of the format, in frames per second (fps).
         /// </summary>
         public float FrameRate { get { return _frameRate; } }
 

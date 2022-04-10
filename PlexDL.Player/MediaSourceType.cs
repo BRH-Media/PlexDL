@@ -22,11 +22,11 @@
         /// </summary>
         Image,
         /// <summary>
-        /// Represents an online media file.
+        /// Represents a remote (online) media file.
         /// </summary>
-        FileStream,
+        RemoteFile,
         /// <summary>
-        /// Represents an online live stream.
+        /// Represents an online live media stream (broadcast).
         /// </summary>
         LiveStream,
         /// <summary>

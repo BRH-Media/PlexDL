@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -46,20 +46,16 @@
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others.
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
+
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -75,7 +71,9 @@ using System.Windows.Forms;
 namespace PlexDL.Player
 {
     /// <summary>
-    /// Represents a pop-up window that displays a short text. One instance of this class is sufficient to use infolabels throughout an application, but if desired, more can be created.
+    /// Represents a movable pop-up window that displays a short text.
+    /// <br/>One instance of this class is sufficient to use infolabels throughout an application,
+    /// <br/>but if desired, more can be created.
     /// </summary>
     [CLSCompliant(true)]
     public sealed class InfoLabel : HideObjectMembers, IDisposable
@@ -306,7 +304,7 @@ namespace PlexDL.Player
         #region Info Label - Main
 
         /// <summary>
-        /// Initializes a new instance of the PVS.MediaPlayer.InfoLabel class.
+        /// Initializes a new instance of the PVS.MediaPlayer.InfoLabel class (creates a new infolabel).
         /// </summary>
         public InfoLabel()
         {
@@ -687,7 +685,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the text associated with the infoLabel.
+        /// Gets or sets the text associated with the infoLabel (when visible).
         /// </summary>
         public string Text
         {
@@ -700,7 +698,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the margin between the text area and the border of each side in the infolabel (when set, use -1 to keep an existing value - default all: 0).
+        /// Gets or sets the margin between the text area and the border of each side in the infolabel (default: all 0).
+        /// <br/>When set, use -1 to keep an existing value.
         /// </summary>
         public Padding TextMargin
         {
@@ -765,7 +764,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the infolabel is automatically resized to display the entire text default: true).
+        /// Gets or sets a value that indicates whether the infolabel is automatically resized to display the entire text (default: true).
         /// </summary>
         public bool AutoSize
         {
@@ -781,7 +780,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the height and width of the text area of the infolabel. When set, the autosize property of the infolabel is set to false.
+        /// Gets or sets the height and width of the text area of the infolabel.
+        /// <br/>When set, the autosize property of the infolabel is set to false.
         /// </summary>
         public Size TextSize
         {
@@ -909,7 +909,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that determines whether to use the Graphics class (GDI+) or the TextRenderer class (GDI) to render the text in the infolabel (default: false (GDI+)).
+        /// Gets or sets a value that determines whether to use the Graphics class (GDI+) or
+        /// <br/>the TextRenderer class (GDI) to render the text in the infolabel (default: false (GDI+)).
         /// </summary>
         public bool UseCompatibleTextRendering
         {
@@ -938,7 +939,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the background color of the infolabel (see also BackBrush - default: SystemColors.Info).
+        /// Gets or sets the background color of the infolabel (default: SystemColors.Info).
+        /// <br/>See also: InfoLabel.BackBrush.
         /// </summary>
         public Color BackColor
         {
@@ -990,7 +992,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the brush that is used to fill the background of the infolabel (see also BackColor).
+        /// Gets or sets the brush that is used to fill the background of the infolabel.
+        /// <br/>See also: InfoLabel.BackColor.
         /// </summary>
         public Brush BackBrush
         {
@@ -1022,7 +1025,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the color of the border of the infolabel (see also BorderBrush - default: SystemColors.WindowFrame).
+        /// Gets or sets the color of the border of the infolabel (default: SystemColors.WindowFrame).
+        /// <br/>See also: InfoLabel.BorderBrush.
         /// </summary>
         public Color BorderColor
         {
@@ -1039,7 +1043,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the brush that is used to fill the border of the infolabel (see also BorderColor).
+        /// Gets or sets the brush that is used to fill the border of the infolabel.
+        /// <br/>See also: InfoLabel.BorderColor.
         /// </summary>
         public Brush BorderBrush
         {
@@ -1072,7 +1077,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the thickness of each side of the border of the infolabel (when set, use -1 to keep an existing value - default all: 1).
+        /// Gets or sets the thickness of each side of the border of the infolabel (default: all 1).
+        /// <br/>When set, use -1 to keep an existing value.
         /// </summary>
         public Padding BorderThickness
         {
@@ -1148,7 +1154,8 @@ namespace PlexDL.Player
         #region Info Label - Duration / Alignment / FadeOut Speed / Opacity / Transparent
 
         /// <summary>
-        /// Gets or sets the duration, in milliseconds, to display the infolabel, that is used when not specified in the show method - default value: 1000.
+        /// Gets or sets the duration, in milliseconds, to display the infolabel (default: 1000).
+        /// <br/>Used when not specified in the show method.
         /// </summary>
         public int Duration
         {
@@ -1161,7 +1168,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the infolabel alignment that is used when not specified in the show method - default value: TopCenter.
+        /// Gets or sets the infolabel alignment (default: TopCenter).
+        /// <br/>Used when not specified in the show method.
         /// </summary>
         public ContentAlignment Align
         {
@@ -1170,7 +1178,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets of sets the alignment location offset, in pixels, of the infolabel - default values: x = 0, y = 0.
+        /// Gets of sets the alignment location offset, in pixels, of the infolabel (default: x = 0, y = 0).
         /// </summary>
         public Point AlignOffset
         {
@@ -1183,7 +1191,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the speed of the fade out effect of the infolabel, values 1 (slow) to 100 (fast) - default value: 20.
+        /// Gets or sets the speed of the fade out effect of the infolabel, values 1 (slow) to 100 (fast) (default: 20).
         /// </summary>
         public int FadeOutSpeed
         {
@@ -1197,7 +1205,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the opacity level of the infolabel, values 0.0 (full transparency) to 1.0 (no transparency) - default value: 1.0.
+        /// Gets or sets the opacity level of the infolabel, values 0.0 (full transparency) to 1.0 (no transparency) (default: 1.0).
         /// </summary>
         public double Opacity
         {
@@ -1212,7 +1220,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the background of the infolabel is transparent - default value: false.
+        /// Gets or sets a value that indicates whether the background of the infolabel is transparent (default: false).
         /// </summary>
         public bool Transparent
         {

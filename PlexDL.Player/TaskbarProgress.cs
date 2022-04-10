@@ -14,10 +14,12 @@ namespace PlexDL.Player
     {
         #region Fields (TaskbarProgress Class)
 
-        private Player                      _base;
-        private List<Form>                  _taskbarItems;
-        internal TaskbarProgressMode        _progressMode;
-        private TaskbarProgressState        _taskbarState = TaskbarProgressState.NoProgress;
+        private const int               NO_ERROR        = 0;
+
+        private Player                  _base;
+        private List<Form>              _taskbarItems;
+        internal TaskbarProgressMode    _progressMode;
+        private TaskbarProgressState    _taskbarState   = TaskbarProgressState.NoProgress;
 
         #endregion
 
@@ -33,7 +35,7 @@ namespace PlexDL.Player
             _taskbarItems    = new List<Form>(4);
             _progressMode    = TaskbarProgressMode.Progress;
 
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
         }
 
         #region Public - Taskbar Progress methods and properties
@@ -79,7 +81,7 @@ namespace PlexDL.Player
                             _base._hasTaskbarProgress = true;
                             _base.StartMainTimerCheck();
                         }
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                     else _base._lastError = HResult.E_INVALIDARG;
                 }
@@ -89,7 +91,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes a taskbar progress indicator from the player.
+        /// Removes the specified taskbar progress indicator from the player.
         /// </summary>
         /// <param name="form">The form whose taskbar progress indicator should be removed.</param>
         public int Remove(Form form)
@@ -118,14 +120,15 @@ namespace PlexDL.Player
                         }
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Removes all taskbar progress indicators from the player. Same as Player.TaskbarProgress.Clear.
+        /// Removes all taskbar progress indicators from the player.
+        /// <br/>Same as Player.TaskbarProgress.Clear.
         /// </summary>
         public int RemoveAll()
         {
@@ -138,14 +141,15 @@ namespace PlexDL.Player
                     SetState(TaskbarProgressState.NoProgress);
                     _taskbarItems    = new List<Form>(4);
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Removes all taskbar progress indicators from the player. Same as Player.TaskbarProgress.RemoveAll.
+        /// Removes all taskbar progress indicators from the player.
+        /// <br/>Same as Player.TaskbarProgress.RemoveAll.
         /// </summary>
         public int Clear()
         {
@@ -163,15 +167,15 @@ namespace PlexDL.Player
 
                 if (_taskbarItems == null)      count = _taskbarItems.Count;
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return count;
             }
         }
 
         /// <summary>
-        /// Gets a list of the forms that have a taskbar progress indicator of the player.
+        /// Gets the forms that have a taskbar progress indicator of the player.
         /// </summary>
-        public Form[] List
+        public Form[] GetForms
         {
             get
             {
@@ -184,7 +188,7 @@ namespace PlexDL.Player
                     {
                         result[i] = _taskbarItems[i];
                     }
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
                 return result;
@@ -198,19 +202,21 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _progressMode;
             }
             set
             {
                 _progressMode = value;
                 if (_base._hasTaskbarProgress && _base.Playing && _base._fileMode) SetValue(_base.PositionX);
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates how the player's progress indicator is displayed in the taskbar button. Changes when the player's playback status changes.
+        /// Gets or sets a value that indicates how the player's progress indicator is displayed in the taskbar button.
+        /// <br/>Setting the status of the player's progress indicator is for special use only and generally not required.
+        /// <br/>The player's progress indicator changes when the player's playback status changes.
         /// </summary>
         public TaskbarProgressState State
         {
@@ -218,7 +224,7 @@ namespace PlexDL.Player
             {
                 if (_base._hasTaskbarProgress)
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     return _taskbarState;
                 }
                 else
@@ -233,14 +239,15 @@ namespace PlexDL.Player
                 {
                     SetState(value);
                     if (!_base._fileMode || _base._liveStreamMode) SetValue(1);
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
             }
         }
 
         /// <summary>
-        /// Updates all taskbar progress indicators of the player. Only for use in special cases.
+        /// Updates all taskbar progress indicators of the player.
+        /// <br/>For special use only, generally not required.
         /// </summary>
         public int Update()
         {
@@ -249,7 +256,7 @@ namespace PlexDL.Player
                 SetValue(_base.PositionX);
                 if (_base._paused) SetState(TaskbarProgressState.Paused);
             }
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return (int)_base._lastError;
         }
 

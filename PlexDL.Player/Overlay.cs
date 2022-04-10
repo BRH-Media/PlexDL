@@ -14,7 +14,9 @@ namespace PlexDL.Player
     {
         #region Fields (Overlay Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -30,14 +32,15 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlay;
             }
             set { _base.AV_SetOverlay(value); }
         }
 
         /// <summary>
-        /// Sets the specified form as the player's display overlay. Same as Player.Overlay.Window = form.
+        /// Sets the specified form as the player's display overlay.
+        /// <br/>Same as Player.Overlay.Window = form.
         /// </summary>
         /// <param name="form">The form to be set as the player's display overlay.</param>
         public void Set(Form form)
@@ -46,7 +49,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes the display overlay from the player. Same as Player.Overlay.Window = null.
+        /// Removes the display overlay from the player.
+        /// <br/>Same as Player.Overlay.Window = null.
         /// </summary>
         public void Remove()
         {
@@ -60,12 +64,12 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlayMode;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
                 if (value != _base._overlayMode)
                 {
                     _base._overlayMode = value;
@@ -76,22 +80,24 @@ namespace PlexDL.Player
                     }
                     _base._mediaOverlayModeChanged?.Invoke(_base, EventArgs.Empty);
                 }
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets a value that indicates whether the player's display overlay is always shown (default: false).
+        /// <br/>By default, a display overlay is only shown when media is playing. 
         /// </summary>
         public bool Hold
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlayHold;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
                 if (value != _base._overlayHold)
                 {
                     _base._overlayHold = value;
@@ -116,17 +122,19 @@ namespace PlexDL.Player
                     }
                     _base._mediaOverlayHoldChanged?.Invoke(_base, EventArgs.Empty);
                 }
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's display overlay can be activated for input and selection (default: false).
+        /// Gets or sets a value indicating whether the player's display overlay can be
+        /// <br/>activated for input and selection (default: false).
         /// </summary>
         public bool CanFocus
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlayCanFocus;
             }
             set
@@ -136,13 +144,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the number of milliseconds that the visibilty of the player's display overlay is delayed when restoring the player's minimized display window (form). Set the value to 0 to disable (default: 200 ms).
+        /// Gets or sets the number of milliseconds that the visibilty of the player's display overlay is delayed
+        /// <br/>when restoring the player's minimized display window (default: 200 ms).
+        /// <br/>A value of 0 (zero) disables the delay.
         /// </summary>
         public int Delay
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._minimizedInterval;
             }
             set
@@ -165,54 +175,58 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player's display overlay is active. See also: Player.Overlay.Present and Player.Overlay.Visible.
+        /// Gets a value indicating whether the player's display overlay is active.
+        /// <br/>See also: Player.Overlay.Present and Player.Overlay.Visible.
         /// </summary>
         public bool Active
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hasOverlayShown;
             }
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player has a display overlay (set, but not necessarily active or visible). See also: Player.Overlay.Active and Player.Overlay.Visible.
+        /// Gets a value indicating whether the player has a display overlay (set, but not necessarily active or visible).
+        /// <br/>See also: Player.Overlay.Active and Player.Overlay.Visible.
         /// </summary>
         public bool Present
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hasOverlay;
             }
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player's display overlay is active and visible. See also: Player.Overlay.Active and Player.Overlay.Present.
+        /// Gets a value indicating whether the player's display overlay is active and visible.
+        /// <br/>See also: Player.Overlay.Active and Player.Overlay.Present.
         /// </summary>
         public bool Visible
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hasOverlay && _base._overlay.Visible;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether clipping of the player's display overlay is enabled. The overlay is clipped when it protrudes outside the parent form of the player's display window (default: false).
+        /// Gets or sets a value indicating whether clipping of the player's display overlay is enabled (default: false).
+        /// <br/>The overlay is clipped when it protrudes outside the parent form of the player's display window..
         /// </summary>
         public bool Clipping
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hasOverlayClipping;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value != _base._hasOverlayClipping)
                 {
                     _base.AV_SetOverlayClipping(value);
@@ -221,25 +235,27 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the opacity of display overlays displayed on screenshots and display clones (default: OverlayBlend.None).
+        /// Gets or sets a value that indicates the opacity of display overlays when displayed on
+        /// <br/>screen copies and display clones (default: OverlayBlend.None).
         /// </summary>
         public OverlayBlend Blend
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlayBlend;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 _base._blendFunction.AlphaFormat = value == OverlayBlend.Transparent ? SafeNativeMethods.AC_SRC_ALPHA : SafeNativeMethods.AC_SRC_OVER;
                 _base._overlayBlend = value;
             }
         }
 
         /// <summary>
-        /// Gets the size and location (in pixels) of the display overlay window relative to the player's display window.
+        /// Gets the size and location (in pixels) of the display overlay window
+        /// <br/>relative to the player's display window.
         /// </summary>
         public Rectangle Bounds
         {
@@ -247,7 +263,7 @@ namespace PlexDL.Player
             {
                 Rectangle bounds;
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (_base._hasOverlayShown)
                 {
                     if (_base._hasVideo && _base._overlayMode == OverlayMode.Video) bounds = _base._videoBounds;

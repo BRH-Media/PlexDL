@@ -16,7 +16,9 @@ namespace PlexDL.Player
     {
         #region Fields (Playlist Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -26,9 +28,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a list of path and file names from the specified m3u type playlist file or null if none are found.
+        /// Returns the path and file names from the specified m3u type playlist file.
         /// </summary>
-        /// <param name="playlist">The path and file name of the playlist file. Supported file types are .m3u and .m3u8.</param>
+        /// <param name="playlist">The path and file name of the playlist file.
+        /// <br/>Supported file types are .m3u and .m3u8.</param>
         public string[] Open(string playlist)
         {
             List<string> fileNames = null;
@@ -84,7 +87,7 @@ namespace PlexDL.Player
                                     else fileNames.Add(line);
                                 }
                             }
-                            _base._lastError = Player.NO_ERROR;
+                            _base._lastError = NO_ERROR;
                         }
                         catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
 
@@ -100,10 +103,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves the specified file name list as an m3u type playlist file. If the playlist file already exists, it is overwritten.
+        /// Saves the specified file names as an m3u type playlist file.
+        /// <br/>If the playlist file already exists, it is overwritten.
         /// </summary>
-        /// <param name="playlist">The path and file name of the playlist. Supported file types are .m3u and .m3u8.</param>
-        /// <param name="fileNames">The list of media file names to save to the specified playlist file.</param>
+        /// <param name="playlist">The path and file name of the playlist.
+        /// <br/>Supported file types are .m3u and .m3u8.</param>
+        /// <param name="fileNames">The media file names to save to the specified playlist file.</param>
         /// <param name="relativePaths">A value that indicates whether to use relative (to the playlist) paths with the saved file names.</param>
         public int Save(string playlist, string[] fileNames, bool relativePaths)
         {
@@ -148,7 +153,7 @@ namespace PlexDL.Player
                     {
                         if (m3u8) File.WriteAllLines(playlist, fileNames, Encoding.UTF8);
                         else File.WriteAllLines(playlist, fileNames);
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                     catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
                 }

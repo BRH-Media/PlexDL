@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -55,6 +55,8 @@
     Slider Value Class
     Metadata Class
     Media Chapters Class
+    Recording Information Class
+    // Motion Information Class
     Display Clone Properties Class
     OverlayForm Class
     OverlayLabel Class
@@ -68,12 +70,7 @@
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others.
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library!
 
@@ -81,8 +78,9 @@
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
     Thank you very much, Sean and Deeksha!
 
+
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -213,9 +211,58 @@ namespace PlexDL.Player
     #endregion
 
 
-    // ******************************** Display Clone Properties Class
+    // ******************************** Recording Information Class
 
-    #region Display Clone Properties Class
+    #region Recording Information Class
+
+    #endregion
+
+
+	// ******************************** Motion Information Class
+
+	#region Motion Information Class
+
+	///// <summary>
+	///// A class that is used to provide motion detection information.
+	///// </summary>
+	//[CLSCompliant(true)]
+	//public sealed class MotionInfo : HideObjectMembers
+	//{
+	//	#region Fields (Motion Info Class)
+
+	//	internal int _darker;
+	//	internal int _lighter;
+	//	internal int _total;
+
+	//	#endregion
+
+	//	internal MotionInfo() { }
+
+	//	/// <summary>
+	//	/// Returns the amount of pixels in the image with a decrease in light intensity.
+	//	/// <br/>The value is a normalized indicator with a value between 0 and 1000.
+	//	/// </summary>
+	//	public int Darker { get { return _darker; } }
+
+	//	/// <summary>
+	//	/// Returns the amount of pixels in the image with an increase in light intensity.
+	//	/// <br/>The value is a normalized indicator with a value between 0 and 1000.
+	//	/// </summary>
+	//	public int Lighter { get { return _lighter; } }
+
+	//	/// <summary>
+	//	/// Returns the amount of pixels in the image with a change in light intensity.
+	//	/// <br/>The value is a normalized indicator with a value between 0 and 1000.
+	//	/// </summary>
+	//	public int Total { get { return _total; } }
+	//}
+
+	#endregion
+
+
+	// ******************************** Display Clone Properties Class
+
+	#region Display Clone Properties Class
 
     #endregion
 
@@ -257,7 +304,11 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region Audio Input Class
+	#region Audio Multi Track Class
+
+    #endregion
+
+	#region Audio Input Class
 
     #endregion
 
@@ -265,7 +316,19 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region Webcam Class
+    #region Video Overlay Class
+
+    #endregion
+
+	#region Webcam Class
+
+    #endregion
+
+	#region Recorder Class
+
+    #endregion
+
+    #region Motion Detection Class
 
     #endregion
 
@@ -273,7 +336,7 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region CursorHide Class
+    #region Cursor Hide Class
 
     /// <summary>
     /// A class that is used to group together the CursorHide methods and properties of the PVS.MediaPlayer.Player class.
@@ -284,7 +347,9 @@ namespace PlexDL.Player
     {
         #region Fields (CursorHide Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -294,9 +359,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Adds the specified form to the list of forms that automatically hide the cursor (mouse pointer) during inactivity when media is playing.
+        /// Adds the specified form to the forms that automatically hide the cursor (mouse pointer)
+        /// <br/>during inactivity when media is playing.
         /// </summary>
-        /// <param name="form">The form to add to the list.</param>
+        /// <param name="form">The form to add.</param>
         public int Add(Form form)
         {
             _base._lastError = Player.CH_AddItem(form, _base); //, _base._display);
@@ -305,9 +371,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes the specified form from the list of forms that automatically hide the cursor.
+        /// Removes the specified form from the forms that automatically hide the cursor (mouse pointer).
         /// </summary>
-        /// <param name="form">The form to remove from the list.</param>
+        /// <param name="form">The form to remove.</param>
         public int Remove(Form form)
         {
             _base._lastError = Player.CH_RemoveItem(form, _base); //, _base._display);
@@ -316,42 +382,46 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Removes all forms added by this player from the list of forms that automatically hide the cursor.
+        /// Removes all forms added by this player from the forms that automatically hide the cursor (mouse pointer).
         /// </summary>
         public int RemoveAll()
         {
             Player.CH_RemovePlayerItems(_base);
             _base._hasCursorHide = false;
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether automatic hiding of the cursor is enabled. This option can be used to temporarily disable the hiding of the cursor. This setting is used by all players in this assembly.
+        /// Gets or sets a value indicating whether automatic hiding of the cursor (mouse pointer) is enabled.
+        /// <br/>This option can be used to temporarily disable the hiding of the cursor.
+        /// <br/>This setting is used by all players in this assembly.
         /// </summary>
         public bool Enabled
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return !Player.ch_Disabled;
             }
             set
             {
                 //Player.ch_EventArgs._reason = CursorChangedReason.UserCommand;
                 Player.CH_Disabled = !value;
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Gets or sets the number of seconds to wait before the cursor is hidden during inactivity when media is playing. This setting is used by all players in this assembly (default: 3 seconds).
+        /// Gets or sets the number of seconds to wait before the cursor (mouse pointer) is hidden
+        /// <br/>during inactivity when media is playing (default: 3 seconds).
+        /// <br/>This setting is used by all players in this assembly.
         /// </summary>
         public int Delay
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return Player.ch_Delay;
             }
             set
@@ -363,18 +433,18 @@ namespace PlexDL.Player
                     Player.ch_Delay = value;
                     Player.ch_Timer.Interval = value == 1 ? 500 : 1000; // value  * 500;
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Get a value that indicates whether the cursor has been hidden by the player.
+        /// Get a value indicating whether the cursor (mouse pointer) has been hidden by the player.
         /// </summary>
         public bool CursorHidden
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return Player.ch_Hidden;
             }
             set
@@ -382,27 +452,28 @@ namespace PlexDL.Player
                 if (value) { Player.CH_HideCursor(); }
                 else { Player.CH_ShowCursor(); }
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Shows the cursor if it was hidden by the player. The cursor is also shown again when the mouse device is moved.
+        /// Shows the cursor (mouse pointer) if it was hidden by the player.
+        /// <br/>The cursor is also shown again when its position is changed.
         /// </summary>
         public int ShowCursor()
         {
             Player.CH_ShowCursor();
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Hides the cursor if the CursorHide option is enabled.
+        /// Hides the cursor (mouse pointer) on the forms that automatically hide the cursor.
         /// </summary>
         public int HideCursor()
         {
             Player.CH_HideCursor();
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return (int)_base._lastError;
         }
     }
@@ -413,7 +484,7 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region DisplayClones Class
+    #region Display Clones Class
 
     /// <summary>
     /// A class that is used to group together the Display Clones methods and properties of the PVS.MediaPlayer.Player class.
@@ -424,12 +495,13 @@ namespace PlexDL.Player
     {
         #region Fields (DisplayClones Class)
 
+        private const int       NO_ERROR        = 0;
         //private const CloneFlip     DEFAULT_FLIP    = CloneFlip.FlipNone;
         //private const CloneLayout   DEFAULT_LAYOUT  = CloneLayout.Zoom;
         //private const CloneQuality  DEFAULT_QUALITY = CloneQuality.Auto;
-        private const int MAX_FRAMERATE = 100;
+        private const int       MAX_FRAMERATE   = 100;
 
-        private Player _base;
+        private Player          _base;
         private CloneProperties _defaultProps;
 
         #endregion
@@ -491,7 +563,7 @@ namespace PlexDL.Player
         /// <param name="clone">The display clone to remove from the player.</param>
         public int Remove(Control clone)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (clone != null)
             {
@@ -506,7 +578,7 @@ namespace PlexDL.Player
         /// <param name="clones">The display clones to remove from the player.</param>
         public int RemoveRange(Control[] clones)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (clones != null)
             {
@@ -531,7 +603,7 @@ namespace PlexDL.Player
             get
             {
                 int count = 0;
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
 
                 if (_base.dc_HasDisplayClones)
                 {
@@ -545,13 +617,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a value that indicates whether the specified control is a display clone of the player.
+        /// Returns a value indicating whether the specified control is a display clone of the player.
         /// </summary>
         /// <param name="control">The control to search for.</param>
         public bool Contains(Control control)
         {
             bool found = false;
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (_base.dc_HasDisplayClones && control != null)
             {
@@ -568,12 +640,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an array of the player's display clones.
+        /// Returns the player's display clones.
         /// </summary>
-        public Control[] GetList()
+        public Control[] GetClones()
         {
             Control[] items = null;
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (_base.dc_HasDisplayClones)
             {
@@ -599,18 +671,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the number of video frames per second used for displaying the player's display clones (default: 30 fps).
+        /// Gets or sets a value that indicates the number of video frames per second (fps)
+        /// <br/>used for displaying the player's display clones (default: 30 fps).
         /// </summary>
         public int FrameRate
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.dc_CloneFrameRate;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
 
                 if (value <= 1) value = 1;
                 else if (value > MAX_FRAMERATE) value = MAX_FRAMERATE;
@@ -620,18 +693,18 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's display clones also show display overlays (default: true).
+        /// Gets or sets a value indicating whether the player's display clones also show display overlays (default: true).
         /// </summary>
         public bool ShowOverlay
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.dc_CloneOverlayShow;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 _base.dc_CloneOverlayShow = value;
 
                 if (_base.dc_HasDisplayClones)
@@ -688,7 +761,7 @@ namespace PlexDL.Player
                     properties._shape       = _base.dc_DisplayClones[index].Shape;
                     properties._videoShape  = _base.dc_DisplayClones[index].HasVideoShape;
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             return properties;
         }
@@ -704,7 +777,7 @@ namespace PlexDL.Player
             if (index != -1)
             {
                 SetCloneProperties(_base.dc_DisplayClones[index], properties);
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             return (int)_base._lastError;
         }
@@ -715,7 +788,7 @@ namespace PlexDL.Player
         /// <param name="properties">The properties to be set.</param>
         public int SetProperties(CloneProperties properties)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (_base.dc_HasDisplayClones)
             {
@@ -862,14 +935,14 @@ namespace PlexDL.Player
                     }
                 }
             }
-            _base._lastError = index == -1 ? HResult.E_INVALIDARG : Player.NO_ERROR;
+            _base._lastError = index == -1 ? HResult.E_INVALIDARG : NO_ERROR;
             return index;
         }
     }
 
     #endregion
 
-    #region PointTo Class
+    #region Point To Class
 
     #endregion
 
@@ -881,11 +954,11 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region TaskbarProgress Class
+    #region Taskbar Progress Class
 
     #endregion
 
-    #region SystemPanels Class
+    #region System Panels Class
 
     #endregion
 
@@ -900,8 +973,10 @@ namespace PlexDL.Player
     {
         #region Fields (Subtitles Class)
 
-        private const int MAX_DIRECTORY_DEPTH = 3;
-        private Player _base;
+        private const int   NO_ERROR            = 0;
+        private const int   MAX_DIRECTORY_DEPTH = 3;
+
+        private Player      _base;
 
         #endregion
 
@@ -911,38 +986,40 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player's subtitles are activated (by subscribing to the Player.Events.MediaSubtitleChanged event) (default: false).
+        /// Gets a value indicating whether the player's subtitles are activated (default: false).
+        /// <br/>Subtitles are activated by subscribing to the Player.Events.MediaSubtitleChanged event.
         /// </summary>
         public bool Enabled
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_SubtitlesEnabled;
             }
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the playing media (or the media specified with Player.Subtitles.Filename) has a subtitles (.srt) file.
+        /// Gets a value indicating whether the playing media, or the media specified with Player.Subtitles.Filename,
+        /// <br/>has a subtitles (.srt) file.
         /// </summary>
         public bool Exists
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 //return _base.Subtitles_Exists() != string.Empty;
                 return _base.Subtitles_Exists().Length > 0;
             }
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the player has active subtitles.
+        /// Gets a value indicating whether the player has active subtitles.
         /// </summary>
         public bool Present
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_HasSubtitles;
             }
         }
@@ -954,7 +1031,7 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_HasSubtitles ? _base.st_SubTitleCount : 0;
             }
         }
@@ -966,7 +1043,7 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_HasSubtitles ? _base.st_CurrentIndex : 0;
             }
         }
@@ -976,7 +1053,7 @@ namespace PlexDL.Player
         /// </summary>
         public string GetText()
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return _base.st_SubtitleOn ? _base.st_SubtitleItems[_base.st_CurrentIndex].Text : string.Empty;
         }
 
@@ -985,7 +1062,7 @@ namespace PlexDL.Player
         /// </summary>
         public TimeSpan GetStartTime()
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return _base.st_SubtitleOn ? TimeSpan.FromTicks(_base.st_SubtitleItems[_base.st_CurrentIndex].StartTime + _base.st_TimeShift) : TimeSpan.Zero;
         }
 
@@ -994,7 +1071,7 @@ namespace PlexDL.Player
         /// </summary>
         public TimeSpan GetEndTime()
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return _base.st_SubtitleOn ? TimeSpan.FromTicks(_base.st_SubtitleItems[_base.st_CurrentIndex].EndTime + _base.st_TimeShift) : TimeSpan.Zero;
         }
 
@@ -1004,24 +1081,26 @@ namespace PlexDL.Player
         /// <param name="index">The index of the item in the player's active subtitles.</param>
         public string GetText(int index)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             if (_base.st_HasSubtitles && index >= 0 && index < _base.st_SubTitleCount) return _base.st_SubtitleItems[index].Text;
             return string.Empty;
         }
 
         /// <summary>
-        /// Returns the start time (including Player.Subtitles.TimeShift) of the specified item in the player's active subtitles.
+        /// Returns the start time (including Player.Subtitles.TimeShift) of the specified item
+        /// <br/>in the player's active subtitles.
         /// </summary>
         /// <param name="index">The index of the item in the player's active subtitles.</param>
         public TimeSpan GetStartTime(int index)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             if (_base.st_HasSubtitles && index >= 0 && index < _base.st_SubTitleCount) return TimeSpan.FromTicks(_base.st_SubtitleItems[index].StartTime + _base.st_TimeShift);
             return TimeSpan.Zero;
         }
 
         /// <summary>
-        /// Returns the end time (including Player.Subtitles.TimeShift) of the specified item in the player's active subtitles.
+        /// Returns the end time (including Player.Subtitles.TimeShift) of the specified item
+        /// <br/>in the player's active subtitles.
         /// </summary>
         /// <param name="index">The index of the item in the player's active subtitles.</param>
         public TimeSpan GetEndTime(int index)
@@ -1035,7 +1114,7 @@ namespace PlexDL.Player
         /// </summary>
         public string GetFileName()
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             if (_base.st_HasSubtitles) return _base.st_SubtitlesName;
             return string.Empty;
         }
@@ -1047,12 +1126,12 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_Encoding;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value != _base.st_Encoding)
                 {
                     _base.st_Encoding = value;
@@ -1062,13 +1141,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the initial directory to search for subtitles files (default: string.Empty (the directory of the playing media)).
+        /// Gets or sets the initial directory to search for subtitles files
+        /// <br/>(default: string.Empty (the directory of the playing media)).
         /// </summary>
         public string Directory
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (_base.st_Directory == null) _base.st_Directory = string.Empty;
                 return _base.st_Directory;
             }
@@ -1081,7 +1161,7 @@ namespace PlexDL.Player
                     {
                         _base.st_Directory = Path.GetDirectoryName(value);
                         if (_base.st_SubtitlesEnabled && _base._playing) _base.Subtitles_Start(true);
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                     catch (Exception e)
                     {
@@ -1094,18 +1174,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the number of nested directories to search for subtitles files (values 0 to 3, default: 0 (base directory only)).
+        /// Gets or sets a value that indicates the number of nested directories to search for subtitles files.
+        /// <br/>Values from 0 to 3 (default: 0 (base directory only)).
         /// </summary>
         public int DirectoryDepth
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_DirectoryDepth;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
 
                 if (value <= 0) value = 0;
                 else if (value >= MAX_DIRECTORY_DEPTH) value = MAX_DIRECTORY_DEPTH;
@@ -1118,18 +1199,20 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the file name of the subtitles file to search for (without directory and extension) (default: string.Empty (the file name of the playing media)). Reset to string.Empty when media starts playing.
+        /// Gets or sets the file name of the subtitles file to search for (without directory and extension)
+        /// <br/>(default: string.Empty (the file name of the playing media)).
+        /// <br/>Reset to string.Empty when media starts playing.
         /// </summary>
         public string FileName
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_FileName;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (!string.IsNullOrWhiteSpace(value))
                 {
                     try
@@ -1148,18 +1231,20 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the number of milliseconds that subtitles appear earlier (negative values) or later (positive values) than specified by the subtitles data. Reset when media ends playing.
+        /// Gets or sets a value that indicates the number of milliseconds that subtitles appear earlier (negative values)
+        /// <br/>or later (positive values) than specified by the subtitles data.
+        /// <br/>Reset when media ends playing.
         /// </summary>
         public int TimeShift
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return (int)(_base.st_TimeShift * Player.TICKS_TO_MS);
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value != _base.st_TimeShift)
                 {
                     _base.st_TimeShift = value * Player.MS_TO_TICKS; // no check (?)
@@ -1175,12 +1260,12 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_RemoveHTMLTags;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value != _base.st_RemoveHTMLTags)
                 {
                     _base.st_RemoveHTMLTags = value;
@@ -1190,20 +1275,21 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether audio only media can activate subtitles (default: false).
+        /// Gets or sets a value that indicates whether media files containing only audio (and no video)
+        /// <br/>can activate subtitles (default: false).
         /// </summary>
         public bool AudioOnly
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.st_AudioOnlyEnabled;
             }
             set
             {
                 if (value != _base.st_AudioOnlyEnabled)
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     _base.st_AudioOnlyEnabled = value;
                     if (_base.st_SubtitlesEnabled && _base._playing && !_base._hasVideo)
                     {
@@ -1232,7 +1318,7 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region Images Class
+	#region Images Class
 
     #endregion
 
@@ -1252,7 +1338,7 @@ namespace PlexDL.Player
 
     #endregion
 
-    #region DragAndDrop Class
+    #region Drag And Drop Class
 
     #endregion
 
@@ -1428,7 +1514,7 @@ namespace PlexDL.Player
             // check status
             if (!_base._hasVideo || (_webcam && !_base._webcamMode)) return HResult.MF_E_NOT_AVAILABLE;
 
-            HResult result = Player.NO_ERROR;
+            HResult result = NO_ERROR;
 
             // create even size
             int width = _base._videoBoundsClip.Width % 2 == 0 ? _base._videoBoundsClip.Width : _base._videoBoundsClip.Width - 1;
@@ -1457,7 +1543,7 @@ namespace PlexDL.Player
 
             // create sinkwriter
             _sinkWriter = CreateSinkWriter(_fileName, width, height);
-            if (_base._lastError == Player.NO_ERROR && _sinkWriter != null)
+            if (_base._lastError == NO_ERROR && _sinkWriter != null)
             {
                 // create buffer
                 _bitmapBuffer = new Bitmap(width, height);
@@ -1467,7 +1553,7 @@ namespace PlexDL.Player
                 // add pixel depth
 
                 //result = MFExtern.MFCreateMemoryBuffer(bufferSize, out wr_MediaBuffer);
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
                 }
             }
@@ -1513,32 +1599,32 @@ namespace PlexDL.Player
             int streamIndex = 0;
 
             HResult result = MFExtern.MFCreateSinkWriterFromURL(fileName, null, null, out IMFSinkWriter sinkWriter);
-            if (result == Player.NO_ERROR)
+            if (result == NO_ERROR)
             {
                 result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeOut);
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
                     result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
-                    if (result == Player.NO_ERROR)
+                    if (result == NO_ERROR)
                     {
                         // if changing the encoder also change the file extension (IMAGES_FILE_EXTENSION)
                         result = mediaTypeOut.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
-                        if (result == Player.NO_ERROR)
+                        if (result == NO_ERROR)
                         {
                             result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
-                            if (result == Player.NO_ERROR)
+                            if (result == NO_ERROR)
                             {
                                 result = mediaTypeOut.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
-                                if (result == Player.NO_ERROR)
+                                if (result == NO_ERROR)
                                 {
                                     result = MFExtern.MFSetAttributeSize(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
-                                    if (result == Player.NO_ERROR)
+                                    if (result == NO_ERROR)
                                     {
                                         result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
-                                        if (result == Player.NO_ERROR)
+                                        if (result == NO_ERROR)
                                         {
                                             result = MFExtern.MFSetAttributeRatio(mediaTypeOut, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-                                            if (result == Player.NO_ERROR)
+                                            if (result == NO_ERROR)
                                             {
                                                 result = sinkWriter.AddStream(mediaTypeOut, out streamIndex);
                                             }
@@ -1552,28 +1638,28 @@ namespace PlexDL.Player
                 if (mediaTypeOut != null) Marshal.ReleaseComObject(mediaTypeOut);
             }
 
-            if (result == Player.NO_ERROR)
+            if (result == NO_ERROR)
             {
                 result = MFExtern.MFCreateMediaType(out IMFMediaType mediaTypeIn);
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
                     result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
-                    if (result == Player.NO_ERROR)
+                    if (result == NO_ERROR)
                     {
                         result = mediaTypeIn.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, _mediaType); // MFMediaType.RGB32);
-                        if (result == Player.NO_ERROR)
+                        if (result == NO_ERROR)
                         {
                             result = mediaTypeIn.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
-                            if (result == Player.NO_ERROR)
+                            if (result == NO_ERROR)
                             {
                                 result = MFExtern.MFSetAttributeSize(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
-                                if (result == Player.NO_ERROR)
+                                if (result == NO_ERROR)
                                 {
                                     result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_FRAME_RATE, _frameRate, 1);
-                                    if (result == Player.NO_ERROR)
+                                    if (result == NO_ERROR)
                                     {
                                         result = MFExtern.MFSetAttributeRatio(mediaTypeIn, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-                                        if (result == Player.NO_ERROR)
+                                        if (result == NO_ERROR)
                                         {
                                             result = sinkWriter.SetInputMediaType(streamIndex, mediaTypeIn, null);
                                         }
@@ -1586,7 +1672,7 @@ namespace PlexDL.Player
                 if (mediaTypeIn != null) Marshal.ReleaseComObject(mediaTypeIn);
             }
 
-            if (result != Player.NO_ERROR && sinkWriter != null)
+            if (result != NO_ERROR && sinkWriter != null)
             {
                 Marshal.ReleaseComObject(sinkWriter);
                 sinkWriter = null;
@@ -1667,45 +1753,45 @@ namespace PlexDL.Player
 
         internal void Recorder_WriteImageFrame(IMFSinkWriter sinkWriter, Bitmap image)
         {
-            HResult result = Player.NO_ERROR;
+            HResult result = NO_ERROR;
 
             System.Drawing.Imaging.BitmapData bmpData = null;
             try { bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat); }
             catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
 
-            if (result == Player.NO_ERROR)
+            if (result == NO_ERROR)
             {
                 int cbWidth = 0;// _imageBytesPerPixel * image.Width;
                 int cbBuffer = cbWidth * image.Height;
                 result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
 
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                     result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
-                    if (result == Player.NO_ERROR)
+                    if (result == NO_ERROR)
                     {
                         //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
                         result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((image.Height - 1) * cbWidth), -cbWidth, cbWidth, image.Height);
                         buffer.Unlock();
 
-                        if (result == Player.NO_ERROR)
+                        if (result == NO_ERROR)
                         {
                             buffer.SetCurrentLength(cbBuffer);
 
                             result = MFExtern.MFCreateSample(out IMFSample sample);
-                            if (result == Player.NO_ERROR)
+                            if (result == NO_ERROR)
                             {
                                 result = sample.AddBuffer(buffer);
-                                if (result == Player.NO_ERROR)
+                                if (result == NO_ERROR)
                                 {
                                     result = sample.SetSampleTime(0);
-                                    if (result == Player.NO_ERROR)
+                                    if (result == NO_ERROR)
                                     {
                                         result = sample.SetSampleDuration(0);// _imageDuration);
-                                        if (result == Player.NO_ERROR)
+                                        if (result == NO_ERROR)
                                         {
                                             sinkWriter.WriteSample(0, sample);
                                         }
@@ -1723,45 +1809,45 @@ namespace PlexDL.Player
 
         internal void Recorder_WriteImageFram2()
         {
-            HResult result = Player.NO_ERROR;
+            HResult result = NO_ERROR;
 
             System.Drawing.Imaging.BitmapData bmpData = null;
             try { bmpData = _bitmapBuffer.LockBits(new Rectangle(0, 0, _bitmapBuffer.Width, _bitmapBuffer.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, _bitmapBuffer.PixelFormat); }
             catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
 
-            if (result == Player.NO_ERROR)
+            if (result == NO_ERROR)
             {
                 int cbWidth = _bytesPerPixel * _bitmapBuffer.Width;
                 int cbBuffer = cbWidth * _bitmapBuffer.Height;
                 result = MFExtern.MFCreateMemoryBuffer(cbBuffer, out IMFMediaBuffer buffer);
 
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                     result = buffer.Lock(out IntPtr data, out int maxLength, out int currentLength);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
-                    if (result == Player.NO_ERROR)
+                    if (result == NO_ERROR)
                     {
                         //result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0, cbWidth, cbWidth, image.Height);
                         result = MFExtern.MFCopyImage(data, cbWidth, bmpData.Scan0 + ((_bitmapBuffer.Height - 1) * cbWidth), -cbWidth, cbWidth, _bitmapBuffer.Height);
                         buffer.Unlock();
 
-                        if (result == Player.NO_ERROR)
+                        if (result == NO_ERROR)
                         {
                             buffer.SetCurrentLength(cbBuffer);
 
                             result = MFExtern.MFCreateSample(out IMFSample sample);
-                            if (result == Player.NO_ERROR)
+                            if (result == NO_ERROR)
                             {
                                 result = sample.AddBuffer(buffer);
-                                if (result == Player.NO_ERROR)
+                                if (result == NO_ERROR)
                                 {
                                     result = sample.SetSampleTime(0);
-                                    if (result == Player.NO_ERROR)
+                                    if (result == NO_ERROR)
                                     {
                                         result = sample.SetSampleDuration(0);// _imageDuration);
-                                        if (result == Player.NO_ERROR)
+                                        if (result == NO_ERROR)
                                         {
                                             _sinkWriter.WriteSample(0, sample);
                                         }

@@ -14,11 +14,13 @@ namespace PlexDL.Player
         internal string     _artist;
         internal string     _albumArtist;
         internal string     _title;
+        internal string     _subTitle;
         internal string     _album;
         internal int        _trackNumber;
         internal string     _year;
         internal TimeSpan   _duration;
         internal string     _genre;
+        internal string     _comment;
         internal Image      _image;
 
         private bool        _disposed;
@@ -43,9 +45,14 @@ namespace PlexDL.Player
         public string Title { get { return _title; } }
 
         /// <summary>
+        /// Gets the subtitle of the media.
+        /// </summary>
+        public string SubTitle { get { return _subTitle; } }
+
+        /// <summary>
         /// Gets the title of the album that contains the media.
         /// </summary>
-        public string Album { get { return _album; } }
+        public string AlbumTitle { get { return _album; } }
 
         /// <summary>
         /// Gets the track number of the media.
@@ -66,6 +73,11 @@ namespace PlexDL.Player
         /// Gets the genre of the media.
         /// </summary>
         public string Genre { get { return _genre; } }
+
+        /// <summary>
+        /// Gets the comment attached to the media.
+        /// </summary>
+        public string Comment { get { return _comment; } }
 
         /// <summary>
         /// Gets the image attached to the media.

@@ -12,7 +12,9 @@ namespace PlexDL.Player
     {
         #region Fields (Position Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -22,7 +24,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the (natural) beginning of the media.
+        /// Gets or sets the playback position of the playing media,
+        /// <br/>measured from the (natural) beginning of the media.
         /// </summary>
         public TimeSpan FromBegin
         {
@@ -30,7 +33,7 @@ namespace PlexDL.Player
             {
                 if (_base._playing)
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
                     else return TimeSpan.FromTicks(_base.PositionX);
                 }
@@ -48,7 +51,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from the (natural) end of the media.
+        /// Gets or sets the playback position of the playing media,
+        /// <br/>measured from the (natural) end of the media.
         /// </summary>
         public TimeSpan ToEnd
         {
@@ -61,7 +65,7 @@ namespace PlexDL.Player
                 {
                     toEnd = _base._mediaLength - _base.PositionX;
                     if (toEnd < 0) toEnd = 0;
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 return TimeSpan.FromTicks(toEnd);
             }
@@ -73,7 +77,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from its (adjustable) start time. See also: Player.Media.StartTime.
+        /// Gets or sets the playback position of the playing media,
+        /// <br/>measured from its (adjustable) start time.
+        /// <br/>See also: Player.Media.StartTime.
         /// </summary>
         public TimeSpan FromStart
         {
@@ -81,7 +87,7 @@ namespace PlexDL.Player
             {
                 if (_base._playing)
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     if (!_base._fileMode) return TimeSpan.FromTicks(_base.PositionX - _base._deviceStart);
                     else return TimeSpan.FromTicks(_base.PositionX - _base._startTime);
                 }
@@ -99,7 +105,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media, measured from its (adjustable) stop time. See also: Player.Media.StopTime.
+        /// Gets or sets the playback position of the playing media,
+        /// <br/>measured from its (adjustable) stop time.
+        /// <br/>See also: Player.Media.StopTime.
         /// </summary>
         public TimeSpan ToStop
         {
@@ -116,7 +124,7 @@ namespace PlexDL.Player
                         if (toEnd < 0) toEnd = 0;
                     }
                     else toEnd = _base._stopTime - _base.PositionX;
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 return TimeSpan.FromTicks(toEnd);
             }
@@ -128,7 +136,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media relative to its (natural) begin and end time. Values from 0.0 to 1.0. See also: Player.Position.Progress.
+        /// Gets or sets the playback position of the playing media
+        /// <br/>relative to its (natural) begin and end time.
+        /// <br/>Values from 0.0 to 1.0.
+        /// <br/>See also: Player.Position.Progress.
         /// </summary>
         public float Track
         {
@@ -141,7 +152,7 @@ namespace PlexDL.Player
                 }
                 else
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     return (float)_base.PositionX / _base._mediaLength;
                 }
             }
@@ -160,7 +171,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the playback position of the playing media relative to its (adjustable) start and stop time. Values from 0.0 to 1.0. See also: Player.Position.Track.
+        /// Gets or sets the playback position of the playing media
+        /// <br/>relative to its (adjustable) start and stop time.
+        /// <br/>Values from 0.0 to 1.0.
+        /// <br/>See also: Player.Position.Track.
         /// </summary>
         public float Progress
         {
@@ -173,7 +187,7 @@ namespace PlexDL.Player
                 }
                 else
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
 
                     long pos = _base._stopTime == 0 ? _base._mediaLength : _base._stopTime;
                     if (pos == 0 || pos <= _base._startTime) return 0;
@@ -190,7 +204,7 @@ namespace PlexDL.Player
                 {
                     if (value >= 0 && value < 1)
                     {
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
 
                         long pos = _base._stopTime == 0 ? _base._mediaLength : _base._stopTime;
                         if (pos <= _base._startTime) return;
@@ -203,7 +217,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Rewinds the playback position of the playing media to its (adjustable) start time. See also: Player.Media.StartTime.
+        /// Rewinds the playback position of the playing media to its (adjustable) start time.
+        /// <br/>See also: Player.Media.StartTime.
         /// </summary>
         public int Rewind()
         {
@@ -215,7 +230,8 @@ namespace PlexDL.Player
         /// <summary>
         /// Changes the playback position of the playing media in any direction by the given amount of seconds.
         /// </summary>
-        /// <param name="seconds">The number of seconds to skip. Use a negative value to skip backwards.</param>
+        /// <param name="seconds">The number of seconds to skip.
+        /// <br/>Negative values move the playback position backwards.</param>
         public int Skip(int seconds)
         {
             if (!_base._fileMode || !_base._playing) _base._lastError = HResult.MF_E_NOT_AVAILABLE;
@@ -224,9 +240,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Changes the playback position of the playing media in any direction by the given amount of video frames. The result can differ from the specified value. See also: Player.Position.StepEnd.
+        /// Changes the playback position of the playing media in any direction by the given amount of video frames.
+        /// <br/>The result can differ from the specified value.
+        /// <br/>See also: Player.Position.StepEnd.
         /// </summary>
-        /// <param name="frames">The number of frames to step. Use a negative value to step backwards.</param>
+        /// <param name="frames">The number of frames to step.
+        /// <br/>Negative values move the playback position backwards.</param>
         public int Step(int frames)
         {
             if (!_base._fileMode || !_base._playing)
@@ -238,13 +257,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the margin at the end of media files that is used to avoid stepping past the end of media files using the Player.Position.Step method. Values from 10 to 1000 milliseconds (default: 200).
+        /// Gets or sets a value that indicates the margin at the end of media files that is used to avoid
+        /// <br/>stepping past the end of media files using the Player.Position.Step method.
+        /// <br/>Values from 10 to 1000 milliseconds (default: 200).
         /// </summary>
         public int StepEOFMargin
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return (int)(_base._stepMargin * Player.TICKS_TO_MS);
             }
             set
@@ -256,20 +277,21 @@ namespace PlexDL.Player
                 else
                 {
                     _base._stepMargin = value * Player.MS_TO_TICKS;
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
             }
         }
 
         /// <summary>
-        /// Restores the player's video image after using the Player.Position.Step method while the player is paused (step-end playback recovery).
+        /// Restores the player's video image after using the Player.Position.Step method
+        /// <br/>while the player is paused (step-end playback recovery).
         /// </summary>
         public int StepEnd()
         {
             if (_base._stepMode && _base._hasVideo && _base._paused) _base.AV_UpdateTopology();
 
-            _base._lastError = Player.NO_ERROR;
-            return Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
+            return NO_ERROR;
         }
     }
 }

@@ -62,7 +62,7 @@
         /// </summary>
         LinkBandwidth,
         /// <summary>
-        /// The current bit rate of the content.
+        /// The current bitrate of the content.
         /// </summary>
         ContentBitrate,
         /// <summary>
@@ -102,7 +102,7 @@
         /// </summary>
         SignedSession,
         /// <summary>
-        /// The current maximum bit rate of the content.
+        /// The current maximum bitrate of the content.
         /// </summary>
         MaxBitrate,
         /// <summary>
@@ -114,7 +114,7 @@
         /// </summary>
         RecoverdPackets,
         /// <summary>
-        /// Boolean value indicating whether the content has a variable bit rate.
+        /// Boolean value indicating whether the content has a variable bitrate.
         /// </summary>
         VariableBitrate,
         /// <summary>

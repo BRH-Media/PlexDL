@@ -1,8 +1,9 @@
 ﻿using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    [ComImport, SuppressUnmanagedCodeSecurity,
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
      Guid("814C7B20-0FDB-4eec-AF8F-F957C8F69EDC")]
     internal interface IMFVideoMixerBitmap

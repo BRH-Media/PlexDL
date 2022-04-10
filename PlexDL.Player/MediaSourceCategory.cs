@@ -16,16 +16,20 @@
         /// </summary>
         LocalFile,
         /// <summary>
-        /// Represents online (internet) media files (including file streams and live streams).
+        /// Represents remote (online) media files.
         /// </summary>
-        OnlineFile,
+        RemoteFile,
+        /// <summary>
+        /// Represents online live media streams (broadcasts).
+        /// </summary>
+        LiveStream,
         /// <summary>
         /// Represents local capture devices (including webcams and audio input devices).
         /// </summary>
         LocalCapture,
         /// <summary>
-        /// Represents online (internet) capture devices.
+        /// Represents remote (online) capture devices.
         /// </summary>
-        OnlineCapture
+        RemoteCapture
     }
 }

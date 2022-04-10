@@ -14,7 +14,9 @@ namespace PlexDL.Player
     {
         #region Fields (PointTo Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -31,7 +33,7 @@ namespace PlexDL.Player
         {
             if (_base._hasDisplay && _base._display.Visible)
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._display.PointToClient(p);
             }
             _base._lastError = HResult.MF_E_NOT_AVAILABLE;
@@ -46,7 +48,7 @@ namespace PlexDL.Player
         {
             if (_base._hasOverlay && _base._overlay.Visible)
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._overlay.PointToClient(p);
             }
             _base._lastError = HResult.MF_E_NOT_AVAILABLE;
@@ -69,7 +71,7 @@ namespace PlexDL.Player
                 {
                     newP.X = p2.X - _base._videoBounds.X;
                     newP.Y = p2.Y - _base._videoBounds.Y;
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
             }
             return newP;

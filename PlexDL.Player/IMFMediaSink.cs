@@ -1,8 +1,9 @@
 ﻿using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    [ComImport, SuppressUnmanagedCodeSecurity,
      Guid("6EF2A660-47C0-4666-B13D-CBB717F2FA2C"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMFMediaSink

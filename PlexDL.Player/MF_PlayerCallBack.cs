@@ -45,7 +45,6 @@ namespace PlexDL.Player
                     if (mediaEventType == MediaEventType.MEError
                         || (_base._webcamMode && mediaEventType == MediaEventType.MEVideoCaptureDeviceRemoved)
                         || (_base._micMode && mediaEventType == MediaEventType.MECaptureAudioSessionDeviceRemoved))
-                        //if (errorCode < 0)
                     {
                         _base._lastError    = errorCode;
                         errorCode           = Player.NO_ERROR;
@@ -59,7 +58,7 @@ namespace PlexDL.Player
                             if (getNext)
                             {
                                 _base._lastError = Player.NO_ERROR;
-                                if (!_base._repeat && !_base._chapterMode) getNext = false;
+                                if (!_base._repeat && !_base._chapterMode && !_base._endPauseMode) getNext = false;
                             }
 
                             Control control = _base._display;

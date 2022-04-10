@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    [ComImport, SuppressUnmanagedCodeSecurity,
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
      Guid("AD4C1B00-4BF7-422F-9175-756693D9130D")]
     internal interface IMFByteStream

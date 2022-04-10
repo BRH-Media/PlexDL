@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -46,20 +46,16 @@
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others.
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
+    
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -69,6 +65,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -149,6 +146,22 @@ namespace PlexDL.Player
 
     #endregion
 
+    #region Player - AudioEventArgs
+
+    #endregion
+
+    #region Player - AudioTrackDeviceEventArgs
+
+    #endregion
+
+    #region Player - EndedPausedEventArgs
+
+    #endregion
+
+    #region Player - MotionEventArgs
+
+    #endregion
+
 
     // ******************************** Player - Delegates (Callbacks)
 
@@ -167,80 +180,86 @@ namespace PlexDL.Player
     public sealed partial class Player : HideObjectMembers, IDisposable
     {
 
-		// ******************************** Player - Event Declarations
+        // ******************************** Player - Event Declarations
 
-		#region Player - Event Declarations
+        #region Player - Event Declarations
 
-		internal EventHandler _mediaStarted;
+        internal EventHandler _mediaStarted;
+        internal EventHandler _mediaStartedNotice;
         internal EventHandler<ChapterStartedEventArgs>
                               _mediaChapterStarted;
 
         internal EventHandler _mediaPausedChanged;
 
-		internal EventHandler<EndedEventArgs>
-							  _mediaEnded;
-		internal EventHandler<EndedEventArgs>
-							  _mediaEndedNotice;
+        internal EventHandler<EndedEventArgs>
+                              _mediaEnded;
+        internal EventHandler<EndedEventArgs>
+                              _mediaEndedNotice;
+        internal EventHandler<EndedPausedEventArgs>
+                              _mediaEndedPaused;
 
-		internal EventHandler _mediaRepeatChanged;
-		internal EventHandler _mediaRepeated;
+        internal EventHandler _mediaRepeatChanged;
+        internal EventHandler _mediaRepeated;
 
         internal EventHandler _mediaChapterRepeatChanged;
         internal EventHandler _mediaChapterRepeated;
 
         internal EventHandler<PositionEventArgs>
-							  _mediaPositionChanged;
+                              _mediaPositionChanged;
 
-		internal EventHandler _mediaStartStopTimeChanged;
+        internal EventHandler _mediaStartStopTimeChanged;
 
-		internal EventHandler _mediaDisplayChanged;
-		internal EventHandler _mediaDisplayModeChanged;
-		internal EventHandler _mediaDisplayShapeChanged;
+        internal EventHandler _mediaDisplayChanged;
+        internal EventHandler _mediaDisplayModeChanged;
+        internal EventHandler _mediaDisplayShapeChanged;
 
-		internal EventHandler _mediaFullScreenChanged;
-		internal EventHandler _mediaFullScreenModeChanged;
+        internal EventHandler _mediaFullScreenChanged;
+        internal EventHandler _mediaFullScreenModeChanged;
 
-		internal EventHandler _mediaAudioVolumeChanged;
-		internal EventHandler _mediaAudioBalanceChanged;
-		internal EventHandler _mediaAudioMuteChanged;
+        internal EventHandler<AudioEventArgs> _mediaAudioVolumeChanged;
+        internal EventHandler<AudioEventArgs> _mediaAudioBalanceChanged;
+        internal EventHandler<AudioEventArgs> _mediaAudioMuteChanged;
+        internal EventHandler _mediaAudioMultiTrackChanged;
 
-		internal EventHandler _mediaAudioDeviceChanged;
+        internal EventHandler _mediaAudioDeviceChanged;
+        internal EventHandler<AudioTrackDeviceEventArgs>
+                              _mediaAudioTrackDeviceChanged;
 
-		internal static EventHandler<SystemAudioDevicesEventArgs>
-						      _masterSystemAudioDevicesChanged;
-		// copy used for unsubsribing:
-		internal EventHandler<SystemAudioDevicesEventArgs>
-						      _mediaSystemAudioDevicesChanged;
+        internal static EventHandler<SystemAudioDevicesEventArgs>
+                              _masterSystemAudioDevicesChanged;
+        // copy used for unsubsribing:
+        internal EventHandler<SystemAudioDevicesEventArgs>
+                              _mediaSystemAudioDevicesChanged;
 
-		internal EventHandler _mediaVideoBoundsChanged;
-		internal EventHandler _mediaVideoAspectRatioChanged;
-		internal EventHandler _mediaVideoCropChanged;
-		internal EventHandler _mediaVideoView3DChanged;
+        internal EventHandler _mediaVideoBoundsChanged;
+        internal EventHandler _mediaVideoAspectRatioChanged;
+        internal EventHandler _mediaVideoCropChanged;
+        internal EventHandler _mediaVideoView3DChanged;
+        internal EventHandler<VideoColorEventArgs>
+                              _mediaVideoColorChanged;
+        internal EventHandler _mediaVideoRotationChanged;
 
-		internal EventHandler _mediaSpeedChanged;
+        internal EventHandler _mediaSpeedChanged;
 
-		internal EventHandler _mediaOverlayChanged;
-		internal EventHandler _mediaOverlayModeChanged;
-		internal EventHandler _mediaOverlayHoldChanged;
-		internal EventHandler _mediaOverlayActiveChanged;
+        internal EventHandler _mediaOverlayChanged;
+        internal EventHandler _mediaOverlayModeChanged;
+        internal EventHandler _mediaOverlayHoldChanged;
+        internal EventHandler _mediaOverlayActiveChanged;
 
         internal EventHandler _mediaDisplayClonesChanged;
 
         internal EventHandler<PeakLevelEventArgs>
-							  _mediaPeakLevelChanged;
-		internal EventHandler<PeakLevelEventArgs>
-							  _mediaInputLevelChanged;
+                              _mediaAudioOutputLevelChanged;
+        internal EventHandler<PeakLevelEventArgs>
+                              _mediaAudioInputLevelChanged;
 
-		internal EventHandler<SubtitleEventArgs>
-							  _mediaSubtitleChanged;
+        internal EventHandler<SubtitleEventArgs>
+                              _mediaSubtitleChanged;
 
-		internal EventHandler _mediaVideoTrackChanged;
-		internal EventHandler _mediaAudioTrackChanged;
+        internal EventHandler _mediaVideoTrackChanged;
+        internal EventHandler _mediaAudioTrackChanged;
 
-		internal EventHandler<VideoColorEventArgs>
-							  _mediaVideoColorChanged;
-
-		internal EventHandler _mediaAudioInputDeviceChanged;
+        internal EventHandler _mediaAudioInputDeviceChanged;
 
         internal EventHandler _mediaWebcamFormatChanged;
 
@@ -248,9 +267,13 @@ namespace PlexDL.Player
         //internal EventHandler   _mediaRecorderStopped;
         //internal EventHandler   _mediaRecorderPausedChanged;
 
-        internal EventHandler _mediaWebcamRecorderStarted;
-        internal EventHandler _mediaWebcamRecorderStopped;
+        internal EventHandler _mediaDeviceRecorderStarted;
+        internal EventHandler _mediaDeviceRecorderStopped;
 
+        internal EventHandler<MotionEventArgs>
+                             _mediaMotionDetected;
+        //internal EventHandler _mediaMatchDetected;
+            
         #endregion
 
 
@@ -265,6 +288,8 @@ namespace PlexDL.Player
                 if (_playing)
                 {
                     long position = PositionX;
+                    if (!_fileMode) position -= _deviceStart;
+
                     long toEnd = _mediaLength - position;
                     if (toEnd < 0) toEnd = 0;
 
@@ -305,445 +330,524 @@ namespace PlexDL.Player
         #region Constants
 
         // Media Foundation Version
-        internal const int                          MF_VERSION                      = 0x10070;
+        internal const int                  MF_VERSION                      = 0x10070;
 
         // PVS.MediaPlayer Version
-        internal const float                        VERSION                         = 1.4F;
-        internal const string                       VERSION_STRING                  = "PVS.MediaPlayer 1.4";
+        internal const float                VERSION = 1.7F;
+        internal const string               VERSION_STRING                  = "PVS.MediaPlayer 1.7";
 
         // Default Values
-        private const string                        AUDIO_TRACK_NAME                = "Audio Track ";
-        private const string                        VIDEO_TRACK_NAME                = "Video Track ";
+        internal const string               AUDIO_TRACK_NAME                = "Audio Track ";
+        internal const string               VIDEO_TRACK_NAME                = "Video Track ";
 
-        internal const int                          MEDIUM_BUFFER_SIZE              = 256;
-        internal const int                          SMALL_BUFFER_SIZE               = 32;
+        internal const int                  MEDIUM_BUFFER_SIZE              = 256;
+        internal const int                  SMALL_BUFFER_SIZE               = 32;
 
-        private const bool                          AUDIO_ENABLED_DEFAULT           = true;
+        private const bool                  AUDIO_ENABLED_DEFAULT           = true;
 
-        private const float                         AUDIO_VOLUME_DEFAULT            = 1.0f;
-        internal const float                        AUDIO_VOLUME_MINIMUM            = 0.0f;
-        internal const float                        AUDIO_VOLUME_MAXIMUM            = 1.0f;
+        private const float                 AUDIO_VOLUME_DEFAULT            = 1.0f;
+        internal const float                AUDIO_VOLUME_MINIMUM            = 0.0f;
+        internal const float                AUDIO_VOLUME_MAXIMUM            = 1.0f;
 
-        private const float                         AUDIO_BALANCE_DEFAULT           = 0.0f;
-        internal const float                        AUDIO_BALANCE_MINIMUM           = -1.0f;
-        internal const float                        AUDIO_BALANCE_MAXIMUM           = 1.0f;
+        private const float                 AUDIO_BALANCE_DEFAULT           = 0.0f;
+        internal const float                AUDIO_BALANCE_MINIMUM           = -1.0f;
+        internal const float                AUDIO_BALANCE_MAXIMUM           = 1.0f;
 
-        internal const float                        VIDEO_COLOR_MINIMUM             = -1.0f;
-        internal const float                        VIDEO_COLOR_MAXIMUM             = 1.0f;
+        internal const float                VIDEO_COLOR_MINIMUM             = -1.0f;
+        internal const float                VIDEO_COLOR_MAXIMUM             = 1.0f;
 
-        internal const int                          VIDEO_WIDTH_MINIMUM             = 8;
-        internal const int                          VIDEO_HEIGHT_MINIMUM            = 8;
-        internal const int                          VIDEO_WIDTH_MAXIMUM             = 25000;
-        internal const int                          VIDEO_HEIGHT_MAXIMUM            = 25000;
-        internal const int                          DEFAULT_VIDEO_WIDTH_MAXIMUM     = 12000; // user video zoom limits
-        internal const int                          DEFAULT_VIDEO_HEIGHT_MAXIMUM    = 12000;
+        internal const int                  VIDEO_WIDTH_MINIMUM             = 8;
+        internal const int                  VIDEO_HEIGHT_MINIMUM            = 8;
+        internal const int                  VIDEO_WIDTH_MAXIMUM             = 25000;
+        internal const int                  VIDEO_HEIGHT_MAXIMUM            = 25000;
+        internal const int                  DEFAULT_VIDEO_WIDTH_MAXIMUM     = 12000; // user video zoom limits
+        internal const int                  DEFAULT_VIDEO_HEIGHT_MAXIMUM    = 12000;
 
-        internal const bool                         DEFAULT_IMAGES_ENABLED          = true;
-        internal const int                          DEFAULT_IMAGES_DURATION         = 50000000; // 5 seconds
-        internal const int                          DEFAULT_IMAGES_FRAME_RATE       = 16;
+        internal const bool                 DEFAULT_IMAGES_ENABLED          = true;
+        internal const int                  DEFAULT_IMAGES_DURATION         = 50000000; // 5 seconds
+        internal const int                  DEFAULT_IMAGES_FRAME_RATE       = 16;
 
-        internal const float                        DEFAULT_SPEED                   = 1.0f;
-        internal const bool                         DEFAULT_SPEED_BOOST             = false;
-        internal const float                        DEFAULT_SPEED_MINIMUM           = 0.125f;
-        internal const float                        DEFAULT_SPEED_MAXIMUM           = 8.0f;
-        internal const long                         DEFAULT_STEP_MARGIN             = 2000000; // 200 ms
+        internal const float                DEFAULT_SPEED                   = 1.0f;
+        internal const bool                 DEFAULT_SPEED_BOOST             = false;
+        internal const float                DEFAULT_SPEED_MINIMUM           = 0.01f; // 0.05f; // 0.125f;
+        internal const float                DEFAULT_SPEED_MAXIMUM           = 8.0f;
+        internal const long                 DEFAULT_STEP_MARGIN             = 2000000; // 200 ms
 
-        private const DisplayMode                   DEFAULT_DISPLAY_MODE            = DisplayMode.ZoomCenter;
-        private const DisplayShape                  DEFAULT_DISPLAY_SHAPE           = DisplayShape.Normal;
-        private const int                           DISPLAY_SHAPE_ROUNDED_SIZE      = 11;
-        private const bool                          DEFAULT_DISPLAY_SHAPE_VIDEO     = true;
+        private const DisplayMode           DEFAULT_DISPLAY_MODE            = DisplayMode.ZoomCenter;
+        private const DisplayShape          DEFAULT_DISPLAY_SHAPE           = DisplayShape.Normal;
+        private const int                   DISPLAY_SHAPE_ROUNDED_SIZE      = 11;
+        private const bool                  DEFAULT_DISPLAY_SHAPE_VIDEO     = true;
 
-        private const FullScreenMode                DEFAULT_FULLSCREEN_MODE         = FullScreenMode.Display;
-        private const OverlayMode                   DEFAULT_OVERLAY_MODE            = OverlayMode.Video;
-        private const OverlayBlend                  DEFAULT_OVERLAY_BLEND           = OverlayBlend.None;
+        private const FullScreenMode        DEFAULT_FULLSCREEN_MODE         = FullScreenMode.Display;
+        private const OverlayMode           DEFAULT_OVERLAY_MODE            = OverlayMode.Video;
+        private const OverlayBlend          DEFAULT_OVERLAY_BLEND           = OverlayBlend.None;
 
-        private const float                         DEFAULT_IMAGE_OVERLAY_SMALL     = 0.10f;
-        private const float                         DEFAULT_IMAGE_OVERLAY_MEDIUM    = 0.15f;
-        private const float                         DEFAULT_IMAGE_OVERLAY_LARGE     = 0.20f;
-        private const float                         DEFAULT_IMAGE_OVERLAY_MARGIN_HORIZONTAL     = 8.0f; // pixels
-        private const float                         DEFAULT_IMAGE_OVERLAY_MARGIN_VERTICAL       = 8.0f; // pixels
+        private const float                 DEFAULT_IMAGE_OVERLAY_SMALL     = 0.10f;
+        private const float                 DEFAULT_IMAGE_OVERLAY_MEDIUM    = 0.15f;
+        private const float                 DEFAULT_IMAGE_OVERLAY_LARGE     = 0.20f;
+        private const float                 DEFAULT_IMAGE_OVERLAY_MARGIN_HORIZONTAL = 8.0f; // pixels
+        private const float                 DEFAULT_IMAGE_OVERLAY_MARGIN_VERTICAL   = 8.0f; // pixels
 
-        private const CopyMode                      DEFAULT_COPY_MODE               = CopyMode.Video;
+        private const CopyMode              DEFAULT_COPY_MODE               = CopyMode.Video;
 
-        private const int                           MAX_FULLSCREEN_PLAYERS          = 16;
-        internal const int                          MAX_AUDIO_CHANNELS              = 16;
+        private const int                   MAX_FULLSCREEN_PLAYERS          = 16;
+        internal const int                  MAX_AUDIO_CHANNELS              = 8; // 16;
 
-        private const int                           DEFAULT_TIMER_INTERVAL          = 100; // ms
-        private const int                           MINIMUM_TIMER_INTERVAL          = 10;
-        private const int                           MAXIMUM_TIMER_INTERVAL          = 2000;
+        private const int                   DEFAULT_TIMER_INTERVAL          = 100; // ms
+        private const int                   MINIMUM_TIMER_INTERVAL          = 10;
+        private const int                   MAXIMUM_TIMER_INTERVAL          = 2000;
 
-        private const bool                          DEFAULT_MINIMIZED_ENABLED       = true;
-        private const int                           DEFAULT_MINIMIZED_INTERVAL      = 200; // ms
+        private const bool                  DEFAULT_MINIMIZED_ENABLED       = true;
+        private const int                   DEFAULT_MINIMIZED_INTERVAL      = 200; // ms
+
+        // Recorder
+        internal const string               DEFAULT_RECORDER_FOLDER_NAME    = "PVS Recordings";
+        internal const AudioFormat          DEFAULT_RECORDER_AUDIO_FORMAT   = AudioFormat.AAC;
+        internal const AudioBitRate         DEFAULT_RECORDER_AUDIO_BITRATE  = AudioBitRate.Kbps_128;
+        internal const bool                 DEFAULT_AUDIO_TO_STEREO         = false; // use stereo if mono (1 to 2 channels)
+        internal const bool                 DEFAULT_AUDIO_TO_MONO           = false; // use mono if stereo (2 to 1 channel)
+
+        internal const VideoFormat          DEFAULT_RECORDER_VIDEO_FORMAT   = VideoFormat.H264;
+        internal const int                  DEFAULT_RECORDER_VIDEO_FRAMERATE = -1;
+        internal const int                  DEFAULT_RECORDER_VIDEO_BITRATE  = 800; // kb/s
+
+        // Motion Detection
+        internal const int                  MOTION_TABLE_WIDTH              = 32;
+        internal const int                  MOTION_TABLE_HEIGHT             = 32;
+		internal const int	                MOTION_TABLE_SIZE	            = MOTION_TABLE_WIDTH * MOTION_TABLE_HEIGHT;
+        internal const double               MOTION_TABLE_FACTOR             = 1.0 / (MOTION_TABLE_SIZE / 100.0);
+        internal const int	                DEFAULT_MOTION_SENSITIVITY      = 10;   // 0-255
+        internal const int	                DEFAULT_MOTION_THRESHOLD        = 3;    // percentage
+        internal const int                  DEFAULT_MOTION_IDLE_TIME        = 0;    // ms
+        internal const int                  DEFAULT_MOTION_TIMER_INTERVAL   = 500;
 
         // Start Media
-        private const bool                          DEFAULT_DOEVENTS_ENABLED        = false;
-        private const int                           DEFAULT_DOEVENTS_TIMEOUT        = 40;
-        private const int                           DEFAULT_DOEVENTS_LOOP           = 4000;
+        private const bool                  DEFAULT_DOEVENTS_ENABLED        = false;
+        private const int                   DEFAULT_DOEVENTS_TIMEOUT        = 40;
+        private const int                   DEFAULT_DOEVENTS_LOOP           = 4000;
 
-        private const long                          UPDATE_TOPOLOGY_START_OFFSET    = 500000;
+        private const long                  UPDATE_TOPOLOGY_START_OFFSET    = 500000; // ticks
 
-        // Fixed Values
-        internal const string                       SUBTITLES_FILE_EXTENSION        = ".srt";
-        internal const string                       MP4_FILE_EXTENSION              = ".mp4";
-        internal const string                       CHAPTERS_FILE_EXTENSION         = ".chap";
-        internal const string                       CHAPTERs_TIME_FORMAT            = @"hh\:mm\:ss\.fff";
-        internal const char                         ONE_SPACE                       = '\u00A0'; // used with temporary files of the same name
+        // Fixed Values:
 
-        internal const int                          TIMEOUT_1_SECOND                = 1000;
-        internal const int                          TIMEOUT_5_SECONDS               = 5000;
-        internal const int                          TIMEOUT_10_SECONDS              = 10000;
-        internal const int                          TIMEOUT_15_SECONDS              = 15000;
-        internal const int                          TIMEOUT_30_SECONDS              = 30000;
-        internal const int                          TIMEOUT_45_SECONDS              = 45000;
+        // video file extensions
+        internal const string               MP4_FILE_EXTENSION              = ".mp4";
+        internal const string               WMV_FILE_EXTENSION              = ".wmv";
 
-        internal const long                         ONE_SECOND_TICKS                = 10000000;
-        private const long                          AUDIO_STEP_TICKS                = 1000000;
-        private const int                           EOF_MARGIN_MS                   = 100; //300;
+        // audio file extensions
+        internal const string               MP3_FILE_EXTENSION              = ".mp3";
+        internal const string               M4A_FILE_EXTENSION              = ".m4a";
+        internal const string               AAC_FILE_EXTENSION              = ".m4a";
+        internal const string               WMA_FILE_EXTENSION              = ".wma";
+        //internal const string             FLAC_FILE_EXTENSION             = ".flac";
+        //internal const string             PCM_FILE_EXTENSION              = ".wav";
+        //internal const string             OGG_FILE_EXTENSION              = ".ogg";
 
-        internal const int                          NO_ERROR                        = 0;
-        internal const int                          NO_VALUE                        = -1;
-        private const int                           NO_STREAM_SELECTED              = -1;
-        private const float                         STOP_VALUE                      = -1;
+        internal const string               SUBTITLES_FILE_EXTENSION        = ".srt";
+        internal const string               CHAPTERS_FILE_EXTENSION         = ".chap";
+        internal const string               CHAPTERs_TIME_FORMAT            = @"hh\:mm\:ss\.fff";
+        internal const char                 ONE_SPACE                       = '\u00A0'; // used with temporary files of the same name
 
-        internal const long                         MS_TO_TICKS                     = 10000;
-        internal const float                        TICKS_TO_MS                     = 0.0001f;
+        //internal const int                TIMEOUT_1_SECOND                = 1000;
+        internal const int                  TIMEOUT_5_SECONDS               = 5000;
+        internal const int                  TIMEOUT_10_SECONDS              = 10000;
+        internal const int                  TIMEOUT_15_SECONDS              = 15000;
+        internal const int                  TIMEOUT_20_SECONDS              = 20000;
+        internal const int                  TIMEOUT_30_SECONDS              = 30000;
+        //internal const int                TIMEOUT_45_SECONDS              = 45000;
 
-        private const int                           MF_UPDATE_WAIT_MS               = 75;
+        internal const long                 ONE_SECOND_TICKS                = 10000000;
+        private const long                  AUDIO_STEP_TICKS                = 1000000;
+        private const int                   EOF_MARGIN_MS                   = 100; //300;
+        private const int                   ENDPAUSE_MARGIN_MS              = 300;
+
+        internal const int                  NO_ERROR                        = 0;
+        internal const int                  NO_VALUE                        = -1;
+        private const int                   NO_STREAM_SELECTED              = -1;
+        private const float                 STOP_VALUE                      = -1;
+
+        internal const long                 MS_TO_TICKS                     = 10000;
+        internal const float                TICKS_TO_MS                     = 0.0001f;
+
+        private const int                   MF_UPDATE_WAIT_MS               = 75;
 
         #endregion
 
         // Media Foundation
-        internal static bool                        MF_Installed;
-        internal static bool                        MF_Checked;
-        internal static int                         MF_Checked_Result;
+        internal static bool                MF_Installed;
+        internal static bool                MF_Checked;
+        internal static HResult             MF_Checked_Result;
 
         // Media Foundation Session
-        internal bool                               mf_HasSession;
-        internal bool                               mf_Replay;
+        internal bool                       mf_HasSession;
+        internal bool                       mf_Replay;
 
-        internal IMFMediaSession                    mf_MediaSession;
-        internal bool                               mf_LowLatency;
-        internal IMFAttributes                      mf_SessionConfig;
-        internal IMFAttributes                      mf_SessionConfigLowLatency;
-        internal IMFMediaSource                     mf_MediaSource;
+        internal IMFMediaSession            mf_MediaSession;
+        internal bool                       mf_LowLatency;
+        internal IMFAttributes              mf_SessionConfig;
+        internal IMFAttributes              mf_SessionConfigLowLatency;
+        internal IMFMediaSource             mf_MediaSource;
 
-        internal IMFVideoDisplayControl             mf_VideoDisplayControl;
-        internal IMFVideoProcessor                  mf_VideoProcessor;
-        internal IMFAudioStreamVolume               mf_AudioStreamVolume;
-        internal IMFRateControl                     mf_RateControl;
+        internal IMFVideoDisplayControl     mf_VideoDisplayControl;
+        internal IMFVideoProcessor          mf_VideoProcessor;
+        internal IMFAudioStreamVolume       mf_AudioStreamVolume;
+        internal IMFRateControl             mf_RateControl;
 
-        internal IMFClock                           mf_Clock;
-        private MF_PlayerCallBack                   mf_CallBack;
-        internal bool                               mf_AwaitCallBack;
-        internal System.Threading.AutoResetEvent    WaitForEvent;
-        internal bool                               mf_DoEvents                 = DEFAULT_DOEVENTS_ENABLED; // if true, use Application.DoEvents with main media start
-        internal bool                               mf_AwaitDoEvents;
-        private int                                 mf_DoEventsTimeOut          = DEFAULT_DOEVENTS_TIMEOUT;
-        private int                                 mf_DoEventsLoop             = DEFAULT_DOEVENTS_LOOP;
+        internal IMFClock                   mf_Clock;
+        internal MF_PlayerCallBack          mf_CallBack;
+        internal bool                       mf_AwaitCallBack;
+        internal System.Threading.AutoResetEvent WaitForEvent;
+        internal bool                       mf_DoEvents                 = DEFAULT_DOEVENTS_ENABLED; // if true, use Application.DoEvents with main media start
+        internal bool                       mf_AwaitDoEvents;
+        private int                         mf_DoEventsTimeOut          = DEFAULT_DOEVENTS_TIMEOUT;
+        private int                         mf_DoEventsLoop             = DEFAULT_DOEVENTS_LOOP;
 
         // Used with all players fullscreen management
-        private static Form[]                       _fullScreenForms            = new Form[MAX_FULLSCREEN_PLAYERS];
+        private static Form[]               _fullScreenForms            = new Form[MAX_FULLSCREEN_PLAYERS];
 
         // Text Buffers
-        internal StringBuilder                      _textBuffer1;
-        internal StringBuilder                      _textBuffer2;
+        internal StringBuilder              _textBuffer1;
+        internal StringBuilder              _textBuffer2;
 
         // Last Error
-        internal HResult                            _lastError;
+        internal HResult                    _lastError;
 
         // Display
-        internal Control                            _display;
-        internal bool                               _displayHold;
-        internal bool                               _hasDisplay;
-        private bool                                _hasDisplayEvents;
-        internal DisplayMode                        _displayMode                = DEFAULT_DISPLAY_MODE;
-        internal VideoDisplay                       _videoDisplay;
-        internal bool                               _hasVideoDisplay;           // also = playing + hasVideo + videoEnabled
-        internal bool                               _dragEnabled;
+        internal Control                    _display;
+        internal bool                       _displayHold;
+        internal bool                       _hasDisplay;
+        private bool                        _hasDisplayEvents;
+        internal DisplayMode                _displayMode                = DEFAULT_DISPLAY_MODE;
+        internal VideoDisplay               _videoDisplay;
+        internal bool                       _hasVideoDisplay;           // also = playing + hasVideo + videoEnabled
+        internal bool                       _dragEnabled;
 
         // Display Shapes
-        internal bool                               _hasDisplayShape;
-        internal DisplayShape                       _displayShape               = DEFAULT_DISPLAY_SHAPE;
-        internal ShapeCallback                      _displayShapeCallback;
-        private bool                                _displayShapeBlock;
-        internal bool                               _hasVideoShape              = DEFAULT_DISPLAY_SHAPE_VIDEO;
-        internal GraphicsPath                       _customShapePath;
+        internal bool                       _hasDisplayShape;
+        internal DisplayShape               _displayShape               = DEFAULT_DISPLAY_SHAPE;
+        internal ShapeCallback              _displayShapeCallback;
+        private bool                        _displayShapeBlock;
+        internal bool                       _hasVideoShape              = DEFAULT_DISPLAY_SHAPE_VIDEO;
+        internal GraphicsPath               _customShapePath;
 
         // Display Overlay
-        internal Form                               _overlay;
-        internal bool                               _hasOverlay;
-        internal OverlayMode                        _overlayMode                = DEFAULT_OVERLAY_MODE;
-        internal bool                               _overlayHold;
-        internal bool                               _overlayCanFocus;
-        private bool                                _hasOverlayMenu;
-        internal bool                               _hasOverlayShown;
-        private bool                                _hasOverlayEvents;
-        private bool                                _hasOverlayFocusEvents;
-        internal bool                               _hasOverlayClipping;
-        private bool                                _hasOverlayClippingEvents;
-        internal OverlayBlend                       _overlayBlend               = DEFAULT_OVERLAY_BLEND;
-        internal SafeNativeMethods.BLENDFUNCTION    _blendFunction;
+        internal Form                       _overlay;
+        internal bool                       _hasOverlay;
+        internal OverlayMode                _overlayMode                = DEFAULT_OVERLAY_MODE;
+        internal bool                       _overlayHold;
+        internal bool                       _overlayCanFocus;
+        private bool                        _hasOverlayMenu;
+        internal bool                       _hasOverlayShown;
+        private bool                        _hasOverlayEvents;
+        private bool                        _hasOverlayFocusEvents;
+        internal bool                       _hasOverlayClipping;
+        private bool                        _hasOverlayClippingEvents;
+        internal OverlayBlend               _overlayBlend               = DEFAULT_OVERLAY_BLEND;
+        internal SafeNativeMethods.BLENDFUNCTION _blendFunction;
 
         // Bitmap Overlay
-        internal bool                               _hasImageOverlay;
-        private MFVideoAlphaBitmap                  _imageOverlay;
-        private Bitmap                              _imageOverlayBitmap;       // storage to prevent image removal by GC in client app
-        private ImagePlacement                      _imageOverlayPlacement;
-        private RectangleF                          _imageOverlayBounds;
-        private bool                                _imageOverlayHold;
+        internal bool                       _hasImageOverlay;
+        private MFVideoAlphaBitmap          _imageOverlay;
+        private Bitmap                      _imageOverlayBitmap;        // storage to prevent image removal by GC in client app
+        private ImagePlacement              _imageOverlayPlacement;
+        private RectangleF                  _imageOverlayBounds;
+        private bool                        _imageOverlayHold;
 
         // Image Overlay Preset Sizes (adjustable by user)
-        internal float                              _IMAGE_OVERLAY_SMALL                = DEFAULT_IMAGE_OVERLAY_SMALL;
-        internal float                              _IMAGE_OVERLAY_SMALL2               = 1.0f - DEFAULT_IMAGE_OVERLAY_SMALL;
-        internal float                              _IMAGE_OVERLAY_MEDIUM               = DEFAULT_IMAGE_OVERLAY_MEDIUM;
-        internal float                              _IMAGE_OVERLAY_MEDIUM2              = 1.0f - DEFAULT_IMAGE_OVERLAY_MEDIUM;
-        internal float                              _IMAGE_OVERLAY_LARGE                = DEFAULT_IMAGE_OVERLAY_LARGE;
-        internal float                              _IMAGE_OVERLAY_LARGE2               = 1.0f - DEFAULT_IMAGE_OVERLAY_LARGE;
-        internal float                              _IMAGE_OVERLAY_MARGIN_HORIZONTAL    = DEFAULT_IMAGE_OVERLAY_MARGIN_HORIZONTAL;
-        internal float                              _IMAGE_OVERLAY_MARGIN_HORIZONTAL2   = 2 * DEFAULT_IMAGE_OVERLAY_MARGIN_HORIZONTAL;
-        internal float                              _IMAGE_OVERLAY_MARGIN_VERTICAL      = DEFAULT_IMAGE_OVERLAY_MARGIN_VERTICAL;
-        internal float                              _IMAGE_OVERLAY_MARGIN_VERTICAL2     = 2 * DEFAULT_IMAGE_OVERLAY_MARGIN_VERTICAL;
+        internal float                      _IMAGE_OVERLAY_SMALL                = DEFAULT_IMAGE_OVERLAY_SMALL;
+        internal float                      _IMAGE_OVERLAY_MEDIUM               = DEFAULT_IMAGE_OVERLAY_MEDIUM;
+        internal float                      _IMAGE_OVERLAY_LARGE                = DEFAULT_IMAGE_OVERLAY_LARGE;
+        internal float                      _IMAGE_OVERLAY_MARGIN_HORIZONTAL    = DEFAULT_IMAGE_OVERLAY_MARGIN_HORIZONTAL;
+        internal float                      _IMAGE_OVERLAY_MARGIN_VERTICAL      = DEFAULT_IMAGE_OVERLAY_MARGIN_VERTICAL;
 
         // Full Screen
-        internal bool                               _fullScreen;
-        internal FullScreenMode                     _fullScreenMode             = DEFAULT_FULLSCREEN_MODE;
-        internal Rectangle                          _fsFormBounds;
-        private FormBorderStyle                     _fsFormBorder;
-        private Rectangle                           _fsParentBounds;
-        private BorderStyle                         _fsParentBorder;
-        private int                                 _fsParentIndex;
-        private Rectangle                           _fsDisplayBounds;
-        private BorderStyle                         _fsDisplayBorder;
-        private int                                 _fsDisplayIndex;
+        internal bool                       _fullScreen;
+        internal FullScreenMode             _fullScreenMode             = DEFAULT_FULLSCREEN_MODE;
+        internal Rectangle                  _fsFormBounds;
+        private FormBorderStyle             _fsFormBorder;
+        private Rectangle                   _fsParentBounds;
+        private BorderStyle                 _fsParentBorder;
+        private int                         _fsParentIndex;
+        private Rectangle                   _fsDisplayBounds;
+        private BorderStyle                 _fsDisplayBorder;
+        private int                         _fsDisplayIndex;
 
         // CursorHide
-        internal bool                               _hasCursorHide;
+        internal bool                       _hasCursorHide;
 
         // Player / Media
-        internal PropVariant                        mf_StartTime;
+        internal PropVariant                mf_StartTime;
 
-        private string                              _playerName;
-        internal string                             _fileName;
-        internal bool                               _fileMode;
-        internal bool                               _hasTempFile;
-        private string                              _tempFileName;
+        private string                      _playerName;
+        internal string                     _fileName;
+        internal bool                       _fileMode;
+        internal bool                       _hasTempFile;
+        private string                      _tempFileName;
 
-        internal long                               _startTime;
-        internal long                               _deviceStart;               // webcam / microphone / live stream start time
-        internal long                               _stopTime;
+        internal long                       _startTime;
+        internal long                       _deviceStart;               // webcam / microphone / live stream start time
+        internal long                       _stopTime;
+        internal bool                       _endPauseMode;              // when subscribed to MediaEndedPaused event
 
-        private bool                                _seekBusy;
-        private bool                                _seekPending;
-        private long                                _seekValue;
+        private bool                        _seekBusy;
+        private bool                        _seekPending;
+        private long                        _seekValue;
 
-        internal bool                               _stepMode;                  // used with special resume
-        internal long                               _stepMargin                 = DEFAULT_STEP_MARGIN; // margin at end of file with stepping
+        internal bool                       _stepMode;                  // used with special resume
+        internal long                       _stepMargin                 = DEFAULT_STEP_MARGIN; // margin at end of file with stepping
 
-        internal bool                               _repeat;
-        internal int                                _repeatCount;
-        internal bool                               _repeatChapter;
-        internal int                                _repeatChapterCount;
-        internal bool                               _playing;
-        internal bool                               _paused;
+        internal bool                       _repeat;
+        internal int                        _repeatCount;
+        internal bool                       _repeatChapter;
+        internal int                        _repeatChapterCount;
+        internal bool                       _playing;
+        internal bool                       _paused;
 
-        internal float                              _speed                      = DEFAULT_SPEED;
-        internal bool                               _speedBoost                 = DEFAULT_SPEED_BOOST;
-        internal float                              mf_Speed                    = DEFAULT_SPEED;
-        internal float                              mf_SpeedMinimum             = DEFAULT_SPEED_MINIMUM;
-        internal float                              mf_SpeedMaximum             = DEFAULT_SPEED_MAXIMUM;
-        private bool                                _speedSkipped;
+        internal float                      _speed                      = DEFAULT_SPEED;
+        internal bool                       _speedBoost                 = DEFAULT_SPEED_BOOST;
+        internal float                      mf_Speed                    = DEFAULT_SPEED;
+        internal float                      mf_SpeedMinimum             = DEFAULT_SPEED_MINIMUM;
+        internal float                      mf_SpeedMaximum             = DEFAULT_SPEED_MAXIMUM;
+        private bool                        _speedSkipped;
 
-        internal long                               _mediaLength;
+        internal long                       _mediaLength;
 
-        internal bool                               _busyStarting;
-        private EndedEventArgs                      _endedEventArgs;
+        internal bool                       _busyStarting;
+        private EndedEventArgs              _endedEventArgs;
 
         // PlayerStartInfo
-        internal bool                               _siFileMode;
-        internal string                             _siFileName;
-        internal bool                               _siMicMode;                 // microphone - audio input
-        private AudioInputDevice                    _siMicDevice;
-        internal bool                               _siWebcamMode;
-        private WebcamDevice                        _siWebcamDevice;
-        private WebcamFormat                        _siWebcamFormat;
-        internal long                               _siStartTime;
-        internal long                               _siStopTime;
-        internal bool                               _siChapterMode;
-        internal MediaChapter[]                     _siMediaChapters;
-        internal int                                _siIndex;
+        internal bool                       _siFileMode;
+        internal string                     _siFileName;
+        internal bool                       _siMicMode;                 // microphone - audio input
+        private AudioInputDevice            _siMicDevice;
+        internal bool                       _siWebcamMode;
+        private WebcamDevice                _siWebcamDevice;
+        private WebcamFormat                _siWebcamFormat;
+        internal long                       _siStartTime;
+        internal long                       _siStopTime;
+        internal bool                       _siChapterMode;
+        internal MediaChapter[]             _siMediaChapters;
+        internal int                        _siIndex;
 
         // Video
-        internal bool                               _hasVideo;
-        internal bool                               _videoCut;
-        internal VideoStream[]                      _videoTracks;
-        internal int                                _videoTrackCount;
-        internal int                                _videoTrackBase             = NO_STREAM_SELECTED;
-        internal int                                _videoTrackCurrent          = NO_STREAM_SELECTED;
-        internal bool                               _hasVideoBounds;
-        internal Rectangle                          _videoBounds;
-        internal Rectangle                          _videoBoundsClip;
-        internal Size                               _videoSourceSize;
-        internal float                              _videoFrameRate;
-        private long                                _videoFrameStep;
-        internal int                                _videoAcceleration          = 2; // MF_TOPOLOGY_DXVA_MODE.Full
+        internal bool                       _hasVideo;
+        internal bool                       _videoCut;
+        internal VideoStream[]              _videoTracks;
+        internal int                        _videoTrackCount;
+        internal int                        _videoTrackBase             = NO_STREAM_SELECTED;
+        internal int                        _videoTrackCurrent          = NO_STREAM_SELECTED;
+        internal bool                       _hasVideoBounds;
+        internal Rectangle                  _videoBounds;
+        internal Rectangle                  _videoBoundsClip;
+        internal Size                       _videoSourceSize;
+        internal float                      _videoFrameRate;
+        private long                        _videoFrameStep;
+        internal int                        _videoAcceleration          = 2; // MF_TOPOLOGY_DXVA_MODE.Full
 
-        internal bool                               _videoSourceRotated;        // set if the video is 90 or 270 degrees rotated
-        internal int                                _videoSourceRotation;
+        internal VideoRotation              _videoRotation              = VideoRotation.None;
+        internal bool                       _videoRotationSwitch;       // width and height switched for 90 and 270 degree rotation
+        //internal int                      _videoMirror;
+        //nternal IMFVideoProcessorControl  _videoMirrorMFT;
+        //internal IMFTransform             _videoProcessorMFT;
 
-        internal bool                               _videoAspectRatio;          // set to true with custom video aspect ratio
-        internal SizeF                              _videoAspectSize;           // default: 0F, 0F
-        internal double                             _videoWidthRatio;           // e.g. 16/9
-        internal double                             _videoHeightRatio;          // e.g. 9/16
+        internal bool                       _videoSourceRotated;        // set if the video is 90 or 270 degrees rotated
+        internal int                        _videoSourceRotation;       // set if the video was already/originally rotated 90 or 270 degrees
 
-        internal bool                               _pixelAspectRatio;          // set to true with non square pixels
-        internal double                             _pixelWidthRatio;
-        internal double                             _pixelHeightRatio;
+        internal bool                       _videoAspectRatio;          // set to true with custom video aspect ratio
+        internal SizeF                      _videoAspectSize;           // default: 0F, 0F
+        internal double                     _videoWidthRatio;           // e.g. 16/9
+        internal double                     _videoHeightRatio;          // e.g. 9/16
 
-        internal bool                               _videoCropMode;             // only used with video crop not video 3d
-        internal Video3DView                        _video3DView;               // side-by-side/over-under 3d view setting
-        internal MFVideoNormalizedRect              _videoCropRect;             // used with 3d stereoscopic views and video crop
+        internal bool                       _pixelAspectRatio;          // set to true with non square pixels
+        internal double                     _pixelWidthRatio;
+        internal double                     _pixelHeightRatio;
+
+        internal bool                       _videoCropMode;             // only used with video crop not video 3d
+        internal Video3DView                _video3DView;               // side-by-side/over-under 3d view setting
+        internal MFVideoNormalizedRect      _videoCropRect;             // used with 3d stereoscopic views and video crop
 
         // Video Processor
-        private bool                                _hasVideoProcessor;
-        private bool                                _failVideoProcessor;
-        private DXVA2VideoProcessorCaps             _videoProcessorCaps;
+        private bool                        _hasVideoProcessor;
+        private bool                        _failVideoProcessor;
+        private DXVA2VideoProcessorCaps     _videoProcessorCaps;
 
         // Video Color
-        internal DXVA2ProcAmpValues                 _procAmpValues;
-        internal bool                               _setVideoColor;
-        internal double                             _brightness;
-        internal bool                               _hasBrightnessRange;
-        internal DXVA2ValueRange                    _brightnessRange;
-        internal double                             _contrast;
-        internal bool                               _hasContrastRange;
-        internal DXVA2ValueRange                    _contrastRange;
-        internal double                             _hue;
-        internal bool                               _hasHueRange;
-        internal DXVA2ValueRange                    _hueRange;
-        internal double                             _saturation;
-        internal bool                               _hasSaturationRange;
-        internal DXVA2ValueRange                    _saturationRange;
+        internal DXVA2ProcAmpValues         _procAmpValues;
+        internal bool                       _setVideoColor;
+        internal double                     _brightness;
+        internal bool                       _hasBrightnessRange;
+        internal DXVA2ValueRange            _brightnessRange;
+        internal double                     _contrast;
+        internal bool                       _hasContrastRange;
+        internal DXVA2ValueRange            _contrastRange;
+        internal double                     _hue;
+        internal bool                       _hasHueRange;
+        internal DXVA2ValueRange            _hueRange;
+        internal double                     _saturation;
+        internal bool                       _hasSaturationRange;
+        internal DXVA2ValueRange            _saturationRange;
 
         // Audio
-        internal bool                               _hasAudio;
-        internal bool                               _audioMono;
-        internal bool                               _audioMonoRestore;
-        internal bool                               _audioCut;
-        internal bool                               _audioEnabled               = AUDIO_ENABLED_DEFAULT;
-        internal float                              _audioVolume                = AUDIO_VOLUME_DEFAULT;
-        internal float                              mf_AudioVolume              = AUDIO_VOLUME_DEFAULT;
-        internal float                              _audioBalance               = AUDIO_BALANCE_DEFAULT;
-        internal float                              mf_AudioBalance             = AUDIO_BALANCE_DEFAULT;
-        internal AudioDevice                        _audioDevice;
-        internal bool                               _hasDeviceChangedHandler;
-        internal AudioStream[]                      _audioTracks;
-        internal int                                _audioTrackCount;
-        internal int                                _audioTrackBase             = NO_STREAM_SELECTED;
-        internal int                                _audioTrackCurrent          = NO_STREAM_SELECTED;
+        internal bool                       _hasAudio;
+        internal bool                       _audioMono;
+        internal bool                       _audioMonoRestore;
+        internal bool                       _audioCut;
+        //internal int                      _audioChannelsLimit;
+        internal bool                       _audioEnabled               = AUDIO_ENABLED_DEFAULT;
+        internal float                      _audioVolume                = AUDIO_VOLUME_DEFAULT;
+        internal float                      mf_AudioVolume              = AUDIO_VOLUME_DEFAULT;
+        internal float                      _audioBalance               = AUDIO_BALANCE_DEFAULT;
+        internal float                      mf_AudioBalance             = AUDIO_BALANCE_DEFAULT;
+        internal AudioDevice                _audioDevice;
+        internal bool                       _hasDeviceChangedHandler;
+        internal AudioStream[]              _audioTracks;
+        internal int                        _audioTrackCount;
+        internal int                        _audioTrackBase             = NO_STREAM_SELECTED;
+        internal int                        _audioTrackCurrent          = NO_STREAM_SELECTED;
+        internal bool                       _audioMultiTrack;
 
-        internal int                                _audioChannelCount;         // channels used to set audio
-        internal int                                _mediaChannelCount;         // channels in playing media
+        internal int                        _audioChannelCount;         // channels used to set audio
+        internal int                        _mediaChannelCount;         // channels in playing media
 
-        internal float[]                            _audioChannelsVolume;
-        internal float[]                            _audioChannelsVolumeCopy;
-        internal float[]                            _audioChannelsMute;
+        internal float[]                    _audioChannelsVolume;
+        internal float[]                    _audioChannelsVolumeCopy;
+        internal float[]                    _audioChannelsMute;
+
+        //internal bool                       _useTransform_DSP           = true;
+        //private IMFTransform                _transform_DSP;             // audio resampler (Digital Signal Processor)
+
+        internal AudioEventArgs             _audioEventArgs;
 
         // Microphone / Audio Input Device
-        internal bool                               _micMode;
-        internal AudioInputDevice                   _micDevice;
+        internal bool                       _micMode;
+        internal AudioInputDevice           _micDevice;
 
         // Webcam
-        internal bool                               _webcamMode;
-        internal WebcamDevice                       _webcamDevice;
-        internal WebcamFormat                       _webcamFormat;
-        internal bool                               _webcamAggregated;
-        internal IMFMediaSource                     _webcamVideoSource;
-        internal IMFMediaSource                     _webcamAudioSource;
+        internal bool                       _webcamMode;
+        internal WebcamDevice               _webcamDevice;
+        internal WebcamFormat               _webcamFormat;
+        internal bool                       _webcamAggregated;
+        internal IMFMediaSource             _webcamVideoSource;
+        internal IMFMediaSource             _webcamAudioSource;
+
+        // Motion Detection
+        internal bool                       _hasMotionDetection;        // true when subscribed to event
+        internal bool                       _hasMotionArea;
+        internal bool                       _hasMotionBlocked;
+        internal bool		                _hasMotionFixedImage;
+        internal volatile bool              _motionDetectionActive;     // motion timer running
+        internal bool		                _motionDetectionBusy;
+
+        internal byte[]		                _motionTable                = null;
+        internal RectangleF                 _motionArea;
+        internal RectangleF                 _motionBlocked;
+        internal int                        _motionSensitivity          = DEFAULT_MOTION_SENSITIVITY;
+        internal int                        _motionThreshold            = DEFAULT_MOTION_THRESHOLD;
+
+        internal bool                       _hasMotionSensitivityTable;
+        internal byte[]                     _motionSensitivityTable;
+
+        internal System.Timers.Timer        _motionTimer;
+        internal int                        _motionTimerInterval        = DEFAULT_MOTION_TIMER_INTERVAL;
+        internal MotionEventArgs            _motionEventArgs;
+
+        internal int                        _motionIdleCounter;
+        internal int                        _motionIdleTime             = DEFAULT_MOTION_IDLE_TIME;
+
+        //internal ImageAttributes            _grayScaleAttributes        = null;
+        //private static ColorMatrix          _grayScaleMatrix            = new ColorMatrix(new[] { new[] {.3f, .3f, .3f, 0, 0}, new[] {.59f, .59f, .59f, 0, 0}, new[] {.11f, .11f, .11f, 0, 0}, new[] {0f, 0f, 0f, 1f, 0f}, new[] {0f, 0f, 0f, 0f, 1f}});
+
+        // Recording
+        internal bool                       _recording;
 
         // Online Streams
-        internal bool                               _fileStreamMode;            // set with online media
-        internal bool                               _liveStreamMode;            // set if online media has no length
+        internal bool                       _fileStreamMode;            // set with online media
+        internal bool                       _liveStreamMode;            // set if online media has no length
 
         // Images
-        internal bool                               _imageMode;
-        internal bool                               _imagesEnabled              = DEFAULT_IMAGES_ENABLED;
-        private int                                 _imageBytesPerPixel;
-        private Guid                                _imageMediaType;
-        internal long                               _imageDuration              = DEFAULT_IMAGES_DURATION;
-        internal int                                _imageFrameRate             = DEFAULT_IMAGES_FRAME_RATE;
+        internal bool                       _imageMode;
+        internal bool                       _imagesEnabled              = DEFAULT_IMAGES_ENABLED;
+        private int                         _imageBytesPerPixel;
+        private Guid                        _imageMediaType;
+        internal long                       _imageDuration              = DEFAULT_IMAGES_DURATION;
+        internal int                        _imageFrameRate             = DEFAULT_IMAGES_FRAME_RATE;
 
         // Chapters
-        internal bool                               _chapterMode;
-        internal int                                _chapterIndex;
-        internal MediaChapter[]                     _mediaChapters;
-        //internal bool                               _endedMode;                 // true when playback has ended but is revived, eg with next chapter in chapterMode - don't adjust start time etc.
-        private IMFTopology                         _chapterTopo;
+        internal bool                       _chapterMode;
+        internal int                        _chapterIndex;
+        internal MediaChapter[]             _mediaChapters;
+        //internal bool                     _endedMode;                 // true when playback has ended but is revived, eg with next chapter in chapterMode - don't adjust start time etc.
+        private IMFTopology                 _chapterTopo;
 
         // Copy
-        internal CopyMode                           _copyMode                   = DEFAULT_COPY_MODE;
+        internal CopyMode                   _copyMode                   = DEFAULT_COPY_MODE;
 
         // Timer used with position changed events, output level meter and others
-        internal Timer                              _timer;
-        internal bool                               _hasPositionEvents;
-        private PositionEventArgs                   _positionArgs;
+        internal Timer                      _timer;
+        internal bool                       _hasPositionEvents;
+        private PositionEventArgs           _positionArgs;
 
         // Peak Level
-        internal PeakLevelEventArgs                 _outputLevelArgs;
-        private bool                                _outputLevelMuted;
-        internal PeakLevelEventArgs                 _inputLevelArgs;
-        private bool                                _inputLevelMuted;
+        internal PeakLevelEventArgs         _outputLevelArgs;
+        private bool                        _outputLevelMuted;
+        internal PeakLevelEventArgs         _inputLevelArgs;
+        private bool                        _inputLevelMuted;
 
         // Minimized - Overlay Delay
-        internal bool                               _minimizeEnabled            = DEFAULT_MINIMIZED_ENABLED;
-        private bool                                _minimizeHasEvent;
-        private bool                                _minimized;
-        private Timer                               _minimizeTimer;
-        internal int                                _minimizedInterval          = DEFAULT_MINIMIZED_INTERVAL;
-        private double                              _minimizedOpacity;
+        internal bool                       _minimizeEnabled            = DEFAULT_MINIMIZED_ENABLED;
+        private bool                        _minimizeHasEvent;
+        private bool                        _minimized;
+        private Timer                       _minimizeTimer;
+        internal int                        _minimizedInterval          = DEFAULT_MINIMIZED_INTERVAL;
+        private double                      _minimizedOpacity;
 
         // Computer Sleep Disable
-        private bool                                _sleepOff;
+        private bool                        _sleepOff;
 
         // Taskbar Progress
         internal static TaskbarIndicator.ITaskbarList3 TaskbarInstance;
-        internal static bool                        _taskbarProgressEnabled;
-        internal bool                               _hasTaskbarProgress;
+        internal static bool                _taskbarProgressEnabled;
+        internal bool                       _hasTaskbarProgress;
 
         // Miscellaneous
-        private bool                                _disposed;
+        private bool                        _disposed;
 
         // Member Grouping Classes
-        private Audio                               _audioClass;
-        private AudioInput                          _audioInputClass;
-        private DisplayClones                       _clonesClass;
-        private Display                             _displayClass;
-        private CursorHide                          _cursorHideClass;
-        private Events                              _eventsClass;
-        private Media                               _mediaClass;
-        private Chapters                            _chaptersClass;
-        private Images                              _imagesClass;
-        private Playlist                            _playlistClass;
-        private TaskbarProgress                     _taskbarProgress;
-        private Overlay                             _overlayClass;
-        private SystemPanels                        _panelsClass;
-        private PointTo                             _pointToClass;
-        private Position                            _positionClass;
-        private Copy                                _copyClass;
-        private Sliders                             _slidersClass;
-        private Subtitles                           _subtitlesClass;
-        private Video                               _videoClass;
-        private Has                                 _hasClass;
-        private Speed                               _speedClass;
-        private Network                             _networkClass;
-        private DragAndDrop                         _dragAndDropClass;
-        private Webcam                              _webcamClass;
-        //internal VideoRecorder          _videoRecorderClass;
-        //internal VideoRecorder          _webcamRecorderClass;
+        private Audio                       _audioClass;
+        private AudioMultiTrack             _audioTrackClass;
+        private AudioInput                  _audioInputClass;
+        private DisplayClones               _clonesClass;
+        private Display                     _displayClass;
+        private CursorHide                  _cursorHideClass;
+        private Events                      _eventsClass;
+        private Media                       _mediaClass;
+        private Chapters                    _chaptersClass;
+        private Images                      _imagesClass;
+        private Playlist                    _playlistClass;
+        private TaskbarProgress             _taskbarProgress;
+        private Overlay                     _overlayClass;
+        private SystemPanels                _panelsClass;
+        private PointTo                     _pointToClass;
+        private Position                    _positionClass;
+        private Copy                        _copyClass;
+        private Sliders                     _slidersClass;
+        private Subtitles                   _subtitlesClass;
+        private Video                       _videoClass;
+        private Has                         _hasClass;
+        private Speed                       _speedClass;
+        private Network                     _networkClass;
+        private DragAndDrop                 _dragAndDropClass;
+        private Webcam                      _webcamClass;
+        private Recorder                    _recorderClass;
+        private MotionDetection             _motionClass;
+
+        //internal VideoRecorder            _videoRecorderClass;
+        //internal VideoRecorder            _webcamRecorderClass;
 
         #endregion
 
 
-        // ******************************** Player - Public Members
+        /* ******************************** Player - Public Members */
 
         // ******************************** Player - Constructor / Dispose / Finalizer / Version / Media Foundation Check
 
@@ -754,19 +858,24 @@ namespace PlexDL.Player
         /// </summary>
         public Player()
         {
-            if (Environment.OSVersion.Version.Major > 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor > 0))
+            if (MF_Installed) MF_Checked_Result = MFExtern.MFStartup(MF_VERSION, MFStartup.Full);
+            else
             {
-                _lastError              = MFExtern.MFStartup(MF_VERSION, MFStartup.Full);
+                if (!MF_Checked)
+                {
+                    if (Environment.OSVersion.Version.Major > 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor > 0))
+                    {
+                        MF_Checked_Result = MFExtern.MFStartup(MF_VERSION, MFStartup.Full);
+                    }
+                    else MF_Checked_Result = HResult.CO_E_WRONGOSFORAPP;
+
+                    MF_Checked   = true;
+                    MF_Installed = MF_Checked_Result == NO_ERROR;
+                }
             }
-            else _lastError             = HResult.CO_E_WRONGOSFORAPP;
 
-            MF_Checked                  = true;
-            MF_Checked_Result           = (int)_lastError;
-
-            if (_lastError == NO_ERROR)
+            if (MF_Checked_Result == NO_ERROR)
             {
-                MF_Installed            = true;
-
                 MFExtern.MFCreateAttributes(out mf_SessionConfig, 1);
                 mf_SessionConfig.SetUINT32(MFAttributesClsid.MF_SESSION_GLOBAL_TIME, 1);
 
@@ -774,34 +883,38 @@ namespace PlexDL.Player
                 mf_SessionConfigLowLatency.SetUINT32(MFAttributesClsid.MF_SESSION_GLOBAL_TIME, 1);
                 mf_SessionConfigLowLatency.SetUINT32(MFAttributesClsid.MF_LOW_LATENCY, 1);
 
-                mf_StartTime            = new PropVariant();
+                mf_StartTime        = new PropVariant();
 
-                // player
-                WaitForEvent            = new System.Threading.AutoResetEvent(false);
-                mf_CallBack             = new MF_PlayerCallBack(this);
+                WaitForEvent        = new System.Threading.AutoResetEvent(false);
+                mf_CallBack         = new MF_PlayerCallBack(this);
 
-                _textBuffer1            = new StringBuilder(MEDIUM_BUFFER_SIZE);
-                _textBuffer2            = new StringBuilder(SMALL_BUFFER_SIZE);
+                _textBuffer1        = new StringBuilder(MEDIUM_BUFFER_SIZE);
+                _textBuffer2        = new StringBuilder(SMALL_BUFFER_SIZE);
 
-                _positionArgs           = new PositionEventArgs();
-                _endedEventArgs         = new EndedEventArgs();
+                _positionArgs       = new PositionEventArgs();
+                _endedEventArgs     = new EndedEventArgs();
 
-                _videoDisplay           = new VideoDisplay();
-                _procAmpValues          = new DXVA2ProcAmpValues();
+                _videoDisplay       = new VideoDisplay();
+                _procAmpValues      = new DXVA2ProcAmpValues();
 
-                _audioChannelsVolume    = new float[MAX_AUDIO_CHANNELS];
+                _audioEventArgs     = new AudioEventArgs();
+
+                //_grayScaleAttributes = new ImageAttributes();
+				//_grayScaleAttributes.SetColorMatrix(_grayScaleMatrix);
+
+                _audioChannelsVolume = new float[MAX_AUDIO_CHANNELS];
                 for (int i = 0; i < MAX_AUDIO_CHANNELS; i++) _audioChannelsVolume[i] = AUDIO_VOLUME_DEFAULT;
-                _audioChannelsMute      = new float[MAX_AUDIO_CHANNELS];
+                _audioChannelsMute = new float[MAX_AUDIO_CHANNELS];
 
-                _timer                  = new Timer { Interval = DEFAULT_TIMER_INTERVAL };
-                _timer.Tick             += AV_TimerTick;
+                _timer              = new Timer { Interval = DEFAULT_TIMER_INTERVAL };
+                _timer.Tick         += AV_TimerTick;
 
-                _minimizeTimer          = new Timer { Interval = DEFAULT_MINIMIZED_INTERVAL };
-                _minimizeTimer.Tick     += AV_MinimizeTimer_Tick;
+                _minimizeTimer      = new Timer { Interval = DEFAULT_MINIMIZED_INTERVAL };
+                _minimizeTimer.Tick += AV_MinimizeTimer_Tick;
             }
             else
             {
-                throw new Win32Exception(GetErrorText(MF_Checked_Result));
+                throw new Win32Exception(GetErrorText((int)MF_Checked_Result));
             }
         }
 
@@ -820,7 +933,7 @@ namespace PlexDL.Player
         {
             if (display != null)
             {
-                _lastError      = AV_SetDisplay(display, true);
+                _lastError = AV_SetDisplay(display, true);
                 if (_lastError == NO_ERROR && overlay != null)
                 {
                     AV_SetOverlay(overlay);
@@ -852,20 +965,26 @@ namespace PlexDL.Player
 
                 if (mf_HasSession)
                 {
-                    try { AV_CloseSession(true, false, StopReason.Finished); }
+                    try
+                    {
+                        AV_CloseSession(true, false, StopReason.Finished);
+                        //if (_videoMirrorMFT != null) { Marshal.ReleaseComObject(_videoMirrorMFT); _videoMirrorMFT = null; }
+                    }
                     catch { /* ignored */ }
                 }
 
                 if (disposing)
                 {
-                    if (dc_HasDisplayClones)    DisplayClones_Clear();
-                    if (_hasTaskbarProgress)    TaskbarProgress.Clear();
+                    _motionDetectionActive = false;
 
-                    if (_hasPositionSlider)     Sliders.Position.TrackBar   = null;
-                    if (_speedSlider != null)   Sliders.Speed               = null;
-                    if (_shuttleSlider != null) Sliders.Shuttle             = null;
-                    if (_volumeSlider != null)  Sliders.AudioVolume         = null;
-                    if (_balanceSlider != null) Sliders.AudioBalance        = null;
+                    if (dc_HasDisplayClones) DisplayClones_Clear();
+                    if (_hasTaskbarProgress) TaskbarProgress.Clear();
+
+                    if (_hasPositionSlider) Sliders.Position.TrackBar = null;
+                    if (_speedSlider != null) Sliders.Speed = null;
+                    if (_shuttleSlider != null) Sliders.Shuttle = null;
+                    if (_volumeSlider != null) Sliders.AudioVolume = null;
+                    if (_balanceSlider != null) Sliders.AudioBalance = null;
 
                     if (_fullScreen)
                     {
@@ -887,6 +1006,12 @@ namespace PlexDL.Player
                         _minimizeTimer.Dispose();
                         _minimizeTimer = null;
                     }
+                    if (_motionTimer != null)
+                    {
+                        _motionTimer.Dispose();
+                        _motionTimer = null;
+                    }
+
                     if (_hasOverlay) AV_SetOverlay(null);
 
                     _videoDisplay.Dispose();
@@ -923,6 +1048,9 @@ namespace PlexDL.Player
 
                 if (WaitForEvent != null) { WaitForEvent.Close(); WaitForEvent = null; }
                 if (mf_StartTime != null) { mf_StartTime.Dispose(); mf_StartTime = null; }
+
+                _motionTable = null;
+                //if (_grayScaleAttributes != null) { _grayScaleAttributes.Dispose(); _grayScaleAttributes = null; }
 
                 MFExtern.MFShutdown();
             }
@@ -981,7 +1109,7 @@ namespace PlexDL.Player
                     }
                     catch (Exception e) { result = (HResult)Marshal.GetHRForException(e); }
                 }
-                MF_Checked_Result = (int)result;
+                MF_Checked_Result = result;
             }
         }
 
@@ -1005,7 +1133,7 @@ namespace PlexDL.Player
             get
             {
                 if (!MF_Checked) DoSystemCheck();
-                return MF_Checked_Result;
+                return (int)MF_Checked_Result;
             }
         }
 
@@ -1017,22 +1145,659 @@ namespace PlexDL.Player
             get
             {
                 if (!MF_Checked) DoSystemCheck();
-                return GetErrorText(MF_Checked_Result);
+                return GetErrorText((int)MF_Checked_Result);
             }
         }
 
-        #endregion
+		#endregion
 
 
-        // ******************************** Player - Play
+		// ******************************** Player - Play
 
-        #region Public - Play
+		#region Play Shortcuts
 
         /// <summary>
-        /// Starts playing the specified media.
+		/// Starts playing the specified audio file.
+        /// <br/>If the media also contains video, it will also be played (see also: Player.Video.Cut).
+        /// <br/>Same as the Player.Play method with an audio file specified.
+		/// </summary>
+		/// <param name="fileName">The path and file name of the (local or online) audio file to be played.</param>
+		public int Play_Audio(string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _siFileName  = fileName;
+            _siFileMode  = true;
+            _siStartTime = 0;
+            _siStopTime  = 0;
+
+            _audioCut    = false;
+			_videoCut    = false;
+
+            return (int)AV_Play();
+        }
+
+        /// <summary>
+		/// Starts playing the audio of the specified file.
+        /// <br/>This method sets the Player.Video.Cut property,
+        /// <br/>which is not automatically reset after the media has finished playing.
+        /// <br/>Same as the Player.Play method with the Player.Video.Cut property set to true.
+		/// </summary>
+		/// <param name="fileName">The path and file name of the (local or online) audio file to be played.</param>
+		public int Play_AudioOnly(string fileName)
+        {
+			if (_busyStarting)
+			{
+				_lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+				return (int)_lastError;
+			}
+
+			_siFileName  = fileName;
+			_siFileMode  = true;
+			_siStartTime = 0;
+			_siStopTime  = 0;
+
+			_audioCut    = false;
+			_videoCut    = true;
+
+			return (int)AV_Play();
+        }
+
+        /// <summary>
+        /// Starts playing the specified audio file.
+        /// <br/>If the media also contains video, it will also be played (see also: Player.Video.Cut). 
+        /// <br/>Same as the Player.Play method with an audio file specified.
         /// </summary>
-        /// <param name="fileName">The path and file name of the media (or chapters file) to be played.</param>
-        public int Play(string fileName)
+        /// <param name="fileName">The path and file name of the (local or online) audio file to be played.</param>
+        /// <param name="startTime">The time offset where the audio file should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the audio file should stop playing or restart if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the audio file.</param>
+        public int Play_Audio(string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _siFileName  = fileName;
+            _siFileMode  = true;
+            _siStartTime = startTime.Ticks;
+            _siStopTime  = stopTime.Ticks;
+
+            _audioCut    = false;
+			_videoCut    = false;
+
+            return (int)AV_Play();
+        }
+
+        /// <summary>
+        /// Starts playing the audio of the specified file.
+        /// <br/>This method sets the Player.Video.Cut property,
+        /// <br/>which is not automatically reset after the media has finished playing. 
+        /// <br/>Same as the Player.Play method with the Player.Video.Cut property set to true.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the (local or online) audio file to be played.</param>
+        /// <param name="startTime">The time offset where the audio file should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the audio file should stop playing or restart if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the audio file.</param>
+        public int Play_AudioOnly(string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+			if (_busyStarting)
+			{
+				_lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+				return (int)_lastError;
+			}
+
+			_siFileName  = fileName;
+			_siFileMode  = true;
+			_siStartTime = startTime.Ticks;
+			_siStopTime  = stopTime.Ticks;
+
+			_audioCut    = false;
+			_videoCut    = true;
+
+			return (int)AV_Play();
+        }
+
+        
+        /// <summary>
+		/// Starts playing the specified video file.
+        /// <br/>If the media also contains audio, it will also be played (see also: Player.Audio.Cut).
+        /// <br/>Same as the Player.Play method with a video file specified.
+		/// </summary>
+		/// <param name="fileName">The path and file name of the (local or online) video file to be played.</param>
+		public int Play_Video(string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _siFileName  = fileName;
+            _siFileMode  = true;
+            _siStartTime = 0;
+            _siStopTime  = 0;
+
+            _audioCut    = false;
+			_videoCut    = false;
+
+            return (int)AV_Play();
+        }
+
+        /// <summary>
+		/// Starts playing the video of the specified file.
+        /// <br/>This method sets the Player.Audio.Cut property,
+        /// <br/>which is not automatically reset after the media has finished playing. 
+        /// <br/>Same as the Player.Play method with the Player.Audio.Cut property set to true.
+		/// </summary>
+		/// <param name="fileName">The path and file name of the (local or online) video file to be played.</param>
+		public int Play_VideoOnly(string fileName)
+        {
+			if (_busyStarting)
+			{
+				_lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+				return (int)_lastError;
+			}
+
+			_siFileName  = fileName;
+			_siFileMode  = true;
+			_siStartTime = 0;
+			_siStopTime  = 0;
+
+			_videoCut    = false;
+			_audioCut    = true;
+
+			return (int)AV_Play();
+        }
+
+        /// <summary>
+        /// Starts playing the specified video file.
+        /// <br/>Same as the Player.Play method with a video file specified.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the (local or online) video file to be played.</param>
+        /// <param name="startTime">The time offset where the video file should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the video file should stop playing or restart if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
+        public int Play_Video(string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _siFileName  = fileName;
+            _siFileMode  = true;
+            _siStartTime = startTime.Ticks;
+            _siStopTime  = stopTime.Ticks;
+
+            _audioCut    = false;
+			_videoCut    = false;
+
+            return (int)AV_Play();
+        }
+
+        /// <summary>
+        /// Starts playing the video of the specified video.
+        /// <br/>This method sets the Player.Audio.Cut property,
+        /// <br/>which is not automatically reset after the media has finished playing. 
+        /// <br/>Same as the Player.Play method with the Player.Audio.Cut property set to true.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the (local or online) video file to be played.</param>
+        /// <param name="startTime">The time offset where the video file should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the video file should stop playing or restart if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
+        public int Play_VideoOnly(string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+			if (_busyStarting)
+			{
+				_lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+				return (int)_lastError;
+			}
+
+			_siFileName  = fileName;
+			_siFileMode  = true;
+			_siStartTime = startTime.Ticks;
+			_siStopTime  = stopTime.Ticks;
+
+			_videoCut    = false;
+			_audioCut    = true;
+
+			return (int)AV_Play();
+        }
+
+        
+        /// <summary>
+        /// Starts playing the specified image file.
+        /// <br/>Same as the Player.Play method with an image file specified.
+        /// <br/>The player's option to play image files is enabled. See: Player.Images.Enabled.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the image file to be played.</param>
+        public int Play_Image(string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _imagesEnabled = true;
+            return Play(fileName);
+        }
+
+       
+        /// <summary>
+        /// Starts playing the specified chapters file.
+        /// <br/>Same as the Player.Play method with a chapters file specified.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the chapters file (.chap) to be played.
+        /// <br/>A chapter file contains information for playing certain parts of a media file with the same name (but with a different extension).</param>
+        public int Play_Chapters(string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(fileName);
+        }
+
+        /// <summary>
+        /// Starts playing the specified chapters file.
+        /// <br/>Same as the Player.Play method with a chapters file specified.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the chapters file (.chap) to be played.
+        /// <br/>A chapter file contains information for playing certain parts of a media file with the same name (but with a different extension).</param>
+        /// <param name="index">The (zero-based) index of the chapter to start playing.</param>
+        public int Play_Chapters(string fileName, int index)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(fileName, index);
+        }
+
+        
+        /// <summary>
+        /// Starts playing the specified byte array.
+        /// <br/>Same as the Player.Play method with a byte array specified.
+        /// </summary>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the byte array does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder.
+        /// <br/>The temporary file will be deleted by the player when playback is finished.</param>
+        public int Play_ByteArray(byte[] byteArray, string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(byteArray, fileName);
+        }
+
+        /// <summary>
+        /// Starts playing the specified byte array.
+        /// <br/>Same as the Player.Play method with a byte array specified.
+        /// </summary>
+        /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the byte array does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder.
+        /// <br/>The temporary file will be deleted by the player when playback is finished.</param>
+        /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
+        public int Play_ByteArray(byte[] byteArray, string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(byteArray, fileName, startTime, stopTime);
+        }
+
+        
+        /// <summary>
+        /// Starts playing the specified embedded resource.
+        /// <br/>Same as the Player.Play method with a byte array specified.
+        /// </summary>
+        /// <param name="resource">The resource (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the resource does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder.
+        /// <br/>The temporary file will be deleted by the player when playback is finished.</param>
+        public int Play_Resource(byte[] resource, string fileName)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(resource, fileName);
+        }
+
+        /// <summary>
+        /// Starts playing the specified embedded resource.
+        /// <br/>Same as the Player.Play method with a byte array specified.
+        /// </summary>
+        /// <param name="resource">The resource (for example, Properties.Resources.MyMovie) to be played.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the resource does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder.
+        /// <br/>The temporary file will be deleted by the player when playback is finished.</param>
+        /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
+        /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
+        public int Play_Resource(byte[] resource, string fileName, TimeSpan startTime, TimeSpan stopTime)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(resource, fileName, startTime, stopTime);
+        }
+
+        
+        /// <summary>
+        /// Starts playing the specified internet live stream.
+        /// <br/>Same as the Player.Play method with an internet livestream address specified.
+        /// <br/>Not all types of internet live streams are supported by the player.
+        /// </summary>
+        /// <param name="streamAddress">The internet address (for example https://...) of the live stream to be played.</param>
+        public int Play_LiveStream(string streamAddress)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(streamAddress);
+        }
+
+        /// <summary>
+        /// Starts playing the specified internet radio station.
+        /// <br/>Same as the Player.Play method with an internet livestream address specified.
+        /// <br/>Not all types of internet radio (live streams) are supported by the player.
+        /// </summary>
+        /// <param name="radioAddress">The internet address (for example https://...) of the radio station to be played.</param>
+        public int Play_InternetRadio(string radioAddress)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            return Play(radioAddress);
+        }
+
+        
+        /// <summary>
+        /// Starts playing the system's default webcam.
+        /// </summary>
+        public int Play_Webcam()
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+			WebcamDevice webcam = Webcam.GetDefaultDevice();
+			if (_lastError != NO_ERROR) return (int)_lastError;
+
+			return Play(webcam, null, null);
+        }
+
+		/// <summary>
+		/// Starts playing the specified or the system's default webcam.
+		/// <br/>Same as the Player.Play method with a webcam device specified (except for the default option).
+		/// </summary>
+		/// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+		public int Play_Webcam(WebcamDevice webcam)
+		{
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+			if (webcam == null)
+			{
+				webcam = Webcam.GetDefaultDevice();
+				if (_lastError != NO_ERROR) return (int)_lastError;
+			}
+			return Play(webcam, null, null);
+		}
+
+		/// <summary>
+		/// Starts playing the specified or the system's default webcam.
+		/// <br/>Same as the Player.Play method with a webcam device specified (except for the default option).
+		/// </summary>
+		/// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+		/// <param name="quality">A value that indicates the quality of the webcam's video output.</param>
+		/// <returns></returns>
+		public int Play_Webcam(WebcamDevice webcam, WebcamQuality quality)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (webcam == null)
+			{
+				webcam = Webcam.GetDefaultDevice();
+				if (_lastError != NO_ERROR) return (int)_lastError;
+			}
+            return Play(webcam, quality);
+        }
+
+        /// <summary>
+        /// Starts playing the specified or the system's default webcam.
+        /// <br/>Same as the Player.Play method with a webcam device specified (except for the default option).
+        /// </summary>
+        /// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+        /// <param name="format">The video output format of the webcam. See also Player.Webcam.GetFormats.</param>
+        /// <returns></returns>
+        public int Play_Webcam(WebcamDevice webcam, WebcamFormat format)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (webcam == null)
+			{
+				webcam = Webcam.GetDefaultDevice();
+				if (_lastError != NO_ERROR) return (int)_lastError;
+			}
+            return Play(webcam, null, format);
+        }
+
+		
+        /// <summary>
+		/// Starts playing the system's default webcam and audio input device.
+		/// <br/>The player's audio output is muted.
+		/// <br/>If no audio output device is present, only video from the webcam (if any) will be played.
+		/// </summary>
+		public int Play_WebcamWithAudio()
+		{
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+			WebcamDevice webcam = Webcam.GetDefaultDevice();
+            if (_lastError != NO_ERROR) return (int)_lastError;
+
+            AudioInputDevice audioInput = AudioInput.GetDefaultDevice();
+            _lastError = NO_ERROR;
+
+			return Play(webcam, audioInput, null);
+		}
+
+		/// <summary>
+		/// Starts playing the specified or the system's default webcam and audio input device.
+		/// <br/>The player's audio output is muted.
+		/// <br/>Same as the Player.Play method with a webcam and audio input device specified (except for the default option).
+		/// </summary>
+		/// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+		/// <param name="audioInput">The audio input device to be played. The value null indicates the system's default audio input device.</param>
+		public int Play_WebcamWithAudio(WebcamDevice webcam, AudioInputDevice audioInput)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (webcam == null)
+            {
+                webcam = Webcam.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            if (audioInput == null)
+            {
+                audioInput = AudioInput.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            return Play(webcam, audioInput, null);
+        }
+
+        /// <summary>
+        /// Starts playing the specified or the system's default webcam and audio input device.
+        /// <br/>The player's audio output is muted.
+        /// <br/>Same as the Player.Play method with a webcam and audio input device specified (except for the default option).
+        /// </summary>
+        /// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+        /// <param name="audioInput">The audio input device to be played. The value null indicates the system's default audio input device.</param>
+        /// <param name="quality">A value that indicates the quality of the webcam's video output.</param>
+        public int Play_WebcamWithAudio(WebcamDevice webcam, AudioInputDevice audioInput, WebcamQuality quality)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (webcam == null)
+            {
+                webcam = Webcam.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            if (audioInput == null)
+            {
+                audioInput = AudioInput.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            return Play(webcam, audioInput, quality);
+        }
+
+        /// <summary>
+        /// Starts playing the specified or the system's default webcam and audio input device.
+        /// <br/>The player's audio output is muted.
+        /// <br/>Same as the Player.Play method with a webcam and audio input device specified (except for the default option).
+        /// </summary>
+        /// <param name="webcam">The webcam to be played. The value null indicates the system's default webcam.</param>
+        /// <param name="audioInput">The audio input device to be played. The value null indicates the system's default audio input device.</param>
+        /// <param name="format">The video output format of the webcam. See also Player.Webcam.GetFormats.</param>
+        /// <returns></returns>
+        public int Play_WebcamWithAudio(WebcamDevice webcam, AudioInputDevice audioInput, WebcamFormat format)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (webcam == null)
+            {
+                webcam = Webcam.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            if (audioInput == null)
+            {
+                audioInput = AudioInput.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            return Play(webcam, audioInput, format);
+        }
+
+        
+        /// <summary>
+        /// Starts playing the system's default audio input device.
+        /// </summary>
+        public int Play_AudioDevice()
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            AudioInputDevice audioInput = AudioInput.GetDefaultDevice();
+            if (_lastError != NO_ERROR) return (int)_lastError;
+
+            return Play(audioInput, false);
+        }
+
+        /// <summary>
+        /// Starts playing the specified or the system's default audio input device.
+        /// <br/>Same as the Player.Play method with an audio input device specified (except for the default option).
+        /// </summary>
+        /// <param name="audioInput">The audio input device to be played. The value null indicates the system's default audio input device.</param>
+        /// <param name="mute">A value that indicates whether to mute the player's audio output.</param>
+        public int Play_AudioDevice(AudioInputDevice audioInput, bool mute)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            if (audioInput == null)
+            {
+                audioInput = AudioInput.GetDefaultDevice();
+                if (_lastError != NO_ERROR) return (int)_lastError;
+            }
+
+            return Play(audioInput, mute);
+        }
+
+		#endregion
+
+
+		#region Public - Play
+
+		/// <summary>
+		/// Starts playing the specified media.
+		/// </summary>
+		/// <param name="fileName">The path and file name of the media to be played.</param>
+		public int Play(string fileName)
         {
             // chack if chapters file
             if (!string.IsNullOrWhiteSpace(fileName) && Path.GetExtension(fileName) == CHAPTERS_FILE_EXTENSION)
@@ -1046,10 +1811,10 @@ namespace PlexDL.Player
                 return (int)_lastError;
             }
 
-            _siFileName     = fileName;
-            _siFileMode     = true;
-            _siStartTime    = 0;
-            _siStopTime     = 0;
+            _siFileName = fileName;
+            _siFileMode = true;
+            _siStartTime = 0;
+            _siStopTime = 0;
 
             return (int)AV_Play();
         }
@@ -1057,30 +1822,10 @@ namespace PlexDL.Player
         /// <summary>
         /// Starts playing the specified media.
         /// </summary>
-        /// <param name="fileName">The path and file name of the chapters file to be played.</param>
-        /// <param name="index">The (zero-based) index of the chapter to start playing.</param>
-        public int Play(string fileName, int index)
-        {
-            // chack if chapters file
-            if (!string.IsNullOrWhiteSpace(fileName) && Path.GetExtension(fileName) == CHAPTERS_FILE_EXTENSION)
-            {
-                MediaChapter[] chapters = Chapters.FromFile(fileName);
-                if (chapters != null)
-                {
-                    fileName = Chapters.GetMediaFile(fileName);
-                    if (fileName != null) return Play(fileName, chapters, index);
-                }
-                return (int)_lastError;
-            }
-            return (int)_lastError;
-        }
-
-        /// <summary>
-        /// Starts playing the specified media.
-        /// </summary>
         /// <param name="fileName">The path and file name of the media to be played.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
-        /// <param name="stopTime">The time offset where the media should stop playing or restart if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
+        /// <param name="stopTime">The time offset where the media should stop playing or restart if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
         public int Play(string fileName, TimeSpan startTime, TimeSpan stopTime)
         {
             _siFileName = fileName;
@@ -1091,79 +1836,119 @@ namespace PlexDL.Player
             return (int)AV_Play();
         }
 
-		#endregion
+        #endregion
 
-		#region Public - Play Chapters
+        #region Public - Play Chapters
 
-		/// <summary>
-		/// Starts playing the specified media.
-		/// </summary>
-		/// <param name="fileName">The path and file name of the media to be played.</param>
-		/// <param name="chapters">The chapters whose consecutive start and end times are to be used to play parts of the media.</param>
-		public int Play(string fileName, MediaChapter[] chapters)
+        /// <summary>
+        /// Starts playing the specified chapters file.
+        /// </summary>
+        /// <param name="chaptersFile">The path and file name of the chapters file (.chap) to be played.
+        /// <br/>A chapter file contains information for playing certain parts of a media file with the same name (but with a different extension).</param>
+        /// <param name="index">The (zero-based) index of the chapter to start playing.</param>
+        public int Play(string chaptersFile, int index)
         {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            // chack if chapters file
+            if (!string.IsNullOrWhiteSpace(chaptersFile) && Path.GetExtension(chaptersFile) == CHAPTERS_FILE_EXTENSION)
+            {
+                MediaChapter[] chapters = Chapters.FromFile(chaptersFile);
+                if (chapters != null)
+                {
+                    chaptersFile = Chapters.GetMediaFile(chaptersFile);
+                    if (chaptersFile != null) return Play(chaptersFile, chapters, index);
+                }
+            }
+            else _lastError = HResult.E_INVALIDARG;
+            return (int)_lastError;
+        }
+
+        /// <summary>
+        /// Starts playing the specified media.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the media to be played.</param>
+        /// <param name="chapters">The chapters that contain the information about which parts of the media to play and in what order.</param>
+        public int Play(string fileName, MediaChapter[] chapters)
+        {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
             if (!CheckChapters(chapters))
             {
                 _lastError = HResult.E_INVALIDARG;
                 return (int)_lastError;
             }
 
-            _siFileName     = fileName;
-            _siFileMode     = true;
-            _siStartTime    = chapters[0]._startTime.Ticks;
-            _siStopTime     = chapters[0]._endTime.Ticks;
+            _siFileName = fileName;
+            _siFileMode = true;
+            _siStartTime = chapters[0]._startTime.Ticks;
+            _siStopTime = chapters[0]._endTime.Ticks;
             _siMediaChapters = CopyChapters(chapters);
-            _siChapterMode  = true;
+            _siChapterMode = true;
 
             return (int)AV_Play();
         }
 
-		/// <summary>
-		/// Starts playing the specified media.
-		/// </summary>
-		/// <param name="fileName">The path and file name of the media to be played.</param>
-		/// <param name="chapters">The chapters whose consecutive start and end times are to be used to play parts of the media.</param>
-		/// <param name="index">The (zero-based) index of the chapter to start playing.</param>
-		public int Play(string fileName, MediaChapter[] chapters, int index)
+        /// <summary>
+        /// Starts playing the specified media.
+        /// </summary>
+        /// <param name="fileName">The path and file name of the media to be played.</param>
+        /// <param name="chapters">The chapters that contain the information about which parts of the media to play and in what order.</param>
+        /// <param name="index">The (zero-based) index of the chapter to start playing.</param>
+        public int Play(string fileName, MediaChapter[] chapters, int index)
         {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
             if (!CheckChapters(chapters) || index >= chapters.Length)
             {
                 _lastError = HResult.E_INVALIDARG;
                 return (int)_lastError;
             }
 
-            _siFileName     = fileName;
-            _siFileMode     = true;
-            _siStartTime    = chapters[index]._startTime.Ticks;
-            _siStopTime     = chapters[index]._endTime.Ticks;
+            _siFileName = fileName;
+            _siFileMode = true;
+            _siStartTime = chapters[index]._startTime.Ticks;
+            _siStopTime = chapters[index]._endTime.Ticks;
             _siMediaChapters = CopyChapters(chapters);
-            _siChapterMode  = true;
-            _siIndex        = index;
+            _siChapterMode = true;
+            _siIndex = index;
 
             return (int)AV_Play();
         }
 
         private static bool CheckChapters(MediaChapter[] chapters)
         {
-			if (chapters == null) return false;
+            if (chapters == null) return false;
 
-			bool result = true;
-			for (int i = 0; i < chapters.Length; i++)
-			{
-				if (chapters[i] == null
+            bool result = true;
+            for (int i = 0; i < chapters.Length; i++)
+            {
+                if (chapters[i] == null
                     || string.IsNullOrWhiteSpace(chapters[i]._title[0])
                     || chapters[i]._startTime.Ticks < 0
                     || chapters[i]._endTime.Ticks < 0
                     || chapters[i]._startTime == chapters[i]._endTime
                     || (chapters[i]._endTime != TimeSpan.Zero && chapters[i]._endTime < chapters[i]._startTime))
                 {
-					result = false;
-					break;
-				}
-			}
+                    result = false;
+                    break;
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
 
         private static MediaChapter[] CopyChapters(MediaChapter[] chapters)
         {
@@ -1182,27 +1967,42 @@ namespace PlexDL.Player
         #region Public - Play Byte Array
 
         /// <summary>
-        /// Starts playing the specified byte array with media content, using a temporary file.
+        /// Starts playing the specified byte array.
         /// </summary>
         /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file, also specifying the name and type of the media. Omit a path name to save to the system temp folder. The file is deleted afterwards.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the byte array does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder. The temporary file will be deleted by the player when playback is finished.</param>
         public int Play(byte[] byteArray, string fileName)
         {
-            _siStartTime    = 0;
-            _siStopTime     = 0;
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
+            _siStartTime = 0;
+            _siStopTime = 0;
 
             return (int)AV_PlayByteArray(byteArray, fileName);
         }
 
         /// <summary>
-        /// Starts playing the specified byte array with media content, using a temporary file.
+        /// Starts playing the specified byte array.
         /// </summary>
         /// <param name="byteArray">The byte array (for example, Properties.Resources.MyMovie) to be played.</param>
-        /// <param name="fileName">The file name for the temporary file, also specifying the name and type of the media. Omit a path name to save to the system temp folder. The file is deleted afterwards.</param>
+        /// <param name="fileName">The name for the temporary file, also specifying the name (if the byte array does not contain metadata) and the type (file extension) of the media.
+        /// <br/>Omit a path name to save the temporary file in the system temporary folder. The temporary file will be deleted by the player when playback is finished.</param>
         /// <param name="startTime">The time offset where the media should start playing or restart if it is repeated.</param>
-        /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated (use TimeSpan.Zero or 00:00:00 to indicate the natural end of the media).</param>
+        /// <param name="stopTime">The time offset where the media should stop playing or rewind if it is repeated.
+        /// <br/>TimeSpan.Zero or 00:00:00 indicates the natural end of the media.</param>
         public int Play(byte[] byteArray, string fileName, TimeSpan startTime, TimeSpan stopTime)
         {
+            if (_busyStarting)
+            {
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
+                return (int)_lastError;
+            }
+
             _siStartTime = startTime.Ticks;
             _siStopTime = stopTime.Ticks;
 
@@ -1223,7 +2023,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Starts playing the specified webcam.
+        /// Starts playing the specified webcam and specified audio input device.
+        /// <br/>The player's audio output is muted.
         /// </summary>
         /// <param name="webcam">The webcam to be played.</param>
         /// <param name="audioInput">The audio input device to be played.</param>
@@ -1242,16 +2043,18 @@ namespace PlexDL.Player
         {
             if (!CheckPlayWebcam(webcam)) return (int)_lastError;
 
-            WebcamFormat format = null;
+            WebcamFormat format;
             if (quality == WebcamQuality.High) format = Webcam.GetHighFormat(webcam, false);
             else if (quality == WebcamQuality.Photo) format = Webcam.GetHighFormat(webcam, true);
             else if (quality == WebcamQuality.Low) format = Webcam.GetLowFormat(webcam);
+            else format = Webcam.GetStandardFormat(webcam);
 
             return PlayCheckedWebcam(webcam, null, format);
         }
 
         /// <summary>
-        /// Starts playing the specified webcam.
+        /// Starts playing the specified webcam and specified audio input device.
+        /// <br/>The player's audio output is muted.
         /// </summary>
         /// <param name="webcam">The webcam to be played.</param>
         /// <param name="audioInput">The audio input device to be played.</param>
@@ -1280,7 +2083,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Starts playing the specified webcam.
+        /// Starts playing the specified webcam and specified audio input device.
+        /// <br/>The player's audio output is muted.
         /// </summary>
         /// <param name="webcam">The webcam to be played.</param>
         /// <param name="audioInput">The audio input device to be played.</param>
@@ -1305,14 +2109,15 @@ namespace PlexDL.Player
 
         private int PlayCheckedWebcam(WebcamDevice webcam, AudioInputDevice audioInput, WebcamFormat format)
         {
-            _siFileName     = webcam._name;
-            _siWebcamMode   = true;
+            _siFileName = webcam._name;
+            _siWebcamMode = true;
             _siWebcamDevice = webcam;
-            _siMicDevice    = audioInput;
+            _siMicDevice = audioInput;
             _siWebcamFormat = format;
-            _siStartTime    = 0;
-            _siStopTime     = 0;
+            _siStartTime = 0;
+            _siStopTime = 0;
 
+            if (audioInput != null) AV_SetAudioEnabled(false);
             return (int)AV_Play();
         }
 
@@ -1324,48 +2129,52 @@ namespace PlexDL.Player
         /// Starts playing the specified audio input device.
         /// </summary>
         /// <param name="audioInput">The audio input device to be played.</param>
-        /// <param name="lowLatency">A value that indicates whether to enable low-latency processing of the audio input. See also: Player.Network.LowLatency.</param>
-        public int Play(AudioInputDevice audioInput, bool lowLatency)
-		{
-			if (audioInput == null || string.IsNullOrWhiteSpace(audioInput._id))
-			{
-				_lastError = HResult.E_INVALIDARG;
-				return (int)_lastError;
-			}
+        /// <param name="mute">A value that indicates whether to mute the audio output from the input device (for use with audio recordings).</param>
+        public int Play(AudioInputDevice audioInput, bool mute)
+        {
+            if (audioInput == null || string.IsNullOrWhiteSpace(audioInput._id))
+            {
+                _lastError = HResult.E_INVALIDARG;
+                return (int)_lastError;
+            }
 
-			_siFileName     = audioInput._name;
-			_siMicMode      = true;
-			_siMicDevice    = audioInput;
-			_siStartTime    = 0;
-			_siStopTime     = 0;
+            _siFileName = audioInput._name;
+            _siMicMode = true;
+            _siMicDevice = audioInput;
+            _siStartTime = 0;
+            _siStopTime = 0;
 
-            mf_LowLatency   = lowLatency;
+            if (mute) AV_SetAudioEnabled(false);
 
-			return (int)AV_Play();
-		}
+            return (int)AV_Play();
+        }
 
-		//internal void ActivateMediaInputEvent()
-		//{
-		//    if (pm_InputMeterPending && _micDevice != null)
-		//    {
-		//        if (InputMeter_Open(_micDevice, false))
-		//        {
-		//            if (_inputLevelArgs == null) _inputLevelArgs = new PeakLevelEventArgs();
-		//            _mediaInputLevelChanged += value;
-		//            pm_InputMeterPending = false;
-		//            StartMainTimerCheck();
-		//        }
-		//    }
-		//}
+        //internal void ActivateMediaInputEvent()
+        //{
+        //    if (pm_InputMeterPending && _micDevice != null)
+        //    {
+        //        if (InputMeter_Open(_micDevice, false))
+        //        {
+        //            if (_inputLevelArgs == null) _inputLevelArgs = new PeakLevelEventArgs();
+        //            _mediaInputLevelChanged += value;
+        //            pm_InputMeterPending = false;
+        //            StartMainTimerCheck();
+        //        }
+        //    }
+        //}
 
-		#endregion
+        #endregion
 
-		#region Public - PlayUnblock / PlayTimeOut
 
-		/// <summary>
-		/// Gets or sets a value that indicates whether the "Application.DoEvents" method will be used while waiting for media to start to keep the main ui thread more responsive. For special purposes only (default: false).
-		/// </summary>
-		public bool PlayUnblock
+        #region Public - DoEvents / DoEvents_TimeOut
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the "Application.DoEvents" method will be used
+        /// <br/>while waiting for media to start to keep the user interface more responsive (default: false).
+        /// <br/>For special purposes only, generally not recommended.
+        /// <br/>See also: Player.DoEvents_TimeOut
+        /// </summary>
+        public bool DoEvents
         {
             get
             {
@@ -1379,9 +2188,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the maximum time in seconds to wait for media to start when the "Player.PlayUnblock" property is activated (values from 10 to 180 seconds, default: 40 seconds).
+        /// Gets or sets a value that indicates the maximum number of seconds to wait for media to start
+        /// <br/>when the Player.DoEvents property is enabled.
+        /// <br/>Values from 10 to 180 seconds (default: 40).
+        /// <br/>See also: Player.DoEvents
         /// </summary>
-        public int PlayTimeOut
+        public int DoEvents_TimeOut
         {
             get
             {
@@ -1430,7 +2242,16 @@ namespace PlexDL.Player
                             _outputLevelArgs._channelCount = pm_PeakMeterChannelCount;
                             _outputLevelArgs._masterPeakValue = STOP_VALUE;
                             _outputLevelArgs._channelsValues = pm_PeakMeterValuesStop;
-                            _mediaPeakLevelChanged(this, _outputLevelArgs);
+                            _outputLevelMuted = true;
+                            _mediaAudioOutputLevelChanged(this, _outputLevelArgs);
+                        }
+                        if (pm_HasInputMeter)
+                        {
+                            _inputLevelArgs._channelCount = pm_InputMeterChannelCount;
+                            _inputLevelArgs._masterPeakValue = STOP_VALUE;
+                            _inputLevelArgs._channelsValues = pm_InputMeterValuesStop;
+                            _inputLevelMuted = true;
+                            _mediaAudioInputLevelChanged(this, _inputLevelArgs);
                         }
                         if (_hasTaskbarProgress)
                         {
@@ -1461,6 +2282,13 @@ namespace PlexDL.Player
                     {
                         _stepMode = false;
                         _paused = false;
+
+                        if (_hasTaskbarProgress)
+                        {
+                            if (!_fileMode) _taskbarProgress.SetState(TaskbarProgressState.Indeterminate);
+                            else _taskbarProgress.SetState(TaskbarProgressState.Normal);
+                        }
+
                         AV_UpdateTopology();
                     }
                     else
@@ -1474,6 +2302,7 @@ namespace PlexDL.Player
                         {
                             _paused = false;
                             StartMainTimerCheck();
+
                             if (_hasTaskbarProgress)
                             {
                                 if (!_fileMode) _taskbarProgress.SetState(TaskbarProgressState.Indeterminate);
@@ -1504,6 +2333,7 @@ namespace PlexDL.Player
 
         /// <summary>
         /// Stops playing chapters but continues playing the current media.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public int StopChapters()
         {
@@ -1519,12 +2349,12 @@ namespace PlexDL.Player
         {
             if (_chapterMode)
             {
-                _chapterMode        = false;
-                _chapterIndex       = 0;
+                _chapterMode = false;
+                _chapterIndex = 0;
                 _repeatChapterCount = 0;
 
-                _startTime          = startTime.Ticks;
-                _stopTime           = stopTime.Ticks;
+                _startTime = startTime.Ticks;
+                _stopTime = stopTime.Ticks;
 
                 if (_stopTime <= 0 || _stopTime >= _mediaLength)
                 {
@@ -1562,6 +2392,9 @@ namespace PlexDL.Player
                 if (_hasDisplay) _display.Invalidate();
                 _mediaDisplayModeChanged?.Invoke(this, EventArgs.Empty);
             }
+            if (_displayShape != DisplayShape.Normal) AV_RemoveDisplayShape(true);
+
+            if (_audioMultiTrack) AudioMultiTrack.Enabled = false;
 
             AV_SetAudioVolume(AUDIO_VOLUME_DEFAULT, true, true);
             AV_SetAudioBalance(AUDIO_BALANCE_DEFAULT, true, true);
@@ -1573,18 +2406,20 @@ namespace PlexDL.Player
             _audioCut = false;
 
             AV_SetVideoAspectRatio(Size.Empty);
+            if (_video3DView != Video3DView.NormalImage) Video.View3D = Video3DView.NormalImage;
+            if (_videoRotation != VideoRotation.None) Video.Rotation = VideoRotation.None;
 
             // Video Colors
             AV_SetBrightness(0, true);
             AV_SetContrast(0, true);
             AV_SetHue(0, true);
             AV_SetSaturation(0, true);
-            _setVideoColor  = false;
+            _setVideoColor = false;
 
-            Paused          = false;
-            Repeat          = false;
-            RepeatChapter   = false;
-            _speedBoost     = false;
+            Paused = false;
+            Repeat = false;
+            RepeatChapter = false;
+            _speedBoost = false;
             AV_SetSpeed(DEFAULT_SPEED, true);
 
             _lastError = NO_ERROR;
@@ -1596,7 +2431,7 @@ namespace PlexDL.Player
         #region Public - Playing / Paused
 
         /// <summary>
-        /// Gets a value that indicates whether the player is playing media (including paused media).
+        /// Gets a value indicating whether the player is playing media (including paused media).
         /// </summary>
         public bool Playing
         {
@@ -1608,7 +2443,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's pause mode is activated.
+        /// Gets or sets a value that indicates whether the player is paused (default: false).
         /// </summary>
         public bool Paused
         {
@@ -1722,16 +2557,16 @@ namespace PlexDL.Player
                     if (_paused)
                     {
                         mf_MediaSession.Start(Guid.Empty, mf_StartTime);
-						//mf_AwaitCallback = true;
-						//WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-						//System.Threading.Thread.Sleep(50);
+                        //mf_AwaitCallback = true;
+                        //WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
+                        //System.Threading.Thread.Sleep(50);
 
-						mf_MediaSession.Pause();
-						mf_AwaitCallBack = true;
-						WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-						//System.Threading.Thread.Sleep(50);
+                        mf_MediaSession.Pause();
+                        mf_AwaitCallBack = true;
+                        WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
+                        //System.Threading.Thread.Sleep(50);
 
-					}
+                    }
                     _seekBusy = false;
                 }
             }
@@ -1745,22 +2580,22 @@ namespace PlexDL.Player
             {
                 _lastError = NO_ERROR;
 
-				PositionX = position;
-				if (_hasPositionSlider)
-				{
-					int position_ms = (int)(position * TICKS_TO_MS);
+                PositionX = position;
+                if (_hasPositionSlider)
+                {
+                    int position_ms = (int)(position * TICKS_TO_MS);
 
-					if (position_ms < _positionSlider.Minimum)
-					{
-						_positionSlider.Value = _positionSlider.Minimum;
-					}
-					else if (position_ms > _positionSlider.Maximum)
-					{
-						_positionSlider.Value = _positionSlider.Maximum;
-					}
-					else _positionSlider.Value = position_ms;
-				}
-			}
+                    if (position_ms < _positionSlider.Minimum)
+                    {
+                        _positionSlider.Value = _positionSlider.Minimum;
+                    }
+                    else if (position_ms > _positionSlider.Maximum)
+                    {
+                        _positionSlider.Value = _positionSlider.Maximum;
+                    }
+                    else _positionSlider.Value = position_ms;
+                }
+            }
         }
 
         internal int Step(int frames)
@@ -1776,10 +2611,10 @@ namespace PlexDL.Player
                     {
                         _lastError = NO_ERROR;
 
-						//if ((frames == 1 || frames == -1) && _paused && _hasVideo)
-						if (_paused && _hasVideo)
-						{
-							_stepMode = true;
+                        //if ((frames == 1 || frames == -1) && _paused && _hasVideo)
+                        if (_paused && _hasVideo)
+                        {
+                            _stepMode = true;
 
                             mf_RateControl.SetRate(false, 0);
                             if (frames == 1)
@@ -1798,27 +2633,27 @@ namespace PlexDL.Player
 
                             Application.DoEvents();
 
-							if (_hasPositionSlider)
-							{
-								int position_ms = (int)(position * TICKS_TO_MS);
-								if (position_ms < _positionSlider.Minimum)
-								{
-									_positionSlider.Value = _positionSlider.Minimum;
-								}
-								else if (position_ms > _positionSlider.Maximum)
-								{
-									_positionSlider.Value = _positionSlider.Maximum;
-								}
-								else _positionSlider.Value = position_ms;
-							}
-							if (_hasTaskbarProgress) _taskbarProgress.SetValue(position);
-							if (_mediaPositionChanged != null) OnMediaPositionChanged();
+                            if (_hasPositionSlider)
+                            {
+                                int position_ms = (int)(position * TICKS_TO_MS);
+                                if (position_ms < _positionSlider.Minimum)
+                                {
+                                    _positionSlider.Value = _positionSlider.Minimum;
+                                }
+                                else if (position_ms > _positionSlider.Maximum)
+                                {
+                                    _positionSlider.Value = _positionSlider.Maximum;
+                                }
+                                else _positionSlider.Value = position_ms;
+                            }
+                            if (_hasTaskbarProgress) _taskbarProgress.SetValue(position);
+                            if (_mediaPositionChanged != null) OnMediaPositionChanged();
                         }
                         else if (position > 0)
                         {
                             SetPosition(position + (frames * (_hasVideo ? _videoFrameStep : AUDIO_STEP_TICKS)));
-							System.Threading.Thread.Sleep(1);
-							Application.DoEvents();
+                            System.Threading.Thread.Sleep(1);
+                            Application.DoEvents();
                         }
                     }
                     else _lastError = HResult.MF_E_OUT_OF_RANGE;
@@ -1874,7 +2709,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether to repeat a media chapter when finished.
+        /// Gets or sets a value that indicates whether to repeat playback of a media chapter when finished.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public bool RepeatChapter
         {
@@ -1897,6 +2733,7 @@ namespace PlexDL.Player
 
         /// <summary>
         /// Gets the number of times that a chapter of the playing media has been repeated.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public int RepeatChapterCount
         {
@@ -1927,7 +2764,7 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the audio output from the player is muted.
+        /// Gets or sets a value that indicates whether the audio output from the player is muted (default: false).
         /// </summary>
         public bool Mute
         {
@@ -1937,10 +2774,26 @@ namespace PlexDL.Player
 
         #endregion
 
+        #region Public - Audio Multi Track
+
+        /// <summary>
+        /// Provides access to the audio multi track settings of the player (for example, Player.AudioMultiTrack.Enabled).
+        /// </summary>
+        public AudioMultiTrack AudioMultiTrack
+        {
+            get
+            {
+                if (_audioTrackClass == null) _audioTrackClass = new AudioMultiTrack(this);
+                return _audioTrackClass;
+            }
+        }
+
+        #endregion
+
         #region Public - Audio Input
 
         /// <summary>
-        /// Provides access to the audio input settings of the player (for example, Player.AudioInput.GetDevices).
+        /// Provides access to the audio input settings of the player (for example, Player.AudioInput.Volume).
         /// </summary>
         public AudioInput AudioInput
         {
@@ -1956,7 +2809,7 @@ namespace PlexDL.Player
         #region Public - Video
 
         /// <summary>
-        /// Provides access to the video settings of the player (for example, Player.Video.Present).
+        /// Provides access to the video settings of the player (for example, Player.Video.Brightness).
         /// </summary>
         public Video Video
         {
@@ -1980,6 +2833,38 @@ namespace PlexDL.Player
             {
                 if (_webcamClass == null) _webcamClass = new Webcam(this);
                 return _webcamClass;
+            }
+        }
+
+        #endregion
+
+        #region Public - Recorder
+
+        /// <summary>
+        /// Provides access to the recorder settings of the player (for example, Player.Recorder.Start).
+        /// </summary>
+        public Recorder Recorder
+        {
+            get
+            {
+                if (_recorderClass == null) _recorderClass = new Recorder(this);
+                return _recorderClass;
+            }
+        }
+
+        #endregion
+
+        #region Public - Motion Detection
+
+        /// <summary>
+        /// Provides access to the motion detection settings of the player (for example, Player.MotionDetection.GetMotion).
+        /// </summary>
+        public MotionDetection MotionDetection
+        {
+            get
+            {
+                if (_motionClass == null) _motionClass = new MotionDetection(this);
+                return _motionClass;
             }
         }
 
@@ -2020,7 +2905,7 @@ namespace PlexDL.Player
         #region Public - FullScreen
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's full screen mode is activated (default: false).
+        /// Gets or sets a value indicating whether the player is in full screen mode (default: false).
         /// </summary>
         public bool FullScreen
         {
@@ -2174,7 +3059,7 @@ namespace PlexDL.Player
         #region Public - Error Information
 
         /// <summary>
-        /// Gets a value that indicates whether an error has occurred with the last player instruction.
+        /// Gets a value indicating whether an error occurred with the player's last instruction.
         /// </summary>
         public bool LastError
         {
@@ -2182,18 +3067,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the code of the last error of the player that occurred (0 = no error).
+        /// Gets the code of the player's last error that occurred (0 = no error).
+        /// <br/>For special purposes, the error code can also be set.
         /// </summary>
         public int LastErrorCode
         {
-            //get { return (int)_lastError; }
             get { return (unchecked((int)_lastError)); }
+            set { _lastError = (HResult)value; }
         }
 
         /// <summary>
-        /// Gets a (localized) description of the last error of the player that has occurred. See also: Player.GetErrorString.
+        /// Gets a (localized) description of the player's last error that occurred.
+        /// <br/>See also: Player.GetErrorString.
         /// </summary>
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public string LastErrorString
         {
             //get { return GetErrorText((int)_lastError); }
@@ -2201,7 +3087,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a (localized) description of the specified error code. See also: Player.LastErrorString.
+        /// Returns a (localized) description of the specified error code.
+        /// <br/>See also: Player.LastErrorString.
         /// </summary>
         /// <param name="errorCode">The error code whose description needs to be obtained.</param>
 #pragma warning disable CA1822 // Mark members as static
@@ -2211,7 +3098,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns a (localized) description of the specified error code. See also: Player.LastErrorString.
+        /// Returns a (localized) description of the specified error code.
+        /// <br/>See also: Player.LastErrorString.
         /// </summary>
         /// <param name="errorCode">The error code whose description needs to be obtained.</param>
 #pragma warning disable CS3001 // Argument type is not CLS-compliant
@@ -2251,7 +3139,6 @@ namespace PlexDL.Player
             get
             {
                 _lastError = NO_ERROR;
-                //return _playerName == null ? VERSION_STRING : _playerName;
                 if (string.IsNullOrWhiteSpace(_playerName)) return VERSION_STRING;
                 return _playerName;
             }
@@ -2295,7 +3182,7 @@ namespace PlexDL.Player
             // this order of checking should not be changed
             if (_imageMode) sourceType = MediaSourceType.Image;
             else if (_liveStreamMode) sourceType = MediaSourceType.LiveStream;
-            else if (_fileStreamMode) sourceType = MediaSourceType.FileStream;
+            else if (_fileStreamMode) sourceType = MediaSourceType.RemoteFile;
             else if (_fileMode)
             {
                 if (_hasTempFile) sourceType = MediaSourceType.ByteArray;
@@ -2312,7 +3199,8 @@ namespace PlexDL.Player
         {
             MediaSourceCategory sourceCategory = MediaSourceCategory.None;
 
-            if (_fileStreamMode || _liveStreamMode) sourceCategory = MediaSourceCategory.OnlineFile;
+            if (_fileStreamMode) sourceCategory = MediaSourceCategory.RemoteFile;
+            else if (_liveStreamMode) sourceCategory = MediaSourceCategory.LiveStream;
             else if (_fileMode) sourceCategory = MediaSourceCategory.LocalFile;
             else if (_webcamMode || _webcamAggregated || _micMode) sourceCategory = MediaSourceCategory.LocalCapture;
 
@@ -2324,7 +3212,7 @@ namespace PlexDL.Player
         #region Public - Chapters
 
         /// <summary>
-        /// Provides access to the chapters settings of the player (for example, Player.Chapters.FromMedia).
+        /// Provides access to the media chapters settings of the player (for example, Player.Chapters.FromMedia).
         /// </summary>
         public Chapters Chapters
         {
@@ -2404,7 +3292,9 @@ namespace PlexDL.Player
         #region Public - Timer Interval
 
         /// <summary>
-        /// Gets or sets the interval of the player's events timer in milliseconds (default: 100 ms).
+        /// Gets or sets the interval of the player's main events timer in milliseconds (default: 100 ms).
+        /// <br/>The timer is used to update the player's position slider and events, the player's taskbar
+        /// <br/>progress indicator and the player's audio peak meters, among other things. 
         /// </summary>
         public int TimerInterval
         {
@@ -2464,7 +3354,8 @@ namespace PlexDL.Player
         #region Public - Sleep Mode
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the system's sleep mode is disabled by the player (default: false).
+        /// Gets or sets a value indicating whether the player has disabled the system's power-saving (sleep) mode (default: false).
+        /// <br/>This setting is used by all players in this assembly and is restored to its original state when all players are removed.
         /// </summary>
         public bool SleepDisabled
         {
@@ -2567,7 +3458,7 @@ namespace PlexDL.Player
         #endregion
 
 
-        // ******************************** Player - Private Members
+        /* ******************************** Player - Private Members */
 
         // ******************************** Player - Play
 
@@ -2627,74 +3518,74 @@ namespace PlexDL.Player
                 Bitmap frame = null;
                 try
                 {
-                    frame       = new Bitmap(fileName);
+                    frame = new Bitmap(fileName);
 
-					int width   = (frame.Width + 3) & 0x7ffffffc;
-					int height  = (frame.Height + 3) & 0x7ffffffc;
+                    int width = (frame.Width + 3) & 0x7ffffffc;
+                    int height = (frame.Height + 3) & 0x7ffffffc;
 
-					if (width <= 32 || height <= 32)
-					{
-						width   = frame.Width * 2;
-						height  = frame.Height * 2;
+                    if (width <= 32 || height <= 32)
+                    {
+                        width = frame.Width * 2;
+                        height = frame.Height * 2;
 
-						Bitmap oldFrame = frame;
-						frame = new Bitmap(frame, width, height);
-						oldFrame.Dispose();
-					}
-					else if (width != frame.Width || height != frame.Height)
-					{
-						Bitmap oldFrame = frame;
-						frame = new Bitmap(frame, width, height);
-						oldFrame.Dispose();
-					}
+                        Bitmap oldFrame = frame;
+                        frame = new Bitmap(frame, width, height);
+                        oldFrame.Dispose();
+                    }
+                    else if (width != frame.Width || height != frame.Height)
+                    {
+                        Bitmap oldFrame = frame;
+                        frame = new Bitmap(frame, width, height);
+                        oldFrame.Dispose();
+                    }
 
-					try
-					{
-						_imageBytesPerPixel = Image.GetPixelFormatSize(frame.PixelFormat) / 8;
-						if (_imageBytesPerPixel == 0) _imageBytesPerPixel = 1;
-					}
-					catch { _imageBytesPerPixel = 4; }
+                    try
+                    {
+                        _imageBytesPerPixel = Image.GetPixelFormatSize(frame.PixelFormat) / 8;
+                        if (_imageBytesPerPixel == 0) _imageBytesPerPixel = 1;
+                    }
+                    catch { _imageBytesPerPixel = 4; }
 
-					if (_imageBytesPerPixel == 3) _imageMediaType = MFMediaType.RGB24;
-					else if (_imageBytesPerPixel == 4) _imageMediaType = MFMediaType.RGB32;
-					else
-					{
-						Bitmap tmp              = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-						Graphics g              = Graphics.FromImage(tmp);
-						g.InterpolationMode     = InterpolationMode.HighQualityBicubic;
-						g.SmoothingMode         = SmoothingMode.HighQuality;
-						g.PixelOffsetMode       = PixelOffsetMode.HighQuality;
-						g.CompositingQuality    = CompositingQuality.HighQuality;
+                    if (_imageBytesPerPixel == 3) _imageMediaType = MFMediaType.RGB24;
+                    else if (_imageBytesPerPixel == 4) _imageMediaType = MFMediaType.RGB32;
+                    else
+                    {
+                        Bitmap tmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                        Graphics g = Graphics.FromImage(tmp);
+                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        g.CompositingQuality = CompositingQuality.HighQuality;
 
-						g.DrawImage(frame, 0, 0, tmp.Width, tmp.Height);
-						g.Dispose();
+                        g.DrawImage(frame, 0, 0, tmp.Width, tmp.Height);
+                        g.Dispose();
 
-						frame.Dispose();
-						frame                   = tmp;
+                        frame.Dispose();
+                        frame = tmp;
 
-						_imageBytesPerPixel     = 4;
-						_imageMediaType         = MFMediaType.RGB32;
-					}
+                        _imageBytesPerPixel = 4;
+                        _imageMediaType = MFMediaType.RGB32;
+                    }
 
-					_tempFileName = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName) + MP4_FILE_EXTENSION);
-					while (File.Exists(_tempFileName))
-					{
-						_tempFileName = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(_tempFileName) + ONE_SPACE + MP4_FILE_EXTENSION);
-					}
-					_hasTempFile = true;
+                    _tempFileName = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName) + MP4_FILE_EXTENSION);
+                    while (File.Exists(_tempFileName))
+                    {
+                        _tempFileName = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(_tempFileName) + ONE_SPACE + MP4_FILE_EXTENSION);
+                    }
+                    _hasTempFile = true;
 
-					IMFSinkWriter sinkWriter = AV_CreateImageWriter(_tempFileName, frame.Width, frame.Height, _imageMediaType, _imageFrameRate);
-					if (sinkWriter != null)
-					{
-						AV_WriteImageFrame(sinkWriter, frame);
+                    IMFSinkWriter sinkWriter = AV_CreateImageWriter(_tempFileName, frame.Width, frame.Height, _imageMediaType, _imageFrameRate);
+                    if (sinkWriter != null)
+                    {
+                        AV_WriteImageFrame(sinkWriter, frame);
 
-						sinkWriter.Finalize_();
-						Marshal.ReleaseComObject(sinkWriter);
-						sinkWriter = null;
-					}
+                        sinkWriter.Finalize_();
+                        Marshal.ReleaseComObject(sinkWriter);
+                        sinkWriter = null;
+                    }
 
-					if (_lastError != NO_ERROR) AV_RemoveTempFile();
-				}
+                    if (_lastError != NO_ERROR) AV_RemoveTempFile();
+                }
                 catch { _lastError = HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE; }
 
                 if (frame != null) frame.Dispose();
@@ -2854,7 +3745,7 @@ namespace PlexDL.Player
 
         #endregion
 
-        #region Private - Play / Reset Play Parameters / PlayByteArray / PlayMedia / SetTopology / UpdateTopology
+        #region Private - Play / Reset Play Parameters / PlayByteArray
 
         internal HResult AV_Play()
         {
@@ -2892,31 +3783,31 @@ namespace PlexDL.Player
             if (_playing) AV_CloseSession(false, true, StopReason.AutoStop);
             else _lastError = NO_ERROR;
 
-            _fileName       = _siFileName;
-            _fileMode       = _siFileMode;
-            _siFileMode     = false;
+            _fileName = _siFileName;
+            _fileMode = _siFileMode;
+            _siFileMode = false;
 
-            _chapterMode    = _siChapterMode;
-            _siChapterMode  = false;
-            _mediaChapters  = _siMediaChapters;
+            _chapterMode = _siChapterMode;
+            _siChapterMode = false;
+            _mediaChapters = _siMediaChapters;
             _siMediaChapters = null;
-            _chapterIndex   = _siIndex;
-            _siIndex        = 0;
+            _chapterIndex = _siIndex;
+            _siIndex = 0;
 
-            _micMode        = _siMicMode;
-            _siMicMode      = false;
-            _micDevice      = _siMicDevice;
+            _micMode = _siMicMode;
+            _siMicMode = false;
+            _micDevice = _siMicDevice;
 
-            _webcamMode     = _siWebcamMode;
-            _siWebcamMode   = false;
-            _webcamDevice   = _siWebcamDevice;
+            _webcamMode = _siWebcamMode;
+            _siWebcamMode = false;
+            _webcamDevice = _siWebcamDevice;
             _siWebcamDevice = null;
-            _webcamFormat   = _siWebcamFormat;
+            _webcamFormat = _siWebcamFormat;
 
             if (_siStartTime != 0 || _siStopTime != 0)
             {
-                _startTime  = _siStartTime;
-                _stopTime   = _siStopTime;
+                _startTime = _siStartTime;
+                _stopTime = _siStopTime;
                 _mediaStartStopTimeChanged?.Invoke(this, EventArgs.Empty);
             }
 
@@ -2938,30 +3829,30 @@ namespace PlexDL.Player
                     else _display.Invalidate();
                 }
 
-				if (_fileMode && _hasPositionSlider)
-				{
-					_positionSlider.Enabled = true;
-					if (_psHandlesProgress)
-					{
-						_positionSlider.Minimum = (int)(_startTime * TICKS_TO_MS);
-						if (_mediaLength <= (EOF_MARGIN_MS * MS_TO_TICKS))
-						{
-							_positionSlider.Maximum = _stopTime == 0 ? (int)(_mediaLength * TICKS_TO_MS) : (int)(_stopTime * TICKS_TO_MS);
-						}
-						else
-						{
-							_positionSlider.Maximum = _stopTime == 0 ? (int)(_mediaLength * TICKS_TO_MS - EOF_MARGIN_MS) : (int)(_stopTime * TICKS_TO_MS);
-						}
-					}
-					else
-					{
-						_positionSlider.Minimum = 0;
-						if (_mediaLength <= (EOF_MARGIN_MS * MS_TO_TICKS)) _positionSlider.Maximum = (int)(_mediaLength * TICKS_TO_MS);// - EOF_MARGIN_MS;
-						else _positionSlider.Maximum = (int)(_mediaLength * TICKS_TO_MS) - EOF_MARGIN_MS;
-					}
-				}
+                if (_fileMode && _hasPositionSlider)
+                {
+                    _positionSlider.Enabled = true;
+                    if (_psHandlesProgress)
+                    {
+                        _positionSlider.Minimum = (int)(_startTime * TICKS_TO_MS);
+                        if (_mediaLength <= (EOF_MARGIN_MS * MS_TO_TICKS))
+                        {
+                            _positionSlider.Maximum = _stopTime == 0 ? (int)(_mediaLength * TICKS_TO_MS) : (int)(_stopTime * TICKS_TO_MS);
+                        }
+                        else
+                        {
+                            _positionSlider.Maximum = _stopTime == 0 ? (int)(_mediaLength * TICKS_TO_MS - EOF_MARGIN_MS) : (int)(_stopTime * TICKS_TO_MS);
+                        }
+                    }
+                    else
+                    {
+                        _positionSlider.Minimum = 0;
+                        if (_mediaLength <= (EOF_MARGIN_MS * MS_TO_TICKS)) _positionSlider.Maximum = (int)(_mediaLength * TICKS_TO_MS);// - EOF_MARGIN_MS;
+                        else _positionSlider.Maximum = (int)(_mediaLength * TICKS_TO_MS) - EOF_MARGIN_MS;
+                    }
+                }
 
-				if (_fileMode && _paused && _startTime != 0 && _hasTaskbarProgress && _taskbarProgress._progressMode == TaskbarProgressMode.Track)
+                if (_fileMode && _paused && _startTime != 0 && _hasTaskbarProgress && _taskbarProgress._progressMode == TaskbarProgressMode.Track)
                 {
                     if (!mf_Replay) _taskbarProgress.SetValue(_startTime);
                 }
@@ -2988,7 +3879,16 @@ namespace PlexDL.Player
                 }
                 if (_fileMode && st_SubtitlesEnabled) Subtitles_Start(false);
 
+                if (pm_InputMeterPending && _micDevice != null)
+                {
+                    if (InputMeter_Open(_micDevice, false))
+                    {
+                        pm_InputMeterPending = false;
+                    }
+                }
+
                 _mediaStarted?.Invoke(this, EventArgs.Empty);
+                _mediaStartedNotice?.Invoke(this, EventArgs.Empty);
 
                 if (_fileMode && _mediaPositionChanged != null)
                 {
@@ -3014,13 +3914,13 @@ namespace PlexDL.Player
 
         private void ResetPlayParameters()
         {
-            _siFileMode         = false;
-            _siMicMode          = false;
-            _siMicDevice        = null;
-            _siWebcamMode       = false;
-            _siWebcamDevice     = null;
-            _siChapterMode      = false;
-            _siIndex            = 0;
+            _siFileMode = false;
+            _siMicMode = false;
+            _siMicDevice = null;
+            _siWebcamMode = false;
+            _siWebcamDevice = null;
+            _siChapterMode = false;
+            _siIndex = 0;
             if (_siMediaChapters != null)
             {
                 for (int i = 0; i < _siMediaChapters.Length; i++)
@@ -3029,7 +3929,7 @@ namespace PlexDL.Player
                 }
                 _siMediaChapters = null;
             }
-            mf_LowLatency       = false;
+            mf_LowLatency = false;
         }
 
         private HResult AV_PlayByteArray(byte[] byteArray, string fileName)
@@ -3037,7 +3937,7 @@ namespace PlexDL.Player
             if (_busyStarting)
             {
                 ResetPlayParameters();
-                _lastError  = HResult.MF_E_STATE_TRANSITION_PENDING;
+                _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
                 return _lastError;
             }
 
@@ -3045,9 +3945,9 @@ namespace PlexDL.Player
 
             if (_lastError == NO_ERROR)
             {
-                _siFileMode     = true;
-                _hasTempFile    = true;
-                _tempFileName   = _siFileName;
+                _siFileMode = true;
+                _hasTempFile = true;
+                _tempFileName = _siFileName;
 
                 return AV_Play();
             }
@@ -3055,6 +3955,10 @@ namespace PlexDL.Player
             ResetPlayParameters();
             return _lastError;
         }
+
+        #endregion
+
+        #region Private - PlayMedia / SetTopology / UpdateTopology
 
         private HResult AV_PlayMedia()
         {
@@ -3080,8 +3984,6 @@ namespace PlexDL.Player
             }
             else if (_webcamMode)
             {
-                // webcams with sound: there is usually a delay when using the aggregate mode, can't find the reason why or a solution
-                // a better result can be obtained by using 2 players, one for webcam video playback and one for audio playback
                 if (_micDevice != null)
                 {
                     _webcamAggregated = true;
@@ -3152,24 +4054,25 @@ namespace PlexDL.Player
 
 #pragma warning disable IDE0059 // Unnecessary assignment of a value (here: CreateObjectFromURL objectType (can't be removed))
 
-					result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.KeepByteStreamAliveOnFail, null, out MFObjectType objectType, out object source);
-					if (result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE)
-					{
-						result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.ContentDoesNotHaveToMatchExtensionOrMimeType, null, out objectType, out source);
-						if (_imagesEnabled && result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE)
-						{
-							result = AV_ImageToVideo(_fileName);
-							if (result == NO_ERROR)
-							{
-								_imageMode = true; //_fileMode - don't set to false
-								result = sourceResolver.CreateObjectFromURL(_tempFileName, MFResolution.MediaSource, null, out objectType, out source);
-								if (result != NO_ERROR && _hasTempFile) AV_RemoveTempFile();
-							}
-						}
-					}
+                    result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.KeepByteStreamAliveOnFail, null, out MFObjectType objectType, out object source);
+                    if (result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE)
+                    {
+                        result = sourceResolver.CreateObjectFromURL(_fileName, MFResolution.MediaSource | MFResolution.ContentDoesNotHaveToMatchExtensionOrMimeType, null, out objectType, out source);
+                        //if (result == HResult.MF_E_UNSUPPORTED_BYTESTREAM_TYPE && _imagesEnabled)
+                        if (result != NO_ERROR && _imagesEnabled)
+                        {
+                            result = AV_ImageToVideo(_fileName);
+                            if (result == NO_ERROR)
+                            {
+                                _imageMode = true; //_fileMode - don't set to false
+                                result = sourceResolver.CreateObjectFromURL(_tempFileName, MFResolution.MediaSource, null, out objectType, out source);
+                                if (result != NO_ERROR && _hasTempFile) AV_RemoveTempFile();
+                            }
+                        }
+                    }
 
-					mf_MediaSource = (IMFMediaSource)source;
-					Marshal.ReleaseComObject(sourceResolver);
+                    mf_MediaSource = (IMFMediaSource)source;
+                    Marshal.ReleaseComObject(sourceResolver);
 
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
@@ -3186,63 +4089,120 @@ namespace PlexDL.Player
                     {
                         if (mf_Replay && _fileMode) // || _liveStreamMode)) // = not webcam or mic
                         {
-							bool getNewLength = false;
+                            IMFStreamDescriptor sd = null;
+                            IMFMediaTypeHandler th = null;
+                            IMFMediaType mt = null;
+                            bool newLength = false;
 
-							if (_audioTrackCurrent != _audioTrackBase)
-							{
-								sourcePD.DeselectStream(_audioTracks[_audioTrackBase].StreamIndex);
-								sourcePD.SelectStream(_audioTracks[_audioTrackCurrent].StreamIndex);
-								getNewLength = true;
-							}
+                            if (_hasAudio)
+                            {
+                                if (_audioTrackCurrent != _audioTrackBase)
+                                {
+                                    sourcePD.DeselectStream(_audioTracks[_audioTrackBase].StreamIndex);
+                                    sourcePD.SelectStream(_audioTracks[_audioTrackCurrent].StreamIndex);
+                                    newLength = true;
+                                }
 
-							//if (((_audioMono && _audioTracks[_audioTrackCurrent].ChannelCount != 1) || _audioMonoRestore) && !_audioCut)
-							if ((_audioMono || _audioMonoRestore) && !_audioCut)
-							{
-								IMFStreamDescriptor sd  = null;
-								IMFMediaTypeHandler th  = null;
-								IMFMediaType mt         = null;
-								try
-								{
-									sourcePD.GetStreamDescriptorByIndex(_audioTracks[_audioTrackCurrent].StreamIndex, out bool selected, out sd);
-									sd.GetMediaTypeHandler(out th);
-									th.GetCurrentMediaType(out mt);
-                                    if (mt != null)
+                                if ((_audioMono || _audioMonoRestore) && !_audioCut)
+                                {
+                                    try
                                     {
-                                        if (_audioMono)
+                                        sourcePD.GetStreamDescriptorByIndex(_audioTracks[_audioTrackCurrent].StreamIndex, out bool selected, out sd);
+                                        sd.GetMediaTypeHandler(out th);
+                                        th.GetCurrentMediaType(out mt);
+                                        if (mt != null)
                                         {
-                                            mt.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, 1);
-                                            _audioTracks[_audioTrackCurrent].ChannelCount = 1;
-                                        }
-                                        else
-                                        {
-                                            mt.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, _audioTracks[_audioTrackCurrent].ChannelCountRestore);
-                                            _audioTracks[_audioTrackCurrent].ChannelCount = _audioTracks[_audioTrackCurrent].ChannelCountRestore;
-                                            _audioMonoRestore = false;
+                                            if (_audioMono)
+                                            {
+                                                mt.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, 1);
+                                                _audioTracks[_audioTrackCurrent].ChannelCount = 1;
+                                            }
+                                            else
+                                            {
+                                                mt.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, _audioTracks[_audioTrackCurrent].ChannelCountRestore);
+                                                _audioTracks[_audioTrackCurrent].ChannelCount = _audioTracks[_audioTrackCurrent].ChannelCountRestore;
+                                                _audioMonoRestore = false;
+                                            }
                                         }
                                     }
-								}
-								finally
-								{
-									if (mt != null) { Marshal.ReleaseComObject(mt); mt = null; }
-									if (th != null) { Marshal.ReleaseComObject(th); th = null; }
-									if (sd != null) { Marshal.ReleaseComObject(sd); sd = null; }
-								}
-							}
-
-							if (_videoTrackCurrent != _videoTrackBase)
-                            {
-                                sourcePD.DeselectStream(_videoTracks[_videoTrackBase].StreamIndex);
-                                sourcePD.SelectStream(_videoTracks[_videoTrackCurrent].StreamIndex);
-                                getNewLength = true;
+                                    finally
+                                    {
+                                        if (mt != null) { Marshal.ReleaseComObject(mt); mt = null; }
+                                        if (th != null) { Marshal.ReleaseComObject(th); th = null; }
+                                        if (sd != null) { Marshal.ReleaseComObject(sd); sd = null; }
+                                    }
+                                }
                             }
 
-                            if (getNewLength)
+                            if (_hasVideo && !_webcamMode)
+                            {
+                                if (_videoTrackCurrent != _videoTrackBase)
+                                {
+                                    sourcePD.DeselectStream(_videoTracks[_videoTrackBase].StreamIndex);
+                                    sourcePD.SelectStream(_videoTracks[_videoTrackCurrent].StreamIndex);
+                                    newLength = true;
+                                }
+
+                                if (_videoRotation != VideoRotation.None || _videoTracks[_videoTrackCurrent].SourceRotation != 0)
+                                {
+                                    try
+                                    {
+                                        sourcePD.GetStreamDescriptorByIndex(_videoTracks[_videoTrackCurrent].StreamIndex, out bool selected2, out sd);
+                                        sd.GetMediaTypeHandler(out th);
+                                        th.GetCurrentMediaType(out mt);
+
+                                        if (mt != null)
+                                        {
+                                            _videoTracks[_videoTrackCurrent].Rotation = _videoTracks[_videoTrackCurrent].SourceRotation;
+                                            _videoSourceRotated = _videoTracks[_videoTrackCurrent].Rotation != 0;
+
+                                            if (_videoRotation != VideoRotation.None)
+                                            {
+                                                _videoTracks[_videoTrackCurrent].Rotation = (_videoTracks[_videoTrackCurrent].Rotation + (int)_videoRotation) % 360;
+                                                mt.SetUINT32(MFAttributesClsid.MF_MT_VIDEO_ROTATION, _videoTracks[_videoTrackCurrent].Rotation);
+                                            }
+                                            if (_videoTracks[_videoTrackCurrent].Rotation == 90 || _videoTracks[_videoTrackCurrent].Rotation == 270)
+                                            {
+                                                if (!_videoRotationSwitch)
+                                                {
+                                                    int pWidth = _videoTracks[_videoTrackCurrent].SourceWidth;
+                                                    _videoTracks[_videoTrackCurrent].SourceWidth = _videoTracks[_videoTrackCurrent].SourceHeight;
+                                                    _videoTracks[_videoTrackCurrent].SourceHeight = pWidth;
+                                                    _videoRotationSwitch = true;
+                                                }
+                                            }
+                                            else if (_videoRotationSwitch)
+                                            {
+                                                int pWidth = _videoTracks[_videoTrackCurrent].SourceWidth;
+                                                _videoTracks[_videoTrackCurrent].SourceWidth = _videoTracks[_videoTrackCurrent].SourceHeight;
+                                                _videoTracks[_videoTrackCurrent].SourceHeight = pWidth;
+                                                _videoRotationSwitch = false;
+                                            }
+                                        }
+                                    }
+                                    finally
+                                    {
+                                        if (mt != null) { Marshal.ReleaseComObject(mt); mt = null; }
+                                        if (th != null) { Marshal.ReleaseComObject(th); th = null; }
+                                        if (sd != null) { Marshal.ReleaseComObject(sd); sd = null; }
+                                    }
+                                }
+                                else if (_videoRotationSwitch)
+                                {
+                                    int pWidth = _videoTracks[_videoTrackCurrent].SourceWidth;
+                                    _videoTracks[_videoTrackCurrent].SourceWidth = _videoTracks[_videoTrackCurrent].SourceHeight;
+                                    _videoTracks[_videoTrackCurrent].SourceHeight = pWidth;
+                                    _videoRotationSwitch = false;
+                                }
+                            }
+
+                            if (newLength)
                             {
                                 sourcePD.GetUINT64(MFAttributesClsid.MF_PD_DURATION, out _mediaLength);
                                 //if (result == NO_ERROR && _mediaLength == 0) result = HResult.MF_E_NO_DURATION;
                                 if (_mediaLength <= 0)
                                 {
-                                    _fileMode       = false;
+                                    _fileMode = false;
                                     _liveStreamMode = true;
                                 }
                                 else
@@ -3264,7 +4224,7 @@ namespace PlexDL.Player
                                 }
                                 if (_mediaLength <= 0)
                                 {
-                                    _fileMode       = false;
+                                    _fileMode = false;
                                     _liveStreamMode = true;
                                 }
                                 else
@@ -3281,18 +4241,18 @@ namespace PlexDL.Player
 
                                 if (result == NO_ERROR)
                                 {
-                                    _audioTracks        = new AudioStream[count];
-                                    _audioTrackCount    = 0;
-                                    _audioTrackBase     = NO_STREAM_SELECTED;
-                                    _audioTrackCurrent  = NO_STREAM_SELECTED;
+                                    _audioTracks = new AudioStream[count];
+                                    _audioTrackCount = 0;
+                                    _audioTrackBase = NO_STREAM_SELECTED;
+                                    _audioTrackCurrent = NO_STREAM_SELECTED;
 
-                                    _videoTracks        = new VideoStream[count];
-                                    _videoTrackCount    = 0;
-                                    _videoTrackBase     = NO_STREAM_SELECTED;
-                                    _videoTrackCurrent  = NO_STREAM_SELECTED;
+                                    _videoTracks = new VideoStream[count];
+                                    _videoTrackCount = 0;
+                                    _videoTrackBase = NO_STREAM_SELECTED;
+                                    _videoTrackCurrent = NO_STREAM_SELECTED;
 
                                     IMFMediaTypeHandler typeHandler = null;
-                                    IMFMediaType type   = null;
+                                    IMFMediaType type = null;
 
                                     HResult hasName;
                                     HResult hasLanguage;
@@ -3311,6 +4271,9 @@ namespace PlexDL.Player
 
                                             if (guidMajorType == MFMediaType.Audio)
                                             {
+                                                _audioTracks[_audioTrackCount].Enabled = _audioEnabled; // true;
+                                                _audioTracks[_audioTrackCount].ChannelVolumes = new float[MAX_AUDIO_CHANNELS];
+
                                                 _audioTracks[_audioTrackCount].StreamIndex = i;
                                                 _audioTracks[_audioTrackCount].Selected = selected;
                                                 if (!_audioCut && selected && _audioTrackBase == NO_STREAM_SELECTED)
@@ -3340,20 +4303,41 @@ namespace PlexDL.Player
                                                 {
                                                     type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, out _audioTracks[_audioTrackCount].ChannelCountRestore);
 
-                                                    //type.SetBlob(MFAttributesClsid.MF_MT_AUDIO_FOLDDOWN_MATRIX, new byte[528], 528);
-                                                    // no information on MFFOLDDOWN_MATRIX coeff found
+													////type.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, 3);
+													//type.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_CHANNEL_MASK, 0x03);
+													//MFFOLDDOWN_MATRIX test = new MFFOLDDOWN_MATRIX
+													//{
+													//	cbSize = 272,
+													//	cSrcChannels = 2,
+													//	cDstChannels = 2,
+													//	dwChannelMask = 0x03, //0x63f,
+													//	Coeff = new int[64]
+													//};
+													//test.Coeff[0] = -394566;
+													//test.Coeff[1] = -394566;
+													//test.Coeff[2] = -394566;
+													//test.Coeff[3] = -394566;
 
-                                                    if (_audioMono && !_audioCut)
-													{
-														type.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, 1);
-													}
+													//byte[] pBuf = test.ToArray();
+													//////MessageBox.Show(pBuf.Length.ToString());
+													//result = type.SetBlob(MFAttributesClsid.MF_MT_AUDIO_FOLDDOWN_MATRIX, pBuf, pBuf.Length);
+													////MessageBox.Show(result.ToString());
+
+													////type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_CHANNEL_MASK, out int mask);
+													////MessageBox.Show(mask.ToString());
+
+													//byte[] blob = new byte[512];
+													//type.GetBlob(MFAttributesClsid.MF_MT_AUDIO_FOLDDOWN_MATRIX, blob, 512, out int size);
+													//MessageBox.Show(size.ToString());
+
+													if (_audioMono && !_audioCut) type.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, 1);
 
                                                     type.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out _audioTracks[_audioTrackCount].MediaType);
                                                     type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, out _audioTracks[_audioTrackCount].ChannelCount);
-                                                    type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, out _audioTracks[_audioTrackCount].Samplerate);
-                                                    type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, out _audioTracks[_audioTrackCount].Bitdepth);
+                                                    type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, out _audioTracks[_audioTrackCount].SampleRate);
+                                                    type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, out _audioTracks[_audioTrackCount].BitDepth);
                                                     type.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, out int avgBytes);
-                                                    _audioTracks[_audioTrackCount].Bitrate = (int)((avgBytes * 0.008) + 0.5);
+                                                    _audioTracks[_audioTrackCount].BitRate = (int)((avgBytes * 0.008) + 0.5);
                                                 }
                                                 else
                                                 {
@@ -3388,9 +4372,14 @@ namespace PlexDL.Player
                                                     if (type != null)
                                                     {
                                                         type.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out _videoTracks[_videoTrackCount].MediaType);
+
                                                         MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_RATE, out int num, out int denum);
                                                         if (denum > 0) _videoTracks[_videoTrackCount].FrameRate = (float)(uint)num / denum;
                                                         MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_FRAME_SIZE, out _videoTracks[_videoTrackCount].SourceWidth, out _videoTracks[_videoTrackCount].SourceHeight);
+
+                                                        //type.GetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, out _videoTracks[_videoTrackCount].BitRate);
+                                                        type.GetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, out int avgBytes);
+                                                        _videoTracks[_videoTrackCount].BitRate = (int)(avgBytes / 1000.0);
 
                                                         MFExtern.MFGetAttributeRatio(type, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, out int pWidth, out int pHeight);
                                                         _videoTracks[_videoTrackCount].PixelAspectRatio = (pWidth != pHeight);
@@ -3403,13 +4392,32 @@ namespace PlexDL.Player
                                                             else _videoTracks[_videoTrackCount].SourceWidth = (int)(_videoTracks[_videoTrackCount].PixelWidthRatio * _videoTracks[_videoTrackCount].SourceWidth);
                                                         }
 
-                                                        type.GetUINT32(MFAttributesClsid.MF_MT_VIDEO_ROTATION, out _videoTracks[_videoTrackCount].Rotation);
-                                                        _videoTracks[_videoTrackCount].Rotated = _videoTracks[_videoTrackCount].Rotation == 90 || _videoTracks[_videoTrackCount].Rotation == 270;
-                                                        if (_videoTracks[_videoTrackCount].Rotated)
+                                                        // because of behaviour mkv files
+                                                        type.GetUINT32(MFAttributesClsid.MF_MT_VIDEO_ROTATION, out _videoTracks[_videoTrackCount].SourceRotation);
+
+                                                        // only with selected stream - can't rotate webcam video (?)
+                                                        if (!_webcamMode && selected)
                                                         {
-                                                            pWidth = _videoTracks[_videoTrackCount].SourceWidth;
-                                                            _videoTracks[_videoTrackCount].SourceWidth = _videoTracks[_videoTrackCount].SourceHeight;
-                                                            _videoTracks[_videoTrackCount].SourceHeight = pWidth;
+                                                            _videoTracks[_videoTrackCount].Rotation = _videoTracks[_videoTrackCount].SourceRotation;
+                                                            _videoSourceRotated = _videoTracks[_videoTrackCount].Rotation != 0;
+
+                                                            if (_videoRotation != VideoRotation.None)
+                                                            {
+                                                               _videoTracks[_videoTrackCount].Rotation = (_videoTracks[_videoTrackCount].Rotation + (int)_videoRotation) % 360;
+                                                               type.SetUINT32(MFAttributesClsid.MF_MT_VIDEO_ROTATION, _videoTracks[_videoTrackCount].Rotation);
+                                                            }
+                                                            _videoTracks[_videoTrackCount].Rotated = _videoTracks[_videoTrackCount].Rotation == 90 || _videoTracks[_videoTrackCount].Rotation == 270;
+                                                            if (_videoTracks[_videoTrackCount].Rotated)
+                                                            {
+                                                                pWidth = _videoTracks[_videoTrackCount].SourceWidth;
+                                                                _videoTracks[_videoTrackCount].SourceWidth = _videoTracks[_videoTrackCount].SourceHeight;
+                                                                _videoTracks[_videoTrackCount].SourceHeight = pWidth;
+                                                                _videoRotationSwitch = true;
+                                                            }
+                                                            else
+                                                            {
+                                                                _videoRotationSwitch = false;
+                                                            }
                                                         }
 
                                                         //type.GetUINT32(MFAttributesClsid.MF_MT_VIDEO_3D, out int Video3D);
@@ -3429,9 +4437,9 @@ namespace PlexDL.Player
                                         }
                                         finally
                                         {
-                                            if (type != null)           { Marshal.ReleaseComObject(type); type = null; }
-                                            if (typeHandler != null)    { Marshal.ReleaseComObject(typeHandler); typeHandler = null; }
-                                            if (sourceSD != null)       { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
+                                            if (type != null) { Marshal.ReleaseComObject(type); type = null; }
+                                            if (typeHandler != null) { Marshal.ReleaseComObject(typeHandler); typeHandler = null; }
+                                            if (sourceSD != null) { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
                                         }
                                     }
                                     //if (mf_AudioStreamCount == 0 && mf_VideoStreamCount == 0) result = HResult.MF_E_MEDIA_SOURCE_NO_STREAMS_SELECTED;
@@ -3480,7 +4488,7 @@ namespace PlexDL.Player
                                 else
                                 {
                                     mf_AwaitCallBack = true;
-                                    WaitForEvent.WaitOne(TIMEOUT_30_SECONDS);
+                                    WaitForEvent.WaitOne(TIMEOUT_20_SECONDS);
                                 }
 
                                 if (_lastError != NO_ERROR)
@@ -3538,9 +4546,9 @@ namespace PlexDL.Player
             }
             else
             {
-                _hasVideo   = false;
-                _hasAudio   = false;
-                _lastError  = result;
+                _hasVideo = false;
+                _hasAudio = false;
+                _lastError = result;
                 AV_CloseSession(false, false, StopReason.Error); // with no MediaEnded event
             }
 
@@ -3550,29 +4558,30 @@ namespace PlexDL.Player
 
         private HResult SetTopology(IMFPresentationDescriptor sourcePD)
         {
-            IMFTopology topology            = null;
-            IMFStreamDescriptor sourceSD    = null;
+            IMFTopology topology = null;
+            IMFStreamDescriptor sourceSD = null;
 
-            IMFTopologyNode sourceNode      = null;
-            IMFTopologyNode outputNode      = null;
+            IMFTopologyNode sourceNode = null;
+            IMFTopologyNode outputNode = null;
+            //IMFTopologyNode transformNode = null;
 
-            IMFActivate rendererActivate    = null;
+            IMFActivate rendererActivate = null;
 
             bool selected;
-            HResult result                  = NO_ERROR;
+            HResult result = NO_ERROR;
 
-            _hasAudio                       = false;
-            _hasVideo                       = false;
+            _hasAudio = false;
+            _hasVideo = false;
 
-            bool setAudio                   = false;
-            bool setVideo                   = false;
+            bool setAudio = false;
+            bool setVideo = false;
 
-            mf_AudioVolume                  = AUDIO_VOLUME_DEFAULT;
-            mf_AudioBalance                 = AUDIO_BALANCE_DEFAULT;
-            mf_Speed                        = DEFAULT_SPEED;
+            mf_AudioVolume = AUDIO_VOLUME_DEFAULT;
+            mf_AudioBalance = AUDIO_BALANCE_DEFAULT;
+            mf_Speed = DEFAULT_SPEED;
 
-            _mediaChannelCount              = 0;
-            _audioChannelCount              = 0;
+            _mediaChannelCount = 0;
+            _audioChannelCount = 0;
 
             try
             {
@@ -3595,37 +4604,92 @@ namespace PlexDL.Player
 
                                 if (deviceCount > 0)
                                 {
-                                    sourcePD.GetStreamDescriptorByIndex(_audioTracks[_audioTrackCurrent].StreamIndex, out selected, out sourceSD);
-
-                                    MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out sourceNode);
-                                    sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, mf_MediaSource);
-                                    sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, sourcePD);
-                                    sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, sourceSD);
-
-                                    MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out outputNode);
-
-                                    MFExtern.MFCreateAudioRendererActivate(out rendererActivate);
-                                    if (_audioDevice != null)
+                                    for (int i = 0; i < _audioTrackCount; i++)
                                     {
-                                        rendererActivate.SetString(MFAttributesClsid.MF_AUDIO_RENDERER_ATTRIBUTE_ENDPOINT_ID, _audioDevice._id);
+                                        //sourcePD.GetStreamDescriptorByIndex(_audioTracks[_audioTrackCurrent].StreamIndex, out selected, out sourceSD);
+                                        sourcePD.SelectStream(_audioTracks[i].StreamIndex);
+                                        sourcePD.GetStreamDescriptorByIndex(_audioTracks[i].StreamIndex, out selected, out sourceSD);
+
+                                        MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out sourceNode);
+                                        sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, mf_MediaSource);
+                                        sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, sourcePD);
+                                        sourceNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, sourceSD);
+
+                                        MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out outputNode);
+
+                                        // set audio device for each stream
+                                        MFExtern.MFCreateAudioRendererActivate(out rendererActivate);
+										if (_audioTracks[i].AudioDevice != null)
+										{
+											rendererActivate.SetString(MFAttributesClsid.MF_AUDIO_RENDERER_ATTRIBUTE_ENDPOINT_ID, _audioTracks[i].AudioDevice.Id);
+										}
+										else if (_audioDevice != null)
+										{
+											rendererActivate.SetString(MFAttributesClsid.MF_AUDIO_RENDERER_ATTRIBUTE_ENDPOINT_ID, _audioDevice._id);
+										}
+
+										// get IMFAudioStreamVolume for each stream = multi track control
+										if (_audioTracks[i].MF_VolumeService != null) Marshal.ReleaseComObject(_audioTracks[i].MF_VolumeService);
+                                        result = rendererActivate.ActivateObject(typeof(IMFMediaSink).GUID, out object sar);
+                                        if (result == NO_ERROR)
+                                        {
+                                            MFExtern.MFGetService((IMFMediaSink)sar, MFServices.MR_STREAM_VOLUME_SERVICE, typeof(IMFAudioStreamVolume).GUID, out object streamVolume);
+                                            _audioTracks[i].MF_VolumeService = streamVolume as IMFAudioStreamVolume;
+                                            Marshal.ReleaseComObject(sar);
+                                        }
+
+                                        outputNode.SetObject(rendererActivate);
+
+                                        topology.AddNode(sourceNode);
+                                        topology.AddNode(outputNode);
+
+                                        //if (_useTransform_DSP)
+                                        //{
+                                        //    // AUDIO RESAMPLER DSP
+                                        //    CreateTransform_DSP();
+                                        //    if (_transform_DSP != null)
+                                        //    {
+                                        //        MFExtern.MFCreateTopologyNode(MFTopologyType.TransformNode, out transformNode);
+                                        //        result = transformNode.SetObject(_transform_DSP);
+
+                                        //        topology.AddNode(transformNode);
+                                        //        sourceNode.ConnectOutput(0, transformNode, 0);
+                                        //        transformNode.ConnectOutput(0, outputNode, 0);
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        sourceNode.ConnectOutput(0, outputNode, 0);
+                                        //    }
+                                        //}
+                                        //else
+                                        //{
+                                        //    sourceNode.ConnectOutput(0, outputNode, 0);
+                                        //}
+
+                                        sourceNode.ConnectOutput(0, outputNode, 0);
+
+                                        if (i == _audioTrackCurrent)
+                                        {
+                                            _mediaChannelCount = _audioTracks[_audioTrackCurrent].ChannelCount;
+                                            setAudio = true;
+                                        }
+
+                                        if (sourceSD != null) { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
+                                        if (sourceNode != null) { Marshal.ReleaseComObject(sourceNode); sourceNode = null; }
+                                        //if (transformNode != null) { Marshal.ReleaseComObject(transformNode); transformNode = null; }
+                                        if (outputNode != null) { Marshal.ReleaseComObject(outputNode); outputNode = null; }
+                                        if (rendererActivate != null) { Marshal.ReleaseComObject(rendererActivate); rendererActivate = null; }
                                     }
-                                    outputNode.SetObject(rendererActivate);
-
-                                    topology.AddNode(sourceNode);
-                                    topology.AddNode(outputNode);
-                                    sourceNode.ConnectOutput(0, outputNode, 0);
-
-                                    _mediaChannelCount = _audioTracks[_audioTrackCurrent].ChannelCount;
-                                    setAudio = true;
                                 }
                             }
                         }
-                        finally
+                        catch // finally
                         {
-                            if (sourceSD != null)           { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
-                            if (sourceNode != null)         { Marshal.ReleaseComObject(sourceNode); sourceNode = null; }
-                            if (outputNode != null)         { Marshal.ReleaseComObject(outputNode); outputNode = null; }
-                            if (rendererActivate != null)   { Marshal.ReleaseComObject(rendererActivate); rendererActivate = null; }
+                            if (sourceSD != null) { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
+                            if (sourceNode != null) { Marshal.ReleaseComObject(sourceNode); sourceNode = null; }
+                            //if (transformNode != null) { Marshal.ReleaseComObject(transformNode); transformNode = null; }
+                            if (outputNode != null) { Marshal.ReleaseComObject(outputNode); outputNode = null; }
+                            if (rendererActivate != null) { Marshal.ReleaseComObject(rendererActivate); rendererActivate = null; }
                         }
                     }
 
@@ -3645,47 +4709,131 @@ namespace PlexDL.Player
 
                             MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out outputNode);
 
-							if (!_hasVideoDisplay)
-							{
-								_videoDisplay.SetBounds(0, 0, 2, 2);
-								_display.Controls.Add(_videoDisplay);
-								_videoDisplay.SendToBack();
-								_hasVideoDisplay = true;
-							}
-							MFExtern.MFCreateVideoRendererActivate(_videoDisplay.Handle, out rendererActivate);
-							outputNode.SetObject(rendererActivate);
+                            if (!_hasVideoDisplay)
+                            {
+                                _videoDisplay.SetBounds(0, 0, 2, 2);
+                                _display.Controls.Add(_videoDisplay);
+                                _videoDisplay.SendToBack();
+                                _hasVideoDisplay = true;
+                            }
+                            MFExtern.MFCreateVideoRendererActivate(_videoDisplay.Handle, out rendererActivate);
+                            outputNode.SetObject(rendererActivate);
 
                             topology.AddNode(sourceNode);
                             topology.AddNode(outputNode);
+
+                            // VIDEO PROCESSOR MFT
+                            //_videoMirror = 2;
+                            //if (_videoMirror != 0)
+                            //{
+                            //	IMFTopologyNode mftNode = null;
+
+                            //	if (_videoMirrorMFT == null)
+                            //	{
+                            //		try
+                            //		{
+                            //			result = MFExtern.MFTEnumEx(MFAttributesClsid.MFT_CATEGORY_VIDEO_PROCESSOR, (int)MFT_EnumFlag.All, null, null, out IMFActivate[] activates, out int count);
+                            //			if (result == NO_ERROR && count > 0)
+                            //			{
+                            //				result = activates[0].ActivateObject(MFAttributesClsid.MFT_VIDEO_PROCESSOR, out object mft);
+                            //				if (result == NO_ERROR) _videoMirrorMFT = (IMFVideoProcessorControl)mft;
+
+                            //				for (int i = 0; i < count; i++)
+                            //				{
+                            //					activates[i].ShutdownObject();  // ?
+                            //					Marshal.ReleaseComObject(activates[i]);
+                            //				}
+                            //			}
+                            //		}
+                            //		catch { /* ignored */ }
+                            //	}
+
+                            //	if (_videoMirrorMFT != null)
+                            //	{
+                            //		// set input IMFMediaType
+                            //		result = ((IMFTransform)_videoMirrorMFT).GetInputAvailableType(0, 0, out IMFMediaType xtype);
+                            //		MessageBox.Show(result.ToString());
+                            //		result = ((IMFTransform)_videoMirrorMFT).SetInputType(0, xtype, 0);
+                            //		MessageBox.Show(result.ToString());
+
+                            //		//sourceSD.GetMediaTypeHandler(out IMFMediaTypeHandler xHandler);
+                            //		//result = xHandler.GetCurrentMediaType(out IMFMediaType xType);
+                            //		//MessageBox.Show(result.ToString());
+                            //		//result = ((IMFTransform)_videoMirrorMFT).SetInputType(0, xType, 0);
+                            //		//MessageBox.Show(result.ToString());
+
+                            //		// set output IMFMediaType
+                            //		((IMFTransform)_videoMirrorMFT).GetOutputAvailableType(0, 0, out IMFMediaType yType);
+                            //		result = ((IMFTransform)_videoMirrorMFT).SetOutputType(0, yType, 0);
+                            //		MessageBox.Show(result.ToString());
+
+
+                            //		result = MFExtern.MFCreateTopologyNode(MFTopologyType.TransformNode, out mftNode);
+                            //		if (result == NO_ERROR)
+                            //		{
+                            //			_videoMirrorMFT.SetMirror(MF_VIDEO_PROCESSOR_MIRROR.Horizontal);
+                            //			result = mftNode.SetObject(_videoMirrorMFT);
+                            //			//result = mftNode.SetObject((IMFTransform)mft);
+                            //			if (result == NO_ERROR)
+                            //			{
+                            //				result = topology.AddNode(mftNode);
+                            //			}
+                            //		}
+
+                            //		if (result != NO_ERROR)
+                            //		{
+                            //			_videoMirror = 0;
+                            //			Marshal.ReleaseComObject(_videoMirrorMFT);
+                            //			_videoMirrorMFT = null;
+                            //		}
+                            //	}
+
+                            //	if (result == NO_ERROR)
+                            //	{
+                            //		sourceNode.ConnectOutput(0, mftNode, 0);
+                            //		mftNode.ConnectOutput(0, outputNode, 0);
+                            //	}
+                            //	else
+                            //	{
+                            //		sourceNode.ConnectOutput(0, outputNode, 0);
+                            //		result = NO_ERROR; // ignore errors with video mirroring
+                            //	}
+                            //	if (mftNode != null) Marshal.ReleaseComObject(mftNode);
+                            //}
+                            //else
+                            //{
+                            //	sourceNode.ConnectOutput(0, outputNode, 0);
+                            //}
+
                             sourceNode.ConnectOutput(0, outputNode, 0);
 
-                            _pixelAspectRatio       = _videoTracks[_videoTrackCurrent].PixelAspectRatio;
+                            _pixelAspectRatio = _videoTracks[_videoTrackCurrent].PixelAspectRatio;
                             if (_pixelAspectRatio)
                             {
-                                _pixelWidthRatio    = _videoTracks[_videoTrackCurrent].PixelWidthRatio;
-                                _pixelHeightRatio   = _videoTracks[_videoTrackCurrent].PixelHeightRatio;
+                                _pixelWidthRatio = _videoTracks[_videoTrackCurrent].PixelWidthRatio;
+                                _pixelHeightRatio = _videoTracks[_videoTrackCurrent].PixelHeightRatio;
                             }
 
-                            _videoSourceRotated     = _videoTracks[_videoTrackCurrent].Rotated;
-                            _videoSourceRotation    = _videoTracks[_videoTrackCurrent].Rotation;
+                            //_videoSourceRotated     = _videoTracks[_videoTrackCurrent].Rotated;
+                            //_videoSourceRotation    = _videoTracks[_videoTrackCurrent].Rotation;
 
-                            _videoSourceSize.Width  = _videoTracks[_videoTrackCurrent].SourceWidth;
+                            _videoSourceSize.Width = _videoTracks[_videoTrackCurrent].SourceWidth;
                             _videoSourceSize.Height = _videoTracks[_videoTrackCurrent].SourceHeight;
 
-                            if (_video3DView        != Video3DView.NormalImage) AV_SetVideo3DView();
+                            if (_video3DView != Video3DView.NormalImage) AV_SetVideo3DView();
 
-                            _videoFrameRate         = _videoTracks[_videoTrackCurrent].FrameRate;
+                            _videoFrameRate = _videoTracks[_videoTrackCurrent].FrameRate;
                             if (_videoFrameRate > 0) _videoFrameStep = (long)(ONE_SECOND_TICKS / _videoFrameRate);
-                            else _videoFrameStep    = AUDIO_STEP_TICKS;
+                            else _videoFrameStep = AUDIO_STEP_TICKS;
 
                             setVideo = true;
                         }
                         finally
                         {
-                            if (sourceSD != null)           { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
-                            if (sourceNode != null)         { Marshal.ReleaseComObject(sourceNode); sourceNode = null; }
-                            if (outputNode != null)         { Marshal.ReleaseComObject(outputNode); outputNode = null; }
-                            if (rendererActivate != null)   { Marshal.ReleaseComObject(rendererActivate); rendererActivate = null; }
+                            if (sourceSD != null) { Marshal.ReleaseComObject(sourceSD); sourceSD = null; }
+                            if (sourceNode != null) { Marshal.ReleaseComObject(sourceNode); sourceNode = null; }
+                            if (outputNode != null) { Marshal.ReleaseComObject(outputNode); outputNode = null; }
+                            if (rendererActivate != null) { Marshal.ReleaseComObject(rendererActivate); rendererActivate = null; }
                         }
                     }
                 }
@@ -3696,7 +4844,6 @@ namespace PlexDL.Player
             if (result == NO_ERROR)
             {
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_HARDWARE_MODE, 1);
-                //topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE, 2);
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE, _videoAcceleration);
                 topology.SetUINT64(MFAttributesClsid.MF_TOPOLOGY_PROJECTSTART, 0);
 
@@ -3724,9 +4871,9 @@ namespace PlexDL.Player
 
                     if (result == HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE && setVideo)
                     {
-                        setAudio    = false;
-                        _lastError  = NO_ERROR; // play video without audio device
-                        result      = NO_ERROR;
+                        setAudio = false;
+                        _lastError = NO_ERROR; // play video without audio device
+                        result = NO_ERROR;
                     }
 
                     if (result == NO_ERROR)
@@ -3742,10 +4889,10 @@ namespace PlexDL.Player
 
                                 if (_setVideoColor)
                                 {
-                                    if (_brightness != 0)   MF_SetBrightness(_brightness);
-                                    if (_contrast != 0)     MF_SetContrast(_contrast);
-                                    if (_hue != 0)          MF_SetHue(_hue);
-                                    if (_saturation != 0)   MF_SetSaturation(_saturation);
+                                    if (_brightness != 0) MF_SetBrightness(_brightness);
+                                    if (_contrast != 0) MF_SetContrast(_contrast);
+                                    if (_hue != 0) MF_SetHue(_hue);
+                                    if (_saturation != 0) MF_SetSaturation(_saturation);
                                 }
                             }
                             //if (!mf_Replay) result = NO_ERROR;
@@ -3759,24 +4906,33 @@ namespace PlexDL.Player
                         {
                             if (setAudio)
                             {
-                                result = MFExtern.MFGetService(mf_MediaSession, MFServices.MR_STREAM_VOLUME_SERVICE, typeof(IMFAudioStreamVolume).GUID, out object streamVolume);
-                                if (result == NO_ERROR)
-                                {
-                                    mf_AudioStreamVolume = streamVolume as IMFAudioStreamVolume;
-                                    mf_AudioStreamVolume.GetChannelCount(out _audioChannelCount);
-                                    _hasAudio = true;
+                                mf_AudioStreamVolume = _audioTracks[_audioTrackCurrent].MF_VolumeService;
+                                mf_AudioStreamVolume.GetChannelCount(out _audioChannelCount);
 
-                                    if (_audioEnabled)
+                                try
+                                {
+                                    for (int i = 0; i < _audioTrackCount; i++)
                                     {
-										AV_SetAudioVolume(_audioVolume, false, false);
-										AV_SetAudioBalance(_audioBalance, false, false);
-                                    }
-                                    else
-                                    {
-                                        mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                        if (i != _audioTrackCurrent && _audioTracks[i].MF_VolumeService != null)// && _audioTracks[i].Enabled)
+                                        {
+                                            if (_audioTracks[i].Enabled) _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+                                            else _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                        }
                                     }
                                 }
-                                //if (!mf_Replay) result = NO_ERROR;
+                                catch { /* ignored */ }
+
+                                _hasAudio = true;
+
+                                if (_audioEnabled)
+                                {
+                                    AV_SetAudioVolume(_audioVolume, false, false);
+                                    AV_SetAudioBalance(_audioBalance, false, false);
+                                }
+                                else
+                                {
+                                    mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                }
                             }
 
                             if (result == NO_ERROR)
@@ -3806,7 +4962,15 @@ namespace PlexDL.Player
                                     {
                                         bool speedChanged = false;
 
-                                        if (_speed < mf_SpeedMinimum) { _speed = mf_SpeedMinimum; speedChanged = true; }
+										//if (mf_SpeedMinimum == 0 && _speed < 1)
+										//{
+										//	if (((IMFRateSupport)mf_RateControl).IsRateSupported(_speedBoost, _speed, null) != NO_ERROR)
+										//	{
+										//		mf_SpeedMinimum = 0.125f;
+										//	}
+										//}
+
+										if (_speed < mf_SpeedMinimum) { _speed = mf_SpeedMinimum; speedChanged = true; }
                                         else if (_speed > mf_SpeedMaximum) { _speed = mf_SpeedMaximum; speedChanged = true; }
 
                                         if (_speed != mf_Speed)
@@ -3833,7 +4997,7 @@ namespace PlexDL.Player
             return result;
         }
 
-        // used with changing audio device, tracks, stopTime while playing
+        // used with changing audio device, tracks, stopTime and others while playing
         internal void AV_UpdateTopology()
         {
             if (_busyStarting)
@@ -3841,37 +5005,37 @@ namespace PlexDL.Player
                 _lastError = HResult.MF_E_STATE_TRANSITION_PENDING;
                 return;
             }
-            _lastError      = NO_ERROR;
+            _lastError = NO_ERROR;
 
-            _busyStarting   = true;
-            mf_Replay       = true;
+            _busyStarting = true;
+            mf_Replay = true;
 
-            _playing        = false;
-            //_stepMode       = false;
+            _playing = false;
+            //_stepMode = false;
             _timer.Stop();
 
             if (mf_VideoDisplayControl != null) { Marshal.ReleaseComObject(mf_VideoDisplayControl); mf_VideoDisplayControl = null; }
-            if (mf_VideoProcessor != null)      { Marshal.ReleaseComObject(mf_VideoProcessor); mf_VideoProcessor = null; }
-            if (mf_AudioStreamVolume != null)   { Marshal.ReleaseComObject(mf_AudioStreamVolume); mf_AudioStreamVolume = null; }
+            if (mf_VideoProcessor != null) { Marshal.ReleaseComObject(mf_VideoProcessor); mf_VideoProcessor = null; }
+            if (mf_AudioStreamVolume != null) { Marshal.ReleaseComObject(mf_AudioStreamVolume); mf_AudioStreamVolume = null; }
             //if (mf_AudioSimpleVolume != null) { Marshal.ReleaseComObject(mf_AudioSimpleVolume); mf_AudioSimpleVolume = null; }
-            if (mf_RateControl != null)         { Marshal.ReleaseComObject(mf_RateControl); mf_RateControl = null; }
+            if (mf_RateControl != null) { Marshal.ReleaseComObject(mf_RateControl); mf_RateControl = null; }
 
-            _hasVideoProcessor  = false;
+            _hasVideoProcessor = false;
             _failVideoProcessor = false;
 
             _hasBrightnessRange = false;
-            _hasContrastRange   = false;
-            _hasHueRange        = false;
+            _hasContrastRange = false;
+            _hasHueRange = false;
             _hasSaturationRange = false;
 
-            _pixelAspectRatio   = false;
+            _pixelAspectRatio = false;
 
             _videoSourceRotated = false;
             _videoSourceRotation = 0;
 
             if (!_videoCropMode) _videoCropRect = null;
 
-            long oldStartTime   = _startTime;
+            long oldStartTime = _startTime;
 
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
 
@@ -3880,8 +5044,8 @@ namespace PlexDL.Player
                 //mf_Clock.GetCorrelatedTime(0, out long presTime, out long sysTime);
                 //_startTime                      = presTime;
                 mf_Clock.GetCorrelatedTime(0, out _startTime, out long sysTime);
-                if (!_paused) _startTime        += UPDATE_TOPOLOGY_START_OFFSET;
-                else if (_stepMode) _startTime  -= UPDATE_TOPOLOGY_START_OFFSET;
+                if (!_paused) _startTime += UPDATE_TOPOLOGY_START_OFFSET;
+                else if (_stepMode) _startTime -= UPDATE_TOPOLOGY_START_OFFSET;
             }
 
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
@@ -3898,8 +5062,8 @@ namespace PlexDL.Player
             mf_MediaSource.Shutdown();
             mf_MediaSession.Shutdown();
 
-            Marshal.ReleaseComObject(mf_MediaSource);   mf_MediaSource = null;
-            Marshal.ReleaseComObject(mf_MediaSession);  mf_MediaSession = null;
+            Marshal.ReleaseComObject(mf_MediaSource); mf_MediaSource = null;
+            Marshal.ReleaseComObject(mf_MediaSession); mf_MediaSession = null;
 
             // is this necessary?
             if (_webcamAggregated)
@@ -3955,70 +5119,175 @@ namespace PlexDL.Player
                         mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
                     }
                 }
-                else
-                {
-                    //System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
-                }
+                //else
+                //{
+                //    //System.Threading.Thread.Sleep(MF_UPDATE_WAIT_MS);
+                //}
 
                 if (_hasOverlay) _display.Invalidate();
+
+                if (pm_InputMeterPending && _micDevice != null)
+                {
+                    if (InputMeter_Open(_micDevice, false))
+                    {
+                        pm_InputMeterPending = false;
+                    }
+                }
 
                 StartMainTimerCheck();
             }
         }
 
-        #endregion
+		#endregion
 
-        #region Private - Close Session / Remove TempFile / Clear Hold
+		#region Private - Create Audio Resampler
 
-        internal void AV_CloseSession(bool purge, bool stopped, StopReason reason)
+		// not yet
+		//private HResult CreateTransform_DSP(IMFMediaType sourceType)
+		//{
+		//	// AUDIO RESAMPLER DSP
+		//	HResult result = MFExtern.MFTEnumEx(MFAttributesClsid.MFT_CATEGORY_AUDIO_EFFECT, (int)MFT_EnumFlag.All, null, null, out IMFActivate[] activates, out int count);
+		//	if (result == NO_ERROR && count > 0)
+		//	{
+		//		object dsp = null;
+		//		bool found = false;
+
+		//		for (int i = 0; i < count; i++)
+		//		{
+		//			if (!found)
+		//			{
+		//				activates[i].GetGUID(MFAttributesClsid.MFT_TRANSFORM_CLSID_Attribute, out Guid mftGuid);
+		//				if (MFAttributesClsid.MFT_AUDIO_RESAMPLER == mftGuid)
+		//				{
+		//					activates[i].ActivateObject(MFAttributesClsid.IMFTransformIid, out dsp);
+		//					found = true;
+		//				}
+		//			}
+		//			Marshal.ReleaseComObject(activates[i]);
+		//		}
+
+		//		if (dsp != null)
+		//		{
+		//			Guid majortype;
+		//			Guid subtype;
+
+		//			int channelCount = 0;
+		//			int samplesPerSec = 0;
+		//			int bitsPerSample = 0;
+
+
+		//			_transform_DSP = (IMFTransform)dsp;
+
+		//			// create input type from source type
+
+		//			MFExtern.MFCreateMediaType(out IMFMediaType inputType);
+		//			inputType.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Audio);
+		//			inputType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.PCM);
+
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, cChannels);
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, sampleRate);
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_BLOCK_ALIGNMENT, blockAlign);
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, bytesPerSecond);
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, bitsPerSample);
+		//			inputType.SetUINT32(MFAttributesClsid.MF_MT_ALL_SAMPLES_INDEPENDENT, 1);
+
+
+
+
+
+		//			if (result == NO_ERROR)
+		//			{
+		//				// set output type
+		//				_transform_DSP.GetOutputAvailableType(0, 0, out IMFMediaType outputType);
+		//				result = _transform_DSP.SetOutputType(0, outputType, MFTSetTypeFlags.None);
+		//				MessageBox.Show(GetErrorString((int)result));
+
+		//				if (result == NO_ERROR)
+		//				{
+		//					// set transformation
+		//				}
+		//			}
+
+		//			if (result != NO_ERROR)
+		//			{
+		//				Marshal.ReleaseComObject(_transform_DSP);
+		//				_transform_DSP = null;
+		//			}
+		//		}
+		//	}
+		//	return result;
+		//}
+
+		#endregion
+
+		#region Private - Close Session / Remove TempFile / Clear Hold
+
+		internal void AV_CloseSession(bool purge, bool stopped, StopReason reason)
         {
             if (mf_HasSession)
             {
+                if (_hasMotionDetection)
+                {
+                    AV_StopMotionTimer(purge);
+                    _hasMotionFixedImage    = false;
+                    _hasMotionArea          = false;
+                    _hasMotionBlocked       = false;
+                }
+
                 _timer.Stop();
                 _playing = false;
 
-                _endedEventArgs._mediaName  = _fileName;
+                _endedEventArgs._mediaName = _fileName;
                 _endedEventArgs._sourceType = AV_GetSourceType();
-                _endedEventArgs._error      = (int)_lastError;
+                _endedEventArgs._error = (int)_lastError;
 
                 // ********************************
 
                 //if (_videoRecorderClass  != null)   { if (_videoRecorderClass._recording)  _videoRecorderClass.Stop(); };
                 //if (_webcamRecorderClass != null)   { if (_webcamRecorderClass._recording) _webcamRecorderClass.Stop(); };
-                if (wsr_Recording) WSR_StopRecorder();
+                if (_recording) Recorder.Stop();
 
-				_stepMode = false;
+                _stepMode = false;
                 if (_psTracking) PositionSlider_StopTracking();
 
                 if (pm_HasPeakMeter)
                 {
-                    _outputLevelArgs._channelCount      = pm_PeakMeterChannelCount;
-                    _outputLevelArgs._masterPeakValue   = STOP_VALUE;
-                    _outputLevelArgs._channelsValues    = pm_PeakMeterValuesStop;
+                    _outputLevelArgs._channelCount = pm_PeakMeterChannelCount;
+                    _outputLevelArgs._masterPeakValue = STOP_VALUE;
+                    _outputLevelArgs._channelsValues = pm_PeakMeterValuesStop;
 
-                    _mediaPeakLevelChanged(this, _outputLevelArgs);
+                    _mediaAudioOutputLevelChanged(this, _outputLevelArgs);
                 }
                 _hasPositionEvents = false;
 
-                if (st_HasSubtitles)        Subtitles_Stop();
-                if (dc_HasDisplayClones)    DisplayClones_Stop(false);
-                if (_hasTaskbarProgress)    _taskbarProgress.SetState(TaskbarProgressState.NoProgress);
+                if (pm_HasInputMeter)
+                {
+                    InputMeter_Close();
+                    pm_InputMeterPending = true;
+                }
+
+                if (st_HasSubtitles) Subtitles_Stop();
+                //if (dc_HasDisplayClones && !_displayHold)   DisplayClones_Stop(false);
+                if (dc_HasDisplayClones) DisplayClones_Stop(false);
+                if (_hasTaskbarProgress) _taskbarProgress.SetState(TaskbarProgressState.NoProgress);
 
                 // ******************************** MF
 
                 if (_hasImageOverlay && !_imageOverlayHold) AV_RemoveVideoOverlay();
 
                 if (mf_VideoDisplayControl != null) { Marshal.ReleaseComObject(mf_VideoDisplayControl); mf_VideoDisplayControl = null; }
-                if (mf_VideoProcessor != null)      { Marshal.ReleaseComObject(mf_VideoProcessor); mf_VideoProcessor = null; }
-                if (mf_AudioStreamVolume != null)   { Marshal.ReleaseComObject(mf_AudioStreamVolume); mf_AudioStreamVolume = null; }
-                if (mf_RateControl != null)         { Marshal.ReleaseComObject(mf_RateControl); mf_RateControl = null; }
+                if (mf_VideoProcessor != null) { Marshal.ReleaseComObject(mf_VideoProcessor); mf_VideoProcessor = null; }
+                if (mf_AudioStreamVolume != null) { Marshal.ReleaseComObject(mf_AudioStreamVolume); mf_AudioStreamVolume = null; }
+                if (mf_RateControl != null) { Marshal.ReleaseComObject(mf_RateControl); mf_RateControl = null; }
+                //if (_videoMirrorMFT != null)      { Marshal.ReleaseComObject(_videoMirrorMFT); _videoMirrorMFT = null; }
+                //if (_transform_DSP != null) { Marshal.ReleaseComObject(_transform_DSP); _transform_DSP = null; }
 
-                _hasVideoProcessor  = false;
+                _hasVideoProcessor = false;
                 _failVideoProcessor = false;
 
                 _hasBrightnessRange = false;
-                _hasContrastRange   = false;
-                _hasHueRange        = false;
+                _hasContrastRange = false;
+                _hasHueRange = false;
                 _hasSaturationRange = false;
 
                 if (mf_Clock != null)
@@ -4062,6 +5331,14 @@ namespace PlexDL.Player
                         _webcamAggregated = false;
                     }
                 }
+
+                // webcam motion detection - moved to dispose
+                //_oldMotionTable = null;
+                //if (_grayScaleAttributes != null)
+                //{
+                //    _grayScaleAttributes.Dispose();
+                //    _grayScaleAttributes = null;
+                //}
 
                 if (_hasVideoDisplay && (!_displayHold || reason == StopReason.UserStop || reason == StopReason.Error))
                 {
@@ -4110,35 +5387,46 @@ namespace PlexDL.Player
                 AV_RemoveDisplay(purge);
                 Application.DoEvents();
 
-                mf_HasSession       = false;
+                mf_HasSession = false;
 
                 bool startStopEvent = false;
                 if ((_startTime != 0 || _stopTime != 0) && _fileMode && !mf_Replay && _mediaStartStopTimeChanged != null) startStopEvent = true;
-                _startTime          = 0;
-                _stopTime           = 0;
-                _repeatCount        = 0;
+                _startTime = 0;
+                _stopTime = 0;
+                _repeatCount = 0;
                 _repeatChapterCount = 0;
-                _mediaLength        = 0;
+                _mediaLength = 0;
                 if (startStopEvent) _mediaStartStopTimeChanged(this, EventArgs.Empty);
 
-                _hasAudio           = false;
-                _audioTracks        = null;
-                _audioTrackCount    = 0;
-                _audioTrackBase     = NO_STREAM_SELECTED;
-                _audioTrackCurrent  = NO_STREAM_SELECTED;
+                _hasAudio = false;
+                if (_audioTracks != null)
+                {
+                    for (int i = 0; i < _audioTracks.Length; i++)
+                    {
+                        if (_audioTracks[i].MF_VolumeService != null)
+                        {
+                            Marshal.ReleaseComObject(_audioTracks[i].MF_VolumeService);
+                            _audioTracks[i].MF_VolumeService = null;
+                        }
+                    }
+                    _audioTracks = null;
+                }
+                _audioTrackCount = 0;
+                _audioTrackBase = NO_STREAM_SELECTED;
+                _audioTrackCurrent = NO_STREAM_SELECTED;
                 //mf_AudioFrameRate = 0;
                 //mf_AudioFrameStep = 0;
-                _mediaChannelCount  = 0;
+                _mediaChannelCount = 0;
 
-                _hasVideo           = false;
-                _videoTracks        = null;
-                _videoTrackCount    = 0;
-                _videoTrackCurrent  = NO_STREAM_SELECTED;
-                _videoTrackBase     = NO_STREAM_SELECTED;
-                _videoFrameRate     = 0;
-                _videoFrameStep     = 0;
+                _hasVideo = false;
+                _videoTracks = null;
+                _videoTrackCount = 0;
+                _videoTrackCurrent = NO_STREAM_SELECTED;
+                _videoTrackBase = NO_STREAM_SELECTED;
+                _videoFrameRate = 0;
+                _videoFrameStep = 0;
 
-                _pixelAspectRatio   = false;
+                _pixelAspectRatio = false;
 
                 _videoSourceRotated = false;
                 _videoSourceRotation = 0;
@@ -4146,44 +5434,45 @@ namespace PlexDL.Player
                 if (!_videoCropMode) _videoCropRect = null;
 
                 //mf_Speed            = DEFAULT_SPEED;
-                mf_SpeedMinimum     = DEFAULT_SPEED_MINIMUM;
-                mf_SpeedMaximum     = DEFAULT_SPEED_MAXIMUM;
+                mf_SpeedMinimum = DEFAULT_SPEED_MINIMUM;
+                mf_SpeedMaximum = DEFAULT_SPEED_MAXIMUM;
 
-				//mf_SpeedReverse     = true;
-				//mf_SpeedReverseThin = false;
-				//mf_SpeedReverseMinimum = DEFAULT_SPEED_REVERSE_MINIMUM;
-				//mf_SpeedReverseMaximum = DEFAULT_SPEED_REVERSE_MAXIMUM;
+                //mf_SpeedReverse     = true;
+                //mf_SpeedReverseThin = false;
+                //mf_SpeedReverseMinimum = DEFAULT_SPEED_REVERSE_MINIMUM;
+                //mf_SpeedReverseMaximum = DEFAULT_SPEED_REVERSE_MAXIMUM;
 
-				//if (_displayMode != DisplayMode.Manual)
-				//{
-				//    _hasVideoBounds = false;
-				//    _videoBounds = Rectangle.Empty;
-				//}
+                //if (_displayMode != DisplayMode.Manual)
+                //{
+                //    _hasVideoBounds = false;
+                //    _videoBounds = Rectangle.Empty;
+                //}
 
-				if (_hasPositionSlider)
-				{
-					_positionSlider.Value   = _positionSlider.Minimum;
-					_positionSlider.Enabled = false;
-				}
-				//if (_hasShuttleSlider) _shuttleSlider.Enabled = false;
+                if (_hasPositionSlider)
+                {
+                    _positionSlider.Enabled = false;
+                    _positionSlider.Minimum = 0;
+                    _positionSlider.Value = 0;
+                }
+                //if (_hasShuttleSlider) _shuttleSlider.Enabled = false;
 
-				if (_hasTempFile) AV_RemoveTempFile();
+                if (_hasTempFile) AV_RemoveTempFile();
 
                 if (_fileMode && !mf_Replay && _mediaPositionChanged != null) OnMediaPositionChanged();
 
-                _fileMode       = false;
-                _webcamMode     = false;
-                _webcamDevice   = null;
-                _webcamFormat   = null;
-                _micMode        = false;
-                _micDevice      = null;
+                _fileMode = false;
+                _webcamMode = false;
+                _webcamDevice = null;
+                _webcamFormat = null;
+                _micMode = false;
+                _micDevice = null;
                 _fileStreamMode = false;
                 _liveStreamMode = false;
-                _imageMode      = false;
-                _chapterMode    = false;
-                _mediaChapters  = null;
+                _imageMode = false;
+                _chapterMode = false;
+                _mediaChapters = null;
 
-                mf_LowLatency   = false;
+                mf_LowLatency = false;
 
                 if (_chapterTopo != null)
                 {
@@ -4587,7 +5876,7 @@ namespace PlexDL.Player
         {
             VideoTrack[] tracks = null;
 
-            if (_playing)
+            if (_hasVideo)
             {
                 int count = _videoTrackCount;
                 if (count > 0)
@@ -4597,13 +5886,19 @@ namespace PlexDL.Player
                     {
                         VideoTrack track = new VideoTrack
                         {
-                            _mediaType = _videoTracks[i].MediaType,
-                            _name = _videoTracks[i].Name,
-                            _language = _videoTracks[i].Language,
-                            _frameRate = _videoTracks[i].FrameRate,
-                            _width = _videoTracks[i].SourceWidth,
-                            _height = _videoTracks[i].SourceHeight
+                            _mediaType  = _videoTracks[i].MediaType,
+                            _name       = _videoTracks[i].Name,
+                            _language   = _videoTracks[i].Language,
+                            _frameRate  = _videoTracks[i].FrameRate,
+                            _bitRate    = _videoTracks[i].BitRate,
+                            _width      = _videoTracks[i].SourceWidth,
+                            _height     = _videoTracks[i].SourceHeight
                         };
+                        if (_videoTracks[i].Rotated && _videoTracks[i].Rotation == 90 || _videoTracks[i].Rotation == 270)
+                        {
+                            track._width  = _videoTracks[i].SourceHeight;
+                            track._height = _videoTracks[i].SourceWidth;
+                        }
                         tracks[i] = track;
                     }
                 }
@@ -4713,31 +6008,107 @@ namespace PlexDL.Player
                         }
                         break;
                 }
-				if (update) _display.Invalidate();
+                if (update) _display.Invalidate();
             }
         }
 
-        #endregion
-
-        #region Private - Audio
-
-        internal void AV_SetAudioEnabled(bool enabled)
+        internal Image AV_VideoAreaCopy(float left, float top, float right, float bottom)
         {
-            _lastError = NO_ERROR;
+            Bitmap image = null;
 
-            if (enabled != _audioEnabled)
+            if (_hasVideo)
             {
-                _audioEnabled = enabled;
-                if (_hasAudio)
+                if (left >= 0f && left < right && top >= 0f && top < bottom && right <= 1f && bottom <= 1f)
                 {
-                    if (enabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
-                    else mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                    IntPtr hdcSource = IntPtr.Zero;
+                    Graphics gSource = null;
+
+                    IntPtr hdcDest   = IntPtr.Zero;
+                    Graphics gDest   = null;
+
+                    try
+                    {
+                        Rectangle rect  = Rectangle.Intersect(_display.ClientRectangle, _videoDisplay.Bounds);
+                        gSource         = _videoDisplay.CreateGraphics();
+
+                        int copyX       = (int)(left * rect.Width);
+                        int copyY       = (int)(top * rect.Height);
+                        int copyWidth   = (int)(right * rect.Width) - copyX;
+                        int copyHeight  = (int)(bottom * rect.Height) - copyY;
+
+                        image           = new Bitmap(copyWidth, copyHeight, gSource);
+                        gDest           = Graphics.FromImage(image);
+
+                        hdcSource       = gSource.GetHdc();
+                        hdcDest         = gDest.GetHdc();
+
+                        SafeNativeMethods.BitBlt(hdcDest, 0, 0, copyWidth, copyHeight, hdcSource, copyX, copyY, SafeNativeMethods.SRCCOPY);
+
+                        _lastError      = NO_ERROR;
+                    }
+                    catch (Exception e) { _lastError = (HResult)Marshal.GetHRForException(e); }
+
+                    if (hdcSource != IntPtr.Zero) gSource.ReleaseHdc(hdcSource);
+                    if (gSource != null) gSource.Dispose();
+
+                    if (hdcDest != IntPtr.Zero) gDest.ReleaseHdc(hdcDest);
+                    if (gDest != null) gDest.Dispose();
                 }
-                _mediaAudioMuteChanged?.Invoke(this, EventArgs.Empty);
+                else _lastError = HResult.MF_E_OUT_OF_RANGE;
             }
+            else _lastError = HResult.MF_E_INVALIDREQUEST;
+
+            return image;
         }
 
-        internal void AV_SetAudioVolume(float volume, bool setSlider, bool signal)
+		#endregion
+
+		#region Private - Audio
+
+		//internal void AV_SetAudioTrackEnabled(bool enabled)
+		//{
+		//    if (_hasAudio)
+		//    {
+		//        _lastError = NO_ERROR;
+
+		//        if (enabled != _audioEnabled)
+		//        {
+		//            _audioEnabled = enabled;
+		//            if (_hasAudio)
+		//            {
+		//                if (enabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+		//                else mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+		//            }
+		//            _mediaAudioMuteChanged?.Invoke(this, EventArgs.Empty);
+		//        }
+		//    }
+		//}
+
+		internal void AV_SetAudioEnabled(bool enabled)
+		{
+			_lastError = NO_ERROR;
+
+			if (enabled != _audioEnabled)
+			{
+				_audioEnabled = enabled;
+				if (_hasAudio)
+				{
+					if (enabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+					else mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+				}
+
+				if (_mediaAudioMuteChanged != null)
+				{
+					_audioEventArgs._track = _audioTrackCurrent;
+					_audioEventArgs._volume = _audioVolume;
+					_audioEventArgs._balance = _audioBalance;
+					_audioEventArgs._muted = !_audioEnabled;
+					_mediaAudioMuteChanged(this, _audioEventArgs);
+				}
+			}
+		}
+
+		internal void AV_SetAudioVolume(float volume, bool setSlider, bool signal)
         {
             if (volume < AUDIO_VOLUME_MINIMUM || volume > AUDIO_VOLUME_MAXIMUM)
             {
@@ -4749,8 +6120,8 @@ namespace PlexDL.Player
 
                 if (volume != mf_AudioVolume)
                 {
-                    _audioVolume    = volume;
-                    mf_AudioVolume  = volume;
+                    _audioVolume = volume;
+                    mf_AudioVolume = volume;
 
                     for (int i = 0; i < MAX_AUDIO_CHANNELS; i++) { _audioChannelsVolume[i] = volume; }
 
@@ -4770,7 +6141,15 @@ namespace PlexDL.Player
                     {
                         if (_volumeSlider != null) _volumeSlider.Value = (int)(_audioVolume * 100);
                     }
-                    if (_mediaAudioVolumeChanged != null && signal) _mediaAudioVolumeChanged(this, EventArgs.Empty);
+
+                    if (_mediaAudioVolumeChanged != null && signal)
+                    {
+                        _audioEventArgs._track      = _audioTrackCurrent;
+                        _audioEventArgs._volume     = _audioVolume;
+                        _audioEventArgs._balance    = _audioBalance;
+                        _audioEventArgs._muted      = !_audioEnabled;
+                        _mediaAudioVolumeChanged(this, _audioEventArgs);
+                    }
                 }
             }
         }
@@ -4787,7 +6166,7 @@ namespace PlexDL.Player
 
                 if (balance != mf_AudioBalance)
                 {
-                    _audioBalance   = balance;
+                    _audioBalance = balance;
                     mf_AudioBalance = balance;
 
                     // TODO surround audio balance
@@ -4820,7 +6199,15 @@ namespace PlexDL.Player
                     {
                         if (_balanceSlider != null) _balanceSlider.Value = (int)(_audioBalance * 100);
                     }
-                    if (_mediaAudioBalanceChanged != null && signal) _mediaAudioBalanceChanged(this, EventArgs.Empty);
+
+                    if (_mediaAudioBalanceChanged != null && signal)
+                    {
+                        _audioEventArgs._track      = _audioTrackCurrent;
+                        _audioEventArgs._volume     = _audioVolume;
+                        _audioEventArgs._balance    = _audioBalance;
+                        _audioEventArgs._muted      = !_audioEnabled;
+                        _mediaAudioBalanceChanged(this, _audioEventArgs);
+                    }
                 }
             }
         }
@@ -4835,18 +6222,34 @@ namespace PlexDL.Player
 
             if (volume != _audioVolume)
             {
-                _audioVolume    = volume;
-                mf_AudioVolume  = volume;
+                _audioVolume = volume;
+                mf_AudioVolume = volume;
                 if (_volumeSlider != null) _volumeSlider.Value = (int)(volume * 100);
-                _mediaAudioVolumeChanged?.Invoke(this, EventArgs.Empty);
-            }
+
+				if (_mediaAudioVolumeChanged != null)
+				{
+					_audioEventArgs._track      = _audioTrackCurrent;
+					_audioEventArgs._volume     = _audioVolume;
+					_audioEventArgs._balance    = _audioBalance;
+					_audioEventArgs._muted      = !_audioEnabled;
+					_mediaAudioVolumeChanged(this, _audioEventArgs);
+				}
+			}
 
             if (balance != _audioBalance)
             {
-                _audioBalance   = balance;
+                _audioBalance = balance;
                 mf_AudioBalance = balance;
                 if (_balanceSlider != null) _balanceSlider.Value = (int)(balance * 100);
-                _mediaAudioBalanceChanged?.Invoke(this, EventArgs.Empty);
+
+                if (_mediaAudioBalanceChanged != null)
+				{
+					_audioEventArgs._track      = _audioTrackCurrent;
+					_audioEventArgs._volume     = _audioVolume;
+					_audioEventArgs._balance    = _audioBalance;
+					_audioEventArgs._muted      = !_audioEnabled;
+					_mediaAudioBalanceChanged(this, _audioEventArgs);
+				}
             }
         }
 
@@ -4855,7 +6258,7 @@ namespace PlexDL.Player
         {
             _lastError = NO_ERROR;
 
-            if (_playing)
+            if ((audioTrack && _hasAudio) || (!audioTrack && _hasVideo))
             {
                 bool setTrack = false;
 
@@ -4872,10 +6275,56 @@ namespace PlexDL.Player
 
                 if (setTrack)
                 {
-                    if (audioTrack) _audioTrackCurrent = track;
-                    else _videoTrackCurrent = track;
+                    if (audioTrack)
+                    {
+                        if (_audioMultiTrack)
+                        {
+                            // save the current track's audio setting
+                            for (int i = 0; i < MAX_AUDIO_CHANNELS; i++)
+                            {
+                                _audioTracks[_audioTrackCurrent].ChannelVolumes[i] = _audioChannelsVolume[i];
+                            }
+                            _audioTracks[_audioTrackCurrent].Volume = _audioVolume;
+                            _audioTracks[_audioTrackCurrent].Balance = _audioBalance;
 
-                    AV_UpdateTopology();
+                            // mute and device are taken from multi track
+                            //_audioTracks[_audioTrackCurrent].Enabled = _audioEnabled;
+                        }
+                        else
+                        {
+                            // when changing audio track all other tracks are muted
+                            for (int i = 0; i < _audioTrackCount; i++)
+                            {
+                                if (i != track)
+                                {
+                                    _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                    for (int j = 0; j < MAX_AUDIO_CHANNELS; j++) _audioTracks[i].ChannelVolumes[j] = 0;
+                                }
+                            }
+                        }
+
+                        _audioTrackCurrent = track;
+
+                        mf_AudioStreamVolume = _audioTracks[_audioTrackCurrent].MF_VolumeService;
+                        _mediaChannelCount = _audioTracks[_audioTrackCurrent].ChannelCount;
+                        //mf_AudioStreamVolume.GetChannelCount(out _audioChannelCount); // not changed
+
+                        if (_audioMultiTrack)
+                        {
+                            //if (_audioTracks[_audioTrackCurrent].Enabled != _audioEnabled) AV_SetAudioEnabled(_audioTracks[_audioTrackCurrent].Enabled);
+                            Audio.ChannelVolumes = _audioTracks[_audioTrackCurrent].ChannelVolumes;
+                        }
+                        else
+                        {
+                            if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+                            else mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                        }
+                    }
+                    else
+                    {
+                        _videoTrackCurrent = track;
+                        AV_UpdateTopology();
+                    }
 
                     if (_lastError == NO_ERROR)
                     {
@@ -4894,13 +6343,14 @@ namespace PlexDL.Player
                     }
                 }
             }
+            else _lastError = HResult.MF_E_INVALIDREQUEST;
         }
 
         internal AudioTrack[] AV_GetAudioTracks()
         {
             AudioTrack[] tracks = null;
 
-            if (_playing)
+            if (_hasAudio)
             {
                 int count = _audioTrackCount;
                 if (count > 0)
@@ -4914,9 +6364,9 @@ namespace PlexDL.Player
                             _name           = _audioTracks[i].Name,
                             _language       = _audioTracks[i].Language,
                             _channelCount   = _audioTracks[i].ChannelCount,
-                            _samplerate     = _audioTracks[i].Samplerate,
-                            _bitdepth       = _audioTracks[i].Bitdepth,
-                            _bitrate        = _audioTracks[i].Bitrate
+                            _sampleRate     = _audioTracks[i].SampleRate,
+                            _bitDepth       = _audioTracks[i].BitDepth,
+                            _bitRate        = _audioTracks[i].BitRate
                         };
                         tracks[i] = track;
                     }
@@ -5211,10 +6661,18 @@ namespace PlexDL.Player
 
             if (_hasVideo || _hasOverlayShown)
             {
+                IntPtr hdcSource = IntPtr.Zero;
+                Graphics gSource = null;
+
+                IntPtr hdcDest = IntPtr.Zero;
+                Graphics gDest = null;
+
+                IntPtr hdcOverlay = IntPtr.Zero;
+                Graphics gOverlay = null;
+
                 try
                 {
                     Rectangle   rect;
-                    Graphics    gSource;
 
                     if (!_hasVideo) videoMode = false;
 
@@ -5229,11 +6687,11 @@ namespace PlexDL.Player
                         gSource = _display.CreateGraphics();
                     }
 
-                    image            = new Bitmap(rect.Width, rect.Height, gSource);
-                    Graphics gDest   = Graphics.FromImage(image);
+                    image       = new Bitmap(rect.Width, rect.Height, gSource);
+                    gDest       = Graphics.FromImage(image);
 
-                    IntPtr hdcSource = gSource.GetHdc();
-                    IntPtr hdcDest   = gDest.GetHdc();
+                    hdcSource   = gSource.GetHdc();
+                    hdcDest     = gDest.GetHdc();
 
                     if (videoMode) SafeNativeMethods.BitBlt(hdcDest, 0, 0, rect.Width, rect.Height, hdcSource, rect.X - _videoDisplay.Bounds.X, rect.Y - _videoDisplay.Bounds.Y, SafeNativeMethods.SRCCOPY);
                     else SafeNativeMethods.BitBlt(hdcDest, 0, 0, rect.Width, rect.Height, hdcSource, 0, 0, SafeNativeMethods.SRCCOPY);
@@ -5242,8 +6700,8 @@ namespace PlexDL.Player
                     {
                         int transparentColor = ColorTranslator.ToWin32(_overlay.TransparencyKey);
 
-                        Graphics gOverlay = _overlay.CreateGraphics();
-                        IntPtr hdcOverlay = gOverlay.GetHdc();
+                        gOverlay = _overlay.CreateGraphics();
+                        hdcOverlay = gOverlay.GetHdc();
 
                         if (videoMode)
                         {
@@ -5273,21 +6731,20 @@ namespace PlexDL.Player
                                 else SafeNativeMethods.AlphaBlend(hdcDest, _videoBoundsClip.X, _videoBoundsClip.Y, _videoBoundsClip.Width, _videoBoundsClip.Height, hdcOverlay, 0, 0, _overlay.ClientRectangle.Width, _overlay.ClientRectangle.Height, _blendFunction);
                             }
                         }
-
-                        gOverlay.ReleaseHdc(hdcOverlay);
-                        gOverlay.Dispose();
                     }
-
-                    // this should be outside try/catch
-                    if (hdcSource  != null) gSource.ReleaseHdc(hdcSource);
-                    if (gSource    != null) gSource.Dispose();
-
-                    if (hdcDest != null) gDest.ReleaseHdc(hdcDest);
-                    if (gDest   != null) gDest.Dispose();
 
                     _lastError = NO_ERROR;
                 }
-                catch { /* ignored */ }
+                catch (Exception e) { _lastError = (HResult)Marshal.GetHRForException(e); }
+
+                if (hdcSource != IntPtr.Zero) gSource.ReleaseHdc(hdcSource);
+                if (gSource != null) gSource.Dispose();
+
+                if (hdcDest != IntPtr.Zero) gDest.ReleaseHdc(hdcDest);
+                if (gDest != null) gDest.Dispose();
+
+                if (hdcOverlay != IntPtr.Zero) gOverlay.ReleaseHdc(hdcOverlay);
+                if (gOverlay != null)  gOverlay.Dispose();
             }
             return image;
         }
@@ -5304,7 +6761,7 @@ namespace PlexDL.Player
             g.CompositingQuality    = CompositingQuality.HighQuality;
             g.PixelOffsetMode       = PixelOffsetMode.HighQuality;
 
-            System.Drawing.Imaging.ImageAttributes imageAttrs = new System.Drawing.Imaging.ImageAttributes();
+            ImageAttributes imageAttrs = new ImageAttributes();
             imageAttrs.SetWrapMode(WrapMode.TileFlipXY);
 
             g.DrawImage(image, new Rectangle(0, 0, width, height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, imageAttrs);
@@ -5488,31 +6945,133 @@ namespace PlexDL.Player
         {
             Rectangle r = shapeBounds;
 
-            // x and y units
-            float x = r.Width / 6f;
-            float y = r.Height / 6f;
+			// x and y units
+			float x = r.Width / 6f;
+			float y = r.Height / 6f;
 
-            PointF[] points = new PointF[8];
+			PointF[] points = new PointF[8];
 
-            points[0].X = r.X + x;
-            points[1].X = points[0].X;
-            points[2].X = r.X;
-            points[3].X = r.X + (3 * x);
-            points[4].X = r.X + (6 * x);
-            points[5].X = r.X + (5 * x);
-            points[6].X = points[5].X;
-            points[7].X = points[0].X;
+			points[0].X = r.X + x;
+			points[1].X = points[0].X;
+			points[2].X = r.X;
+			points[3].X = r.X + (3 * x);
+			points[4].X = r.X + (6 * x);
+			points[5].X = r.X + (5 * x);
+			points[6].X = points[5].X;
+			points[7].X = points[0].X;
 
-            points[0].Y = r.Y;
-            points[1].Y = r.Y + (3 * y);
-            points[2].Y = points[1].Y;
-            points[3].Y = r.Y + (6 * y);
-            points[4].Y = points[1].Y;
-            points[5].Y = points[1].Y;
-            points[6].Y = r.Y;
-            points[7].Y = r.Y;
+			points[0].Y = r.Y;
+			points[1].Y = r.Y + (3 * y);
+			points[2].Y = points[1].Y;
+			points[3].Y = r.Y + (6 * y);
+			points[4].Y = points[1].Y;
+			points[5].Y = points[1].Y;
+			points[6].Y = r.Y;
+			points[7].Y = r.Y;
 
-            return AV_PresetShapeSetPoints(points);
+			return AV_PresetShapeSetPoints(points);
+
+            /*
+			// Slashes:
+
+			// x and y units
+			float x = r.Width / 9f;
+			float y = r.Height / 9f;
+
+			GraphicsPath path = new GraphicsPath();
+
+			PointF[] points = new PointF[4];
+
+			points[0].X = r.X;
+			points[1].X = r.X;
+			points[2].X = r.X + (2 * x);
+			points[3].X = r.X;
+
+			points[0].Y = r.Y;
+			points[1].Y = r.Y + (2 * y);
+			points[2].Y = r.Y;
+			points[3].Y = r.Y;
+
+			path.AddPolygon(points);
+
+
+			points = new PointF[5];
+
+			points[0].X = r.X;
+			points[1].X = r.X;
+			points[2].X = r.X + (6 * x);
+			points[3].X = r.X + (4 * x);
+			points[4].X = r.X;
+
+			points[0].Y = r.Y + (4 * y);
+			points[1].Y = r.Y + (6 * y);
+			points[2].Y = r.Y;
+			points[3].Y = r.Y;
+			points[4].Y = points[0].Y;
+
+			path.AddPolygon(points);
+
+
+			points = new PointF[7];
+
+			points[0].X = r.X;
+			points[1].X = r.X;
+			points[2].X = r.X + x;
+			points[3].X = r.X + (9 * x);
+			points[4].X = points[3].X;
+			points[5].X = r.X + (8 * x);
+			points[6].X = r.X;
+
+			points[0].Y = r.Y + (8 * y);
+			points[1].Y = r.Y + (9 * y);
+			points[2].Y = points[1].Y;
+			points[3].Y = r.Y + y;
+			points[4].Y = r.Y;
+			points[5].Y = r.Y;
+			points[6].Y = points[0].Y;
+
+			path.AddPolygon(points);
+
+
+			points = new PointF[5];
+
+			points[0].X = r.X + (3 * x);
+			points[1].X = r.X + (5 * x);
+			points[2].X = r.X + (9 * x);
+			points[3].X = points[2].X;
+			points[4].X = points[0].X;
+
+			points[0].Y = r.Y + (9 * y);
+			points[1].Y = points[0].Y;
+			points[2].Y = r.Y + (5 * y);
+			points[3].Y = r.Y + (3 * y);
+			points[4].Y = points[0].Y;
+
+			path.AddPolygon(points);
+
+
+			points = new PointF[4];
+
+			points[0].X = r.X + (7 * x);
+			points[1].X = r.X + (9 * x);
+			points[2].X = points[1].X;
+			points[3].X = points[0].X;
+
+			points[0].Y = r.Y + (9 * y);
+			points[1].Y = points[0].Y;
+			points[2].Y = r.Y + (7 * y);
+			points[3].Y = points[0].Y;
+
+			path.AddPolygon(points);
+
+
+            Region region = new Region(path);
+            path.Dispose();
+
+            return region;
+
+            */
+
         }
 
         internal Region AV_PresetArrowLeftShape(Rectangle shapeBounds)
@@ -5891,8 +7450,8 @@ namespace PlexDL.Player
 
             IntPtr handle = SafeNativeMethods.CreateRoundRectRgn(
                shapeBounds.Left, shapeBounds.Top,
-               shapeBounds.Left + shapeBounds.Width,
-               shapeBounds.Top + shapeBounds.Height,
+               shapeBounds.Left + shapeBounds.Width + 1,
+               shapeBounds.Top + shapeBounds.Height + 1,
                DISPLAY_SHAPE_ROUNDED_SIZE, DISPLAY_SHAPE_ROUNDED_SIZE);
 
             Region region = Region.FromHrgn(handle);
@@ -6524,8 +8083,7 @@ namespace PlexDL.Player
 
                     _imageOverlayPlacement = alignment; // gets 'really' set with AV_ShowBitmapOverlay()
                     paras.dwFlags |= MFVideoAlphaBitmapFlags.DestRect;
-
-                    paras.rcSrc = new MFRect(0, 0, image.Width, image.Height); // must always be present
+                    paras.rcSrc = new MFRect(0, 0, image.Width, image.Height); // must always be present:
 
                     if (bounds == RectangleF.Empty || bounds.Width <= bounds.X || bounds.Height <= bounds.Y) _imageOverlayBounds = new RectangleF(0, 0, 1, 1);
                     else _imageOverlayBounds = bounds;
@@ -6595,57 +8153,58 @@ namespace PlexDL.Player
         {
             if (_hasVideo && _hasImageOverlay)
             {
-				if (MFExtern.MFGetService(mf_MediaSession, MFServices.MR_VIDEO_MIXER_SERVICE, typeof(IMFVideoMixerBitmap).GUID, out object videoMixer) == NO_ERROR)
-				{
-					MFVideoNormalizedRect nrcDest = new MFVideoNormalizedRect();
+                if (MFExtern.MFGetService(mf_MediaSession, MFServices.MR_VIDEO_MIXER_SERVICE, typeof(IMFVideoMixerBitmap).GUID, out object videoMixer) == NO_ERROR)
+                {
+                    MFVideoNormalizedRect nrcDest = new MFVideoNormalizedRect();
 
-					double vWidth   = _videoSourceSize.Width;
-					double vHeight  = _videoSourceSize.Height;
+                    double vWidth   = _videoSourceSize.Width;
+                    double vHeight  = _videoSourceSize.Height;
+                    bool vWide      = vWidth >= vHeight;
 
-					double bWidth   = _imageOverlayBitmap.Width;
+                    // TODO ?
+                    // if (_video3DView == Video3DView.LeftImage)
+
+                    double bWidth   = _imageOverlayBitmap.Width;
 					double bHeight  = _imageOverlayBitmap.Height;
 
-					double difX;
-					double difY;
+                    double difX     = vWidth / bWidth;
+                    double difY     = vHeight / bHeight;
 
                     float xMargin;
                     float yMargin;
+                    float MARGIN    = _IMAGE_OVERLAY_LARGE;
 
-                    if (_videoSourceSize.Width <= 960)
-                    {
+                    if ((vWide &&_videoSourceSize.Width <= 960) || (!vWide && _videoSourceSize.Height <= 960))
+					{
 						xMargin = (float)(_IMAGE_OVERLAY_MARGIN_HORIZONTAL / _videoSourceSize.Width);
 						yMargin = (float)(_IMAGE_OVERLAY_MARGIN_VERTICAL / _videoSourceSize.Height);
-                    }
-                    else
-                    {
-						xMargin = (float)(_IMAGE_OVERLAY_MARGIN_HORIZONTAL2 / _videoSourceSize.Width);
-						yMargin = (float)(_IMAGE_OVERLAY_MARGIN_VERTICAL2 / _videoSourceSize.Height);
-                    }
+					}
+					else
+					{
+						xMargin = (float)((2 * _IMAGE_OVERLAY_MARGIN_HORIZONTAL) / _videoSourceSize.Width);
+						yMargin = (float)((2 * _IMAGE_OVERLAY_MARGIN_VERTICAL) / _videoSourceSize.Height);
+					}
 
                     switch (_imageOverlayPlacement)
 					{
 						case ImagePlacement.Zoom:
-							difX = vWidth / bWidth;
-							difY = vHeight / bHeight;
 							if (difX < difY)
 							{
 								nrcDest.left = 0;
 								nrcDest.right = 1;
-								nrcDest.top = (float)(1.0 - ((bHeight * difX) + 0.5) / vHeight) / 2;
+                                nrcDest.top = (float)(1.0 - ((bHeight * difX) + 0.5) / vHeight) / 2f;
 								nrcDest.bottom = 1.0f - nrcDest.top;
 							}
-							else
+                            else
 							{
 								nrcDest.top = 0;
 								nrcDest.bottom = 1;
-								nrcDest.left = (float)(1.0 - ((bWidth * difY) + 0.5) / vWidth) / 2;
+								nrcDest.left = (float)(1.0 - ((bWidth * difY) + 0.5) / vWidth) / 2f;
 								nrcDest.right = 1.0f - nrcDest.left;
 							}
 							break;
 
 						case ImagePlacement.Center:
-                            difX = vWidth / bWidth;
-                            difY = vHeight / bHeight;
                             if (difX < difY)
                             {
                                 nrcDest.left = 0.2f;
@@ -6663,8 +8222,6 @@ namespace PlexDL.Player
                             break;
 
                         case ImagePlacement.Cover:
-							difX = vWidth / bWidth;
-							difY = vHeight / bHeight;
 							if (difX > difY)
 							{
 								nrcDest.left = 0;
@@ -6681,185 +8238,125 @@ namespace PlexDL.Player
 							}
 							break;
 
-						case ImagePlacement.TopLeftLarge:
-							nrcDest.left = xMargin;
-							nrcDest.top = yMargin;
-							if (vWidth >= vHeight)
-							{
-								nrcDest.right = (float)((((_IMAGE_OVERLAY_LARGE * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
-								nrcDest.bottom = _IMAGE_OVERLAY_LARGE + yMargin;
-							}
-							else
-							{
-								nrcDest.right = _IMAGE_OVERLAY_LARGE + xMargin;
-								nrcDest.bottom = (float)((((_IMAGE_OVERLAY_LARGE * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-							}
-							break;
-
-                        case ImagePlacement.TopLeftMedium:
-                            nrcDest.left = xMargin;
-                            nrcDest.top = yMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.right = (float)((((_IMAGE_OVERLAY_MEDIUM * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
-                                nrcDest.bottom = _IMAGE_OVERLAY_MEDIUM + yMargin;
-                            }
-                            else
-                            {
-                                nrcDest.right = _IMAGE_OVERLAY_MEDIUM + xMargin;
-                                nrcDest.bottom = (float)((((_IMAGE_OVERLAY_MEDIUM * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-                            }
-                            break;
-
                         case ImagePlacement.TopLeftSmall:
-                            nrcDest.left = xMargin;
-                            nrcDest.top = yMargin;
-                            if (vWidth >= vHeight)
-                            {
-								nrcDest.right = (float)((((_IMAGE_OVERLAY_SMALL * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
-								nrcDest.bottom = _IMAGE_OVERLAY_SMALL + yMargin;
-                            }
-                            else
-                            {
-								nrcDest.right = _IMAGE_OVERLAY_SMALL + xMargin;
-								nrcDest.bottom = (float)((((_IMAGE_OVERLAY_SMALL * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-							}
-                            break;
+                        case ImagePlacement.TopLeftMedium:
+                        case ImagePlacement.TopLeftLarge:
 
-                        case ImagePlacement.TopRightLarge:
+                            if (_imageOverlayPlacement == ImagePlacement.TopLeftSmall) MARGIN = _IMAGE_OVERLAY_SMALL;
+                            else if (_imageOverlayPlacement == ImagePlacement.TopLeftMedium) MARGIN = _IMAGE_OVERLAY_MEDIUM;
+
+                            nrcDest.left = xMargin;
 							nrcDest.top = yMargin;
-							nrcDest.right = 1 - xMargin;
+
 							if (vWidth >= vHeight)
 							{
-								nrcDest.left = (float)(1 - (((_IMAGE_OVERLAY_LARGE * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-								nrcDest.bottom = _IMAGE_OVERLAY_LARGE + yMargin;
-							}
+								nrcDest.right = (float)((((MARGIN * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
+								nrcDest.bottom = MARGIN + yMargin;
+                            }
 							else
 							{
-								nrcDest.left = _IMAGE_OVERLAY_LARGE2 - xMargin;
-								nrcDest.bottom = (float)((((_IMAGE_OVERLAY_LARGE * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-							}
+                                if (bWidth < bHeight)
+                                {
+									nrcDest.right = MARGIN + xMargin;
+									nrcDest.bottom = (float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) + yMargin;
+								}
+                                else
+                                {
+                                    nrcDest.right = ((float)(vHeight / vWidth) * (MARGIN + xMargin));
+                                    nrcDest.bottom = (float)(vHeight / vWidth) * ((float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) + yMargin);
+                                }
+                            }
 							break;
-
-                        case ImagePlacement.TopRightMedium:
-                            nrcDest.top = yMargin;
-                            nrcDest.right = 1 - xMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.left = (float)(1 - (((_IMAGE_OVERLAY_MEDIUM * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-                                nrcDest.bottom = _IMAGE_OVERLAY_MEDIUM + yMargin;
-                            }
-                            else
-                            {
-                                nrcDest.left = _IMAGE_OVERLAY_MEDIUM2 - xMargin;
-                                nrcDest.bottom = (float)((((_IMAGE_OVERLAY_MEDIUM * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-                            }
-                            break;
 
                         case ImagePlacement.TopRightSmall:
-                            nrcDest.top = yMargin;
-                            nrcDest.right = 1 - xMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.left = (float)(1 - (((_IMAGE_OVERLAY_SMALL * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-                                nrcDest.bottom = _IMAGE_OVERLAY_SMALL + yMargin;
-                            }
-                            else
-                            {
-                                nrcDest.left = _IMAGE_OVERLAY_SMALL2 - xMargin;
-                                nrcDest.bottom = (float)((((_IMAGE_OVERLAY_SMALL * vWidth) / bWidth) * bHeight) / vHeight) + yMargin;
-                            }
-                            break;
+                        case ImagePlacement.TopRightMedium:
+                        case ImagePlacement.TopRightLarge:
 
-                        case ImagePlacement.BottomLeftLarge:
-							nrcDest.left = xMargin;
-							nrcDest.bottom = 1 - yMargin;
+                            if (_imageOverlayPlacement == ImagePlacement.TopRightSmall) MARGIN = _IMAGE_OVERLAY_SMALL;
+                            else if (_imageOverlayPlacement == ImagePlacement.TopRightMedium) MARGIN = _IMAGE_OVERLAY_MEDIUM;
+
+                            nrcDest.top = yMargin;
+							nrcDest.right = 1 - xMargin;
+
 							if (vWidth >= vHeight)
 							{
-								nrcDest.top = _IMAGE_OVERLAY_LARGE2 - yMargin;
-								nrcDest.right = (float)((((_IMAGE_OVERLAY_LARGE * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
+								nrcDest.left = (float)(1 - (((MARGIN * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
+								nrcDest.bottom = MARGIN + yMargin;
 							}
 							else
 							{
-								nrcDest.top = (float)((((_IMAGE_OVERLAY_LARGE2 * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-								nrcDest.right = _IMAGE_OVERLAY_LARGE + xMargin;
-							}
+								if (bWidth < bHeight)
+								{
+									nrcDest.left = (1.0f - MARGIN) - xMargin;
+									nrcDest.bottom = (float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) + yMargin;
+								}
+								else
+								{
+                                    nrcDest.left = 1.0f - ((float)(vHeight / vWidth) * (MARGIN + xMargin));
+                                    nrcDest.bottom = (float)(vHeight / vWidth) * ((float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) + yMargin);
+                                }
+                            }
 							break;
-
-                        case ImagePlacement.BottomLeftMedium:
-                            nrcDest.left = xMargin;
-                            nrcDest.bottom = 1 - yMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.top = _IMAGE_OVERLAY_MEDIUM2 - yMargin;
-                                nrcDest.right = (float)((((_IMAGE_OVERLAY_MEDIUM * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
-                            }
-                            else
-                            {
-                                nrcDest.top = (float)((((_IMAGE_OVERLAY_MEDIUM2 * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-                                nrcDest.right = _IMAGE_OVERLAY_MEDIUM + xMargin;
-                            }
-                            break;
 
                         case ImagePlacement.BottomLeftSmall:
-                            nrcDest.left = xMargin;
-                            nrcDest.bottom = 1 - yMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.top = _IMAGE_OVERLAY_SMALL2 - yMargin;
-                                nrcDest.right = (float)((((_IMAGE_OVERLAY_SMALL * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
-                            }
-                            else
-                            {
-                                nrcDest.top = (float)((((_IMAGE_OVERLAY_SMALL2 * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-                                nrcDest.right = _IMAGE_OVERLAY_SMALL + xMargin;
-                            }
-                            break;
+                        case ImagePlacement.BottomLeftMedium:
+                        case ImagePlacement.BottomLeftLarge:
 
-                        case ImagePlacement.BottomRightLarge:
-							nrcDest.right = 1 - xMargin;
+                            if (_imageOverlayPlacement == ImagePlacement.BottomLeftSmall) MARGIN = _IMAGE_OVERLAY_SMALL;
+                            else if (_imageOverlayPlacement == ImagePlacement.BottomLeftMedium) MARGIN = _IMAGE_OVERLAY_MEDIUM;
+
+                            nrcDest.left = xMargin;
 							nrcDest.bottom = 1 - yMargin;
+
 							if (vWidth >= vHeight)
 							{
-								nrcDest.left = (float)(1 - (((_IMAGE_OVERLAY_LARGE * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-								nrcDest.top = _IMAGE_OVERLAY_LARGE2 - yMargin;
+								nrcDest.top = (1.0f - MARGIN) - yMargin;
+								nrcDest.right = (float)((((MARGIN * vHeight) / bHeight) * bWidth) / vWidth) + xMargin;
 							}
 							else
 							{
-								nrcDest.left = _IMAGE_OVERLAY_LARGE2 - xMargin;
-								nrcDest.top = (float)((((_IMAGE_OVERLAY_LARGE * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-							}
+                                if (bWidth < bHeight)
+                                {
+                                    nrcDest.top = 1 - (float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) - yMargin;
+                                    nrcDest.right = MARGIN + xMargin;
+                                }
+                                else
+                                {
+                                    nrcDest.top = 1 - ((float)(vHeight / vWidth) * ((float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth)) + yMargin);
+                                    nrcDest.right = ((float)(vHeight / vWidth) * (MARGIN + xMargin));
+                                }
+                            }
 							break;
 
-						case ImagePlacement.BottomRightMedium:
-                            nrcDest.right   = 1 - xMargin;
-                            nrcDest.bottom  = 1 - yMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.left    = (float)(1 - (((_IMAGE_OVERLAY_MEDIUM * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-                                nrcDest.top     = _IMAGE_OVERLAY_MEDIUM2 - yMargin;
-                            }
-                            else
-                            {
-                                nrcDest.left    = _IMAGE_OVERLAY_MEDIUM2 - xMargin;
-                                nrcDest.top     = (float)((((_IMAGE_OVERLAY_MEDIUM * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-                            }
-                            break;
-
                         case ImagePlacement.BottomRightSmall:
-                            nrcDest.right       = 1 - xMargin;
-                            nrcDest.bottom      = 1 - yMargin;
-                            if (vWidth >= vHeight)
-                            {
-                                nrcDest.left    = (float)(1 - (((_IMAGE_OVERLAY_SMALL * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
-                                nrcDest.top     = _IMAGE_OVERLAY_SMALL2 - yMargin;
+                        case ImagePlacement.BottomRightMedium:
+                        case ImagePlacement.BottomRightLarge:
+
+                            if (_imageOverlayPlacement == ImagePlacement.BottomRightSmall) MARGIN = _IMAGE_OVERLAY_SMALL;
+                            else if (_imageOverlayPlacement == ImagePlacement.BottomRightMedium) MARGIN = _IMAGE_OVERLAY_MEDIUM;
+
+                            nrcDest.right = 1 - xMargin;
+							nrcDest.bottom = 1 - yMargin;
+
+							if (vWidth >= vHeight)
+							{
+								nrcDest.left = (float)(1 - (((MARGIN * vHeight) / bHeight) * bWidth) / vWidth) - xMargin;
+								nrcDest.top = (1.0f - MARGIN) - yMargin;
+							}
+							else
+							{
+                                if (bWidth < bHeight)
+                                {
+                                    nrcDest.left = 1 - MARGIN - xMargin;
+                                    nrcDest.top = (float)(1 - (((MARGIN * vHeight) / bWidth) * bHeight) / vWidth) - yMargin;
+                                }
+                                else
+                                {
+                                    nrcDest.left = 1.0f - ((float)(vHeight / vWidth) * (MARGIN + xMargin));
+                                    nrcDest.top = 1 - ((float)(vHeight / vWidth) * ((float)((((MARGIN * vHeight) / bWidth) * bHeight) / vWidth)) + yMargin);
+                                }
                             }
-                            else
-                            {
-                                nrcDest.left    = _IMAGE_OVERLAY_SMALL2 - xMargin;
-                                nrcDest.top     = (float)((((_IMAGE_OVERLAY_SMALL * vWidth) / bWidth) * bHeight) / vHeight) - yMargin;
-                            }
-                            break;
+							break;
 
                         case ImagePlacement.Custom:
 							nrcDest.left    = _imageOverlayBounds.X;
@@ -6875,17 +8372,97 @@ namespace PlexDL.Player
 							nrcDest.bottom  = 1;
 							break;
 					}
+
+					if ((_videoRotation == VideoRotation.CW_90 || _videoRotation == VideoRotation.CW_270) || _videoSourceRotated)
+					{
+						double delta;
+
+						if (_imageOverlayPlacement >= ImagePlacement.TopLeftSmall && _imageOverlayPlacement <= ImagePlacement.TopRightLarge)
+						{
+							if (vWidth > vHeight)
+							{
+								if (!_videoSourceRotated)
+								{
+									difX = vHeight * (vHeight / vWidth);
+									difY = (vWidth - difX) / 2;
+									delta = difY / difX;
+
+									nrcDest.top = (nrcDest.top - (float)delta) + (float)(delta * xMargin);
+									nrcDest.bottom = (nrcDest.bottom - (float)delta) + (float)(delta * xMargin);
+								}
+							}
+							else
+							{
+								difX = vWidth * (vWidth / vHeight);
+								difY = (vHeight - difX) / 2;
+								delta = difY / difX;
+
+								nrcDest.top = (nrcDest.top - (float)delta) + (float)(delta * xMargin);
+								nrcDest.bottom = (nrcDest.bottom - (float)delta) + (float)(delta * xMargin);
+							}
+						}
+						else if (_imageOverlayPlacement >= ImagePlacement.BottomLeftSmall && _imageOverlayPlacement <= ImagePlacement.BottomRightLarge)
+						{
+							if (vWidth > vHeight)
+							{
+								if (!_videoSourceRotated)
+								{
+									difX = vHeight * (vHeight / vWidth);
+									difY = (vWidth - difX) / 2;
+									delta = difY / difX;
+
+									nrcDest.top = (nrcDest.top + (float)delta) - (float)(delta * xMargin);
+									nrcDest.bottom = (nrcDest.bottom + (float)delta) - (float)(delta * xMargin);
+								}
+							}
+							else
+							{
+								difX = vWidth * (vWidth / vHeight);
+								difY = (vHeight - difX) / 2;
+								delta = difY / difX;
+
+								nrcDest.top = (nrcDest.top + (float)delta) - (float)(delta * xMargin);
+								nrcDest.bottom = (nrcDest.bottom + (float)delta) - (float)(delta * xMargin);
+							}
+						}
+						else
+						{
+                            // TODO not tested yet
+							if (vWidth > vHeight)
+							{
+								if (!_videoSourceRotated)
+								{
+									difX = vHeight * (vHeight / vWidth);
+									difY = (vWidth - difX) / 2;
+									delta = difY / difX;
+
+                                    //nrcDest.left = (nrcDest.left - (float)delta) + ((2 * nrcDest.left) * (float)delta); // + (float)(delta * xMargin);
+                                    //nrcDest.right = (nrcDest.right + (float)delta) - ((2 * (1 - nrcDest.right)) * (float)delta); // + (float)(delta * xMargin);
+
+                                    nrcDest.right = (nrcDest.right + (float)delta) - ((2 * nrcDest.left) * (float)delta); // + (float)(delta * xMargin);
+                                    nrcDest.left = (nrcDest.left - (float)delta) + ((2 * nrcDest.left) * (float)delta); // + (float)(delta * xMargin);
+                                }
+							}
+							else
+							{
+								difX = vWidth * (vWidth / vHeight);
+								difY = (vHeight - difX) / 2;
+								delta = (difY / difX);
+
+                                //nrcDest.top = (nrcDest.top - (float)delta) + ((2 * nrcDest.top) * (float)delta); // + (float)(delta * xMargin);
+                                //nrcDest.bottom = (nrcDest.bottom + (float)delta) - ((2 * (1 - nrcDest.bottom)) * (float)delta); // + (float)(delta * xMargin);
+
+                                nrcDest.bottom = (nrcDest.bottom + (float)delta) - ((2 * nrcDest.top) * (float)delta); // + (float)(delta * xMargin);
+                                nrcDest.top = (nrcDest.top - (float)delta) + ((2 * nrcDest.top) * (float)delta); // + (float)(delta * xMargin);
+                            }
+						}
+					}
+
 					_imageOverlay.paras.nrcDest = nrcDest;
 
-                    try
-                    {
-                        ((IMFVideoMixerBitmap)videoMixer).SetAlphaBitmap(_imageOverlay);
-                    }
-                    catch
-                    {
-                        // probably unaccepted bounds parameter
-                        _imageOverlayPlacement = ImagePlacement.Stretch;
-                    }
+                    try { ((IMFVideoMixerBitmap)videoMixer).SetAlphaBitmap(_imageOverlay); }
+                    catch { /* ignored */ }  // { _imageOverlayPlacement = ImagePlacement.Stretch; } // probably unaccepted bounds parameter
+
                     Marshal.ReleaseComObject(videoMixer);
                 }
             }
@@ -7362,7 +8939,7 @@ namespace PlexDL.Player
         {
             if (_hasDisplay)
             {
-                _lastError = Player.NO_ERROR;
+                _lastError = NO_ERROR;
                 return _fullScreen && _fullScreenMode == FullScreenMode.Display_AllScreens;
             }
             _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
@@ -7385,7 +8962,7 @@ namespace PlexDL.Player
                 {
                     AV_SetFullScreen(false);
                 }
-                _lastError = Player.NO_ERROR;
+                _lastError = NO_ERROR;
             }
             else _lastError = HResult.ERROR_INVALID_WINDOW_HANDLE;
         }
@@ -7407,6 +8984,7 @@ namespace PlexDL.Player
                 {
                     if (mf_RateControl != null)
                     {
+                        float oldSpeed = mf_Speed;
                         _speed = speed;
                         if (_speedSlider != null && setSlider) SpeedSlider_ValueToSlider(speed);
 
@@ -7414,13 +8992,26 @@ namespace PlexDL.Player
                         {
                             mf_AwaitCallBack = true;
                             mf_RateControl.SetRate(_speedBoost, speed);
-                            //mf_AwaitCallback = true;
                             WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-                        }
-                        else AV_UpdateTopology();
 
-                        mf_Speed = speed;
-                        _mediaSpeedChanged?.Invoke(this, EventArgs.Empty);
+							if (_lastError != NO_ERROR)
+							{
+								speed = oldSpeed;
+								_speed = oldSpeed;
+								if (_speedSlider != null)
+								{
+									SpeedSlider_ValueToSlider(oldSpeed);
+									_mediaSpeedChanged?.Invoke(this, EventArgs.Empty);
+								}
+							}
+                        }
+						else AV_UpdateTopology();
+
+                        if (_lastError == NO_ERROR)
+                        {
+                            mf_Speed = speed;
+                            _mediaSpeedChanged?.Invoke(this, EventArgs.Empty);
+                        }
                     }
                     else
                     {
@@ -7438,14 +9029,291 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+		#endregion
+
+		#region Private - Motion Detection
+
+		internal void AV_StartMotionTimer()
+		{
+			if (_hasMotionDetection && !_motionDetectionActive)
+			{
+				if (_motionTimer == null)
+				{
+					_motionTimer = new System.Timers.Timer(_motionTimerInterval);
+					_motionTimer.Elapsed += MotionTimer_Elapsed;
+				}
+				if (_motionTimer != null && _hasVideo)
+				{
+                    _motionTimer.SynchronizingObject = _display.FindForm();
+
+                    _motionIdleCounter = 0;
+                    _motionTimer.Start();
+                    _motionDetectionActive = true;
+				}
+				else _motionDetectionActive = false;
+			}
+		}
+
+		internal void AV_StopMotionTimer(bool purge)
+		{
+			_motionDetectionActive = false;
+			if (purge)
+			{
+				if (_motionTimer != null) { _motionTimer.Dispose(); _motionTimer = null; }
+
+				_mediaMotionDetected = null;
+                _hasMotionFixedImage = false;
+				_hasMotionDetection = false;
+			}
+			else
+			{
+				if (_motionTimer != null) _motionTimer.Stop();
+			}
+			_motionTable = null;
+		}
+
+#pragma warning disable CA1806 // Do not ignore method results
+
+		internal void MotionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+            if (!_motionDetectionBusy)
+            {
+                _motionDetectionBusy = true;
+
+				if (_motionDetectionActive && _hasVideo)
+				{
+					Bitmap      image       = null;
+
+					IntPtr      hdcSource   = IntPtr.Zero;
+					Graphics    gSource     = null;
+
+					IntPtr      hdcDest     = IntPtr.Zero;
+					Graphics    gDest       = null;
+
+                    int         copyX;
+                    int         copyY;
+                    int         copyWidth;
+                    int         copyHeight;
+
+					BitmapData  bitmapData  = null;
+					byte[]      motionTable = new byte[MOTION_TABLE_SIZE];
+
+					int         result      = 0;
+
+					try
+					{
+						Rectangle rect      = Rectangle.Intersect(_display.ClientRectangle, _videoDisplay.Bounds);
+						gSource             = _videoDisplay.CreateGraphics();
+
+						image               = new Bitmap(MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT, gSource);
+						gDest               = Graphics.FromImage(image);
+
+						hdcSource           = gSource.GetHdc();
+						hdcDest             = gDest.GetHdc();
+
+                        SafeNativeMethods.SetStretchBltMode(hdcDest, SafeNativeMethods.STRETCH_HALFTONE);
+
+                        if (_hasMotionArea)
+                        {
+                            copyX       = (int)(_motionArea.X * rect.Width);
+                            copyY       = (int)(_motionArea.Y * rect.Height);
+                            copyWidth   = (int)(_motionArea.Width * rect.Width) - copyX;
+                            copyHeight  = (int)(_motionArea.Height * rect.Height) - copyY;
+
+                            SafeNativeMethods.StretchBlt(hdcDest, 0, 0, MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT,
+										hdcSource, copyX, copyY, copyWidth, copyHeight, SafeNativeMethods.SRCCOPY);
+                        }
+                        else
+                        {
+                            SafeNativeMethods.StretchBlt(hdcDest, 0, 0, MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT,
+										hdcSource, 0, 0, rect.Width, rect.Height, SafeNativeMethods.SRCCOPY);
+                        }
+
+                        gSource.ReleaseHdc(hdcSource);
+				        gSource.Dispose();
+
+					    gDest.ReleaseHdc(hdcDest);
+
+                        if (_hasMotionBlocked)
+                        {
+                            copyX       = (int)(_motionBlocked.X * MOTION_TABLE_WIDTH);
+                            copyY       = (int)(_motionBlocked.Y * MOTION_TABLE_HEIGHT);
+                            copyWidth   = (int)(_motionBlocked.Width * MOTION_TABLE_WIDTH) - copyX;
+                            copyHeight  = (int)(_motionBlocked.Height * MOTION_TABLE_HEIGHT) - copyY;
+
+                            gDest.FillRectangle(Brushes.White, copyX, copyY, copyWidth, copyHeight);
+                        }
+
+					    gDest.Dispose();
+
+						unsafe
+						{
+							bitmapData = image.LockBits(new Rectangle(0, 0, MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT), ImageLockMode.ReadOnly, image.PixelFormat);
+							byte* pixel = (byte*)bitmapData.Scan0;
+
+							if (_motionTable == null)
+							{
+								for (int i = 0; i < MOTION_TABLE_SIZE; i++)
+								{
+									motionTable[i++] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+									pixel++;
+
+                                    motionTable[i++] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                    pixel++;
+
+                                    motionTable[i++] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                    pixel++;
+
+                                    motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                    pixel++;
+								}
+							}
+							else
+							{
+                                if (_hasMotionSensitivityTable)
+                                {
+                                    for (int i = 0; i < MOTION_TABLE_SIZE; i++)
+                                    {
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivityTable[i]) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivityTable[i]) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivityTable[i]) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivityTable[i]) result++;
+                                        pixel++;
+                                    }
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < MOTION_TABLE_SIZE; i++)
+                                    {
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivity) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivity) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivity) result++;
+                                        i++; pixel++;
+
+                                        motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                                        if (Math.Abs(_motionTable[i] - motionTable[i]) > _motionSensitivity) result++;
+                                        pixel++;
+                                    }
+                                }
+
+								result = (int)((result * MOTION_TABLE_FACTOR) + .99);
+                                if (_motionThreshold > result) result = 0;
+							}
+
+							if (!_hasMotionFixedImage) _motionTable = motionTable;
+
+							image.UnlockBits(bitmapData);
+							image.Dispose(); image = null;
+						}
+					}
+					catch
+					{
+						if (hdcSource != IntPtr.Zero) gSource.ReleaseHdc(hdcSource);
+						if (gSource != null) gSource.Dispose();
+
+						if (hdcDest != IntPtr.Zero) gDest.ReleaseHdc(hdcDest);
+						if (gDest != null) gDest.Dispose();
+
+						if (bitmapData != null) image.UnlockBits(bitmapData);
+						if (image != null) { image.Dispose(); image = null; }
+						result = -1;
+					}
+
+					if (result != -1)
+					{
+                        if (result > 0)
+                        {
+                            _motionIdleCounter = 0;
+                            _motionEventArgs._motion = result;
+                            _mediaMotionDetected?.Invoke(this, _motionEventArgs);
+                        }
+                        else
+                        {
+                            if (_motionIdleTime != 0)
+                            {
+                                _motionIdleCounter += _motionTimerInterval;
+                                if (_motionIdleCounter >= _motionIdleTime)
+                                {
+                                    _motionIdleCounter = 0;
+
+                                    _motionEventArgs._motion = 0;
+                                    _mediaMotionDetected?.Invoke(this, _motionEventArgs);
+                                }
+                            }
+                        }
+					}
+				}
+
+				_motionDetectionBusy = false;
+			}
+		}
+
+#pragma warning restore CA1806 // Do not ignore method results
+
+        // used with SetFixedImage
+        internal void AV_SetMotionTable(Image image)
+		{
+            if (image != null)
+            {
+                Bitmap      bitmap      = new Bitmap(MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT);
+                Graphics    g           = Graphics.FromImage(bitmap);
+                BitmapData  bitmapData  = null;
+                byte[]      motionTable = new byte[MOTION_TABLE_SIZE];
+
+                try
+                {
+                    g.DrawImage(image, 0, 0, MOTION_TABLE_WIDTH, MOTION_TABLE_HEIGHT);
+                    g.Dispose(); g = null;
+
+                    unsafe
+                    {
+                        bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                        byte* pixel = (byte*)bitmapData.Scan0;
+
+                        for (int i = 0; i < MOTION_TABLE_SIZE; i++)
+                        {
+                            motionTable[i] = (byte)((*pixel++ + *pixel++ + *pixel++) / 3);
+                            pixel++;
+                        }
+                        bitmap.UnlockBits(bitmapData);
+                    }
+                    _motionTable = motionTable;
+                }
+                catch
+                {
+                    if (bitmapData != null) bitmap.UnlockBits(bitmapData);
+                    if (g != null) g.Dispose();
+                }
+
+                bitmap.Dispose();
+            }
+		}
+
+		#endregion
 
 
-        // ******************************** Player - Player Events
+		// ******************************** Player - Player Events
 
-        #region Private - Player Events
+		#region Private - Player Events
 
-        private void AV_SetDisplayEvents()
+		private void AV_SetDisplayEvents()
         {
             if (!_hasDisplayEvents)
             {
@@ -7680,14 +9548,41 @@ namespace PlexDL.Player
                         try
                         {
                             _chapterIndex++;
-                            if (_chapterIndex >= _mediaChapters.Length)
-                            {
-                                if (_repeat) _chapterIndex = 0;
-                                else
-                                {
-                                    _busyStarting = false;
-                                    AV_CloseSession(false, true, StopReason.Finished);
-                                    return;
+							if (_chapterIndex >= _mediaChapters.Length)
+							{
+								if (_repeat) _chapterIndex = 0;
+								else
+								{
+									_busyStarting = false;
+									if (_endPauseMode)
+									{
+										mf_StartTime.type = ConstPropVariant.VariantType.Int64;
+										mf_StartTime.longValue = (_stopTime == 0 ? _mediaLength : _stopTime) - (ENDPAUSE_MARGIN_MS * MS_TO_TICKS);
+										_lastError = mf_MediaSession.Start(Guid.Empty, mf_StartTime);
+										if (_lastError == NO_ERROR)
+										{
+											mf_AwaitCallBack = true;
+											if (!WaitForEvent.WaitOne(TIMEOUT_10_SECONDS)) _lastError = HResult.COR_E_TIMEOUT;
+											if (_lastError == NO_ERROR)
+											{
+												Pause();
+                                                EndedPausedEventArgs stopArgs = new EndedPausedEventArgs();
+												_mediaEndedPaused?.Invoke(this, stopArgs);
+                                                _lastError = NO_ERROR;
+                                                if (stopArgs._continue)
+                                                {
+                                                    Resume();
+                                                    AV_CloseSession(false, true, StopReason.Finished);
+                                                }
+											}
+										}
+                                        if (_lastError != NO_ERROR) AV_CloseSession(false, true, StopReason.Error);
+									}
+									else
+									{
+										AV_CloseSession(false, true, StopReason.Finished);
+									}
+									return;
                                 }
                             }
 
@@ -7776,6 +9671,7 @@ namespace PlexDL.Player
                                 if (_mediaPositionChanged != null) OnMediaPositionChanged();
                                 _mediaStartStopTimeChanged?.Invoke(this, EventArgs.Empty);
                                 _mediaChapterStarted?.Invoke(this, new ChapterStartedEventArgs(_chapterIndex, _mediaChapters[_chapterIndex]._title[0]));
+                                _lastError = NO_ERROR;
                             }
                         }
                         catch (Exception e)
@@ -7795,8 +9691,6 @@ namespace PlexDL.Player
                             if (!WaitForEvent.WaitOne(TIMEOUT_10_SECONDS)) _lastError = HResult.COR_E_TIMEOUT;
                         }
                     }
-
-                    //_busyStarting = false;
 
 					if (_lastError == NO_ERROR)
 					{
@@ -7818,6 +9712,7 @@ namespace PlexDL.Player
 							_repeatCount++;
 							_mediaRepeated?.Invoke(this, EventArgs.Empty);
 						}
+                        _lastError = NO_ERROR;
 					}
 					else
 					{
@@ -7830,7 +9725,37 @@ namespace PlexDL.Player
 			}
             else
             {
-                if (_lastError == NO_ERROR) AV_CloseSession(false, true, StopReason.Finished);
+                if (_lastError == NO_ERROR)
+                {
+					if (_endPauseMode)
+					{
+						mf_StartTime.type = ConstPropVariant.VariantType.Int64;
+						mf_StartTime.longValue = (_stopTime == 0 ? _mediaLength : _stopTime) - (ENDPAUSE_MARGIN_MS * MS_TO_TICKS);
+						_lastError = mf_MediaSession.Start(Guid.Empty, mf_StartTime);
+						if (_lastError == NO_ERROR)
+						{
+							mf_AwaitCallBack = true;
+							if (!WaitForEvent.WaitOne(TIMEOUT_10_SECONDS)) _lastError = HResult.COR_E_TIMEOUT;
+							if (_lastError == NO_ERROR)
+							{
+								Pause();
+                                EndedPausedEventArgs stopArgs = new EndedPausedEventArgs();
+								_mediaEndedPaused?.Invoke(this, stopArgs);
+                                _lastError = NO_ERROR;
+                                if (stopArgs._continue)
+                                {
+                                    Resume();
+                                    AV_CloseSession(false, true, StopReason.Finished);
+                                }
+							}
+						}
+						if (_lastError != NO_ERROR) AV_CloseSession(false, true, StopReason.Error);
+					}
+					else
+					{
+						AV_CloseSession(false, true, StopReason.Finished);
+					}
+				}
                 else AV_CloseSession(false, true, StopReason.Error);
             }
         }
@@ -7844,12 +9769,14 @@ namespace PlexDL.Player
 
 		internal void StartMainTimerCheck()
         {
-            if (!_timer.Enabled && _playing && !_paused && ((_hasAudio && pm_HasPeakMeter) || (_fileMode && (_hasPositionEvents || _hasPositionSlider || _hasTaskbarProgress) || pm_HasInputMeter))) _timer.Start();
+            //if (!_timer.Enabled && _playing && !_paused && ((_hasAudio && pm_HasPeakMeter) || (_fileMode && (_hasPositionEvents || _hasPositionSlider || _hasTaskbarProgress) || pm_HasInputMeter))) _timer.Start();
+            if (!_timer.Enabled && _playing && !_paused && ((_hasAudio && pm_HasPeakMeter) || ((_hasPositionEvents || _hasPositionSlider || _hasTaskbarProgress) || pm_HasInputMeter))) _timer.Start();
         }
 
         internal void StopMainTimerCheck()
         {
-            if (_timer.Enabled && (!_playing || _paused) || ((!_hasAudio || !pm_HasPeakMeter) && (!_fileMode || (!_hasPositionEvents && !_hasPositionSlider && !_hasTaskbarProgress) && !pm_HasInputMeter))) _timer.Stop();
+            //if (_timer.Enabled && (!_playing || _paused) || ((!_hasAudio || !pm_HasPeakMeter) && (!_fileMode || (!_hasPositionEvents && !_hasPositionSlider && !_hasTaskbarProgress) && !pm_HasInputMeter))) _timer.Stop();
+            if (_timer.Enabled && (!_playing || _paused) || ((!_hasAudio || !pm_HasPeakMeter) && ((!_hasPositionEvents && !_hasPositionSlider && !_hasTaskbarProgress) && !pm_HasInputMeter))) _timer.Stop();
         }
 
         internal void AV_TimerTick(object sender, EventArgs e)
@@ -7865,9 +9792,9 @@ namespace PlexDL.Player
 					else if (val >= _positionSlider.Maximum) _positionSlider.Value = _positionSlider.Maximum;
 					else _positionSlider.Value = val;
 
-					if (_hasTaskbarProgress) _taskbarProgress.SetValue(pos);
+					if (_fileMode && _hasTaskbarProgress) _taskbarProgress.SetValue(pos);
 				}
-				else if (_hasTaskbarProgress)
+				else if (_fileMode && _hasTaskbarProgress)
 				{
 					_taskbarProgress.SetValue(PositionX);
 				}
@@ -7877,7 +9804,8 @@ namespace PlexDL.Player
 
             if (pm_HasPeakMeter)
             {
-                if (_audioVolume == 0 || !_audioEnabled || _paused)
+                //if (_audioVolume == 0 || !_audioEnabled || _paused)
+                if (_paused || (!_audioMultiTrack && (_audioVolume == 0 || !_audioEnabled)))
                 {
                     if (!_outputLevelMuted)
                     {
@@ -7885,7 +9813,7 @@ namespace PlexDL.Player
                         _outputLevelArgs._masterPeakValue = STOP_VALUE;
                         _outputLevelArgs._channelsValues  = pm_PeakMeterValuesStop;
                         _outputLevelMuted                 = true;
-                        _mediaPeakLevelChanged(this, _outputLevelArgs);
+                        _mediaAudioOutputLevelChanged(this, _outputLevelArgs);
                     }
                 }
                 else
@@ -7895,11 +9823,11 @@ namespace PlexDL.Player
                     _outputLevelArgs._masterPeakValue = pm_PeakMeterMasterValue;
                     _outputLevelArgs._channelsValues  = pm_PeakMeterValues;
                     _outputLevelMuted                 = false;
-                    _mediaPeakLevelChanged(this, _outputLevelArgs);
+                    _mediaAudioOutputLevelChanged(this, _outputLevelArgs);
                 }
             }
 
-            if (pm_HasInputMeter)
+            if (pm_HasInputMeter) // && _micDevice != null)
             {
                 if (_paused)
                 {
@@ -7909,7 +9837,7 @@ namespace PlexDL.Player
                         _inputLevelArgs._masterPeakValue = STOP_VALUE;
                         _inputLevelArgs._channelsValues  = pm_InputMeterValuesStop;
                         _inputLevelMuted                 = true;
-                        _mediaInputLevelChanged(this, _inputLevelArgs);
+                        _mediaAudioInputLevelChanged(this, _inputLevelArgs);
                     }
                 }
                 else
@@ -7919,7 +9847,7 @@ namespace PlexDL.Player
                     _inputLevelArgs._masterPeakValue = pm_InputMeterMasterValue;
                     _inputLevelArgs._channelsValues  = pm_InputMeterValues;
                     _inputLevelMuted                 = false;
-                    _mediaInputLevelChanged(this, _inputLevelArgs);
+                    _mediaAudioInputLevelChanged(this, _inputLevelArgs);
                 }
             }
         }
@@ -7927,322 +9855,16 @@ namespace PlexDL.Player
         #endregion
 
 
-        // ******************************** Player - Webcam / Sound Recorder
+		// ******************************** Player - Slider (TrackBar) Managers
 
-        #region Private - Webcam / Sound Recorder
+		#region Public - Slider (TrackBar) Managers
 
-        #region Webcam Recorder Fields
+		#region Public - Sliders
 
-        private class WSR_WebcamCallBack : IMFCaptureEngineOnEventCallback
-        {
-            #region Fields
-
-            private Player _base;
-
-            #endregion
-
-            public WSR_WebcamCallBack(Player player)
-            {
-                _base = player;
-            }
-
-            public HResult OnEvent(IMFMediaEvent pEvent)
-            {
-                if (_base.mf_AwaitCallBack)
-                {
-                    pEvent.GetStatus(out _base.wsr_ErrorFromCallback);
-
-                    _base.mf_AwaitCallBack = false;
-                    _base.WaitForEvent.Set();
-                }
-
-                return HResult.S_OK;
-            }
-        }
-        private WSR_WebcamCallBack  wsr_CallBack;
-
-        private string              wsr_FolderName          = "PVS Recordings";
-
-        internal IMFCaptureEngine   wsr_Recorder;
-        internal bool               wsr_HasRecorder;
-        internal bool               wsr_Recording;
-
-        internal HResult            wsr_ErrorFromCallback;
-
-        //internal RecorderAudioFormat wsr_AudioFormat      = RecorderAudioFormat.AAC;
-        internal RecorderVideoFormat wsr_VideoFormat        = RecorderVideoFormat.H264;
-
-        #endregion
-
-        #region Webcam Recorder Start / Stop
-
-        // creates and starts the recorder
-        internal HResult WSR_StartRecorder(string fileName, int width, int height, float frameRate)
-        {
-            //bool hasAudio               = false;
-            //IMFMediaSource audioSource  = null;
-            //IMFMediaType audioType      = null;
-
-            bool hasVideo               = false;
-            IMFMediaSource videoSource  = null;
-            IMFMediaType videoType      = null;
-
-            IMFAttributes attributes    = null;
-
-            IMFCaptureSink sink         = null;
-
-            // create capture engine factory
-            IMFCaptureEngineClassFactory factory = (IMFCaptureEngineClassFactory)new MFCaptureEngineClassFactory();
-            if (factory != null)
-            {
-                // create capture engine
-                _lastError = factory.CreateInstance(MFAttributesClsid.CLSID_MFCaptureEngine, typeof(IMFCaptureEngine).GUID, out object engine);
-				if (_lastError == NO_ERROR)
-				{
-					// capture engine created
-					wsr_Recorder            = (IMFCaptureEngine)engine;
-					wsr_HasRecorder         = true;
-                    wsr_ErrorFromCallback   = NO_ERROR;
-
-                    // create sources
-                    if (_webcamMode)
-					{
-						hasVideo = true;
-
-						// create video source
-						MFExtern.MFCreateAttributes(out IMFAttributes sourceAttr, 2);
-						sourceAttr.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
-						sourceAttr.SetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK, _webcamDevice._id);
-
-						_lastError = MFExtern.MFCreateDeviceSource(sourceAttr, out videoSource);
-						if (_lastError == HResult.MF_E_ATTRIBUTENOTFOUND || _lastError == HResult.ERROR_PATH_NOT_FOUND) _lastError = HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED;
-						Marshal.ReleaseComObject(sourceAttr);
-                        if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-
-                        if (_lastError == NO_ERROR)
-						{
-							//if (!_webcamAggregated)
-							{
-								MFExtern.MFCreateAttributes(out attributes, 1);
-								attributes.SetUINT32(MFAttributesClsid.MF_CAPTURE_ENGINE_USE_VIDEO_DEVICE_ONLY, 1);
-							}
-                            //else
-                            //{
-                            //	hasAudio = true;
-
-                            //	MFExtern.MFCreateAttributes(out sourceAttr, 2);
-                            //	sourceAttr.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_GUID);
-                            //	sourceAttr.SetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_ENDPOINT_ID, _micDevice._id);
-                            //	_lastError = MFExtern.MFCreateDeviceSource(sourceAttr, out audioSource);
-                            //	if (_lastError == HResult.MF_E_ATTRIBUTENOTFOUND || _lastError == HResult.ERROR_PATH_NOT_FOUND) _lastError = HResult.MF_E_NO_AUDIO_RECORDING_DEVICE;
-                            //	Marshal.ReleaseComObject(sourceAttr);
-
-                            //	if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-                            //}
-                        }
-                    }
-                    //else // _micMode
-                    //{
-                    //	hasAudio = true;
-
-                    //	// create audio source
-                    //	MFExtern.MFCreateAttributes(out attributes, 1);
-                    //	attributes.SetUINT32(MFAttributesClsid.MF_CAPTURE_ENGINE_USE_AUDIO_DEVICE_ONLY, 1);
-
-                    //	MFExtern.MFCreateAttributes(out IMFAttributes sourceAttr, 2);
-                    //	sourceAttr.SetGUID(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_GUID);
-                    //	sourceAttr.SetString(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_ENDPOINT_ID, _micDevice._id);
-                    //	_lastError = MFExtern.MFCreateDeviceSource(attributes, out audioSource);
-                    //	if (_lastError == HResult.MF_E_ATTRIBUTENOTFOUND || _lastError == HResult.ERROR_PATH_NOT_FOUND) _lastError = HResult.MF_E_NO_AUDIO_RECORDING_DEVICE;
-                    //	Marshal.ReleaseComObject(sourceAttr);
-
-                    //	if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-                    //}
-
-                    if (_lastError == NO_ERROR)
-                    {
-                        wsr_CallBack = new WSR_WebcamCallBack(this);
-
-                        mf_AwaitCallBack = true;
-                        _lastError = wsr_Recorder.Initialize(wsr_CallBack, attributes, null, videoSource); // null = audioSource
-                        WaitForEvent.WaitOne(TIMEOUT_30_SECONDS);
-
-                        if (_lastError == NO_ERROR) _lastError = wsr_ErrorFromCallback;
-                        if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-
-                        if (_lastError == NO_ERROR)
-                        {
-                            // get sink for recording audio and video
-                            _lastError = wsr_Recorder.GetSink(MF_CAPTURE_ENGINE_SINK_TYPE.Record, out sink);
-                            if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-
-                            if (_lastError == NO_ERROR)
-                            {
-                                // add webcam stream
-                                if (hasVideo)
-                                {
-                                    videoType = WSR_CreateVideoMediaType(width, height, frameRate);
-
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-
-									_lastError = ((IMFCaptureRecordSink)sink).AddStream(0, videoType, null, out int videoIndex);
-                                    if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-                                }
-
-                                if (_lastError == NO_ERROR)
-                                {
-									//add audio stream
-
-									//if (hasAudio)
-									//{
-									//	AudioTrack[] tracks = AV_GetAudioTracks();
-									//	audioType = WSR_CreateAudioMediaType(tracks[0]._samplerate, tracks[0]._channelCount, 44100);
-									//	_lastError = ((IMFCaptureRecordSink)sink).AddStream(0, audioType, null, out int audioIndex);
-									//	if ((int)_lastError == -1072873821) _lastError = NO_ERROR;
-									//}
-
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-
-									//if (_lastError == NO_ERROR)
-									{
-                                        //  TODO set extension for audio only
-                                        if (wsr_VideoFormat == RecorderVideoFormat.WMV3) fileName = Path.ChangeExtension(fileName, ".wmv");
-                                        else fileName = Path.ChangeExtension(fileName, ".mp4");
-
-                                        // set output file
-                                        _lastError = ((IMFCaptureRecordSink)sink).SetOutputFileName(fileName);
-                                        if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                // release averything
-
-                if (factory != null)     Marshal.ReleaseComObject(factory);
-
-                if (sink != null)        Marshal.ReleaseComObject(sink);
-                //if (audioType != null)   Marshal.ReleaseComObject(videoType);
-                if (videoType != null)   Marshal.ReleaseComObject(videoType);
-
-                if (attributes != null)  Marshal.ReleaseComObject(attributes);
-
-                //if (audioSource != null) Marshal.ReleaseComObject(audioSource);
-                if (videoSource != null) Marshal.ReleaseComObject(videoSource);
-
-                if (_lastError != NO_ERROR) WSR_StopRecorder();
-                else
-                {
-                    mf_AwaitCallBack = true;
-                    _lastError = wsr_Recorder.StartRecord();
-                    WaitForEvent.WaitOne(TIMEOUT_30_SECONDS);
-
-                    if (_lastError == NO_ERROR) _lastError = wsr_ErrorFromCallback;
-                    if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR;
-
-					if (_lastError == NO_ERROR)
-					{
-						wsr_Recording = true;
-                        _mediaWebcamRecorderStarted?.Invoke(this, EventArgs.Empty);
-					}
-
-					else WSR_StopRecorder();
-				}
-            }
-            if (_lastError == HResult.MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED) _lastError = NO_ERROR; // THIS ERROR KEEPS POPPING UP EVERY ONCE IN A WHILE - WHERE DOES IT COME FROM ???
-            return _lastError;
-        }
-
-        // stops and removes the recorder
-        internal void WSR_StopRecorder()
-        {
-            if (wsr_Recorder != null)
-            {
-                if (wsr_Recording)
-                {
-                    mf_AwaitCallBack = true;
-                    wsr_Recorder.StopRecord(true, true);
-                    WaitForEvent.WaitOne(TIMEOUT_10_SECONDS);
-                    wsr_Recording = false;
-
-                    _mediaWebcamRecorderStopped?.Invoke(this, EventArgs.Empty);
-                }
-                Marshal.ReleaseComObject(wsr_Recorder);
-                wsr_Recorder    = null;
-                wsr_HasRecorder = false;
-            }
-            wsr_CallBack = null;
-		}
-
-        #endregion
-
-        #region Webcam Recorder File Name / Create Media Types
-
-        internal string WSR_CreateFileName()
-        {
-            string fileName = null;
-            try
-            {
-                string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), wsr_FolderName);
-                string path = Path.Combine(folder, string.Format("Recordings {0:yyyy-MM-dd}", DateTime.Now));
-                Directory.CreateDirectory(path);
-                fileName = Path.Combine(path, string.Format("Recording {0:yyyy-MM-dd} at {0:HH-mm-ss}.mp4", DateTime.Now));
-            }
-            catch { /* ignored */ }
-            return fileName;
-        }
-
-        // removed error checking
-		private IMFMediaType WSR_CreateVideoMediaType(int width, int height, float frameRate)
-		{
-			const int VIDEO_BIT_RATE = 800000;
-
-			MFExtern.MFCreateMediaType(out IMFMediaType mediaType);
-
-			mediaType.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Video);
-			if (wsr_VideoFormat == RecorderVideoFormat.WMV3) mediaType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.WMV3);
-			else mediaType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.H264);
-            mediaType.SetUINT32(MFAttributesClsid.MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
-			mediaType.SetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, 2); // 2 = Progressive
-			MFExtern.MFSetAttributeSize(mediaType, MFAttributesClsid.MF_MT_FRAME_SIZE, width, height);
-			MFExtern.MFSetAttributeRatio(mediaType, MFAttributesClsid.MF_MT_FRAME_RATE, (int)(frameRate * 10000), 10001);
-			MFExtern.MFSetAttributeRatio(mediaType, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
-
-			return mediaType;
-        }
-
-        // removed error checking
-        //private IMFMediaType WSR_CreateAudioMediaType(int samplesPerSecond, int numChannels, int bytesPerSecond)
-        //{
-        //	MFExtern.MFCreateMediaType(out IMFMediaType mediaType);
-
-        //	mediaType.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Audio);
-        //	mediaType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.AAC);
-        //	mediaType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, samplesPerSecond);
-        //	mediaType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, 16);
-        //	mediaType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, numChannels);
-        //	mediaType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, bytesPerSecond);
-        //	mediaType.SetUINT32(MFAttributesClsid.MF_MT_AUDIO_BLOCK_ALIGNMENT, 1);
-
-        //	return mediaType;
-        //}
-
-        #endregion
-
-        #endregion
-
-
-        // ******************************** Player - Slider (TrackBar) Managers
-
-        #region Public - Slider (TrackBar) Managers
-
-        #region Public - Sliders
-
-        /// <summary>
-        /// Provides access to the sliders (trackbars) settings of the player (for example, Player.Sliders.Position).
-        /// </summary>
-        public Sliders Sliders
+		/// <summary>
+		/// Provides access to the sliders (trackbars) settings of the player (for example, Player.Sliders.Position).
+		/// </summary>
+		public Sliders Sliders
         {
             get
             {
@@ -8256,6 +9878,14 @@ namespace PlexDL.Player
         #region Public - PositionSlider Manager
 
         #region PositionSlider Fields
+
+        private const int   MINIMUM_POSITION    = 0;
+        private const int   MAXIMUM_POSITION    = 1;
+
+        private const int   TRACK_MARGIN        = 13;
+        private const int   TOTAL_MARGIN        = 27;
+
+        private const int   POSITION_MARGIN     = 5;
 
         internal int        _psMouseWheel;      // 0 = disabled
         internal int        _psMouseWheelShift  = 5000;
@@ -8302,27 +9932,27 @@ namespace PlexDL.Player
 						_psMuted    = false;
 
 						_timer.Stop();
-						_positionSlider.Scroll -= PositionSlider_Scroll;
+						//_positionSlider.Scroll -= PositionSlider_Scroll;
 
 						float pos;
 						if (_psHorizontal)
 						{
-							if (e.X <= 13) pos = 0;
-							else if (e.X >= _positionSlider.Width - 13) pos = 1;
-							else pos = (float)(e.X - 13) / (_positionSlider.Width - 27);
+							if (e.X <= TRACK_MARGIN) pos = MINIMUM_POSITION;
+							else if (e.X >= _positionSlider.Width - TRACK_MARGIN) pos = MAXIMUM_POSITION;
+							else pos = (float)(e.X - TRACK_MARGIN) / (_positionSlider.Width - TOTAL_MARGIN);
 						}
 						else
 						{
-							if (e.Y <= 13) pos = 1;
-							else if (e.Y >= _positionSlider.Height - 13) pos = 0;
-							else pos = 1 - (float)(e.Y - 13) / (_positionSlider.Height - 27);
+							if (e.Y <= TRACK_MARGIN) pos = MAXIMUM_POSITION;
+							else if (e.Y >= _positionSlider.Height - TRACK_MARGIN) pos = MINIMUM_POSITION;
+							else pos = 1 - (float)(e.Y - TRACK_MARGIN) / (_positionSlider.Height - TOTAL_MARGIN);
 						}
 
 						if (_psHandlesProgress)
 						{
-							if (Math.Abs(_positionSlider.Value - (int)(pos * (_positionSlider.Maximum - _positionSlider.Minimum)) + _positionSlider.Minimum) > 5) _positionSlider.Value = (int)(pos * (_positionSlider.Maximum - _positionSlider.Minimum)) + _positionSlider.Minimum;
+							if (Math.Abs(_positionSlider.Value - (int)(pos * (_positionSlider.Maximum - _positionSlider.Minimum)) + _positionSlider.Minimum) > POSITION_MARGIN) _positionSlider.Value = (int)(pos * (_positionSlider.Maximum - _positionSlider.Minimum)) + _positionSlider.Minimum;
 						}
-						else if (Math.Abs(_positionSlider.Value - (int)(pos * _positionSlider.Maximum)) > 5) _positionSlider.Value = (int)(pos * _positionSlider.Maximum);
+						else if (Math.Abs(_positionSlider.Value - (int)(pos * _positionSlider.Maximum)) > POSITION_MARGIN) _positionSlider.Value = (int)(pos * _positionSlider.Maximum);
 						_psValue = _positionSlider.Value;
 
                         if (_psClickAndDrag)
@@ -8338,12 +9968,24 @@ namespace PlexDL.Player
 
                         if (_psLiveSeek)
 						{
-                            if (_hasAudio && _audioEnabled)
+                            // multi track
+                            if (_hasAudio && (_audioEnabled || _audioMultiTrack))
 							{
 								if (_paused || _psSilentSeek == SilentSeek.Always)
 								{
 									_psMuteAlways = true;
-									mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                    // multi track
+                                    if (_audioMultiTrack && _audioTrackCount > 1)
+                                    {
+                                        for (int i = 0; i < _audioTrackCount; i++)
+                                        {
+                                            if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                                            {
+                                                _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                            }
+                                        }
+                                    }
+                                    if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
 									_psMuted = true;
 								}
 								else if (_psSilentSeek == SilentSeek.OnMoving) _psMuteOnMove = true;
@@ -8352,9 +9994,20 @@ namespace PlexDL.Player
 						}
 						else
 						{
-							if (_hasAudio && _audioEnabled && _paused)
+							if (_hasAudio && (_audioEnabled || _audioMultiTrack) && _paused)
 							{
-								mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                // multi track
+                                if (_audioMultiTrack && _audioTrackCount > 1)
+                                {
+                                    for (int i = 0; i < _audioTrackCount; i++)
+                                    {
+                                        if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                                        {
+                                            _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                        }
+                                    }
+                                }
+                                if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
 								_psMuted = true;
 							}
 
@@ -8381,8 +10034,8 @@ namespace PlexDL.Player
 				}
 				else
 				{
-					_positionSlider.Value = 0;
-					_psValue = 0;
+					_positionSlider.Value   = MINIMUM_POSITION;
+					_psValue                = MINIMUM_POSITION;
 				}
 			}
 		}
@@ -8399,6 +10052,17 @@ namespace PlexDL.Player
                     {
                         if (!_psTimer.Enabled)
                         {
+                            // multi track
+                            if (_audioMultiTrack && _audioTrackCount > 1)
+                            {
+                                for (int i = 0; i < _audioTrackCount; i++)
+                                {
+                                    if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                                    {
+                                        _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                    }
+                                }
+                            }
                             mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
                             _psMuted = true;
                         }
@@ -8442,6 +10106,17 @@ namespace PlexDL.Player
 
         internal void PositionSlider_TimerTick(object sender, EventArgs e)
         {
+            // multi track
+            if (_audioMultiTrack && _audioTrackCount > 1)
+            {
+                for (int i = 0; i < _audioTrackCount; i++)
+                {
+                    if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                    {
+                        if (_audioTracks[i].MF_VolumeService != null) _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+                    }
+                }
+            }
             if (mf_AudioStreamVolume != null) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
             _psTimer.Stop();
             _psMuted = false;
@@ -8467,11 +10142,22 @@ namespace PlexDL.Player
             if (_psMuted)
             {
                 if (_paused) System.Threading.Thread.Sleep(300); // prevent audio 'click'
+                // multi track
+                if (_audioMultiTrack && _audioTrackCount > 1)
+                {
+                    for (int i = 0; i < _audioTrackCount; i++)
+                    {
+                        if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                        {
+                            _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+                        }
+                    }
+                }
                 mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
                 _psMuted = false;
             }
 
-			_positionSlider.Scroll += new EventHandler(PositionSlider_Scroll);
+			//_positionSlider.Scroll += new EventHandler(PositionSlider_Scroll);
 			_positionSlider.MouseMove -= PositionSlider_MouseMove;
 			_positionSlider.MouseUp -= PositionSlider_MouseUp;
 
@@ -8488,20 +10174,23 @@ namespace PlexDL.Player
                     else
                     {
                         _psBusy = true;
+
                         do
                         {
                             _psSkipped = false;
                             PositionX = _positionSlider.Value * MS_TO_TICKS;
 
                         } while (_psSkipped);
+
+                        Application.DoEvents();
                         _psBusy = false;
                     }
                 }
             }
             else
             {
-                _positionSlider.Value = 0;
-                _psValue = 0;
+                _positionSlider.Value   = MINIMUM_POSITION;
+                _psValue                = MINIMUM_POSITION;
             }
         }
 
@@ -8527,9 +10216,86 @@ namespace PlexDL.Player
                     if (pos < _positionSlider.Minimum) pos = _positionSlider.Minimum;
                 }
 
-                _positionSlider.Value = pos;
-                PositionX = pos * MS_TO_TICKS;
+                if (_hasAudio && (_audioEnabled || _audioMultiTrack) && _paused)
+                {
+                    // multi track
+                    if (_audioMultiTrack && _audioTrackCount > 1)
+                    {
+                        for (int i = 0; i < _audioTrackCount; i++)
+                        {
+                            if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                            {
+                                _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                            }
+                        }
+                    }
+                    if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                    _psMuted = true;
+                }
 
+                _positionSlider.Value = pos;
+				PositionX = pos * MS_TO_TICKS;
+
+                if (_psMuted)
+                {
+                    System.Threading.Thread.Sleep(20); // prevent audio 'click'
+                    // multi track
+                    if (_audioMultiTrack && _audioTrackCount > 1)
+                    {
+                        for (int i = 0; i < _audioTrackCount; i++)
+                        {
+                            if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                            {
+                                _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+                            }
+                        }
+                    }
+                    mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+                }
+
+				_psBusy = false;
+            }
+        }
+
+        internal void PositionSlider_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (_hasAudio && (_audioEnabled || _audioMultiTrack) && _paused && (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down))
+            {
+                _psBusy = true;
+                // multi track
+                if (_audioMultiTrack && _audioTrackCount > 1)
+                {
+                    for (int i = 0; i < _audioTrackCount; i++)
+                    {
+                        if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                        {
+                            _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                        }
+                    }
+                }
+                if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                _psMuted = true;
+            }
+        }
+
+        internal void PositionSlider_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (_psMuted)
+            {
+                System.Threading.Thread.Sleep(20); // prevent audio 'click'
+                // multi track
+                if (_audioMultiTrack && _audioTrackCount > 1)
+                {
+                    for (int i = 0; i < _audioTrackCount; i++)
+                    {
+                        if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                        {
+                            _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+                        }
+                    }
+                }
+                mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+                _psMuted = false;
                 _psBusy = false;
             }
         }
@@ -8565,7 +10331,20 @@ namespace PlexDL.Player
                         _paused = true;
                     }
 
-                    if (_hasAudio && _audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                    if (_hasAudio)
+                    {
+                        if (_audioMultiTrack && _audioTrackCount > 1)
+                        {
+                            for (int i = 0; i < _audioTrackCount; i++)
+                            {
+                                if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+                                {
+                                    _audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                                }
+                            }
+                        }
+                        if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsMute);
+                    }
 
                     //if (_audioDevice == null) // mf bug - rate sets system default audio device
                     //{
@@ -8618,39 +10397,60 @@ namespace PlexDL.Player
 
             if (_playing)
             {
-                //if (_audioDevice == null)
-                //{
-                //    //mf_AwaitCallback = true;
-                //    //mf_RateControl.SetRate(_speedBoost, _speed);
-                //    ////mf_AwaitCallback = true;
-                //    //WaitForEvent.WaitOne(TIMEOUT_5_SECONDS);
-                //}
-                //else
-                //{
-                //    AV_UpdateTopology();
-                //}
-
-                if (_pauseSet)
-                {
-                    Resume();
-                    if (_hasAudio && _audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+				if (_pauseSet)
+				{
+					Resume();
+					if (_hasAudio)
+					{
+                        if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+                        if (_audioMultiTrack && _audioTrackCount > 1)
+						{
+							for (int i = 0; i < _audioTrackCount; i++)
+							{
+								if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+								{
+									_audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+								}
+							}
+						}
+					}
                 }
-                else
-                {
+				else
+				{
                     if ((Control.ModifierKeys & Keys.Control) == 0)
-                    {
+					{
                         bool audio = _audioEnabled;
-                        _audioEnabled = false;
+						_audioEnabled = false;
+
+                        // TODO mute multi track - needs 'special' method
+                        //_audioTracks[1].Enabled = false;
+                        //_audioTracks[1].MF_VolumeService.SetAllVolumes(1, _audioChannelsMute);
 
                         _stepMode = true;
-                        AV_UpdateTopology();
+						AV_UpdateTopology();
 
-                        System.Threading.Thread.Sleep(10);
-                        Application.DoEvents();
+						System.Threading.Thread.Sleep(10);
+						Application.DoEvents();
 
-                        _audioEnabled = audio;
-                    }
-                    if (_hasAudio && _audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+						_audioEnabled = audio;
+
+						// TODO unmute multi track - needs 'special' method
+					}
+
+                    if (_hasAudio)
+                    {
+						if (_audioEnabled) mf_AudioStreamVolume.SetAllVolumes(_audioChannelCount, _audioChannelsVolume);
+						//if (_audioMultiTrack && _audioTrackCount > 1)
+						//{
+						//	for (int i = 0; i < _audioTrackCount; i++)
+						//	{
+						//		if (i != _audioTrackCurrent && _audioTracks[i].Enabled)
+						//		{
+						//			_audioTracks[i].MF_VolumeService.SetAllVolumes(_audioChannelCount, _audioTracks[i].ChannelVolumes);
+						//		}
+						//	}
+						//}
+					}
                 }
             }
         }
@@ -8749,7 +10549,8 @@ namespace PlexDL.Player
                     switch (_speedSlider.Value)
                     {
                         case 0:
-                            _scrollSpeed = 0.10f;
+                            //_scrollSpeed = 0.05f;
+                            _scrollSpeed = DEFAULT_SPEED_MINIMUM;
                             break;
                         case 1:
                             _scrollSpeed = 0.25f;

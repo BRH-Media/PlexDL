@@ -10,7 +10,7 @@
         /// Location: topleft of the player's display window.
         /// Display resize: shrink: no, grow: no.
         /// </summary>
-        Normal,
+        Original,
         /// <summary>
         /// Size: original size.
         /// Location: center of the player's display window.

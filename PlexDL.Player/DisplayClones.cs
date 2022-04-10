@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -49,20 +49,16 @@
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others.
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
+
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -94,7 +90,7 @@ namespace PlexDL.Player
 
     public partial class Player
     {
-        /*
+		/*
             Display Clones
 
             This section provides easy cloning (copying) of the video display of the player to one or more other display
@@ -102,28 +98,28 @@ namespace PlexDL.Player
         */
 
 
-        // ******************************** Display Clones - Fields
+		// ******************************** Display Clones - Fields
 
-        #region Display Clones - Fields
+		#region Display Clones - Fields
 
-        // Display Clone data
-        internal class Clone
-        {
-            internal Control            Control;
-            internal CloneQuality       Quality;
-            internal CloneLayout        Layout;
-            internal CloneFlip          Flip;
-            internal bool               HasShape;
-            internal DisplayShape       Shape;
-            internal bool               HasVideoShape;
-            internal ShapeCallback      ShapeCallback;
-            internal bool               Drag;
-            internal Cursor             DragCursor;
-            internal bool               Refresh;
-            internal int                Errors;     // count errors because there can be 'no-true-error glitches' (?)
-        }
+		// Display Clone data
+		internal sealed class Clone
+		{
+			internal Control        Control;
+			internal CloneQuality   Quality;
+			internal CloneLayout    Layout;
+			internal CloneFlip      Flip;
+			internal bool           HasShape;
+			internal DisplayShape   Shape;
+			internal bool           HasVideoShape;
+			internal ShapeCallback  ShapeCallback;
+			internal bool           Drag;
+			internal Cursor         DragCursor;
+			internal bool           Refresh;
+			internal int            Errors;     // count errors because there can be 'no-true-error glitches' (?)
+		}
 
-        private const int               DC_DEFAULT_FRAMERATE        = 30;
+		private const int               DC_DEFAULT_FRAMERATE        = 30;
         private const bool              DC_DEFAULT_OVERLAY_SHOW     = true;
         private const int               DC_BUSY_TIME_OUT            = 1000;
 
@@ -874,7 +870,7 @@ namespace PlexDL.Player
             bool overlayMode = dc_CloneOverlayShow && (_hasOverlay && _overlay.Visible);
 
             // Paint only if there's a video image or a display overlay (hold)
-            if (_hasVideo || overlayMode)
+            if (_hasVideo || overlayMode) // || _displayHold)
             {
                 double      difX;
                 double      difY;
@@ -1031,37 +1027,43 @@ namespace PlexDL.Player
 
 #pragma warning disable CA1806 // Do not ignore method results
 
-                                // set quality
-                                if (dc_DisplayClones[i].Quality != CloneQuality.Normal)
-                                {
-                                    if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
-                                    {
-                                        if (destRect.Width < sourceRect.Width || destRect.Height < sourceRect.Height)
-											SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+								// set quality
+								if (dc_DisplayClones[i].Quality != CloneQuality.Normal)
+								{
+									if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
+									{
+										if (destRect.Width < sourceRect.Width || destRect.Height < sourceRect.Height)
+											SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_DELETESCANS); // SafeNativeMethods.STRETCH_HALFTONE);
 									}
-                                    else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
-                                }
+									else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+								}
+
+                                // or just (?)
+								//if (destRect.Width < sourceRect.Width || destRect.Height < sourceRect.Height)
+                                //    SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_DELETESCANS); // SafeNativeMethods.STRETCH_HALFTONE);
+
+
 #pragma warning restore CA1806 // Do not ignore method results
 
                                 if (flipMode == CloneFlip.FlipNone)
                                 {
                                     SafeNativeMethods.StretchBlt(destHdc, destRect.X, destRect.Y, destRect.Width, destRect.Height,
-                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                 }
                                 else if (flipMode == CloneFlip.FlipX)
                                 {
                                     SafeNativeMethods.StretchBlt(destHdc, destRect.X + destRect.Width - 1, destRect.Y, -destRect.Width, destRect.Height,
-                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                 }
                                 else if (flipMode == CloneFlip.FlipY)
                                 {
                                     SafeNativeMethods.StretchBlt(destHdc, destRect.X, destRect.Y + destRect.Height - 1, destRect.Width, -destRect.Height,
-                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                 }
                                 else //if (flip == FlipType.FlipXY)
                                 {
                                     SafeNativeMethods.StretchBlt(destHdc, destRect.X + destRect.Width - 1, destRect.Y + destRect.Height - 1, -destRect.Width, -destRect.Height,
-                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                        sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                 }
                             }
                             else
@@ -1096,7 +1098,7 @@ namespace PlexDL.Player
                                         if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
                                         {
                                             if (dc_RefreshRect.Width < sourceRect.Width || dc_RefreshRect.Height < sourceRect.Height)
-												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_DELETESCANS);
 										}
                                         else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
                                     }
@@ -1105,22 +1107,22 @@ namespace PlexDL.Player
                                     if (flipMode == CloneFlip.FlipNone)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, 0, dc_RefreshRect.Y, dc_RefreshRect.Width, newSize,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else if (flipMode == CloneFlip.FlipX)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.Width, dc_RefreshRect.Y, -dc_RefreshRect.Width, newSize,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else if (flipMode == CloneFlip.FlipY)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, 0, dc_RefreshRect.Y + newSize - 1, dc_RefreshRect.Width, -newSize,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else //if (flip == FlipType.FlipXY)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.Width, dc_RefreshRect.Y + newSize - 1, -dc_RefreshRect.Width, -newSize,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                 }
                                 else
@@ -1148,7 +1150,7 @@ namespace PlexDL.Player
                                         if (dc_DisplayClones[i].Quality == CloneQuality.Auto)
                                         {
                                             if (dc_RefreshRect.Width < sourceRect.Width || dc_RefreshRect.Height < sourceRect.Height)
-												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
+												SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_DELETESCANS);
 										}
                                         else SafeNativeMethods.SetStretchBltMode(destHdc, SafeNativeMethods.STRETCH_HALFTONE);
                                     }
@@ -1157,22 +1159,22 @@ namespace PlexDL.Player
                                     if (flipMode == CloneFlip.FlipNone)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X, 0, newSize, dc_RefreshRect.Height,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else if (flipMode == CloneFlip.FlipX)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, 0, -newSize, dc_RefreshRect.Height,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else if (flipMode == CloneFlip.FlipY)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X, dc_RefreshRect.Height - 1, newSize, -dc_RefreshRect.Height,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                     else //if (flip == FlipType.FlipXY)
                                     {
                                         SafeNativeMethods.StretchBlt(destHdc, dc_RefreshRect.X + newSize - 1, dc_RefreshRect.Height - 1, -newSize, -dc_RefreshRect.Height,
-                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY_U);
+                                            sourceHdc, sourceRect.Left, sourceRect.Top, sourceRect.Width, sourceRect.Height, SafeNativeMethods.SRCCOPY);
                                     }
                                 }
                             }

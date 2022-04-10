@@ -15,21 +15,23 @@ namespace PlexDL.Player
     {
         #region Fields (Display Class)
 
-        private Player _base;
+        private const int   NO_ERROR        = 0;
 
-        private bool _isDragging;
+        private Player      _base;
 
-        private Cursor _oldCursor;
-        private Cursor _dragCursor = Cursors.SizeAll;
+        private bool        _isDragging;
 
-        private bool _setDragCursor = true;
+        private Cursor      _oldCursor;
+        private Cursor      _dragCursor     = Cursors.SizeAll;
 
-        private Point _oldLocation;
+        private bool        _setDragCursor  = true;
 
-        private Form _dragForm;
+        private Point       _oldLocation;
+
+        private Form        _dragForm;
 
         #endregion
-
+       
         internal Display(Player player)
         {
             _base = player;
@@ -42,25 +44,26 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._display;
             }
             set { _base.AV_SetDisplay(value, true); }
         }
 
         /// <summary>
-        /// Gets or sets the display mode (size and location) of the video image on the player's display window (default: DisplayMode.ZoomCenter). See also: Player.Video.Bounds.
+        /// Gets or sets the display mode (size and location) of the video image on the player's display window (default: DisplayMode.ZoomCenter).
+        /// <br/>See also: Player.Video.Bounds.
         /// </summary>
         public DisplayMode Mode
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._displayMode;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
 
                 if (_base._displayMode != value)
                 {
@@ -82,6 +85,7 @@ namespace PlexDL.Player
                     if (_base.dc_DisplayClonesRunning) _base.DisplayClones_Refresh();
                     _base._mediaDisplayModeChanged?.Invoke(_base, EventArgs.Empty);
                 }
+                _base._lastError = NO_ERROR;
             }
         }
 
@@ -92,39 +96,43 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.Overlay;
             }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's full screen mode is activated (default: false). See also: Player.Display.FullScreenMode.
+        /// Gets or sets a value indicating whether the player's full screen mode is activated (default: false).
+        /// <br/>See also: Player.Display.FullScreenMode.
         /// </summary>
         public bool FullScreen
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._fullScreen;
             }
             set { _base.AV_SetFullScreen(value); }
         }
 
         /// <summary>
-        /// Gets or sets the player's full screen display mode (default: FullScreenMode.Display). See also: Player.Display.FullScreen.
+        /// Gets or sets the player's full screen display mode (default: FullScreenMode.Display).
+        /// <br/>See also: Player.Display.FullScreen.
         /// </summary>
         public FullScreenMode FullScreenMode
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._fullScreenMode;
             }
             set { _base.FullScreenMode = value; }
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the player's full screen display mode on all screens (video wall) is activated (default: false). See also: Player.Display.FullScreen and Player.Display.FullScreenMode.
+        /// Gets or sets a value indicating whether the player's full screen display mode
+        /// <br/>on all screens (video wall) is enabled (default: false).
+        /// <br/>See also: Player.Display.FullScreen and Player.Display.FullScreenMode.
         /// </summary>
         public bool Wall
         {
@@ -141,7 +149,7 @@ namespace PlexDL.Player
             {
                 Rectangle r = Rectangle.Empty;
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (_base._fullScreen)
                 {
                     r = _base._fsFormBounds;
@@ -163,13 +171,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shape of the player's display window. See also: Player.Display.GetShape and Player.Display.SetShape.
+        /// Gets or sets the shape of the player's display window.
+        /// <br/>See also: Player.Display.GetShape and Player.Display.SetShape.
         /// </summary>
         public DisplayShape Shape
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._displayShape;
             }
             set
@@ -179,14 +188,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the shape of the player's display window (default: DisplayShape.Normal). See also: Player.Display.Shape.
+        /// Gets the shape of the player's display window (default: DisplayShape.Normal).
+        /// <br/>See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value that indicates the shape of the player's display window.</param>
         /// <param name="videoShape">A value that indicates whether the shape applies to the video image (or to the display window).</param>
         /// <param name="overlayShape">A value that indicates whether the shape is also applied to display overlays.</param>
         public int GetShape(out DisplayShape shape, out bool videoShape, out bool overlayShape)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             shape           = _base._displayShape;
             videoShape      = _base._hasVideoShape;
@@ -196,7 +206,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the shape of the player's display window. See also: Player.Display.Shape.
+        /// Sets the shape of the player's display window.
+        /// <br/>See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value that indicates the shape of the player's display window.</param>
         public int SetShape(DisplayShape shape)
@@ -205,14 +216,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Sets the shape of the player's display window. See also: Player.Display.Shape.
+        /// Sets the shape of the player's display window.
+        /// <br/>See also: Player.Display.Shape.
         /// </summary>
         /// <param name="shape">A value that indicates the shape of the player's display window.</param>
         /// <param name="videoShape">A value that indicates whether the shape applies to the video image (or to the display window).</param>
         /// <param name="overlayShape">A value that indicates whether the shape should also be applied to display overlays.</param>
         public int SetShape(DisplayShape shape, bool videoShape, bool overlayShape)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
 
             if (shape == DisplayShape.Normal)
             {
@@ -237,6 +249,7 @@ namespace PlexDL.Player
                             _base._mediaVideoBoundsChanged += _base.AV_DisplayShapeChanged;
                         }
                         _base._mediaDisplayShapeChanged?.Invoke(_base, EventArgs.Empty);
+                        _base._lastError = NO_ERROR;
                     }
                 }
                 else
@@ -249,13 +262,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a custom display shape. The shape can be activated with Player.Display.Shape = DisplayShape.Custom.
+        /// Gets or sets a custom display shape.
+        /// <br/>The shape can be activated with Player.Display.Shape = DisplayShape.Custom.
         /// </summary>
         public GraphicsPath CustomShape
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._customShapePath;
             }
             set
@@ -276,18 +290,19 @@ namespace PlexDL.Player
                         _base.AV_UpdateDisplayShape();
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Gets or sets the cursor that is used when the player's display window is dragged (default: Cursors.SizeAll). See also: Player.Display.DragEnabled.
+        /// Gets or sets the cursor (mouse pointer) that is used when the player's display window is dragged (default: Cursors.SizeAll).
+        /// <br/>See also: Player.Display.DragEnabled.
         /// </summary>
         public Cursor DragCursor
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _dragCursor;
             }
             set
@@ -298,18 +313,20 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the parent window of the player's display window can be moved by dragging the player's display window (default: false). See also: Player.Display.DragCursor.
+        /// Gets or sets a value indicating whether the parent window of the player's display window
+        /// <br/>can be moved by dragging the player's display window (default: false).
+        /// <br/>See also: Player.Display.DragCursor.
         /// </summary>
         public bool DragEnabled
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._dragEnabled;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value)
                 {
                     if (!_base._dragEnabled)
@@ -334,7 +351,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Drags the parent window (form) of the player's display window. Use as the mousedown eventhandler of any control other than the player's display window (see Player.Display.DragEnabled), for example, a display overlay. 
+        /// Drags the parent window (form) of the player's display window.
+        /// <br/>Can be used as the mousedown event handler of any control other than the player's display window,
+        /// <br/>for example, a display overlay.
         /// </summary>
         public void Drag_MouseDown(object sender, MouseEventArgs e)
         {
@@ -406,11 +425,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Updates the video image on the player's display window. For special use only, generally not required.
+        /// Updates the video image on the player's display window.
+        /// <br/>For special use only, generally not required.
         /// </summary>
         public int Update()
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             if (_base._webcamMode)
             {
                 _base.AV_UpdateTopology();
@@ -429,13 +449,17 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the contents of the player's display window are retained after media has finished playing (default: false). Can be used to smooth the transition between media. If set to true, the value must be reset to false when all media playback is complete to clear the display. See also: Player.Display.HoldClear.
+        /// Gets or sets a value that indicates whether the contents of the player's display window are preserved
+        /// <br/>after media has finished playing (default: false).
+        /// <br/>Can be used to smooth the transition between consecutively played media.
+        /// <br/>If set to true, the value must be reset to false when all media has finished playing to clear the display.
+        /// <br/>See also: Player.Display.HoldClear.
         /// </summary>
         public bool Hold
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._displayHold;
             }
             set
@@ -445,19 +469,20 @@ namespace PlexDL.Player
                     _base._displayHold = value;
                     if (!value) _base.AV_ClearHold();
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
-        /// Clears the player's display window when the Player.Display.Hold option is enabled and no media is playing. See also: Player.Display.Hold.
+        /// Clears the player's display window when the Player.Display.Hold option is enabled and no media is playing.
+        /// <br/>See also: Player.Display.Hold.
         /// </summary>
         public int HoldClear()
         {
             if (_base._displayHold)
             {
                 _base.AV_ClearHold();
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_INVALIDREQUEST;
             return (int)_base._lastError;

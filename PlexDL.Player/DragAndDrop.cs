@@ -14,6 +14,8 @@ namespace PlexDL.Player
     {
         #region Fields (DragAndDrop Class)
 
+        private const int           NO_ERROR        = 0;
+
         private Player              _base;
         private IDropTargetHelper   _dropHelper;
         private Win32Point          _location;
@@ -26,7 +28,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Enables drag-and-drop ghost images to be displayed when dragged over the specified form. Can be used when no actual drag-and-drop functionality is implemented (otherwise use Player.DragAndDrop.DragEnter etc.).
+        /// Enables drag-and-drop ghost images to be displayed when dragged over the specified form.
+        /// <br/>Can be used when no actual drag-and-drop functionality is implemented (otherwise use Player.DragAndDrop.DragEnter etc.).
         /// </summary>
         /// <param name="form">The form on which drag-and-drop ghost images should be enabled.</param>
         public int Add(Form form)
@@ -40,7 +43,7 @@ namespace PlexDL.Player
                 form.DragLeave += Form_DragLeave;
                 form.DragDrop += Form_DragDrop;
 
-                _base._lastError =Player.NO_ERROR;
+                _base._lastError =NO_ERROR;
             }
             else _base._lastError = HResult.E_INVALIDARG;
             return (int)_base._lastError;
@@ -61,7 +64,7 @@ namespace PlexDL.Player
                 form.DragLeave -= Form_DragLeave;
                 form.DragDrop -= Form_DragDrop;
 
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else _base._lastError = HResult.E_INVALIDARG;
             return (int)_base._lastError;
@@ -73,9 +76,11 @@ namespace PlexDL.Player
         private void Form_DragDrop(object sender, DragEventArgs e) { DragDrop(e); }
 
         /// <summary>
-        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form). Add to the OnDragEnter method (or DragEnter event handler) of a control. Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
+        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form).
+        /// <br/>Add to the OnDragEnter method (or DragEnter event handler) of a control.
+        /// <br/>Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
         /// </summary>
-        /// <param name="e">The event arguments received with the OnDragEnter method or the DragEnter event handler (just pass them to this method).</param>
+        /// <param name="e">The event arguments received with the OnDragEnter method or the DragEnter event handler (pass on to this method).</param>
         public void DragEnter(DragEventArgs e)
         {
             if (e != null)
@@ -84,16 +89,18 @@ namespace PlexDL.Player
                 _dropHelper = (IDropTargetHelper)new DragDropHelper();
                 _dropHelper.DragEnter(IntPtr.Zero, (System.Runtime.InteropServices.ComTypes.IDataObject)e.Data, ref _location, (int)e.Effect);
 
-                //_base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
             }
             //else _base._lastError = HResult.E_INVALIDARG;
             //return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form). Add to the OnDragOver method (or DragOver event handler) of a control. Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
+        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form).
+        /// <br/>Add to the OnDragOver method (or DragOver event handler) of a control.
+        /// <br/>Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
         /// </summary>
-        /// <param name="e">The event arguments received with the OnDragOver method or the DragOver event handler (just pass them to this method).</param>
+        /// <param name="e">The event arguments received with the OnDragOver method or the DragOver event handler (pass on to this method).</param>
         public void DragOver(DragEventArgs e)
         {
             if (e != null)
@@ -101,14 +108,16 @@ namespace PlexDL.Player
                 _location.x = e.X; _location.y = e.Y;
                 _dropHelper.DragOver(ref _location, (int)e.Effect);
 
-                //_base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
             }
             //else _base._lastError = HResult.E_INVALIDARG;
             //return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form). Add to the OnDragLeave method (or DragLeave event handler) of a control. Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
+        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form).
+        /// <br/>Add to the OnDragLeave method (or DragLeave event handler) of a control.
+        /// <br/>Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
         /// </summary>
         public void DragLeave()
         {
@@ -116,14 +125,16 @@ namespace PlexDL.Player
             Marshal.ReleaseComObject(_dropHelper);
             _dropHelper = null;
 
-            //_base._lastError = Player.NO_ERROR;
+            //_base._lastError = NO_ERROR;
             //return (int)_base._lastError;
         }
 
         /// <summary>
-        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form). Add to the OnDragDrop method (or DragDrop event handler) of a control. Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
+        /// Enables drag-and-drop ghost images to be displayed when dragged over a control (for example, a form).
+        /// <br/>Add to the OnDragDrop method (or DragDrop event handler) of a control.
+        /// <br/>Always use all 4 Player.DragAndDrop methods: DragEnter, DragOver, DragLeave and DragDrop.
         /// </summary>
-        /// <param name="e">The event arguments received with the OnDragDrop method or the DragDrop event handler (just pass them to this method).</param>
+        /// <param name="e">The event arguments received with the OnDragDrop method or the DragDrop event handler (pass on to this method).</param>
         public void DragDrop(DragEventArgs e)
         {
             if (e != null)
@@ -133,7 +144,7 @@ namespace PlexDL.Player
                 Marshal.ReleaseComObject(_dropHelper);
                 _dropHelper = null;
 
-                //_base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
             }
             //else _base._lastError = HResult.E_INVALIDARG;
             //return (int)_base._lastError;

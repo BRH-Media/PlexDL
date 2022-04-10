@@ -14,6 +14,10 @@
         /// </summary>
         FileName,
         /// <summary>
+        /// The name of the playing device (same as MediaName.FileName).
+        /// </summary>
+        DeviceName,
+        /// <summary>
         /// The file name with path and extension of the playing media.
         /// </summary>
         FullPath,

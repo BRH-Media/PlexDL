@@ -14,9 +14,11 @@ namespace PlexDL.Player
     {
         #region Fields (Sliders Class)
 
+        private const int       NO_ERROR = 0;
+
         //private const int       MAX_SCROLL_VALUE = 60000;
-        private Player _base;
-        private PositionSlider _positionSliderClass;
+        private Player          _base;
+        private PositionSlider  _positionSliderClass;
 
         #endregion
 
@@ -26,13 +28,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shuttle slider (trackbar) that is controlled by the player. Hold down the shift key to decrease the frame step rate and/or the control key to skip step-end playback recovery.
+        /// Gets or sets the shuttle slider (trackbar) that is controlled by the player.
+        /// <br/>Hold down the shift key to decrease the frame step rate and/or the control key to skip step-end playback recovery.
+        /// <br/>The player's shuttle slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Shuttle
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._shuttleSlider;
             }
             set
@@ -72,18 +76,19 @@ namespace PlexDL.Player
                         _base._hasShuttleSlider = true;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the audio volume slider (trackbar) that is controlled by the player.
+        /// <br/>The player's audio volume slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar AudioVolume
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._volumeSlider;
             }
             set
@@ -113,18 +118,19 @@ namespace PlexDL.Player
                         _base._volumeSlider.MouseWheel += _base.VolumeSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the audio balance slider (trackbar) that is controlled by the player.
+        /// <br/>The player's audio balance slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar AudioBalance
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._balanceSlider;
             }
             set
@@ -154,18 +160,19 @@ namespace PlexDL.Player
                         _base._balanceSlider.MouseWheel += _base.BalanceSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the playback speed slider (trackbar) that is controlled by the player.
+        /// <br/>The player's speed slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Speed
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._speedSlider;
             }
             set
@@ -200,7 +207,7 @@ namespace PlexDL.Player
                         _base._speedSlider.MouseWheel       += _base.SpeedSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
@@ -251,12 +258,13 @@ namespace PlexDL.Player
 
         /// <summary>
         /// Gets or sets the video image brightness slider (trackbar) that is controlled by the player.
+        /// <br/>The player's brightness slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Brightness
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._brightnessSlider;
             }
             set
@@ -286,18 +294,19 @@ namespace PlexDL.Player
                         _base._brightnessSlider.MouseWheel += _base.BrightnessSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the video image contrast slider (trackbar) that is controlled by the player.
+        /// <br/>The player's contrast slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Contrast
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._contrastSlider;
             }
             set
@@ -327,18 +336,19 @@ namespace PlexDL.Player
                         _base._contrastSlider.MouseWheel    += _base.ContrastSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the video image hue slider (trackbar) that is controlled by the player.
+        /// <br/>The player's hue slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Hue
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._hueSlider;
             }
             set
@@ -368,18 +378,19 @@ namespace PlexDL.Player
                         _base._hueSlider.MouseWheel += _base.HueSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets or sets the video image saturation slider (trackbar) that is controlled by the player.
+        /// <br/>The player's saturation slider is for user input only and should not be changed from program code.
         /// </summary>
         public TrackBar Saturation
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._saturationSlider;
             }
             set
@@ -409,7 +420,7 @@ namespace PlexDL.Player
                         _base._saturationSlider.MouseWheel += _base.SaturationSlider_MouseWheel;
                     }
                 }
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
         }
     }

@@ -13,7 +13,9 @@ namespace PlexDL.Player
     {
         #region Fields (SystemPanels Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -36,7 +38,7 @@ namespace PlexDL.Player
         /// <param name="centerForm">The control panel is centered on top of the specified form.</param>
         public bool ShowAudioMixer(Form centerForm)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return SafeNativeMethods.CenterSystemDialog("SndVol.exe", "", centerForm) || SafeNativeMethods.CenterSystemDialog("SndVol32.exe", "", centerForm);
         }
 
@@ -54,7 +56,7 @@ namespace PlexDL.Player
         /// <param name="centerForm">The control panel is centered on top of the specified form.</param>
         public bool ShowAudioDevices(Form centerForm)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return SafeNativeMethods.CenterSystemDialog("control", "mmsys.cpl,,0", centerForm);
         }
 
@@ -72,7 +74,7 @@ namespace PlexDL.Player
         /// <param name="centerForm">The control panel is centered on top of the specified form.</param>
         public bool ShowAudioInputDevices(Form centerForm)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return SafeNativeMethods.CenterSystemDialog("control", "mmsys.cpl,,1", centerForm);
         }
 
@@ -90,7 +92,7 @@ namespace PlexDL.Player
         /// <param name="centerForm">The control panel is centered on top of the specified form.</param>
         public bool ShowDisplaySettings(Form centerForm)
         {
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
             return SafeNativeMethods.CenterSystemDialog("control", "desk.cpl", centerForm);
         }
     }

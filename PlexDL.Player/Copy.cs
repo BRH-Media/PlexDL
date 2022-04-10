@@ -15,8 +15,10 @@ namespace PlexDL.Player
     {
         #region Fields (Copy Class)
 
-        private Player  _base;
-        private bool    _cloneCopy = true;
+        private const int   NO_ERROR    = 0;
+
+        private Player      _base;
+        private bool        _cloneCopy  = true;
 
         #endregion
 
@@ -28,7 +30,9 @@ namespace PlexDL.Player
 
 
         /// <summary>
-        /// Gets or sets a value that specifies whether to use the display clones copy method (which is fast and does not copy overlapping windows) with CopyMode.Video and CopyMode.Display (default: true). When enabled, display overlays are copied according to the Player.DisplayClones.ShowOverlay setting.
+        /// Gets or sets a value that specifies whether to use the display clones copy method with CopyMode.Video and CopyMode.Display (default: true).
+        /// <br/>The display clones copy method is fast and does not copy overlapping windows.
+        /// <br/>When enabled, display overlays are copied according to the Player.DisplayClones.ShowOverlay setting.
         /// </summary>
         public bool CloneMode
         {
@@ -43,19 +47,20 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._copyMode;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 _base._copyMode = value;
             }
         }
 
 
         /// <summary>
-        /// Returns an image from the Player.Copy.Mode part of the screen. See also: Player.Video.ToImage.
+        /// Returns an image from the Player.Copy.Mode part of the screen.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
         public Image ToImage()
         {
@@ -97,7 +102,7 @@ namespace PlexDL.Player
                     Graphics memoryGraphics = Graphics.FromImage(memoryImage);
                     memoryGraphics.CopyFromScreen(r.Location.X, r.Location.Y, 0, 0, r.Size);
                     memoryGraphics.Dispose();
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 catch (Exception e)
                 {
@@ -113,9 +118,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the specified part of the screen. See also: Player.Video.ToImage.
+        /// Returns an image from the specified part of the screen.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public Image ToImage(CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -126,9 +133,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the Player.Copy.Mode part of the screen with the specified dimensions. See also: Player.Video.ToImage.
+        /// Returns an image from the Player.Copy.Mode part of the screen with the specified dimensions.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio.</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image while maintaining the aspect ratio.</param>
         public Image ToImage(int size)
         {
             Image theImage = null;
@@ -153,10 +161,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the specified part of the screen with the specified dimensions. See also: Player.Video.ToImage.
+        /// Returns an image from the specified part of the screen with the specified dimensions.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image while maintaining the aspect ratio.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public Image ToImage(int size, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -167,10 +177,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the Player.Copy.Mode part of the screen with the specified dimensions. See also: Player.Video.ToImage.
+        /// Returns an image from the Player.Copy.Mode part of the screen with the specified dimensions.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
+        /// <param name="width">The width (in pixels) of the image.</param>
+        /// <param name="height">The height (in pixels) of the image.</param>
         public Image ToImage(int width, int height)
         {
             Image theImage = null;
@@ -190,11 +201,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns an image from the specified part of the screen with the specified dimensions. See also: Player.Video.ToImage.
+        /// Returns an image from the specified part of the screen with the specified dimensions.
+        /// <br/>See also: Player.Video.ToImage.
         /// </summary>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="width">The width (in pixels) of the image.</param>
+        /// <param name="height">The height (in pixels) of the image.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public Image ToImage(int width, int height, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -206,7 +219,8 @@ namespace PlexDL.Player
 
 
         /// <summary>
-        /// Copies an image from the Player.Copy.Mode part of the screen to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the Player.Copy.Mode part of the screen to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
         public int ToClipboard()
         {
@@ -221,9 +235,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies an image from the specified CopyMode part of the screen to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the specified CopyMode part of the screen to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToClipboard(CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -234,9 +250,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies an image from the Player.Copy.Mode part of the screen with the specified dimensions to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the Player.Copy.Mode part of the screen with the specified dimensions to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image while maintaining the aspect ratio</param>
         public int ToClipboard(int size)
         {
             Image copy = ToImage(size);
@@ -250,10 +267,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies an image from the specified CopyMode part of the screen with the specified dimensions to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the specified CopyMode part of the screen with the specified dimensions to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="size">The size of the longest side of the image while maintaining the aspect ratio.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image while maintaining the aspect ratio.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToClipboard(int size, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -264,10 +283,11 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies an image from the Player.Copy.Mode part of the screen with the specified dimensions to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the Player.Copy.Mode part of the screen with the specified dimensions to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
+        /// <param name="width">The width (in pixels) of the image.</param>
+        /// <param name="height">The height (in pixels) of the image.</param>
         public int ToClipboard(int width, int height)
         {
             Image copy = ToImage(width, height);
@@ -281,11 +301,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Copies an image from the specified CopyMode part of the screen with the specified dimensions to the system's clipboard. See also: Player.Video.ToClipboard.
+        /// Copies an image from the specified CopyMode part of the screen with the specified dimensions to the system's clipboard.
+        /// <br/>See also: Player.Video.ToClipboard.
         /// </summary>
-        /// <param name="width">The width of the image.</param>
-        /// <param name="height">The height of the image.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="width">The width (in pixels) of the image.</param>
+        /// <param name="height">The height (in pixels) of the image.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToClipboard(int width, int height, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -297,7 +319,8 @@ namespace PlexDL.Player
 
 
         /// <summary>
-        /// Saves an image from the Player.Copy.Mode part of the screen to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the Player.Copy.Mode part of the screen to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
@@ -318,11 +341,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves an image from the specified CopyMode part of the screen to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the specified CopyMode part of the screen to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -333,11 +358,12 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves an image from the Player.Copy.Mode part of the screen with the specified dimensions to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the Player.Copy.Mode part of the screen with the specified dimensions to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="size">The size of the longest side of the image to save while maintaining the aspect ratio.</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image to save while maintaining the aspect ratio.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int size)
         {
             if ((fileName != null) && (fileName.Length > 3))
@@ -355,12 +381,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves an image from the specified CopyMode part of the screen with the specified dimensions to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the specified CopyMode part of the screen with the specified dimensions to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="size">The size of the longest side of the image to save while maintaining the aspect ratio.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="size">The size (in pixels) of the longest side of the image to save while maintaining the aspect ratio.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int size, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;
@@ -371,12 +399,13 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves an image from the Player.Copy.Mode part of the screen withe the specified dimensions to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the Player.Copy.Mode part of the screen withe the specified dimensions to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="width">The width of the image to save.</param>
-        /// <param name="height">The height of the image to save.</param>
+        /// <param name="width">The width (in pixels) of the image to save.</param>
+        /// <param name="height">The height (in pixels) of the image to save.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int width, int height)
         {
             if ((fileName != null) && (fileName.Length > 3))
@@ -394,13 +423,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Saves an image from the specified CopyMode part of the screen with the specified dimensions to the specified file. See also: Player.Video.ToFile.
+        /// Saves an image from the specified CopyMode part of the screen with the specified dimensions to the specified file.
+        /// <br/>See also: Player.Video.ToFile.
         /// </summary>
         /// <param name="fileName">The name of the file to save.</param>
         /// <param name="imageFormat">The file format of the image to save.</param>
-        /// <param name="width">The width of the image to save.</param>
-        /// <param name="height">The height of the image to save.</param>
-        /// <param name="mode">A value that indicates the part of the screen to copy. The Player.Copy.Mode setting is not changed.</param>
+        /// <param name="width">The width (in pixels) of the image to save.</param>
+        /// <param name="height">The height (in pixels) of the image to save.</param>
+        /// <param name="mode">A value that indicates the part of the screen to copy.
+        /// <br/>The Player.Copy.Mode setting is not changed.</param>
         public int ToFile(string fileName, System.Drawing.Imaging.ImageFormat imageFormat, int width, int height, CopyMode mode)
         {
             CopyMode oldMode = _base._copyMode;

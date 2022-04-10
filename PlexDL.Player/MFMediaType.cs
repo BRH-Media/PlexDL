@@ -34,7 +34,7 @@ namespace PlexDL.Player
         //public static readonly Guid Dolby_AC3_SPDIF = new Guid(0x0092, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid DRM = new Guid(0x0009, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid WMAudioV8 = new Guid(0x0161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-        //public static readonly Guid WMAudioV9 = new Guid(0x0162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid WMAudioV9 = new Guid(0x0162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid WMAudio_Lossless = new Guid(0x0163, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid WMASPDIF = new Guid(0x0164, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid MSP1 = new Guid(0x000A, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
@@ -54,7 +54,7 @@ namespace PlexDL.Player
         public static readonly Guid RGB24 = new Guid(20, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid RGB555 = new Guid(24, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid RGB565 = new Guid(23, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-        public static readonly Guid RGB8 = new Guid(41, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        //public static readonly Guid RGB8 = new Guid(41, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         //public static readonly Guid AI44 = new FourCC("AI44").ToMediaSubtype();
         //public static readonly Guid AYUV = new FourCC("AYUV").ToMediaSubtype();
         //public static readonly Guid YUY2 = new FourCC("YUY2").ToMediaSubtype();
@@ -83,7 +83,7 @@ namespace PlexDL.Player
         //public static readonly Guid MP43 = new FourCC("MP43").ToMediaSubtype();
         //public static readonly Guid MP4S = new FourCC("MP4S").ToMediaSubtype();
         //public static readonly Guid M4S2 = new FourCC("M4S2").ToMediaSubtype();
-        public static readonly Guid MP4V = new FourCC("MP4V").ToMediaSubtype();
+        //public static readonly Guid MP4V = new FourCC("MP4V").ToMediaSubtype();
         //public static readonly Guid WMV1 = new FourCC("WMV1").ToMediaSubtype();
         //public static readonly Guid WMV2 = new FourCC("WMV2").ToMediaSubtype();
         public static readonly Guid WMV3 = new FourCC("WMV3").ToMediaSubtype();
@@ -101,7 +101,7 @@ namespace PlexDL.Player
         public static readonly Guid H264 = new FourCC("H264").ToMediaSubtype();
         //public static readonly Guid MJPG = new FourCC("MJPG").ToMediaSubtype();
         //public static readonly Guid O420 = new FourCC("420O").ToMediaSubtype();
-        //public static readonly Guid HEVC = new FourCC("HEVC").ToMediaSubtype();
+        public static readonly Guid HEVC = new FourCC("HEVC").ToMediaSubtype();
         //public static readonly Guid HEVC_ES = new FourCC("HEVS").ToMediaSubtype();
 
         //public static readonly Guid H265 = new FourCC("H265").ToMediaSubtype();

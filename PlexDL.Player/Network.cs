@@ -13,7 +13,9 @@ namespace PlexDL.Player
     {
         #region Fields (Network Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
         
@@ -36,7 +38,7 @@ namespace PlexDL.Player
                 try
                 {
                     _base._lastError = MFExtern.MFGetService(_base.mf_MediaSession, MFServices.MFNETSOURCE_STATISTICS_SERVICE, typeof(IPropertyStore).GUID, out object store);
-                    if (_base._lastError == Player.NO_ERROR)
+                    if (_base._lastError == NO_ERROR)
                     {
                         PropertyKeys.PKEY_NetSource_Statistics.pID = (int)statistics;
                         PropVariant data = new PropVariant();
@@ -55,18 +57,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the player's low latency network mode (default: false). This property also applies to local media playback and is reset (to false) when media ends playing.
+        /// Gets or sets a value indicating the player's low latency network mode (default: false).
+        /// <br/>This property also applies to local media playback and is reset (to false) when media ends playing.
         /// </summary>
         public bool LowLatency
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.mf_LowLatency;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (value != _base.mf_LowLatency)
                 {
                     _base.mf_LowLatency = value;
@@ -90,12 +93,12 @@ namespace PlexDL.Player
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return mf_NetCredentialEnabled;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 mf_NetCredentialEnabled = value;
             }
         }
@@ -146,7 +149,7 @@ namespace PlexDL.Player
         public void CredentialsTest()
         {
             HResult result = MFExtern.MFCreateCredentialCache(out mf_NetCredentialCache);
-            if (result == Player.NO_ERROR)
+            if (result == NO_ERROR)
             {
                 IMFNetCredential _netCredential;
                 MFNetCredentialRequirements _netCredentialRequirements;
@@ -157,15 +160,15 @@ namespace PlexDL.Player
                 byte[] password = Encoding.ASCII.GetBytes("Peter1234" + '\0');
 
                 result = _netCredential.SetUser(userName, userName.Length, false);
-                if (result == Player.NO_ERROR) result = _netCredential.SetPassword(password, password.Length, false);
+                if (result == NO_ERROR) result = _netCredential.SetPassword(password, password.Length, false);
                 MessageBox.Show("Set User: " + _base.GetErrorString((int)result));
 
-                if (result == Player.NO_ERROR)
+                if (result == NO_ERROR)
                 {
                     IMFNetCredential testCredential;
                     result = mf_NetCredentialCache.GetCredential("https://CodeProject.com", string.Empty, MFNetAuthenticationFlags.None, out testCredential, out _netCredentialRequirements);
                     MessageBox.Show("Get Credential: " + _base.GetErrorString((int)result));
-                    if (result == Player.NO_ERROR)
+                    if (result == NO_ERROR)
                     {
                         byte[] testName = new byte[256];
                         MFInt testData = new MFInt(256);
@@ -173,7 +176,7 @@ namespace PlexDL.Player
                         result = testCredential.GetUser(testName, testData, testEncrypted);
                         MessageBox.Show("Get User: " + _base.GetErrorString((int)result));
 
-                        if (result == Player.NO_ERROR)
+                        if (result == NO_ERROR)
                         {
                             if (testName == null)
                             {

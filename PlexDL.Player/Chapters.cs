@@ -20,10 +20,11 @@ namespace PlexDL.Player
     {
         #region Fields (Chapters Class)
 
+        private const int       NO_ERROR                = 0;
         private const string    NO_TITLE_INDICATOR      = "#";
         private const int       CHAPTERS_FILE_MAX_SIZE  = 10240;
         private const string    ROOT_ATOM_TYPES         = "ftyp,moov,mdat,pdin,moof,mfra,stts,stsc,stsz,meta,free,skip";
-        private const string    IGNORE_EXTENSIONS       = ".chap.srt.m3u.m3u8.ppl.txt.inf.cfg.exe.dll";
+        private const string    IGNORE_EXTENSIONS       = ".chap.srt.m3u.m3u8.ppl.txt.inf.ini.cfg.exe.dll.jpg.png.jpeg.bmp.gif.tiff.tif.jfif.heic";
 
         private Player          _base;
 
@@ -67,9 +68,12 @@ namespace PlexDL.Player
         */
 
         /// <summary>
-        /// Returns chapter information from the playing media file. Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
+        /// Returns chapter information from the playing media file.
+        /// <br/>Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others).
+        /// <br/>This method does not evaluate file extensions but the actual content of files.
         /// </summary>
-        /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
+        /// <param name="chapters_I">When this method returns, contains the chapter information of the media stored in the QuickTime (mp4 types)
+        /// <br/>or Matroska (mkv types) format or null.</param>
         /// <param name="chapters_II">When this method returns, contains the chapter information of the media stored the Nero (mp4 types) format or null.</param>
         public int FromMedia(out MediaChapter[] chapters_I, out MediaChapter[] chapters_II)
         {
@@ -83,7 +87,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns chapter information from the specified media file. Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others). This method does not evaluate file extensions but the actual content of files.
+        /// Returns chapter information from the specified media file.
+        /// <br/>Supported file formats: .mp4, .m4a, .m4b, .m4v, .mkv, .mka and .webm (and maybe others).
+        /// <br/>This method does not evaluate file extensions but the actual content of files.
         /// </summary>
         /// <param name="fileName">The path and name of the media file whose chapter information is to be obtained.</param>
         /// <param name="chapters_I">When this method returns, contains the chapter information of the media file stored in the QuickTime (mp4 types) or Matroska (mkv types) format or null.</param>
@@ -109,19 +115,19 @@ namespace PlexDL.Player
                         if ((ROOT_ATOM_TYPES.IndexOf(Encoding.ASCII.GetString(new byte[] { buffer[4], buffer[5], buffer[6], buffer[7] }), StringComparison.Ordinal) >= 0))
                         {
                             fileType = 1;
-                            _base._lastError = Player.NO_ERROR;
+                            _base._lastError = NO_ERROR;
                         }
                         else if (buffer[0] == 0x1A && buffer[1] == 0x45 && buffer[2] == 0xDF && buffer[3] == 0xA3)
                         {
                             fileType = 2;
-                            _base._lastError = Player.NO_ERROR;
+                            _base._lastError = NO_ERROR;
                         }
                     }
                 }
                 catch (Exception e) { _base._lastError = (HResult)Marshal.GetHRForException(e); }
             }
 
-            if (_base._lastError == Player.NO_ERROR)
+            if (_base._lastError == NO_ERROR)
             {
                 _fileLength = _reader.Length;
                 _reader.Position = 0;
@@ -735,13 +741,14 @@ namespace PlexDL.Player
         /* Get Chapters From Text File */
 
         /// <summary>
-        /// Gets or sets the initial directory to search for chapter files with the Player.Chapters.FromFile method (default: string.Empty (the directory of the playing media)).
+        /// Gets or sets the initial directory to search for chapter files with the Player.Chapters.FromFile
+        /// <br/>method (default: string.Empty (the directory of the playing media)).
         /// </summary>
         public string Directory
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (_chapDirectory == null) _chapDirectory = string.Empty;
                 return _chapDirectory;
             }
@@ -753,7 +760,7 @@ namespace PlexDL.Player
                     try
                     {
                         _chapDirectory = Path.GetDirectoryName(value);
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                     catch (Exception e)
                     {
@@ -766,13 +773,15 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the file name (without path and extension) of the chapters file to search for with the Player.Chapters.FromFile method (default: string.Empty (the file name of the playing media)). Reset to string.Empty after the Player.Chapters.FromFile method is used.
+        /// Gets or sets the file name (without path and extension) of the chapters file to search for with the
+        /// <br/>Player.Chapters.FromFile method (default: string.Empty (the file name of the playing media)).
+        /// <br/>Reset to string.Empty after the Player.Chapters.FromFile method is used.
         /// </summary>
         public string FileName
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 if (_chapFileName == null) _chapFileName = string.Empty;
                 return _chapFileName;
             }
@@ -782,7 +791,7 @@ namespace PlexDL.Player
                 {
                     value = value.Trim();
                     _chapFileName = value;
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 else
                 {
@@ -793,19 +802,21 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets the number of chapters in the playing media (only applicable to chapters played with the Player.Play method).
+        /// Gets the number of chapters in the playing media.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public int Count
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._chapterMode ? _base._mediaChapters.Length : 0;
             }
         }
 
         /// <summary>
-        /// Gets or sets the (zero-based) index of the media chapter being played (only applicable to chapters played with the Player.Play method). 
+        /// Gets or sets the (zero-based) index of the chapter being played.
+        /// <br/>Applies only to chapters played using the Player.Play method. 
         /// </summary>
         public int Index
         {
@@ -813,7 +824,7 @@ namespace PlexDL.Player
             {
                 if (_base._chapterMode)
                 {
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                     return _base._chapterIndex;
                 }
                 _base._lastError = HResult.MF_E_NOT_AVAILABLE;
@@ -836,9 +847,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Plays the next media chapter (only applicable to chapters played with the Player.Play method).
+        /// Plays the next chapter, if any.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
-        public int Next()
+        public int PlayNext()
         {
             if (_base._chapterMode)
             {
@@ -854,9 +866,10 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Plays the previous media chapter (only applicable to chapters played with the Player.Play method).
+        /// Plays the previous chapter, if any.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
-        public int Previous()
+        public int PlayPrevious()
         {
             if (_base._chapterMode)
             {
@@ -873,7 +886,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the playing media chapter or null if not available (only applicable to chapters played with the Player.Play method).
+        /// Returns the chapter being played.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public MediaChapter GetChapter()
         {
@@ -885,7 +899,7 @@ namespace PlexDL.Player
                 if (index >= 0 && index < _base._mediaChapters.Length)
                 {
                     chapter = _base._mediaChapters[index];
-                    _base._lastError = Player.NO_ERROR;
+                    _base._lastError = NO_ERROR;
                 }
                 else _base._lastError = HResult.MF_E_OUT_OF_RANGE;
             }
@@ -895,7 +909,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the media chapter with the specified index or null if not available (only applicable to chapters played with the Player.Play method).
+        /// Returns the chapter with the specified index.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         /// <param name="index">The (zero-based) index of the chapter to be retrieved.</param>
         public MediaChapter GetChapter(int index)
@@ -916,7 +931,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns the playing media chapters or null if not available (only applicable to chapters played with the Player.Play method).
+        /// Returns the chapters being played.
+        /// <br/>Applies only to chapters played using the Player.Play method.
         /// </summary>
         public MediaChapter[] GetChapters()
         {
@@ -925,7 +941,7 @@ namespace PlexDL.Player
             if (_base._chapterMode)
             {
                 chapters = _base._mediaChapters;
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
             }
             else _base._lastError = HResult.MF_E_NOT_AVAILABLE;
 
@@ -940,11 +956,14 @@ namespace PlexDL.Player
             _base.AV_EndOfMedia();
             _base._repeatChapter = repeat;
 
-            _base._lastError = Player.NO_ERROR;
+            _base._lastError = NO_ERROR;
         }
 
         /// <summary>
-        /// Returns chapter information of the playing media from a chapters text file. The information is obtained from a file with the same name as the playing media file but with the extension ".chap" located in the same folder as the media file or in one of the folders contained therein. See also: Player.Chapters.Directory and Player.Chapters.FileName.
+        /// Returns the chapters for the playing media.
+        /// <br/>The information is obtained from a file with the same name as the playing media file but with the extension ".chap"
+        /// <br/>located in the same folder as the media file or in one of the folders contained therein.
+        /// <br/>See also: Player.Chapters.Directory and Player.Chapters.FileName.
         /// </summary>
         public MediaChapter[] FromFile()
         {
@@ -970,9 +989,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Returns chapter information from the specified chapters text file.
+        /// Returns the chapters from the specified chapters file.
         /// </summary>
-        /// <param name="fileName">The path and file name of the chapters text file.</param>
+        /// <param name="fileName">The path and file name of the chapters file.</param>
         public MediaChapter[] FromFile(string fileName)
         {
             if (!string.IsNullOrWhiteSpace(fileName))
@@ -987,7 +1006,7 @@ namespace PlexDL.Player
         private MediaChapter[] GetChaptersFile(string path)
         {
             MediaChapter[] chapters = null;
-            _base._lastError = HResult.MF_E_NOT_AVAILABLE;
+            _base._lastError = HResult.ERROR_FILE_NOT_FOUND;
 
             if (path.Length > 0 && File.Exists(path) && new FileInfo(path).Length < CHAPTERS_FILE_MAX_SIZE)
             {
@@ -1039,7 +1058,7 @@ namespace PlexDL.Player
                         else
                         {
                             if (trueCount != count) Array.Resize(ref chapters, trueCount);
-                            _base._lastError = Player.NO_ERROR;
+                            _base._lastError = NO_ERROR;
                         }
                     }
                 }
@@ -1053,9 +1072,10 @@ namespace PlexDL.Player
         // Get Base Media File
 
         /// <summary>
-        /// Returns the path and file name of the media file (located in the same or parent(!) directory) belonging to the specified chapters text file or null if not found.
+        /// Returns the path and file name of the media file (located in the same or parent directory)
+        /// <br/>belonging to the specified chapters file.
         /// </summary>
-        /// <param name="fileName">The path and file name of the chapters text file.</param>
+        /// <param name="fileName">The path and file name of the chapters file.</param>
 #pragma warning disable CA1822 // Mark members as static
         public string GetMediaFile(string fileName)
 #pragma warning restore CA1822 // Mark members as static
@@ -1109,24 +1129,26 @@ namespace PlexDL.Player
         }
 
 
-        /* Write Chapters To Text File */
+        /* Save Chapter Information To A File */
 
         /// <summary>
-        /// Saves the specified chapters to the specified chapters text file. If the chapters text file already exists, it is overwritten.
+        /// Saves the specified chapters to the specified file.
+        /// <br/>If the file already exists, it is overwritten.
         /// </summary>
-        /// <param name="fileName">The path and file name of the chapters text file. The file extension is set to ".chap".</param>
-        /// <param name="chapters">The chapters to save to the chapters text file.</param>
+        /// <param name="fileName">The path and file name of the file. The file extension is set to ".chap".</param>
+        /// <param name="chapters">The chapters to save.</param>
         public int ToFile(string fileName, MediaChapter[] chapters)
         {
             return ToFile(fileName, chapters, 0);
         }
 
         /// <summary>
-        /// Saves the specified chapters to the specified chapters text file. If the chapters text file already exists, it is overwritten.
+        /// Saves the specified chapters to the specified file.
+        /// <br/>If the file already exists, it is overwritten.
         /// </summary>
-        /// <param name="fileName">The path and file name of the chapters text file. The file extension is set to ".chap".</param>
-        /// <param name="chapters">The chapters to save to the chapters text file.</param>
-        /// <param name="titleIndex">The index of the chapter title to save to the chapters text file (if multiple languages are used, default: 0).</param>
+        /// <param name="fileName">The path and file name of the file. The file extension is set to ".chap".</param>
+        /// <param name="chapters">The chapters to save.</param>
+        /// <param name="titleIndex">The index of the chapter title to save (if multiple languages are used, default: 0).</param>
         public int ToFile(string fileName, MediaChapter[] chapters, int titleIndex)
         {
             if (string.IsNullOrWhiteSpace(fileName) || chapters == null) _base._lastError = HResult.E_INVALIDARG;
@@ -1154,7 +1176,7 @@ namespace PlexDL.Player
                     if (text.Length > initLength)
                     {
                         File.WriteAllText(Path.ChangeExtension(fileName, Player.CHAPTERS_FILE_EXTENSION), text.ToString());
-                        _base._lastError = Player.NO_ERROR;
+                        _base._lastError = NO_ERROR;
                     }
                     else _base._lastError = HResult.E_INVALIDARG;
                 }

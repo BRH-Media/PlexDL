@@ -35,7 +35,7 @@ namespace PlexDL.Player
         { get { return _name; } }
 
         /// <summary>
-        /// A value that indicates whether the property is supported by the webcam.
+        /// A value indicating whether the property is supported by the webcam.
         /// </summary>
         public bool Supported
         {
@@ -58,12 +58,14 @@ namespace PlexDL.Player
         public int Default { get { return _default; } }
 
         /// <summary>
-        /// The step size for the webcam property. The step size is the smallest increment by which the webcam property can change.
+        /// The step size for the webcam property.
+        /// <br/>The step size is the smallest increment by which the property can change.
         /// </summary>
         public int StepSize { get { return _step; } }
 
         /// <summary>
-        /// Gets or sets the value of the webcam property. When set, the Automatic setting is set to false (manual control).
+        /// Gets or sets the value of the webcam property.
+        /// <br/>When set, WebcamProperty.AutoEnabled is set to false (manual control).
         /// </summary>
         public int Value
         {
@@ -76,7 +78,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the property can be controlled automatically by the webcam. See also: WebcamProperty.AutoEnabled.
+        /// Gets a value indicating whether the property can be controlled automatically by the webcam.
+        /// <br/>See also: WebcamProperty.AutoEnabled.
         /// </summary>
         public bool AutoSupport
         {
@@ -84,7 +87,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the property is controlled automatically by the webcam. See also: WebcamProperty.AutoSupported.
+        /// Gets or sets a value indicating whether the property is controlled automatically by the webcam.
+        /// <br/>See also: WebcamProperty.AutoSupported.
         /// </summary>
         public bool AutoEnabled
         {

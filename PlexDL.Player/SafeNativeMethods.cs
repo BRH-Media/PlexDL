@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -49,20 +49,16 @@
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others.
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
+
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -71,6 +67,7 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Forms;
 
 #endregion
@@ -93,7 +90,7 @@ namespace PlexDL.Player
 
     #region Native Methods
 
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     internal static class SafeNativeMethods
     {
         // ******************************** Win32 Windows
@@ -141,11 +138,9 @@ namespace PlexDL.Player
         //internal const int CAPTUREBLT       = 0x40000000;
         //internal const int MIXBLT           = 0x40CC0020;
 
-        internal const uint SRCCOPY_U = 0xCC0020;
-        //internal const uint CAPTUREBLT_U    = 0x40000000;
-        //internal const uint MIXBLT_U        = 0x40CC0020;
-
-        internal const int STRETCH_HALFTONE = 4; // quality mode setting for SetStretchBltMode
+        // quality mode setting for SetStretchBltMode
+        internal const int STRETCH_DELETESCANS  = 3;
+        internal const int STRETCH_HALFTONE     = 4;
 
         [DllImport("gdi32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -347,9 +342,9 @@ namespace PlexDL.Player
         //internal const int MOUSEEVENTF_RIGHTUP = 0x10;
 
         [DllImport("user32.dll")]
-#pragma warning disable IDE1006 // Naming Styles
+//#pragma warning disable IDE1006 // Naming Styles
 		internal static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, int dwExtraInfo);
-#pragma warning restore IDE1006 // Naming Styles
+//#pragma warning restore IDE1006 // Naming Styles
 
         #endregion
 
@@ -418,39 +413,48 @@ namespace PlexDL.Player
     //    DoesNotUseNetwork = 0x00000800,
     //}
 
-    //[UnmanagedName("MFVideo3DFormat")]
-    //internal enum MFVideo3DFormat
-    //{
-    //    BaseView = 0,
-    //    MultiView = 1,
-    //    PackedLeftRight = 2,
-    //    PackedTopBottom = 3
-    //}
-
-    //[Flags, UnmanagedName("MFT_ENUM_FLAG")]
-    //internal enum MFT_EnumFlag
-    //{
-    //    None = 0x00000000,
-    //    SyncMFT = 0x00000001,   // Enumerates V1 MFTs. This is default.
-    //    AsyncMFT = 0x00000002,   // Enumerates only software async MFTs also known as V2 MFTs
-    //    Hardware = 0x00000004,   // Enumerates V2 hardware async MFTs
-    //    FieldOfUse = 0x00000008,   // Enumerates MFTs that require unlocking
-    //    LocalMFT = 0x00000010,   // Enumerates Locally (in-process) registered MFTs
-    //    TranscodeOnly = 0x00000020,   // Enumerates decoder MFTs used by transcode only
-    //    SortAndFilter = 0x00000040,   // Apply system local, do not use and preferred sorting and filtering
-    //    SortAndFilterApprovedOnly = 0x000000C0,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_APPROVED_PLUGINS
-    //    SortAndFilterWebOnly = 0x00000140,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_WEB_PLUGINS
-    //    SortAndFilterWebOnlyEdgemode = 0x00000240,
-    //    All = 0x0000003F    // Enumerates all MFTs including SW and HW MFTs and applies filtering
-    //}
-
-    //[UnmanagedName("MF_VIDEO_PROCESSOR_MIRROR")]
-    //internal enum MF_VIDEO_PROCESSOR_MIRROR
+    //[Flags, UnmanagedName("MFNetAuthenticationFlags")]
+    //internal enum MFNetAuthenticationFlags
     //{
     //    None = 0,
-    //    Horizontal = 1,
-    //    Vertical = 2
+    //    Proxy = 0x00000001,
+    //    ClearText = 0x00000002,
+    //    LoggedOnUser = 0x00000004
     //}
+
+    //[UnmanagedName("MFNetCredentialRequirements")]
+    //internal enum MFNetCredentialRequirements
+    //{
+    //    None = 0,
+    //    RequirePrompt = 0x00000001,
+    //    RequireSaveSelected = 0x00000002
+    //}
+
+    //[Flags, UnmanagedName("MFNetCredentialOptions")]
+    //internal enum MFNetCredentialOptions
+    //{
+    //    None = 0,
+    //    Save = 0x00000001,
+    //    DontCache = 0x00000002,
+    //    AllowClearText = 0x00000004,
+    //}
+
+    //[UnmanagedName("MFVideo3DFormat")]
+	//internal enum MFVideo3DFormat
+	//{
+	//    BaseView = 0,
+	//    MultiView = 1,
+	//    PackedLeftRight = 2,
+	//    PackedTopBottom = 3
+	//}
+
+    //[UnmanagedName("MF_VIDEO_PROCESSOR_MIRROR")]
+	//internal enum MF_VIDEO_PROCESSOR_MIRROR
+	//{
+	//	None = 0,
+	//	Horizontal = 1,
+	//	Vertical = 2
+	//}
 
     //[UnmanagedName("MFVideoInterlaceMode")]
     //internal enum MFVideoInterlaceMode
@@ -481,28 +485,9 @@ namespace PlexDL.Player
     //    public int dwClockJitter;
     //}
 
-    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFFOLDDOWN_MATRIX")]
-    //internal struct MFFOLDDOWN_MATRIX
-    //{
-    //    public int      cbSize;
-    //    public int      cSrcChannels;
-    //    public int      cDstChannels;
-    //    public int      dwChannelMask;
-    //    public long[]   Coeff;
-
-    //    public MFFOLDDOWN_MATRIX(int size, int sourceChannels, int destChannels, int channelMask, long[] coefficients)
-    //    {
-    //        cbSize          = size;
-    //        cSrcChannels    = sourceChannels;
-    //        cDstChannels    = destChannels;
-    //        dwChannelMask   = channelMask;
-    //        Coeff           = coefficients;
-    //    }
-    //}
-
     #endregion
 
-    #region Static Classes
+	#region Static Classes
 
 #pragma warning disable CA1060 // Move pinvokes to native methods class
 
@@ -983,14 +968,14 @@ namespace PlexDL.Player
     // and uses 2 different methods to check for recursion (which in theory
     // could be nested quite deeply).
 
-    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTER_TYPE_INFO")]
-	//internal class MFTRegisterTypeInfo
+    //[UnmanagedName("CLSID_VideoProcessorMFT"),
+	//ComImport,
+	//Guid("88753B26-5B24-49bd-B2E7-0C445C78C982")]
+	//internal sealed class VideoProcessorMFT
 	//{
-	//    public Guid guidMajorType;
-	//    public Guid guidSubtype;
 	//}
 
-	//[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
+    //[StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
 	//internal class MFNetCredentialManagerGetParam
 	//{
 	//	public HResult hrOp;
@@ -1157,104 +1142,62 @@ namespace PlexDL.Player
     //}
 
     //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    //Guid("A3F675D5-6119-4f7f-A100-1D8B280F0EFB")]
-    //internal interface IMFVideoProcessorControl
-    //{
-    //    //[PreserveSig]
-    //    //HResult SetBorderColor(
-    //    //    MFARGB pBorderColor
-    //    //);
-    //    [PreserveSig]
-    //    HResult SetBorderColor();
+	//InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+	//Guid("BDE633D3-E1DC-4a7f-A693-BBAE399C4A20")]
+	//internal interface IMFVideoProcessorControl2 : IMFVideoProcessorControl
+	//{
 
-    //    [PreserveSig]
-    //    HResult SetSourceRectangle(
-    //        MFRect pSrcRect
-    //    );
+	//	//[PreserveSig]
+	//	//new HResult SetBorderColor(
+	//	//    MFARGB pBorderColor
+	//	//);
+	//	[PreserveSig]
+	//	new HResult SetBorderColor();
 
-    //    [PreserveSig]
-    //    HResult SetDestinationRectangle(
-    //        MFRect pDstRect
-    //    );
+	//	[PreserveSig]
+	//	new HResult SetSourceRectangle(
+	//		MFRect pSrcRect
+	//	);
 
-    //    //[PreserveSig]
-    //    //HResult SetMirror(
-    //    //    MF_VIDEO_PROCESSOR_MIRROR eMirror
-    //    //);
-    //    [PreserveSig]
-    //    HResult SetMirror();
+	//	[PreserveSig]
+	//	new HResult SetDestinationRectangle(
+	//		MFRect pDstRect
+	//	);
 
-    //    //[PreserveSig]
-    //    //HResult SetRotation(
-    //    //    MF_VIDEO_PROCESSOR_ROTATION eRotation
-    //    //);
-    //    [PreserveSig]
-    //    HResult SetRotation();
+	//	[PreserveSig]
+	//	new HResult SetMirror(
+	//		MF_VIDEO_PROCESSOR_MIRROR eMirror
+	//	);
+	//	//[PreserveSig]
+	//	//new HResult SetMirror();
 
-    //    [PreserveSig]
-    //    HResult SetConstrictionSize(
-    //        [In] MFSize pConstrictionSize
-    //    );
-    //}
+	//	//[PreserveSig]
+	//	//new HResult SetRotation(
+	//	//    MF_VIDEO_PROCESSOR_ROTATION eRotation
+	//	//);
+	//	[PreserveSig]
+	//	new HResult SetRotation();
 
-    //[ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    //InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    //Guid("BDE633D3-E1DC-4a7f-A693-BBAE399C4A20")]
-    //internal interface IMFVideoProcessorControl2 : IMFVideoProcessorControl
-    //{
+	//	[PreserveSig]
+	//	new HResult SetConstrictionSize(
+	//		[In] MFSize pConstrictionSize
+	//	);
 
-    //    //[PreserveSig]
-    //    //new HResult SetBorderColor(
-    //    //    MFARGB pBorderColor
-    //    //);
-    //    [PreserveSig]
-    //    new HResult SetBorderColor();
+	//	[PreserveSig]
+	//	HResult SetRotationOverride(
+	//		int uiRotation
+	//		);
 
-    //    [PreserveSig]
-    //    new HResult SetSourceRectangle(
-    //        MFRect pSrcRect
-    //    );
+	//	[PreserveSig]
+	//	HResult EnableHardwareEffects(
+	//		[In, MarshalAs(UnmanagedType.Bool)] bool fEnabled
+	//		);
 
-    //    [PreserveSig]
-    //    new HResult SetDestinationRectangle(
-    //        MFRect pDstRect
-    //    );
-
-    //    //[PreserveSig]
-    //    //new HResult SetMirror(
-    //    //    MF_VIDEO_PROCESSOR_MIRROR eMirror
-    //    //);
-    //    [PreserveSig]
-    //    new HResult SetMirror();
-
-    //    //[PreserveSig]
-    //    //new HResult SetRotation(
-    //    //    MF_VIDEO_PROCESSOR_ROTATION eRotation
-    //    //);
-    //    [PreserveSig]
-    //    new HResult SetRotation();
-
-    //    [PreserveSig]
-    //    new HResult SetConstrictionSize(
-    //        [In] MFSize pConstrictionSize
-    //    );
-
-    //    [PreserveSig]
-    //    HResult SetRotationOverride(
-    //        int uiRotation
-    //        );
-
-    //    [PreserveSig]
-    //    HResult EnableHardwareEffects(
-    //        [In, MarshalAs(UnmanagedType.Bool)] bool fEnabled
-    //        );
-
-    //    [PreserveSig]
-    //    HResult GetSupportedHardwareEffects(
-    //        out int puiSupport
-    //        );
-    //}
+	//	[PreserveSig]
+	//	HResult GetSupportedHardwareEffects(
+	//		out int puiSupport
+	//		);
+	//}
 
     // This is the ASync version of IMFSourceReader.  The only difference is the ReadSample method, which must allow
     // the final 4 params to be null.
@@ -1399,9 +1342,6 @@ namespace PlexDL.Player
     #endregion
 
     #region Media Foundation - Capture Engine
-
-    // see internal static class MFAttributesClsid
-    //public static readonly Guid CLSID_MFCaptureEngine = new Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a");
 
     #region Enum
 

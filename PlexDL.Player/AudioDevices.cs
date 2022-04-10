@@ -1,16 +1,16 @@
 ﻿/****************************************************************
 
-    PVS.MediaPlayer - Version 1.4
-    June 2021, The Netherlands
-    © Copyright 2021 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
+    PVS.MediaPlayer - Version 1.7
+    January 2022, The Netherlands
+    © Copyright 2022 PVS The Netherlands - licensed under The Code Project Open License (CPOL)
 
     PVS.MediaPlayer uses (part of) the Media Foundation .NET library by nowinskie and snarfle (https://sourceforge.net/projects/mfnet).
     Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details (http://mfnet.sourceforge.net).
 
     ****************
 
-    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET Framework 4.x, .NET 5.0 or higher and WinForms (any CPU).
-    * Use of the recorder requires Windows 8 or later.
+    For use with Microsoft Windows 7 or higher*, Microsoft .NET Core 3.1, .NET 4, 5, 6 or higher and WinForms (any CPU).
+    * Use of the recorders requires Windows 8 or later.
 
     Created with Microsoft Visual Studio.
 
@@ -28,7 +28,7 @@
     5. DisplayClones.cs - multiple video displays 
     6. CursorHide.cs    - hides the mouse cursor during inactivity
     7. Subtitles.cs     - subrip (.srt) subtitles
-    8. Infolabel.cs     - custom ToolTip
+    8. Infolabel.cs     - movable small pop-up window
 
     Required references:
 
@@ -49,25 +49,22 @@
     System Audio Notification Client EventHandler
     System Audio Notification Client
     Master Volume / Master Mute / ChannelCount
+    Input Level / Input Mute
 
     ****************
 
     Thanks!
 
-    Many thanks to Microsoft (Windows, .NET Framework, Visual Studio and others), all the people
-    writing about programming on the internet (a great source for ideas and solving problems),
-    the websites publishing those or other writings about programming, the people responding to the
-    PVS.MediaPlayer articles with comments and suggestions and, of course, the people at CodeProject.
-
-    Thanks to Google for their free online services like Search, Drive, Translate and others. 
+    Thank you for your comments, suggestions and 5 star votes. You keep this library alive.
 
     Special thanks to the creators of Media Foundation .NET for their great library.
 
     Special thanks to Sean Ewington and Deeksha Shenoy of CodeProject who also took care of publishing the many
     code updates and changes in the PVS.MediaPlayer articles in a friendly, fast, and highly competent manner.
 
+
     Peter Vegter
-    June 2021, The Netherlands
+    January 2022, The Netherlands
 
     ****************************************************************/
 
@@ -190,12 +187,12 @@ namespace PlexDL.Player
         {
             if (pm_HasPeakMeter)
             {
-                if (_playing && _mediaPeakLevelChanged != null)
+                if (_playing && _mediaAudioOutputLevelChanged != null)
                 {
                     _outputLevelArgs._channelCount    = pm_PeakMeterChannelCount;
                     _outputLevelArgs._masterPeakValue = STOP_VALUE;
                     _outputLevelArgs._channelsValues  = pm_PeakMeterValuesStop;
-                    _mediaPeakLevelChanged(this, _outputLevelArgs);
+                    _mediaAudioOutputLevelChanged(this, _outputLevelArgs);
                 }
 
                 pm_PeakMeterChannelCount = 0;
@@ -293,12 +290,12 @@ namespace PlexDL.Player
         {
             if (pm_HasInputMeter)
             {
-                if (_playing && _mediaPeakLevelChanged != null)
+                if (_playing && _mediaAudioInputLevelChanged != null)
                 {
                     _inputLevelArgs._channelCount = pm_InputMeterChannelCount;
                     _inputLevelArgs._masterPeakValue = STOP_VALUE;
                     _inputLevelArgs._channelsValues = pm_InputMeterValuesStop;
-                    _mediaInputLevelChanged(this, _inputLevelArgs);
+                    _mediaAudioInputLevelChanged(this, _inputLevelArgs);
                 }
 
                 pm_InputMeterChannelCount = 0;
@@ -798,83 +795,91 @@ namespace PlexDL.Player
             }
         }
 
-        #endregion
+		#endregion
 
 
-        // ******************************** Audio Input Devices - Input Level / Input Mute
+		// ******************************** Audio Input Devices - Input Level / Input Mute
 
-        #region Audio Input Devices - Input Level / Input Mute
+		#region Audio Input Devices - Input Level / Input Mute
 
-        internal static float AudioDevice_InputLevel(AudioInputDevice device, float level, bool set)
+		internal static float AudioDevice_InputLevel(AudioInputDevice device, float level, bool set)
+		{
+			float getVolume = -1;
+
+			if (device != null)
+			{
+                IMMDeviceEnumerator deviceEnumerator = null;
+                IMMDevice           audioDevice      = null;
+                object              audioDeviceInfo  = null;
+
+                try
+				{
+					deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
+					//if (device == null) deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia, out audioDevice);
+					//else deviceEnumerator.GetDevice(device._id, out audioDevice);
+					deviceEnumerator.GetDevice(device._id, out audioDevice);
+
+					if (audioDevice != null)
+					{
+						audioDevice.Activate(ref IID_IAudioEndpointVolume, 3, IntPtr.Zero, out audioDeviceInfo);
+						if (set)
+						{
+							// TODO set out of range?
+							if (level <= 0) level = 0;
+							else if (level > 1) level = 1;
+							((IAudioEndpointVolume)audioDeviceInfo).SetMasterVolumeLevelScalar(level, Guid.Empty);
+							getVolume = level;
+						}
+						else
+						{
+							((IAudioEndpointVolume)audioDeviceInfo).GetMasterVolumeLevelScalar(out getVolume);
+						}
+					}
+				}
+				catch { /* ignored */  }
+
+				if (audioDeviceInfo != null) Marshal.ReleaseComObject(audioDeviceInfo);
+				if (audioDevice != null) Marshal.ReleaseComObject(audioDevice);
+				if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
+			}
+
+			return getVolume;
+		}
+
+		internal static int AudioDevice_InputMute(AudioInputDevice device, ref bool mute, bool set)
         {
             IMMDeviceEnumerator deviceEnumerator    = null;
             IMMDevice           audioDevice         = null;
             object              audioDeviceInfo     = null;
-            float               getVolume           = -1;
+            int                 result              = (int)HResult.MF_E_NO_AUDIO_RECORDING_DEVICE;
 
-            try
+            if (device != null)
             {
-                deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-                if (device == null) deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia, out audioDevice);
-                else deviceEnumerator.GetDevice(device._id, out audioDevice);
-
-                if (audioDevice != null)
+                try
                 {
-                    audioDevice.Activate(ref IID_IAudioEndpointVolume, 3, IntPtr.Zero, out audioDeviceInfo);
-                    if (set)
+                    deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
+                    if (device == null) deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia, out audioDevice);
+                    else deviceEnumerator.GetDevice(device._id, out audioDevice);
+
+                    if (audioDevice != null)
                     {
-                        // TODO set out of range?
-                        if (level <= 0) level = 0;
-                        else if (level > 1) level = 1;
-                        ((IAudioEndpointVolume)audioDeviceInfo).SetMasterVolumeLevelScalar(level, Guid.Empty);
-                        getVolume = level;
-                    }
-                    else
-                    {
-                        ((IAudioEndpointVolume)audioDeviceInfo).GetMasterVolumeLevelScalar(out getVolume);
+                        audioDevice.Activate(ref IID_IAudioEndpointVolume, 3, IntPtr.Zero, out audioDeviceInfo);
+                        if (set)
+                        {
+                            result = ((IAudioEndpointVolume)audioDeviceInfo).SetMute(mute, Guid.Empty);
+                        }
+                        else
+                        {
+                            result = ((IAudioEndpointVolume)audioDeviceInfo).GetMute(out mute);
+                        }
                     }
                 }
+                catch { result = (int)HResult.MF_E_NOT_AVAILABLE; }
+
+                if (audioDeviceInfo != null) Marshal.ReleaseComObject(audioDeviceInfo);
+                if (audioDevice != null) Marshal.ReleaseComObject(audioDevice);
+                if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
             }
-            catch { /* ignored */  }
-
-            if (audioDeviceInfo != null) Marshal.ReleaseComObject(audioDeviceInfo);
-            if (audioDevice != null) Marshal.ReleaseComObject(audioDevice);
-            if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
-
-            return getVolume;
-        }
-
-        internal static int AudioDevice_InputMute(AudioInputDevice device, ref bool mute, bool set)
-        {
-            IMMDeviceEnumerator deviceEnumerator    = null;
-            IMMDevice           audioDevice         = null;
-            object              audioDeviceInfo     = null;
-            int                 result              = (int)HResult.MF_E_NO_AUDIO_PLAYBACK_DEVICE;
-
-            try
-            {
-                deviceEnumerator = (IMMDeviceEnumerator)new MMDeviceEnumerator();
-                if (device == null) deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia, out audioDevice);
-                else deviceEnumerator.GetDevice(device._id, out audioDevice);
-
-                if (audioDevice != null)
-                {
-                    audioDevice.Activate(ref IID_IAudioEndpointVolume, 3, IntPtr.Zero, out audioDeviceInfo);
-                    if (set)
-                    {
-                        result = ((IAudioEndpointVolume)audioDeviceInfo).SetMute(mute, Guid.Empty);
-                    }
-                    else
-                    {
-                        result = ((IAudioEndpointVolume)audioDeviceInfo).GetMute(out mute);
-                    }
-                }
-            }
-            catch { result = (int)HResult.MF_E_NOT_AVAILABLE; }
-
-            if (audioDeviceInfo != null) Marshal.ReleaseComObject(audioDeviceInfo);
-            if (audioDevice != null) Marshal.ReleaseComObject(audioDevice);
-            if (deviceEnumerator != null) Marshal.ReleaseComObject(deviceEnumerator);
 
             return result;
         }

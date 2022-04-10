@@ -3,7 +3,7 @@
 namespace PlexDL.Player
 {
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Class)]
-    internal sealed class UnmanagedNameAttribute : System.Attribute
+    internal sealed class UnmanagedNameAttribute : Attribute
     {
         private string m_Name;
 

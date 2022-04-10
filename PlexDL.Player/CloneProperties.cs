@@ -49,7 +49,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the shape of the display clone window (default: DisplayShape.Normal). See also: CloneProperties.ShapeVideo.
+        /// Gets or sets the shape of the display clone window (default: DisplayShape.Normal).
+        /// <br/>See also: CloneProperties.ShapeVideo.
         /// </summary>
         public DisplayShape Shape
         {
@@ -58,7 +59,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the CloneProperties.Shape property applies to the video image (or to the display window) of the display clone (default: true (video)).
+        /// Gets or sets a value indicating whether the CloneProperties.Shape property applies to the video image
+        /// <br/>or to the display window of the display clone (default: true (video image)).
         /// </summary>
         public bool ShapeVideo
         {
@@ -67,7 +69,9 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the parent window (form) of the display clone can be moved by dragging the display clone window (default: false). See also: CloneProperties.DragCursor.
+        /// Gets or sets a value indicating whether the parent window (form) of the display clone
+        /// <br/>can be moved by dragging the display clone window (default: false).
+        /// <br/>See also: CloneProperties.DragCursor.
         /// </summary>
         public bool DragEnabled
         {
@@ -76,7 +80,8 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets the cursor that is used when the display clone window is dragged (default: Cursors.SizeAll). See also: CloneProperties.DragEnabled.
+        /// Gets or sets the cursor that is used when the display clone window is dragged (default: Cursors.SizeAll).
+        /// <br/>See also: CloneProperties.DragEnabled.
         /// </summary>
         public Cursor DragCursor
         {

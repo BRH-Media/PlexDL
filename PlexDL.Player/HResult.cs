@@ -269,7 +269,7 @@
         //MF_E_PROPERTY_READ_ONLY = unchecked((int)0xC00D3E8E),
         //MF_E_PROPERTY_NOT_ALLOWED = unchecked((int)0xC00D3E8F),
         //MF_E_MEDIA_SOURCE_NOT_STARTED = unchecked((int)0xC00D3E91),
-        //MF_E_UNSUPPORTED_FORMAT = unchecked((int)0xC00D3E98),
+        MF_E_UNSUPPORTED_FORMAT = unchecked((int)0xC00D3E98),
         //MF_E_MP3_BAD_CRC = unchecked((int)0xC00D3E99),
         //MF_E_NOT_PROTECTED = unchecked((int)0xC00D3E9A),
         //MF_E_MEDIA_SOURCE_WRONGSTATE = unchecked((int)0xC00D3E9B),
@@ -279,7 +279,7 @@
         //MF_E_UNSUPPORTED_CHARACTERISTICS = unchecked((int)0xC00D3E9E),
         MF_E_NO_AUDIO_RECORDING_DEVICE = unchecked((int)0xC00D3E9F),
         //MF_E_AUDIO_RECORDING_DEVICE_IN_USE = unchecked((int)0xC00D3EA0),
-        MF_E_AUDIO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA1),
+        //MF_E_AUDIO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA1),
         MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA2),
         MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED = unchecked((int)0xC00D3EA3),
 

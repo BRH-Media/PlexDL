@@ -1,8 +1,9 @@
 ﻿using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    [ComImport, SuppressUnmanagedCodeSecurity,
      Guid("7FF12CCE-F76F-41C2-863B-1666C8E5E139"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMFPresentationTimeSource : IMFClock

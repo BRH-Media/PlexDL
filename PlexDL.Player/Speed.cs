@@ -12,7 +12,9 @@ namespace PlexDL.Player
     {
         #region Fields (Speed Class)
 
-        private Player _base;
+        private const int   NO_ERROR = 0;
+
+        private Player      _base;
 
         #endregion
 
@@ -22,13 +24,14 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates the speed at which media is played by the player (default: 1.0 (normal speed)). The setting is adjusted by the player if media cannot be played at the set speed.
+        /// Gets or sets a value that indicates the speed at which media is played by the player (default: 1.0 (normal speed)).
+        /// <br/>The setting is adjusted by the player if media cannot be played at the set speed.
         /// </summary>
         public float Rate
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._speed;
             }
             set
@@ -42,18 +45,19 @@ namespace PlexDL.Player
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether stream thinning (displaying fewer video frames) should be used when playing media. This option can be used to increase the maximum playback speed of media (use together with Player.Audio.Cut for very fast playback speeds) (default: false).
+        /// Gets or sets a value that indicates whether stream thinning (displaying fewer video frames) should be used when playing media (default: false).
+        /// <br/>This option can be used to increase the maximum playback speed of media (together with Player.Audio.Cut for very fast playback speeds).
         /// </summary>
         public bool Boost
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base._speedBoost;
             }
             set
             {
-                _base._lastError = Player.NO_ERROR;
+                //_base._lastError = NO_ERROR;
                 if (value != _base._speedBoost)
                 {
                     _base._speedBoost = value;
@@ -76,29 +80,32 @@ namespace PlexDL.Player
                         }
                     }
                 }
+                _base._lastError = NO_ERROR;
             }
         }
 
         /// <summary>
         /// Gets a value that indicates the minimum speed at which the playing media can be played by the player.
+        /// <br/>The minimum speed supported by the player is 0.01f, while the minimum speed supported by most media is 0.125f.
         /// </summary>
         public float Minimum
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.mf_SpeedMinimum;
             }
         }
 
         /// <summary>
         /// Gets a value that indicates the maximum speed at which the playing media can be played by the player.
+        /// The maximum speed supported by most media (with video and audio) is usually 2.0f and for audio only it is usually 8.0f.
         /// </summary>
         public float Maximum
         {
             get
             {
-                _base._lastError = Player.NO_ERROR;
+                _base._lastError = NO_ERROR;
                 return _base.mf_SpeedMaximum;
             }
         }

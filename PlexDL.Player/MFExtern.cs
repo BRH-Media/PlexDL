@@ -111,17 +111,17 @@ namespace PlexDL.Player
             punLow = (int)(ul & 0xffffffff);
         }
 
-        //[DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        //public static extern HResult MFTEnumEx(
-        //    [In] Guid MFTransformCategory,
-        //    //MFT_EnumFlag Flags,
-        //    int Flags,
-        //    [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
-        //    [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
-        //    [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
-        //    //[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] out IMFActivate[] pppMFTActivate,
-        //    out int pnumMFTActivate
-        //);
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult MFTEnumEx(
+            [In] Guid MFTransformCategory,
+            //MFT_EnumFlag Flags,
+            int Flags,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
+            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
+            //[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] out IMFActivate[] pppMFTActivate,
+            out int pnumMFTActivate
+        );
 
         //// use with NET 2.0, 3.0 and  3.5 (returns only 1 device) (because of SizeParamIndex)
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
@@ -268,6 +268,23 @@ namespace PlexDL.Player
             int lSrcStride,
             int dwWidthInBytes,
             int dwLines
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult MFTranscodeGetAudioOutputAvailableTypes(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidSubType,
+            MFT_EnumFlag dwMFTFlags,
+            IMFAttributes pCodecConfig,
+            out IMFCollection ppAvailableTypes
+        );
+
+        [DllImport("shell32.dll", SetLastError = true), SuppressUnmanagedCodeSecurity]
+        public static extern HResult SHGetPropertyStoreFromParsingName(
+            [In][MarshalAs(UnmanagedType.LPWStr)] string pszPath,
+            IntPtr zeroWorks,
+            GETPROPERTYSTOREFLAGS flags,
+            ref Guid iIdPropStore,
+            [Out] out IPropertyStore propertyStore
         );
 
         //[DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]

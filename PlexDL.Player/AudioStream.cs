@@ -11,8 +11,15 @@ namespace PlexDL.Player
         internal string Language;
         internal int    ChannelCount;
         internal int    ChannelCountRestore;
-        internal int    Samplerate;
-        internal int    Bitdepth;
-        internal int    Bitrate;
+        internal int    SampleRate;
+        internal int    BitDepth;
+        internal int    BitRate;
+
+        internal AudioDevice            AudioDevice;
+        internal IMFAudioStreamVolume   MF_VolumeService;
+        internal float                  Volume;
+        internal float                  Balance;
+        internal float[]                ChannelVolumes;
+        internal bool                   Enabled;
     }
 }

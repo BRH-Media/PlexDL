@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PlexDL.Player
 {
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    [ComImport, SuppressUnmanagedCodeSecurity,
      Guid("3323b55a-f92a-4fe2-8edc-e9bfc0634d77"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMFCaptureRecordSink : IMFCaptureSink

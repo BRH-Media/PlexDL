@@ -34,10 +34,12 @@ namespace PlexDL.Player
         public string Adapter { get { return _adapter; } }
 
         /// <summary>
-        /// Returns a string that represents this device information.
+        /// Returns a string that represents the device,
+        /// <br/>containing the name and adapter (if available).
         /// </summary>
         public override string ToString()
         {
+            if (string.IsNullOrWhiteSpace(_adapter)) return _name;
             return string.Format("{0} ({1})", _name, _adapter);
         }
     }
