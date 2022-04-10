@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlexDL.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -12,6 +13,11 @@ namespace PlexDL.Common.Structures.AppOptions
         [DisplayName("PlexDL Version")]
         [Description("The version of PlexDL that you're currently running")]
         public string StoredAppVersion { get; set; } = Application.ProductVersion;
+
+        [DisplayName("QR Fetch Mode")]
+        [Description(
+            "When a QR code needs to be generated, PlexDL can use an online service or an offline generator (QRCoder; default).")]
+        public QRCodeFetchMode GlobalQrFetchMode { get; set; } = QRCodeFetchMode.Offline;
 
         [DisplayName("Autostream")]
         [Description(

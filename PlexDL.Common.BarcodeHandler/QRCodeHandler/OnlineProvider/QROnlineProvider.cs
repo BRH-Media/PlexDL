@@ -1,16 +1,16 @@
-﻿using inet;
-using PlexDL.AltoHTTP.Common.Net;
-using PlexDL.Common.Logging;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Web;
+using inet;
+using PlexDL.AltoHTTP.Common.Net;
+using PlexDL.Common.Logging;
 
 // ReSharper disable RedundantIfElseBlock
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
 
-namespace PlexDL.Common.BarcodeHandler.QRCode.OnlineProvider
+namespace PlexDL.Common.BarcodeHandler.QRCodeHandler.OnlineProvider
 {
     public class QROnlineProvider
     {

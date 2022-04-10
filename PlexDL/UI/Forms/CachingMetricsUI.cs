@@ -72,14 +72,23 @@ namespace PlexDL.UI.Forms
         {
             try
             {
+                //does the caching directory exist?
+                if (!Directory.Exists(CachingFileDir.RootCacheDirectory))
+                {
+                    //create it!
+                    Directory.CreateDirectory(CachingFileDir.RootCacheDirectory);
+                }
+
                 //the directory must exist
                 if (Directory.Exists(CachingFileDir.RootCacheDirectory))
                 {
+                    //setup for a known caching directory
                     lblCachingDirectoryValue.Text = CachingFileDir.RootCacheDirectory;
                     lblCachingDirectoryValue.ForeColor = Color.Black;
                 }
                 else
                 {
+                    //setup for an unknown/nonexistent caching directory
                     lblCachingDirectoryValue.Text = @"Unknown";
                     lblCachingDirectoryValue.ForeColor = Color.DarkRed;
                 }

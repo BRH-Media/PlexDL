@@ -1,5 +1,5 @@
 ﻿using inet;
-using PlexDL.Common.BarcodeHandler.QRCode.OnlineProvider;
+using PlexDL.Common.BarcodeHandler.QRCodeHandler;
 using PlexDL.Common.Components.Forms;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Structures.Plex;
@@ -116,15 +116,13 @@ namespace PlexDL.UI.Forms
                 try
                 {
                     //code generation handler
-                    var codeImage = new QROnlineProvider(Link);
+                    var codeImage = QRCodeManager.GetCodeImage(Link);
 
-                    //generate code
-                    if (codeImage.Fetch())
-
-                        //apply new image if not null
-                        if (codeImage.CodeImage != null)
-
-                            picQRCode.BackgroundImage = codeImage.CodeImage;
+                    //apply new image if not null
+                    if (codeImage != null)
+                    {
+                        picQRCode.BackgroundImage = codeImage;
+                    }
                 }
                 catch (Exception ex)
                 {
