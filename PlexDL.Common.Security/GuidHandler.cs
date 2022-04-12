@@ -34,8 +34,10 @@ namespace PlexDL.Common.Security
                         : read;
             }
             else
+            {
                 //replace the file with new 20-byte entropy data and return the result
                 value = NewGlobalGuid();
+            }
 
             //return the final value
             return value;

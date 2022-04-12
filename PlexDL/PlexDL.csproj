@@ -373,6 +373,10 @@
       <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
       <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlexDL.Common.Shodan\PlexDL.Common.Shodan.csproj">
+      <Project>{5ca1f4f9-c5cb-4aff-96cd-9b8f78968eaa}</Project>
+      <Name>PlexDL.Common.Shodan</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlexDL.Common\PlexDL.Common.csproj">
       <Project>{a464f174-fedd-45c7-b17a-4fd707867f2b}</Project>
       <Name>PlexDL.Common</Name>

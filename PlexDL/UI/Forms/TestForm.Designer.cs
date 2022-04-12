@@ -36,6 +36,7 @@ namespace PlexDL.UI.Forms
             this.lblNothingInteresting = new System.Windows.Forms.Label();
             this.pnlTestingArea = new System.Windows.Forms.Panel();
             this.pnlNothingInteresting = new System.Windows.Forms.Panel();
+            this.flatButton1 = new libbrhscgui.Components.FlatButton();
             this.pnlTestingArea.SuspendLayout();
             this.pnlNothingInteresting.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +61,7 @@ namespace PlexDL.UI.Forms
             // 
             // pnlTestingArea
             // 
+            this.pnlTestingArea.Controls.Add(this.flatButton1);
             this.pnlTestingArea.Controls.Add(this.pnlNothingInteresting);
             this.pnlTestingArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTestingArea.Location = new System.Drawing.Point(0, 0);
@@ -77,6 +79,24 @@ namespace PlexDL.UI.Forms
             this.pnlNothingInteresting.Size = new System.Drawing.Size(264, 30);
             this.pnlNothingInteresting.TabIndex = 2;
             // 
+            // flatButton1
+            // 
+            this.flatButton1.AutoSize = true;
+            this.flatButton1.BackColor = System.Drawing.Color.Silver;
+            this.flatButton1.FlatAppearance.BorderSize = 0;
+            this.flatButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.flatButton1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.flatButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.flatButton1.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.flatButton1.ForeColor = System.Drawing.Color.Black;
+            this.flatButton1.Location = new System.Drawing.Point(222, 135);
+            this.flatButton1.Name = "flatButton1";
+            this.flatButton1.Size = new System.Drawing.Size(75, 24);
+            this.flatButton1.TabIndex = 3;
+            this.flatButton1.Text = "Shodan";
+            this.flatButton1.UseVisualStyleBackColor = false;
+            this.flatButton1.Click += new System.EventHandler(this.flatButton1_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -92,6 +112,7 @@ namespace PlexDL.UI.Forms
             this.Text = "Testing Area";
             this.Load += new System.EventHandler(this.TestForm_Load);
             this.pnlTestingArea.ResumeLayout(false);
+            this.pnlTestingArea.PerformLayout();
             this.pnlNothingInteresting.ResumeLayout(false);
             this.pnlNothingInteresting.PerformLayout();
             this.ResumeLayout(false);
@@ -104,5 +125,6 @@ namespace PlexDL.UI.Forms
         private Label lblNothingInteresting;
         private Panel pnlTestingArea;
         private Panel pnlNothingInteresting;
+        private libbrhscgui.Components.FlatButton flatButton1;
     }
 }
