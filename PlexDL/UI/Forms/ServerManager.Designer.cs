@@ -48,6 +48,7 @@ namespace PlexDL.UI.Forms
             this.itmOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRenderTokenColumn = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmForceHttps = new System.Windows.Forms.ToolStripMenuItem();
             this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,6 @@ namespace PlexDL.UI.Forms
             this.sepAuthenticationStatus = new System.Windows.Forms.ToolStripSeparator();
             this.lblViewing = new System.Windows.Forms.ToolStripLabel();
             this.lblViewingValue = new System.Windows.Forms.ToolStripLabel();
-            this.itmForceHttps = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.cxtServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
@@ -174,6 +174,14 @@ namespace PlexDL.UI.Forms
             this.itmRenderTokenColumn.Size = new System.Drawing.Size(191, 22);
             this.itmRenderTokenColumn.Text = "Render Token Column";
             this.itmRenderTokenColumn.Click += new System.EventHandler(this.ItmRenderTokenColumn_Click);
+            // 
+            // itmForceHttps
+            // 
+            this.itmForceHttps.CheckOnClick = true;
+            this.itmForceHttps.Name = "itmForceHttps";
+            this.itmForceHttps.Size = new System.Drawing.Size(191, 22);
+            this.itmForceHttps.Text = "Force HTTPS";
+            this.itmForceHttps.Click += new System.EventHandler(this.ItmForceHttps_Click);
             // 
             // itmConnect
             // 
@@ -295,14 +303,6 @@ namespace PlexDL.UI.Forms
             this.lblViewingValue.Name = "lblViewingValue";
             this.lblViewingValue.Size = new System.Drawing.Size(24, 22);
             this.lblViewingValue.Text = "0/0";
-            // 
-            // itmForceHttps
-            // 
-            this.itmForceHttps.CheckOnClick = true;
-            this.itmForceHttps.Name = "itmForceHttps";
-            this.itmForceHttps.Size = new System.Drawing.Size(191, 22);
-            this.itmForceHttps.Text = "Force HTTPS";
-            this.itmForceHttps.Click += new System.EventHandler(this.ItmForceHttps_Click);
             // 
             // ServerManager
             // 

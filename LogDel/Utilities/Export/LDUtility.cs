@@ -24,7 +24,7 @@ namespace LogDel.Utilities.Export
                 sw.Write("###");
                 for (var i = 0; i < table.Columns.Count; i++)
                 {
-                    sw.Write(table.Columns[i].ToString().Replace(" ", ""));
+                    sw.Write(table.Columns[i]);
                     if (i < table.Columns.Count - 1) sw.Write("!");
                 }
 

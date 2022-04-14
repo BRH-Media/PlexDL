@@ -1,4 +1,5 @@
 ﻿using LogDel.Utilities.Export;
+using PlexDL.Common.Shodan.Enums;
 using PlexDL.WaitWindow;
 using Shodan.Client;
 using Shodan.Models;
@@ -25,9 +26,34 @@ namespace PlexDL.Common.Shodan.UI
         /// </summary>
         public List<Service> ShodanResults { get; set; }
 
+        public TokenFinderResult Result { get; set; } = new TokenFinderResult();
+
         public TokenFinder()
         {
             InitializeComponent();
+        }
+
+        public static TokenFinderResult Launch()
+        {
+            try
+            {
+                //create a new instance
+                var finder = new TokenFinder();
+
+                //show the instance
+                finder.ShowDialog();
+
+                //return the result object
+                return finder.Result;
+            }
+            catch (Exception ex)
+            {
+                //alert user
+                UIMessages.Error($"TokenFinder launch error:\n\n{ex}");
+            }
+
+            //default
+            return null;
         }
 
         private void TokenFinder_Load(object sender, EventArgs e)
@@ -230,11 +256,18 @@ namespace PlexDL.Common.Shodan.UI
                             //setup table
                             if (dgvTokens.InvokeRequired)
                             {
-                                dgvTokens.BeginInvoke((MethodInvoker)delegate { dgvTokens.DataSource = data; });
+                                dgvTokens.BeginInvoke((MethodInvoker)delegate
+                               {
+                                   dgvTokens.DataSource = data;
+                                   cxtGridStartSession.Enabled = true;
+                                   cxtGridCopyToken.Enabled = true;
+                               });
                             }
                             else
                             {
                                 dgvTokens.DataSource = data;
+                                cxtGridStartSession.Enabled = true;
+                                cxtGridCopyToken.Enabled = true;
                             }
 
                             //setup viewing label
@@ -242,6 +275,26 @@ namespace PlexDL.Common.Shodan.UI
                         }
                         else
                         {
+                            //setup table
+                            if (dgvTokens.InvokeRequired)
+                            {
+                                dgvTokens.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    dgvTokens.DataSource = null;
+                                    cxtGridStartSession.Enabled = false;
+                                    cxtGridCopyToken.Enabled = false;
+                                });
+                            }
+                            else
+                            {
+                                dgvTokens.DataSource = null;
+                                cxtGridStartSession.Enabled = false;
+                                cxtGridCopyToken.Enabled = false;
+                            }
+
+                            //setup viewing label
+                            SetViewingLabel();
+
                             //alert user
                             UIMessages.Error(@"No results found");
                         }
@@ -308,7 +361,7 @@ namespace PlexDL.Common.Shodan.UI
             }
         }
 
-        private void ItmActionsBeginSearch_Click(object sender, EventArgs e)
+        private void BeginSearch()
         {
             try
             {
@@ -347,6 +400,92 @@ namespace PlexDL.Common.Shodan.UI
             {
                 //alert user
                 UIMessages.Error($"Search error:\n\n{ex}");
+            }
+        }
+
+        private void StartSession()
+        {
+            try
+            {
+                //data selected?
+                if (dgvTokens.SelectedRows.Count == 1)
+                {
+                    //locate the token
+                    var selectedToken = (string)dgvTokens.SelectedRows[0].Cells[dgvTokens.SelectedRows[0].Cells.Count - 1]
+                        .Value;
+
+                    //validation
+                    if (!string.IsNullOrWhiteSpace(selectedToken))
+                    {
+                        //token length validation
+                        if (selectedToken.Length == 20)
+                        {
+                            //apply results
+                            Result = new TokenFinderResult
+                            {
+                                Status = TokenFinderStatus.TOKEN_FOUND_START_SESSION,
+                                Token = selectedToken
+                            };
+
+                            //close the form
+                            Close();
+                        }
+                    }
+                }
+                else
+                {
+                    //alert user
+                    UIMessages.Error(@"You cannot start a session as you have not selected a token from the grid");
+                }
+            }
+            catch (Exception ex)
+            {
+                //alert user
+                UIMessages.Error($"Start session error:\n\n{ex}");
+            }
+        }
+
+        private void ItmActionsBeginSearch_Click(object sender, EventArgs e)
+            => BeginSearch();
+
+        private void CxtGridBeginSearch_Click(object sender, EventArgs e)
+            => BeginSearch();
+
+        private void CxtGridStartSession_Click(object sender, EventArgs e)
+            => StartSession();
+
+        private void CxtGridCopyToken_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //data selected?
+                if (dgvTokens.SelectedRows.Count == 1)
+                {
+                    //locate the token
+                    var selectedToken = (string)dgvTokens.SelectedRows[0].Cells[dgvTokens.SelectedRows[0].Cells.Count - 1]
+                        .Value;
+
+                    //validation
+                    if (!string.IsNullOrWhiteSpace(selectedToken))
+                    {
+                        //token length validation
+                        if (selectedToken.Length == 20)
+                        {
+                            //set it to the clipboard
+                            Clipboard.SetText(selectedToken);
+                        }
+                    }
+                }
+                else
+                {
+                    //alert user
+                    UIMessages.Error(@"Please select a token to copy");
+                }
+            }
+            catch (Exception ex)
+            {
+                //alert user
+                UIMessages.Error($"Copy token error:\n\n{ex}");
             }
         }
     }

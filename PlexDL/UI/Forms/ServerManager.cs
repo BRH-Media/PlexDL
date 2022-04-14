@@ -8,6 +8,8 @@ using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Renderers.Forms.GridView;
+using PlexDL.Common.Shodan.Enums;
+using PlexDL.Common.Shodan.UI;
 using PlexDL.Common.Structures.AppOptions;
 using PlexDL.MyPlex;
 using PlexDL.PlexAPI.LoginHandler.Auth;
@@ -16,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -84,6 +87,113 @@ namespace PlexDL.UI.Forms
         {
             var result = Relays.GetServerRelays();
             e.Result = result;
+        }
+
+        private static void TokenFinderLauncher(object sender, EventArgs e)
+        {
+            try
+            {
+                //launch the token finder
+                var result = TokenFinder.Launch();
+
+                //validation
+                if (result != null)
+                {
+                    //session start?
+                    if (result.Status == TokenFinderStatus.TOKEN_FOUND_START_SESSION)
+                    {
+                        //setup
+                        ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = result.Token;
+                    }
+                }
+                else
+                {
+                    //alert user
+                    UIMessages.Error(@"Token finder returned a null result");
+                }
+            }
+            catch (Exception ex)
+            {
+                //log error
+                LoggingHelpers.RecordException(ex.Message, "SMTokenFinderLaunchError");
+            }
+        }
+
+        private void TokenFinderAddButton()
+        {
+            try
+            {
+                //create a new button
+                var item = new ToolStripMenuItem
+                {
+                    Name = @"itmAuthenticateShodan",
+                    Text = @"Shodan Token Finder",
+                    ShortcutKeys = Keys.Control | Keys.B
+                };
+
+                //setup click handler
+                item.Click += TokenFinderLauncher;
+
+                //add to menu
+                itmAuthenticate.DropDownItems.AddRange(new ToolStripItem[] { item });
+            }
+            catch (Exception ex)
+            {
+                //log error
+                LoggingHelpers.RecordException(ex.Message, "SMTokenFinderRemoveError");
+            }
+        }
+
+        private void TokenFinderRemoveButton()
+        {
+            try
+            {
+                //grab the count (so it doesn't get modified)
+                var count = itmAuthenticate.DropDownItems.Count;
+
+                //disallowed; remove the entry if it exists
+                for (var i = 0; i < count; i++)
+                {
+                    //grab the correct item
+                    var item = itmAuthenticate.DropDownItems[i];
+
+                    //test for name
+                    if (item.Name == @"itmAuthenticateShodan")
+                    {
+                        //remove it!
+                        itmAuthenticate.DropDownItems.RemoveAt(i);
+
+                        //exit
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //log error
+                LoggingHelpers.RecordException(ex.Message, "SMTokenFinderRemoveError");
+            }
+        }
+
+        private void TokenFinderSetup()
+        {
+            try
+            {
+                //remove existing one (if present)
+                TokenFinderRemoveButton();
+
+                //ensure we are allowed to do this
+                if (Environment.GetCommandLineArgs().Contains(@"-s") || Environment.GetCommandLineArgs().Contains(@"-debug"))
+                {
+                    //add new one
+                    TokenFinderAddButton();
+                }
+            }
+            catch (Exception ex)
+            {
+                //log error
+                LoggingHelpers.RecordException(ex.Message, "SMTokenFinderSetupError");
+            }
         }
 
         private void LoadServers(bool silent = false)
@@ -447,6 +557,9 @@ namespace PlexDL.UI.Forms
         {
             try
             {
+                //setup Shodan token finder
+                TokenFinderSetup();
+
                 //default status update
                 SetInterfaceAuthenticationStatus(false);
 

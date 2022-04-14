@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             PlexDL.Common.Components.Styling.BoolColour boolColour1 = new PlexDL.Common.Components.Styling.BoolColour();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TokenFinder));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -41,10 +42,15 @@
             this.lblViewing = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblViewingValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgvTokens = new PlexDL.Common.Components.Controls.FlatDataGridView();
+            this.cxtGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cxtGridBeginSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtGridStartSession = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
+            this.cxtGridCopyToken = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTokens)).BeginInit();
+            this.cxtGrid.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuMain
@@ -71,7 +77,7 @@
             // 
             this.itmFileExport.Name = "itmFileExport";
             this.itmFileExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmFileExport.Size = new System.Drawing.Size(180, 22);
+            this.itmFileExport.Size = new System.Drawing.Size(148, 22);
             this.itmFileExport.Text = "Export";
             this.itmFileExport.Click += new System.EventHandler(this.ItmFileExport_Click);
             // 
@@ -139,6 +145,7 @@
             this.dgvTokens.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvTokens.CellContentClickMessage = false;
             this.dgvTokens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTokens.ContextMenuStrip = this.cxtGrid;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
@@ -161,10 +168,42 @@
             this.dgvTokens.Size = new System.Drawing.Size(800, 404);
             this.dgvTokens.TabIndex = 2;
             // 
+            // cxtGrid
+            // 
+            this.cxtGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cxtGridBeginSearch,
+            this.cxtGridStartSession,
+            this.cxtGridCopyToken});
+            this.cxtGrid.Name = "cxtGrid";
+            this.cxtGrid.Size = new System.Drawing.Size(181, 92);
+            // 
+            // cxtGridBeginSearch
+            // 
+            this.cxtGridBeginSearch.Name = "cxtGridBeginSearch";
+            this.cxtGridBeginSearch.Size = new System.Drawing.Size(180, 22);
+            this.cxtGridBeginSearch.Text = "Begin Search";
+            this.cxtGridBeginSearch.Click += new System.EventHandler(this.CxtGridBeginSearch_Click);
+            // 
+            // cxtGridStartSession
+            // 
+            this.cxtGridStartSession.Enabled = false;
+            this.cxtGridStartSession.Name = "cxtGridStartSession";
+            this.cxtGridStartSession.Size = new System.Drawing.Size(180, 22);
+            this.cxtGridStartSession.Text = "Start Session";
+            this.cxtGridStartSession.Click += new System.EventHandler(this.CxtGridStartSession_Click);
+            // 
             // sfdExport
             // 
             this.sfdExport.Filter = "Comma Separated Values File|*.csv|JavaScript Object Notation File|*.json|Logging " +
     "Delimited File|*.logdel|eXtensible Markup Language File|*.xml";
+            // 
+            // cxtGridCopyToken
+            // 
+            this.cxtGridCopyToken.Enabled = false;
+            this.cxtGridCopyToken.Name = "cxtGridCopyToken";
+            this.cxtGridCopyToken.Size = new System.Drawing.Size(180, 22);
+            this.cxtGridCopyToken.Text = "Copy Token";
+            this.cxtGridCopyToken.Click += new System.EventHandler(this.CxtGridCopyToken_Click);
             // 
             // TokenFinder
             // 
@@ -189,6 +228,7 @@
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTokens)).EndInit();
+            this.cxtGrid.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,5 +247,9 @@
         private System.Windows.Forms.ToolStripStatusLabel lblViewing;
         private System.Windows.Forms.ToolStripStatusLabel lblViewingValue;
         private System.Windows.Forms.SaveFileDialog sfdExport;
+        private System.Windows.Forms.ContextMenuStrip cxtGrid;
+        private System.Windows.Forms.ToolStripMenuItem cxtGridBeginSearch;
+        private System.Windows.Forms.ToolStripMenuItem cxtGridStartSession;
+        private System.Windows.Forms.ToolStripMenuItem cxtGridCopyToken;
     }
 }
