@@ -1,5 +1,4 @@
 ﻿using PlexDL.Common.Components.Forms;
-using PlexDL.Common.Shodan.UI;
 using System;
 using System.Drawing;
 
@@ -46,11 +45,6 @@ namespace PlexDL.UI.Forms
 
             // And finally, apply the re-centering to the object.
             pnlNothingInteresting.Location = newLocation;
-        }
-
-        private void flatButton1_Click(object sender, EventArgs e)
-        {
-            new TokenFinder().ShowDialog();
         }
     }
 }
