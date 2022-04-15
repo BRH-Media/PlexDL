@@ -37,12 +37,12 @@ namespace PlexDL.UI.Forms
             this.txtServerPort = new libbrhscgui.Components.WaterMarkTextBox();
             this.gbConnectionInformation = new System.Windows.Forms.GroupBox();
             this.tlpControls = new System.Windows.Forms.TableLayoutPanel();
+            this.chkForceHttps = new System.Windows.Forms.CheckBox();
             this.txtToken = new libbrhscgui.Components.WaterMarkTextBox();
             this.chkToken = new System.Windows.Forms.CheckBox();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkForceHttps = new System.Windows.Forms.CheckBox();
             this.gbConnectionInformation.SuspendLayout();
             this.tlpControls.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -108,6 +108,17 @@ namespace PlexDL.UI.Forms
             this.tlpControls.Size = new System.Drawing.Size(286, 98);
             this.tlpControls.TabIndex = 4;
             // 
+            // chkForceHttps
+            // 
+            this.chkForceHttps.AutoSize = true;
+            this.chkForceHttps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkForceHttps.Location = new System.Drawing.Point(3, 55);
+            this.chkForceHttps.Name = "chkForceHttps";
+            this.chkForceHttps.Size = new System.Drawing.Size(280, 17);
+            this.chkForceHttps.TabIndex = 4;
+            this.chkForceHttps.Text = "Force HTTPS";
+            this.chkForceHttps.UseVisualStyleBackColor = true;
+            // 
             // txtToken
             // 
             this.txtToken.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -170,17 +181,6 @@ namespace PlexDL.UI.Forms
             this.btnCancel.TabIndex = 16;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // chkForceHttps
-            // 
-            this.chkForceHttps.AutoSize = true;
-            this.chkForceHttps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkForceHttps.Location = new System.Drawing.Point(3, 55);
-            this.chkForceHttps.Name = "chkForceHttps";
-            this.chkForceHttps.Size = new System.Drawing.Size(280, 17);
-            this.chkForceHttps.TabIndex = 4;
-            this.chkForceHttps.Text = "Force HTTPS";
-            this.chkForceHttps.UseVisualStyleBackColor = true;
             // 
             // DirectConnect
             // 

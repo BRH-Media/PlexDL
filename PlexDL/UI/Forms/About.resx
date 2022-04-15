@@ -59,8 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="
-              www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -122,7 +121,7 @@
   <data name="picLogo.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAATsAAANTCAYAAADR5LrZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAA/7JJREFUeF5s/WV3HNvahY3t35GRkeRNPrx5jq0mSZaZmWmbmZmZmZlJtiVbZssC
+        wgAADsIBFShKgAAA/7JJREFUeF5s/WV3HNvahY3t35GRkeRNPrx5jq0mSZaZmWmbmZmZmZlJtiVbZssC
         s5iZmVmtZi6uujNXyz55MkY+XGOtWgVd0tl9ec7qts8/pNv5fyH9vv8rGfb/38hw4P/QDAf+n5r+8P+h
         GS/8j2a6Y9CMd02a8bqJjJdCNcPVMFl/yyjr7+hV/fUwNeRKhKJ/MEo2PBoj6a6NlgYeHy4P2B0h6Y5P
         knQX5ysh5xeoISdnS7oT0yTdmdmS/uwyWX9mjWI4t1Yxnlmj6Y8sV/SHN0j6fbsk3Z4DguHoKcFw+Lxk

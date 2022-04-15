@@ -44,8 +44,12 @@ namespace PlexDL.UI.Forms
 
         private void FrmConnect_Load(object sender, EventArgs e)
         {
+            //set values
             ConnectionStarted = false;
             txtAccountToken.Text = ConnectionInfo.PlexAccountToken;
+
+            //set active control
+            ActiveControl = txtAccountToken;
         }
     }
 }

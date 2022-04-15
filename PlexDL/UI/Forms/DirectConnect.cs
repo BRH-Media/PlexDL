@@ -145,6 +145,9 @@ namespace PlexDL.UI.Forms
             txtServerPort.Text = ConnectionInfo.PlexPort.ToString();
             txtToken.Text = ConnectionInfo.PlexAccountToken;
 
+            //set active text
+            ActiveControl = txtServerIP;
+
             //setup HTTPS checkbox
             chkForceHttps.Checked = Flags.IsHttps;
 
