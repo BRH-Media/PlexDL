@@ -3,6 +3,7 @@ using PlexDL.Common.Pxz.Structures;
 using PlexDL.Common.Pxz.Structures.File.Record;
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -19,23 +20,26 @@ namespace PlexDL.Common.Pxz
         /// </summary>
         /// <param name="raw"></param>
         /// <returns></returns>
-        public static string AutoXml(string raw)
+        public static string AutoXml(byte[] raw)
         {
             try
             {
+                //byte conversion
+                var rawString = Encoding.UTF8.GetString(raw);
+
                 //validation
-                if (!string.IsNullOrEmpty(raw))
+                if (!string.IsNullOrEmpty(rawString))
                 {
                     //test for validity
-                    var isAlreadyXml = IsValidXml(raw);
+                    var isAlreadyXml = IsValidXml(rawString);
 
                     //run accordingly
                     if (isAlreadyXml)
-                        return raw;
+                        return rawString;
                     else
                     {
                         //decompression may now be required
-                        var decompressed = GZipCompressor.DecompressString(raw);
+                        var decompressed = Encoding.UTF8.GetString(GZipCompressor.DecompressBytes(raw));
 
                         //test for XML validity
                         if (IsValidXml(decompressed))
@@ -100,7 +104,7 @@ namespace PlexDL.Common.Pxz
             }
         }
 
-        public static PxzRecord StringToPxzRecord(string record)
+        public static PxzRecord BytesToPxzRecord(byte[] record)
         {
             try
             {
@@ -143,7 +147,7 @@ namespace PlexDL.Common.Pxz
             }
         }
 
-        public static PxzIndex StringToPxzIndex(string index)
+        public static PxzIndex BytesToPxzIndex(byte[] index)
         {
             try
             {

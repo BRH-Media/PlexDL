@@ -3,6 +3,7 @@ using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Extensions;
 using System;
 using System.Drawing;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -129,17 +130,17 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
         /// </summary>
         /// <param name="compressedRaw">The raw representation of the PxzRecord to load</param>
         /// <returns></returns>
-        public static PxzRecord FromRawForm(string compressedRaw)
+        public static PxzRecord FromRawForm(byte[] compressedRaw)
         {
-            var decompressedXml = GZipCompressor.DecompressString(compressedRaw);
-            return Serializers.StringToPxzRecord(decompressedXml);
+            var decompressedXml = GZipCompressor.DecompressBytes(compressedRaw);
+            return Serializers.BytesToPxzRecord(decompressedXml);
         }
 
         /// <summary>
-        /// Convert the current record to a GZipped Base64 string
+        /// Convert the current record to a GZipped byte array
         /// </summary>
         /// <returns></returns>
-        public string ToRawForm()
+        public byte[] ToRawForm()
         {
             var rawDoc = Serializers.PxzRecordToXml(this);
             var rawXml = rawDoc.OuterXml;
@@ -162,7 +163,7 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
         /// <returns></returns>
         public static PxzRecord FromXmlForm(string rawXml)
         {
-            return Serializers.StringToPxzRecord(rawXml);
+            return Serializers.BytesToPxzRecord(Encoding.UTF8.GetBytes(rawXml));
         }
 
         /// <summary>

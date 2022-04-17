@@ -17,9 +17,9 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
         public bool Encrypted { get; set; }
 
         /// <summary>
-        /// Raw compressed base64-encoded (ASCII/UTF8) Gzipped bytes
+        /// Raw compressed Gzipped bytes
         /// </summary>
-        public string RawRecord { get; set; } = @"";
+        public byte[] RawRecord { get; set; }
 
         /// <summary>
         /// The original file name of the record (e.g. background.jpeg)
@@ -51,7 +51,7 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
             {
                 //The record should be decompressed
                 var raw = RawRecord;
-                var r = !string.IsNullOrEmpty(raw) ? GZipCompressor.DecompressBytes(raw) : null;
+                var r = raw?.Length > 0 ? GZipCompressor.DecompressBytes(raw) : null;
 
                 //Check if the record is protected
                 if (Encrypted && r != null)
@@ -82,7 +82,7 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
                 rawData = provider.ProcessedValue;
             }
 
-            RawRecord = GZipCompressor.CompressString(rawData);
+            RawRecord = GZipCompressor.CompressBytes(rawData);
         }
 
         /// <summary>

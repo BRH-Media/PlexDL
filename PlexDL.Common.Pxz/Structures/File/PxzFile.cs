@@ -150,16 +150,11 @@ namespace PlexDL.Common.Pxz.Structures.File
         {
             if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
 
-            foreach (var r in FileIndex.RecordReference)
-            {
-                if (r.RecordName != recordName)
-                    continue;
-
-                var i = FileIndex.RecordReference.IndexOf(r);
-                return Records[i];
-            }
-
-            return null;
+            return (from r in FileIndex.RecordReference
+                    where r.RecordName == recordName
+                    select FileIndex.RecordReference.IndexOf(r)
+                into i
+                    select Records[i]).FirstOrDefault();
         }
 
         /// <summary>
@@ -288,20 +283,20 @@ namespace PlexDL.Common.Pxz.Structures.File
                     return;
                 }
 
-                //raw gzip index string (base64)
-                string idxString;
+                //raw gzip byte container
+                byte[] idxData;
 
                 //extract and save the index to a new stream
                 using (var idxStream = new MemoryStream())
                 {
                     idxFile.Extract(idxStream); //ERROR LINE
                     idxStream.Position = 0;
-                    idxString = new StreamReader(idxStream).ReadToEnd();
+                    idxData = idxStream.ToArray();
                 }
 
                 //Gzip decompress
-                var idxByte = GZipCompressor.DecompressString(idxString);
-                var index = Serializers.StringToPxzIndex(idxByte);
+                var idxByte = GZipCompressor.DecompressBytes(idxData);
+                var index = Serializers.BytesToPxzIndex(idxByte);
 
                 //if this gets flipped to true, it's potentially bad news
                 var tamperedWith = false;
@@ -318,11 +313,8 @@ namespace PlexDL.Common.Pxz.Structures.File
                     recFile.Extract(recStream);
                     recStream.Position = 0;
 
-                    //open a new reader for the memory block
-                    using var reader = new StreamReader(recStream);
-
-                    //jump through the memory stream and turn it into Base64
-                    var recRaw = reader.ReadToEnd();
+                    //jump through the memory stream
+                    var recRaw = recStream.ToArray();
 
                     //serialise rawXml into a usable PxzRecord
                     var rec = PxzRecord.FromRawForm(recRaw);

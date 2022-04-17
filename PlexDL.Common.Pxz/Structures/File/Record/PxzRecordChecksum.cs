@@ -20,7 +20,7 @@ namespace PlexDL.Common.Pxz.Structures.File.Record
             var dec = MD5Helper.CalculateMd5Hash(content.AutoRecord);
             if (dec == null) return;
 
-            RawMd5 = MD5Helper.CalculateMd5Hash(content.RawRecord);
+            RawMd5 = MD5Helper.Md5ToHex(MD5Helper.CalculateMd5Hash(content.RawRecord));
             DecMd5 = MD5Helper.Md5ToHex(dec);
         }
     }

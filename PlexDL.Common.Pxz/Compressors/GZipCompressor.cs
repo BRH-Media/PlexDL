@@ -22,9 +22,9 @@ namespace PlexDL.Common.Pxz.Compressors
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        public static string CompressString(string text)
+        public static byte[] CompressString(string text)
         {
-            return Convert.ToBase64String(CompressBytes(text));
+            return CompressBytes(text);
         }
 
         /// <summary>
@@ -61,27 +61,6 @@ namespace PlexDL.Common.Pxz.Compressors
         {
             var buffer = Encoding.UTF8.GetBytes(text);
             return CompressBytes(buffer);
-        }
-
-        /// <summary>
-        /// Decompresses the string.
-        /// </summary>
-        /// <param name="compressedText">The compressed text.</param>
-        /// <returns></returns>
-        public static string DecompressString(string compressedText)
-        {
-            return Encoding.UTF8.GetString(DecompressBytes(compressedText));
-        }
-
-        /// <summary>
-        /// Decompresses the string into a byte array.
-        /// </summary>
-        /// <param name="compressedText">The text to decompress (Base64)</param>
-        /// <returns></returns>
-        public static byte[] DecompressBytes(string compressedText)
-        {
-            var buffer = Convert.FromBase64String(compressedText);
-            return DecompressBytes(buffer);
         }
 
         /// <summary>
