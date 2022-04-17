@@ -10,8 +10,10 @@
     <RootNamespace>PlexDL.WaitWindow</RootNamespace>
     <AssemblyName>PlexDL.WaitWindow</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,21 +32,37 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\WaitWindowType.cs" />
+    <Compile Include="Globals\WaitWindowGlobalSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WaitWindow.cs" />
-    <Compile Include="WaitWindowEventArgs.cs" />
     <Compile Include="UI\WaitWindowGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\WaitWindowGUI.Designer.cs">
-      <DependentUpon>WaitWindowGUI.cs</DependentUpon>
+    <Compile Include="UI\WaitWindowGUIStandard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WaitWindowGUIStandard.Designer.cs">
+      <DependentUpon>WaitWindowGUIStandard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WaitWindow.cs" />
+    <Compile Include="WaitWindowEventArgs.cs" />
+    <Compile Include="UI\WaitWindowGUIClassic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WaitWindowGUIClassic.Designer.cs">
+      <DependentUpon>WaitWindowGUIClassic.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +76,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WaitWindowGUI.resx">
-      <DependentUpon>WaitWindowGUI.cs</DependentUpon>
+    <EmbeddedResource Include="UI\WaitWindowGUIClassic.resx">
+      <DependentUpon>WaitWindowGUIClassic.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WaitWindowGUIStandard.resx">
+      <DependentUpon>WaitWindowGUIStandard.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

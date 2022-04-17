@@ -1,4 +1,6 @@
-﻿using PlexDL.WaitWindow.UI;
+﻿using PlexDL.WaitWindow.Enums;
+using PlexDL.WaitWindow.Globals;
+using PlexDL.WaitWindow.UI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -88,8 +90,40 @@ namespace PlexDL.WaitWindow
                 message = "Please wait...";
 
             //	Set up the window
-            _gui = new WaitWindowGUI(this);
-            _gui.SetMessage(message);
+            switch (WaitWindowGlobalSettings.WindowType)
+            {
+                // Classic window (circular progress bar type)
+                case WaitWindowType.Classic:
+
+                    // Define a new classic form
+                    var classicForm = new WaitWindowGUIClassic(this);
+                    classicForm.SetMessage(message);
+
+                    // Set the form
+                    _gui = classicForm;
+
+                    // Exit
+                    break;
+
+                // Standard window
+                case WaitWindowType.Standard:
+
+                    // Define a new standard form
+                    var standardForm = new WaitWindowGUIStandard(this);
+                    standardForm.SetMessage(message);
+
+                    // Set the form
+                    _gui = standardForm;
+
+                    // Exit
+                    break;
+
+                // Unknown window type
+                default:
+
+                    // Exit with null; we don't know what to do with this
+                    return null;
+            }
 
             //	Call it
             _gui.ShowDialog();

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace PlexDL.WaitWindow.UI
 {
-    public partial class WaitWindowGUI : Form
+    public partial class WaitWindowGUIClassic
     {
         /// <summary>
         /// Component provider
@@ -47,7 +47,7 @@ namespace PlexDL.WaitWindow.UI
             this.MessageLabel.Name = "MessageLabel";
             this.MessageLabel.Size = new System.Drawing.Size(196, 129);
             this.MessageLabel.TabIndex = 2;
-            this.MessageLabel.Text = "Working on it";
+            this.MessageLabel.Text = "Processing";
             this.MessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tmrDots
@@ -103,7 +103,7 @@ namespace PlexDL.WaitWindow.UI
             this.tlpMain.Size = new System.Drawing.Size(316, 129);
             this.tlpMain.TabIndex = 4;
             // 
-            // WaitWindowGui
+            // WaitWindowGUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -113,7 +113,7 @@ namespace PlexDL.WaitWindow.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "WaitWindowGui";
+            this.Name = "WaitWindowGUI";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Working";

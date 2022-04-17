@@ -1,4 +1,6 @@
 ﻿using PlexDL.Common.Enums;
+using PlexDL.WaitWindow.Enums;
+using PlexDL.WaitWindow.Globals;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +15,14 @@ namespace PlexDL.Common.Structures.AppOptions
         [DisplayName("PlexDL Version")]
         [Description("The version of PlexDL that you're currently running")]
         public string StoredAppVersion { get; set; } = Application.ProductVersion;
+
+        [DisplayName("Wait Window Display Style")]
+        [Description("PlexDL's wait window is extensible and as such, different styles can be configured here.")]
+        public WaitWindowType WaitWindowDisplayStyle
+        {
+            get => WaitWindowGlobalSettings.WindowType;
+            set => WaitWindowGlobalSettings.WindowType = value;
+        }
 
         [DisplayName("QR Fetch Mode")]
         [Description(

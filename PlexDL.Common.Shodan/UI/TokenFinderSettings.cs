@@ -68,5 +68,45 @@ namespace PlexDL.Common.Shodan.UI
                 UIMessages.Error("Could not save settings:\n\n- Invalid API key");
             }
         }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            //apply the result
+            DialogResult = DialogResult.Cancel;
+
+            //close the form
+            Close();
+        }
+
+        private void BtnApiTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //validation
+                if (!string.IsNullOrWhiteSpace(txtApiKey.Text) && txtApiKey.Text.Length == 32)
+                {
+                    //validation
+                    if (!txtApiKey.Text.Contains(" ") && !txtApiKey.Text.Contains("\t"))
+                    {
+
+                    }
+                    else
+                    {
+                        //alert user
+                        UIMessages.Error("API test failed:\n\nInvalid key");
+                    }
+                }
+                else
+                {
+                    //alert user
+                    UIMessages.Error("API test failed:\n\nInvalid key");
+                }
+            }
+            catch (Exception ex)
+            {
+                //alert the user
+                UIMessages.Error($"API test error:\n\n{ex}");
+            }
+        }
     }
 }
