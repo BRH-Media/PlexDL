@@ -102,6 +102,10 @@ namespace PlexDL.UI.Forms
 
         private void LstLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //if we already have a search active, cancel it; otherwise do nothing
+            if (_isFiltered)
+                CancelSearch();
+
             //make sure it's not a file we already have loaded
             if (_currentLogFile != lstLogFiles.SelectedItem.ToString()
                 && lstLogFiles.SelectedIndex > -1)
