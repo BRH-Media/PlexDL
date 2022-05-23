@@ -48,7 +48,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>

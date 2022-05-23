@@ -485,6 +485,9 @@ namespace PlexDL.UI.Forms
                          select new[] { p.Name, pValue })
                 .ToArray());
 
+            //update the content type
+            txtCurrentContentType.Text = ObjectProvider.CurrentContentType.ToString();
+
             //updates the internal counter
             UpdateRefreshInt();
 

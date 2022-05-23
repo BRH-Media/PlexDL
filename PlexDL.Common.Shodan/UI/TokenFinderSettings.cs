@@ -93,24 +93,31 @@ namespace PlexDL.Common.Shodan.UI
                     //show the window
                     WaitWindow.WaitWindow.Show(ApiTest, @"Testing API key");
                 }
-
-                //validation
-                if (!string.IsNullOrWhiteSpace(txtApiKey.Text) && txtApiKey.Text.Length == 32)
+                else
                 {
                     //validation
-                    if (!txtApiKey.Text.Contains(" ") && !txtApiKey.Text.Contains("\t"))
+                    if (!string.IsNullOrWhiteSpace(txtApiKey.Text) && txtApiKey.Text.Length == 32)
                     {
-                        //setup Shodan client
-                        var client = new ClientFactory(Strings.ShodanApiKey).GetFullClient();
-
-                        //execute the query!
-                        var result = client.AccountProfile().GetAwaiter().GetResult();
-
                         //validation
-                        if (result != null)
+                        if (!txtApiKey.Text.Contains(" ") && !txtApiKey.Text.Contains("\t"))
                         {
-                            //alert user
-                            UIMessages.Info($"API test succeeded:\n\nRegistered profile: {result.DisplayName}");
+                            //setup Shodan client
+                            var client = new ClientFactory(Strings.ShodanApiKey).GetFullClient();
+
+                            //execute the query!
+                            var result = client.AccountProfile().GetAwaiter().GetResult();
+
+                            //validation
+                            if (result != null)
+                            {
+                                //alert user
+                                UIMessages.Info("API test succeeded");
+                            }
+                            else
+                            {
+                                //alert user
+                                UIMessages.Error("API test failed:\n\nInvalid key");
+                            }
                         }
                         else
                         {
@@ -123,11 +130,6 @@ namespace PlexDL.Common.Shodan.UI
                         //alert user
                         UIMessages.Error("API test failed:\n\nInvalid key");
                     }
-                }
-                else
-                {
-                    //alert user
-                    UIMessages.Error("API test failed:\n\nInvalid key");
                 }
             }
             catch (Exception ex)

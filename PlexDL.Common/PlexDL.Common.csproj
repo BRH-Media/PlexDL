@@ -48,7 +48,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -187,10 +186,6 @@
       <Project>{aba08e30-bcbb-4eb8-a187-8c8b7037bc48}</Project>
       <Name>PlexDL.Common.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlexDL.PlexAPI.LoginHandler\PlexDL.PlexAPI.LoginHandler.csproj">
-      <Project>{f40a5d3c-078c-44a6-b6cf-53ff7b9c89df}</Project>
-      <Name>PlexDL.PlexAPI.LoginHandler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlexDL.PlexAPI\PlexDL.MyPlex.csproj">
       <Project>{94e9eaea-bb7a-4834-b2ae-98afcd68c8db}</Project>
       <Name>PlexDL.MyPlex</Name>
@@ -225,11 +220,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-  </Target>
 </Project>

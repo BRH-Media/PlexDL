@@ -206,6 +206,10 @@ namespace PlexDL.Common.Shodan.UI
                                 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
                                 page = httpClient.GetStringAsync(settingsUrl).GetAwaiter().GetResult();
                             }
+                            catch (HttpRequestException)
+                            {
+                                //do nothing
+                            }
                             catch (TaskCanceledException)
                             {
                                 //do nothing
