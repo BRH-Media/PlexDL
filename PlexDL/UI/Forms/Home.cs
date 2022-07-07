@@ -2856,10 +2856,7 @@ namespace PlexDL.UI.Forms
 
         private static void ShowLogViewer()
         {
-            using (var frm = new LogViewer())
-            {
-                frm.ShowDialog();
-            }
+            new LogViewer().ShowDialog();
         }
 
         private void ItmTrackSearch_Click(object sender, EventArgs e)

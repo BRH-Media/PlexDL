@@ -377,6 +377,12 @@ namespace PlexDL.UI.Forms
         {
             try
             {
+                //warn user
+                UIMessages.Warning("Please be aware that the Cast feature is highly " +
+                                   "experimental and is unstable; work on this feature " +
+                                   "has been limited due to technological issues associated " +
+                                   "with WinForms.");
+
                 //setup service events
                 if (Service != null)
                     Service.ChromeCastClient.ConnectedChanged += Client_Connected;

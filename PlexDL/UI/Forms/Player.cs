@@ -151,7 +151,7 @@ namespace PlexDL.UI.Forms
             {
                 var msg =
                     UIMessages.Question(
-                        @"PlexDL Matroska (mkv) playback is not supported, however some codecs may still work unofficially. Would you like to continue playback via PVS?");
+                        @"PlexDL Matroska (mkv) playback is not supported, however some codecs may still work. Would you like to continue playback via PVS?");
 
                 if (!msg)
                     Close();
@@ -367,97 +367,122 @@ namespace PlexDL.UI.Forms
 
         private static StreamInfo GetContentDownloadInfo(int index)
         {
-            if (index + 1 <= TableManager.ReturnCorrectTable().Rows.Count)
+            try
             {
-                var result = TableManager.ReturnCorrectTable().Rows[index];
-                var key = result["key"].ToString();
-                var baseUri = Strings.GetBaseUri(false);
-                key = key.TrimStart('/');
-                var uri = baseUri + key + "/?X-Plex-Token=";
+                if (index + 1 <= TableManager.ReturnCorrectTable().Rows.Count)
+                {
+                    var result = TableManager.ReturnCorrectTable().Rows[index];
+                    var key = result["key"].ToString();
+                    var baseUri = Strings.GetBaseUri(false);
+                    key = key.TrimStart('/');
+                    var uri = baseUri + key + "/?X-Plex-Token=";
 
-                var reply = XmlGet.GetXmlTransaction(uri, false, false, false);
+                    var reply = XmlGet.GetXmlTransaction(uri, false, false, false);
 
-                var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply);
-                return obj;
+                    var obj = DownloadInfoGatherers.GetContentDownloadInfo(reply);
+                    return obj;
+                }
+
+                UIMessages.Error(@"Index was higher than row count; could not process data.",
+                    @"Indexing Error");
+            }
+            catch (Exception ex)
+            {
+                //alert user
+                UIMessages.Error($"Content streaming info couldn't be fetched due to the following error:\b\b{ex}");
             }
 
-            UIMessages.Error(@"Index was higher than row count; could not process data.",
-                @"Indexing Error");
             return new StreamInfo();
         }
 
         private void NextTitle()
         {
-            //check if the table has been loaded correctly before trying
-            //to get data from it.
-            if (!TableManager.ActiveTableFilled)
-                return;
-
-            if (StreamingContent.StreamIndex + 1 < TableManager.ReturnCorrectTable().Rows.Count)
+            try
             {
-                //fetch the correct content
-                var next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
-                StreamingContent = next;
-                var formTitle = StreamingContent.StreamInformation.ContentTitle;
+                //check if the table has been loaded correctly before trying
+                //to get data from it.
+                if (!TableManager.ActiveTableFilled)
+                    return;
 
-                //set the form title to the new content
-                Text = formTitle;
+                if (StreamingContent.StreamIndex + 1 < TableManager.ReturnCorrectTable().Rows.Count)
+                {
+                    //fetch the correct content
+                    var next = GetObjectFromIndex(StreamingContent.StreamIndex + 1);
+                    StreamingContent = next;
+                    var formTitle = StreamingContent.StreamInformation.ContentTitle;
 
-                //reset and repaint the GUI
-                Stop(true);
-                Refresh();
+                    //set the form title to the new content
+                    Text = formTitle;
+
+                    //reset and repaint the GUI
+                    Stop(true);
+                    Refresh();
+                }
+                else if (StreamingContent.StreamIndex + 1 == TableManager.ReturnCorrectTable().Rows.Count)
+                {
+                    //fetch the correct content
+                    var next = GetObjectFromIndex(0);
+                    StreamingContent = next;
+
+                    var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                    //set the form title to the new content
+                    Text = formTitle;
+
+                    //reset and repaint the GUI
+                    Stop(true);
+                    Refresh();
+                }
             }
-            else if (StreamingContent.StreamIndex + 1 == TableManager.ReturnCorrectTable().Rows.Count)
+            catch (Exception ex)
             {
-                //fetch the correct content
-                var next = GetObjectFromIndex(0);
-                StreamingContent = next;
-
-                var formTitle = StreamingContent.StreamInformation.ContentTitle;
-
-                //set the form title to the new content
-                Text = formTitle;
-
-                //reset and repaint the GUI
-                Stop(true);
-                Refresh();
+                //alert user
+                UIMessages.Error($"Next title error:\b\b{ex}");
             }
         }
 
         private void PrevTitle()
         {
-            //check if the table has been loaded correctly before trying
-            //to get data from it.
-            if (!TableManager.ActiveTableFilled)
-                return;
-
-            if (StreamingContent.StreamIndex != 0)
+            try
             {
-                //fetch the correct content
-                var prev = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
-                StreamingContent = prev;
-                var formTitle = StreamingContent.StreamInformation.ContentTitle;
+                //check if the table has been loaded correctly before trying
+                //to get data from it.
+                if (!TableManager.ActiveTableFilled)
+                    return;
 
-                //set the form title to the new content
-                Text = formTitle;
+                if (StreamingContent.StreamIndex != 0)
+                {
+                    //fetch the correct content
+                    var prev = GetObjectFromIndex(StreamingContent.StreamIndex - 1);
+                    StreamingContent = prev;
+                    var formTitle = StreamingContent.StreamInformation.ContentTitle;
 
-                //reset and repaint the GUI
-                Stop(true);
-                Refresh();
+                    //set the form title to the new content
+                    Text = formTitle;
+
+                    //reset and repaint the GUI
+                    Stop(true);
+                    Refresh();
+                }
+                else
+                {
+                    //fetch the correct content
+                    var prev = GetObjectFromIndex(TableManager.ReturnCorrectTable().Rows.Count - 1);
+                    StreamingContent = prev;
+                    var formTitle = StreamingContent.StreamInformation.ContentTitle;
+
+                    //set the form title to the new content
+                    Text = formTitle;
+
+                    //reset and repaint the GUI
+                    Stop(true);
+                    Refresh();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //fetch the correct content
-                var prev = GetObjectFromIndex(TableManager.ReturnCorrectTable().Rows.Count - 1);
-                StreamingContent = prev;
-                var formTitle = StreamingContent.StreamInformation.ContentTitle;
-
-                //set the form title to the new content
-                Text = formTitle;
-
-                //reset and repaint the GUI
-                Stop(true);
-                Refresh();
+                //alert user
+                UIMessages.Error($"Previous title error:\b\b{ex}");
             }
         }
 

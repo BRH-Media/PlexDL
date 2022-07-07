@@ -191,52 +191,52 @@ namespace PlexDL.AltoHTTP.Common.Downloader
                             HeadersReceived(this, EventArgs.Empty);
                         }, null);
                 }
+
+                if (overWriteFile)
+                {
+                    _file = File.Open(DestPath, FileMode.Append, FileAccess.Write);
+                }
+                else
+                {
+                    _file = File.Exists(DestPath) ? new FileStream(DestPath, FileMode.Truncate, FileAccess.Write) : new FileStream(DestPath, FileMode.Create, FileAccess.Write);
+                }
+
+                long bytesRead;
+                _speedBytes = 0;
+                var buffer = new byte[4096];
+                _stpWatch.Reset();
+                _stpWatch.Start();
+
+                while (_str != null && (bytesRead = _str.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    if ((_state == DownloadState.Cancelled) | (_state == DownloadState.Paused)) break;
+                    _state = DownloadState.Downloading;
+                    _file.Write(buffer, 0, (int)bytesRead);
+                    _file.Flush();
+                    BytesReceived += bytesRead;
+                    _speedBytes += bytesRead;
+
+                    //CALCULATIONS FOR DOWNLOAD PROGRESS
+                    Progress = _progress = ((double)BytesReceived / ContentSize) * 100;
+                    SpeedInBytes = (long)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);
+                }
+
+                _resp?.Close();
+
+                _stpWatch.Reset();
+                CloseResources();
+                Thread.Sleep(100);
+                if (_state == DownloadState.Downloading)
+                {
+                    _state = DownloadState.Completed;
+                    State = _state;
+                }
             }
             catch
             {
                 _state = DownloadState.ErrorOccurred;
                 State = _state;
                 return;
-            }
-
-            if (overWriteFile)
-            {
-                _file = File.Open(DestPath, FileMode.Append, FileAccess.Write);
-            }
-            else
-            {
-                _file = File.Exists(DestPath) ? new FileStream(DestPath, FileMode.Truncate, FileAccess.Write) : new FileStream(DestPath, FileMode.Create, FileAccess.Write);
-            }
-
-            long bytesRead;
-            _speedBytes = 0;
-            var buffer = new byte[4096];
-            _stpWatch.Reset();
-            _stpWatch.Start();
-
-            while (_str != null && (bytesRead = _str.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                if ((_state == DownloadState.Cancelled) | (_state == DownloadState.Paused)) break;
-                _state = DownloadState.Downloading;
-                _file.Write(buffer, 0, (int)bytesRead);
-                _file.Flush();
-                BytesReceived += bytesRead;
-                _speedBytes += bytesRead;
-
-                //CALCULATIONS FOR DOWNLOAD PROGRESS
-                Progress = _progress = ((double)BytesReceived / ContentSize) * 100;
-                SpeedInBytes = (long)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);
-            }
-
-            _resp?.Close();
-
-            _stpWatch.Reset();
-            CloseResources();
-            Thread.Sleep(100);
-            if (_state == DownloadState.Downloading)
-            {
-                _state = DownloadState.Completed;
-                State = _state;
             }
         }
 
