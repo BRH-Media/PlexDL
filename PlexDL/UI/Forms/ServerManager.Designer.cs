@@ -70,9 +70,9 @@ namespace PlexDL.UI.Forms
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmAuthenticate,
+            this.itmConnect,
             this.itmLoad,
-            this.itmOptions,
-            this.itmConnect});
+            this.itmOptions});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(800, 24);
@@ -188,8 +188,8 @@ namespace PlexDL.UI.Forms
             this.itmConnect.Enabled = false;
             this.itmConnect.Name = "itmConnect";
             this.itmConnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.itmConnect.Size = new System.Drawing.Size(134, 20);
-            this.itmConnect.Text = "Connect to this server";
+            this.itmConnect.Size = new System.Drawing.Size(64, 20);
+            this.itmConnect.Text = "Connect";
             this.itmConnect.Click += new System.EventHandler(this.ItmConnect_Click);
             // 
             // cxtServers
