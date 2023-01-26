@@ -46,6 +46,8 @@
             this.cxtGridStartSession = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtGridCopyToken = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
+            this.itmFileImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.ofdImport = new System.Windows.Forms.OpenFileDialog();
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTokens)).BeginInit();
@@ -67,7 +69,8 @@
             // itmFile
             // 
             this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmFileExport});
+            this.itmFileExport,
+            this.itmFileImport});
             this.itmFile.Name = "itmFile";
             this.itmFile.Size = new System.Drawing.Size(37, 20);
             this.itmFile.Text = "File";
@@ -76,7 +79,7 @@
             // 
             this.itmFileExport.Name = "itmFileExport";
             this.itmFileExport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.itmFileExport.Size = new System.Drawing.Size(148, 22);
+            this.itmFileExport.Size = new System.Drawing.Size(180, 22);
             this.itmFileExport.Text = "Export";
             this.itmFileExport.Click += new System.EventHandler(this.ItmFileExport_Click);
             // 
@@ -174,13 +177,13 @@
             this.cxtGridStartSession,
             this.cxtGridCopyToken});
             this.cxtGrid.Name = "cxtGrid";
-            this.cxtGrid.Size = new System.Drawing.Size(181, 70);
+            this.cxtGrid.Size = new System.Drawing.Size(141, 48);
             // 
             // cxtGridStartSession
             // 
             this.cxtGridStartSession.Enabled = false;
             this.cxtGridStartSession.Name = "cxtGridStartSession";
-            this.cxtGridStartSession.Size = new System.Drawing.Size(180, 22);
+            this.cxtGridStartSession.Size = new System.Drawing.Size(140, 22);
             this.cxtGridStartSession.Text = "Start Session";
             this.cxtGridStartSession.Click += new System.EventHandler(this.CxtGridStartSession_Click);
             // 
@@ -188,13 +191,25 @@
             // 
             this.cxtGridCopyToken.Enabled = false;
             this.cxtGridCopyToken.Name = "cxtGridCopyToken";
-            this.cxtGridCopyToken.Size = new System.Drawing.Size(180, 22);
+            this.cxtGridCopyToken.Size = new System.Drawing.Size(140, 22);
             this.cxtGridCopyToken.Text = "Copy Token";
             this.cxtGridCopyToken.Click += new System.EventHandler(this.CxtGridCopyToken_Click);
             // 
             // sfdExport
             // 
             this.sfdExport.Filter = "Comma Separated Values File|*.csv|JavaScript Object Notation File|*.json|Logging " +
+    "Delimited File|*.logdel|eXtensible Markup Language File|*.xml";
+            // 
+            // itmFileImport
+            // 
+            this.itmFileImport.Name = "itmFileImport";
+            this.itmFileImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.itmFileImport.Size = new System.Drawing.Size(180, 22);
+            this.itmFileImport.Text = "Import";
+            // 
+            // ofdImport
+            // 
+            this.ofdImport.Filter = "Comma Separated Values File|*.csv|JavaScript Object Notation File|*.json|Logging " +
     "Delimited File|*.logdel|eXtensible Markup Language File|*.xml";
             // 
             // TokenFinder
@@ -242,5 +257,7 @@
         private System.Windows.Forms.ContextMenuStrip cxtGrid;
         private System.Windows.Forms.ToolStripMenuItem cxtGridStartSession;
         private System.Windows.Forms.ToolStripMenuItem cxtGridCopyToken;
+        private System.Windows.Forms.ToolStripMenuItem itmFileImport;
+        private System.Windows.Forms.OpenFileDialog ofdImport;
     }
 }

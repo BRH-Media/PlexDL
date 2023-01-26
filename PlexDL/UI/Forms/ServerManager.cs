@@ -145,7 +145,7 @@ namespace PlexDL.UI.Forms
                 var item = new ToolStripMenuItem
                 {
                     Name = @"itmAuthenticateShodan",
-                    Text = @"Shodan Token Finder",
+                    Text = @"Via Shodan",
                     ShortcutKeys = Keys.Control | Keys.B
                 };
 
