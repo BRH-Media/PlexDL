@@ -1,5 +1,6 @@
 ﻿using LogDel.Utilities.Export;
 using PlexDL.Common.Shodan.Enums;
+using PlexDL.Common.Shodan.Globals;
 using PlexDL.WaitWindow;
 using Shodan.Client;
 using Shodan.Models;
@@ -15,6 +16,7 @@ using System.Windows.Forms;
 using UIHelpers;
 using Strings = PlexDL.Common.Shodan.Globals.Strings;
 
+// ReSharper disable RedundantAssignment
 // ReSharper disable InvertIf
 
 namespace PlexDL.Common.Shodan.UI
@@ -26,7 +28,7 @@ namespace PlexDL.Common.Shodan.UI
         /// </summary>
         public List<Service> ShodanResults { get; set; }
 
-        public TokenFinderResult Result { get; set; } = new TokenFinderResult();
+        public TokenFinderResult Result { get; set; } = new();
 
         public TokenFinder()
         {
@@ -56,10 +58,16 @@ namespace PlexDL.Common.Shodan.UI
             return null;
         }
 
+        private void DgvTokens_DoubleClick(object sender, EventArgs e)
+            => StartSession();
+
         private void TokenFinder_Load(object sender, EventArgs e)
         {
             //load API key
             Strings.ShodanApiKey = ApiKeyManager.StoredShodanApiKey();
+
+            //load grid
+            SetDataGridSource(ObjectProvider.PreviousResults);
         }
 
         private void ItmSettings_Click(object sender, EventArgs e)
@@ -166,6 +174,111 @@ namespace PlexDL.Common.Shodan.UI
             }
         }
 
+        private void ScrapeServer(object sender, WaitWindowEventArgs e)
+            => e.Result = ScrapeServer((string)e.Arguments[0],
+                (int)e.Arguments[1], false);
+
+        private object[] ScrapeServer(string url, int index, bool multiThreaded = true)
+        {
+            try
+            {
+                //do we need to apply a wait  window?
+                if (multiThreaded)
+                {
+                    //setup wait window
+                    return (object[])WaitWindow.WaitWindow.Show(ScrapeServer,
+                        $@"Scraping server {index + 1}/{ShodanResults.Count}",
+                        url, index);
+                }
+                else
+                {
+                    //Shodan result
+                    var s = ShodanResults[index];
+
+                    //store HTML content here
+                    var page = @"";
+
+                    try
+                    {
+                        //download the page
+                        var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+                        page = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
+                    }
+                    catch (HttpRequestException)
+                    {
+                        //do nothing
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        //do nothing
+                    }
+
+                    //validation
+                    if (!string.IsNullOrWhiteSpace(page))
+                    {
+                        //load a HTML document for parsing purposes
+                        var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                        htmlDoc.LoadHtml(page);
+
+                        //try and find the pms_token <input> tag in the html file (the textbox in Tautulli for Plex.tv Authentication)
+                        var pmsToken = htmlDoc.DocumentNode.Descendants("input")
+                            .Where(node => node.GetAttributeValue("id", "")
+                                .Equals("pms_token")).ToList();
+
+                        //unload HTML document
+                        htmlDoc = null;
+
+                        //validation
+                        if (pmsToken.Count > 0)
+                        {
+                            //get the token from <input id="pms_token" value="[token_here]">
+                            var token = pmsToken[0].Attributes["value"].Value;
+
+                            //check if the token's valid (Plex tokens are always exactly 20 characters in length)
+                            if (!string.IsNullOrWhiteSpace(token))
+                            {
+                                //these checks must be nested, because if we check for token.Length before a null check is passed, an exception could be thrown.
+                                if (token.Length == 20)
+                                {
+                                    //calculate date first seen
+                                    var firstSeen =
+                                        (DateTime.Now - TimeSpan.FromMinutes(s.Uptime)).ToString(@"dd/MM/yyyy");
+
+                                    //create information array
+                                    object[] dataRow = { firstSeen, s.IPStr, s.Port.ToString(), token };
+
+                                    //return the result
+                                    return dataRow;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //alert user
+                UIMessages.Error($"Token scrape error:\n\n{ex}");
+            }
+
+            //default
+            return null;
+        }
+
+        private void SetDataGridSource(DataTable data)
+        {
+            try
+            {
+                dgvTokens.DataSource = data;
+                cxtGridStartSession.Enabled = true;
+                cxtGridCopyToken.Enabled = true;
+            }
+            catch
+            {
+                //nothing
+            }
+        }
+
         private void ExecuteTokenScraping(object sender, WaitWindowEventArgs e)
             => ExecuteTokenScraping(false);
 
@@ -180,7 +293,7 @@ namespace PlexDL.Common.Shodan.UI
                     if (multiThreaded)
                     {
                         //setup wait window
-                        WaitWindow.WaitWindow.Show(ExecuteTokenScraping, $@"Scraping {ShodanResults.Count} servers");
+                        WaitWindow.WaitWindow.Show(ExecuteTokenScraping, @"Dealing with scraped data");
                     }
                     else
                     {
@@ -192,86 +305,45 @@ namespace PlexDL.Common.Shodan.UI
                         data.Columns.Add(@"Token");
 
                         //go through each service
-                        foreach (var s in ShodanResults)
+                        for (var i = 0; i < ShodanResults.Count; i++)
                         {
+                            //grab the result
+                            var s = ShodanResults[i];
+
                             //form a URL based on the service
                             var settingsUrl = $"http://{s.IPStr}:{s.Port}/settings";
 
-                            //store HTML content here
-                            var page = @"";
-
-                            try
-                            {
-                                //download the page
-                                var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
-                                page = httpClient.GetStringAsync(settingsUrl).GetAwaiter().GetResult();
-                            }
-                            catch (HttpRequestException)
-                            {
-                                //do nothing
-                            }
-                            catch (TaskCanceledException)
-                            {
-                                //do nothing
-                            }
+                            //scrape
+                            var scrapedRow = ScrapeServer(settingsUrl, i);
 
                             //validation
-                            if (!string.IsNullOrWhiteSpace(page))
+                            if (scrapedRow != null)
                             {
-                                //load a HTML document for parsing purposes
-                                var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-                                htmlDoc.LoadHtml(page);
-
-                                //try and find the pms_token <input> tag in the html file (the textbox in Tautulli for Plex.tv Authentication)
-                                var pmsToken = htmlDoc.DocumentNode.Descendants("input")
-                                    .Where(node => node.GetAttributeValue("id", "")
-                                        .Equals("pms_token")).ToList();
-
-                                //validation
-                                if (pmsToken.Count > 0)
-                                {
-                                    //get the token from <input id="pms_token" value="[token_here]">
-                                    var token = pmsToken[0].Attributes["value"].Value;
-
-                                    //check if the token's valid (Plex tokens are always exactly 20 characters in length)
-                                    if (!string.IsNullOrWhiteSpace(token))
-                                    {
-                                        //these checks must be nested, because if we check for token.Length before a null check is passed, an exception could be thrown.
-                                        if (token.Length == 20)
-                                        {
-                                            //calculate date first seen
-                                            var firstSeen =
-                                                (DateTime.Now - TimeSpan.FromMinutes(s.Uptime)).ToString(@"dd/MM/yyyy");
-
-                                            //create information array
-                                            object[] dataRow = { firstSeen, s.IPStr, s.Port.ToString(), token };
-
-                                            //add it to the table
-                                            data.Rows.Add(dataRow);
-                                        }
-                                    }
-                                }
+                                //add it to the collection
+                                data.Rows.Add(scrapedRow);
                             }
                         }
+
+                        //clear results
+                        ObjectProvider.PreviousResults = null;
 
                         //do we have results?
                         if (data.Rows.Count > 0)
                         {
+                            //apply results
+                            ObjectProvider.PreviousResults = data;
+
                             //setup table
                             if (dgvTokens.InvokeRequired)
                             {
                                 dgvTokens.BeginInvoke((MethodInvoker)delegate
-                               {
-                                   dgvTokens.DataSource = data;
-                                   cxtGridStartSession.Enabled = true;
-                                   cxtGridCopyToken.Enabled = true;
-                               });
+                                {
+                                    SetDataGridSource(data);
+                                });
                             }
                             else
                             {
-                                dgvTokens.DataSource = data;
-                                cxtGridStartSession.Enabled = true;
-                                cxtGridCopyToken.Enabled = true;
+                                SetDataGridSource(data);
                             }
 
                             //setup viewing label
@@ -283,11 +355,11 @@ namespace PlexDL.Common.Shodan.UI
                             if (dgvTokens.InvokeRequired)
                             {
                                 dgvTokens.BeginInvoke((MethodInvoker)delegate
-                                {
-                                    dgvTokens.DataSource = null;
-                                    cxtGridStartSession.Enabled = false;
-                                    cxtGridCopyToken.Enabled = false;
-                                });
+                               {
+                                   dgvTokens.DataSource = null;
+                                   cxtGridStartSession.Enabled = false;
+                                   cxtGridCopyToken.Enabled = false;
+                               });
                             }
                             else
                             {
@@ -384,6 +456,9 @@ namespace PlexDL.Common.Shodan.UI
                 //token available?
                 if (!string.IsNullOrWhiteSpace(Strings.ShodanApiKey))
                 {
+                    //clear previous results
+                    ObjectProvider.PreviousResults = null;
+
                     //execute the Shodan search
                     ExecuteSearch();
 
@@ -450,9 +525,6 @@ namespace PlexDL.Common.Shodan.UI
         }
 
         private void ItmActionsBeginSearch_Click(object sender, EventArgs e)
-            => BeginSearch();
-
-        private void CxtGridBeginSearch_Click(object sender, EventArgs e)
             => BeginSearch();
 
         private void CxtGridStartSession_Click(object sender, EventArgs e)

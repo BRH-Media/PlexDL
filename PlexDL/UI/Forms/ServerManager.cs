@@ -89,7 +89,7 @@ namespace PlexDL.UI.Forms
             e.Result = result;
         }
 
-        private static void TokenFinderLauncher(object sender, EventArgs e)
+        private void TokenFinderLauncher(object sender, EventArgs e)
         {
             try
             {
@@ -104,6 +104,24 @@ namespace PlexDL.UI.Forms
                     {
                         //setup
                         ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = result.Token;
+
+                        //apply the new token
+                        if (ApplyToken(result.Token))
+                        {
+                            //alert the user to the status
+                            UIMessages.Info(
+                                @"Token applied successfully. You can now load servers and relays from Plex.tv");
+
+                            //render the servers view
+                            LoadServers(true);
+
+                            //status update
+                            SetInterfaceAuthenticationStatus(true);
+                        }
+                        else
+
+                            //alert the user to the error
+                            UIMessages.Error(@"An unknown error occurred");
                     }
                 }
                 else
@@ -391,41 +409,40 @@ namespace PlexDL.UI.Forms
             var servers = new List<Server>();
 
             //construct a new direct connection dialog
-            using (var frmDir = new DirectConnect())
+            using var frmDir = new DirectConnect();
+
+            //setup form prerequisities
+            frmDir.ConnectionInfo = info;
+            frmDir.DifferentToken = diffToken;
+            frmDir.LoadLocalLink = localLink;
+
+            //dialog verification
+            if (frmDir.ShowDialog() != DialogResult.OK) return;
+            if (!frmDir.Success) return;
+
+            //set auth globals
+            ObjectProvider.Settings.ConnectionInfo = frmDir.ConnectionInfo;
+            ObjectProvider.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+
+            //construct new server object from supplied direct connection information
+            var s = new Server
             {
-                //setup form prerequisities
-                frmDir.ConnectionInfo = info;
-                frmDir.DifferentToken = diffToken;
-                frmDir.LoadLocalLink = localLink;
+                accessToken = ObjectProvider.User.authenticationToken,
+                address = ObjectProvider.Settings.ConnectionInfo.PlexAddress,
+                port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
+                name = "DirectConnect"
+            };
 
-                //dialog verification
-                if (frmDir.ShowDialog() != DialogResult.OK) return;
-                if (!frmDir.Success) return;
+            //apply listing information for auth
+            servers.Add(s);
+            ObjectProvider.PlexServers = servers;
 
-                //set auth globals
-                ObjectProvider.Settings.ConnectionInfo = frmDir.ConnectionInfo;
-                ObjectProvider.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+            //set globals
+            SelectedServer = s;
+            DialogResult = DialogResult.OK;
 
-                //construct new server obejct from supplied direct connection information
-                var s = new Server
-                {
-                    accessToken = ObjectProvider.User.authenticationToken,
-                    address = ObjectProvider.Settings.ConnectionInfo.PlexAddress,
-                    port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
-                    name = "DirectConnect"
-                };
-
-                //apply listing information for auth
-                servers.Add(s);
-                ObjectProvider.PlexServers = servers;
-
-                //set globals
-                SelectedServer = s;
-                DialogResult = DialogResult.OK;
-
-                //close the GUI
-                Close();
-            }
+            //close the GUI
+            Close();
         }
 
         private void SelectServer()
@@ -574,8 +591,7 @@ namespace PlexDL.UI.Forms
                     ProfileDefinedServer();
 
                     // this check must be done before checking the count, because if it is null, we'll get an error for trying to access "Count" on a null object.
-                    if (ObjectProvider.PlexServers == null) return;
-                    if (ObjectProvider.PlexServers.Count <= 0) return;
+                    if (ObjectProvider.PlexServers is not { Count: > 0 }) return;
 
                     RenderServersView(ObjectProvider.PlexServers);
                     SelectServer();
@@ -705,45 +721,45 @@ namespace PlexDL.UI.Forms
             {
                 //check if there's a connection before trying to update the authentication token
                 if (Internet.IsConnected)
-
+                {
                     //new token input form
-                    using (var frm = new Authenticate())
+                    using var frm = new Authenticate();
+
+                    //construct a new authentication information descriptor
+                    var existingInfo = new ConnectionInfo
                     {
-                        //construct a new authentication information descriptor
-                        var existingInfo = new ConnectionInfo
-                        {
-                            PlexAccountToken = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
-                        };
+                        PlexAccountToken = ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
+                    };
 
-                        //apply the descriptor
-                        frm.ConnectionInfo = existingInfo;
+                    //apply the descriptor
+                    frm.ConnectionInfo = existingInfo;
 
-                        //show the dialog and ensure 'OK' was pressed
-                        if (frm.ShowDialog() != DialogResult.OK)
-                            return;
+                    //show the dialog and ensure 'OK' was pressed
+                    if (frm.ShowDialog() != DialogResult.OK)
+                        return;
 
-                        //exit if the attempt was unsuccessful
-                        if (!frm.Success)
-                            return;
+                    //exit if the attempt was unsuccessful
+                    if (!frm.Success)
+                        return;
 
-                        //apply the new token
-                        if (ApplyToken(frm.ConnectionInfo.PlexAccountToken))
-                        {
-                            //alert the user to the status
-                            UIMessages.Info(
-                                @"Token applied successfully. You can now load servers and relays from Plex.tv");
+                    //apply the new token
+                    if (ApplyToken(frm.ConnectionInfo.PlexAccountToken))
+                    {
+                        //alert the user to the status
+                        UIMessages.Info(
+                            @"Token applied successfully. You can now load servers and relays from Plex.tv");
 
-                            //render the servers view
-                            LoadServers(true);
+                        //render the servers view
+                        LoadServers(true);
 
-                            //status update
-                            SetInterfaceAuthenticationStatus(true);
-                        }
-                        else
-
-                            //alert the user to the error
-                            UIMessages.Error(@"An unknown error occurred");
+                        //status update
+                        SetInterfaceAuthenticationStatus(true);
                     }
+                    else
+
+                        //alert the user to the error
+                        UIMessages.Error(@"An unknown error occurred");
+                }
                 else
                     // trying to connect on no connection will not end well; alert the user.
                     UIMessages.Warning(

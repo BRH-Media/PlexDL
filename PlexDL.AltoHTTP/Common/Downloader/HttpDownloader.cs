@@ -40,7 +40,7 @@ namespace PlexDL.AltoHTTP.Common.Downloader
         public event ProgressChangedEventHandler DownloadProgressChanged;
 
         /// <summary>
-        ///     Fired when response headers received e.g ContentLegth, Resumeability
+        ///     Fired when response headers received e.g ContentLength, Resumeability
         /// </summary>
         public event EventHandler HeadersReceived;
 
@@ -52,7 +52,7 @@ namespace PlexDL.AltoHTTP.Common.Downloader
         private readonly AsyncOperation _oprtor;
 
         private long _speedBytes;
-        private double _progress;
+        private long _progress;
         private DownloadState _state;
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace PlexDL.AltoHTTP.Common.Downloader
         /// <summary>
         ///     Gets the current download progress over 100
         /// </summary>
-        public double Progress
+        public long Progress
         {
             get => _progress;
             private set
@@ -217,7 +217,7 @@ namespace PlexDL.AltoHTTP.Common.Downloader
                     _speedBytes += bytesRead;
 
                     //CALCULATIONS FOR DOWNLOAD PROGRESS
-                    Progress = _progress = ((double)BytesReceived / ContentSize) * 100;
+                    Progress = _progress = (BytesReceived / ContentSize) * 100;
                     SpeedInBytes = (long)(_speedBytes / 1.0 / _stpWatch.Elapsed.TotalSeconds);
                 }
 
@@ -226,17 +226,15 @@ namespace PlexDL.AltoHTTP.Common.Downloader
                 _stpWatch.Reset();
                 CloseResources();
                 Thread.Sleep(100);
-                if (_state == DownloadState.Downloading)
-                {
-                    _state = DownloadState.Completed;
-                    State = _state;
-                }
+                if (_state != DownloadState.Downloading)
+                    return;
+                _state = DownloadState.Completed;
+                State = _state;
             }
             catch
             {
                 _state = DownloadState.ErrorOccurred;
                 State = _state;
-                return;
             }
         }
 

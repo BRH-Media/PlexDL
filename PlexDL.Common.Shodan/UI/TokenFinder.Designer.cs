@@ -43,10 +43,9 @@
             this.lblViewingValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgvTokens = new PlexDL.Common.Components.Controls.FlatDataGridView();
             this.cxtGrid = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cxtGridBeginSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtGridStartSession = new System.Windows.Forms.ToolStripMenuItem();
-            this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.cxtGridCopyToken = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTokens)).BeginInit();
@@ -167,22 +166,15 @@
             this.dgvTokens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTokens.Size = new System.Drawing.Size(800, 404);
             this.dgvTokens.TabIndex = 2;
+            this.dgvTokens.DoubleClick += new System.EventHandler(this.DgvTokens_DoubleClick);
             // 
             // cxtGrid
             // 
             this.cxtGrid.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cxtGridBeginSearch,
             this.cxtGridStartSession,
             this.cxtGridCopyToken});
             this.cxtGrid.Name = "cxtGrid";
-            this.cxtGrid.Size = new System.Drawing.Size(181, 92);
-            // 
-            // cxtGridBeginSearch
-            // 
-            this.cxtGridBeginSearch.Name = "cxtGridBeginSearch";
-            this.cxtGridBeginSearch.Size = new System.Drawing.Size(180, 22);
-            this.cxtGridBeginSearch.Text = "Begin Search";
-            this.cxtGridBeginSearch.Click += new System.EventHandler(this.CxtGridBeginSearch_Click);
+            this.cxtGrid.Size = new System.Drawing.Size(181, 70);
             // 
             // cxtGridStartSession
             // 
@@ -192,11 +184,6 @@
             this.cxtGridStartSession.Text = "Start Session";
             this.cxtGridStartSession.Click += new System.EventHandler(this.CxtGridStartSession_Click);
             // 
-            // sfdExport
-            // 
-            this.sfdExport.Filter = "Comma Separated Values File|*.csv|JavaScript Object Notation File|*.json|Logging " +
-    "Delimited File|*.logdel|eXtensible Markup Language File|*.xml";
-            // 
             // cxtGridCopyToken
             // 
             this.cxtGridCopyToken.Enabled = false;
@@ -204,6 +191,11 @@
             this.cxtGridCopyToken.Size = new System.Drawing.Size(180, 22);
             this.cxtGridCopyToken.Text = "Copy Token";
             this.cxtGridCopyToken.Click += new System.EventHandler(this.CxtGridCopyToken_Click);
+            // 
+            // sfdExport
+            // 
+            this.sfdExport.Filter = "Comma Separated Values File|*.csv|JavaScript Object Notation File|*.json|Logging " +
+    "Delimited File|*.logdel|eXtensible Markup Language File|*.xml";
             // 
             // TokenFinder
             // 
@@ -248,7 +240,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblViewingValue;
         private System.Windows.Forms.SaveFileDialog sfdExport;
         private System.Windows.Forms.ContextMenuStrip cxtGrid;
-        private System.Windows.Forms.ToolStripMenuItem cxtGridBeginSearch;
         private System.Windows.Forms.ToolStripMenuItem cxtGridStartSession;
         private System.Windows.Forms.ToolStripMenuItem cxtGridCopyToken;
     }

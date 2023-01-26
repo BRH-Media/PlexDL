@@ -93,7 +93,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmViaToken.Name = "itmViaToken";
             this.itmViaToken.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.itmViaToken.Size = new System.Drawing.Size(180, 22);
+            this.itmViaToken.Size = new System.Drawing.Size(168, 22);
             this.itmViaToken.Text = "Via Token";
             this.itmViaToken.Click += new System.EventHandler(this.ItmViaToken_Click);
             // 
@@ -101,7 +101,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmViaPlexTv.Name = "itmViaPlexTv";
             this.itmViaPlexTv.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.itmViaPlexTv.Size = new System.Drawing.Size(180, 22);
+            this.itmViaPlexTv.Size = new System.Drawing.Size(168, 22);
             this.itmViaPlexTv.Text = "Via Plex.tv";
             this.itmViaPlexTv.Click += new System.EventHandler(this.ItmViaPlexTv_Click);
             // 

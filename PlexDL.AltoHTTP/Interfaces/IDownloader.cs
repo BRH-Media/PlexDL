@@ -8,7 +8,7 @@ namespace PlexDL.AltoHTTP.Interfaces
     {
         long ContentSize { get; }
         long BytesReceived { get; }
-        double Progress { get; }
+        long Progress { get; }
         long SpeedInBytes { get; }
         string FileUrl { get; }
         string DestPath { get; }
