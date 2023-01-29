@@ -1,7 +1,9 @@
 ﻿using PlexDL.Common.Shodan.Globals;
 using PlexDL.WaitWindow;
 using Shodan.Client;
+using Shodan.Exceptions;
 using System;
+using System.Net;
 using System.Windows.Forms;
 using UIHelpers;
 
@@ -102,7 +104,7 @@ namespace PlexDL.Common.Shodan.UI
                         if (!txtApiKey.Text.Contains(" ") && !txtApiKey.Text.Contains("\t"))
                         {
                             //setup Shodan client
-                            var client = new ClientFactory(Strings.ShodanApiKey).GetFullClient();
+                            var client = new ClientFactory(txtApiKey.Text).GetFullClient();
 
                             //execute the query!
                             var result = client.AccountProfile().GetAwaiter().GetResult();
@@ -111,7 +113,7 @@ namespace PlexDL.Common.Shodan.UI
                             if (result != null)
                             {
                                 //alert user
-                                UIMessages.Info("API test succeeded");
+                                UIMessages.Info($"API test successful\n\nYou have {result.Credits} credits remaining");
                             }
                             else
                             {
@@ -130,6 +132,18 @@ namespace PlexDL.Common.Shodan.UI
                         //alert user
                         UIMessages.Error("API test failed:\n\nInvalid key");
                     }
+                }
+            }
+            catch (ShodanException ex)
+            {
+                if (ex.Response.StatusCode != HttpStatusCode.Unauthorized)
+                {
+                    UIMessages.Error(!string.IsNullOrWhiteSpace(ex.Error) ? ex.Error : @"Shodan API error occurred");
+                }
+                else
+                {
+                    //alert user
+                    UIMessages.Error("API test failed:\n\nInvalid key");
                 }
             }
             catch (Exception ex)
