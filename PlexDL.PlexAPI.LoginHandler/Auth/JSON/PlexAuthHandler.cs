@@ -8,7 +8,7 @@ namespace PlexDL.PlexAPI.LoginHandler.Auth.JSON
     {
         public static PlexAuth NewPlexAuthPin()
         {
-            var j = Get.DownloadJson(PlexEndpoints.PlexPinsEndpoint, RestSharp.Method.POST);
+            var j = Get.DownloadJson(PlexEndpoints.PlexPinsEndpoint, RestSharp.Method.Post);
             return JsonValidation.IsValidJson(j) ? PlexAuth.FromJson(j) : null;
         }
 

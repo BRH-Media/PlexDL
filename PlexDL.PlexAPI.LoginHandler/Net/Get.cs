@@ -6,15 +6,18 @@ namespace PlexDL.PlexAPI.LoginHandler.Net
 {
     public static class Get
     {
-        public static string DownloadJson(string url, Method method = Method.GET)
+        public static string DownloadJson(string url, Method method = Method.Get)
         {
             //setup the request and the client with the global user agent
-            var client = new RestClient(url) { UserAgent = NetGlobals.GlobalUserAgent };
-            var request = new RestRequest(method);
+            var client = new RestClient(url);
+            var request = new RestRequest
+            {
+                Method = method
+            };
 
             //if a timeout is specified, we need to apply it to the client
             if (NetGlobals.Timeout > 0)
-                client.Timeout = NetGlobals.Timeout * 1000;
+                client.Options.MaxTimeout = NetGlobals.Timeout * 1000;
 
             //add required Plex headers
             request.AddHeader("Accept", "application/json");

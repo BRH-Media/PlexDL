@@ -25,7 +25,7 @@ namespace PlexDL.MyPlex
 
         public List<Server> GetServers(User user)
         {
-            var request = new RestRequest(Method.GET) { Resource = "pms/servers" };
+            var request = new RestRequest("pms/servers");
             var servers = Execute<List<Server>>(request, user);
 
             var finalReturn = new List<Server>();

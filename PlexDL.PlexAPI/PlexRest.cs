@@ -1,7 +1,6 @@
 using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Security;
 using RestSharp;
-using System;
 
 namespace PlexDL.MyPlex
 {
@@ -12,15 +11,12 @@ namespace PlexDL.MyPlex
 
         protected RestClient GetRestClient()
         {
-            var client = new RestClient
-            {
-                BaseUrl = new Uri(GetBaseUrl()),
-                UserAgent = NetGlobals.GlobalUserAgent
-            };
+            var client = new RestClient(GetBaseUrl());
+            client.Options.UserAgent = NetGlobals.GlobalUserAgent;
 
             //if a timeout is specified, we need to apply it to the client
             if (NetGlobals.Timeout > 0)
-                client.Timeout = NetGlobals.Timeout * 1000;
+                client.Options.MaxTimeout = NetGlobals.Timeout * 1000;
 
             return client;
         }

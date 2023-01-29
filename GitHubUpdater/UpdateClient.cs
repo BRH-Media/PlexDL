@@ -234,11 +234,8 @@ namespace GitHubUpdater
         /// <returns></returns>
         protected RestClient GetRestClient()
         {
-            var client = new RestClient
-            {
-                BaseUrl = new Uri(BaseUrl),
-                UserAgent = NetGlobals.GlobalUserAgent
-            };
+            var client = new RestClient(BaseUrl);
+            client.Options.UserAgent = NetGlobals.GlobalUserAgent;
             return client;
         }
 
