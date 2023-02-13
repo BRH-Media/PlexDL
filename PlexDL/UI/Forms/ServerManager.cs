@@ -52,9 +52,6 @@ namespace PlexDL.UI.Forms
         {
             WaitWindow.WaitWindow.Show(RenderServersView, @"Updating Grid",
                 servers, RenderTokenColumn);
-
-            //update view label
-            SetInterfaceViewingStatus();
         }
 
         private void RenderServersView(object sender, WaitWindowEventArgs e)
@@ -246,6 +243,9 @@ namespace PlexDL.UI.Forms
                             @"No internet connection. Please connect to a network before attempting to load servers.",
                             @"Network Error");
                 }
+
+                //update view label
+                SetInterfaceViewingStatus();
             }
             catch (Exception ex)
             {
@@ -287,6 +287,9 @@ namespace PlexDL.UI.Forms
                             @"No internet connection. Please connect to a network before attempting to load relays.",
                             @"Network Error");
                 }
+
+                //update view label
+                SetInterfaceViewingStatus();
             }
             catch (Exception ex)
             {
