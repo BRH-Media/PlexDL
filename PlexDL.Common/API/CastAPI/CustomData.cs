@@ -20,23 +20,23 @@ namespace PlexDL.Common.API.CastAPI
         public static CustomData FillFromApiServer(MyPlex.Server svr, bool transcode = false)
         {
             var data = new CustomData();
-            var user = svr.user;
+            var user = svr.User;
             var newServer = new Server
             {
-                machineIdentifier = svr.machineIdentifier,
+                machineIdentifier = svr.MachineIdentifier,
                 transcoderAudio = transcode,
                 transcoderVideo = transcode,
                 transcoderVideoRemuxOnly = transcode,
-                version = svr.version,
+                version = svr.Version,
                 myPlexSubscription = false, //it's possible that this is true, but always default to false just in case.
                 isVerifiedHostname = true, //bad things will happen if this isn't true
                 protocol = "http", //https needs a certificate and Windows will get cranky if it doesn't have one; http just to be on the safe side.
-                address = svr.address,
-                port = svr.port,
-                accessToken = svr.accessToken
+                address = svr.Address,
+                port = svr.Port,
+                accessToken = svr.AccessToken
             };
 
-            data.user = svr.user;
+            data.user = svr.User;
             data.server = newServer;
 
             return data;

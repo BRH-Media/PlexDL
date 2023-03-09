@@ -75,7 +75,7 @@ namespace PlexDL.UI.Forms
             {
                 var result = ObjectProvider.PlexProvider.GetServers(ObjectProvider.User);
                 if (ObjectProvider.Settings.CacheSettings.Mode.EnableServerCaching)
-                    ServerCaching.ServerToCache(result, ObjectProvider.User.authenticationToken);
+                    ServerCaching.ServerToCache(result, ObjectProvider.User.AuthenticationToken);
                 e.Result = result;
             }
         }
@@ -327,7 +327,7 @@ namespace PlexDL.UI.Forms
 
                         //apply globals
                         ObjectProvider.Svr = s;
-                        ObjectProvider.User.authenticationToken = s.accessToken;
+                        ObjectProvider.User.AuthenticationToken = s.AccessToken;
 
                         //form operation
                         DialogResult = DialogResult.OK;
@@ -345,7 +345,7 @@ namespace PlexDL.UI.Forms
                             LoggingHelpers.RecordException(testUrl.LastException.Message, @"TestConnectionError");
                         }
                         else
-                            UIMessages.Error($@"Couldn't connect to ""{s.address}:{s.port}""", @"Network Error");
+                            UIMessages.Error($@"Couldn't connect to ""{s.Address}:{s.Port}""", @"Network Error");
                     }
                 }
                 else
@@ -385,7 +385,7 @@ namespace PlexDL.UI.Forms
             }
             catch (Exception ex)
             {
-                LoggingHelpers.RecordGeneralEntry($"Couldn't connect to \"{svr.address}:{svr.port}\"");
+                LoggingHelpers.RecordGeneralEntry($"Couldn't connect to \"{svr.Address}:{svr.Port}\"");
                 LoggingHelpers.RecordException(ex.Message, "ConnectionTestError");
             }
 
@@ -393,13 +393,13 @@ namespace PlexDL.UI.Forms
         }
 
         private static string ConnectionLink(Server svr)
-            => $@"{(Flags.IsHttps ? @"https" : @"http")}://{svr.address}:{svr.port}/?X-Plex-Token={svr.accessToken}";
+            => $@"{(Flags.IsHttps ? @"https" : @"http")}://{svr.Address}:{svr.Port}/?X-Plex-Token={svr.AccessToken}";
 
         private void RunDirectConnect(bool localLink)
         {
             var info = new ConnectionInfo
             {
-                PlexAccountToken = ObjectProvider.User.authenticationToken,
+                PlexAccountToken = ObjectProvider.User.AuthenticationToken,
                 PlexAddress = ""
             };
 
@@ -425,15 +425,15 @@ namespace PlexDL.UI.Forms
 
             //set auth globals
             ObjectProvider.Settings.ConnectionInfo = frmDir.ConnectionInfo;
-            ObjectProvider.User.authenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
+            ObjectProvider.User.AuthenticationToken = frmDir.ConnectionInfo.PlexAccountToken;
 
             //construct new server object from supplied direct connection information
             var s = new Server
             {
-                accessToken = ObjectProvider.User.authenticationToken,
-                address = ObjectProvider.Settings.ConnectionInfo.PlexAddress,
-                port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
-                name = "DirectConnect"
+                AccessToken = ObjectProvider.User.AuthenticationToken,
+                Address = ObjectProvider.Settings.ConnectionInfo.PlexAddress,
+                Port = ObjectProvider.Settings.ConnectionInfo.PlexPort,
+                Name = "DirectConnect"
             };
 
             //apply listing information for auth
@@ -664,7 +664,7 @@ namespace PlexDL.UI.Forms
                                 UIMessages.Info(
                                     @"Successfully connected to Plex.tv. You can now load and connect to your servers/relays.",
                                     @"Success");
-                                LoadServers(true);
+                                LoadServers(!Flags.IsDebug);
 
                                 //status update
                                 SetInterfaceAuthenticationStatus(true);
@@ -798,7 +798,7 @@ namespace PlexDL.UI.Forms
 
         private static bool IsTokenSet()
         {
-            return !string.IsNullOrEmpty(ObjectProvider.User.authenticationToken);
+            return !string.IsNullOrEmpty(ObjectProvider.User.AuthenticationToken);
         }
 
         private bool ApplyToken(string token, bool silent = true)
@@ -808,7 +808,7 @@ namespace PlexDL.UI.Forms
                 //check if there's a connection before trying to update the authentication token
                 if (Internet.IsConnected)
                 {
-                    ObjectProvider.User.authenticationToken = token;
+                    ObjectProvider.User.AuthenticationToken = token;
                     ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = token;
                     itmLoad.Enabled = true;
                     itmOptions.Enabled = true;
@@ -867,7 +867,7 @@ namespace PlexDL.UI.Forms
 
         private void ItmViewAccountToken_Click(object sender, EventArgs e)
         {
-            var token = ObjectProvider.User.authenticationToken;
+            var token = ObjectProvider.User.AuthenticationToken;
 
             if (string.IsNullOrEmpty(token)) return;
 
@@ -882,7 +882,7 @@ We've also copied it to the clipboard for you :)");
         {
             if (dgvServers.SelectedRows.Count == 1)
             {
-                var token = CurrentServer().accessToken;
+                var token = CurrentServer().AccessToken;
 
                 if (string.IsNullOrEmpty(token))
                     return;

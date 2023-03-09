@@ -78,10 +78,10 @@ namespace PlexDL.Common
         public static string MatchUriToToken(string uri, List<Server> plexServers)
         {
             foreach (var s in from s in plexServers
-                              let serverUri = "http://" + s.address + ":" + s.port + "/"
+                              let serverUri = "http://" + s.Address + ":" + s.Port + "/"
                               where uri.Contains(serverUri)
                               select s)
-                return s.accessToken;
+                return s.AccessToken;
 
             return "";
         }

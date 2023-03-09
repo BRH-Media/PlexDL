@@ -81,7 +81,7 @@ namespace PlexDL.Common.Net
                 //default secret account token
                 var secret = !string.IsNullOrWhiteSpace(ObjectProvider.Settings.ConnectionInfo.PlexAccountToken)
                     ? ObjectProvider.Settings.ConnectionInfo.PlexAccountToken
-                    : ObjectProvider.User.authenticationToken;
+                    : ObjectProvider.User.AuthenticationToken;
 
                 //allows specific server connection matching for the correct token
                 var uriToken = string.IsNullOrEmpty(secret)

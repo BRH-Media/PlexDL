@@ -25,18 +25,21 @@ namespace PlexDL.MyPlex
 
         public List<Server> GetServers(User user)
         {
-            var request = new RestRequest("pms/servers");
-            var servers = Execute<List<Server>>(request, user);
+            var request = new RestRequest("pms/servers")
+            {
+                RootElement = @"MediaContainer"
+            };
+            var servers = Execute<HashSet<Server>>(request, user);
 
             var finalReturn = new List<Server>();
 
             foreach (var t in servers)
             {
-                t.user = user;
+                t.User = user;
 
-                if (t.port > 0 && !IsPrivateIp(t.address)
-                               && !string.IsNullOrEmpty(t.version)
-                               && !string.IsNullOrEmpty(t.machineIdentifier))
+                if (t.Port > 0 && !IsPrivateIp(t.Address)
+                               && !string.IsNullOrEmpty(t.Version)
+                               && !string.IsNullOrEmpty(t.MachineIdentifier))
                     finalReturn.Add(t);
             }
 

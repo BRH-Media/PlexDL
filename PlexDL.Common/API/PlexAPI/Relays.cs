@@ -59,10 +59,10 @@ namespace PlexDL.Common.API.PlexAPI
                         var port = Convert.ToInt32(n.Attributes?["port"].Value);
                         var svrRelay = new Server
                         {
-                            address = address,
-                            port = port,
-                            name = name,
-                            accessToken = accessToken
+                            Address = address,
+                            Port = port,
+                            Name = name,
+                            AccessToken = accessToken
                         };
                         relays.Add(svrRelay);
                         break;

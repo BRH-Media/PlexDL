@@ -25,9 +25,9 @@ namespace PlexDL.Common.Renderers.Forms.GridView
 
             foreach (var r1 in data)
                 if (renderTokenColumn)
-                    dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString(), r1.accessToken);
+                    dgvBind.Rows.Add(r1.Name, r1.Address, r1.Port.ToString(), r1.AccessToken);
                 else
-                    dgvBind.Rows.Add(r1.name, r1.address, r1.port.ToString());
+                    dgvBind.Rows.Add(r1.Name, r1.Address, r1.Port.ToString());
 
             if (target.InvokeRequired)
             {

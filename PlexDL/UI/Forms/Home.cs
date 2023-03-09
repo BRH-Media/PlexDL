@@ -244,8 +244,8 @@ namespace PlexDL.UI.Forms
 
         private void DoConnectFromServer(Server s)
         {
-            var address = s.address;
-            var port = s.port;
+            var address = s.Address;
+            var port = s.Port;
 
             var connectInfo = new ConnectionInfo
             {
@@ -280,9 +280,9 @@ namespace PlexDL.UI.Forms
                     if (frm.ShowDialog() != DialogResult.OK)
                         return;
 
-                    ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = frm.SelectedServer.accessToken;
-                    ObjectProvider.Settings.ConnectionInfo.PlexAddress = frm.SelectedServer.address;
-                    ObjectProvider.Settings.ConnectionInfo.PlexPort = frm.SelectedServer.port;
+                    ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = frm.SelectedServer.AccessToken;
+                    ObjectProvider.Settings.ConnectionInfo.PlexAddress = frm.SelectedServer.Address;
+                    ObjectProvider.Settings.ConnectionInfo.PlexPort = frm.SelectedServer.Port;
                     ObjectProvider.Svr = frm.SelectedServer;
 
                     DoConnectFromServer(frm.SelectedServer);

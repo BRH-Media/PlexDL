@@ -20,8 +20,8 @@ namespace PlexDL.Common.API.CastAPI
             try
             {
                 //connection details for the server
-                var ip = server.address;
-                var port = server.port;
+                var ip = server.Address;
+                var port = server.Port;
                 const string protocol = @"http";
 
                 //Constants
@@ -32,7 +32,7 @@ namespace PlexDL.Common.API.CastAPI
                 const int own = 1;
 
                 //Dynamic
-                var uri = $"server://{server.machineIdentifier}/com.plexapp.plugins.library{content.ApiUri}";
+                var uri = $"server://{server.MachineIdentifier}/com.plexapp.plugins.library{content.ApiUri}";
 
                 //assemble URLs
                 var baseUri = $"{protocol}://{ip}:{port}";
@@ -52,7 +52,7 @@ namespace PlexDL.Common.API.CastAPI
                             GuidHandler.GetGlobalGuid().ToString());
 
                         //Plex authentication token
-                        request.Headers.TryAddWithoutValidation("X-Plex-Token", server.accessToken);
+                        request.Headers.TryAddWithoutValidation("X-Plex-Token", server.AccessToken);
 
                         //send the request and store the response
                         var response = httpClient.SendAsync(request).Result;

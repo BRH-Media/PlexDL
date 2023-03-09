@@ -1,42 +1,65 @@
 using System;
 using System.Globalization;
+using System.Xml.Serialization;
 
-// ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
 
 namespace PlexDL.MyPlex
 {
+    [Serializable]
+    [XmlType(@"Server")]
     public class Server : PlexRest
     {
-        public string accessToken { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public int port { get; set; }
-        public string version { get; set; }
-        public string host { get; set; }
-        public string localAddresses { get; set; }
-        public string machineIdentifier { get; set; }
-        public bool owned { get; set; }
-        public User user { get; set; }
+        [XmlElement(@"accessToken")]
+        public string AccessToken { get; set; }
 
-        public string createdAt
+        [XmlElement(@"name")]
+        public string Name { get; set; }
+
+        [XmlElement(@"address")]
+        public string Address { get; set; }
+
+        [XmlElement(@"port")]
+        public int Port { get; set; }
+
+        [XmlElement(@"version")]
+        public string Version { get; set; }
+
+        [XmlElement(@"host")]
+        public string Host { get; set; }
+
+        [XmlElement(@"localAddresses")]
+        public string LocalAddresses { get; set; }
+
+        [XmlElement(@"machineIdentifier")]
+        public string MachineIdentifier { get; set; }
+
+        [XmlElement(@"owned")]
+        public bool Owned { get; set; }
+
+        [XmlElement(@"user")]
+        public User User { get; set; }
+
+        [XmlElement(@"createdAt")]
+        public string CreatedAt
         {
-            get => createDate.ToString(CultureInfo.CurrentCulture);
-            set => createDate = Utils.GetDateTimeFromTimestamp(value);
+            get => _createDate.ToString(CultureInfo.CurrentCulture);
+            set => _createDate = Utils.GetDateTimeFromTimestamp(value);
         }
 
-        public string updatedAt
+        [XmlElement(@"updatedAt")]
+        public string UpdatedAt
         {
-            get => lastUpdated.ToString(CultureInfo.CurrentCulture);
-            set => lastUpdated = Utils.GetDateTimeFromTimestamp(value);
+            get => _lastUpdated.ToString(CultureInfo.CurrentCulture);
+            set => _lastUpdated = Utils.GetDateTimeFromTimestamp(value);
         }
 
-        public DateTime createDate { get; set; }
-        public DateTime lastUpdated { get; set; }
+        private DateTime _createDate;
+        private DateTime _lastUpdated;
 
         protected override string GetBaseUrl()
         {
-            return "http://" + address + ":" + port;
+            return "http://" + Address + ":" + Port;
         }
     }
 }

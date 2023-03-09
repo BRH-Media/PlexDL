@@ -1,6 +1,7 @@
 using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Security;
 using RestSharp;
+using RestSharp.Serializers.Xml;
 
 namespace PlexDL.MyPlex
 {
@@ -41,6 +42,7 @@ namespace PlexDL.MyPlex
         public T Execute<T>(RestRequest request, RestClient client) where T : new()
         {
             client.UseXml();
+            client.UseDotNetXmlSerializer();
             var response = client.Execute<T>(request);
 
             if (response.ErrorException != null)
@@ -55,8 +57,7 @@ namespace PlexDL.MyPlex
             var client = GetRestClient();
 
             request = AddPlexHeaders(request);
-
-            request.AddParameter("X-Plex-Token", user.authenticationToken);
+            request.AddParameter("X-Plex-Token", user.AuthenticationToken);
 
             return Execute<T>(request, client);
         }
