@@ -40,6 +40,7 @@ namespace PlexDL.UI.Forms
             this.itmAuthenticate = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViaToken = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViaPlexTv = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLoad = new System.Windows.Forms.ToolStripMenuItem();
             this.itmServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRelays = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@ namespace PlexDL.UI.Forms
             this.itmClearServers = new System.Windows.Forms.ToolStripMenuItem();
             this.itmRenderTokenColumn = new System.Windows.Forms.ToolStripMenuItem();
             this.itmForceHttps = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtServers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itmViewLink = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewAccountToken = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,8 +70,8 @@ namespace PlexDL.UI.Forms
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmAuthenticate,
-            this.itmConnect,
             this.itmLoad,
+            this.itmConnect,
             this.itmOptions});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -105,12 +105,21 @@ namespace PlexDL.UI.Forms
             this.itmViaPlexTv.Text = "Via Plex.tv";
             this.itmViaPlexTv.Click += new System.EventHandler(this.ItmViaPlexTv_Click);
             // 
+            // itmConnect
+            // 
+            this.itmConnect.Enabled = false;
+            this.itmConnect.Name = "itmConnect";
+            this.itmConnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.itmConnect.Size = new System.Drawing.Size(64, 20);
+            this.itmConnect.Text = "Connect";
+            this.itmConnect.Click += new System.EventHandler(this.ItmConnect_Click);
+            // 
             // itmLoad
             // 
             this.itmLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDirectConnection,
             this.itmServers,
             this.itmRelays,
-            this.itmDirectConnection,
             this.itmLocalLink});
             this.itmLoad.Enabled = false;
             this.itmLoad.Name = "itmLoad";
@@ -182,15 +191,6 @@ namespace PlexDL.UI.Forms
             this.itmForceHttps.Size = new System.Drawing.Size(191, 22);
             this.itmForceHttps.Text = "Force HTTPS";
             this.itmForceHttps.Click += new System.EventHandler(this.ItmForceHttps_Click);
-            // 
-            // itmConnect
-            // 
-            this.itmConnect.Enabled = false;
-            this.itmConnect.Name = "itmConnect";
-            this.itmConnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.itmConnect.Size = new System.Drawing.Size(64, 20);
-            this.itmConnect.Text = "Connect";
-            this.itmConnect.Click += new System.EventHandler(this.ItmConnect_Click);
             // 
             // cxtServers
             // 

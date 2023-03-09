@@ -1,5 +1,6 @@
 ﻿using PlexDL.Common.Structures.AppOptions.Caching;
 using PlexDL.Common.Structures.AppOptions.Display;
+using PlexDL.Common.Structures.AppOptions.Metadata;
 using PlexDL.Common.Structures.AppOptions.Player;
 using System;
 using System.ComponentModel;
@@ -27,6 +28,11 @@ namespace PlexDL.Common.Structures.AppOptions
         [DisplayName("Grid Display Settings")]
         [Description("Values related to PlexDL data rendering")]
         public GridViewDisplays DataDisplay { get; set; } = new GridViewDisplays();
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [DisplayName("Metadata Display Settings")]
+        [Description("Settings related to the display of the metadata window")]
+        public MetadataDisplaySettings MetadataDisplay { get; set; } = new MetadataDisplaySettings();
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [DisplayName("Streaming Settings")]

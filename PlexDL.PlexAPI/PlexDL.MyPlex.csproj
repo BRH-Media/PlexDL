@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetServersResponse.cs" />
     <Compile Include="MyPlex.cs" />
     <Compile Include="PlexRest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

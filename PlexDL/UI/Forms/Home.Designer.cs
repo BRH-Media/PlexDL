@@ -155,6 +155,7 @@ namespace PlexDL.UI.Forms
             this.itmMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.itmStartSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCast = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmPxzExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLogging = new System.Windows.Forms.ToolStripMenuItem();
             this.itmLogViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.itmCaching = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,7 +188,6 @@ namespace PlexDL.UI.Forms
             this.itmDownloadThisTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadThisAlbum = new System.Windows.Forms.ToolStripMenuItem();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
-            this.itmPxzExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
             this.cxtEpisodeOptions.SuspendLayout();
             this.cxtLibrarySections.SuspendLayout();
@@ -1349,8 +1349,8 @@ namespace PlexDL.UI.Forms
             this.itmServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmServerManager,
             this.itmDisconnect,
-            this.itmClearMyToken,
-            this.itmContinueWatching});
+            this.itmContinueWatching,
+            this.itmClearMyToken});
             this.itmServers.Name = "itmServers";
             this.itmServers.Size = new System.Drawing.Size(56, 20);
             this.itmServers.Text = "Servers";
@@ -1401,7 +1401,7 @@ namespace PlexDL.UI.Forms
             // 
             this.itmMetadata.Name = "itmMetadata";
             this.itmMetadata.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.itmMetadata.Size = new System.Drawing.Size(180, 22);
+            this.itmMetadata.Size = new System.Drawing.Size(176, 22);
             this.itmMetadata.Text = "Metadata";
             this.itmMetadata.Click += new System.EventHandler(this.ItmMetadata_Click);
             // 
@@ -1409,16 +1409,23 @@ namespace PlexDL.UI.Forms
             // 
             this.itmStartSearch.Name = "itmStartSearch";
             this.itmStartSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.itmStartSearch.Size = new System.Drawing.Size(180, 22);
+            this.itmStartSearch.Size = new System.Drawing.Size(176, 22);
             this.itmStartSearch.Text = "Start Search";
             this.itmStartSearch.Click += new System.EventHandler(this.ItmStartSearch_Click);
             // 
             // itmCast
             // 
             this.itmCast.Name = "itmCast";
-            this.itmCast.Size = new System.Drawing.Size(180, 22);
+            this.itmCast.Size = new System.Drawing.Size(176, 22);
             this.itmCast.Text = "Cast";
             this.itmCast.Click += new System.EventHandler(this.ItmCast_Click);
+            // 
+            // itmPxzExplorer
+            // 
+            this.itmPxzExplorer.Name = "itmPxzExplorer";
+            this.itmPxzExplorer.Size = new System.Drawing.Size(176, 22);
+            this.itmPxzExplorer.Text = "PXZ Explorer";
+            this.itmPxzExplorer.Click += new System.EventHandler(this.ItmPxzExplorer_Click);
             // 
             // itmLogging
             // 
@@ -1472,21 +1479,21 @@ namespace PlexDL.UI.Forms
             // itmCheckForUpdates
             // 
             this.itmCheckForUpdates.Name = "itmCheckForUpdates";
-            this.itmCheckForUpdates.Size = new System.Drawing.Size(180, 22);
+            this.itmCheckForUpdates.Size = new System.Drawing.Size(171, 22);
             this.itmCheckForUpdates.Text = "Check for Updates";
             this.itmCheckForUpdates.Click += new System.EventHandler(this.ItmCheckForUpdates_Click);
             // 
             // itmRepo
             // 
             this.itmRepo.Name = "itmRepo";
-            this.itmRepo.Size = new System.Drawing.Size(180, 22);
+            this.itmRepo.Size = new System.Drawing.Size(171, 22);
             this.itmRepo.Text = "Repo";
             this.itmRepo.Click += new System.EventHandler(this.ItmRepo_Click);
             // 
             // itmAbout
             // 
             this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(180, 22);
+            this.itmAbout.Size = new System.Drawing.Size(171, 22);
             this.itmAbout.Text = "About";
             this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
             // 
@@ -1652,13 +1659,6 @@ namespace PlexDL.UI.Forms
             // wkrGetMetadata
             // 
             this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WkrGetMetadata_DoWork);
-            // 
-            // itmPxzExplorer
-            // 
-            this.itmPxzExplorer.Name = "itmPxzExplorer";
-            this.itmPxzExplorer.Size = new System.Drawing.Size(180, 22);
-            this.itmPxzExplorer.Text = "PXZ Explorer";
-            this.itmPxzExplorer.Click += new System.EventHandler(this.ItmPxzExplorer_Click);
             // 
             // Home
             // 

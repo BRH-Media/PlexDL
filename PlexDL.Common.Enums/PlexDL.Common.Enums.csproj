@@ -38,6 +38,7 @@
     <Compile Include="ContentType.cs" />
     <Compile Include="DevStatus.cs" />
     <Compile Include="ExportFormat.cs" />
+    <Compile Include="MetadataContainerDisplayOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRCodeFetchMode.cs" />
     <Compile Include="SearchRule.cs" />

@@ -29,11 +29,14 @@ namespace PlexDL.MyPlex
             {
                 RootElement = @"MediaContainer"
             };
-            var servers = Execute<HashSet<Server>>(request, user);
+            var servers = Execute<GetServersResponse>(request, user);
+
+            if (servers == null)
+                return null;
 
             var finalReturn = new List<Server>();
 
-            foreach (var t in servers)
+            foreach (var t in servers.Servers)
             {
                 t.User = user;
 

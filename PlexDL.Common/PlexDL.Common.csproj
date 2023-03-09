@@ -137,6 +137,7 @@
     <Compile Include="Structures\AppOptions\Display\Grids\TV\TVDisplay.cs" />
     <Compile Include="Structures\AppOptions\Display\GridViewDisplays.cs" />
     <Compile Include="Structures\AppOptions\GenericAppSettings.cs" />
+    <Compile Include="Structures\AppOptions\Metadata\MetadataDisplaySettings.cs" />
     <Compile Include="Structures\AppOptions\Player\PlaybackMode.cs" />
     <Compile Include="Structures\AppOptions\Player\PlayerKeyBindings.cs" />
     <Compile Include="Structures\AppOptions\Player\PlayerSettings.cs" />
@@ -218,6 +219,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

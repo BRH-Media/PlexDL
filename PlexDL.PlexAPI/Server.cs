@@ -10,49 +10,49 @@ namespace PlexDL.MyPlex
     [XmlType(@"Server")]
     public class Server : PlexRest
     {
-        [XmlElement(@"accessToken")]
+        [XmlAttribute(@"accessToken")]
         public string AccessToken { get; set; }
 
-        [XmlElement(@"name")]
+        [XmlAttribute(@"name")]
         public string Name { get; set; }
 
-        [XmlElement(@"address")]
+        [XmlAttribute(@"address")]
         public string Address { get; set; }
 
-        [XmlElement(@"port")]
+        [XmlAttribute(@"port")]
         public int Port { get; set; }
 
-        [XmlElement(@"version")]
+        [XmlAttribute(@"version")]
         public string Version { get; set; }
 
-        [XmlElement(@"host")]
+        [XmlAttribute(@"host")]
         public string Host { get; set; }
 
-        [XmlElement(@"localAddresses")]
+        [XmlAttribute(@"localAddresses")]
         public string LocalAddresses { get; set; }
 
-        [XmlElement(@"machineIdentifier")]
+        [XmlAttribute(@"machineIdentifier")]
         public string MachineIdentifier { get; set; }
 
-        [XmlElement(@"owned")]
-        public bool Owned { get; set; }
+        [XmlAttribute(@"owned")]
+        public int Owned { get; set; }
 
-        [XmlElement(@"user")]
-        public User User { get; set; }
-
-        [XmlElement(@"createdAt")]
+        [XmlAttribute(@"createdAt")]
         public string CreatedAt
         {
             get => _createDate.ToString(CultureInfo.CurrentCulture);
             set => _createDate = Utils.GetDateTimeFromTimestamp(value);
         }
 
-        [XmlElement(@"updatedAt")]
+        [XmlAttribute(@"updatedAt")]
         public string UpdatedAt
         {
             get => _lastUpdated.ToString(CultureInfo.CurrentCulture);
             set => _lastUpdated = Utils.GetDateTimeFromTimestamp(value);
         }
+
+        [XmlElement(@"user")]
+        public User User { get; set; }
 
         private DateTime _createDate;
         private DateTime _lastUpdated;

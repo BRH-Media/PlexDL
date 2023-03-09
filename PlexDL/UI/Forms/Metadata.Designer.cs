@@ -214,6 +214,10 @@ namespace PlexDL.UI.Forms
             this.dgvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAttributes.Size = new System.Drawing.Size(258, 172);
             this.dgvAttributes.TabIndex = 0;
+            this.dgvAttributes.CellMouseMove +=
+                new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvAttributes_CellMouseMove);
+            this.dgvAttributes.CellMouseLeave +=
+                new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvAttributes_CellMouseLeave);
             // 
             // tlpMain
             // 

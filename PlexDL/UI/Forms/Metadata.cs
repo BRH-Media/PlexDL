@@ -3,8 +3,11 @@ using PlexDL.Common.API.PlexAPI.IO;
 using PlexDL.Common.API.PlexAPI.Objects.AttributeTables;
 using PlexDL.Common.Components.Controls;
 using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Enums;
+using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.PlayerLaunchers;
+using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using PlexDL.ResourceProvider.Properties;
 using PlexDL.WaitWindow;
@@ -25,8 +28,73 @@ namespace PlexDL.UI.Forms
         public Metadata()
             => InitializeComponent();
 
-        public PlexObject StreamingContent { get; set; } = new PlexObject();
+        public PlexObject StreamingContent { get; set; } = new();
         public bool StationaryMode { get; set; }
+        public bool ContainerChange { get; set; } = false;
+
+        private void DgvAttributes_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                if (ContainerChange)
+                    return;
+                if (e.ColumnIndex >= 1)
+                {
+                    var cellToChange = dgvAttributes.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    var cellHeading = dgvAttributes.Rows[e.RowIndex].Cells[0];
+                    if (cellToChange != null && cellHeading != null)
+                    {
+                        if (cellHeading.Value.ToString() == @"Container")
+                        {
+                            var format = ObjectProvider.Settings.MetadataDisplay.MetadataContainerDisplay == MetadataContainerDisplayOption.Description
+                                ? MediaContainerFormats.DescriptionToFormat(cellToChange.Value.ToString())
+                                : MediaContainerFormats.FormatToDescription(cellToChange.Value.ToString());
+                            if (!string.IsNullOrWhiteSpace(format))
+                            {
+                                cellToChange.Value = format;
+                                ContainerChange = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                //nothing
+            }
+        }
+
+        private void DgvAttributes_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (!ContainerChange)
+                    return;
+                if (e.ColumnIndex >= 1)
+                {
+                    var cellToChange = dgvAttributes.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    var cellHeading = dgvAttributes.Rows[e.RowIndex].Cells[0];
+                    if (cellToChange != null && cellHeading != null)
+                    {
+                        if (cellHeading.Value.ToString() == @"Container")
+                        {
+                            var description = ObjectProvider.Settings.MetadataDisplay.MetadataContainerDisplay == MetadataContainerDisplayOption.Description
+                                ? MediaContainerFormats.FormatToDescription(cellToChange.Value.ToString())
+                                : MediaContainerFormats.DescriptionToFormat(cellToChange.Value.ToString());
+                            if (!string.IsNullOrWhiteSpace(description))
+                            {
+                                cellToChange.Value = description;
+                                ContainerChange = false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                //nothing
+            }
+        }
 
         private void LoadWorker(object sender, WaitWindowEventArgs e)
         {

@@ -6,33 +6,34 @@ using System.Xml.Serialization;
 namespace PlexDL.MyPlex
 {
     [Serializable]
+    [XmlType(@"User")]
     public class User
     {
-        [XmlElement(@"username")]
+        [XmlAttribute(@"username")]
         public string Username { get; set; }
 
-        [XmlElement(@"email")]
+        [XmlAttribute(@"email")]
         public string Email { get; set; }
 
-        [XmlElement(@"id")]
+        [XmlAttribute(@"id")]
         public int Id { get; set; }
 
-        [XmlElement(@"thumb")]
+        [XmlAttribute(@"thumb")]
         public string Thumb { get; set; }
 
-        [XmlElement(@"queueEmail")]
+        [XmlAttribute(@"queueEmail")]
         public string QueueEmail { get; set; }
 
-        [XmlElement(@"queueUid")]
+        [XmlAttribute(@"queueUid")]
         public string QueueUid { get; set; }
 
-        [XmlElement(@"cloudSyncDevice")]
+        [XmlAttribute(@"cloudSyncDevice")]
         public string CloudSyncDevice { get; set; }
 
-        [XmlElement(@"authenticationToken")]
+        [XmlAttribute(@"authenticationToken")]
         public string AuthenticationToken { get; set; }
 
-        [XmlElement(@"joinDate")]
+        [XmlAttribute(@"joinDate")]
         public DateTime JoinDate { get; set; }
     }
 }

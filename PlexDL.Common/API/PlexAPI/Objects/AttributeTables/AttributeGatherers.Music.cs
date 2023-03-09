@@ -1,4 +1,6 @@
-﻿using PlexDL.Common.Logging;
+﻿using PlexDL.Common.Enums;
+using PlexDL.Common.Globals.Providers;
+using PlexDL.Common.Logging;
 using PlexDL.Common.Structures;
 using PlexDL.Common.Structures.Plex;
 using System;
@@ -27,7 +29,10 @@ namespace PlexDL.Common.API.PlexAPI.Objects.AttributeTables
                 var genre = new[] { "Genre", content.ContentGenre };
                 var duration = new[] { "Duration", Methods.CalculateTime(content.StreamInformation.ContentDuration) };
                 var size = new[] { "File size", Methods.FormatBytes(content.StreamInformation.ByteLength) };
-                var container = new[] { "Container", MediaContainerFormats.FormatToDescription(content.StreamInformation.Container) };
+                var container = new[] { "Container", ObjectProvider.Settings.MetadataDisplay.MetadataContainerDisplay == MetadataContainerDisplayOption.Description
+                    ? MediaContainerFormats.FormatToDescription(content.StreamInformation.Container)
+                    : content.StreamInformation.Container
+                };
 
                 var newRows = new[]
                 {

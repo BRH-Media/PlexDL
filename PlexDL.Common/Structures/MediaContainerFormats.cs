@@ -82,6 +82,29 @@ namespace PlexDL.Common.Structures
             }
         };
 
+        public static string DescriptionToFormat(string desc)
+        {
+            try
+            {
+                //validation
+                if (!string.IsNullOrWhiteSpace(desc))
+
+                    //go through each container definition
+                    foreach (var c in ContainerDefinitions.Where(c => string.Equals(c[1], desc, StringComparison.CurrentCultureIgnoreCase)))
+
+                        //return corresponding format
+                        return c[0];
+            }
+            catch (Exception ex)
+            {
+                //log error
+                LoggingHelpers.RecordException(ex.Message, @"MediaContainerFormatError");
+            }
+
+            //default
+            return desc;
+        }
+
         public static string FormatToDescription(string format)
         {
             try

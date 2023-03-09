@@ -839,11 +839,11 @@ namespace PlexDL.UI.Forms
         private void ItmClearServers_Click(object sender, EventArgs e)
         {
             dgvServers.DataSource = null;
-            //force a repaint
             dgvServers.Invalidate();
             ObjectProvider.PlexServers = null;
             itmLoad.Enabled = false;
             itmOptions.Enabled = false;
+            SetInterfaceViewingStatus();
         }
 
         private void ItmRenderTokenColumn_Click(object sender, EventArgs e)
