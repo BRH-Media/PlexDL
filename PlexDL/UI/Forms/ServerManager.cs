@@ -4,6 +4,7 @@ using PlexDL.Common.API.PlexAPI;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Caching.Handlers;
 using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
@@ -305,13 +306,50 @@ namespace PlexDL.UI.Forms
             return ObjectProvider.PlexServers[index];
         }
 
+        private void DoConnectWithMod()
+        {
+            try
+            {
+                if (Internet.IsConnected)
+                {
+                    if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet())
+                        return;
+
+                    //fetch details
+                    var s = CurrentServer();
+
+                    //change details
+                    ObjectProvider.Settings.ConnectionInfo.PlexAccountToken = s.AccessToken;
+                    ObjectProvider.Settings.ConnectionInfo.PlexAddress = s.Address;
+                    ObjectProvider.Settings.ConnectionInfo.PlexPort = s.Port;
+
+                    //run the connection window
+                    var info = ObjectProvider.Settings.ConnectionInfo;
+                    RunDirectConnect(DirectConnectMode.ModifiedDetails, info, true);
+                }
+                else
+                {
+                    // trying to connect on no connection will not end well; alert the user.
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"ModConnectionError");
+                UIMessages.Error("Server connection (modified details) attempt failed\n\n" + ex);
+            }
+        }
+
         private void DoConnect()
         {
             try
             {
                 if (Internet.IsConnected)
                 {
-                    if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet()) return;
+                    if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet())
+                        return;
 
                     //make sure that we can connect to this server.
                     //This way, we can avoid unwanted errors for the
@@ -337,22 +375,36 @@ namespace PlexDL.UI.Forms
                     {
                         if (testUrl.LastException != null)
                         {
-                            UIMessages.Error(
-                                testUrl.StatusCode != "Undetermined"
-                                    ? $@"Connection failed. The server result was: {testUrl.StatusCode}"
-                                    : $@"Connection failed. The error was: {testUrl.LastException.Message}",
-                                @"Network Error");
                             LoggingHelpers.RecordException(testUrl.LastException.Message, @"TestConnectionError");
+                            if (UIMessages.ErrorQuestion(
+                                testUrl.StatusCode != "Undetermined"
+                                    ? $"Connection failed. The server result was: {testUrl.StatusCode}\n\n"
+                                    + "Do you want to connect with different details?"
+                                    : $"Connection failed. The error was: {testUrl.LastException.Message}\n\n"
+                                    + "Do you want to connect with different details?",
+                                @"Network Error"))
+                            {
+                                DoConnectWithMod();
+                            }
                         }
                         else
-                            UIMessages.Error($@"Couldn't connect to ""{s.Address}:{s.Port}""", @"Network Error");
+                        {
+                            LoggingHelpers.RecordException(@"Server connection failure", @"TestConnectionError");
+                            if (UIMessages.ErrorQuestion($@"Couldn't connect to ""{s.Address}:{s.Port}""" + "\n\n" +
+                                "Do you want to connect with different details?", @"Network Error"))
+                            {
+                                DoConnectWithMod();
+                            }
+                        }
                     }
                 }
                 else
+                {
                     // trying to connect on no connection will not end well; alert the user.
                     UIMessages.Warning(
                         @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
                         @"Network Error");
+                }
             }
             catch (Exception ex)
             {
@@ -395,7 +447,7 @@ namespace PlexDL.UI.Forms
         private static string ConnectionLink(Server svr)
             => $@"{(Flags.IsHttps ? @"https" : @"http")}://{svr.Address}:{svr.Port}/?X-Plex-Token={svr.AccessToken}";
 
-        private void RunDirectConnect(bool localLink)
+        private void RunDirectConnect(DirectConnectMode mode)
         {
             var info = new ConnectionInfo
             {
@@ -403,10 +455,10 @@ namespace PlexDL.UI.Forms
                 PlexAddress = ""
             };
 
-            RunDirectConnect(localLink, info);
+            RunDirectConnect(mode, info);
         }
 
-        private void RunDirectConnect(bool localLink, ConnectionInfo info, bool diffToken = false)
+        private void RunDirectConnect(DirectConnectMode mode, ConnectionInfo info, bool diffToken = false)
         {
             //new list of servers
             var servers = new List<Server>();
@@ -417,7 +469,7 @@ namespace PlexDL.UI.Forms
             //setup form prerequisities
             frmDir.ConnectionInfo = info;
             frmDir.DifferentToken = diffToken;
-            frmDir.LoadLocalLink = localLink;
+            frmDir.Mode = mode;
 
             //dialog verification
             if (frmDir.ShowDialog() != DialogResult.OK) return;
@@ -624,13 +676,13 @@ namespace PlexDL.UI.Forms
         private void ItmDirectConnection_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
-                RunDirectConnect(false);
+                RunDirectConnect(DirectConnectMode.Normal);
         }
 
         private void ItmLocalLink_Click(object sender, EventArgs e)
         {
             if (IsTokenSet())
-                RunDirectConnect(true);
+                RunDirectConnect(DirectConnectMode.LocalLink);
         }
 
         private void ItmRelays_Click(object sender, EventArgs e)
@@ -790,16 +842,15 @@ namespace PlexDL.UI.Forms
 
         private void LoadProfileDefinedServer()
         {
-            if (!CheckProfileDefinedServer()) return;
+            if (!CheckProfileDefinedServer())
+                return;
 
             var info = ObjectProvider.Settings.ConnectionInfo;
-            RunDirectConnect(false, info, true);
+            RunDirectConnect(DirectConnectMode.Normal, info, true);
         }
 
         private static bool IsTokenSet()
-        {
-            return !string.IsNullOrEmpty(ObjectProvider.User.AuthenticationToken);
-        }
+            => !string.IsNullOrEmpty(ObjectProvider.User.AuthenticationToken);
 
         private bool ApplyToken(string token, bool silent = true)
         {

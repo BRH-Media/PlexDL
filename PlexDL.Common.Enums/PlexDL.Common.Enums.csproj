@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="ContentType.cs" />
     <Compile Include="DevStatus.cs" />
+    <Compile Include="DirectConnectMode.cs" />
     <Compile Include="ExportFormat.cs" />
     <Compile Include="MetadataContainerDisplayOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
