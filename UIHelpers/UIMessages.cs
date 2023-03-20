@@ -47,5 +47,14 @@ namespace UIHelpers
 
         public static bool Question(string msg, string title = @"Question")
             => ThreadSafeMessage(msg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+
+        public static bool InfoQuestion(string msg, string title = @"Question")
+            => ThreadSafeMessage(msg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+
+        public static bool ErrorQuestion(string msg, string title = @"Question")
+            => ThreadSafeMessage(msg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes;
+
+        public static bool WarningQuestion(string msg, string title = @"Question")
+            => ThreadSafeMessage(msg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
     }
 }

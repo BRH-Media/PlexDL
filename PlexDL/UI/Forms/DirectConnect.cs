@@ -1,5 +1,6 @@
 ﻿using PlexDL.AltoHTTP.Common.Net;
 using PlexDL.Common.Components.Forms;
+using PlexDL.Common.Enums;
 using PlexDL.Common.Globals;
 using PlexDL.Common.Structures.AppOptions;
 using System;
@@ -18,8 +19,8 @@ namespace PlexDL.UI.Forms
         //public bool ConnectionStarted { get; set; } = false;
         public bool Success { get; set; }
 
-        //specifies whether PlexDL should fill txtServerIP.Text with "127.0.0.1"
-        public bool LoadLocalLink { get; set; } = false;
+        //mode specification
+        public DirectConnectMode Mode { get; set; } = DirectConnectMode.Normal;
 
         //force "Use a different token" check status
         public bool DifferentToken
@@ -151,16 +152,38 @@ namespace PlexDL.UI.Forms
             //setup HTTPS checkbox
             chkForceHttps.Checked = Flags.IsHttps;
 
-            //local link?
-            if (LoadLocalLink)
-            {
-                //setup with locally-hosted Plex server values
-                txtServerIP.Text = @"127.0.0.1";
-                txtServerIP.ReadOnly = true;
-                Text = @"Local Machine Connection";
-            }
-
+            //perform UI setup
+            ModeSetup();
             CheckDiffToken();
+        }
+
+        private void ModeSetup()
+        {
+            try
+            {
+                switch (Mode)
+                {
+                    case DirectConnectMode.LocalLink:
+
+                        //setup with locally-hosted Plex server values
+                        txtServerIP.Text = @"127.0.0.1";
+                        txtServerIP.ReadOnly = true;
+                        Text = @"Local Machine Connection";
+                        break;
+
+                    case DirectConnectMode.ModifiedDetails:
+                        Text = @"Modified Connection";
+                        break;
+
+                    case DirectConnectMode.Normal:
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                //nothing
+            }
         }
 
         private void chkToken_CheckedChanged(object sender, EventArgs e)
