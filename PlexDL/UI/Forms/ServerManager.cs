@@ -893,5 +893,13 @@ We've also copied it to the clipboard for you :)");
 
         private void ItmForceHttps_Click(object sender, EventArgs e)
             => Flags.IsHttps = itmForceHttps.Checked;
+
+        private void ItmConnectAsIs_Click(object sender, EventArgs e)
+            => ItmConnect_Click(sender, e);
+
+        private void ItmConnectModifyDetails_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
