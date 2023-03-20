@@ -413,11 +413,6 @@ namespace PlexDL.UI.Forms
             }
         }
 
-        private void ItmConnect_Click(object sender, EventArgs e)
-        {
-            DoConnect();
-        }
-
         //another method to handle testing a connection
         //this one's here for logging purposes and such, and is used
         //solely by the Server Manager
@@ -946,11 +941,32 @@ We've also copied it to the clipboard for you :)");
             => Flags.IsHttps = itmForceHttps.Checked;
 
         private void ItmConnectAsIs_Click(object sender, EventArgs e)
-            => ItmConnect_Click(sender, e);
+            => DoConnect();
 
         private void ItmConnectModifyDetails_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (Internet.IsConnected)
+                {
+                    if (dgvServers.SelectedRows.Count != 1 || !IsTokenSet())
+                        return;
 
+                    DoConnectWithMod();
+                }
+                else
+                {
+                    // trying to connect on no connection will not end well; alert the user.
+                    UIMessages.Warning(
+                        @"No internet connection. Please connect to a network before attempting to start a Plex server connection.",
+                        @"Network Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingHelpers.RecordException(ex.Message, @"ModifiedDirectConnectionError");
+                UIMessages.Error("Server connection attempt failed\n\n" + ex);
+            }
         }
     }
 }

@@ -154,14 +154,13 @@ namespace PlexDL.UI.Forms
             // itmConnect
             // 
             this.itmConnect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmConnectModifyDetails,
-            this.itmConnectAsIs});
+            this.itmConnectAsIs,
+            this.itmConnectModifyDetails});
             this.itmConnect.Enabled = false;
             this.itmConnect.Name = "itmConnect";
             this.itmConnect.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.itmConnect.Size = new System.Drawing.Size(64, 20);
             this.itmConnect.Text = "Connect";
-            this.itmConnect.Click += new System.EventHandler(this.ItmConnect_Click);
             // 
             // itmConnectModifyDetails
             // 
