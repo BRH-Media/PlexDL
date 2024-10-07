@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PlexDL.Common.Pxz")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides decoding and encoding for the PXZ (PlexDL XML-Zipped) Format")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("PlexDL.Common.Pxz")]

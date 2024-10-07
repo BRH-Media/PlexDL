@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.7.3</version>
+    <title>PlexDL.Common.Enums</title>
+    <authors>BRH Media</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/BRH-Media/PlexDL</projectUrl>
+    <description>Contains enumerables required for PlexDL dependencies</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright (c) BRH Media (Baeleigh Harris) 2024</copyright>
+    <tags>PlexDL enums package</tags>
+  </metadata>
+</package>

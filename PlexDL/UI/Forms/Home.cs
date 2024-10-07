@@ -16,7 +16,6 @@ using PlexDL.Common.Globals.Providers;
 using PlexDL.Common.Logging;
 using PlexDL.Common.Net;
 using PlexDL.Common.PlayerLaunchers;
-using PlexDL.Common.Pxz.UI;
 using PlexDL.Common.Renderers.Forms.GridView;
 using PlexDL.Common.SearchFramework;
 using PlexDL.Common.Security;
@@ -38,6 +37,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using PlexDL.Common.Pxz.UI;
 using UIHelpers;
 using Directory = System.IO.Directory;
 

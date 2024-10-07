@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Common.BarcodeHandle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Common.Shodan", "PlexDL.Common.Shodan\PlexDL.Common.Shodan.csproj", "{5CA1F4F9-C5CB-4AFF-96CD-9B8F78968EAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexDL.Common.Pxz.Explorer", "PlexDL.Common.Pxz.Explorer\PlexDL.Common.Pxz.Explorer.csproj", "{0A32FB9A-6AA2-4B4A-BD51-3AB9F2706232}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{5CA1F4F9-C5CB-4AFF-96CD-9B8F78968EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CA1F4F9-C5CB-4AFF-96CD-9B8F78968EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CA1F4F9-C5CB-4AFF-96CD-9B8F78968EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A32FB9A-6AA2-4B4A-BD51-3AB9F2706232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A32FB9A-6AA2-4B4A-BD51-3AB9F2706232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A32FB9A-6AA2-4B4A-BD51-3AB9F2706232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A32FB9A-6AA2-4B4A-BD51-3AB9F2706232}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

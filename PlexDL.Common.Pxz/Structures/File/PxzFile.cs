@@ -4,14 +4,12 @@ using PlexDL.Common.Pxz.Compressors;
 using PlexDL.Common.Pxz.Enums;
 using PlexDL.Common.Pxz.Extensions;
 using PlexDL.Common.Pxz.Structures.File.Record;
-using PlexDL.Common.Pxz.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using UIHelpers;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
@@ -131,14 +129,6 @@ namespace PlexDL.Common.Pxz.Structures.File
 
             //default
             return new List<PxzRecord>();
-        }
-
-        /// <summary>
-        /// Show the PXZ Explorer with the current PXZ file loaded
-        /// </summary>
-        public void ShowInformation()
-        {
-            PxzExplorer.ShowPxzExplorer(this);
         }
 
         /// <summary>
@@ -279,7 +269,7 @@ namespace PlexDL.Common.Pxz.Structures.File
                 if (idxFile == null)
                 {
                     if (!ParseSilent)
-                        UIMessages.Error(@"PXZ index couldn't be found or it isn't valid");
+                       throw new Exception(@"PXZ index couldn't be found or it isn't valid");
                     return;
                 }
 
@@ -336,12 +326,12 @@ namespace PlexDL.Common.Pxz.Structures.File
                 //check authenticity flag, and warn if it's been altered
                 if (tamperedWith)
                     if (!ParseSilent)
-                        UIMessages.Warning("Content has been modified\n\nThe MD5 checksums stored do not match the checksums calculated, which is an indication that the contents may have been altered outside of the PXZ handler. The file will continue loading after you close this message.");
+                        throw new Exception("Content has been modified\n\nThe MD5 checksums stored do not match the checksums calculated, which is an indication that the contents may have been altered outside of the PXZ handler. The file will continue loading after you close this message.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (!ParseSilent)
-                    UIMessages.Error(ex.ToString());
+                    throw;
             }
         }
     }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PlexDL.Common.Enums")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Contains enumerables required for PlexDL dependencies")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BRH Media")]
 [assembly: AssemblyProduct("PlexDL.Common.Enums")]

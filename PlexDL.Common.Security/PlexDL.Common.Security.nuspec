@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.7.3</version>
+    <title>PlexDL.Common.Security</title>
+    <authors>BRH Media</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+	<projectUrl>https://github.com/BRH-Media/PlexDL</projectUrl>
+    <description>Provides security functionality (i.e., encryption/decryption) for various PlexDL functions</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright (c) BRH Media (Baeleigh Harris) 2024</copyright>
+    <tags>PlexDL enums security package</tags>
+	<dependencies>
+		<dependency id="PlexDL.Common.Enums" version="1.7.3"></dependency>
+	</dependencies>
+  </metadata>
+</package>

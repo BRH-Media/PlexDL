@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PlexDL.Common.Security")]
-[assembly: AssemblyDescription("Provides security functionality (i.e., encryption/decryption) for various PlexDL functions")]
+[assembly: AssemblyTitle("PlexDL.Common.Pxz.Explorer")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BRH Media")]
-[assembly: AssemblyProduct("PlexDL.Common.Security")]
-[assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("PlexDL.Common.Pxz.Explorer")]
+[assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("aba08e30-bcbb-4eb8-a187-8c8b7037bc48")]
+[assembly: Guid("0a32fb9a-6aa2-4b4a-bd51-3ab9f2706232")]
 
 // Version information for an assembly consists of the following four values:
 //
