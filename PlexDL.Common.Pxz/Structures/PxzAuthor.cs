@@ -9,7 +9,7 @@ namespace PlexDL.Common.Pxz.Structures
         public string UserAccount { get; set; }
         public string DisplayName { get; set; }
 
-        public static PxzAuthor FromCurrent()
+        public static PxzAuthor FromCurrent(bool fillDisplayName = false)
         {
             try
             {
@@ -17,7 +17,7 @@ namespace PlexDL.Common.Pxz.Structures
                 {
                     MachineName = Environment.MachineName,
                     UserAccount = Environment.UserName,
-                    DisplayName = CurrentDisplayName()
+                    DisplayName = fillDisplayName ? CurrentDisplayName() : ""
                 };
             }
             catch
