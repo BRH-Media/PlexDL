@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using UIHelpers;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
@@ -138,13 +139,19 @@ namespace PlexDL.Common.Pxz.Structures.File
         /// <returns></returns>
         public PxzRecord LoadRecord(string recordName)
         {
-            if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0) return null;
+            if (Records.Count <= 0 || FileIndex.RecordReference.Count <= 0)
+                return null;
 
-            return (from r in FileIndex.RecordReference
-                    where r.RecordName == recordName
-                    select FileIndex.RecordReference.IndexOf(r)
-                into i
-                    select Records[i]).FirstOrDefault();
+            for (var i = 0; i < FileIndex.RecordReference.Count; i++)
+            {
+                var r = FileIndex.RecordReference[i];
+                if (r.RecordName == recordName)
+                {
+                    return Records[i];
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -248,7 +255,8 @@ namespace PlexDL.Common.Pxz.Structures.File
             try
             {
                 //can't load a non-existent file
-                if (!System.IO.File.Exists(path)) return;
+                if (!System.IO.File.Exists(path))
+                    return;
 
                 //clear all lists and assign the new location
                 Location = path;
@@ -269,7 +277,7 @@ namespace PlexDL.Common.Pxz.Structures.File
                 if (idxFile == null)
                 {
                     if (!ParseSilent)
-                       throw new Exception(@"PXZ index couldn't be found or it isn't valid");
+                        throw new Exception(@"PXZ index couldn't be found or it isn't valid");
                     return;
                 }
 
